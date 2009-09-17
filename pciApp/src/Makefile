@@ -15,8 +15,11 @@ LIBRARY_RTEMS = pci
 SRCS_DIRS += os/RTEMS
 USR_CPPFLAGS += -I../os/RTEMS
 
+INC += devLibPCI.h
+INC += devLibPCIImpl.h
 pci_SRCS += devLibPCI.c
 
+INC_RTEMS += osdPCI.h
 pci_SRCS_RTEMS += osdPCI.c
 
 pci_LIBS += Com
