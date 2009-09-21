@@ -1,0 +1,4 @@
+# Prescaler devices
+device(longin , VME_IO, devLIEVRPreScaler, "EVR Prescaler")
+device(longout, VME_IO, devLOEVRPreScaler, "EVR Prescaler")
+
