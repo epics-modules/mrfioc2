@@ -6,6 +6,8 @@
 
 #include <epicsTypes.h>
 
+#include <string>
+
 struct MapType {
   enum type {
     None,
@@ -32,7 +34,7 @@ public:
   /**\defgroup ena Enable/disable pulser output.
    */
   /*@{*/
-  virtual bool enabled()=0;
+  virtual bool enabled() const=0;
   virtual void enable(bool)=0;
   /*@}*/
 
@@ -42,7 +44,7 @@ public:
    */
   /*@{*/
   virtual void delay(epicsUInt32)=0;
-  virtual epicsUInt32 setDelay()=0;
+  virtual epicsUInt32 setDelay() const=0;
   //virtual delayUnit(TimeUnits::type)=0;
   //virtual TimeUnits::type setDelayUnit()=0;
   /*@}*/
@@ -53,7 +55,7 @@ public:
    */
   /*@{*/
   virtual void width(epicsUInt32)=0;
-  virtual epicsUInt32 setWidth()=0;
+  virtual epicsUInt32 setWidth() const=0;
   //virtual widthUnit(TimeUnits::type)=0;
   //virtual TimeUnits::type setWidthUnit()=0;
   /*@}*/
@@ -61,7 +63,7 @@ public:
   /**\defgroup scaler Set triggered mode prescaler
    */
   /*@{*/
-  virtual epicsUInt32 prescaler()=0;
+  virtual epicsUInt32 prescaler() const=0;
   virtual void setPrescaler(epicsUInt32)=0;
   /*@}*/
 
@@ -70,7 +72,7 @@ public:
    * Selects normal or inverted.
    */
   /*@{*/
-  virtual bool polarityNorm()=0;
+  virtual bool polarityNorm() const=0;
   virtual void setPolarityNorm(bool)=0;
   /*@}*/
 
@@ -80,7 +82,7 @@ public:
    * Settings other than TSL::Float temporarily disable all event mappings
    */
   /*@{*/
-  virtual TSL::type state()=0;
+  virtual TSL::type state() const=0;
   virtual void setState(TSL::type)=0;
   /*@}*/
 
@@ -92,14 +94,15 @@ public:
    */
   /*@{*/
   //! What action is source 'src' mapped to?
-  virtual MapType::type mappedSource(epicsUInt32 src)=0;
+  virtual MapType::type mappedSource(epicsUInt32 src) const=0;
   //! Set mapping of source 'src'.
   virtual void sourceSetMap(epicsUInt32 src,MapType::type action)=0;
+
   //! Return a human readable string naming 'src'.
-  virtual const char* sourceName(epicsUInt32 src)=0;
+  virtual const char* sourceName(epicsUInt32 src) const=0;
 
   //! Return a human readable string describing the mapping (does not affect hardware).
-  virtual const char* mapDesc(epicsUInt32,MapType::type) const;//!< Default uses sourceName()
+  virtual std::string mapDesc(epicsUInt32,MapType::type) const;
   /*@}*/
 };
 

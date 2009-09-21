@@ -9,7 +9,7 @@ class PreScaler : public IOStatus
 public:
   virtual ~PreScaler()=0;
 
-  virtual epicsUInt32 prescaler()=0;
+  virtual epicsUInt32 prescaler() const=0;
   virtual void setPrescaler(epicsUInt32)=0;
 };
 
