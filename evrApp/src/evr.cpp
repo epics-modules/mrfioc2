@@ -1,5 +1,5 @@
 
-#include "evr.hpp"
+#include "evr/evr.h"
 
 /**@file evr.cpp
  *
@@ -11,10 +11,6 @@
  */
 
 EVR::~EVR()
-{
-}
-
-IOStatus::~IOStatus()
 {
 }
 

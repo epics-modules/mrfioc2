@@ -9,10 +9,10 @@ LIBRARY = evr
 
 SRC_DIRS += evr
 
-INC += util.hpp
-INC += pulser.hpp
-INC += output.hpp
-INC += prescaler.hpp
+INC += evr/util.h
+INC += evr/pulser.h
+INC += evr/output.h
+INC += evr/prescaler.h
 
 evr_SRCS += evr.cpp
 

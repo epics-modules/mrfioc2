@@ -16,7 +16,7 @@
 class IOStatus
 {
 public:
-  virtual IOSCANPVT statusChange(){return NULL;};
+  virtual IOSCANPVT statusChange(){return 0;};
 };
 
 struct TimeUnits {

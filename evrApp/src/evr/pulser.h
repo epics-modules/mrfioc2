@@ -2,7 +2,7 @@
 #ifndef PULSER_HPP_INC
 #define PULSER_HPP_INC
 
-#include "evr/util.hpp"
+#include "evr/util.h"
 
 #include <epicsTypes.h>
 
@@ -41,7 +41,7 @@ public:
    * Units of event clock period.
    */
   /*@{*/
-  virtual delay(epicsUInt32)=0;
+  virtual void delay(epicsUInt32)=0;
   virtual epicsUInt32 setDelay()=0;
   //virtual delayUnit(TimeUnits::type)=0;
   //virtual TimeUnits::type setDelayUnit()=0;
@@ -52,7 +52,7 @@ public:
    * Units of event clock period.
    */
   /*@{*/
-  virtual width(epicsUInt32)=0;
+  virtual void width(epicsUInt32)=0;
   virtual epicsUInt32 setWidth()=0;
   //virtual widthUnit(TimeUnits::type)=0;
   //virtual TimeUnits::type setWidthUnit()=0;
@@ -61,8 +61,8 @@ public:
   /**\defgroup scaler Set triggered mode prescaler
    */
   /*@{*/
-  virtual epicsUint32 prescaler()=0;
-  virtual void setPrescaler(epicsUint32)=0;
+  virtual epicsUInt32 prescaler()=0;
+  virtual void setPrescaler(epicsUInt32)=0;
   /*@}*/
 
   /**\defgroup pol Set output polarity

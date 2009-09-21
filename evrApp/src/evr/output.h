@@ -2,7 +2,7 @@
 #ifndef OUTPUT_HPP_INC
 #define OUTPUT_HPP_INC
 
-#include "evr/util.hpp"
+#include "evr/util.h"
 
 #include <epicsTypes.h>
 

@@ -2,9 +2,9 @@
 #ifndef EVR_HPP_INC
 #define EVR_HPP_INC
 
-#include "evr/pulser.hpp"
-#include "evr/output.hpp"
-#include "evr/prescaler.hpp"
+#include "evr/pulser.h"
+#include "evr/output.h"
+#include "evr/prescaler.h"
 
 /**@brief Base interface for EVRs.
  *
@@ -54,7 +54,7 @@ public:
   virtual Output* output(epicsUInt32)=0;
 
   //! Prescaler id number is device specific
-  virtual Prescaler* prescaler(epicsUInt32)=0;
+  virtual PreScaler* prescaler(epicsUInt32)=0;
 
   /** Hook to handle general event mapping table manipulation.
    *  Allows 'special' events only (ie heartbeat, log, led, etc)
@@ -69,11 +69,11 @@ public:
   virtual epicsUInt32 eventClock()=0;
   virtual epicsUInt32 eventClockDiv()=0;
   //! Set Event clock rate and microsecond divider
-  virtual void setEventClock(epicsUInt32,epicsUInt32)=0;
-  virtual void setEventClock(epicsUInt32,epicsUInt32)=0;
+  virtual void setEventClock(epicsUInt32)=0;
+  virtual void setEventClockDiv(epicsUInt32)=0;
 
   virtual IOSCANPVT recvError()=0;
-  virtual size_t recvErrorCount()=0;
+  virtual epicsUInt32 recvErrorCount()=0;
 
   virtual void tsLatch()=0;
   virtual void tsLatchReset()=0;
