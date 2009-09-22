@@ -17,6 +17,7 @@ USR_CPPFLAGS += -I../os/RTEMS
 
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
+INC += pciEndian.h
 pci_SRCS += devLibPCI.c
 
 INC_RTEMS += osdPCI.h
