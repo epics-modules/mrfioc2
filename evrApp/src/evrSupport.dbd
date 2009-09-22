@@ -2,3 +2,8 @@
 device(longin , VME_IO, devLIEVRPreScaler, "EVR Prescaler")
 device(longout, VME_IO, devLOEVRPreScaler, "EVR Prescaler")
 
+# EVR devices
+device(longin , VME_IO, devLIEVR, "EVR")
+device(longout, VME_IO, devLOEVR, "EVR")
+device(bi     , VME_IO, devBIEVR, "EVR")
+device(bo     , VME_IO, devBOEVR, "EVR")

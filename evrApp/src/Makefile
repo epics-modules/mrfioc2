@@ -21,9 +21,20 @@ evr_SRCS += evr.cpp
 evr_SRCS += cardmap.cpp
 
 evr_SRCS += devPreScaler.cpp
+evr_SRCS += devEvr.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
+
+# Note: evrtest is NOT a working ioc.
+#       it exists to ensure that libevr
+#       will link correctly.
+PROD_IOC += evrtest
+
+evrtest_SRCS += evrMain.cpp
+
+evrtest_LIBS += evr
+evrtest_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 include $(TOP)/configure/RULES
 #----------------------------------------

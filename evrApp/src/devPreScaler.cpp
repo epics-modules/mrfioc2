@@ -15,49 +15,14 @@
 
 #include <stdexcept>
 
-extern "C" {
-
-static long init_in(longinRecord *pli);
-static long read_long(longinRecord *pli);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read_long;
-} devLIEVRPreScaler = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_in,
-  NULL,
-  (DEVSUPFUN) read_long
-};
-epicsExportAddress(dset,devLIEVRPreScaler);
-
-static long init_out(longoutRecord *plo);
-static long write_long(longoutRecord *plo);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write_long;
-} devLOEVRPreScaler = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_out,
-  NULL,
-  (DEVSUPFUN) write_long
-};
-epicsExportAddress(dset,devLOEVRPreScaler);
-
-}; // extern "C"
+/**@file devPreScaler.cpp
+ *
+ * Device support for accessing PreScaler instances.
+ *
+ * Uses VME_IO links. '#Cxx Syy @'
+ * xx - card number
+ * yy - Prescaler number
+ */
 
 static long init_record(dbCommon *prec, DBLINK* lnk)
 {
@@ -123,3 +88,41 @@ try {
   return 1;
 }
 }
+
+extern "C" {
+
+struct {
+  long num;
+  DEVSUPFUN  report;
+  DEVSUPFUN  init;
+  DEVSUPFUN  init_record;
+  DEVSUPFUN  get_ioint_info;
+  DEVSUPFUN  read_long;
+} devLIEVRPreScaler = {
+  5,
+  NULL,
+  NULL,
+  (DEVSUPFUN) init_in,
+  NULL,
+  (DEVSUPFUN) read_long
+};
+epicsExportAddress(dset,devLIEVRPreScaler);
+
+struct {
+  long num;
+  DEVSUPFUN  report;
+  DEVSUPFUN  init;
+  DEVSUPFUN  init_record;
+  DEVSUPFUN  get_ioint_info;
+  DEVSUPFUN  write_long;
+} devLOEVRPreScaler = {
+  5,
+  NULL,
+  NULL,
+  (DEVSUPFUN) init_out,
+  NULL,
+  (DEVSUPFUN) write_long
+};
+epicsExportAddress(dset,devLOEVRPreScaler);
+
+}; // extern "C"
