@@ -10,8 +10,12 @@ static
 devices_t devices;
 
 void
-storeEVR(short id, EVR* dev)
+storeEVRBase(short id, EVR* dev)
 {
+  if(!dev)
+    throw std::runtime_error("storeEVR: Can not store NULL."
+      "  (initialization probably failed)");
+
   devices_t::const_iterator it=devices.find(id);
 
   if(it!=devices.end())

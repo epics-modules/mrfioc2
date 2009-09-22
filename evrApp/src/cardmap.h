@@ -28,6 +28,12 @@ getEVR(short id)
  *
  * throws std::runtime_error if 'id' has already been used.
  */
-void storeEVR(short id, EVR* dev);
+void storeEVRBase(short id, EVR* dev);
+
+template<typename EVRSubclass>
+void storeEVR(short id,EVRSubclass *dev)
+{
+  storeEVRBase(id,dynamic_cast<EVR*>(dev));
+};
 
 #endif /* CARDMAP_H_INC */

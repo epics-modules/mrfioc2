@@ -14,6 +14,8 @@ iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
 evrApp_DEPEND_DIRS += pciApp
 
+evrnullApp_DEPEND_DIRS += evrApp
+
 include $(TOP)/configure/RULES_TOP
 
 

@@ -178,7 +178,17 @@ try {
   property<epicsUInt32> *prop;
   std::string parm(lnk->value.vmeio.parm);
 
-  if( parm=="PLL Control" ){
+  if( parm=="Model" ){
+    prop=new property<epicsUInt32>(
+        card,
+        &EVR::model
+    );
+  }else if( parm=="Version" ){
+    prop=new property<epicsUInt32>(
+        card,
+        &EVR::version
+    );
+  }else if( parm=="PLL Control" ){
     prop=new property<epicsUInt32>(
         card,
         &EVR::pllCtrl,
