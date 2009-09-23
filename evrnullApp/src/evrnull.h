@@ -13,7 +13,7 @@
  * A simple implimentation of EVR which maintains some state,
  * and prints to screen.
  */
-class EVRNull
+class EVRNull : public EVR
 {
 public:
   EVRNull(const char*);

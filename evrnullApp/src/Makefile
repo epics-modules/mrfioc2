@@ -11,7 +11,7 @@ DBD += evrnull.dbd
 
 evrnull_DBD += base.dbd
 evrnull_DBD += evrSupport.dbd
-evrnull_DBD += evrnull.dbd
+evrnull_DBD += nullreg.dbd
 
 # evrnull_registerRecordDeviceDriver.cpp derives from evrnull.dbd
 evrnull_SRCS += evrnull_registerRecordDeviceDriver.cpp

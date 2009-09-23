@@ -26,9 +26,10 @@ public:
   typedef S setting_type;
   typedef void (EVR::*setter_t)(S);
   typedef P (EVR::*getter_t)() const;
+  typedef IOSCANPVT (EVR::*updater_t)();
 
-  property(EVR* o,getter_t g, setter_t s=0) :
-    card(o), setter(s), getter(g) {};
+  property(EVR* o,getter_t g, setter_t s=0, updater_t u=0) :
+    card(o), setter(s), getter(g),updater(u) {};
 
   P get() const
   {
@@ -41,11 +42,28 @@ public:
     (card->*setter)(v);
   };
 
+  IOSCANPVT update()
+  {
+    if(!updater) return 0;
+    return (card->*updater)();
+  };
+
 private:
   EVR* card;
   setter_t setter;
   getter_t getter;
+  updater_t updater;
 };
+
+template<class PT>
+static long get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
+{
+  property<PT> *prop=static_cast<property<PT>*>(prec->dpvt);
+
+  *io = prop->update();
+
+  return 0;
+}
 
 /***************** BI/BO *****************/
 
@@ -70,7 +88,9 @@ try {
   }else if( parm=="PLL Lock Status" ){
     prop=new property<bool>(
         card,
-        &EVR::pllLocked
+        &EVR::pllLocked,
+        0,
+        &EVR::pllChanged
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
@@ -112,6 +132,11 @@ static long init_bo(boRecord *pbo)
   return binary_init_record((dbCommon*)pbo, &pbo->out);
 }
 
+static long get_ioint_info_bi(int dir,dbCommon* prec,IOSCANPVT* io)
+{
+  return get_ioint_info<bool>(dir,prec,io);
+}
+
 static long write_bo(boRecord* pbo)
 {
 try {
@@ -140,7 +165,7 @@ struct {
   NULL,
   NULL,
   (DEVSUPFUN) init_bi,
-  NULL,
+  (DEVSUPFUN) get_ioint_info_bi,
   (DEVSUPFUN) read_bi
 };
 epicsExportAddress(dset,devBIEVR);

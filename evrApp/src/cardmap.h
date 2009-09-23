@@ -33,7 +33,7 @@ void storeEVRBase(short id, EVR* dev);
 template<typename EVRSubclass>
 void storeEVR(short id,EVRSubclass *dev)
 {
-  storeEVRBase(id,dynamic_cast<EVR*>(dev));
+  storeEVRBase(id,static_cast<EVR*>(dev));
 };
 
 #endif /* CARDMAP_H_INC */
