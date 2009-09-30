@@ -37,7 +37,7 @@ public:
   virtual const PreScaler* prescaler(epicsUInt32) const{return 0;};
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
-  virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func);
+  virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
 
   virtual epicsUInt32 pllCtrl() const{return 0;};

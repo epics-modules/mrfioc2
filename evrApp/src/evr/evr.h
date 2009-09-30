@@ -57,7 +57,7 @@ public:
    * Note: this is one place where Device Support will have some depth.
    */
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const=0;
-  virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func)=0;
+  virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool set)=0;
 
 
   /**\defgroup pll Module reference clock

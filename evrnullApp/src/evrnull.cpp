@@ -25,6 +25,6 @@ EVRNull::specialMapped(epicsUInt32 code, epicsUInt32 func) const
 }
 
 void
-EVRNull::specialSetMap(epicsUInt32 code, epicsUInt32 func)
+EVRNull::specialSetMap(epicsUInt32 code, epicsUInt32 func, bool set)
 {
 }
