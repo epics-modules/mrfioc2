@@ -13,57 +13,10 @@
 
 #include "cardmap.h"
 #include "evr/evr.h"
+#include "property.h"
 
 #include <stdexcept>
 #include <string>
-
-//! get/set access to a pair of member functions
-template<typename P,typename S=P>
-class property
-{
-public:
-  typedef P reading_type;
-  typedef S setting_type;
-  typedef void (EVR::*setter_t)(S);
-  typedef P (EVR::*getter_t)() const;
-  typedef IOSCANPVT (EVR::*updater_t)();
-
-  property(EVR* o,getter_t g, setter_t s=0, updater_t u=0) :
-    card(o), setter(s), getter(g),updater(u) {};
-
-  P get() const
-  {
-    return (card->*getter)();
-  };
-
-  void set(S v)
-  {
-    if(!setter) return;
-    (card->*setter)(v);
-  };
-
-  IOSCANPVT update()
-  {
-    if(!updater) return 0;
-    return (card->*updater)();
-  };
-
-private:
-  EVR* card;
-  setter_t setter;
-  getter_t getter;
-  updater_t updater;
-};
-
-template<class PT>
-static long get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  property<PT> *prop=static_cast<property<PT>*>(prec->dpvt);
-
-  *io = prop->update();
-
-  return 0;
-}
 
 /***************** BI/BO *****************/
 
@@ -76,17 +29,17 @@ try {
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  property<bool> *prop;
+  property<EVR,bool> *prop;
   std::string parm(lnk->value.vmeio.parm);
 
   if( parm=="Enable" ){
-    prop=new property<bool>(
+    prop=new property<EVR,bool>(
         card,
         &EVR::enabled,
         &EVR::enable
     );
   }else if( parm=="PLL Lock Status" ){
-    prop=new property<bool>(
+    prop=new property<EVR,bool>(
         card,
         &EVR::pllLocked,
         0,
@@ -116,7 +69,7 @@ static long init_bi(biRecord *pbi)
 static long read_bi(biRecord* pbi)
 {
 try {
-  property<bool> *priv=static_cast<property<bool>*>(pbi->dpvt);
+  property<EVR,bool> *priv=static_cast<property<EVR,bool>*>(pbi->dpvt);
 
   pbi->rval = priv->get();
 
@@ -134,13 +87,13 @@ static long init_bo(boRecord *pbo)
 
 static long get_ioint_info_bi(int dir,dbCommon* prec,IOSCANPVT* io)
 {
-  return get_ioint_info<bool>(dir,prec,io);
+  return get_ioint_info<EVR,bool,bool>(dir,prec,io);
 }
 
 static long write_bo(boRecord* pbo)
 {
 try {
-  property<bool> *priv=static_cast<property<bool>*>(pbo->dpvt);
+  property<EVR,bool> *priv=static_cast<property<EVR,bool>*>(pbo->dpvt);
 
   priv->set(pbo->rval);
 
@@ -200,49 +153,49 @@ try {
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  property<epicsUInt32> *prop;
+  property<EVR,epicsUInt32> *prop;
   std::string parm(lnk->value.vmeio.parm);
 
   if( parm=="Model" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::model
     );
   }else if( parm=="Version" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::version
     );
   }else if( parm=="PLL Control" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::pllCtrl,
         &EVR::pllSetCtrl
     );
   }else if( parm=="Event Clock Div" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::eventClockDiv,
         &EVR::setEventClockDiv
     );
   }else if( parm=="Receive Error" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::recvErrorCount
     );
   }else if( parm=="Timestamp Prescaler" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::tsDiv,
         &EVR::setTsDiv
     );
   }else if( parm=="Timestamp Seconds" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::tsLatchSec
     );
   }else if( parm=="Timestamp Counter" ){
-    prop=new property<epicsUInt32>(
+    prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::tsLatchCount
     );
@@ -270,7 +223,7 @@ static long init_li(longinRecord *pli)
 static long read_li(longinRecord* pli)
 {
 try {
-  property<bool> *priv=static_cast<property<bool>*>(pli->dpvt);
+  property<EVR,epicsUInt32> *priv=static_cast<property<EVR,epicsUInt32>*>(pli->dpvt);
 
   pli->val = priv->get();
 
@@ -286,10 +239,15 @@ static long init_lo(longoutRecord *plo)
   return binary_init_record((dbCommon*)plo, &plo->out);
 }
 
+static long get_ioint_info_li(int dir,dbCommon* prec,IOSCANPVT* io)
+{
+  return get_ioint_info<EVR,epicsUInt32,epicsUInt32>(dir,prec,io);
+}
+
 static long write_lo(longoutRecord* plo)
 {
 try {
-  property<bool> *priv=static_cast<property<bool>*>(plo->dpvt);
+  property<EVR,epicsUInt32> *priv=static_cast<property<EVR,epicsUInt32>*>(plo->dpvt);
 
   priv->set(plo->val);
 
@@ -314,7 +272,7 @@ struct {
   NULL,
   NULL,
   (DEVSUPFUN) init_li,
-  NULL,
+  (DEVSUPFUN) get_ioint_info_li,
   (DEVSUPFUN) read_li
 };
 epicsExportAddress(dset,devLIEVR);
