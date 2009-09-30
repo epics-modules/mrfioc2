@@ -181,7 +181,9 @@ try {
   }else if( parm=="Receive Error" ){
     prop=new property<EVR,epicsUInt32>(
         card,
-        &EVR::recvErrorCount
+        &EVR::recvErrorCount,
+        0,
+        &EVR::recvError
     );
   }else if( parm=="Timestamp Prescaler" ){
     prop=new property<EVR,epicsUInt32>(
