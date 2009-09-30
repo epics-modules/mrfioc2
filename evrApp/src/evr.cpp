@@ -38,11 +38,11 @@ Pulser::mapDesc(epicsUInt32 src,MapType::type action) const
     return name+" is not mapped";
   case MapType::Trigger:
     return name+" triggers the pulser";
-  case MapType::Reset:
+  case MapType::Set:
     name+=" sets the output to ";
     name+=polarityNorm() ? "High" : "Low";
     return name;
-  case MapType::Set:
+  case MapType::Reset:
     name+=" resets the output to ";
     name+=polarityNorm() ? "Low" : "High";
     return name;
