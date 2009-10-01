@@ -25,6 +25,7 @@ evr_SRCS += cardmap.cpp
 evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvr.cpp
 evr_SRCS += devEvrMapping.cpp
+evr_SRCS += devEvrOutput.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
