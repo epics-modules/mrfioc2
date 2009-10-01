@@ -4,6 +4,8 @@
 
 #include <dbScan.h>
 
+struct dbCommon;
+
 /**@file util.hpp
  *
  * Misc definitions.
@@ -12,12 +14,22 @@
 /**@brief A general way to notify device support of status changes
  *
  * Device Supports can use statusChange() to implement get_ioint_info()
+ *
+ * A more complicated implimentaton would use the argument to
+ * impliment reference counting to allow the 'interrupt' to
+ * be disabled when unused.
  */
 class IOStatus
 {
 public:
-  virtual IOSCANPVT statusChange(){return 0;};
+  virtual IOSCANPVT statusChange(bool up=true){return 0;};
 };
+
+/*! Assumes that prec->dpvt contains an instance of an IOStatus sub-class
+ *
+ * Store with prec->dpvt=static_cast<void*>(subcls)
+ */
+static long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io);
 
 struct TimeUnits {
   enum type {

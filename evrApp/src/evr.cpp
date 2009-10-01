@@ -3,6 +3,9 @@
 #include "evr/pulser.h"
 #include "evr/output.h"
 #include "evr/prescaler.h"
+#include "evr/util.h"
+
+#include "dbCommon.h"
 
 /**@file evr.cpp
  *
@@ -49,4 +52,13 @@ Pulser::mapDesc(epicsUInt32 src,MapType::type action) const
   }
 
   return std::string("Invalid action selected!");
+}
+
+static long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
+{
+  IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
+
+  *io=stat->statusChange(dir);
+  
+  return 0;
 }
