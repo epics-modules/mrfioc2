@@ -83,10 +83,6 @@ try {
   
   return 0;
   
-} catch(std::runtime_error& e) {
-  plo->val=0;
-  recGblRecordError(S_dev_noDevice, (void*)plo, e.what());
-  return S_dev_noDevice;
 } catch(std::exception& e) {
   plo->val=0;
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
@@ -96,7 +92,7 @@ try {
 
 extern "C" {
 
-  struct {
+struct {
   long num;
   DEVSUPFUN  report;
   DEVSUPFUN  init;
