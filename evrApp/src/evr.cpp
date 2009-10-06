@@ -54,7 +54,7 @@ Pulser::mapDesc(epicsUInt32 src,MapType::type action) const
   return std::string("Invalid action selected!");
 }
 
-static long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
+long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 {
   IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
 

@@ -29,7 +29,7 @@ public:
  *
  * Store with prec->dpvt=static_cast<void*>(subcls)
  */
-static long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io);
+long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io);
 
 struct TimeUnits {
   enum type {
