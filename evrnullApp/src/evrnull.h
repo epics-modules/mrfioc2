@@ -6,21 +6,41 @@
 
 #include <string>
 #include <set>
+#include <map>
 #include <utility>
 
 #include <dbScan.h>
+
+#include "outnull.h"
 
 /**@brief An implimentation of the EVR interface which does nothing.
  *
  * A simple implimentation of EVR which maintains some state,
  * and prints to screen.
+ *
+ * codes and sub-units
+ *  0 - invalid/disabled
+ *  1->255 - event code mapping
+ *  256->264 - distributed bus bits
+ *  265->267 - prescalers (clock dividers)
+ *  268->280 - outputs
  */
 class EVRNull : public EVR
 {
 public:
+  static inline epicsUInt32 id2code(epicsUInt32 i)
+    {return i>=1 && i<=255 ? i : 0;};
+  static inline epicsUInt32 id2dbus(epicsUInt32 i)
+    {return i>=256 && i<=264 ? i-256 : 0;};
+  static inline epicsUInt32 id2ps(epicsUInt32 i)
+    {return i>=265 && i<=267 ? i-265 : 0;};
+  static inline epicsUInt32 id2out(epicsUInt32 i)
+    {return i>=268 && i<=280 ? i-268 : 0;};
+
+public:
   EVRNull(const char*);
 
-  virtual ~EVRNull(){};
+  virtual ~EVRNull();
 
   virtual epicsUInt32 model() const{return 0x12345678;};
 
@@ -32,8 +52,14 @@ public:
   virtual Pulser* pulser(epicsUInt32){return 0;};
   virtual const Pulser* pulser(epicsUInt32) const{return 0;};
 
-  virtual Output* output(epicsUInt32){return 0;};
-  virtual const Output* output(epicsUInt32) const{return 0;};
+  virtual OutputNull* output(epicsUInt32 o)
+    {outmap_t::const_iterator it=outmap.find(o);
+     return it!=outmap.end() ? it->second : NULL;
+    };
+  virtual const OutputNull* output(epicsUInt32 o) const
+    {outmap_t::const_iterator it=outmap.find(o);
+     return it!=outmap.end() ? it->second : NULL;
+    };
 
   virtual PreScaler* prescaler(epicsUInt32){return 0;};
   virtual const PreScaler* prescaler(epicsUInt32) const{return 0;};
@@ -77,6 +103,9 @@ private:
   typedef std::pair<epicsUInt32,epicsUInt32> smap_ent_t;
   typedef std::set<smap_ent_t> smap_t;
   smap_t smap;
+
+  typedef std::map<epicsUInt32,OutputNull*> outmap_t;
+  outmap_t outmap;
 }; // class EVRNull
 
 #endif // EVRNULL_H_INC

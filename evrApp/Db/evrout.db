@@ -1,0 +1,16 @@
+
+record(mbbo, "$(P)$(O):set") {
+  field( DTYP, "EVR Output")
+  field( OUT , "#C$(C) S$(ID) @State")
+  field( ZRST, "Float (default)")
+  field( ONST, "Force Low")
+  field( TWST, "Force High")
+}
+
+record(mbbi, "$(P)$(O)") {
+  field( DTYP, "EVR Output")
+  field( INP , "#C$(C) S$(ID) @State")
+  field( ZRST, "Float (default)")
+  field( ONST, "Force Low")
+  field( TWST, "Force High")
+}

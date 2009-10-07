@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 
 DB += evrbase.db
 DB += evrmap.db
+DB += evrout.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

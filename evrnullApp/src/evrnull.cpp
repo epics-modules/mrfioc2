@@ -10,6 +10,15 @@ EVRNull::EVRNull(const char* name) :
   ,pllNotify()
 {
   scanIoInit(&pllNotify);
+
+  for(int i=0; i<=12; i++){
+    outmap[268+i]=new OutputNull(*this);
+  }
+}
+
+EVRNull::~EVRNull()
+{
+  //TODO: delete outmap
 }
 
 void
