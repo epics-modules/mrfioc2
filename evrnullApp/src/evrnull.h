@@ -38,6 +38,7 @@ public:
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
+  virtual const char* idName(epicsUInt32 src) const{return "Nothing";};
 
 
   virtual epicsUInt32 pllCtrl() const{return 0;};

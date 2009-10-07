@@ -59,6 +59,11 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const=0;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool set)=0;
 
+  /** Return a human readable string describing 'src'.
+   * 'src' can the mapping code for any event code, distributed bus bit,
+   * prescaler, pulser, or input.
+   */
+  virtual const char* idName(epicsUInt32 src) const=0;
 
   /**\defgroup pll Module reference clock
    *

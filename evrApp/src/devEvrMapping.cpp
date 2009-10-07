@@ -1,15 +1,16 @@
 
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstring>
+
 #include <epicsExport.h>
+#include <dbDefs.h>
 #include <dbAccess.h>
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 
-#include <longinRecord.h>
 #include <longoutRecord.h>
-#include <biRecord.h>
-#include <boRecord.h>
+#include <stringinRecord.h>
 
 #include "cardmap.h"
 #include "evr/evr.h"
@@ -31,6 +32,8 @@
  * The meaning of the function code is implimentation specific except
  * that 0 means no event and must disable a mapping.
  */
+
+/***************** Mapping record ******************/
 
 struct map_priv {
   EVR* card;
@@ -90,6 +93,82 @@ try {
 }
 }
 
+/***************** Mapping identifier record ******************/
+
+/*
+ * This record should be linked to any of the long out mapping records.
+ * It will provide a text description of the meaning of the device
+ * dependent mapping code.
+ */
+
+static long init_si(stringinRecord *prec)
+{
+try {
+  
+  switch(prec->inp.type){
+  case CONSTANT:
+  case PV_LINK:
+  case DB_LINK:
+  case CA_LINK:
+    break;
+  default:
+    recGblRecordError(S_db_badField, (void *)prec,
+      "devSiSoft (init_record) Illegal INP field");
+    return S_db_badField;
+  }
+  
+  EVR* card=getEVR<EVR>(prec->inp.value.vmeio.card);
+  if(!card)
+    throw std::runtime_error("Failed to lookup device");
+
+  prec->dpvt=static_cast<void*>(card);
+
+  if(prec->inp.type==CONSTANT){
+    epicsUInt32 id;
+    const char* desc;
+    if (!recGblInitConstantLink(&prec->inp, DBF_LONG, &id)){
+      //TODO: invalid alarm
+    }else if( !(desc=card->idName(id)) ){
+      //TODO: invalid alarm
+    }else{
+      strncpy(prec->val,desc,sizeof(prec->val));
+      prec->udf = FALSE;
+    }
+  }
+
+  return 0;
+
+} catch(std::runtime_error& e) {
+  recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
+  return S_dev_noDevice;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
+
+static long read_string(stringinRecord* prec)
+{
+  EVR *card=static_cast<EVR*>(prec->dpvt);
+
+  epicsUInt32 id;
+  long status=dbGetLink(&prec->inp, DBF_LONG, &id, 0, 0);
+  if(!status){    
+    const char* desc=card->idName(id);
+    if(!desc){
+      //TODO: invalid alarm
+      return 1;
+    }else{
+      strncpy(prec->val,desc,sizeof(prec->val));
+      prec->udf = FALSE;
+    }
+  }
+  
+  return status;
+}
+
+/********************** DSETs ***********************/
+
 extern "C" {
 
 struct {
@@ -103,10 +182,27 @@ struct {
   5,
   NULL,
   NULL,
+  (DEVSUPFUN) init_si,
+  NULL,
+  (DEVSUPFUN) read_string
+};
+epicsExportAddress(dset,devLOEVRMap);
+
+struct {
+  long num;
+  DEVSUPFUN  report;
+  DEVSUPFUN  init;
+  DEVSUPFUN  init_record;
+  DEVSUPFUN  get_ioint_info;
+  DEVSUPFUN  read;
+} devSIEVRMap = {
+  5,
+  NULL,
+  NULL,
   (DEVSUPFUN) init_lo,
   NULL,
   (DEVSUPFUN) write_lo
 };
-epicsExportAddress(dset,devLOEVRMap);
+epicsExportAddress(dset,devSIEVRMap);
 
 };

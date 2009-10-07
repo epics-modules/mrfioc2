@@ -20,8 +20,6 @@ public:
   /*@{*/
   virtual bool source(epicsUInt32) const=0;
   virtual void setSource(epicsUInt32, bool)=0;
-  //! Return a human readable string describing 'src'.
-  virtual const char* sourceName(epicsUInt32 src) const=0;
   /*@}*/
 
   /**\defgroup man Manually set output state.
