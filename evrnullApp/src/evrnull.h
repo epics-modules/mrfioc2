@@ -5,6 +5,8 @@
 #include "evr/evr.h"
 
 #include <string>
+#include <set>
+#include <utility>
 
 #include <dbScan.h>
 
@@ -71,6 +73,10 @@ private:
   bool m_locked;
   std::string m_name;
   IOSCANPVT pllNotify;
+
+  typedef std::pair<epicsUInt32,epicsUInt32> smap_ent_t;
+  typedef std::set<smap_ent_t> smap_t;
+  smap_t smap;
 }; // class EVRNull
 
 #endif // EVRNULL_H_INC

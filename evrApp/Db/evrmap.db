@@ -1,0 +1,7 @@
+
+record(longout, "$(P)map:$(M)") {
+  field( DTYP, "EVR Mapping" )
+  field( OUT , "#C$(C) S$(func) @")
+  field( DESC, "Mapping for $(M)")
+  field( VAL , 0) # default to disabled
+}
