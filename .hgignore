@@ -1,5 +1,6 @@
 O.*
 bin
+configure
 db
 dbd
 include
