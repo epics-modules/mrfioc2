@@ -1,13 +1,13 @@
 #------------------------------------------------------------------------------
-# $(TIMING)/mrfCommon/src/Makefile
+# $(TIMING)/mrfVme/src/Makefile
 #
 #------------------------------------------------------------------------------
 # Author:  Eric Bjorklund
-# Date:    19 October 2009
+# Date:    20 October 2009
 #
 #------------------------------------------------------------------------------
 # Modification History:
-# 19 Oct 2008  E.Bjorklund      Original Release
+# 20 Oct 2008  E.Bjorklund      Original Release
 #
 #------------------------------------------------------------------------------
 # FILE DESCRIPTION:
@@ -25,7 +25,6 @@
 # Operating Systems Supported:
 #   vxWorks
 #   RTEMS
-#   Build Host
 #
 #------------------------------------------------------------------------------
 
@@ -35,16 +34,6 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
-USR_CFLAGS += -DDEBUG_PRINT
-
-#---------------------
-# HOST_BUILD macro tells mrfFracSynth whether it should produce entries
-# for the IOC shell
-#
-ifeq ($(EPICS_HOST_ARCH),$(T_A))
-    USR_CFLAGS += -DHOST_BUILD
-endif
-
 #---------------------
 # Only build for "hardware" IOC's
 #
@@ -53,40 +42,16 @@ ifneq ($(findstring Host, $(VALID_BUILDS)),)
 endif
 
 #---------------------
-# Install include files
-#
-INC += mrfCommon.h        # Common MRF event system constants & definitions
-INC += mrfCommonIO.h      # Common I/O access macros
-INC += debugPrint.h       # SLAC debug print utility
-
-#---------------------
-# Install OS-Dependent include files
-#
-INC_vxWorks += mrfSyncIO.h
-INC_RTEMS   += mrfSyncIO.h
-
-#---------------------
 # Build the MRF Common Library
 #
-LIBRARY_IOC += mrfCommon
-mrfCommon_OBJS += mrfFracSynth
+LIBRARY_IOC += mrfVme
+mrfVme_OBJS += mrfVme64x
+mrfVme_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-OBJS_IOC += $(mrfCommon_OBJS)
-
-#---------------------
-# Build the host-side utilities for creating and analyzing
-# the fractional synthesizer control words.
-#
-PROD_HOST += FracSynthAnalyze
-PROD_HOST += FracSynthControlWord
-
-FracSynthAnalyze_OBJS += FracSynthAnalyze
-FracSynthAnalyze_OBJS += mrfFracSynth
-
-FracSynthControlWord_OBJS += FracSynthControlWord
-FracSynthControlWord_OBJS += mrfFracSynth
+OBJS_IOC += $(mrfVme_OBJS)
 
 #---------------------
 # Generic EPICS build rules
 #
 include $(TOP)/configure/RULES
+

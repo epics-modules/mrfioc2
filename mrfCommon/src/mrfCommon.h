@@ -47,6 +47,14 @@
 #define MRF_COMMON_H
 
 /**************************************************************************************************/
+/*  Include Header Files from the Common Utilities                                                */
+/**************************************************************************************************/
+
+#include <epicsTypes.h>                        /* EPICS Architecture-independent type definitions */
+#include <debugPrint.h>                        /* SLAC Debug print utility                        */
+
+
+/**************************************************************************************************/
 /*  MRF Event System Constants                                                                    */
 /**************************************************************************************************/
 
@@ -60,11 +68,12 @@
 
 
 /**************************************************************************************************/
-/*  Include Header Files from the Common Utilities                                                */
+/*  MRF Series Board Codes                                                                        */
 /**************************************************************************************************/
 
-#include <epicsTypes.h>                        /* EPICS Architecture-independent type definitions */
-#include <debugPrint.h>                        /* SLAC Debug print utility                        */
+#define MRF_SERIES_200       0x000000C8        /* Series 200 Code (in Hex)                        */
+#define MRF_SERIES_220       0x000000DC        /* Series 220 Code (in Hex)                        */
+#define MRF_SERIES_230       0x000000E6        /* Series 230 Code (in Hex)                        */
 
 
 /**************************************************************************************************/
