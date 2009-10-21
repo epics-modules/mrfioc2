@@ -1,5 +1,5 @@
 /***************************************************************************************************
-|* mrfSyncIO.h -- Operating System Independent Synchronous I/O Routine Defintions
+|* osiSyncIO.h -- Operating System Independent Synchronous I/O Routine Defintions
 |*
 |*--------------------------------------------------------------------------------------------------
 |* Author:   E.Bjorklund (LANSCE)
@@ -8,15 +8,17 @@
 |*--------------------------------------------------------------------------------------------------
 |* MODIFICATION HISTORY:
 |* 31 Dec 2006  E.Bjorklund	Original
+|* 21 Oct 2009  E.Bjorklund     Expanded to handle both big-endian and little-endian busses
 |*
 |*--------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
+|*   This file maps the operating system independent synchronous I/O routines to their
+|*   corresponding RTEMS synchronous I/O routines.
 |*
-|* This file maps the MRF operating system independent synchronous I/O routines to their
-|* corresponding RTEMS synchronous I/O routines.
+|*   Note that the RTEMS synchronous I/O routines also handle byte-swapping.
 |*
 \**************************************************************************************************/
-
+
 /**************************************************************************************************
 |*                                     COPYRIGHT NOTIFICATION
 |**************************************************************************************************
@@ -27,24 +29,13 @@
 |*
 |**************************************************************************************************
 |*
-|* Copyright (c) 2006 The University of Chicago,
-|* as Operator of Argonne National Laboratory.
-|*
-|* Copyright (c) 2006 The Regents of the University of California,
-|* as Operator of Los Alamos National Laboratory.
-|*
-|* Copyright (c) 2006 The Board of Trustees of the Leland Stanford Junior
-|* University, as Operator of the Stanford Linear Accelerator Center.
-|*
-|**************************************************************************************************
-|*
 |* This software is distributed under the EPICS Open License Agreement which
 |* can be found in the file, LICENSE, included with this distribution.
 |*
 \*************************************************************************************************/
 
-#ifndef MRF_SYNC_OPS_H
-#define MRF_SYNC_OPS_H
+#ifndef OSI_SYNC_OPS_H
+#define OSI_SYNC_OPS_H
 
 /**************************************************************************************************/
 /*  Required Header Files                                                                         */
@@ -57,15 +48,32 @@
 /*  Map the OSI Synchronous I/O Routines to Their RTEMS Counterparts                              */
 /**************************************************************************************************/
 
-#define mrf_osi_read8_sync(address)  in_8   ((volatile void *)(address))
-#define mrf_osi_read16_sync(address) in_be16((volatile void *)(address))
-#define mrf_osi_read32_sync(address) in_be32((volatile void *)(address))
+/*---------------------
+ * Definitions for Accessing Big-Endian Busses
+ */
+#define osi_read_be8_sync(address)  in_8   ((volatile void *)(address))
+#define osi_read_be16_sync(address) in_be16((volatile void *)(address))
+#define osi_read_be32_sync(address) in_be32((volatile void *)(address))
 
-#define mrf_osi_write8_sync(address,value)  \
+#define osi_write_be8_sync(address,value)  \
         out_8   ((volatile void *)(address),  (epicsUInt8)(value))
-#define mrf_osi_write16_sync(address,value) \
+#define osi_write_be16_sync(address,value) \
         out_be16((volatile void *)(address), (epicsUInt16)(value))
-#define mrf_osi_write32_sync(address,value) \
+#define osi_write_be32_sync(address,value) \
         out_be32((volatile void *)(address), (epicsUInt32)(value))
+
+/*---------------------
+ * Definitions for Accessing Little-Endian Busses
+ */
+#define osi_read_le8_sync(address)  in_8   ((volatile void *)(address))
+#define osi_read_le16_sync(address) in_le16((volatile void *)(address))
+#define osi_read_le32_sync(address) in_le32((volatile void *)(address))
+
+#define osi_write_le8_sync(address,value)  \
+        out_8   ((volatile void *)(address),  (epicsUInt8)(value))
+#define osi_write_le16_sync(address,value) \
+        out_le16((volatile void *)(address), (epicsUInt16)(value))
+#define osi_write_le32_sync(address,value) \
+        out_le32((volatile void *)(address), (epicsUInt32)(value))
 
 #endif
