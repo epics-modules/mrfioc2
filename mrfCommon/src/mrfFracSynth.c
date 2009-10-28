@@ -231,7 +231,7 @@ typedef struct {                         /* FracSynthComponents                 
  *   Contains legal post-divider values and their control-word field codes
  */
 
-LOCAL const PostDivideStruct   PostDivideList [NUM_POST_DIVIDES] = {
+static const PostDivideStruct   PostDivideList [NUM_POST_DIVIDES] = {
     { 1.0, 0x00},  { 2.0, 0x02},  { 3.0, 0x03},  { 4.0, 0x04},  { 5.0, 0x05},  { 6.0, 0x06},
     { 7.0, 0x07},  { 8.0, 0x08},  { 9.0, 0x09},  {10.0, 0x0A},  {11.0, 0x0B},  {12.0, 0x0C},
     {13.0, 0x0D},  {14.0, 0x0E},  {15.0, 0x0F},  {16.0, 0x10},  {18.0, 0x11},  {20.0, 0x12},
@@ -246,7 +246,7 @@ LOCAL const PostDivideStruct   PostDivideList [NUM_POST_DIVIDES] = {
  *   Translates the post-divider field code into the actual post-divider value.
  */
 
-LOCAL epicsInt32 PostDivideValList [NUM_POST_DIVIDE_VALS] = {
+static epicsInt32 PostDivideValList [NUM_POST_DIVIDE_VALS] = {
      1,  3,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
     16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 52, 56, 60
 };
@@ -257,7 +257,7 @@ LOCAL epicsInt32 PostDivideValList [NUM_POST_DIVIDE_VALS] = {
  *   Contains legal correction factor ratios and their control-word field codes.
  */
 
-LOCAL const CorrectionStruct  CorrectionList [NUM_CORRECTIONS] = {
+static const CorrectionStruct  CorrectionList [NUM_CORRECTIONS] = {
     {(1.0),     CORRECTION_DIV_14, CORRECTION_DIV_14},
     {(14./18.), CORRECTION_DIV_14, CORRECTION_DIV_18},
     {(14./17.), CORRECTION_DIV_14, CORRECTION_DIV_17},
@@ -289,7 +289,7 @@ LOCAL const CorrectionStruct  CorrectionList [NUM_CORRECTIONS] = {
  *   Translates correction factor field codes into the actual correction value term values
  */
 
-LOCAL const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
+static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
     {16, 1}, {16, 1}, {18, 1}, {17, 1}, {31, 2}, {14, 1}, {32, 2}, {15, 1}
 };/* CorrectionValList*/
 
@@ -372,7 +372,7 @@ LOCAL const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus mrfSetEventClockSpeed (
 
     /**********************************************************************************************/
@@ -582,7 +582,7 @@ epicsStatus mrfSetEventClockSpeed (
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsUInt32 FracSynthControlWord (
 
     /**********************************************************************************************/
@@ -895,7 +895,7 @@ epicsUInt32 FracSynthControlWord (
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsFloat64 FracSynthAnalyze (
 
     /**********************************************************************************************/
@@ -1118,12 +1118,12 @@ epicsFloat64 FracSynthAnalyze (
 
 #ifndef HOST_BUILD
 
-LOCAL const iocshArg         FracSynthControlWordArg0    = {"DesiredFreq", iocshArgDouble};
-LOCAL const iocshArg *const  FracSynthControlWordArgs[1] = {&FracSynthControlWordArg0};
-LOCAL const iocshFuncDef     FracSynthControlWordDef     = {"FracSynthControlWord", 1,
+static const iocshArg         FracSynthControlWordArg0    = {"DesiredFreq", iocshArgDouble};
+static const iocshArg *const  FracSynthControlWordArgs[1] = {&FracSynthControlWordArg0};
+static const iocshFuncDef     FracSynthControlWordDef     = {"FracSynthControlWord", 1,
                                                             FracSynthControlWordArgs};
 
-LOCAL_RTN
+static
 void FracSynthControlWordCall (const iocshArgBuf *args) {
     epicsFloat64  Dummy;
     FracSynthControlWord (args[0].dval, MRF_FRAC_SYNTH_REF, DP_DEBUG, &Dummy);
@@ -1134,12 +1134,12 @@ void FracSynthControlWordCall (const iocshArgBuf *args) {
 /*   FracSynthAnalyze() -- Analyze a Fractional Synthesizer Control Word                          */
 /**************************************************************************************************/
 
-LOCAL const iocshArg         FracSynthAnalyzeArg0    = {"ControlWord", iocshArgInt};
-LOCAL const iocshArg *const  FracSynthAnalyzeArgs[1] = {&FracSynthAnalyzeArg0};
-LOCAL const iocshFuncDef     FracSynthAnalyzeDef     = {"FracSynthAnalyze", 1,
+static const iocshArg         FracSynthAnalyzeArg0    = {"ControlWord", iocshArgInt};
+static const iocshArg *const  FracSynthAnalyzeArgs[1] = {&FracSynthAnalyzeArg0};
+static const iocshFuncDef     FracSynthAnalyzeDef     = {"FracSynthAnalyze", 1,
                                                         FracSynthAnalyzeArgs};
 
-LOCAL_RTN
+static
 void FracSynthAnalyzeCall (const iocshArgBuf *args) {
     FracSynthAnalyze (args[0].ival, MRF_FRAC_SYNTH_REF, DP_DEBUG);
 }/*end FracSynthAnalyzeCall()*/
@@ -1149,7 +1149,7 @@ void FracSynthAnalyzeCall (const iocshArgBuf *args) {
 /*  EPICS Registrar Function for this Module                                                      */
 /**************************************************************************************************/
 
-LOCAL_RTN
+static
 void FracSynthRegistrar () {
     iocshRegister (&FracSynthControlWordDef , FracSynthControlWordCall );
     iocshRegister (&FracSynthAnalyzeDef     , FracSynthAnalyzeCall);

@@ -73,7 +73,7 @@
 /*---------------------
  * Table of Offsets to the 8 Outbound Translation Attribute Registers
  */
-LOCAL const epicsUInt32  otar [TEMPE_OUTBOUND_WINDOW_COUNT] = {
+static const epicsUInt32  otar [TEMPE_OUTBOUND_WINDOW_COUNT] = {
     TEMPE_OTAT0,        /* Attribute register for outbound window 0 */
     TEMPE_OTAT1,        /* Attribute register for outbound window 1 */
     TEMPE_OTAT2,        /* Attribute register for outbound window 2 */
@@ -163,7 +163,7 @@ epicsUInt32 sysTempeBaseAdrsGet (void);
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCSRMemProbe (
     epicsUInt32            csrAddress,        /* Address in CR/CSR space to be probed.            */
     epicsInt32             mode,              /* Probe direction (read or write)                  */

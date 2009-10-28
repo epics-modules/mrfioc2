@@ -94,14 +94,14 @@
 /*  Prototypes for Local Utility Routines                                                         */
 /**************************************************************************************************/
 
-LOCAL_RTN  epicsStatus        convCRtoLong     (epicsUInt32*, epicsInt32, epicsUInt32*);
-LOCAL_RTN  epicsStatus        convOffsetToLong (epicsUInt32*, epicsInt32, epicsUInt32*);
+static  epicsStatus        convCRtoLong     (epicsUInt32*, epicsInt32, epicsUInt32*);
+static  epicsStatus        convOffsetToLong (epicsUInt32*, epicsInt32, epicsUInt32*);
 
-LOCAL_RTN  void               getSNString      (epicsUInt32*, char*);
-LOCAL_RTN  epicsUInt32        getUserCSRAdr    (epicsInt32);
+static  void               getSNString      (epicsUInt32*, char*);
+static  epicsUInt32        getUserCSRAdr    (epicsInt32);
 
-LOCAL_RTN  epicsStatus        probeCRSpace     (epicsInt32, epicsUInt32*);
-LOCAL_RTN  epicsStatus        probeUCSRSpace   (epicsInt32, epicsUInt32*);
+static  epicsStatus        probeCRSpace     (epicsInt32, epicsUInt32*);
+static  epicsStatus        probeUCSRSpace   (epicsInt32, epicsUInt32*);
 
 
 /**************************************************************************************************/
@@ -111,7 +111,7 @@ LOCAL_RTN  epicsStatus        probeUCSRSpace   (epicsInt32, epicsUInt32*);
 /*---------------------
  * Table for translating binary into hexadecimal characters
  */
-LOCAL const char hexChar [16] = {
+static const char hexChar [16] = {
     '0', '1', '2', '3', '4', '5', '6', '7',
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
@@ -119,7 +119,7 @@ LOCAL const char hexChar [16] = {
 /*---------------------
  * Table of VME cards that support function 1
  */
-LOCAL const epicsUInt32 funcOneCards [] = {
+static const epicsUInt32 funcOneCards [] = {
     MRF_VME_EVR230_BID,          /* Series 230 Event Receiver                                     */
     MRF_VME_EVR230RF_BID         /* Series 230 Event Receiver with CML outputs                    */
 };
@@ -360,7 +360,7 @@ LOCAL const epicsUInt32 funcOneCards [] = {
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVG (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Generator Card                   */
@@ -440,7 +440,7 @@ epicsInt32 mrfFindNextEVG (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVG200 (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Generator Card                   */
@@ -512,7 +512,7 @@ epicsInt32 mrfFindNextEVG200 (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVG230 (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Generator Card                   */
@@ -583,7 +583,7 @@ epicsInt32 mrfFindNextEVG230 (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVR (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Receiver Card                    */
@@ -663,7 +663,7 @@ epicsInt32 mrfFindNextEVR (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVR200 (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Receiver Card                    */
@@ -738,7 +738,7 @@ epicsInt32 mrfFindNextEVR200 (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsInt32 mrfFindNextEVR230 (epicsInt32 lastSlot)
 {
     epicsInt32   slot;          /* VME slot number of next Event Receiver Card                    */
@@ -792,7 +792,7 @@ epicsInt32 mrfFindNextEVR230 (epicsInt32 lastSlot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 void mrfGetSerialNumberVME (epicsInt32 Slot, char *SerialNumber)
 {
     epicsUInt32  *pUCSR;        /* Pointer to local buffer containing data from the User-CSR area */
@@ -852,7 +852,7 @@ void mrfGetSerialNumberVME (epicsInt32 Slot, char *SerialNumber)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus mrfSetAddress (epicsInt32 Slot,  epicsUInt32 VMEAddress, epicsUInt32 AddressModifier)
 {
    /*---------------------
@@ -938,7 +938,7 @@ epicsStatus mrfSetAddress (epicsInt32 Slot,  epicsUInt32 VMEAddress, epicsUInt32
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
 {
    /*---------------------
@@ -1022,7 +1022,7 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 void mrfSNShow (epicsInt32 Slot)
 {
    /*---------------------
@@ -1078,7 +1078,7 @@ void mrfSNShow (epicsInt32 Slot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 void vmeCRShow (epicsInt32 Slot)
 {
    /*---------------------
@@ -1322,7 +1322,7 @@ void vmeCRShow (epicsInt32 Slot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 void vmeCSRShow (epicsInt32 Slot)
 {
    /*---------------------
@@ -1421,7 +1421,7 @@ void vmeCSRShow (epicsInt32 Slot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 void vmeUserCSRShow (epicsInt32 Slot)
 {
    /*---------------------
@@ -1515,7 +1515,7 @@ void vmeUserCSRShow (epicsInt32 Slot)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCRFindBoard (
     epicsInt32    StartSlot,            /* The VME slot number where we should start the search   */
     epicsUInt32   ManufacturerID,       /* Manufacturer ID of the board we are looking for        */
@@ -1576,7 +1576,7 @@ epicsStatus vmeCRFindBoard (
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCRFindBoardMasked (
     epicsInt32    StartSlot,            /* The VME slot number where we should start the search   */
     epicsUInt32   ManufacturerID,       /* Manufacturer ID of the board we are looking for        */
@@ -1661,7 +1661,7 @@ epicsStatus vmeCRFindBoardMasked (
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCRGetBID (epicsInt32 Slot, epicsUInt32 *BoardID)
 {
    /*---------------------
@@ -1728,7 +1728,7 @@ epicsStatus vmeCRGetBID (epicsInt32 Slot, epicsUInt32 *BoardID)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCRGetMFG (epicsInt32 Slot, epicsUInt32 *MfgID)
 {
    /*---------------------
@@ -1799,7 +1799,7 @@ epicsStatus vmeCRGetMFG (epicsInt32 Slot, epicsUInt32 *MfgID)
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCSRWriteADER (epicsInt32 Slot, epicsUInt32 Func, epicsUInt32 Value)
 {
    /*---------------------
@@ -1869,7 +1869,7 @@ epicsStatus vmeCSRWriteADER (epicsInt32 Slot, epicsUInt32 Func, epicsUInt32 Valu
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 epicsStatus convCRtoLong (epicsUInt32 *pCR, epicsInt32 NumBytes, epicsUInt32 *Value)
 {
    /*---------------------
@@ -1933,7 +1933,7 @@ epicsStatus convCRtoLong (epicsUInt32 *pCR, epicsInt32 NumBytes, epicsUInt32 *Va
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 epicsStatus convOffsetToLong (epicsUInt32 *pCR, epicsInt32 NumBytes, epicsUInt32 *Value)
 {
    /*---------------------
@@ -1994,7 +1994,7 @@ epicsStatus convOffsetToLong (epicsUInt32 *pCR, epicsInt32 NumBytes, epicsUInt32
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 void getSNString (epicsUInt32 *pUCSR, char *stringValue)
 {
    /*---------------------
@@ -2068,7 +2068,7 @@ void getSNString (epicsUInt32 *pUCSR, char *stringValue)
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 epicsUInt32 getUserCSRAdr (epicsInt32 Slot)
 {
    /*---------------------
@@ -2140,7 +2140,7 @@ epicsUInt32 getUserCSRAdr (epicsInt32 Slot)
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 epicsStatus probeCRSpace (epicsInt32 slot, epicsUInt32 *pCR)
 {
    /*---------------------
@@ -2190,7 +2190,7 @@ epicsStatus probeCRSpace (epicsInt32 slot, epicsUInt32 *pCR)
 |*
 \**************************************************************************************************/
 
-LOCAL_RTN
+static
 epicsStatus probeUCSRSpace (epicsInt32 Slot, epicsUInt32 *pUCSR)
 {
    /*---------------------

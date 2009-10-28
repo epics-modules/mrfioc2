@@ -104,7 +104,7 @@
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCSRMemProbe (
     epicsUInt32   csrAddress,        /* Address in CR/CSR space to be probed.            */
     epicsInt32    mode,              /* Probe direction (read or write)                  */

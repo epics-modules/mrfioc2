@@ -89,32 +89,6 @@
 #else
     #define EVENT_CLOCK_DEFAULT    0.00                 /* Defaults to cntrl word value or 125.0  */
 #endif
-
-/**************************************************************************************************/
-/*  Special Macros to Document Global Vs Local Routines and Data                                  */
-/*  (note that these values can be overridden in the invoking module)                             */
-/**************************************************************************************************/
-
-/*---------------------
- * Globally accessible routines
- */
-#ifndef GLOBAL_RTN
-#define GLOBAL_RTN
-#endif
-
-/*---------------------
- * Routines that are normally only locally accessible
- */
-#ifndef LOCAL_RTN
-#define LOCAL_RTN static
-#endif
-
-/*---------------------
- * Data that is normally only locally accessible
- */
-#ifndef LOCAL
-#define LOCAL static
-#endif
 
 /**************************************************************************************************/
 /*  Special Macros to Define Symbolic Success/Error Return Codes                                  */
@@ -127,10 +101,6 @@
 
 #ifndef ERROR
 #define ERROR  (-1)
-#endif
-
-#ifndef NULL
-#define NULL   ('\0')
 #endif
 
 #endif

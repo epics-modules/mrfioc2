@@ -93,7 +93,7 @@
 /*---------------------
  * Table of Offsets to the 8 Target Window Control Registers
  */
-LOCAL const epicsUInt32  lsiCtlX [UNIVERSE_TARGET_WINDOW_COUNT] = {
+static const epicsUInt32  lsiCtlX [UNIVERSE_TARGET_WINDOW_COUNT] = {
     0x100,        /* Control register for target window 0 */
     0x114,        /* Control register for target window 1 */
     0x128,        /* Control register for target window 2 */
@@ -181,7 +181,7 @@ IMPORT void        sysPciOutLong (epicsUInt32 address, epicsUInt32 data);
 |*
 \**************************************************************************************************/
 
-GLOBAL_RTN
+
 epicsStatus vmeCSRMemProbe (
     epicsUInt32   csrAddress,        /* Address in CR/CSR space to be probed.                     */
     epicsInt32    mode,              /* Probe direction (read or write)                           */
