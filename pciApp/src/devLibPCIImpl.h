@@ -15,6 +15,7 @@ extern "C" {
 struct osdPCIDevice {
   epicsPCIDevice dev; /* "public" data */
   ELLNODE node;
+  void *drvpvt; /* for out of tree drivers */
 };
 typedef struct osdPCIDevice osdPCIDevice;
 

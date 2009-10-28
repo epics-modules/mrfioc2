@@ -73,6 +73,7 @@ typedef struct {
   struct PCIBar bar[6];
   volatile void *erom;
   epicsUInt8 irq;
+  void *devpvt; /* For devLib clients */
 } epicsPCIDevice;
 
 #define PCIBARCOUNT NELEMENTS( ((epicsPCIDevice*)0)->bar )
