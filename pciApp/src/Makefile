@@ -29,7 +29,6 @@ INC += devLibPCIImpl.h
 INC += pciEndian.h
 pci_SRCS += devLibPCI.c
 
-INC += osdPCI.h
 pci_SRCS += osdPCI.c
 
 pci_LIBS += Com

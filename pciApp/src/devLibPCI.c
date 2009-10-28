@@ -5,8 +5,6 @@
 
 #include "devLibPCIImpl.h"
 
-#include "osdPCI.h"
-
 #define epicsExportSharedSymbols
 #include "devLibPCI.h"
 

@@ -6,13 +6,19 @@
 #include <shareLib.h>
 #include <epicsTypes.h>
 
-/*#include "osdPCI.h"
-*/
-struct osdPCIDevice;
+#include "devLibPCI.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct osdPCIDevice {
+  epicsPCIDevice dev; /* "public" data */
+  ELLNODE node;
+};
+typedef struct osdPCIDevice osdPCIDevice;
+
+#define osd2epicsDev(osd) CONTAINER(osd,const osdPCIDevice,dev)
 
 typedef struct {
 

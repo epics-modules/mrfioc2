@@ -2,10 +2,19 @@
 #include <stdlib.h>
 #include <epicsAssert.h>
 
-#include "osdPCI.h"
+#include <rtems/pci.h>
+#include <rtems/endian.h>
+
+#include <ellLib.h>
+#include <dbDefs.h>
+
+#include "devLibPCI.h"
 
 #define epicsExportSharedSymbols
 #include "devLibPCIImpl.h"
+
+/* 0 <= N <= 5 */
+#define PCI_BASE_ADDRESS(N) ( PCI_BASE_ADDRESS_0 + 4*(N) )
 
 static
 int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
