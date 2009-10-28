@@ -8,20 +8,29 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
-USR_CFLAGS += -Wall -Werror
+LIBRARY_IOC = pci
 
-LIBRARY_RTEMS = pci
-
+ifeq ($(OS_CLASS),RTEMS)
 SRCS_DIRS += os/RTEMS
 USR_CPPFLAGS += -I../os/RTEMS
+
+else ifeq ($(OS_CLASS),vxWorks)
+SRCS_DIRS += os/vxWorks
+USR_CPPFLAGS += -I../os/vxWorks
+
+else
+SRCS_DIRS += os/default
+USR_CPPFLAGS += -I../os/default
+
+endif
 
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
 INC += pciEndian.h
 pci_SRCS += devLibPCI.c
 
-INC_RTEMS += osdPCI.h
-pci_SRCS_RTEMS += osdPCI.c
+INC += osdPCI.h
+pci_SRCS += osdPCI.c
 
 pci_LIBS += Com
 
