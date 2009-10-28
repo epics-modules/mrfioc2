@@ -94,16 +94,10 @@ int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
   return ret;
 }
 
-static
-int rtemsDevPCIToLocalAddr(struct osdPCIDevice* dev,unsigned int bar,volatile void **a)
-{
-  return 1;
-}
-
 
 devLibPCIVirtualOS prtemsPCIVirtualOS = {
   rtemsDevPCIFind,
-  rtemsDevPCIToLocalAddr
+  devPCIToLocalAddr_General
 };
 
 devLibPCIVirtualOS *pdevLibPCIVirtualOS = &prtemsPCIVirtualOS;
