@@ -35,9 +35,11 @@ typedef struct {
  * static const epicsPCIID mydevs[] = {
  *    DEVPCI_SUBDEVICE_SUBVENDOR( 0x1234, 0x1030, 0x0001, 0x4321 ),
  *    DEVPCI_SUBDEVICE_SUBVENDOR( 0x1234, 0x1030, 0x0002, 0x4321 ),
- *    NULL
+ *    DEVPCI_END
  * };
  */
+
+#define DEVPCI_END {0,0,0,0,0,0}
 
 #define DEVPCI_DEVICE_VENDOR(dev,vend) \
 { dev, vend, DEVPCI_ANY_SUBDEVICE, DEVPCI_ANY_SUBVENDOR, \

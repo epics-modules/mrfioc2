@@ -50,7 +50,7 @@ const epicsPCIDevice **found
    * Ensure all entries for the requested device/vendor pairs
    * are in the 'devices' list.
    */
-  for(search=idlist; search; search++){
+  for(search=idlist; search && !!search->device; search++){
     if( (err=fill_cache(search->device, search->vendor)) )
       return err;
   }
@@ -73,7 +73,7 @@ const epicsPCIDevice **found
       match=0;
       curdev=CONTAINER(cur,const osdPCIDevice,node);
 
-      for(search=idlist; search; search++){
+      for(search=idlist; search && !!search->device; search++){
 
         match=1;
 
