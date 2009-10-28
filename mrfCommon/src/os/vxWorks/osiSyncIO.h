@@ -71,8 +71,8 @@ void        sysOut32   (void*, epicsUInt32);    /* Synchronous 32 bit write     
  * Definitions for Accessing Little-Endian Busses
  */
 #define osi_read_le8_sync(address)        sysInByte   ((epicsUInt32)(address))
-#define osi_read_le16_sync(address)       be16_to_cpu (sysIn16 ((address)))
-#define osi_read_le32_sync(address)       be32_to_cpu (sysIn32 ((address)))
+#define osi_read_le16_sync(address)       le16_to_cpu (sysIn16 ((address)))
+#define osi_read_le32_sync(address)       le32_to_cpu (sysIn32 ((address)))
 
 #define osi_write_le8_sync(address,data)  sysOutByte  ((epicsUInt32)(address), (epicsUInt8)(data))
 #define osi_write_le16_sync(address,data) sysOut16    ((address), le16_to_cpu((epicsUInt16)(data)))
