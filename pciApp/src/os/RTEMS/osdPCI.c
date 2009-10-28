@@ -33,10 +33,10 @@ int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
     uint16_t val16;
     uint32_t val32;
 
-    pci_read_config_word(b,d,f,PCI_VENDOR_ID, &val16);
+    pci_read_config_word(b,d,f,PCI_DEVICE_ID, &val16);
     next->dev.id.device=val16;
 
-    pci_read_config_word(b,d,f,PCI_DEVICE_ID, &val16);
+    pci_read_config_word(b,d,f,PCI_VENDOR_ID, &val16);
     next->dev.id.vendor=val16;
 
     pci_read_config_word(b,d,f,PCI_SUBSYSTEM_ID, &val16);

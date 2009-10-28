@@ -19,6 +19,6 @@ struct osdPCIDevice {
 };
 typedef struct osdPCIDevice osdPCIDevice;
 
-#define osd2epicsDev(osd) CONTAINER(osd,osdPCIDevice,dev)
+#define osd2epicsDev(osd) CONTAINER(osd,const osdPCIDevice,dev)
 
 #endif /* OSDPCI_H_INC */
