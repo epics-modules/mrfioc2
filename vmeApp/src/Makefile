@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# $(TIMING)/mrfVme/src/Makefile
+# $(TIMING)/vmeApp/src/Makefile
 #
 #------------------------------------------------------------------------------
 # Author:  Eric Bjorklund
@@ -42,11 +42,11 @@ ifneq ($(findstring Host, $(VALID_BUILDS)),)
 endif
 
 #---------------------
-# Build the MRF Common Library
+# Build the VME Common Library
 #
 LIBRARY_IOC += mrfVme
 mrfVme_OBJS += mrfVme64x
-mrfVme_LIBS += $(EPICS_BASE_IOC_LIBS)
+mrfVme_OBJS += mrfVmeBusInterface
 
 OBJS_IOC += $(mrfVme_OBJS)
 

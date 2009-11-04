@@ -130,7 +130,6 @@
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <epicsEndian.h>        /* EPICS CPU "endianness" definitions                             */
 #include <osiSyncIO.h>          /* OS-Independent Synchronous I/O Routines                        */
 
 
@@ -148,47 +147,39 @@
  * CPU Byte Order is Little-Endian
  */
 
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+#if _BYTE_ORDER == _LITTLE_ENDIAN
 
-static inline
-epicsUInt16 be16_to_cpu (epicsUInt16 value) {
-    return (((value & 0x00ff) << 8) |
-            ((value & 0xff00) >> 8));
-}/*end be16_to_cpu()*/
+#define be16_to_cpu(value) ((epicsUInt16) (  \
+        (((value) & 0x00ff) << 8)    |       \
+        (((value) & 0xff00) >> 8)))
 
-static inline
-epicsUInt32 be32_to_cpu (epicsUInt32 value) {
-    return (((value & 0x000000ff) << 24) |
-            ((value & 0x0000ff00) << 8)  |
-            ((value & 0x00ff0000) >> 8)  |
-            ((value & 0xff000000) >> 24));
-}/*end be32_to_cpu()*/
+#define be32_to_cpu (epicsUInt32 value) ((epicsUInt32) (  \
+        (((value) & 0x000000ff) << 24)   |                \
+        (((value) & 0x0000ff00) << 8)    |                \
+        (((value) & 0x00ff0000) >> 8)    |                \
+        (((value) & 0xff000000) >> 24)))
 
-#define le16_to_cpu(value) (value);
-#define le32_to_cpu(value) (value);
+#define le16_to_cpu(value) (value)
+#define le32_to_cpu(value) (value)
 
 /*=====================
  * CPU Byte Order is Big-Endian
  */
 
-#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+#elif _BYTE_ORDER == _BIG_ENDIAN
 
-#define be16_to_cpu(value) (value);
-#define be32_to_cpu(value) (value);
+#define be16_to_cpu(value) (value)
+#define be32_to_cpu(value) (value)
 
-static inline
-epicsUInt16 le16_to_cpu (epicsUInt16 value) {
-    return (((value & 0x00ff) << 8) |
-            ((value & 0xff00) >> 8));
-}/*end be16_to_cpu()*/
+#define le16_to_cpu(value) ((epicsUInt16) (  \
+        (((value) & 0x00ff) << 8)    |       \
+        (((value) & 0xff00) >> 8)))
 
-static inline
-epicsUInt32 le32_to_cpu (epicsUInt32 value) {
-    return (((value & 0x000000ff) << 24) |
-            ((value & 0x0000ff00) << 8)  |
-            ((value & 0x00ff0000) >> 8)  |
-            ((value & 0xff000000) >> 24));
-}/*end be32_to_cpu()*/
+#define le32_to_cpu (epicsUInt32 value) ((epicsUInt32) (  \
+        (((value) & 0x000000ff) << 24)   |                \
+        (((value) & 0x0000ff00) << 8)    |                \
+        (((value) & 0x00ff0000) >> 8)    |                \
+        (((value) & 0xff000000) >> 24)))
 
 /*=====================
  * CPU Byte Order is Unknown

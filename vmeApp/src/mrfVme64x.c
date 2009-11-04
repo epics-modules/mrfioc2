@@ -1,5 +1,5 @@
 /**************************************************************************************************
-|* mrfVme64x.c -- Utilities to Support VME-64X CR/CSR Geographical Addressing
+|* $(TIMING)/vmeApp/src/mrfVme64x.c -- Utilities to Support VME-64X CR/CSR Geographical Addressing
 |*
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Jukka Pietarinen (Micro-Research Finland, Oy)
@@ -14,12 +14,25 @@
 |* 12 Oct 2007  R.Hartmann      Updated to include the series 230 modules
 |* 26 Aug 2009  E.Bjorklund     Removed the EVG-230 from the list of modules that support
 |*                              function 1 addressing in CSR space.
+|* 29 Oct 2009  E.Bjorklund     Renamed mrfSetIrqLevel() to mrfSetIrq() and modified it to set
+|*                              both the IRQ vector and level (needed by modular register map).
+|*                              Also modified vmeUserCSRShow to display the IRQ vector.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
+|*   This module contains utility routines for reading and manipulating the VME CR/CSR space
+|*   used by the MRF Series 200 modules to configure their VME address spaces.
 |*
-|* This module contains utility routines for reading and manipulating the VME CR/CSR space
-|* used by the MRF Series 200 modules to configure their VME address spaces.
+|*--------------------------------------------------------------------------------------------------
+|* HARDWARE SUPPORTED:
+|*   Series 2xx Event Generator and Event Receiver Cards
+|*     APS Register Mask
+|*     Modular Register Mask
+|*
+|*--------------------------------------------------------------------------------------------------
+|* OPERATING SYSTEMS SUPPORTED:
+|*   vxWorks
+|*   RTEMS
 |*
 \*************************************************************************************************/
 
@@ -30,17 +43,6 @@
 |* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
 |* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
 |* AND IN ALL SOURCE LISTINGS OF THE CODE.
-|*
-|**************************************************************************************************
-|*
-|* Copyright (c) 2008 The University of Chicago,
-|* as Operator of Argonne National Laboratory.
-|*
-|* Copyright (c) 2008 The Regents of the University of California,
-|* as Operator of Los Alamos National Laboratory.
-|*
-|* Copyright (c) 2008 The Board of Trustees of the Leland Stanford Junior
-|* University, as Operator of the Stanford Linear Accelerator Center.
 |*
 |**************************************************************************************************
 |*
@@ -301,6 +303,7 @@ static const epicsUInt32 funcOneCards [] = {
 /**************************************************************************************************/
 
 #define  UCSR_IRQ_LEVEL                0x0003   /* Interrupt request level                        */
+#define  UCSR_IRQ_VECTOR               0x0007   /* Interrupt request vector                       */
 #define  UCSR_SERIAL_NUMBER            0x0013   /* Board serial number (MAC Address)              */
 
 #define  UCSR_SN_SIZE       (MRF_SN_BYTES * 4)  /* Size of serial number space (in total bytes)   */
@@ -911,35 +914,30 @@ epicsStatus mrfSetAddress (epicsInt32 Slot,  epicsUInt32 VMEAddress, epicsUInt32
 }/*end mrfSetAddress()*/
 
 /**************************************************************************************************
-|* mrfSetIrqLevel () -- Set the VME Interrupt Request Level
+|* mrfSetIrq () -- Set the VME Interrupt Request Vector and Level
 |*-------------------------------------------------------------------------------------------------
 |*
-|* Sets the specified VME Interrupt Request Level (IRQ) in the appropriate field in User-Defined
-|* CSR space.
+|* Sets the specified VME Interrupt Request Vector and Level in the appropriate fields
+|* of the board's User-Defined CSR space.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
-|*      status = mrfSetIrqLevel (Slot, Level);
+|*      status = mrfSetIrq (Slot, Vector, Level);
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
 |*      Slot   = (epicsInt32)   VME slot number of the card we wish to set the IRQ level for.
-|*      Level  = (epicsInt32)   The IRQ level we wish to set.
+|*      Vector = (epicsInt32)   The interrupt request vector number
+|*      Level  = (epicsInt32)   The interrupt request service level
 |*
 |*-------------------------------------------------------------------------------------------------
 |* RETURNS:
 |*      status  = (epicsStatus)  Returns OK if we were able to set the card's IRQ level.
 |*                               Returns ERROR if there was some problem setting the IRQ level.
 |*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine only works on VME Event Receiver cards, as they are the only cards capable
-|*   of generating a VME interrupt.
-|*
 \**************************************************************************************************/
 
-
-epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
+epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level)
 {
    /*---------------------
     * Local Variables
@@ -949,10 +947,18 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
     epicsUInt32   tmp = 999;               /* Temp variable for level readback                    */
 
    /*---------------------
+    * Make sure the requested vector is in the correct range
+    */
+    if ((Vector < 1) || (Vector > 255)) {
+        printf ("mrfSetIrq: Invalid IRQ Vector (%d).  Should be between 1 and 255\n", Vector);
+        return ERROR;
+    }/*end if IRQ level was not valid*/
+
+   /*---------------------
     * Make sure the requested level is in the correct range
     */
     if ((Level < 1) || (Level > 7)) {
-        printf ("mrfSetIrqLevel: Invalid IRQ Level (%d).  Should be between 1 and 7\n", Level);
+        printf ("mrfSetIrq: Invalid IRQ Level (%d).  Should be between 1 and 7\n", Level);
         return ERROR;
     }/*end if IRQ level was not valid*/
 
@@ -960,7 +966,7 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
     * Try to locate the start of User-Defined CSR space
     */
     if (!(pUCSR = getUserCSRAdr (Slot))) {
-        printf ("mrfSetIrqLevel: Board in slot %d does not support CR/CSR addressing\n", Slot);
+        printf ("mrfSetIrq: Board in slot %d does not support CR/CSR addressing\n", Slot);
         return ERROR;
     }/*end if could not access User-CSR space*/
 
@@ -980,18 +986,40 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Level)
     * return a failure status.
     */
     if ((OK != status) || (tmp != Level)) {
-        printf ("mrfSetIrqLevel: Unable to set board in slot %d to IRQ level %d (readback: %d)\n",
+        printf ("mrfSetIrq: Unable to set board in slot %d to IRQ level %d (readback: %d)\n",
                 Slot, Level, tmp);
         return ERROR;
     }/*end if could not set IRQ level*/
 
    /*---------------------
-    * If we made it this far, the IRQ level was successfully set.
+    * Set the IRQ vector in User-Defined CSR space
+    */
+    status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_VECTOR), CSR_WRITE, 1, (epicsUInt32 *)&Vector);
+
+   /*---------------------
+    * If the write succeeded, try to read the vector back to make sure it was really set.
+    */
+    tmp = 0;
+    if (OK == status)
+        status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_VECTOR), CSR_READ, 1, &tmp);
+
+   /*---------------------
+    * If the read call failed, or if it read back a different value than we wrote,
+    * return a failure status.
+    */
+    if ((OK != status) || (tmp != Level)) {
+        printf ("mrfSetIrq: Unable to set board in slot %d to IRQ vector %d (readback: %d)\n",
+                Slot, Vector, tmp);
+        return ERROR;
+    }/*end if could not set IRQ level*/
+
+   /*---------------------
+    * If we made it this far, the IRQ vector and level were successfully set.
     * Return a success status.
     */
     return OK;
 
-}/*end mrfSetIrqLevel()*/
+}/*end mrfSetIrq()*/
 
 /**************************************************************************************************/
 /*                      Diagnostic Routines Available Through the IOC Shell                       */
@@ -1450,9 +1478,10 @@ void vmeUserCSRShow (epicsInt32 Slot)
         printf ("  Board serial number: %s\n", serialNumber);
 
        /*---------------------
-        * Display the IRQ level
+        * Display the IRQ vector and level
         */
-        printf ("  IRQ Level: %d\n", pUCSR[LINDEX(UCSR_IRQ_LEVEL)]);
+        printf ("  IRQ Vector: %d\n", pUCSR[LINDEX(UCSR_IRQ_VECTOR)]);
+        printf ("  IRQ Level:  %d\n", pUCSR[LINDEX(UCSR_IRQ_LEVEL)]);
 
     }/*end if we could read the User-CSR space*/
 
@@ -2219,17 +2248,18 @@ epicsStatus probeUCSRSpace (epicsInt32 Slot, epicsUInt32 *pUCSR)
 
 
 /**************************************************************************************************/
-/*   mrfSetIrqLevel() -- Set the VME IRQ Level for the Board                                      */
+/*   mrfSetIrq() -- Set the VME Interrupt Vector and Level for the Board                          */
 /**************************************************************************************************/
 
-static const iocshArg         mrfSetIrqLevelArg0    = {"slot",  iocshArgInt};
-static const iocshArg         mrfSetIrqLevelArg1    = {"level", iocshArgInt};
-static const iocshArg *const  mrfSetIrqLevelArgs[2] = {&mrfSetIrqLevelArg0, &mrfSetIrqLevelArg1};
-static const iocshFuncDef     mrfSetIrqLevelDef     = {"mrfSetIrqLevel", 2, mrfSetIrqLevelArgs};
+static const iocshArg         mrfSetIrqArg0    = {"slot",   iocshArgInt};
+static const iocshArg         mrfSetIrqArg1    = {"vector", iocshArgInt};
+static const iocshArg         mrfSetIrqArg2    = {"level",  iocshArgInt};
+static const iocshArg *const  mrfSetIrqArgs[3] = {&mrfSetIrqArg0, &mrfSetIrqArg1, &mrfSetIrqArg2};
+static const iocshFuncDef     mrfSetIrqDef     = {"mrfSetIrq", 3, mrfSetIrqArgs};
 
-static void mrfSetIrqLevelCall (const iocshArgBuf *args) {
-    mrfSetIrqLevel(args[0].ival, args[1].ival);
-}/*end mrfSetIrqLevelCall()*/
+static void mrfSetIrqCall (const iocshArgBuf *args) {
+    mrfSetIrq(args[0].ival, args[1].ival, args[2].ival);
+}/*end mrfSetIrqCall()*/
 
 
 /**************************************************************************************************/
@@ -2305,7 +2335,7 @@ static void vmeCSRWriteADERCall(const iocshArgBuf * args) {
 /**************************************************************************************************/
 
 static void mrfVmeRegistrar () {
-    iocshRegister (&mrfSetIrqLevelDef  , mrfSetIrqLevelCall  );
+    iocshRegister (&mrfSetIrqDef       , mrfSetIrqCall  );
     iocshRegister (&mrfSNShowDef       , mrfSNShowCall       );
     iocshRegister (&vmeCRShowDef       , vmeCRShowCall       );
     iocshRegister (&vmeUserCSRShowDef  , vmeUserCSRShowCall  );

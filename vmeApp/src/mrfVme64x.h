@@ -1,5 +1,5 @@
 /***************************************************************************************************
-|* mrfVme64x.h -- Utilities to Support VME-64X CR/CSR Geographical Addressing
+|* $(TIMING)/vmeApp/src/mrfVme64x.h -- Utilities to Support VME-64X CR/CSR Geographical Addressing
 |*
 |*--------------------------------------------------------------------------------------------------
 |* Authors:  Jukka Pietarinen (Micro-Research Finland, Oy)
@@ -12,6 +12,8 @@
 |* 12 Oct 2007  R.Hartmann      Updated to include the series 230 modules
 |* 06 Jun 2008  E.Bjorklund     Moved Board ID codes to mrfCommon.h
 |* 20 Oct 2009  E.Bjorklund     Adapted for the Modular Register Mask software
+|* 29 Oct 2009  E.Bjorklund     Renamed mrfSetIrqLevel() to mrfSetIrq() and modified it to set
+|*                              both the IRQ vector and level (needed by modular register map).
 |*
 |*--------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
@@ -20,13 +22,13 @@
 |*   templates for the utility functions used to probe and manipulate the CR/CSR
 |*   address space.
 |*
-|*------------------------------------------------------------------------------
+|*--------------------------------------------------------------------------------------------------
 |* HARDWARE SUPPORTED:
 |*   Series 2xx Event Generator and Event Receiver Cards
 |*   APS Register Mask
 |*   Modular Register Mask
 |*
-|*------------------------------------------------------------------------------
+|*--------------------------------------------------------------------------------------------------
 |* OPERATING SYSTEMS SUPPORTED:
 |*   vxWorks
 |*   RTEMS
@@ -50,7 +52,7 @@
 
 #ifndef MRF_VME_64X_H
 #define MRF_VME_64X_H
-
+
 /**************************************************************************************************/
 /*  Other Header Files Required By This File                                                      */
 /**************************************************************************************************/
@@ -83,6 +85,12 @@
 #define MRF_VME_IEEE_OUI     0x000EB2   /* VME Organizationally Unique Identifier (OUI) for MRF   */
 #define MRF_PCI_VENDOR_ID    0x1A3E     /* PCI Vendor ID for MRF                                  */
 
+/**************************************************************************************************/
+/*  Board ID Field Masks                                                                          */
+/**************************************************************************************************/
+
+#define MRF_BID_TYPE_MASK    0xFFFFFF00 /* Mask for Board ID Field                                */
+#define MRF_BID_SERIES_MASK  0x000000FF /* Mask for Board Series Field                            */
 
 /**************************************************************************************************/
 /*  Generic VME Board Type Codes                                                                  */
@@ -114,6 +122,8 @@
 #define MRF_VME_EVG230_BID   (MRF_VME_EVG_BID    | MRF_SERIES_230) /* VME Event Generator 230     */
 #define MRF_VME_EVR230_BID   (MRF_VME_EVR_BID    | MRF_SERIES_230) /* VME Event Receiver 230      */
 #define MRF_VME_EVR230RF_BID (MRF_VME_EVR_RF_BID | MRF_SERIES_230) /* VME EVR 230 w/ RF Recovery  */
+
+
 
 /**************************************************************************************************/
 /*  Function Prototypes for CR/CSR Utility Routines                                               */
@@ -131,7 +141,7 @@ epicsInt32   mrfFindNextEVR230     (epicsInt32);
 void         mrfGetSerialNumberVME (epicsInt32, char*);
 epicsStatus  mrfSetAddress         (epicsInt32, epicsUInt32, epicsUInt32);
 epicsStatus  mrfSetAddressEx       (epicsInt32, epicsUInt32, epicsUInt32, epicsUInt32);
-epicsStatus  mrfSetIrqLevel        (epicsInt32, epicsInt32);
+epicsStatus  mrfSetIrq             (epicsInt32, epicsInt32, epicsInt32);
 
 /*---------------------
  * Diagnostic routines that can be called from the IOC shell.

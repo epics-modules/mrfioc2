@@ -57,13 +57,14 @@ endif
 #
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfCommonIO.h      # Common I/O access macros
+INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += debugPrint.h       # SLAC debug print utility
 
 #---------------------
 # Install OS-Dependent include files
 #
-INC_vxWorks += mrfSyncIO.h
-INC_RTEMS   += mrfSyncIO.h
+INC_vxWorks += osiSyncIO.h
+INC_RTEMS   += osiSyncIO.h
 
 #---------------------
 # Build the MRF Common Library

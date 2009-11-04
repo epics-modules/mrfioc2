@@ -65,10 +65,27 @@
 #define MRF_DEF_CLOCK_SPEED       125.0        /* Default event clock speed is 125 MHz.           */
 #define MRF_SN_BYTES                  6        /* Number of bytes in serial number                */
 #define MRF_SN_STRING_SIZE           18        /* Size of serial number string (including NULL)   */
+#define MRF_DESCRIPTION_SIZE         80        /* Size of description text string (inclucing NULL)*/
+
+/**************************************************************************************************/
+/*  MRF Supported Bus Types                                                                       */
+/**************************************************************************************************/
+
+#define MRF_BUS_COMPACT_PCI           0        /* 0 = Compact PCI (3U)                            */
+#define MRF_BUS_PMC                   1        /* 1 = PMC                                         */
+#define MRF_BUS_VME                   2        /* 2 = VME 64x                                     */
 
 
 /**************************************************************************************************/
-/*  MRF Series Board Codes                                                                        */
+/*  MRF Board Types                                                                               */
+/**************************************************************************************************/
+
+#define MRF_CARD_TYPE_EVR             1        /* 1 = Event Receiver                              */
+#define MRF_CARD_TYPE_EVG             2        /* 2 = Event Generator                             */
+
+
+/**************************************************************************************************/
+/*  MRF Board Series Codes                                                                        */
 /**************************************************************************************************/
 
 #define MRF_SERIES_200       0x000000C8        /* Series 200 Code (in Hex)                        */
@@ -77,7 +94,7 @@
 
 
 /**************************************************************************************************/
-/*  Site-Specific Configuration Parameters                                                        */
+/*  Site-Specific Defaults                                                                        */
 /*  (these parameters take their values from the MRF_CONFIG_SITE* files)                          */
 /**************************************************************************************************/
 
@@ -89,6 +106,12 @@
 #else
     #define EVENT_CLOCK_DEFAULT    0.00                 /* Defaults to cntrl word value or 125.0  */
 #endif
+
+/*---------------------
+ * Define the prototype for an EPICS Interrupt Service Routine
+ * (for some reason, devLib.h neglects to define this for us).
+ */
+typedef void (*EPICS_ISR_FUNC) (void *);
 
 /**************************************************************************************************/
 /*  Special Macros to Define Symbolic Success/Error Return Codes                                  */
