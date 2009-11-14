@@ -84,28 +84,56 @@ public:
     //
     inline epicsInt32 GetBusType () const {
         return (BusType);
-    }//end GetType()
+    }//end GetBusType()
 
     //=====================
     // Return the logical card number
     //
     inline epicsInt32 GetCardNum () const {
         return (CardNum);
-    }//end GetType()
+    }//end GetCardNum()
 
     //=====================
     // Return card type (EVG, EVR, etc.)
     //
     inline epicsInt32 GetCardType () const {
         return (CardType);
-    }//end GetType()
+    }//end GetCardType()
+
+    //=====================
+    // Return sub-unit value
+    //
+    inline epicsInt32 GetSubUnit () const {
+        return (Slot);
+    }//end GetSubUnit()
+
+    //=====================
+    // Return the sub-unit name (Slot, Index, etc.)
+    //
+    inline const char *GetSubUnitName () const {
+        return ("VME Slot");
+    }//end GetSubUnitName()
 
     //=====================
     // Return pointer to card description text
     //
     inline const char *GetDescription () const {
         return (Description);
-    }//end GetCardType()
+    }//end GetDescription()
+
+    //=====================
+    // Return pointer to text for most recent error
+    //
+    inline const char *GetErrorText () const {
+        return (ErrorText);
+    }//end GetErrorText()
+
+    //=====================
+    // Return pointer to card's serial number
+    //
+    inline const char *GetSerialNumber () const {
+        return (SerialNumber);
+    }//end GetSerialNumber()
 
     //=====================
     // Bus address configuration routine
@@ -157,6 +185,7 @@ private:
     epicsInt32       Slot;                  // Card's VME slot number
     
     char             Description  [MRF_DESCRIPTION_SIZE];  // Card description (mostly for devLib)
+    char             ErrorText    [128];                   // Text from latest error
     char             SerialNumber [MRF_SN_STRING_SIZE];    // Card's serial number
     
 };// end class mrfVmeBusInterface //

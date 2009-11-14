@@ -60,6 +60,9 @@
 #include <epicsTypes.h>                 /* EPICS Architecture-independent type definitions        */
 #include <mrfCommon.h>                  /* MRF Common defintions                                  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**************************************************************************************************/
 /*  Mode Definitions for the vmeCSRMemProbe Function                                              */
@@ -161,5 +164,8 @@ epicsStatus  vmeCRGetMFG           (epicsInt32, epicsUInt32*);
 epicsStatus  vmeCSRWriteADER       (epicsInt32, epicsUInt32, epicsUInt32);
 epicsStatus  vmeCSRMemProbe        (epicsUInt32, epicsInt32, epicsInt32, epicsUInt32*);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

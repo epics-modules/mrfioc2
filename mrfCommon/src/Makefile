@@ -36,6 +36,7 @@ TOP=../..
 include $(TOP)/configure/CONFIG
 
 USR_CFLAGS += -DDEBUG_PRINT
+USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
 # HOST_BUILD macro tells mrfFracSynth whether it should produce entries
@@ -67,10 +68,16 @@ INC_vxWorks += osiSyncIO.h
 INC_RTEMS   += osiSyncIO.h
 
 #---------------------
+# Install DBD files
+#
+DBD += mrfCommon.dbd
+
+#---------------------
 # Build the MRF Common Library
 #
 LIBRARY_IOC += mrfCommon
 mrfCommon_OBJS += mrfFracSynth
+mrfCommon_OBJS += mrfBusInterface
 
 OBJS_IOC += $(mrfCommon_OBJS)
 

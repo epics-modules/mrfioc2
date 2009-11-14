@@ -34,6 +34,9 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
+USR_CFLAGS += -DDEBUG_PRINT
+USR_CPPFLAGS += -DDEBUG_PRINT
+
 #---------------------
 # Only build for "hardware" IOC's
 #
@@ -42,11 +45,23 @@ ifneq ($(findstring Host, $(VALID_BUILDS)),)
 endif
 
 #---------------------
+# Install include files
+#
+INC += mrfVmeBusInterface.h
+
+#---------------------
+# Install DBD files
+#
+DBD += mrfVme.dbd
+
+#---------------------
 # Build the VME Common Library
 #
 LIBRARY_IOC += mrfVme
+
 mrfVme_OBJS += mrfVme64x
 mrfVme_OBJS += mrfVmeBusInterface
+mrfVme_OBJS += vmeCSRMemProbeOSI
 
 OBJS_IOC += $(mrfVme_OBJS)
 

@@ -67,10 +67,14 @@ public:
     //=====================
     // Getter functions
     //
-    virtual epicsInt32   GetBusType     () const = 0; // Return the card's bus type (VME, PCI, etc.)
-    virtual epicsInt32   GetCardNum     () const = 0; // Return the logical card number
-    virtual epicsInt32   GetCardType    () const = 0; // Return the card type (EVG, EVR, etc.)
-    virtual const char  *GetDescription () const = 0; // Return pointer to card description text
+    virtual epicsInt32   GetBusType      () const = 0; // Return the card's bus type (VME, PCI, etc)
+    virtual epicsInt32   GetCardNum      () const = 0; // Return the logical card number
+    virtual epicsInt32   GetCardType     () const = 0; // Return the card type (EVG, EVR, etc.)
+    virtual epicsInt32   GetSubUnit      () const = 0; // Return the sub-unit value
+    virtual const char  *GetSubUnitName  () const = 0; // Return sub-unit name (Slot, Index, etc.)
+    virtual const char  *GetDescription  () const = 0; // Return pointer to card description text
+    virtual const char  *GetErrorText    () const = 0; // Return pointer to text from last error
+    virtual const char  *GetSerialNumber () const = 0; // Return pointer to card's serial number
 
     //=====================
     // Bus address configuration routine

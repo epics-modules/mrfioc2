@@ -172,6 +172,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
     // Set the string member variables to "null"
     //
     Description[0]  = '\0';
+    ErrorText[0]    = '\0';
     SerialNumber[0] = '\0';
 
 };//end mrfVmeBusInterface Constructor
@@ -213,6 +214,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
 |*      AddressRegistered  = (bool)        True if bus address was registered with devLib
 |*      CpuAddress         = (epicsUInt32) CPU address for accessing the register map
 |*      Description        = (char *)      Card description (used to register with devLib)
+|*      ErrorText          = (char *)      Text from last error condition
 |*      Serial Number      = (char *)      Card's serial number (read from CSR space)
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -241,15 +243,14 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     epicsUInt32     BoardSeries;           // Card's board series (extracted from the board ID)
     epicsUInt16     Junk;                  // Dummy variable for card read probe function
     epicsUInt32     status;                // Status return variable
-
+    char            statusText [64];       // Status text string
 
     //=====================
     // Make sure the slot number is valid
     //
     if ((Slot < 1) || (Slot > MRF_MAX_VME_SLOT)) {
-        errPrintf (-1, NULL, 0,
-                   "Slot number %d is invalid, must be between 1 and %d\n",
-                    Slot, MRF_MAX_VME_SLOT);
+        sprintf (ErrorText, "Slot number %d is invalid, must be between 1 and %d",
+                 Slot, MRF_MAX_VME_SLOT);
         return 0;
     }//end if slot number is invalid
 
@@ -258,8 +259,7 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //
     status = vmeCRGetBID (Slot, &BoardID);
     if (OK != status) {
-        errPrintf (-1, NULL, 0,
-                   "Unable to access CR/CSR Space for slot %d.\n", Slot);
+        sprintf (ErrorText, "Unable to access CR/CSR Space for slot %d.", Slot);
         return 0;
     }//end could not read the card's board ID
 
@@ -281,8 +281,7 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     // Check to see if the card at this slot is the kind of card we expected
     //
     if (ActualType != CardType) {
-        errPrintf (-1, NULL, 0,
-                   "Card found in slot %d. is not an %s\n", Slot, CardTypeName[CardType]);
+        sprintf (ErrorText, "Card found in slot %d. is not an %s", Slot, CardTypeName[CardType]);
         return 0;
     }//end if the actual card type does not match the expected card type
 
@@ -303,9 +302,10 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
                  (volatile void **)(void*)&CpuAddress);  // Local address of card's register map
 
     if (OK != status) {
-        errPrintf (status, NULL, 0,
-                   "\nUnable to register Event Generator Card %d at VME/A24 address 0x%08X\n",
-                   CardNum, BusAddress);
+        errSymLookup (status, statusText, 64);
+        sprintf (ErrorText,
+                 "Unable to register %s Card %d at VME/A24 address 0x%08X\n  %s",
+                 CardTypeName[CardType], CardNum, BusAddress, statusText);
         return 0;
     }//end if devRegisterAddress() failed
 
@@ -314,8 +314,7 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //
     status = mrfSetAddress (Slot, BusAddress, VME_AM_STD_SUP_DATA);
     if (OK != status) {
-        errPrintf (-1, NULL, 0,
-                   "Unable to set bus address for slot %d.\n", Slot);
+        sprintf (ErrorText, "Unable to set bus address for slot %d.", Slot);
         return 0;
     }//end could not set VME address in CR/CSR space
 
@@ -325,9 +324,9 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     AddressRegistered = true;
     status = devReadProbe (sizeof(epicsUInt16), (const volatile void*)CpuAddress, &Junk);
     if (OK != status) {
-        errPrintf (-1, NULL, 0,
-                   "Unable to read Event Generator Card %d (slot %d) at VME/A24 address 0x%08X\n",
-                   CardNum, Slot, BusAddress);
+        sprintf (ErrorText,
+                 "Unable to read Event Generator Card %d (slot %d) at VME/A24 address 0x%08X",
+                 CardNum, Slot, BusAddress);
     }//end if could not read the Event Generator card
 
     //=====================
@@ -385,6 +384,7 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT OUTPUTS (member variables):
+|*      ErrorText        = (char *)         Text from last error condition
 |*      IntRtnConnected  = (bool)           True if bus address was registered with devLib
 |*      IntVecConnected  = (bool)           True if the interrupt vector is set in CR/CSR space
 |*      ISR              = (EPICS_ISR_FUNC) Address of interrupt handler routine
@@ -413,11 +413,11 @@ mrfVmeBusInterface::ConfigBusInterrupt (
     // Local Variables
     //
     epicsStatus   status;               // Local status variable
+    char          statusText [64];      // Status text string
 
     if (devInterruptInUseVME(IrqVector)) {
-        errPrintf (-1, NULL, 0,
-                   "Requested interrupt vector (0x%04X) for card %d is already in use.\n",
-                   IrqVector, CardNum);
+        sprintf (ErrorText, "Requested interrupt vector (0x%04X) for card %d is already in use",
+                 IrqVector, CardNum);
         return ERROR;
     }//end if interrupt vector is already in use
 
@@ -426,9 +426,8 @@ mrfVmeBusInterface::ConfigBusInterrupt (
     //
     status = mrfSetIrq (Slot, IrqVector, IrqLevel);
     if (OK != status) {
-        errPrintf (-1, NULL, 0,
-                  "Unable to set IRQ vector and level for %s Card %d in slot %d.\n",
-                   CardTypeName[CardType], CardNum, Slot);
+        sprintf (ErrorText, "Unable to set IRQ vector and level for %s Card %d in slot %d",
+                 CardTypeName[CardType], CardNum, Slot);
         return ERROR;
     }//end if we could not set the IRQ vector/level
 
@@ -442,9 +441,9 @@ mrfVmeBusInterface::ConfigBusInterrupt (
     // If we could not connect to the interrupt vector, disable the card's interrupts
     //
     if (OK != status) {
-        errPrintf (status, NULL, 0,
-                   "Unable to connect %s Card %d to interrupt vector 0x%04X\n",
-                   CardTypeName[CardType], CardNum, IrqVector);
+        errSymLookup (status, statusText, 64);
+        sprintf (ErrorText, "Unable to connect %s Card %d to interrupt vector 0x%04X\n  %s",
+                 CardTypeName[CardType], CardNum, IrqVector, statusText);
 
         mrfSetIrq (Slot, 0, 0);
         IntVecConnected = false;
@@ -526,32 +525,36 @@ void
 mrfVmeBusInterface::BusHwReport () const {
     printf ("  Card %d in VME slot %d.  Serial Number = %s.\n", CardNum, Slot, SerialNumber);
     printf ("       VME Address = %8.8X.  Local Address = %8.8X.", BusAddress, CpuAddress);
-    printf ("   Vector = %3.3X.  Level = %d.\n", CpuAddress, IrqVector, IrqLevel);
+    printf ("   Vector = %3.3X.  Level = %d.\n", IrqVector, IrqLevel);
 }//end BusHwReport()
 
 /**************************************************************************************************
-|* ~mrfVmeBusInterface () -- Bus Interface Destructor
+|* ~mrfVmeBusInterface () -- Class Destructor
 |*
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|*   Sets the cards interrupt vector and interrupt request level in CR/CSR space and connects
-|*   the interrupt service routine to the interrupt vector.
+|*   Disconnect the card's VME bus interface and free up its resources.  This involves:
+|*     o Unregister the card's VME address from devLib
+|*     o Disable VME interrupts from the card
+|*     o Disconnect the card's interrupt service routine
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
-|*      status = ConfigBusInterrupt (IntHandler, IntParm);
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      IntHandler       = (EPICS_ISR_FUNC) Address of the interrupt handler routine.
-|*      IntParm          = (void *)         Parameter to pass to the interrupt handler routine
+|*      ~mrfVmeBusInterface ();
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT INPUTS (member variables):
 |*      AddressRegistered = (bool)           True if VME address was registered with devLib
+|*      BusAddress        = (epicsUInt32)    Card's VME bus address
+|*      Description       = (char *)         Card description (used to register with devLib)
 |*      IntRtnConnected   = (bool)           True if the interrupt handler routine was connected
 |*      IntVecConnected   = (bool)           True if the interrupt vector is set in CR/CSR space
 |*      ISR               = (EPICS_ISR_FUNC) Address of interrupt handler routine
+|*      Slot              = (epicsInt32)     Card's VME slot number
+|*
+|*-------------------------------------------------------------------------------------------------
+|* NOTES:
+|*   The bus interface destructor must run before the card destructor is executed.
 |*
 \**************************************************************************************************/
 

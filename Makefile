@@ -3,19 +3,31 @@ TOP = .
 include $(TOP)/configure/CONFIG
 DIRS := $(DIRS) $(filter-out $(DIRS), configure)
 DIRS := $(DIRS) $(filter-out $(DIRS), mrfCommon)
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *App))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocBoot))
+#DIRS := $(DIRS) $(filter-out $(DIRS), pciApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), vmeApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), evgApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), evrApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), evrnullApp)
+DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
 
-define DIR_template
- $(1)_DEPEND_DIRS = configure
-endef
-$(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir))))
 
-iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
-evrApp_DEPEND_DIRS += pciApp
-
-evrnullApp_DEPEND_DIRS += evrApp
+#DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *App))
+#DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocBoot))
+#
+#define DIR_template
+# $(1)_DEPEND_DIRS = configure
+#endef
+#$(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir))))
+#
+#iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
+#
+#evgMrmApp_DEPEND_DIRS += pciApp vmeApp evgApp
+#
+#evrApp_DEPEND_DIRS += pciApp
+#
+#evrnullApp_DEPEND_DIRS += evrApp
 
 include $(TOP)/configure/RULES_TOP
 

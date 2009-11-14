@@ -937,28 +937,28 @@ epicsStatus mrfSetAddress (epicsInt32 Slot,  epicsUInt32 VMEAddress, epicsUInt32
 |*
 \**************************************************************************************************/
 
-epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level)
+epicsStatus mrfSetIrq (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level)
 {
    /*---------------------
     * Local Variables
     */
     epicsUInt32   pUCSR;                   /* Pointer to User-CSR space (longword aligned)        */
     epicsStatus   status;                  /* Local status variable                               */
-    epicsUInt32   tmp = 999;               /* Temp variable for level readback                    */
+    epicsUInt32   tmp;                     /* Temp variable for level readback                    */
 
    /*---------------------
     * Make sure the requested vector is in the correct range
     */
-    if ((Vector < 1) || (Vector > 255)) {
-        printf ("mrfSetIrq: Invalid IRQ Vector (%d).  Should be between 1 and 255\n", Vector);
+    if ((Vector < 0) || (Vector > 255)) {
+        printf ("mrfSetIrq: Invalid IRQ Vector (%d).  Should be between 0 and 255\n", Vector);
         return ERROR;
     }/*end if IRQ level was not valid*/
 
    /*---------------------
     * Make sure the requested level is in the correct range
     */
-    if ((Level < 1) || (Level > 7)) {
-        printf ("mrfSetIrq: Invalid IRQ Level (%d).  Should be between 1 and 7\n", Level);
+    if ((Level < 0) || (Level > 7)) {
+        printf ("mrfSetIrq: Invalid IRQ Level (%d).  Should be between 0 and 7\n", Level);
         return ERROR;
     }/*end if IRQ level was not valid*/
 
@@ -973,6 +973,7 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level
    /*---------------------
     * Set the IRQ level in User-Defined CSR space
     */
+    tmp = 999;
     status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_LEVEL), CSR_WRITE, 1, (epicsUInt32 *)&Level);
 
    /*---------------------
@@ -999,7 +1000,7 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level
    /*---------------------
     * If the write succeeded, try to read the vector back to make sure it was really set.
     */
-    tmp = 0;
+    tmp = 999;
     if (OK == status)
         status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_VECTOR), CSR_READ, 1, &tmp);
 
@@ -1007,9 +1008,10 @@ epicsStatus mrfSetIrqLevel (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level
     * If the read call failed, or if it read back a different value than we wrote,
     * return a failure status.
     */
-    if ((OK != status) || (tmp != Level)) {
-        printf ("mrfSetIrq: Unable to set board in slot %d to IRQ vector %d (readback: %d)\n",
-                Slot, Vector, tmp);
+    if ((OK != status) || (tmp != Vector)) {
+        printf (
+            "mrfSetIrq: Unable to set board in slot %d to IRQ vector 0x%02X (readback: 0x%02X)\n",
+            Slot, Vector, tmp);
         return ERROR;
     }/*end if could not set IRQ level*/
 
@@ -1480,8 +1482,8 @@ void vmeUserCSRShow (epicsInt32 Slot)
        /*---------------------
         * Display the IRQ vector and level
         */
-        printf ("  IRQ Vector: %d\n", pUCSR[LINDEX(UCSR_IRQ_VECTOR)]);
-        printf ("  IRQ Level:  %d\n", pUCSR[LINDEX(UCSR_IRQ_LEVEL)]);
+        printf ("  IRQ Vector: 0x%02X\n", pUCSR[LINDEX(UCSR_IRQ_VECTOR)]);
+        printf ("  IRQ Level:  %d\n",     pUCSR[LINDEX(UCSR_IRQ_LEVEL)]);
 
     }/*end if we could read the User-CSR space*/
 
