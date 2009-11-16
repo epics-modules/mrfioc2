@@ -61,7 +61,7 @@ int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
     for(b=0;b<PCIBARCOUNT;b++){
       pci_read_config_dword(b,d,f,PCI_BASE_ADDRESS(b), &val32);
 
-      next->dev.bar[b].ioport=val32 & PCI_BASE_ADDRESS_SPACE_IO;
+      next->dev.bar[b].ioport=!!(val32 & PCI_BASE_ADDRESS_SPACE);
       if(next->dev.bar[b].ioport){
         /* This BAR is I/O ports */
         next->dev.bar[b].below1M=0;
@@ -73,8 +73,8 @@ int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
 
       }else{
         /* This BAR is memory mapped */
-        next->dev.bar[b].below1M=val32&PCI_BASE_ADDRESS_MEM_TYPE_1M;
-        next->dev.bar[b].addr64=val32&PCI_BASE_ADDRESS_MEM_TYPE_64;
+        next->dev.bar[b].below1M=!!(val32&PCI_BASE_ADDRESS_MEM_TYPE_1M);
+        next->dev.bar[b].addr64=!!(val32&PCI_BASE_ADDRESS_MEM_TYPE_64);
 
         next->dev.bar[b].base=(volatile void*)( val32 & PCI_BASE_ADDRESS_MEM_MASK );
 
