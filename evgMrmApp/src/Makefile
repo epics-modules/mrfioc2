@@ -54,6 +54,10 @@ INC += evgMrm.h
 #
 DBD += evgMrm.dbd
 
+evgMrm_DBD += mrfCommon.dbd
+evgMrm_DBD += drvEvg.dbd
+evgMrm_DBD += mrfVme.dbd
+
 #---------------------
 # Build the modular register map event generator library
 #

@@ -1,4 +1,0 @@
-include "mrfCommon.dbd"
-include "drvEvg.dbd"
-include "mrfVme.dbd"
-registrar (evgMrmRegistrar)
