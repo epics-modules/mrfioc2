@@ -34,36 +34,37 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
-USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
-
-#---------------------
-# Only build for "hardware" IOC's
-#
-ifneq ($(findstring Host, $(VALID_BUILDS)),)
-    VALID_BUILDS = Host
-endif
 
 #---------------------
 # Install include files
 #
 INC += mrfVmeBusInterface.h
+INC += mrfcsr.h
+INC += devcsr.h
+INC += vmedefs.h
 
 #---------------------
 # Install DBD files
 #
 DBD += mrfVme.dbd
+DBD += vmecsr.dbd
 
 #---------------------
 # Build the VME Common Library
 #
+LIBRARY_IOC += vme
+
+vme_SRCS += devcsr.c
+vme_SRCS += iocreg.c
+vme_LIBS += Com
+
 LIBRARY_IOC += mrfVme
 
-mrfVme_OBJS += mrfVme64x
-mrfVme_OBJS += mrfVmeBusInterface
-mrfVme_OBJS += vmeCSRMemProbeOSI
+mrfVme_LIBS += Com
+mrfVme_SRCS += mrfVmeBusInterface.cpp
 
-OBJS_IOC += $(mrfVme_OBJS)
+#mrfVme_OBJS += vmeCSRMemProbeOSI
 
 #---------------------
 # Generic EPICS build rules
