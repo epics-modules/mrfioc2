@@ -1,6 +1,5 @@
 O.*
 ^bin$
-^configure$
 ^db$
 ^include$
 ^lib$
