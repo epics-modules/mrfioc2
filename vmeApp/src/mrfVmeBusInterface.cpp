@@ -109,7 +109,7 @@ const epicsInt32  NUM_SUPPORTED_CARDS (sizeof(SupportedCards) / sizeof(Supported
 //       FPGA Firmware Version Register
 //
 static
-char*  CardTypeName [] = {
+const char*  CardTypeName [] = {
     "Unsupported Card Type",                    // 0 = Not used 
     "Event Receiver",                           // 1 = Event Receiver
     "Event Generator"                           // 2 = Event Generator
