@@ -66,6 +66,7 @@
 
 #include <devLib.h>             // EPICS Device-independant hardware addressing support library
 #include <osdVME.h>             // EPICS VME address mode definitions
+#include "vmedefs.h"
 
 #include <mrfVme64x.h>          // VME-64X CR/CSR routines and definitions (with MRF extensions)
 #include <mrfVmeBusInterface.h> // Class definition file
