@@ -58,8 +58,6 @@ DEVPCI_ANY_CLASS, DEVPCI_ANY_REVISION }
 class, revision }
 
 struct PCIBar {
-  volatile void *base;
-  epicsUInt32 len;
   unsigned int ioport:1; /* 0 memory, 1 I/O */
   unsigned int addr64:1; /* 0 32 bit, 1 64 bit */
   unsigned int below1M:1; /* 0 Normal, 1 Must be mapped below 1M */
@@ -71,7 +69,6 @@ typedef struct {
   unsigned int device;
   unsigned int function;
   struct PCIBar bar[6];
-  volatile void *erom;
   epicsUInt8 irq;
   void *devpvt; /* For devLib clients */
 } epicsPCIDevice;
@@ -94,6 +91,13 @@ devPCIToLocalAddr(
   const epicsPCIDevice *idlist,
           unsigned int  bar,
         volatile void **ppLocalAddr
+);
+
+epicsShareFunc
+epicsUInt32
+devPCIBarLen(
+  const epicsPCIDevice *idlist,
+          unsigned int  bar
 );
 
 #ifdef __cplusplus

@@ -33,7 +33,14 @@ extern "C" {
 
 struct osdPCIDevice {
   epicsPCIDevice dev; /* "public" data */
+
+  /* Can be used to cache values */
+  volatile void *base[PCIBARCOUNT];
+  epicsUInt32    len[PCIBARCOUNT];
+  volatile void *erom;
+
   ELLNODE node;
+
   void *drvpvt; /* for out of tree drivers */
 };
 typedef struct osdPCIDevice osdPCIDevice;
@@ -48,6 +55,8 @@ typedef struct {
   int (*pDevPCIFind)(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store);
 
   int (*pDevPCIToLocalAddr)(struct osdPCIDevice* dev,unsigned int bar,volatile void **a);
+
+  epicsUInt32 (*pDevPCIBarLen)(struct osdPCIDevice* dev,unsigned int bar);
 
 } devLibPCIVirtualOS;
 

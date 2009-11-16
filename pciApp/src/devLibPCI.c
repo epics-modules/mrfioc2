@@ -139,15 +139,24 @@ devPCIToLocalAddr(
   return (*pdevLibPCIVirtualOS->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr);
 }
 
-int
-devPCIToLocalAddr_General(
-  osdPCIDevice* dev,
-  unsigned int bar,
-  volatile void **ppLocalAddr
+
+
+epicsShareFunc
+epicsUInt32
+devPCIBarLen(
+  const epicsPCIDevice *idlist,
+          unsigned int  bar
 )
 {
-  *ppLocalAddr=dev->dev.bar[bar].base;
-  return 0;
+  osdPCIDevice *curdev=CONTAINER(idlist,osdPCIDevice,dev);
+
+  if(!pdevLibPCIVirtualOS)
+    return 5;
+
+  if(bar>=PCIBARCOUNT)
+    return 2;
+
+  return (*pdevLibPCIVirtualOS->pDevPCIBarLen)(curdev,bar);
 }
 
 /**************** local functions *****************/
