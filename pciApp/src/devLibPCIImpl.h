@@ -2,11 +2,30 @@
 #ifndef DEVLIBPCIIMPL_H_INC
 #define DEVLIBPCIIMPL_H_INC
 
+#include <stddef.h>
+
+#include <dbDefs.h>
 #include <ellLib.h>
 #include <shareLib.h>
 #include <epicsTypes.h>
 
 #include "devLibPCI.h"
+
+/* Subtract member byte offset, returning pointer to parent object
+ *
+ * Added in Base 3.14.11
+ */
+#ifndef CONTAINER
+# ifdef __GNUC__
+#   define CONTAINER(ptr, structure, member) ({                     \
+        const __typeof(((structure*)0)->member) *_ptr = (ptr);      \
+        (structure*)((char*)_ptr - offsetof(structure, member));    \
+    })
+# else
+#   define CONTAINER(ptr, structure, member) \
+        ((structure*)((char*)(ptr) - offsetof(structure, member)))
+# endif
+#endif
 
 #ifdef __cplusplus
 extern "C" {
