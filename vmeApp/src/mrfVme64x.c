@@ -66,7 +66,6 @@
 #include <epicsExport.h>        /* EPICS Symbol exporting macro definitions                       */
 
 #include <mrfVme64x.h>          /* VME-64X CR/CSR routines and definitions (with MRF extensions)  */
-#include <mrfCommonIO.h>        /* MRF Common I/O macro definitions                               */
 
 
 /**************************************************************************************************/

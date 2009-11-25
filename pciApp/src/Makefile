@@ -10,20 +10,6 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC = pci
 
-ifeq ($(OS_CLASS),RTEMS)
-SRCS_DIRS += os/RTEMS
-USR_CPPFLAGS += -I../os/RTEMS
-
-else ifeq ($(OS_CLASS),vxWorks)
-SRCS_DIRS += os/vxWorks
-USR_CPPFLAGS += -I../os/vxWorks
-
-else
-SRCS_DIRS += os/default
-USR_CPPFLAGS += -I../os/default
-
-endif
-
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
 INC += pciEndian.h

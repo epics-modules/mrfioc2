@@ -22,8 +22,9 @@ DBD += drvEvg.dbd
 # Build the generic event generator library
 #
 LIBRARY_IOC += evg
+
 evg_SRCS    += evg.cpp
-evg_OBJS    += drvEvg.cpp
+evg_SRCS    += drvEvg.cpp
 
 #OBJS_IOC += $(evg_OBJS)
 
@@ -32,13 +33,13 @@ evg_OBJS    += drvEvg.cpp
 #
 LIBRARY_IOC      += evgSequence
 
-evgSequence_OBJS += Sequence
-evgSequence_OBJS += SequenceEvent
+evgSequence_SRCS += Sequence.cpp
+evgSequence_SRCS += SequenceEvent.cpp
 
-evgSequence_OBJS += devSequence
-evgSequence_OBJS += devSequenceEvent
+evgSequence_SRCS += devSequence.cpp
+evgSequence_SRCS += devSequenceEvent.cpp
 
-OBJS_IOC += $(evgSequence_OBJS)
+#OBJS_IOC += $(evgSequence_OBJS)
 
 #---------------------
 # Generic EPICS build rules
