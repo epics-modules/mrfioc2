@@ -56,17 +56,13 @@ endif
 #---------------------
 # Install include files
 #
+INC += mrfIoOps.h
+INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfIoOps.h
 INC += mrfCommonIO.h      # Common I/O access macros
 INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += debugPrint.h       # SLAC debug print utility
-
-#---------------------
-# Install OS-Dependent include files
-#
-INC_vxWorks += osiSyncIO.h
-INC_RTEMS   += osiSyncIO.h
 
 #---------------------
 # Install DBD files
