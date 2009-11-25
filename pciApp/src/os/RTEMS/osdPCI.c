@@ -86,7 +86,7 @@ int rtemsDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
     next->erom=(volatile void*)(val32 & PCI_ROM_ADDRESS_MASK);
 
     pci_read_config_byte(b,d,f,PCI_INTERRUPT_LINE, &val8);
-    next->dev.irq=val32;
+    next->dev.irq=val8;
 
     ellInsert(store,NULL,&next->node);
   }
@@ -102,6 +102,9 @@ rtemsDevPCIToLocalAddr(
   volatile void **ppLocalAddr
 )
 {
+  if(!dev->base[bar])
+    return 1;
+
   *ppLocalAddr=dev->base[bar];
   return 0;
 }
@@ -115,6 +118,9 @@ rtemsDevPCIBarLen(
 {
   int b=dev->dev.bus, d=dev->dev.device, f=dev->dev.function;
   uint32_t start, max, mask;
+
+  if(!dev->base[bar])
+    return 1;
 
   if(dev->len[bar])
     return dev->len[bar];
@@ -135,15 +141,15 @@ rtemsDevPCIBarLen(
    * and when the mask is written the address becomes
    * 0xffffff80 then the length is 0x80 (128) bytes
    */
-  pci_read_config_dword(b,d,f,PCI_BASE_ADDRESS(b), &start);
+  pci_read_config_dword(b,d,f,PCI_BASE_ADDRESS(bar), &start);
 
   /* If the BIOS didn't set this BAR then don't mess with it */
   if((start&mask)==0)
     return 0;
 
-  pci_write_config_dword(b,d,f,PCI_BASE_ADDRESS(b), mask);
-  pci_read_config_dword(b,d,f,PCI_BASE_ADDRESS(b), &max);
-  pci_write_config_dword(b,d,f,PCI_BASE_ADDRESS(b), start);
+  pci_write_config_dword(b,d,f,PCI_BASE_ADDRESS(bar), mask);
+  pci_read_config_dword(b,d,f,PCI_BASE_ADDRESS(bar), &max);
+  pci_write_config_dword(b,d,f,PCI_BASE_ADDRESS(bar), start);
 
   /* mask out bits which aren't address bits */
   max&=mask;

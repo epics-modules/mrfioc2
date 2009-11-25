@@ -39,34 +39,15 @@ USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
-# HOST_BUILD macro tells mrfFracSynth whether it should produce entries
-# for the IOC shell
-#
-ifeq ($(EPICS_HOST_ARCH),$(T_A))
-    USR_CFLAGS += -DHOST_BUILD
-endif
-
-#---------------------
-# Only build for "hardware" IOC's
-#
-ifneq ($(findstring Host, $(VALID_BUILDS)),)
-    VALID_BUILDS = Host
-endif
-
-#---------------------
 # Install include files
 #
+INC += mrfIoOps.h
+INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfIoOps.h
 INC += mrfCommonIO.h      # Common I/O access macros
 INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += debugPrint.h       # SLAC debug print utility
-
-#---------------------
-# Install OS-Dependent include files
-#
-INC_vxWorks += osiSyncIO.h
-INC_RTEMS   += osiSyncIO.h
 
 #---------------------
 # Install DBD files
@@ -77,10 +58,10 @@ DBD += mrfCommon.dbd
 # Build the MRF Common Library
 #
 LIBRARY_IOC += mrfCommon
-mrfCommon_OBJS += mrfFracSynth
-mrfCommon_OBJS += mrfBusInterface
+mrfCommon_SRCS += mrfFracSynth.c
+mrfCommon_SRCS += mrfBusInterface.cpp
 
-OBJS_IOC += $(mrfCommon_OBJS)
+#OBJS_IOC += $(mrfCommon_SRCS)
 
 #---------------------
 # Build the host-side utilities for creating and analyzing
@@ -89,11 +70,13 @@ OBJS_IOC += $(mrfCommon_OBJS)
 PROD_HOST += FracSynthAnalyze
 PROD_HOST += FracSynthControlWord
 
-FracSynthAnalyze_OBJS += FracSynthAnalyze
-FracSynthAnalyze_OBJS += mrfFracSynth
+FracSynthAnalyze_SRCS += FracSynthAnalyze.c
+FracSynthAnalyze_SRCS += mrfFracSynth.c
 
-FracSynthControlWord_OBJS += FracSynthControlWord
-FracSynthControlWord_OBJS += mrfFracSynth
+FracSynthControlWord_SRCS += FracSynthControlWord.c
+FracSynthControlWord_SRCS += mrfFracSynth.c
+
+PROD_LIBS += Com
 
 #---------------------
 # Generic EPICS build rules

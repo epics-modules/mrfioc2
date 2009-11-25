@@ -54,13 +54,17 @@ INC += evgMrm.h
 #
 DBD += evgMrm.dbd
 
+evgMrm_DBD += mrfCommon.dbd
+evgMrm_DBD += drvEvg.dbd
+evgMrm_DBD += mrfVme.dbd
+
 #---------------------
 # Build the modular register map event generator library
 #
 LIBRARY_IOC += evgMrm
-evgMrm_OBJS += evgMrm
+evgMrm_SRCS += evgMrm.cpp
 
-OBJS_IOC += $(evgMrm_OBJS)
+#OBJS_IOC += $(evgMrm_OBJS)
 
 #---------------------
 # Generic EPICS build rules

@@ -8,13 +8,6 @@ USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
-# Only build for "hardware" IOC's
-#
-ifneq ($(findstring Host, $(VALID_BUILDS)),)
-    VALID_BUILDS = Host
-endif
-
-#---------------------
 # Install include files
 #
 INC += drvEvg.h
@@ -29,10 +22,10 @@ DBD += drvEvg.dbd
 # Build the generic event generator library
 #
 LIBRARY_IOC += evg
-evg_OBJS    += evg
-evg_OBJS    += drvEvg
+evg_SRCS    += evg.cpp
+evg_OBJS    += drvEvg.cpp
 
-OBJS_IOC += $(evg_OBJS)
+#OBJS_IOC += $(evg_OBJS)
 
 #---------------------
 # Build the default sequencer library

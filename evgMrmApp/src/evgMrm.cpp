@@ -343,7 +343,7 @@ evgMrm::Configure ()
     // Disable all interupt sources
     // Then try to connect the interrupt service routine
     //
-    BE_CLEAR32 (pReg, InterruptEnable);
+    BE_WRITE32 (pReg, InterruptEnable, 0);
     if (OK != BusInterface->ConfigBusInterrupt((EPICS_ISR_FUNC)EgInterrupt, (void *)this))
         throw std::runtime_error(BusInterface->GetErrorText());
 
@@ -385,7 +385,7 @@ evgMrm::IntEnable() {
 
 void
 evgMrm::Interrupt () {
-    BE_BITCLR32 (pReg, InterruptEnable, EVG_IRQ_ENABLE);
+    BITCLR(BE,32, pReg, InterruptEnable, EVG_IRQ_ENABLE);
 }//end Interrupt()
 
 epicsStatus

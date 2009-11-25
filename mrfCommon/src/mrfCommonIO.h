@@ -60,52 +60,28 @@
 |*--------------------------------------------------------------------------------------------------
 |* DEFINED MACROS:
 |*
-|* The macros defined in this file can be classified within the following 8 catagories:
-|*                                              |
-|* Big-Endian Read Operations:                  | Synchronous Big-Endian Read Operations:
-|*     BE_READ8  (base,offset)                  |     BE_READ8_SYNC  (base,offset)
-|*     BE_READ16 (base,offset)                  |     BE_READ16_SYNC (base,offset)
-|*     BE_READ32 (base,offset)                  |     BE_READ32_SYNC (base,offset)
-|*                                              |
-|* Big-Endian Write Operations:                 | Synchronous Big-Endian Write Operations:
-|*     BE_WRITE8  (base,offset,value)           |     BE_WRITE8_SYNC  (base,offset,value)
-|*     BE_WRITE16 (base,offset,value)           |     BE_WRITE16_SYNC (base,offset,value)
-|*     BE_WRITE32 (base,offset,value)           |     BE_WRITE32_SYNC (base,offset,value)
-|*                                              |
-|*     BE_CLEAR8  (base,offset)                 |     BE_CLEAR8_SYNC  (base,offset)
-|*     BE_CLEAR16 (base,offset)                 |     BE_CLEAR16_SYNC (base,offset)
-|*     BE_CLEAR32 (base,offset)                 |     BE_CLEAR32_SYNC (base,offset)
-|*                                              |
-|*     BE_BITCLR8  (base,offset,mask)           |     BE_BITCLR8_SYNC  (base,offset,mask)
-|*     BE_BITCLR16 (base,offset,mask)           |     BE_BITCLR16_SYNC (base,offset,mask)
-|*     BE_BITCLR32 (base,offset,mask)           |     BE_BITCLR32_SYNC (base,offset,mask)
-|*                                              |
-|*     BE_BITSET8  (base,offset,mask)           |     BE_BITSET8_SYNC  (base,offset,mask)
-|*     BE_BITSET16 (base,offset,mask)           |     BE_BITSET16_SYNC (base,offset,mask)
-|*     BE_BITSET32 (base,offset,mask)           |     BE_BITSET32_SYNC (base,offset,mask)
-|*                                              |
-|* Little-Endian Read Operations:               | Synchronous Little-Endian Read Operations:
-|*     LE_READ8  (base,offset)                  |     LE_READ8_SYNC  (base,offset)
-|*     LE_READ16 (base,offset)                  |     LE_READ16_SYNC (base,offset)
-|*     LE_READ32 (base,offset)                  |     LE_READ32_SYNC (base,offset)
-|*                                              |
-|* Little-Endian Write Operations:              | Synchronous Little-Endian Write Operations:
-|*     LE_WRITE8  (base,offset,value)           |     LE_WRITE8_SYNC  (base,offset,value)
-|*     LE_WRITE16 (base,offset,value)           |     LE_WRITE16_SYNC (base,offset,value)
-|*     LE_WRITE32 (base,offset,value)           |     LE_WRITE32_SYNC (base,offset,value)
-|*                                              |
-|*     LE_CLEAR8  (base,offset)                 |     LE_CLEAR8_SYNC  (base,offset)
-|*     LE_CLEAR16 (base,offset)                 |     LE_CLEAR16_SYNC (base,offset)
-|*     LE_CLEAR32 (base,offset)                 |     LE_CLEAR32_SYNC (base,offset)
-|*                                              |
-|*     LE_BITCLR8  (base,offset,mask)           |     LE_BITCLR8_SYNC  (base,offset,mask)
-|*     LE_BITCLR16 (base,offset,mask)           |     LE_BITCLR16_SYNC (base,offset,mask)
-|*     LE_BITCLR32 (base,offset,mask)           |     LE_BITCLR32_SYNC (base,offset,mask)
-|*                                              |
-|*     LE_BITSET8  (base,offset,mask)           |     LE_BITSET8_SYNC  (base,offset,mask)
-|*     LE_BITSET16 (base,offset,mask)           |     LE_BITSET16_SYNC (base,offset,mask)
-|*     LE_BITSET32 (base,offset,mask)           |     LE_BITSET32_SYNC (base,offset,mask)
-|*                                              |
+|* The macros defined in this file can be classified within the following 4 catagories:
+|*
+|* Big-Endian Read Operations:
+|*     BE_READ8  (base,offset)
+|*     BE_READ16 (base,offset)
+|*     BE_READ32 (base,offset)
+|*
+|* Big-Endian Write Operations:
+|*     BE_WRITE8  (base,offset,value)
+|*     BE_WRITE16 (base,offset,value)
+|*     BE_WRITE32 (base,offset,value)
+|*
+|* Little-Endian Read Operations:
+|*     LE_READ8  (base,offset)
+|*     LE_READ16 (base,offset)
+|*     LE_READ32 (base,offset)
+|*
+|* Little-Endian Write Operations:
+|*     LE_WRITE8  (base,offset,value)
+|*     LE_WRITE16 (base,offset,value)
+|*     LE_WRITE32 (base,offset,value)
+|*
 \**************************************************************************************************/
 
 /**************************************************************************************************
@@ -130,65 +106,40 @@
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <osiSyncIO.h>          /* OS-Independent Synchronous I/O Routines                        */
+#include <mrfIoOps.h>
+#include <mrfBitOps.h>
 
 
 /**************************************************************************************************/
-/*  Define the "Byte Swap" Macros that translate between bus byte order and cpu byte order        */
-/*    o be16_to_cpu(): 16-bit Big-Endian Bus to CPU Translation                                   */
-/*    o be32_to_cpu(): 32-bit Big-Endian Bus to CPU Translation                                   */
-/*    o le16_to_cpu(): 16-bit Little-Endian Bus to CPU Translation                                */
-/*    o le32_to_cpu(): 32-bit Little-Endian Bus to CPU Translation                                */
+/*                                 Macros For Native Order I/O                                    */
 /*                                                                                                */
-/**************************************************************************************************/
 
 
-/*=====================
- * CPU Byte Order is Little-Endian
+/*================================================================================================*/
+/* Define the macros for synchronous I/O operations.                                              */
+/* These will ultimately resolve into operating system dependent function or macro calls.         */
+/*================================================================================================*/
+
+/*---------------------
+ * Synchronous Read Operations
  */
+#define NAT_READ8(base,offset)  \
+        ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
+#define NAT_READ16(base,offset) \
+        nat_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
+#define NAT_READ32(base,offset) \
+        nat_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
-#if _BYTE_ORDER == _LITTLE_ENDIAN
-
-#define be16_to_cpu(value) ((epicsUInt16) (  \
-        (((value) & 0x00ff) << 8)    |       \
-        (((value) & 0xff00) >> 8)))
-
-#define be32_to_cpu (epicsUInt32 value) ((epicsUInt32) (  \
-        (((value) & 0x000000ff) << 24)   |                \
-        (((value) & 0x0000ff00) << 8)    |                \
-        (((value) & 0x00ff0000) >> 8)    |                \
-        (((value) & 0xff000000) >> 24)))
-
-#define le16_to_cpu(value) (value)
-#define le32_to_cpu(value) (value)
-
-/*=====================
- * CPU Byte Order is Big-Endian
+/*---------------------
+ * Synchronous Write Operations
  */
+#define NAT_WRITE8(base,offset,value) \
+        iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
+#define NAT_WRITE16(base,offset,value) \
+        nat_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
+#define NAT_WRITE32(base,offset,value) \
+        nat_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
-#elif _BYTE_ORDER == _BIG_ENDIAN
-
-#define be16_to_cpu(value) (value)
-#define be32_to_cpu(value) (value)
-
-#define le16_to_cpu(value) ((epicsUInt16) (  \
-        (((value) & 0x00ff) << 8)    |       \
-        (((value) & 0xff00) >> 8)))
-
-#define le32_to_cpu (epicsUInt32 value) ((epicsUInt32) (  \
-        (((value) & 0x000000ff) << 24)   |                \
-        (((value) & 0x0000ff00) << 8)    |                \
-        (((value) & 0x00ff0000) >> 8)    |                \
-        (((value) & 0xff000000) >> 24)))
-
-/*=====================
- * CPU Byte Order is Unknown
- */
-
-#else
-#  error "EPICS endianness macros undefined"
-#endif
-
 /**************************************************************************************************/
 /*                             Macros For Big-Endian Bus I/O                                      */
 /*                                                                                                */
@@ -202,132 +153,24 @@
 /*---------------------
  * Synchronous Read Operations
  */
-#define BE_READ8_SYNC(base,offset)  \
-        osi_read_be8_sync  ((epicsUInt8 *)(base) + U8_  ## offset)
-#define BE_READ16_SYNC(base,offset) \
-        osi_read_be16_sync ((epicsUInt8 *)(base) + U16_ ## offset)
-#define BE_READ32_SYNC(base,offset) \
-        osi_read_be32_sync ((epicsUInt8 *)(base) + U32_ ## offset)
+#define BE_READ8(base,offset)  \
+        ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
+#define BE_READ16(base,offset) \
+        be_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
+#define BE_READ32(base,offset) \
+        be_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
 /*---------------------
  * Synchronous Write Operations
  */
-#define BE_WRITE8_SYNC(base,offset,value) \
-        osi_write_be8_sync  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#define BE_WRITE16_SYNC(base,offset,value) \
-        osi_write_be16_sync (((epicsUInt8 *)(base) + U16_ ## offset), value)
-#define BE_WRITE32_SYNC(base,offset,value) \
-        osi_write_be32_sync (((epicsUInt8 *)(base) + U32_ ## offset), value)
-
-/*---------------------
- * Synchronous Register Clear Operations
- */
-#define BE_CLEAR8_SYNC(base,offset)  BE_WRITE8_SYNC (base, offset, 0)
-#define BE_CLEAR16_SYNC(base,offset) BE_WRITE16_SYNC(base, offset, 0)
-#define BE_CLEAR32_SYNC(base,offset) BE_WRITE32_SYNC(base, offset, 0)
-
-/*---------------------
- * Synchronous Bit Clear Operations
- */
-#define BE_BITCLR8_SYNC(base,offset,mask) \
-        BE_WRITE8_SYNC (base, offset, (BE_READ8_SYNC(base, offset)  & (epicsUInt8)~(mask)))
-#define BE_BITCLR16_SYNC(base,offset,mask) \
-        BE_WRITE16_SYNC(base, offset, (BE_READ16_SYNC(base, offset) & (epicsUInt16)~(mask)))
-#define BE_BITCLR32_SYNC(base,offset,mask) \
-        BE_WRITE32_SYNC(base, offset, (BE_READ32_SYNC(base, offset) & (epicsUInt32)~(mask)))
-
-/*---------------------
- * Synchronous Bit Set Operations
- */
-#define BE_BITSET8_SYNC(base,offset,mask) \
-        BE_WRITE8_SYNC (base, offset, (BE_READ8_SYNC(base, offset)  | (epicsUInt8)(mask)))
-#define BE_BITSET16_SYNC(base,offset,mask) \
-        BE_WRITE16_SYNC(base, offset, (BE_READ16_SYNC(base, offset) | (epicsUInt16)(mask)))
-#define BE_BITSET32_SYNC(base,offset,mask) \
-        BE_WRITE32_SYNC(base, offset, (BE_READ32_SYNC(base, offset) | (epicsUInt32)(mask)))
-
-/*================================================================================================*/
-/* If SYNC_IO=YES is specified in the MRF_CONFIG_SITE files, or if MRF_SYNC_IO is defined         */
-/* prior to including this header file for the first time, make all I/O synchronous.              */
-/*================================================================================================*/
-
-#ifdef MRF_SYNC_IO
-
-/*---------------------
- * Make All Scalar Read Operations Synchronous
- */
-#define BE_READ8(base,offset)  BE_READ8_SYNC (base,offset)
-#define BE_READ16(base,offset) BE_READ16_SYNC(base,offset)
-#define BE_READ32(base,offset) BE_READ32_SYNC(base,offset)
-
-/*---------------------
- * Make All Scalar Write Operations Synchronous
- */
-#define BE_WRITE8(base,offset,value)  BE_WRITE8_SYNC (base,offset,value)
-#define BE_WRITE16(base,offset,value) BE_WRITE16_SYNC(base,offset,value)
-#define BE_WRITE32(base,offset,value) BE_WRITE32_SYNC(base,offset,value)
-
-#else
-
-/*================================================================================================*/
-/* Define macros for regular (non-synchronous) I/O operations                                     */
-/*================================================================================================*/
-
-/*---------------------
- * Regular Read Operations
- */
-#define BE_READ8(base,offset)  \
-        *((volatile epicsUInt8 *) ((epicsUInt8 *)(base) + U8_  ## offset))
-#define BE_READ16(base,offset) \
-        be16_to_cpu (*((volatile epicsUInt16 *)((epicsUInt8 *)(base) + U16_ ## offset)))
-#define BE_READ32(base,offset) \
-        be32_to_cpu (*((volatile epicsUInt32 *)((epicsUInt8 *)(base) + U32_ ## offset)))
-
-/*---------------------
- * Regular Write Operations
- */
 #define BE_WRITE8(base,offset,value) \
-        *(volatile epicsUInt8 *)((epicsUInt8 *)(base)  + U8_  ## offset) = value
+        iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #define BE_WRITE16(base,offset,value) \
-        *(volatile epicsUInt16 *)((epicsUInt8 *)(base) + U16_ ## offset) = be16_to_cpu (value)
+        be_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #define BE_WRITE32(base,offset,value) \
-        *(volatile epicsUInt32 *)((epicsUInt8 *)(base) + U32_ ## offset) = be32_to_cpu (value)
+        be_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
-#endif
 
-/*================================================================================================*/
-/* Define macros for derived I/O operations.                                                      */
-/* These will resolve into either regular or synchronous operations, depending on how             */
-/* the SYNC_IO option was defined in the MRF_CONFIG_SITE files.                                   */
-/*================================================================================================*/
-
-/*---------------------
- * Register Clear Operations
- */
-#define BE_CLEAR8(base,offset)  BE_WRITE8 (base, offset, 0)
-#define BE_CLEAR16(base,offset) BE_WRITE16(base, offset, 0)
-#define BE_CLEAR32(base,offset) BE_WRITE32(base, offset, 0)
-
-/*---------------------
- * Bit Clear Operations
- */
-#define BE_BITCLR8(base,offset,mask) \
-        BE_WRITE8 (base, offset, (BE_READ8(base, offset)  & (epicsUInt8)~(mask)))
-#define BE_BITCLR16(base,offset,mask) \
-        BE_WRITE16(base, offset, (BE_READ16(base, offset) & (epicsUInt16)~(mask)))
-#define BE_BITCLR32(base,offset,mask) \
-        BE_WRITE32(base, offset, (BE_READ32(base, offset) & (epicsUInt32)~(mask)))
-
-/*---------------------
- * Bit Set Operations
- */
-#define BE_BITSET8(base,offset,mask) \
-        BE_WRITE8 (base, offset, (BE_READ8(base, offset)  | (epicsUInt8)(mask)))
-#define BE_BITSET16(base,offset,mask) \
-        BE_WRITE16(base, offset, (BE_READ16(base, offset) | (epicsUInt16)(mask)))
-#define BE_BITSET32(base,offset,mask) \
-        BE_WRITE32(base, offset, (BE_READ32(base, offset) | (epicsUInt32)(mask)))
-
 /**************************************************************************************************/
 /*                            Macros For Little-Endian Bus I/O                                    */
 /*                                                                                                */
@@ -341,130 +184,22 @@
 /*---------------------
  * Synchronous Read Operations
  */
-#define LE_READ8_SYNC(base,offset)  \
-        osi_read8_sync  ((epicsUInt8 *)(base) + U8_  ## offset)
-#define LE_READ16_SYNC(base,offset) \
-        osi_read_le16_sync ((epicsUInt8 *)(base) + U16_ ## offset)
-#define LE_READ32_SYNC(base,offset) \
-        osi_read_le32_sync ((epicsUInt8 *)(base) + U32_ ## offset)
+#define LE_READ8(base,offset)  \
+        ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
+#define LE_READ16(base,offset) \
+        le_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
+#define LE_READ32(base,offset) \
+        le_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
 /*---------------------
  * Synchronous Write Operations
  */
-#define LE_WRITE8_SYNC(base,offset,value) \
-        osi_write8_sync  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#define LE_WRITE16_SYNC(base,offset,value) \
-        osi_write_le16_sync (((epicsUInt8 *)(base) + U16_ ## offset), value)
-#define LE_WRITE32_SYNC(base,offset,value) \
-        osi_write_le32_sync (((epicsUInt8 *)(base) + U32_ ## offset), value)
-
-/*---------------------
- * Synchronous Register Clear Operations
- */
-#define LE_CLEAR8_SYNC(base,offset)  LE_WRITE8_SYNC (base, offset, 0)
-#define LE_CLEAR16_SYNC(base,offset) LE_WRITE16_SYNC(base, offset, 0)
-#define LE_CLEAR32_SYNC(base,offset) LE_WRITE32_SYNC(base, offset, 0)
-
-/*---------------------
- * Synchronous Bit Clear Operations
- */
-#define LE_BITCLR8_SYNC(base,offset,mask) \
-        LE_WRITE8_SYNC (base, offset, (LE_READ8_SYNC(base, offset)  & (epicsUInt8)~(mask)))
-#define LE_BITCLR16_SYNC(base,offset,mask) \
-        LE_WRITE16_SYNC(base, offset, (LE_READ16_SYNC(base, offset) & (epicsUInt16)~(mask)))
-#define LE_BITCLR32_SYNC(base,offset,mask) \
-        LE_WRITE32_SYNC(base, offset, (LE_READ32_SYNC(base, offset) & (epicsUInt32)~(mask)))
-
-/*---------------------
- * Synchronous Bit Set Operations
- */
-#define LE_BITSET8_SYNC(base,offset,mask) \
-        LE_WRITE8_SYNC (base, offset, (LE_READ8_SYNC(base, offset)  | (epicsUInt8)(mask)))
-#define LE_BITSET16_SYNC(base,offset,mask) \
-        LE_WRITE16_SYNC(base, offset, (LE_READ16_SYNC(base, offset) | (epicsUInt16)(mask)))
-#define LE_BITSET32_SYNC(base,offset,mask) \
-        LE_WRITE32_SYNC(base, offset, (LE_READ32_SYNC(base, offset) | (epicsUInt32)(mask)))
-
-/*================================================================================================*/
-/* If SYNC_IO=YES is specified in the MRF_CONFIG_SITE files, or if MRF_SYNC_IO is defined         */
-/* prior to including this header file for the first time, make all I/O synchronous.              */
-/*================================================================================================*/
-
-#ifdef MRF_SYNC_IO
-
-/*---------------------
- * Make All Scalar Read Operations Synchronous
- */
-#define LE_READ8(base,offset)  LE_READ8_SYNC (base,offset)
-#define LE_READ16(base,offset) LE_READ16_SYNC(base,offset)
-#define LE_READ32(base,offset) LE_READ32_SYNC(base,offset)
-
-/*---------------------
- * Make All Scalar Write Operations Synchronous
- */
-#define LE_WRITE8(base,offset,value)  LE_WRITE8_SYNC (base,offset,value)
-#define LE_WRITE16(base,offset,value) LE_WRITE16_SYNC(base,offset,value)
-#define LE_WRITE32(base,offset,value) LE_WRITE32_SYNC(base,offset,value)
-
-#else
-
-/*================================================================================================*/
-/* Define macros for regular (non-synchronous) I/O operations                                     */
-/*================================================================================================*/
-
-/*---------------------
- * Regular Read Operations
- */
-#define LE_READ8(base,offset)  \
-        *((volatile epicsUInt8 *) ((epicsUInt8 *)(base) + U8_  ## offset))
-#define LE_READ16(base,offset) \
-        be16_to_cpu (*((volatile epicsUInt16 *)((epicsUInt8 *)(base) + U16_ ## offset)))
-#define LE_READ32(base,offset) \
-        be32_to_cpu (*((volatile epicsUInt32 *)((epicsUInt8 *)(base) + U32_ ## offset)))
-
-/*---------------------
- * Regular Write Operations
- */
 #define LE_WRITE8(base,offset,value) \
-        *(volatile epicsUInt8 *)((epicsUInt8 *)(base)  + U8_  ## offset) = value
+        iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #define LE_WRITE16(base,offset,value) \
-        *(volatile epicsUInt16 *)((epicsUInt8 *)(base) + U16_ ## offset) = be16_to_cpu (value)
+        le_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #define LE_WRITE32(base,offset,value) \
-        *(volatile epicsUInt32 *)((epicsUInt8 *)(base) + U32_ ## offset) = be32_to_cpu (value)
+        le_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
-#endif
-
-/*================================================================================================*/
-/* Define macros for derived I/O operations.                                                      */
-/* These will resolve into either regular or synchronous operations, depending on how             */
-/* the SYNC_IO option was defined in the MRF_CONFIG_SITE files.                                   */
-/*================================================================================================*/
-
-/*---------------------
- * Register Clear Operations
- */
-#define LE_CLEAR8(base,offset)  LE_WRITE8 (base, offset, 0)
-#define LE_CLEAR16(base,offset) LE_WRITE16(base, offset, 0)
-#define LE_CLEAR32(base,offset) LE_WRITE32(base, offset, 0)
-
-/*---------------------
- * Bit Clear Operations
- */
-#define LE_BITCLR8(base,offset,mask) \
-        LE_WRITE8 (base, offset, (LE_READ8(base, offset)  & (epicsUInt8)~(mask)))
-#define LE_BITCLR16(base,offset,mask) \
-        LE_WRITE16(base, offset, (LE_READ16(base, offset) & (epicsUInt16)~(mask)))
-#define LE_BITCLR32(base,offset,mask) \
-        LE_WRITE32(base, offset, (LE_READ32(base, offset) & (epicsUInt32)~(mask)))
-
-/*---------------------
- * Bit Set Operations
- */
-#define LE_BITSET8(base,offset,mask) \
-        LE_WRITE8 (base, offset, (LE_READ8(base, offset)  | (epicsUInt8)(mask)))
-#define LE_BITSET16(base,offset,mask) \
-        LE_WRITE16(base, offset, (LE_READ16(base, offset) | (epicsUInt16)(mask)))
-#define LE_BITSET32(base,offset,mask) \
-        LE_WRITE32(base, offset, (LE_READ32(base, offset) | (epicsUInt32)(mask)))
 
 #endif
