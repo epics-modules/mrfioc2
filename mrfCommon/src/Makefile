@@ -58,10 +58,10 @@ DBD += mrfCommon.dbd
 # Build the MRF Common Library
 #
 LIBRARY_IOC += mrfCommon
-mrfCommon_OBJS += mrfFracSynth
-mrfCommon_OBJS += mrfBusInterface
+mrfCommon_SRCS += mrfFracSynth.c
+mrfCommon_SRCS += mrfBusInterface.cpp
 
-OBJS_IOC += $(mrfCommon_OBJS)
+#OBJS_IOC += $(mrfCommon_SRCS)
 
 #---------------------
 # Build the host-side utilities for creating and analyzing
@@ -70,11 +70,13 @@ OBJS_IOC += $(mrfCommon_OBJS)
 PROD_HOST += FracSynthAnalyze
 PROD_HOST += FracSynthControlWord
 
-FracSynthAnalyze_OBJS += FracSynthAnalyze
-FracSynthAnalyze_OBJS += mrfFracSynth
+FracSynthAnalyze_SRCS += FracSynthAnalyze.c
+FracSynthAnalyze_SRCS += mrfFracSynth.c
 
-FracSynthControlWord_OBJS += FracSynthControlWord
-FracSynthControlWord_OBJS += mrfFracSynth
+FracSynthControlWord_SRCS += FracSynthControlWord.c
+FracSynthControlWord_SRCS += mrfFracSynth.c
+
+PROD_LIBS += Com
 
 #---------------------
 # Generic EPICS build rules

@@ -22,10 +22,10 @@ DBD += drvEvg.dbd
 # Build the generic event generator library
 #
 LIBRARY_IOC += evg
-evg_OBJS    += evg
-evg_OBJS    += drvEvg
+evg_SRCS    += evg.cpp
+evg_OBJS    += drvEvg.cpp
 
-OBJS_IOC += $(evg_OBJS)
+#OBJS_IOC += $(evg_OBJS)
 
 #---------------------
 # Generic EPICS build rules
