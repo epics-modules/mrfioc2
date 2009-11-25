@@ -59,8 +59,9 @@
 /**************************************************************************************************/
 
 #define MRF_NUM_EVENTS              256        /* Number of possible events                       */
-#define MRF_MAX_DATA_BUFFER        2048        /* Maximum size of the distributed data buffer     */
 #define MRF_EVENT_FIFO_SIZE         512        /* Size of EVR/EVG event FIFO                      */
+#define MRF_MAX_DATA_BUFFER        2048        /* Maximum size of the distributed data buffer     */
+#define MRF_MAX_SEQUENCE_EVENTS    2048        /* Maximum number of events in a sequence RAM      */
 #define MRF_FRAC_SYNTH_REF         24.0        /* Fractional Synth reference frequency (MHz).     */
 #define MRF_DEF_CLOCK_SPEED       125.0        /* Default event clock speed is 125 MHz.           */
 #define MRF_SN_BYTES                  6        /* Number of bytes in serial number                */

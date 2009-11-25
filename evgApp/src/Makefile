@@ -35,6 +35,19 @@ evg_OBJS    += drvEvg
 OBJS_IOC += $(evg_OBJS)
 
 #---------------------
+# Build the default sequencer library
+#
+LIBRARY_IOC      += evgSequence
+
+evgSequence_OBJS += Sequence
+evgSequence_OBJS += SequenceEvent
+
+evgSequence_OBJS += devSequence
+evgSequence_OBJS += devSequenceEvent
+
+OBJS_IOC += $(evgSequence_OBJS)
+
+#---------------------
 # Generic EPICS build rules
 #
 include $(TOP)/configure/RULES

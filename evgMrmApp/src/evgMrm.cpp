@@ -91,7 +91,7 @@
 |*      CardNum     = (epicsInt32)  Logical card number for this Event Generator card.
 |*      Slot        = (epicsInt32)  Physical VME slot number for this Event Generator card.
 |*      VmeAddress  = (epicsUInt32) VME A24 address for this card's register map.
-|*      IntVector   = (epicsUnt32)  Interrupt vector for this card.
+|*      IntVector   = (epicsInt32)  Interrupt vector for this card.
 |*      IntLevel    = (epicsInt32)  VME interrupt request level for this card.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ EgConfigureVME (
 }//end EgConfigureVME()
 
 /**************************************************************************************************/
-/*                             Class Memeber Function Definitions                                 */
+/*                              Class Member Function Definitions                                 */
 /*                                                                                                */
 
 
@@ -187,37 +187,36 @@ EgConfigureVME (
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
-|*      evgMrm (BusInterface);
+|*      new evgMrm (BusInterface);
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUTS:
-|*      BusInterface  (mrfBusInterface *) Pointer to the hardware bus interface object
+|*      BusInterface  = (mrfBusInterface *) Pointer to the hardware bus interface object
 |*
 \**************************************************************************************************/
 
 evgMrm::evgMrm (mrfBusInterface *BusInterface) :
-    BusInterface(BusInterface)
-{
+
     //=====================
     // Initialize the card-related "meta data"
     //
-    CardNum = BusInterface->GetCardNum();       // Set the logical card number
-    CardLock = 0;                               // No card lock yet
-    DebugFlag = &EvgGlobalDebugFlag;            // Use the global EVG debug level flag
+    CardNum(BusInterface->GetCardNum()),         // Set the logical card number
+    CardLock(0),                                 // No card lock yet
+    DebugFlag(&EvgGlobalDebugFlag),              // Use the global EVG debug level flag
 
     //=====================
     // Initialize the bus-related data
     //
-    BusType = BusInterface->GetBusType();       // Set the bus type (VME, PCI, etc.)
-    SubUnit = BusInterface->GetSubUnit();       // Set the bus sub-unit value (VME Slot, PCI Index)
+    BusInterface(BusInterface),
+    BusType(BusInterface->GetBusType()),         // Set the bus type (VME, PCI, etc.)
+    SubUnit(BusInterface->GetSubUnit()),         // Set the bus sub-unit value (VME Slot, PCI Index)
 
     //=====================
     // Initialize the hardware-related data
     //
-    pReg = 0;                                   // No register map address yet.
+    pReg(0)                                     // No register map address yet.
 
-}//end Constructor
-
+{}//end Constructor
 
 /**************************************************************************************************
 |* SetDebugLevel () -- Set The Debug Level That Will Be Used For This Card
