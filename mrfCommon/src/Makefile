@@ -39,21 +39,6 @@ USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
-# HOST_BUILD macro tells mrfFracSynth whether it should produce entries
-# for the IOC shell
-#
-ifeq ($(EPICS_HOST_ARCH),$(T_A))
-    USR_CFLAGS += -DHOST_BUILD
-endif
-
-#---------------------
-# Only build for "hardware" IOC's
-#
-ifneq ($(findstring Host, $(VALID_BUILDS)),)
-    VALID_BUILDS = Host
-endif
-
-#---------------------
 # Install include files
 #
 INC += mrfIoOps.h
