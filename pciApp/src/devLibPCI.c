@@ -159,6 +159,37 @@ devPCIBarLen(
   return (*pdevLibPCIVirtualOS->pDevPCIBarLen)(curdev,bar);
 }
 
+epicsShareFunc
+int devPCIConnectInterrupt(
+  const epicsPCIDevice *id,
+  void (*pFunction)(void *),
+  void  *parameter
+)
+{
+  osdPCIDevice *curdev=CONTAINER(id,osdPCIDevice,dev);
+
+  if(!pdevLibPCIVirtualOS)
+    return 5;
+
+  return (*pdevLibPCIVirtualOS->pDevPCIConnectInterrupt)
+                (curdev,pFunction,parameter);
+}
+
+epicsShareFunc
+int devPCIDisconnectInterrupt(
+  const epicsPCIDevice *id,
+  void (*pFunction)(void *)
+)
+{
+  osdPCIDevice *curdev=CONTAINER(id,osdPCIDevice,dev);
+
+  if(!pdevLibPCIVirtualOS)
+    return 5;
+
+  return (*pdevLibPCIVirtualOS->pDevPCIDisconnectInterrupt)
+                (curdev,pFunction);
+}
+
 /**************** local functions *****************/
 
 
