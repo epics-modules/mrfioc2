@@ -340,6 +340,24 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 }//end aoInitRecord()
 
 
+struct aoSeqEvent {
+    long num;
+    DEVSUPFUN report;
+    DEVSUPFUN init;
+    DEVSUPFUN init_record;
+    DEVSUPFUN get_ioint_info;
+    DEVSUPFUN read;
+    DEVSUPFUN special_linconv;
+} aoSeqEvent = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)aoInitRecord,
+    NULL,
+    NULL,
+    NULL
+};
+epicsExportAddress(dset, aoSeqEvent);
 
 
 //!
