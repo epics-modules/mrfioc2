@@ -77,21 +77,22 @@ public:
    *  Should happen outside.
    */
   /*@{*/
-  virtual epicsUInt32 pllCtrl() const=0;
-  virtual void pllSetCtrl(epicsUInt32)=0;
+
+  virtual double clock() const=0;
+  virtual void clockSet(double)=0;
+
   //! Test for PLL error condition
   virtual bool pllLocked() const=0;
   virtual IOSCANPVT pllChanged()=0;
-  /*@}*/
 
-  virtual epicsUInt32 eventClockDiv() const=0;
-  virtual void setEventClockDiv(epicsUInt32)=0;
-
-  virtual IOSCANPVT recvError()=0;
-  virtual epicsUInt32 recvErrorCount() const=0;
+  virtual epicsUInt32 uSecDiv() const=0;
 
   virtual epicsUInt32 tsDiv() const=0;
   virtual void setTsDiv(epicsUInt32)=0;
+  /*@}*/
+
+  virtual IOSCANPVT recvError()=0;
+  virtual epicsUInt32 recvErrorCount() const=0;
 
   virtual void tsLatch()=0;
   virtual void tsLatchReset()=0;

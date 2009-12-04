@@ -68,15 +68,13 @@ public:
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
   virtual const char* idName(epicsUInt32 src) const{return "Nothing";};
 
-
-  virtual epicsUInt32 pllCtrl() const{return 0;};
-  virtual void pllSetCtrl(epicsUInt32){};
+  virtual double clock() const{return 0.0;};
+  virtual void clockSet(double){};
 
   virtual bool pllLocked() const{return m_locked;};
   virtual IOSCANPVT pllChanged(){return pllNotify;};
 
-  virtual epicsUInt32 eventClockDiv() const{return 0;};
-  virtual void setEventClockDiv(epicsUInt32){};
+  virtual epicsUInt32 uSecDiv() const{return 0;};
 
   virtual IOSCANPVT recvError(){return 0;};
   virtual epicsUInt32 recvErrorCount() const{return 0;};
