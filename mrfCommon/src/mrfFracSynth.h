@@ -52,6 +52,10 @@
 
 #include <epicsTypes.h>                 /* EPICS Architecture-independent type definitions        */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**************************************************************************************************/
 /*  Function Prototypes for Fractional Synthesizer Utility Routines                               */
 /**************************************************************************************************/
@@ -62,5 +66,9 @@ epicsStatus   mrfSetEventClockSpeed (epicsFloat64,  epicsUInt32,  epicsFloat64,
 epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epicsFloat64*);
 
 epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
