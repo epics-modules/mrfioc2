@@ -10,6 +10,13 @@ class Pulser;
 class Output;
 class PreScaler;
 
+enum OutputType {
+  OutputInt=0, //! Internal
+  OutputFP=1,  //! Front Panel
+  OutputFPUniv=2, //! FP Universal
+  OutputRB=3 //! Rear Breakout
+};
+
 /**@brief Base interface for EVRs.
  *
  * This is the interface which the generic EVR device support
@@ -42,8 +49,8 @@ public:
   virtual const Pulser* pulser(epicsUInt32) const=0;
 
   //! Output id number is device specific
-  virtual Output* output(epicsUInt32)=0;
-  virtual const Output* output(epicsUInt32) const=0;
+  virtual Output* output(OutputType otype,epicsUInt32 idx)=0;
+  virtual const Output* output(OutputType,epicsUInt32) const=0;
 
   //! Prescaler id number is device specific
   virtual PreScaler* prescaler(epicsUInt32)=0;
@@ -59,11 +66,10 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const=0;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool set)=0;
 
-  /** Return a human readable string describing 'src'.
-   * 'src' can the mapping code for any event code, distributed bus bit,
-   * prescaler, pulser, or input.
+  /** Return a human readable string describing 'func'.
+   * 'func' is any mapping code which can be a special mapping.
    */
-  virtual const char* idName(epicsUInt32 src) const=0;
+  virtual const char* idName(epicsUInt32 func) const=0;
 
   /**\defgroup pll Module reference clock
    *

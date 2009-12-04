@@ -52,11 +52,11 @@ public:
   virtual Pulser* pulser(epicsUInt32){return 0;};
   virtual const Pulser* pulser(epicsUInt32) const{return 0;};
 
-  virtual OutputNull* output(epicsUInt32 o)
+  virtual OutputNull* output(OutputType,epicsUInt32 o)
     {outmap_t::const_iterator it=outmap.find(o);
      return it!=outmap.end() ? it->second : NULL;
     };
-  virtual const OutputNull* output(epicsUInt32 o) const
+  virtual const OutputNull* output(OutputType,epicsUInt32 o) const
     {outmap_t::const_iterator it=outmap.find(o);
      return it!=outmap.end() ? it->second : NULL;
     };

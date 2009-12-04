@@ -40,13 +40,4 @@ struct TimeUnits {
   };
 };
 
-//! Three state logic
-struct TSL {
-  enum type {
-    Float, //!< Driver off
-    Low,
-    High
-  };
-};
-
 #endif // UTIL_HPP_INC

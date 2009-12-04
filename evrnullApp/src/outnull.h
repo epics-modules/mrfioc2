@@ -10,25 +10,19 @@ class EVRNull;
 
 class OutputNull : public Output
 {
-  OutputNull(EVRNull&);
+  OutputNull():src(0){};
 
   friend class EVRNull;
 public:
   virtual ~OutputNull(){};
 
-  virtual bool source(epicsUInt32 u) const;
-  virtual void setSource(epicsUInt32 u, bool s);
+  virtual epicsUInt32 source() const{return src;};
+  virtual void setSource(epicsUInt32 u){src=u;};
 
-  virtual TSL::type state() const;
-  virtual void setState(TSL::type c){cur=c;};
+  virtual const char*sourceName(epicsUInt32) const{return "Unknown";};
 
 protected:
-  EVRNull& card;
-
-  TSL::type cur;
-
-  typedef std::set<epicsUInt32> map_t;
-  map_t smap;
+  epicsUInt32 src;
 };
 
 #endif /* OUTNULL_H_INC */
