@@ -129,7 +129,7 @@
 //=====================
 // Common device information structure use by all SequenceEvent records
 //
-typedef struct devInfoStruct {
+struct devInfoStruct {
     Sequence       *pSequence;  // Pointer to the Sequence object
     SequenceEvent  *pEvent;     // Pointer to the SequenceEvent object
     epicsInt32      Function;   // Function code
