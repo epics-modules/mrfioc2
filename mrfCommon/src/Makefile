@@ -39,14 +39,6 @@ USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
-# HOST_BUILD macro tells mrfFracSynth whether it should produce entries
-# for the IOC shell
-#
-ifeq ($(EPICS_HOST_ARCH),$(T_A))
-    USR_CFLAGS += -DHOST_BUILD
-endif
-
-#---------------------
 # Install include files
 #
 INC += mrfIoOps.h
@@ -79,10 +71,7 @@ PROD_HOST += FracSynthAnalyze
 PROD_HOST += FracSynthControlWord
 
 FracSynthAnalyze_SRCS += FracSynthAnalyze.c
-FracSynthAnalyze_SRCS += mrfFracSynth.c
-
 FracSynthControlWord_SRCS += FracSynthControlWord.c
-FracSynthControlWord_SRCS += mrfFracSynth.c
 
 PROD_LIBS += Com
 

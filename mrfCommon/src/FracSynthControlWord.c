@@ -78,10 +78,18 @@
 #include <epicsTypes.h>         /* EPICS type definitions                                         */
 
 #include <mrfCommon.h>          /* MRF common definitions                                         */
-#include <mrfFracSynth.h>       /* MRF SY87739L control word creation & analysis routines         */
 
 /**************************************************************************************************/
-/*  Code                                                                                          */
+/*  Import the Fractional Synthesizer Utility Routines                                            */
+/**************************************************************************************************/
+
+#define HOST_BUILD
+
+#include <mrfFracSynth.h>       /* MRF SY87739L control word creation & analysis prototypes       */
+#include <mrfFracSynth.c>       /* MRF SY87739L control word creation & analysis routines         */
+
+/**************************************************************************************************/
+/*  Main Program                                                                                  */
 /**************************************************************************************************/
 
 int main (int argc, char *argv[]) {
