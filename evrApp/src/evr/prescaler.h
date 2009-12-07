@@ -4,6 +4,8 @@
 
 #include <epicsTypes.h>
 
+#include <evr/util.h>
+
 class PreScaler : public IOStatus
 {
 public:

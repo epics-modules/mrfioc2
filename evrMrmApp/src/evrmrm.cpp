@@ -11,8 +11,6 @@
 
 #include "mrfFracSynth.h"
 
-#include "evrmrmoutput.h"
-
 #include "evrmrmiocsh.h"
 
 #include <dbScan.h>
@@ -57,6 +55,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
 
+    size_t nPS=3;
     size_t nOFP=0, nOFPUV=0, nORB=0;
 
     switch(v){
@@ -90,6 +89,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     for(size_t i=0; i<nORB; i++){
         outputs[std::make_pair(OutputRB,i)]=new MRMOutput(base+U16_OutputMapRB(i));
     }
+
+    prescalers.resize(nPS);
+    for(size_t i=0; i<nPS; i++){
+        prescalers[i]=new MRMPreScaler(base+U32_Scaler(i));
+    }
 }
 
 EVRMRM::~EVRMRM()
@@ -100,6 +104,11 @@ EVRMRM::~EVRMRM()
         delete &(*it);
     }
     outputs.clear();
+    for(prescalers_t::iterator it=prescalers.begin();
+        it!=prescalers.end(); ++it)
+    {
+        delete &(*it);
+    }
 }
 
 epicsUInt32
@@ -166,16 +175,20 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
-PreScaler*
-EVRMRM::prescaler(epicsUInt32)
+MRMPreScaler*
+EVRMRM::prescaler(epicsUInt32 i)
 {
-    return 0;
+    if(i>=prescalers.size())
+        throw std::range_error("PreScaler id is out of range");
+    return prescalers[i];
 }
 
-const PreScaler*
-EVRMRM::prescaler(epicsUInt32) const
+const MRMPreScaler*
+EVRMRM::prescaler(epicsUInt32 i) const
 {
-    return 0;
+    if(i>=prescalers.size())
+        throw std::range_error("PreScaler id is out of range");
+    return prescalers[i];
 }
 
 bool

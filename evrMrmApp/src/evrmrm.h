@@ -5,6 +5,7 @@
 #include "evr/evr.h"
 
 #include <string>
+#include <vector>
 #include <set>
 #include <map>
 #include <utility>
@@ -12,6 +13,7 @@
 #include <dbScan.h>
 
 #include "evrmrmoutput.h"
+#include "evrmrmprescaler.h"
 
 /**@brief Modular Register Map Event Receivers
  *
@@ -37,8 +39,8 @@ public:
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
-  virtual PreScaler* prescaler(epicsUInt32);
-  virtual const PreScaler* prescaler(epicsUInt32) const;
+  virtual MRMPreScaler* prescaler(epicsUInt32);
+  virtual const MRMPreScaler* prescaler(epicsUInt32) const;
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -85,6 +87,9 @@ private:
 
   typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
   outputs_t outputs;
+
+  typedef std::vector<MRMPreScaler*> prescalers_t;
+  prescalers_t prescalers;
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

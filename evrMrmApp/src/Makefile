@@ -23,6 +23,7 @@ evrmrm_SRCS += pcisearch.c
 evrmrm_SRCS += evrmrmiocsh.c
 evrmrm_SRCS += evrmrm.cpp
 evrmrm_SRCS += evrmrmoutput.cpp
+evrmrm_SRCS += evrmrmprescaler.cpp
 
 # evrmrm_registerRecordDeviceDriver.cpp derives from evrmrm.dbd
 evrmrm_SRCS += evrmrm_registerRecordDeviceDriver.cpp
