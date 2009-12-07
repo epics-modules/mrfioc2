@@ -44,6 +44,11 @@ public:
     }//end GetName()
 
     //=====================
+    // Setter Functions
+    //
+    void SetEventTime (epicsFloat64 Ticks);
+
+    //=====================
     // Register the timestamp record
     //
     void RegisterTimeRecord (dbCommon *pRec);
@@ -74,8 +79,8 @@ private:
     //=====================
     // Event timestamp variables
     //
-    epicsFloat64   Time;                // Requested timestamp (in ticks) for this event
-    epicsFloat64   TimeStamp;           // Timestamp (in ticks) actually assigned to this event
+    epicsFloat64   RequestedTime;       // Requested timestamp (in ticks) for this event
+    epicsFloat64   ActualTime;          // Timestamp (in ticks) actually assigned to this event
     dbCommon      *TimeRecord;          // Pointer to the timestamp record
 
     //=====================

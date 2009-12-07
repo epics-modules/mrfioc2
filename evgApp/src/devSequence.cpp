@@ -194,7 +194,7 @@ EgDeclareSequence (epicsInt32 CardNum, epicsInt32 SeqNum)
     // If we don't have a Sequence object for this ID, create one
     //
     else {
-        try {pSeq = new Sequence(SeqNum);}
+        try {pSeq = new Sequence(SeqNum, pEvg);}
 
        /* Abort if we could not create the Sequence object */
         catch (std::exception& e) {

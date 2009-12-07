@@ -3,6 +3,9 @@
 #include <stdexcept>            // Standard C++ exception definitions
 #include <map>                  // Standard C++ map template
 
+#include <errno.h>              // Standard C global error number definitions
+
+#include <epicsStdlib.h>        // EPICS Standard C library support routines
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
 #include <drvSup.h>             // EPICS Driver support definitions
 #include <initHooks.h>          // EPICS IOC Initialization hooks support library
@@ -18,6 +21,165 @@ typedef std::map <epicsInt32, EVG*> CardList;
 
 static bool       ConfigureLock = false;
 static CardList   EvgCardList;
+
+//**************************************************************************************************
+//  EgConfigEventClock () -- Specify Input and/or Output Event Link Clock Speeds
+//**************************************************************************************************
+//! @par Description:
+//!   This routine can be used to specify the event clock speed on a per-card basis.
+//!   An event generator card can actually have two event clock speeds.  The first (and most
+//!   important) is the clock speed of the outgoing event link.  This speed is set either
+//!   externally by the frequency and scale factor of the RF-input port, or internally by the
+//!   fractional synthesizer chip.  The second speed is the event clock frequency of the incoming
+//!   event link.  This feature allows two event links running at different frequencies to be
+//!   merged.  Note that if the incoming link has a different frequency than the outgoing link,
+//!   The outgoing link's frequency must be determined externally via the RF-input port.
+//!
+//! @par Function:
+//!   
+//!
+//! @param      Card        = (input)  Logical card number for the event generator card.
+//! @param      OutputSpeed = (input)  Event clock frequency (in MegaHertz) of the outgoing
+//!                                    event link.  
+//! @param      InputSpeed  = (input)  Event clock frequency (in MegaHertz) of the incoming
+//!                                    event link.  This parameter may be "omitted" by specifying
+//!                                    an empty string, "0", or the NULL pointer.  If omitted, the
+//!                                    incoming event link clock speed will default to that of
+//!                                    the outgoing event link.
+//!
+//! @return     Returns OK if the event link clock speed(s) was successfully set.<br>
+//!             Returns ERROR if the event link clock speed(s) could not be set.
+//!
+//! @note
+//! - Ideally, this routine should be called after the event generator card has been configured
+//!   but before iocInit() is called.
+//!
+//! - The outgoing and incoming clock frequencies are specified as character strings in order
+//!   to accomodate those shells that do not support floating point input.
+//!
+//**************************************************************************************************
+
+/**************************************************************************************************
+|* EgConfigEventClockSpeed () -- Set a New Event Clock Frequency
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine can be used to specify the event clock speed on a per-card basis.  This can be
+|* useful for those sites that have more than one clock speed in their timing systems.  The event
+|* clock speed can be specified directly (in MegaHertz) or by specifying a fractional synthesizer
+|* control word.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Make sure the specified Event Generator card has been configured.
+|*   o Make sure we have either a valid event clock frequency or a valid fractional synthesizer
+|*     control word.
+|*   o Based on the input parameters, compute the event clock frequency (in MHz) and the fractional
+|*     synthesizer control word to generate that frequency.
+|*   o If iocInit() has already been called, set the new clock speed now.  Otherwise, just store
+|*     it in the Event Generator card structure and set it during the first pass of device
+|*     initialization.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*      status = EgConfigEventClockSpeed (Card, ClockSpeed, ControlWord);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      Card           =  (epicsInt32)  Logical card number for the Event Generator card.
+|*      ClockSpeed     =  (char *)      [Optional] character string representation of the floating
+|*                                      point value for the desired event clock speed in MegaHertz.
+|*                                      This value is specified as an ASCII string because some
+|*                                      IOC shells (e.g. vxWorks) can not process floating point
+|*                                      numbers.
+|*                                      Set to "0" or "" if the clock speed should be taken from
+|*                                      the ControlWord parameter instead.
+|*      ControlWord    =  (epicsUInt32) [Optional] fractional synthesizer control word to
+|*                                      generate the desired event clock frequency.
+|*                                      Set to 0 if the clock speed should be specified
+|*                                      from the ClockSpeed parameter instead.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT INPUTS:
+|*      ConfigureLock  = (epicsBoolean) If TRUE, then iocInit() has already been called, so the
+|*                                      event clock speed should be changed immediately.
+|*                                      Otherwise, setting the event clock speed is deferred until
+|*                                      iocInit() is called.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      status         = (epicsStatus)  Returns OK if the Event Generator's event clock was
+|*                                      successfully set.
+|*                                      Returns ERROR if some problem prevented the new event clock
+|*                                      frequency from being set.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* NOTES:
+|* o Ideally, this routine should be called after the Event Generator card has been configured
+|*   (e.g. EgConfigure()), but before iocInit() is called.
+|* o If the ControlWord parameter is specified (not zero), the routine will check the control
+|*   word for programming errors.
+|* o If both ClockSpeed and ControlWord parameters are specified, the routine will make sure that
+|*   the frequency generated by the ControlWord parameter is within +/- 100 ppm of the desired
+|*   ClockSpeed.
+|*
+\**************************************************************************************************/
+
+
+epicsStatus EgConfigEventClock (epicsInt32 Card, char* OutputSpeed, char* InputSpeed)
+{
+    epicsFloat64    InputFrequency  = 0.0;     // Desired clock speed converted to floating point
+    epicsFloat64    OutputFrequency = 0.0;     // Desired clock speed converted to floating point
+    EVG*            pEvg;                      // Pointer to event generator card object
+    char           *tailPtr;                   // Temp pointer used in string-to-double routine
+
+    //=====================
+    // Make sure the specified card has already been configured.
+    //
+    if (NULL == (pEvg = EgGetCard(Card))) {
+        printf ("EgConfigEventClock: Card %d has not been configured\n", Card);
+        return ERROR;
+    }//end if card was not configured
+
+    //=====================
+    // Translate the outgoing event clock speed into floating-point format.
+    //
+    if ((0 != OutputSpeed) && (strlen(OutputSpeed))) {
+        errno = OK;
+        OutputFrequency = epicsStrtod (OutputSpeed, &tailPtr);
+
+        if ((OK != errno) || (tailPtr == OutputSpeed) || (0.0==OutputFrequency)) {
+            printf ("EgConfigEventClock: Invalid clock speed value for outgoing event link\n");
+            return ERROR;
+        }//end if error converting output clock speed
+    }//end if OutputSpeed string is not null
+
+    //=====================
+    // Make sure that the outgoing clock frequency was specified
+    //
+    if (0.0 == OutputFrequency) {
+        printf ("EgConfigEventClock: Outgoing event link speed was not specified.\n");
+        return ERROR;
+    }//end if outgoing frequency not specified
+
+    //=====================
+    // Translate the incoming event clock speed into floating-point format.
+    //
+    if ((0 != InputSpeed) && (strlen(InputSpeed))) {
+        errno = OK;
+        InputFrequency = epicsStrtod (InputSpeed, &tailPtr);
+
+        if ((OK != errno) || (tailPtr == InputSpeed)) {
+            printf ("EgConfigEventClock: Invalid clock speed value for incoming event link\n");
+            return ERROR;
+        }//end if error converting input clock speed
+    }//end if InputSpeed string is not null
+
+    //=====================
+    // If we got this far, return success.
+    //
+    return OK;
+
+}//end EgConfigEventClock()
 
 void
 EgAddCard (epicsInt32 CardNum, EVG *pEvg) {

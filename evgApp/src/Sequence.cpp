@@ -89,15 +89,18 @@
 //!   Class Constructor
 //!
 //! @par Function:
-//!   Create an event generator Sequence object and assign it to the specified sequence ID number
+//!   Create an event generator Sequence object and assign it to the specified event generator
+//!   card using the specified sequence ID number.
 //!
 //! @param Number  = (input) Sequence ID number.
-//!                  The sequence ID number must be unique for every Sequence object in the system.
+//! @param pEvg    = (input) Pointer to the event generator card object that this sequence
+//!                  belongs to.
 //!
 //**************************************************************************************************
 
-Sequence::Sequence (epicsInt32  Number):
+Sequence::Sequence (epicsInt32  Number, EVG* pEvg):
     SequenceNumber(Number),
+    pEvg(pEvg),
     NumEvents(0)
 {
     //=====================

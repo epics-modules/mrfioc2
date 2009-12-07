@@ -11,6 +11,7 @@
 #include <mrfCommon.h>          // MRF Common definitions
 
 #include <SequenceEvent.h>      // SequenceEvent class definition
+#include <evg/evg.h>            // Event generator class definition
 
 /**************************************************************************************************/
 /*  Configuration Parameters                                                                      */
@@ -34,14 +35,21 @@ public:
     //=====================
     // Class Constructor
     //
-    Sequence (epicsInt32 Number);
+    Sequence (epicsInt32 Number, EVG* pEvg);
 
     //=====================
     // Get the sequence number as an ASCII string
     //
-    inline const char *GetSequenceString() {
+    inline const char *GetSequenceString() const {
         return (SeqNumString);
     }//end GetSequenceNumber()
+
+    //=====================
+    // Get the number of seconds per event clock tick
+    //
+    inline epicsFloat64 GetSecsPerTick() const {
+        return (pEvg->GetSecsPerTick());
+    }//end GetSeqsPerTick()
 
     //=====================
     // Create a new event and add it to the sequence
@@ -62,6 +70,7 @@ private:
 
     epicsInt32      SequenceNumber;                      // Unique sequence number for this sequence
     char            SeqNumString [MAX_SEQUENCE_CHARS];   // Sequence number as an ASCII string
+    EVG*            pEvg;                                // Event generator card
 
     //=====================
     // Event List

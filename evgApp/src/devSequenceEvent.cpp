@@ -115,8 +115,11 @@
 #include  <boRecord.h>          // EPICS Binary output record definition
 #include  <longoutRecord.h>     // EPICS Long output record definition
 
-#include  <Sequence.h>          // MRF Sequence Class
-#include  <SequenceEvent.h>     // MRF Sequence Event Class
+#include  <menuConvert.h>       // EPICS conversion field menu items
+
+#include  <mrfCommon.h>         // MRF Common definitions
+#include  <Sequence.h>          // MRF Sequence class
+#include  <SequenceEvent.h>     // MRF Sequence event class
 #include  <devSequence.h>       // MRF Sequence device support declarations
 #include  <drvEvg.h>            // MRF Event Generator driver infrastructure routines
 
@@ -130,10 +133,24 @@
 // Common device information structure use by all SequenceEvent records
 //
 typedef struct devInfoStruct {
-    Sequence       *pSequence;  // Pointer to the Sequence object
-    SequenceEvent  *pEvent;     // Pointer to the SequenceEvent object
-    epicsInt32      Function;   // Function code
+    Sequence       *pSequence;   // Pointer to the Sequence object
+    SequenceEvent  *pEvent;      // Pointer to the SequenceEvent object
+    epicsInt32      Function;    // Function code
 };//end devInfoStruct
+
+
+//=====================
+// Device Support Entry Table (DSET) for analog input and analog output records
+//
+typedef struct AnalogDSET {
+    long	number;	         // Number of support routines
+    DEVSUPFUN	report;		 // Report routine
+    DEVSUPFUN	init;	         // Device suppport initialization routine
+    DEVSUPFUN	init_record;     // Record initialization routine
+    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
+    DEVSUPFUN   perform_io;      // Read or Write routine
+    DEVSUPFUN   special_linconv; // Special linear-conversion routine
+};//end AnalogDSET
 
 /**************************************************************************************************/
 /*                                Common Utility Routines                                         */
@@ -260,6 +277,68 @@ void parseLink (
 /*                                                                                                */
 
 
+/**************************************************************************************************/
+/*  Analog Output Devise Support Routines                                                         */
+/**************************************************************************************************/
+
+static epicsStatus aoInitRecord (aoRecord* pRec);
+static epicsStatus aoWrite      (aoRecord* pRec);
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Analog Output Records                                   */
+/**************************************************************************************************/
+
+extern "C" {
+static
+AnalogDSET devAoMrfSeqEvent = {
+    6,                                  // Number of entries in the table
+    NULL,                               // -- No device report routine
+    NULL,                               // -- No device support initialization routine
+    (DEVSUPFUN)aoInitRecord,            // Record initialization routine
+    NULL,                               // -- No get I/O interrupt information routine
+    (DEVSUPFUN)aoWrite,                 // Write routine
+    NULL                                // -- No special linear conversion routine
+};
+
+epicsExportAddress (dset, devAoMrfSeqEvent);
+
+};//end extern "C"
+
+/**************************************************************************************************
+|* aoInitRecord () -- Initialize an Analog Output Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called during IOC initialization to initialize a Sequence Event
+|*    analog output record.  It performs the following functions:
+|*      - Extract the card number, sequence number, record function, and event name from
+|*        the OUT field.
+|*      - Declare the sequence number and the event name.
+|*      - Register the record as this event's timestamp record.
+|*      - Create and initialize the device information structure.
+|*      - Initialize the LINR and ESLO fields.
+|*      - Call the aoWrite routine to convert the initial value to ticks and
+|*        write it to the SequenceEvent object.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    EVENT_TIME  = Sets the requested time for this event to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aoInitRecord (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (aoRecord *)     Address of the ao record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    NO_CONVERT:  Successful initialization, do not perform
+|*                                           value conversion
+|*                              Other        Failure code
+|*
+\**************************************************************************************************/
 
 static
 epicsStatus aoInitRecord (aoRecord *pRec)
@@ -269,9 +348,9 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     //
     std::string     Function;           // Record function name (from OUT link)
     std::string     Name;               // Sequence event name (from OUT link)
-    devInfoStruct  *pDevInfo = NULL;    // Pointer to device-specific information structure.
-    Sequence       *pSequence;          // Pointer to the Sequence object for this event
-    SequenceEvent  *pEvent;             // Pointer to our SequenceEvent object
+    devInfoStruct*  pDevInfo = NULL;    // Pointer to device-specific information structure.
+    Sequence*       pSequence;          // Pointer to the Sequence object for this event
+    SequenceEvent*  pEvent;             // Pointer to our SequenceEvent object
     epicsInt32      SeqNum;             // Sequence ID number for this event (from OUT link)
     epicsStatus     status;             // Anticipated error status
 
@@ -319,6 +398,19 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         pDevInfo->pEvent = pEvent;
         pRec->dpvt = (void *)pDevInfo;
 
+        //=====================
+        // Disable automatic value conversion by record support.
+        // We have to do our own conversion because the raw timestamp could
+        // exceed 32 bits.
+        //
+        pRec->linr = menuConvertNO_CONVERSION;
+
+        //=====================
+        // Set the initial value 
+        //
+        aoWrite (pRec);
+        return NO_CONVERT;
+
     }//end try
 
     //=====================
@@ -331,15 +423,71 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         return (status);
     }//end if record initialization failed
 
+}//end aoInitRecord()
+
+/**************************************************************************************************
+|* aoWrite () -- Write the Timestamp to the SequenceEvent Object.
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called from the aoRecord's "process()" routine.
+|*
+|*    It converts the timestamp in the VAL field from engineering units to event clock ticks
+|*    and writes it to the SequenceEvent object.
+|*
+|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
+|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
+|*    use the ao record's built in linear, slope, or breakpoint table conversion features.
+|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
+|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
+|*    case EGUF was changed).
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    EVENT_TIME  = Sets the requested time for this event to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aoWrite (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (aoRecord *)     Address of the ao record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    Always returns OK
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus aoWrite (aoRecord* pRec) {
+
     //=====================
-    // If record initialization succeeded, return success code
+    // Extract the Sequence and SequenceEvent objects from the dpvt structure
     //
+    devInfoStruct*  pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+    Sequence*       pSequence = pDevInfo->pSequence;
+    SequenceEvent*  pEvent    = pDevInfo->pEvent;
+
+    //=====================
+    // Re-compute the slope (in case EGUF has changed)
+    // If EGUF is 0, it means we want event clock ticks.
+    //
+    if (0.0 == pRec->eguf)
+        pRec->eslo = 1.0;
+
+    else
+        pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
+
+    //=====================
+    // Convert the VAL field to "Event Clock Ticks" and write
+    // it to the SequenceEvent object.
+    //
+    pEvent->SetEventTime (pRec->val / pRec->eslo);
+
     return OK;
 
-}//end aoInitRecord()
-
-
-
+}// aoWrite()
 
 //!
 //! @}

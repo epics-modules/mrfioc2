@@ -107,8 +107,8 @@ SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
     EventCode(0),               // Default event code is 0 (no code)
     EventCodeRecord(NULL),      // Pointer to event code record
 
-    Time(0.0),                  // Default requested time is 0 ticks
-    TimeStamp(0.0),             // Assigned timestamp
+    RequestedTime(0.0),         // Default requested time is 0 ticks
+    ActualTime(0.0),            // Assigned timestamp
     TimeRecord(NULL),           // Pointer to event time record
 
     Enable(true),               // Default enable flag is true (event is enabled)
@@ -120,6 +120,29 @@ SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
 {};//end constructor
 
 //**************************************************************************************************
+//  SetEventTime () -- Set or Change This Event's Timestamp
+//**************************************************************************************************
+//! @par Description:
+//!   Changes the requested timestamp for this event and notifies the Sequence object
+//!
+//! @par Function:
+//!   Set the new requested timestamp.
+//!   Signal the Sequence object that the timestamp has changed.
+//!
+//! @param      Ticks  = (input) New requested timestamp expressed in "Event Clock Ticks"
+//!
+//! @par Member Variables Referenced:
+//! - \e        RequestedTime = (modified) The requested timestamp for this event.
+//!
+//**************************************************************************************************
+
+void
+SequenceEvent::SetEventTime (epicsFloat64 Ticks)
+{
+    RequestedTime = Ticks;
+}
+
+//**************************************************************************************************
 //  RegisterTimeRecord () -- Register The Existence Of A SequenceEvent Timestamp Record
 //**************************************************************************************************
 //! @par Description:
@@ -127,15 +150,15 @@ SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
 //!
 //! @par Function:
 //!   First check to see if a timestamp record has already been registered for this event.
-//!   If so, throw a runtime_error containing the name of the previously registered record
+//!   If so, throw a runtime_error containing the name of the previously registered record.
 //!   If this is the first record to register, make it the timestamp record.
 //!
 //! @param      pRec  = (input) Pointer to the record we wish to register
 //!
-//! @throw      runtime_error is thrown if a timestamp record was already registered
+//! @throw      runtime_error is thrown if a timestamp record was already registered.
 //!
 //! @par Member Variables Referenced:
-//! - \e        TimeRecord = (modified) Points to the timestamp record registered for this event
+//! - \e        TimeRecord = (modified) Points to the timestamp record registered for this event.
 //!
 //**************************************************************************************************
 
