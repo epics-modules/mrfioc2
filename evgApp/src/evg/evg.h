@@ -16,10 +16,11 @@ public:
     //=====================
     // Getter Routines
     //
-    virtual epicsInt32   GetBusType     () const = 0; // Return the card's bus type (VME, PCI, etc.)
-    virtual epicsInt32   GetCardNum     () const = 0; // Return the logical card number
-    virtual epicsInt32   GetSubUnit     () const = 0; // Return the sub-unit value
-    virtual const char  *GetSubUnitName () const = 0; // Return the sub-unit name
+    virtual epicsInt32    GetBusType     () const = 0; // Return card's bus type (VME, PCI, etc.)
+    virtual epicsInt32    GetCardNum     () const = 0; // Return the logical card number
+    virtual epicsInt32    GetSubUnit     () const = 0; // Return the sub-unit value
+    virtual const char   *GetSubUnitName () const = 0; // Return the sub-unit name
+    virtual epicsFloat64  GetSecsPerTick () const = 0; // Return number of seconds per tick
 
     //=====================
     // Setter Routines
