@@ -9,5 +9,6 @@
 #define PCI_VENDOR_ID_MRF             0x1a3e   /* PCI Vendor ID for Micro Research Finland, Oy    */
 
 #define PCI_DEVICE_ID_MRF_EVR_200     0x10c8   /* PCI Device ID for MRF EVR-200                   */
+#define PCI_DEVICE_ID_MRF_EVR_230     0x11e6
 
 #endif /* MRMPCI_H */

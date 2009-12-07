@@ -58,6 +58,13 @@ typedef struct {
 
   epicsUInt32 (*pDevPCIBarLen)(struct osdPCIDevice* dev,unsigned int bar);
 
+  int (*pDevPCIConnectInterrupt)(struct osdPCIDevice *id,
+                                 void (*pFunction)(void *),
+                                 void  *parameter);
+
+  int (*pDevPCIDisconnectInterrupt)(struct osdPCIDevice *id,
+                                    void (*pFunction)(void *));
+
 } devLibPCIVirtualOS;
 
 epicsShareExtern devLibPCIVirtualOS *pdevLibPCIVirtualOS;

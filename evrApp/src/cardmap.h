@@ -4,6 +4,8 @@
 
 #include "evr/evr.h"
 
+extern "C++" {
+
 /**@file cardmap.h
  *
  * Utilities for interaction between IOC Shell functions
@@ -35,5 +37,7 @@ void storeEVR(short id,EVRSubclass *dev)
 {
   storeEVRBase(id,static_cast<EVR*>(dev));
 };
+
+} // extern C++
 
 #endif /* CARDMAP_H_INC */

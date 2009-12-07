@@ -19,22 +19,27 @@
  *
  * Device support for accessing Output sub-device instances.
  *
- * Uses VME_IO links. '#Cxx Syy @'
+ * Uses AB_IO links. '#Lxx Ayy Czz S0 @'
  * xx - card number
- * yy - Output number
+ * yy - Output class (FP, RB, etc.)
+ * zz - Output number
  */
 
 static long init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  Output* output=card->output(lnk->value.vmeio.signal);
-  if(!card)
-    throw std::runtime_error("Prescaler id# is out of range");
+  Output* output=0;
+
+  output=card->output((enum OutputType)lnk->value.abio.adapter,
+                      lnk->value.abio.card);
+
+  if(!output)
+    throw std::runtime_error("Output Type is out of range");
 
   prec->dpvt=static_cast<void*>(output);
 
@@ -61,14 +66,7 @@ static long write_mbbo(mbboRecord *prec)
 try{
   Output* out=static_cast<Output*>(prec->dpvt);
 
-  switch(prec->val){
-  case 0:  out->setState(TSL::Float); break;
-  case 1:  out->setState(TSL::Low); break;
-  case 2:  out->setState(TSL::High); break;
-  default:
-    //TODO: raise invalid alarm
-    return 1;
-  }
+  out->setSource(prec->rval);
 
   return 0;
 
@@ -91,14 +89,7 @@ static long read_mbbi(mbbiRecord *prec)
 try{
   Output* out=static_cast<Output*>(prec->dpvt);
 
-  switch(out->state()){
-  case TSL::Float: prec->val=0; break;
-  case TSL::Low: prec->val=1; break;
-  case TSL::High: prec->val=2; break;
-  default:
-    //TODO: raise invalid alarm
-    return 1;
-  }
+  prec->rval=out->source();
 
   return 0;
 } catch(std::exception& e) {

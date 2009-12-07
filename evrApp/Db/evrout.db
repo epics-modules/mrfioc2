@@ -1,15 +1,16 @@
 
-record(mbbo, "$(P)$(O):set") {
+record(mbbo, "$(P)$(O)src:set") {
   field( DTYP, "EVR Output")
-  field( OUT , "#C$(C) S$(ID) @State")
+  field( OUT , "#L$(C) A$(OT) C$(IDX) S0 @Map")
   field( ZRST, "Float (default)")
   field( ONST, "Force Low")
   field( TWST, "Force High")
 }
 
-record(mbbi, "$(P)$(O)") {
+record(mbbi, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
-  field( INP , "#C$(C) S$(ID) @State")
+  field( INP , "#L$(C) A$(OT) C$(IDX) S0 @Map")
+  field( SCAN, "1 second")
   field( ZRST, "Float (default)")
   field( ONST, "Force Low")
   field( TWST, "Force High")

@@ -99,6 +99,7 @@
 
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ string class
+#include  <cstdlib>
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
 #include  <alarm.h>             // EPICS Alarm status and severity definitions
@@ -132,10 +133,17 @@
 //=====================
 // Common device information structure use by all SequenceEvent records
 //
+<<<<<<< local
 typedef struct devInfoStruct {
     Sequence       *pSequence;   // Pointer to the Sequence object
     SequenceEvent  *pEvent;      // Pointer to the SequenceEvent object
     epicsInt32      Function;    // Function code
+=======
+struct devInfoStruct {
+    Sequence       *pSequence;  // Pointer to the Sequence object
+    SequenceEvent  *pEvent;     // Pointer to the SequenceEvent object
+    epicsInt32      Function;   // Function code
+>>>>>>> other
 };//end devInfoStruct
 
 
@@ -487,7 +495,32 @@ epicsStatus aoWrite (aoRecord* pRec) {
 
     return OK;
 
+<<<<<<< local
 }// aoWrite()
+=======
+}//end aoInitRecord()
+
+
+struct aoSeqEvent {
+    long num;
+    DEVSUPFUN report;
+    DEVSUPFUN init;
+    DEVSUPFUN init_record;
+    DEVSUPFUN get_ioint_info;
+    DEVSUPFUN read;
+    DEVSUPFUN special_linconv;
+} aoSeqEvent = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)aoInitRecord,
+    NULL,
+    NULL,
+    NULL
+};
+epicsExportAddress(dset, aoSeqEvent);
+
+>>>>>>> other
 
 //!
 //! @}

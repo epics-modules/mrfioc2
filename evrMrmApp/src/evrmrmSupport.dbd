@@ -1,0 +1,4 @@
+variable(evrmrmVerb,int)
+registrar(mrmsearchreg)
+registrar(mrmsetupreg)
+include evrSupport.dbd

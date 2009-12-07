@@ -18,20 +18,11 @@ public:
    * Note: this is one place where Device Support will have some depth.
    */
   /*@{*/
-  virtual bool source(epicsUInt32) const=0;
-  virtual void setSource(epicsUInt32, bool)=0;
+  virtual epicsUInt32 source() const=0;
+  virtual void setSource(epicsUInt32)=0;
   /*@}*/
 
-  /**\defgroup man Manually set output state.
-   *
-   * Override to set an output to the requested state.
-   * Settings other than TSL::Float temporarily disable all event mappings
-   */
-  /*@{*/
-  virtual TSL::type state() const=0;
-  // Settings other than TSL::Float temporarily disable all sources
-  virtual void setState(TSL::type)=0;
-  /*@}*/
+  virtual const char*sourceName(epicsUInt32) const=0;
 };
 
 #endif // OUTPUT_HPP_INC

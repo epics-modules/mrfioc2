@@ -88,7 +88,7 @@ const epicsPCIDevice **found
 epicsShareFunc
 int
 devPCIToLocalAddr(
-  const epicsPCIDevice *idlist,
+  const epicsPCIDevice *id,
           unsigned int  bar,
         volatile void **ppLocalAddr
 );
@@ -96,8 +96,21 @@ devPCIToLocalAddr(
 epicsShareFunc
 epicsUInt32
 devPCIBarLen(
-  const epicsPCIDevice *idlist,
+  const epicsPCIDevice *id,
           unsigned int  bar
+);
+
+epicsShareFunc
+int devPCIConnectInterrupt(
+  const epicsPCIDevice *id,
+  void (*pFunction)(void *),
+  void  *parameter
+);
+
+epicsShareFunc
+int devPCIDisconnectInterrupt(
+  const epicsPCIDevice *id,
+  void (*pFunction)(void *)
 );
 
 #ifdef __cplusplus

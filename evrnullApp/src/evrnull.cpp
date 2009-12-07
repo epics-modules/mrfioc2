@@ -12,7 +12,7 @@ EVRNull::EVRNull(const char* name) :
   scanIoInit(&pllNotify);
 
   for(int i=0; i<=12; i++){
-    outmap[268+i]=new OutputNull(*this);
+    outmap[268+i]=new OutputNull();
   }
 }
 

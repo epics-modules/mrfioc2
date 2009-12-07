@@ -3,7 +3,7 @@
 record(bi, "$(P)enable") {
   field(DTYP, "EVR")
   field(INP , "#C$(C) S0 @Enable")
-  field(DESC, "Master enable for EVR device")
+  field(DESC, "Master enable status for EVR device")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
 }
@@ -20,10 +20,41 @@ record(bo, "$(P)enable:set") {
   field(ONAM, "Enabled")
 }
 
+record(ao, "$(P)clock:set") {
+  field(DTYP, "EVR")
+  field(OUT , "#C$(C) S0 @Clock")
+  field(PINI, "YES")
+  field(DESC, "Event Link speed")
+  field(VAL , "124.9135")
+  field(EGU , "MHz")
+  field(PREC, 3)
+  field(FLNK, "$(P)clock")
+}
+
+record(ai, "$(P)clock") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Clock")
+  field(SCAN, "1 second")
+  field(DESC, "Event Link speed")
+  field(PINI, "YES")
+  field(UDF , 0)
+  field(EGU , "MHz")
+  field(PREC, 3)
+  field(FLNK, "$(P)clock:error")
+}
+
+record(calc, "$(P)clock:error") {
+  field(CALC, "(A-B)*1000")
+  field(EGU , "KHz")
+  field(PREC, 3)
+  field(INPA, "$(P)clock:set")
+  field(INPB, "$(P)clock")
+}
+
 record(bi, "$(P)pll") {
   field(DTYP, "EVR")
   field(INP , "#C$(C) S0 @PLL Lock Status")
-  field(SCAN, "I/O Intr")
+  field(SCAN, "1 second")
   field(PINI, "YES")
   field(DESC, "Status of PLL")
   field(ZNAM, "Error")
@@ -42,4 +73,46 @@ record(longin, "$(P)ver") {
   field(INP , "#C$(C) S0 @Version")
   field(PINI, "YES")
   field(DESC, "Firmware version")
+}
+
+record(longin, "$(P)error") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Receive Error")
+  field(PINI, "YES")
+  field(SCAN, "1 second")
+  field(DESC, "Rx error count")
+}
+
+record(longout, "$(P)ts:div:set") {
+  field(DTYP, "EVR")
+  field(OUT , "#C$(C) S0 @Timestamp Prescaler")
+  field(PINI, "YES")
+  field(DESC, "Timestamp divider")
+  field(FLNK, "$(P)ts:div")
+}
+
+record(longin, "$(P)ts:div") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Timestamp Prescaler")
+  field(PINI, "YES")
+  field(DESC, "Timestamp divider")
+}
+
+record(longin, "$(P)ts:sec") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Timestamp Seconds")
+  field(SCAN, "1 second")
+  field(EGU , "sec")
+}
+
+record(longin, "$(P)ts:cnt") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Timestamp Counter")
+  field(SCAN, "1 second")
+}
+
+record(longin, "$(P)rxerror") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Receive Error")
+  field(SCAN, "I/O Intr")
 }

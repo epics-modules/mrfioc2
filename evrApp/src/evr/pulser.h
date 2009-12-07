@@ -76,16 +76,6 @@ public:
   virtual void setPolarityNorm(bool)=0;
   /*@}*/
 
-  /**\defgroup man Manually set pulser output state.
-   *
-   * Override to set an output to the requested state.
-   * Settings other than TSL::Float temporarily disable all event mappings
-   */
-  /*@{*/
-  virtual TSL::type state() const=0;
-  virtual void setState(TSL::type)=0;
-  /*@}*/
-
   /**\defgroup map Control which source(s) effect this pulser.
    *
    * Meaning of source id number is device specific.

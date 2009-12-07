@@ -18,7 +18,6 @@ evrnull_SRCS += evrnull_registerRecordDeviceDriver.cpp
 
 evrnull_SRCS += iocshfn.cpp
 evrnull_SRCS += evrnull.cpp
-evrnull_SRCS += outnull.cpp
 
 # Build the main IOC entry point on workstation OSs.
 evrnull_SRCS_DEFAULT += evrnullMain.cpp

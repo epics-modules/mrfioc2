@@ -52,11 +52,11 @@ public:
   virtual Pulser* pulser(epicsUInt32){return 0;};
   virtual const Pulser* pulser(epicsUInt32) const{return 0;};
 
-  virtual OutputNull* output(epicsUInt32 o)
+  virtual OutputNull* output(OutputType,epicsUInt32 o)
     {outmap_t::const_iterator it=outmap.find(o);
      return it!=outmap.end() ? it->second : NULL;
     };
-  virtual const OutputNull* output(epicsUInt32 o) const
+  virtual const OutputNull* output(OutputType,epicsUInt32 o) const
     {outmap_t::const_iterator it=outmap.find(o);
      return it!=outmap.end() ? it->second : NULL;
     };
@@ -68,15 +68,13 @@ public:
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
   virtual const char* idName(epicsUInt32 src) const{return "Nothing";};
 
-
-  virtual epicsUInt32 pllCtrl() const{return 0;};
-  virtual void pllSetCtrl(epicsUInt32){};
+  virtual double clock() const{return 0.0;};
+  virtual void clockSet(double){};
 
   virtual bool pllLocked() const{return m_locked;};
   virtual IOSCANPVT pllChanged(){return pllNotify;};
 
-  virtual epicsUInt32 eventClockDiv() const{return 0;};
-  virtual void setEventClockDiv(epicsUInt32){};
+  virtual epicsUInt32 uSecDiv() const{return 0;};
 
   virtual IOSCANPVT recvError(){return 0;};
   virtual epicsUInt32 recvErrorCount() const{return 0;};
