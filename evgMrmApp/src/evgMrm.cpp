@@ -203,7 +203,6 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     CardNum(BusInterface->GetCardNum()),         // Set the logical card number
     CardLock(0),                                 // No card lock yet
     DebugFlag(&EvgGlobalDebugFlag),              // Use the global EVG debug level flag
-    SecsPerTick(8.0e-9),                         // Seconds per event clock tick
 
     //=====================
     // Initialize the bus-related data
@@ -215,7 +214,15 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     //=====================
     // Initialize the hardware-related data
     //
-    pReg(0)                                     // No register map address yet.
+    pReg(0),                                    // No register map address yet.
+
+    //=====================
+    // Initialize Event Link Clock data
+    //
+    OutLinkFrequency(0.0),                      // Event clock frequency for the outgoing link
+    InLinkFrequency(0.0),                       // Event clock frequency for the incoming link
+    SecsPerTick(8.0),                           // Seconds per event clock tick
+    FracSynthCtrl(0)                            // Fractional synthesizer control word
 
 {}//end Constructor
 

@@ -133,24 +133,17 @@
 //=====================
 // Common device information structure use by all SequenceEvent records
 //
-<<<<<<< local
-typedef struct devInfoStruct {
-    Sequence       *pSequence;   // Pointer to the Sequence object
-    SequenceEvent  *pEvent;      // Pointer to the SequenceEvent object
-    epicsInt32      Function;    // Function code
-=======
 struct devInfoStruct {
     Sequence       *pSequence;  // Pointer to the Sequence object
     SequenceEvent  *pEvent;     // Pointer to the SequenceEvent object
     epicsInt32      Function;   // Function code
->>>>>>> other
 };//end devInfoStruct
 
 
 //=====================
 // Device Support Entry Table (DSET) for analog input and analog output records
 //
-typedef struct AnalogDSET {
+struct AnalogDSET {
     long	number;	         // Number of support routines
     DEVSUPFUN	report;		 // Report routine
     DEVSUPFUN	init;	         // Device suppport initialization routine
@@ -299,7 +292,7 @@ static epicsStatus aoWrite      (aoRecord* pRec);
 
 extern "C" {
 static
-AnalogDSET devAoMrfSeqEvent = {
+AnalogDSET devAoSeqEvent = {
     6,                                  // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
@@ -309,7 +302,7 @@ AnalogDSET devAoMrfSeqEvent = {
     NULL                                // -- No special linear conversion routine
 };
 
-epicsExportAddress (dset, devAoMrfSeqEvent);
+epicsExportAddress (dset, devAoSeqEvent);
 
 };//end extern "C"
 
@@ -495,32 +488,7 @@ epicsStatus aoWrite (aoRecord* pRec) {
 
     return OK;
 
-<<<<<<< local
 }// aoWrite()
-=======
-}//end aoInitRecord()
-
-
-struct aoSeqEvent {
-    long num;
-    DEVSUPFUN report;
-    DEVSUPFUN init;
-    DEVSUPFUN init_record;
-    DEVSUPFUN get_ioint_info;
-    DEVSUPFUN read;
-    DEVSUPFUN special_linconv;
-} aoSeqEvent = {
-    6,
-    NULL,
-    NULL,
-    (DEVSUPFUN)aoInitRecord,
-    NULL,
-    NULL,
-    NULL
-};
-epicsExportAddress(dset, aoSeqEvent);
-
->>>>>>> other
 
 //!
 //! @}
