@@ -115,16 +115,30 @@
 typedef void (*EPICS_ISR_FUNC) (void *);
 
 /**************************************************************************************************/
-/*  Special Macros to Define Symbolic Success/Error Return Codes                                  */
+/*  Special Macros to Define Commonly Used Symbols                                                */
 /*  (note that these values can be overridden in the invoking module)                             */
 /**************************************************************************************************/
 
+
+/*---------------------
+ * Success return code
+ */
 #ifndef OK
 #define OK     (0)
 #endif
 
+/*---------------------
+ * Failure return code
+ */
 #ifndef ERROR
 #define ERROR  (-1)
+#endif
+
+/*---------------------
+ * Success, but do not perform linear conversions (ai & ao record device support routines)
+ */
+#ifndef NO_CONVERT
+#define NO_CONVERT (2)
 #endif
 
 #endif
