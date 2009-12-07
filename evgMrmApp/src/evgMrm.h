@@ -104,6 +104,13 @@ public:
     }//end GetSubUnitName()
 
     //=====================
+    // Return the Seconds per Tick value
+    //
+    inline epicsFloat64 GetSecsPerTick() const {
+        return (SecsPerTick);
+    }//end GetSecsPerTick()
+
+    //=====================
     // Set Card's Debug Level
     //
     void SetDebugLevel (epicsInt32 level);
@@ -142,7 +149,7 @@ private:
     //
     epicsInt32        CardNum;          // Logical card number for this card
     epicsMutexId      CardLock;         // Mutex to lock access to the card
-    epicsInt32       *DebugFlag;        // Pointer to which debug flag we should use
+    epicsInt32*       DebugFlag;        // Pointer to which debug flag we should use
     epicsInt32        LocalDebugFlag;   // Card-specific debug level
 
     //=====================
@@ -158,6 +165,13 @@ private:
     epicsUInt32       pReg;             // CPU Address for accessing the card's register map
     epicsUInt32       FPGAVersion;      // Firmware version number
 
+    //=====================
+    // Event Link Clock Data
+    //
+    epicsFloat64      OutLinkFrequency; // Event clock frequency for the outgoing link
+    epicsFloat64      InLinkFrequency;  // Event clock frequency for the incoming link
+    epicsFloat64      SecsPerTick;      // Seconds per event clock tick (outgoing link)
+    epicsUInt32       FracSynthCtrl;    // Fractional synthesizer control word
 
 };// end class evgMrm //
 

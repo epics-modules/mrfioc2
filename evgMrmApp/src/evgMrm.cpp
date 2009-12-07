@@ -203,6 +203,7 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     CardNum(BusInterface->GetCardNum()),         // Set the logical card number
     CardLock(0),                                 // No card lock yet
     DebugFlag(&EvgGlobalDebugFlag),              // Use the global EVG debug level flag
+    SecsPerTick(8.0e-9),                         // Seconds per event clock tick
 
     //=====================
     // Initialize the bus-related data
@@ -343,14 +344,14 @@ evgMrm::Configure ()
     // Disable all interupt sources
     // Then try to connect the interrupt service routine
     //
-    BE_WRITE32 (pReg, InterruptEnable, 0);
+    NAT_WRITE32 (pReg, InterruptEnable, 0);
     if (OK != BusInterface->ConfigBusInterrupt((EPICS_ISR_FUNC)EgInterrupt, (void *)this))
         throw std::runtime_error(BusInterface->GetErrorText());
 
     //=====================
     // Initialize some member variables from the current hardware values
     //
-    FPGAVersion = BE_READ32 (pReg, FPGAVersion);
+    FPGAVersion = NAT_READ32 (pReg, FPGAVersion);
 
     //=====================
     // Output some debug informational messages if desired
@@ -385,7 +386,7 @@ evgMrm::IntEnable() {
 
 void
 evgMrm::Interrupt () {
-    BITCLR(BE,32, pReg, InterruptEnable, EVG_IRQ_ENABLE);
+    BITCLR(NAT,32, pReg, InterruptEnable, EVG_IRQ_ENABLE);
 }//end Interrupt()
 
 epicsStatus
