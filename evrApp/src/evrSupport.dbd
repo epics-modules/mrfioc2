@@ -5,8 +5,8 @@ device(longout, VME_IO, devLOEVRPreScaler, "EVR Prescaler")
 
 # Output devices
 # '#Lcard Atype Cindex S0 @'
-device(mbbi,    AB_IO, devMBBIOutput, "EVR Output")
-device(mbbo,    AB_IO, devMBBOOutput, "EVR Output")
+device(longin,     AB_IO, devLIOutput, "EVR Output")
+device(longout,    AB_IO, devLOOutput, "EVR Output")
 
 # EVR devices
 # '#Ccard S0 @'

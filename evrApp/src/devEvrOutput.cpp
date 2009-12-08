@@ -6,8 +6,8 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 
-#include <mbbiRecord.h>
-#include <mbboRecord.h>
+#include <longinRecord.h>
+#include <longoutRecord.h>
 
 #include "cardmap.h"
 #include "evr/evr.h"
@@ -54,19 +54,19 @@ try {
 }
 }
 
-/********** MBBO **************/
+/********** LONGOUT **************/
 
-static long init_mbbo(mbboRecord *prec)
+static long init_longout(longoutRecord *prec)
 {
   return init_record((dbCommon*)prec, &prec->out);
 }
 
-static long write_mbbo(mbboRecord *prec)
+static long write_longout(longoutRecord *prec)
 {
 try{
   Output* out=static_cast<Output*>(prec->dpvt);
 
-  out->setSource(prec->rval);
+  out->setSource(prec->val);
 
   return 0;
 
@@ -77,19 +77,19 @@ try{
 }
 
 
-/************* MBBI ****************/
+/************* LONGIN ****************/
 
-static long init_mbbi(mbbiRecord *pmbbi)
+static long init_longin(longinRecord *plongin)
 {
-  return init_record((dbCommon*)pmbbi, &pmbbi->inp);
+  return init_record((dbCommon*)plongin, &plongin->inp);
 }
 
-static long read_mbbi(mbbiRecord *prec)
+static long read_longin(longinRecord *prec)
 {
 try{
   Output* out=static_cast<Output*>(prec->dpvt);
 
-  prec->rval=out->source();
+  prec->val=out->source();
 
   return 0;
 } catch(std::exception& e) {
@@ -108,15 +108,15 @@ struct {
   DEVSUPFUN  init_record;
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  read;
-} devMBBIOutput = {
+} devLIOutput = {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_mbbi,
+  (DEVSUPFUN) init_longin,
   NULL,
-  (DEVSUPFUN) read_mbbi
+  (DEVSUPFUN) read_longin
 };
-epicsExportAddress(dset,devMBBIOutput);
+epicsExportAddress(dset,devLIOutput);
 
 struct {
   long num;
@@ -125,14 +125,14 @@ struct {
   DEVSUPFUN  init_record;
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  write;
-} devMBBOOutput = {
+} devLOOutput = {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_mbbo,
+  (DEVSUPFUN) init_longout,
   NULL,
-  (DEVSUPFUN) write_mbbo
+  (DEVSUPFUN) write_longout
 };
-epicsExportAddress(dset,devMBBOOutput);
+epicsExportAddress(dset,devLOOutput);
 
 };
