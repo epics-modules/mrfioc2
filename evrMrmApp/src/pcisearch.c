@@ -119,8 +119,10 @@ mrmevrdump(int verb)
       BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
       blen=LE_READ32(plx,LAS0BRD);
-      if(verb>=2)
+      if(verb>=2){
         printf("PLX range 0 config: 0x%08x\n",blen);
+        printf("PLX INTCSR %04x\n",LE_READ16(plx, INTCSR));
+      }
     }
 
     if(!!evr){

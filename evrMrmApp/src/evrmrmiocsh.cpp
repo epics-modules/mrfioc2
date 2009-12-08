@@ -78,24 +78,28 @@ setupAutoPCI(int inst)
     BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
 
+    /* Enable active high interrupt1 through the PLX to the PCI bus.
+     */
+    LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
+                            INTCSR_INT1_Polarity|
+                            INTCSR_PCI_Enable);
+
     // Install ISR
+
+    NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
+
+    // Acknowledge missed interrupts
+    //TODO: This avoids a spurious FIFO Full
+    NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
     EVRMRM *receiver=new EVRMRM(inst,evr);
 
-    int ilock=epicsInterruptLock();
-
-    if(devPCIConnectInterrupt(cur,EVRMRM::isr,receiver)){
-        epicsInterruptUnlock(ilock);
+    if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
         printf("Failed to install ISR\n");
     }else{
-        // Acknowledge missed interrupts
-        NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
-
         NAT_WRITE32(evr, IRQEnable,
-            IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr
+            IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr|IRQ_HWMapped|IRQ_Event
         );
-
-        epicsInterruptUnlock(ilock);
 
         storeEVR(inst,receiver);
     }
