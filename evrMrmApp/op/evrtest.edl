@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 87
-y 756
+x 392
+y 360
 w 381
-h 331
+h 400
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -455,5 +455,45 @@ nullColor index 0
 useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 23
+y 328
+w 81
+h 22
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Outputs"
+numPvs 4
+numDsps 5
+displayFileName {
+  0 "evrouttest.edl"
+  1 "evrouttest.edl"
+  2 "evrouttest.edl"
+  3 "evrouttest.edl"
+  4 "evrouttest.edl"
+}
+menuLabel {
+  0 "Output Mappings"
+  1 "IRQ"
+  2 "FP1"
+  3 "FP2"
+  4 "FP3"
+}
+symbols {
+  1 "O=irqmap:"
+  2 "O=fp1:"
+  3 "O=fp2:"
+  4 "O=fp3:"
+}
 endObjectProperties
 
