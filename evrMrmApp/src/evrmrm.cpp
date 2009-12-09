@@ -92,7 +92,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     prescalers.resize(nPS);
     for(size_t i=0; i<nPS; i++){
-        prescalers[i]=new MRMPreScaler(base+U32_Scaler(i));
+        prescalers[i]=new MRMPreScaler(*this,base+U32_Scaler(i));
     }
 }
 
