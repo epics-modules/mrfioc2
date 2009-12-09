@@ -44,7 +44,19 @@ REGINFO("CountPS", CounterPS, 32, 2),
 REGINFO("USecDiv", USecDiv, 32, 2),
 REGINFO("ClkCtrl", ClkCtrl, 32, 2),
 REGINFO("LogSts",  LogStatus, 32, 2),
-REGINFO("FracDiv", FracDiv, 32, 2)
+REGINFO("TSSec",TSSec, 32, 5),
+REGINFO("TSEvt",TSEvt, 32, 5),
+REGINFO("TSSecLath",TSSecLatch, 32, 5),
+REGINFO("TSEvtLath",TSEvtLatch, 32, 5),
+REGINFO("FracDiv", FracDiv, 32, 2),
+REGINFO("Scaler0",Scaler(0),32,5),
+REGINFO("Pul0Ctrl",PulserCtrl(0),32,5),
+REGINFO("Pul0Scal",PulserScal(0),32,5),
+REGINFO("Pul0Dely",PulserDely(0),32,5),
+REGINFO("Pul0Wdth",PulserWdth(0),32,5),
+REGINFO("FP0MAP",OutputMapFP(0),16,5),
+REGINFO("FPU0MAP",OutputMapFPUniv(0),16,5),
+REGINFO("RB0MAP",OutputMapRB(0),16,5)
 #undef REGINFO
 };
 
