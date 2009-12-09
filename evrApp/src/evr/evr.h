@@ -81,9 +81,8 @@ public:
   virtual double clock() const=0;
   virtual void clockSet(double)=0;
 
-  //! Test for PLL error condition
+  //! Internal PLL Status
   virtual bool pllLocked() const=0;
-  virtual IOSCANPVT pllChanged()=0;
 
   virtual epicsUInt32 uSecDiv() const=0;
 
@@ -91,8 +90,14 @@ public:
   virtual void setTsDiv(epicsUInt32)=0;
   /*@}*/
 
-  virtual IOSCANPVT recvError()=0;
+  /**\defgroup linksts Event Link Status
+   */
+  /*@{*/
+  virtual bool linkStatus() const=0;
+  virtual IOSCANPVT linkChanged()=0;
   virtual epicsUInt32 recvErrorCount() const=0;
+  /*@}*/
+
 
   virtual void tsLatch()=0;
   virtual void tsLatchReset()=0;

@@ -342,14 +342,14 @@ EVRMRM::pllLocked() const
     return READ32(base, ClkCtrl) & ClkCtrl_cglock;
 }
 
-IOSCANPVT
-EVRMRM::pllChanged()
+bool
+EVRMRM::linkStatus() const
 {
-    return 0;
+    return !(READ32(base, Status) & Status_legvio);
 }
 
 IOSCANPVT
-EVRMRM::recvError()
+EVRMRM::linkChanged()
 {
     return IRQrxError;
 }

@@ -45,12 +45,12 @@ try {
         card,
         &EVR::uSecDiv
     );
-  }else if( parm=="Receive Error" ){
+  }else if( parm=="Receive Error Count" ){
     prop=new property<EVR,epicsUInt32>(
         card,
         &EVR::recvErrorCount,
         0,
-        &EVR::recvError
+        &EVR::linkChanged
     );
   }else if( parm=="Timestamp Prescaler" ){
     prop=new property<EVR,epicsUInt32>(

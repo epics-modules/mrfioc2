@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 392
-y 360
+x 1137
+y 463
 w 381
 h 400
 font "helvetica-medium-r-18.0"
@@ -439,11 +439,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 111
-y 283
+x 206
+y 284
 w 73
 h 22
-controlPv "$(P)rxerror"
+controlPv "$(P)link:cnt"
 format "decimal"
 font "helvetica-medium-r-18.0"
 fgColor index 14
@@ -495,5 +495,29 @@ symbols {
   3 "O=fp2:"
   4 "O=fp3:"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 112
+y 284
+w 73
+h 22
+controlPv "$(P)link:sts"
+format "string"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 

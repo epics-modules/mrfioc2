@@ -50,12 +50,12 @@ public:
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
-  virtual IOSCANPVT pllChanged();
+
+  virtual bool linkStatus() const;
+  virtual IOSCANPVT linkChanged();
+  virtual epicsUInt32 recvErrorCount() const;
 
   virtual epicsUInt32 uSecDiv() const;
-
-  virtual IOSCANPVT recvError();
-  virtual epicsUInt32 recvErrorCount() const;
 
   virtual epicsUInt32 tsDiv() const;
   virtual void setTsDiv(epicsUInt32);

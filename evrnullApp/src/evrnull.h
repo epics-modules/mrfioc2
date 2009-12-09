@@ -71,13 +71,13 @@ public:
   virtual double clock() const{return 0.0;};
   virtual void clockSet(double){};
 
-  virtual bool pllLocked() const{return m_locked;};
-  virtual IOSCANPVT pllChanged(){return pllNotify;};
+  virtual bool pllLocked() const{return true;};
+
+  virtual bool linkStatus() const{return m_locked;};
+  virtual IOSCANPVT linkChanged(){return linkNotify;};
+  virtual epicsUInt32 recvErrorCount() const{return 0;};
 
   virtual epicsUInt32 uSecDiv() const{return 0;};
-
-  virtual IOSCANPVT recvError(){return 0;};
-  virtual epicsUInt32 recvErrorCount() const{return 0;};
 
   virtual epicsUInt32 tsDiv() const{return 0;};
   virtual void setTsDiv(epicsUInt32){};
@@ -96,7 +96,7 @@ private:
   bool m_enabled;
   bool m_locked;
   std::string m_name;
-  IOSCANPVT pllNotify;
+  IOSCANPVT linkNotify;
 
   typedef std::pair<epicsUInt32,epicsUInt32> smap_ent_t;
   typedef std::set<smap_ent_t> smap_t;
