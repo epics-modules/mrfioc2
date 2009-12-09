@@ -23,7 +23,10 @@ template<typename EVRSubclass>
 EVRSubclass*
 getEVR(short id)
 {
-  return dynamic_cast<EVRSubclass*>(getEVRBase(id));
+  EVR* base=getEVRBase(id);
+  if(!base)
+    return 0;
+  return dynamic_cast<EVRSubclass*>(base);
 };
 
 /**@brief Save the association between 'id' and 'dev'.
