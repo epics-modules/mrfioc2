@@ -47,6 +47,17 @@
 
 
 /**************************************************************************************************/
+/*  Symbol Definitions                                                                            */
+/**************************************************************************************************/
+
+//=====================
+// Event clock source
+//
+#define EVG_CLOCK_SRC_INTERNAL  0       // Event clock is generated internally
+#define EVG_CLOCK_SRC_RF        1       // Event clock is generated from the RF input port
+#define EVG_CLOCK_SRC_MAX       1       // Maximum value for outgoing link clock source
+
+/**************************************************************************************************/
 /*  Common Variable Declarations                                                                  */
 /**************************************************************************************************/
 
@@ -77,6 +88,7 @@ void            EgInterrupt      (EVG *pEvg);
 void            EgAddCard        (epicsInt32 CardNum, EVG *pEvg);
 EVG            *EgGetCard        (epicsInt32 CardNum);
 bool            EgConfigDisabled ();
+bool            EgInitDone       ();
 
 void            EgConflictCheck  (epicsInt32   CardNum,
                                   epicsInt32   BusType,

@@ -116,6 +116,13 @@ public:
     void SetDebugLevel (epicsInt32 level);
 
     //=====================
+    // Event Link Clock Setters
+    //
+    epicsStatus SetOutLinkClockSource (epicsInt16 ClockSource);
+    epicsStatus SetOutLinkClockSpeed  (epicsFloat64 ClockSpeed);
+    epicsStatus SetInLinkClockSpeed   (epicsFloat64 ClockSpeed);
+
+    //=====================
     // Card Configuration and Initialization Routines
     //
     void Configure  ();
@@ -139,6 +146,14 @@ public:
 
 
 /**************************************************************************************************/
+/*  Private Methods                                                                               */
+/**************************************************************************************************/
+
+private:
+    void SetFracSynth ();
+
+
+/**************************************************************************************************/
 /*  Private Data                                                                                  */
 /**************************************************************************************************/
 
@@ -148,14 +163,14 @@ private:
     // Card-Related Data
     //
     epicsInt32        CardNum;          // Logical card number for this card
-    epicsMutexId      CardLock;         // Mutex to lock access to the card
+    epicsMutex*       CardMutex;        // Mutex to lock access to the card
     epicsInt32*       DebugFlag;        // Pointer to which debug flag we should use
     epicsInt32        LocalDebugFlag;   // Card-specific debug level
 
     //=====================
     // Bus-Related Data
     //
-    mrfBusInterface  *BusInterface;     // Address of bus interface object
+    mrfBusInterface*  BusInterface;     // Address of bus interface object
     epicsInt32        BusType;          // Bus type for this card (VME, PCI, etc.)
     epicsInt32        SubUnit;          // Bus sub-unit address (e.g. VME Slot, PCI Index, etc.)
 
@@ -171,7 +186,8 @@ private:
     epicsFloat64      OutLinkFrequency; // Event clock frequency for the outgoing link
     epicsFloat64      InLinkFrequency;  // Event clock frequency for the incoming link
     epicsFloat64      SecsPerTick;      // Seconds per event clock tick (outgoing link)
-    epicsUInt32       FracSynthCtrl;    // Fractional synthesizer control word
+    epicsUInt32       FracSynthWord;    // Fractional synthesizer control word
+    epicsInt16        OutLinkSource;    // Clock source for outgoing event link
 
 };// end class evgMrm //
 

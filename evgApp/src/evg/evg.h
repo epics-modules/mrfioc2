@@ -28,6 +28,13 @@ public:
     virtual void         SetDebugLevel (epicsInt32 level) = 0;
 
     //=====================
+    // Event Link Clock Setters
+    //
+    epicsStatus SetOutLinkClockSource (epicsInt16 ClockSource);
+    epicsStatus SetOutLinkClockSpeed  (epicsFloat64 ClockSpeed);
+    epicsStatus SetInLinkClockSpeed   (epicsFloat64 ClockSpeed);
+
+    //=====================
     // Card Configuration and Initialization Routines
     //
     virtual void         Configure      () = 0;       // Initial card configuration

@@ -48,13 +48,18 @@
 #include <stdexcept>               // Standard C++ exception class
 
 #include <epicsTypes.h>            // EPICS Architecture-independent type definitions
+#include <epicsInterrupt.h>        // EPICS Interrupt context support routines
 #include <epicsMutex.h>            // EPICS Mutex support library
+#include <epicsThread.h>           // EPICS Thread support library
+
+#include <errlog.h>                // EPICS Error logging support library
 #include <iocsh.h>                 // EPICS IOC shell support library
 #include <registryFunction.h>      // EPICS Registry support library
 
 #include <mrfCommon.h>             // MRF Common definitions
 #include <mrfCommonIO.h>           // MRF Common I/O macros
 #include <mrfBusInterface.h>       // MRF Bus interface base class definition
+#include <mrfFracSynth.h>          // MRF fractional synthesizer support routines
 #include <mrfVmeBusInterface.h>    // MRF VME Bus interface class definition
 
 #include <drvEvg.h>                // Event generator driver infrastructure declarations
@@ -102,6 +107,7 @@
 |*
 \**************************************************************************************************/
 
+extern "C" {
 epicsStatus
 EgConfigureVME (
     epicsInt32    CardNum,  	     // Logical card number
@@ -172,6 +178,7 @@ EgConfigureVME (
     return OK;
 
 }//end EgConfigureVME()
+}//end extern "C"
 
 /**************************************************************************************************/
 /*                              Class Member Function Definitions                                 */
@@ -201,7 +208,7 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     // Initialize the card-related "meta data"
     //
     CardNum(BusInterface->GetCardNum()),         // Set the logical card number
-    CardLock(0),                                 // No card lock yet
+    CardMutex(new epicsMutex),                   // Create the card access mutex
     DebugFlag(&EvgGlobalDebugFlag),              // Use the global EVG debug level flag
 
     //=====================
@@ -222,7 +229,8 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     OutLinkFrequency(0.0),                      // Event clock frequency for the outgoing link
     InLinkFrequency(0.0),                       // Event clock frequency for the incoming link
     SecsPerTick(8.0),                           // Seconds per event clock tick
-    FracSynthCtrl(0)                            // Fractional synthesizer control word
+    FracSynthWord(0),                           // Fractional synthesizer control word
+    OutLinkSource(EVG_CLOCK_SRC_INTERNAL)       // Clock source for outgoing event link
 
 {}//end Constructor
 
@@ -326,7 +334,7 @@ evgMrm::SetDebugLevel (epicsInt32 level) {
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT OUTPUTS (member variables):
-|*      CardLock      = (epicsMutexId)       Mutex to lock access to this card.
+|*      CardMutex     = (epicsMutex *)       Mutex to lock access to this card.
 |*      FPGAVersion   = (epicsUInt32)        Card's firmware revision number
 |*
 \**************************************************************************************************/
@@ -334,12 +342,6 @@ evgMrm::SetDebugLevel (epicsInt32 level) {
 void
 evgMrm::Configure ()
 {
-
-    //=====================
-    // Create the card locking mutex
-    //
-    if (0 == (CardLock = epicsMutexCreate()))
-        throw std::runtime_error("Unable to create mutex for event generator card");
 
     //=====================
     // Try to register this card at the requested bus address space
@@ -389,6 +391,16 @@ evgMrm::RebootInit() {
 void
 evgMrm::IntEnable() {
     DEBUGPRINT (DP_INFO, *DebugFlag, ("IntEnable() Routine Called for EVG Card %d\n", CardNum));
+
+    //=====================
+    // Do all those things that we were waiting until the end of
+    // the initialization phase to do.
+    //
+    if (!InLinkFrequency)
+        InLinkFrequency = OutLinkFrequency;
+
+    SetFracSynth();
+
 }//end IntEnable()
 
 void
@@ -415,6 +427,231 @@ evgMrm::Report (epicsInt32 level) const {
 
 }//end Report()
 
+//**************************************************************************************************
+//  SetOutLinkClockSource () -- Set the Output Event Link Clock Source
+//**************************************************************************************************
+//! @par Description:
+//!   Sets the source for the outgoing event link event clock.  The clock can be either generated
+//!   internally (using the fractional synthesizer chip) or externally (using the RF input port).
+//!
+//! @par Function:
+//!   If configuration is still in progress, just record the clock source value.  If configuration
+//!   has completed, set the requested value in the ClockSource register.<br>
+//!
+//! @param      ClockSource = (input)  New value for the outgoing event link clock source.
+//!
+//! @return     Returns OK if the clock source was successfully configured.<br>
+//!             Returns ERROR if the clock source value was invalid.
+//!
+//! @par Member Variables Referenced:
+//! - \e        OutLinkSource = (modified) The requested outgoing event link clock source
+//! - \e        pReg          = (input)    Address of the EVG register map
+//!
+//! @note
+//! - Note that if the incoming link and the outgoing link have different clock frequencies,
+//!   then the outgoing link's clock source may not be set to "Internal".
+//!
+//**************************************************************************************************
+
+epicsStatus
+evgMrm::SetOutLinkClockSource (epicsInt16 ClockSource)
+{
+    //=====================
+    // Local variables
+    //
+    epicsStatus   status = OK;  // Local status variable
+
+    //=====================
+    // Range check
+    //
+    if ((ClockSource < 0) || (ClockSource > EVG_CLOCK_SRC_MAX)) {
+        errlogPrintf ("Invalid output link clock source (%d)\n", ClockSource);
+        return ERROR;
+    }//end if value out of range
+
+    //=====================
+    // Lock the card and record the desired setting
+    //
+    CardMutex->lock();
+    OutLinkSource = ClockSource;
+
+    //=====================
+    // If initialization is finished, set the clock source
+    //
+    if (EgInitDone()) {
+
+        //=====================
+        // Do not allow the out link clock source to be "Internal" if the out link frequency
+        // does not equal the in link frequency.
+        //
+        if ((EVG_CLK_SRC_EXTRF == ClockSource) && (InLinkFrequency != OutLinkFrequency)) {
+            errlogPrintf ("Cannot set outgoing link clock source to \"Internal\" when\n");
+            errlogPrintf ("Incoming link frequency does not equal outgoing link frequency");
+
+            status = ERROR;
+            ClockSource = EVG_CLOCK_SRC_RF;
+        }//end if trying to set internal clock source when input freq. not equal output freq.
+
+        //=====================
+        // Set the outgoing event link clock source
+        //
+        switch (ClockSource) {
+
+        case EVG_CLOCK_SRC_INTERNAL:  // Use internal fractional synthesizer to generate the clock
+            BITCLR (NAT, 8, pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+            break;
+
+        case EVG_CLOCK_SRC_RF:        // Use external RF source to generate the clock
+            BITSET (NAT, 8, pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+            break;
+
+        }//end switch
+    }//end if we are not still in configuration mode
+
+    //=====================
+    // Release the card mutex and return
+    //
+    CardMutex->unlock();
+    return status;
+
+}//end SetOutLinkClockSource()
+
+//**************************************************************************************************
+//  SetOutLinkClockSpeed () -- Set the Output Event Link Clock Speed
+//**************************************************************************************************
+//! @par Description:
+//!   Sets the event clock speed for the outgoing event link.
+//!
+//! @par Function:
+//!   If configuration is still in progress, just record the clock source value.  If configuration
+//!   has completed, set the requested value in the ClockSpeed register.
+//!   
+//!
+//! @param      ClockSpeed = (input)  New value (in megahertz) for the outgoing event link
+//!                                   clock speed
+//!
+//! @return     Returns OK if the clock speed was successfully set.<br>
+//!             Returns ERROR if the clock speed value was out of range.
+//!
+//! @par Member Variables Referenced:
+//! - \e        CardMutex        = (input)    Mutex guarding access to this card
+//! - \e        InLinkFrequency  = (input)    The requested incoming event link clock frequency
+//! - \e        OutLinkFrequency = (modified) The requested outgoing event link clock frequency
+//! - \e        SecsPerTick      = (modified) Seconds per tick.  Scale factor for ai/ao records
+//! - \e        FracSynthWord    = (modified) Fractional synthesizer control word
+//!
+//**************************************************************************************************
+
+epicsStatus
+evgMrm::SetOutLinkClockSpeed (epicsFloat64 ClockSpeed)
+{
+    //=====================
+    // Local variables
+    //
+    epicsUInt32    ControlWord; // Fractional synthesizer control word for requested frequency
+    epicsFloat64   Error;       // Error (in ppm) between requested frequency & control word
+
+    //=====================
+    // See if the requested clock frequency can be accommodated by the hardware
+    //
+    ControlWord = FracSynthControlWord (ClockSpeed, MRF_FRAC_SYNTH_REF, *DebugFlag, &Error);
+    if ((!ControlWord) || (Error > 100.0)) {
+        errlogPrintf ("Cannot set event clock speed to %f MHz.\n", ClockSpeed);
+        return ERROR;
+    }//end if value out of range
+
+    //=====================
+    // Lock access to the card and record the desired setting
+    //
+    CardMutex->lock();
+    OutLinkFrequency = ClockSpeed;
+    SecsPerTick = 1e-6 / OutLinkFrequency;
+
+    //=====================
+    // If we haven't set a frequency for the incoming event link,
+    // use the outgoing link frequency to set the fractional synthesizer.
+    //
+    if (!InLinkFrequency)
+        FracSynthWord = ControlWord;
+
+    //=====================
+    // If initialization is finished, and no incoming link frequency has been set,
+    // use the outgoing event link clock speed to set the fractional synthesizer.
+    //
+    if (EgInitDone() && !InLinkFrequency)
+        SetFracSynth();
+
+    //=====================
+    // Unlock the card and return
+    //
+    CardMutex->unlock();
+    return OK;
+
+}//end SetOutLinkClockSpeed()
+
+//**************************************************************************************************
+//  SetInLinkClockSpeed () -- Set the Input Event Link Clock Speed
+//**************************************************************************************************
+//! @par Description:
+//!   Sets the event clock speed for the incoming event link.
+//!
+//! @par Function:
+//!   If configuration is still in progress, just record the clock source value.  If configuration
+//!   has completed, set the requested value in the ClockSpeed register.
+//!   
+//!
+//! @param      ClockSpeed = (input)  New value (in megahertz) for the outgoing event link
+//!                                   clock speed
+//!
+//! @return     Returns OK if the clock speed was successfully set.<br>
+//!             Returns ERROR if the clock speed value was out of range.
+//!
+//! @par Member Variables Referenced:
+//! - \e        CardMutex        = (input)    Mutex guarding access to this card
+//! - \e        InLinkFrequency  = (modified) The requested outgoing event link clock frequency
+//! - \e        FracSynthWord    = (modified) Fractional synthesizer control word
+//!
+//**************************************************************************************************
+
+epicsStatus
+evgMrm::SetInLinkClockSpeed (epicsFloat64 ClockSpeed)
+{
+    //=====================
+    // Local variables
+    //
+    epicsUInt32    ControlWord; // Fractional synthesizer control word for requested frequency
+    epicsFloat64   Error;       // Error (in ppm) between requested frequency & control word
+
+    //=====================
+    // See if the requested clock frequency can be accommodated by the hardware
+    //
+    ControlWord = FracSynthControlWord (ClockSpeed, MRF_FRAC_SYNTH_REF, *DebugFlag, &Error);
+    if ((!ControlWord) || (Error > 100.0)) {
+        errlogPrintf ("Cannot set event clock speed to %f MHz.\n", ClockSpeed);
+        return ERROR;
+    }//end if value out of range
+
+    //=====================
+    // Lock access to the card and record the desired setting
+    //
+    CardMutex->lock();
+    InLinkFrequency = ClockSpeed;
+    FracSynthWord = ControlWord;
+
+    //=====================
+    // If initialization is finished, set the incoming event link frequency
+    // to set the fractional synthesizer control word.
+    //
+    if (EgInitDone()) SetFracSynth();
+
+    //=====================
+    // Unlock the card and return
+    //
+    CardMutex->unlock();
+    return OK;
+
+}//end SetInLinkClockSpeed()
+
 /**************************************************************************************************
 |* ~evgMrm () -- Class Destructor
 |*
@@ -431,7 +668,7 @@ evgMrm::Report (epicsInt32 level) const {
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT INPUTS (member variables):
 |*      BusInterface  (mrfBusInterface *) Pointer to the hardware bus interface object
-|*      CardLock      (epicsMutexId)      Mutex to lock access to the card.
+|*      CardMutex     (epicsMutex *)      Mutex to lock access to the card.
 |*
 \**************************************************************************************************/
 
@@ -443,17 +680,97 @@ evgMrm::~evgMrm () {
     DEBUGPRINT (DP_INFO, *DebugFlag,("Destructor called for event generator card %d\n", CardNum));
 
     //=====================
-    // Delete the bus interface object
+    // Delete the bus interface object and the card mutex object
     //
     delete BusInterface;
-
-    //=====================
-    // Delete the card lock mutex
-    //
-    if (0 != CardLock)
-        epicsMutexDestroy (CardLock);
+    delete CardMutex;
 
 }//end destructor
+
+/**************************************************************************************************
+|* SetFracSynth () -- Load a new Control Word Into the Fractional Synthesizer Chip
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   Sets the fractional synthesizer control word.  The fractional synthesizer has two functions:
+|*     1) It sets the expected frequency for the incoming event link.
+|*     2) If the outgoing event link's clock source is set to "Internal", it also sets the
+|*        frequency of the outgoing event link clock.
+|*
+|*   If the new control word is the same as the control word already loaded, exit without doing
+|*   anything (in order to avoid a resync-bump).  Once the new control word has been loaded,
+|*   wait for it to take effect and then clear the resulting "Receiver Violation" error.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*      SetFracSynth ();
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT INPUTS (member variables):
+|*      CardMutex     = (epicsMutex *) Mutex guarding access to this card
+|*      FracSynthWord = (epicsUInt32)  Desired fractional synthesizer control word
+|*      pReg          = (epicsUInt32)  Address of the EVG register map
+|*
+|*
+\**************************************************************************************************/
+
+void
+evgMrm::SetFracSynth ()
+{
+    epicsUInt32     EnableMask;   // Currently enabled EVG interrupts
+    epicsUInt32     Key;          // Used to restore interrupt level after locking
+
+    //=====================
+    // If the desired fractional synthesizer control word was never set,
+    // use whatever the current hardware is set to.
+    //
+    if (!FracSynthWord) {
+        FracSynthWord = NAT_READ32 (pReg, FracSynthWord);
+        return;
+    }//end if nobody set the control word.
+
+    //=====================
+    // If the requested control word is the same as the current fractional synthesizer
+    // control word, exit without writing the control word so that we don't cause a "bump"
+    // in the gate outputs.
+    //
+    if (NAT_READ32(pReg, FracSynthWord) == FracSynthWord)
+        return;
+
+    //=====================
+    // Disable incomming event link receiver violation interrupts while we set
+    // the fractional synthesizer control word.
+    //
+    CardMutex->lock();
+    Key = epicsInterruptLock();
+    EnableMask = NAT_READ32 (pReg, InterruptEnable);
+    NAT_WRITE32 (pReg, InterruptEnable, (EnableMask & ~(EVG_IRQ_RXVIO)));
+    epicsInterruptUnlock (Key);
+
+    //=====================
+    // Set the new fractional synthesizer control word and wait for it to synch up.
+    //
+    NAT_WRITE32 (pReg, FracSynthWord, FracSynthWord);
+    epicsThreadSleep (0.5);
+
+    //=====================
+    // Reset the "Receiver Violation" error that this probably caused.
+    //
+    Key = epicsInterruptLock();
+    BITCLR (NAT, 32, pReg, InterruptFlag, EVG_IRQ_RXVIO);
+
+    //=====================
+    // Reset the interrupt enable mask.
+    //
+    if (EnableMask & EVG_IRQ_RXVIO)
+        NAT_WRITE32 (pReg, InterruptEnable, EnableMask);
+
+    //=====================
+    // Release the card lock, and return
+    //
+    epicsInterruptUnlock (Key);
+    CardMutex->unlock();
+
+}//end SetFracSynth()
 
 /**************************************************************************************************/
 /*                              EPICS IOC Shell Registery                                         */

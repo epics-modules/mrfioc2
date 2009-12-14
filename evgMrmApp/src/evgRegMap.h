@@ -176,11 +176,16 @@
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/*  Interrupt Enable Register (0x000c) Bit Assignments                                            */
+/*  Interrupt Flag Register (0x000c) and Interrupt Enable Register (0x0008) Bit Assignments       */
 /**************************************************************************************************/
 
-#define EVG_IRQ_ENABLE   0x80000000     // Master Interrupt Enable Bit
-#define EVG_IRQ_DBUFF    0x00000020     // Data Buffer Interrupt Bit
-#define EVG_IRQ_FIFO     0x00000002     // Event FIFO Full Interrupt Bit
-#define EVG_IRQ_RXVIO    0x00000001     // Receiver Violation Bit
+#define EVG_IRQ_ENABLE          0x80000000     // Master Interrupt Enable Bit
+#define EVG_IRQ_DBUFF           0x00000020     // Data Buffer Interrupt Bit
+#define EVG_IRQ_FIFO            0x00000002     // Event FIFO Full Interrupt Bit
+#define EVG_IRQ_RXVIO           0x00000001     // Receiver Violation Bit
 
+/**************************************************************************************************/
+/*  Outgoing Event Link Clock Source Register (0x0050) Bit Assignments                            */
+/**************************************************************************************************/
+
+#define EVG_CLK_SRC_EXTRF             0x01     // External/Internal reference clock select
