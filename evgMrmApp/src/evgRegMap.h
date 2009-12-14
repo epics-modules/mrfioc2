@@ -176,10 +176,14 @@
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/*  Interrupt Flag Register (0x000c) and Interrupt Enable Register (0x0008) Bit Assignments       */
+/*  Interrupt Flag Register (0x0008) and Interrupt Enable Register (0x000c) Bit Assignments       */
 /**************************************************************************************************/
 
 #define EVG_IRQ_ENABLE          0x80000000     // Master Interrupt Enable Bit
+#define EVG_IRQ_STOP_RAM1       0x00002000     // Sequence RAM 1 Stop Interrupt Bit
+#define EVG_IRQ_STOP_RAM0       0x00001000     // Sequence RAM 0 Stop Interrupt Bit
+#define EVG_IRQ_START_RAM1      0x00000200     // Sequence RAM 1 Start Interrupt Bit
+#define EVG_IRQ_START_RAM0      0x00000100     // Sequence RAM 0 Start Interrupt Bit
 #define EVG_IRQ_DBUFF           0x00000020     // Data Buffer Interrupt Bit
 #define EVG_IRQ_FIFO            0x00000002     // Event FIFO Full Interrupt Bit
 #define EVG_IRQ_RXVIO           0x00000001     // Receiver Violation Bit

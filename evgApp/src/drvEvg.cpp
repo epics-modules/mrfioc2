@@ -3,7 +3,7 @@
 #include <stdexcept>            // Standard C++ exception definitions
 #include <map>                  // Standard C++ map template
 
-#include <string.h>
+#include <string.h>             // Standard C string processing routines
 #include <errno.h>              // Standard C global error number definitions
 
 #include <epicsStdlib.h>        // EPICS Standard C library support routines
