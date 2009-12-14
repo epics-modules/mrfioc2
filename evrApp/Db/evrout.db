@@ -1,17 +1,11 @@
 
-record(mbbo, "$(P)$(O)src:set") {
+record(longout, "$(P)$(O)src:set") {
   field( DTYP, "EVR Output")
   field( OUT , "#L$(C) A$(OT) C$(IDX) S0 @Map")
-  field( ZRST, "Float (default)")
-  field( ONST, "Force Low")
-  field( TWST, "Force High")
+  field( FLNK, "$(P)$(O)src")
 }
 
-record(mbbi, "$(P)$(O)src") {
+record(longin, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
   field( INP , "#L$(C) A$(OT) C$(IDX) S0 @Map")
-  field( SCAN, "1 second")
-  field( ZRST, "Float (default)")
-  field( ONST, "Force Low")
-  field( TWST, "Force High")
 }

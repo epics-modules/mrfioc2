@@ -40,8 +40,14 @@ try {
     prop=new property<EVR,bool>(
         card,
         &EVR::pllLocked,
+        0
+    );
+  }else if( parm=="Link Status" ){
+    prop=new property<EVR,bool>(
+        card,
+        &EVR::linkStatus,
         0,
-        &EVR::pllChanged
+        &EVR::linkChanged
     );
   }else
     throw std::runtime_error("Invalid parm string in link");

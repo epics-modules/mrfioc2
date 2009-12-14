@@ -182,9 +182,9 @@ struct {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_si,
+  (DEVSUPFUN) init_lo,
   NULL,
-  (DEVSUPFUN) read_string
+  (DEVSUPFUN) write_lo
 };
 epicsExportAddress(dset,devLOEVRMap);
 
@@ -199,9 +199,9 @@ struct {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_lo,
+  (DEVSUPFUN) init_si,
   NULL,
-  (DEVSUPFUN) write_lo
+  (DEVSUPFUN) read_string
 };
 epicsExportAddress(dset,devSIEVRMap);
 

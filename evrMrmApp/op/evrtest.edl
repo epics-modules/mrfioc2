@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 87
-y 756
+x 1137
+y 463
 w 381
-h 331
+h 400
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -439,11 +439,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 111
-y 283
+x 206
+y 284
 w 73
 h 22
-controlPv "$(P)rxerror"
+controlPv "$(P)link:cnt"
 format "decimal"
 font "helvetica-medium-r-18.0"
 fgColor index 14
@@ -455,5 +455,150 @@ nullColor index 0
 useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 23
+y 328
+w 81
+h 22
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Outputs"
+numPvs 4
+numDsps 5
+displayFileName {
+  0 "evrouttest.edl"
+  1 "evrouttest.edl"
+  2 "evrouttest.edl"
+  3 "evrouttest.edl"
+  4 "evrouttest.edl"
+}
+menuLabel {
+  0 "Output Mappings"
+  1 "IRQ"
+  2 "FP1"
+  3 "FP2"
+  4 "FP3"
+}
+symbols {
+  1 "O=irqmap:"
+  2 "O=fp1:"
+  3 "O=fp2:"
+  4 "O=fp3:"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 112
+y 284
+w 73
+h 22
+controlPv "$(P)link:sts"
+format "string"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 128
+y 326
+w 86
+h 22
+controlPv "$(P)scale1"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 126
+y 360
+w 96
+h 22
+controlPv "$(P)scale1.RVAL"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+useAlarmBorder
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 229
+y 326
+w 68
+h 22
+controlPv "$(P)scale1:raw:set"
+format "decimal"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+clipToDspLimits
 endObjectProperties
 

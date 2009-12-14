@@ -1,0 +1,25 @@
+
+record(ao, "$(P)$(O)") {
+  field( DTYP, "EVR Prescaler")
+  field( OUT , "#C$(C) S$(IDX) @Divide")
+  field( DESC, "PreScaler $(IDX) Output freq")
+  field( PREC, 6)
+  field( FLNK, "$(P)$(O):raw")
+}
+
+record(longout, "$(P)$(O):raw:set") {
+  field( DTYP, "EVR Prescaler")
+  field( OUT , "#C$(C) S$(IDX) @Divide")
+  field( HOPR, 0xffff)
+  field( HIGH, 0xffff)
+  field( LOW , 0)
+  field( LOPR, 0)
+  field( HSV , MAJOR)
+  field( LSV , MAJOR)
+  field( FLNK, "$(P)$(O):raw")
+}
+
+record(longin, "$(P)$(O):raw") {
+  field( DTYP, "EVR Prescaler")
+  field( INP , "#C$(C) S$(IDX) @Divide")
+}

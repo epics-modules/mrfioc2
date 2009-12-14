@@ -13,11 +13,29 @@ record(bo, "$(P)enable:set") {
   field(OUT , "#C$(C) S0 @Enable")
   field(DESC, "Master enable for EVR device")
   field(PINI, "YES")
-  field(VAL , 0)
+  field(VAL , 1)
   field(UDF , 0)
   field(FLNK, "$(P)enable")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+}
+
+record(bi, "$(P)link:sts") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Link Status")
+  field(DESC, "Status of event link")
+  field(SCAN, "1 second")
+  field(ZNAM, "Fail")
+  field(ONAM, "OK")
+}
+
+record(longin, "$(P)link:cnt") {
+  field(DTYP, "EVR")
+  field(DESC, "Receive Error Count")
+  field(INP , "#C$(C) S0 @Receive Error Count")
+  field(PINI, "YES")
+  field(SCAN, "1 second")
+  field(DESC, "Rx error count")
 }
 
 record(ao, "$(P)clock:set") {
@@ -25,7 +43,7 @@ record(ao, "$(P)clock:set") {
   field(OUT , "#C$(C) S0 @Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , "124.9135")
+  field(VAL , 124.9135)
   field(EGU , "MHz")
   field(PREC, 3)
   field(FLNK, "$(P)clock")
@@ -75,14 +93,6 @@ record(longin, "$(P)ver") {
   field(DESC, "Firmware version")
 }
 
-record(longin, "$(P)error") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Receive Error")
-  field(PINI, "YES")
-  field(SCAN, "1 second")
-  field(DESC, "Rx error count")
-}
-
 record(longout, "$(P)ts:div:set") {
   field(DTYP, "EVR")
   field(OUT , "#C$(C) S0 @Timestamp Prescaler")
@@ -109,10 +119,4 @@ record(longin, "$(P)ts:cnt") {
   field(DTYP, "EVR")
   field(INP , "#C$(C) S0 @Timestamp Counter")
   field(SCAN, "1 second")
-}
-
-record(longin, "$(P)rxerror") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Receive Error")
-  field(SCAN, "I/O Intr")
 }

@@ -7,9 +7,9 @@ EVRNull::EVRNull(const char* name) :
    m_enabled(false)
   ,m_locked(false)
   ,m_name(name)
-  ,pllNotify()
+  ,linkNotify()
 {
-  scanIoInit(&pllNotify);
+  scanIoInit(&linkNotify);
 
   for(int i=0; i<=12; i++){
     outmap[268+i]=new OutputNull();
@@ -26,7 +26,7 @@ EVRNull::enable(bool v)
 {
   m_enabled=v;
   m_locked=v;
-  scanIoRequest(pllNotify);
+  scanIoRequest(linkNotify);
 }
 
 bool

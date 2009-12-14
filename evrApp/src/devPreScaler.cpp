@@ -1,11 +1,12 @@
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <epicsExport.h>
 #include <dbAccess.h>
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 
+#include <aoRecord.h>
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
@@ -49,14 +50,19 @@ try {
 }
 }
 
-static long init_in(longinRecord *pli)
+static long init_li(longinRecord *prec)
 {
-  return init_record((dbCommon*)pli, &pli->inp);
+  return init_record((dbCommon*)prec, &prec->inp);
 }
 
-static long init_out(longoutRecord *plo)
+static long init_lo(longoutRecord *prec)
 {
-  return init_record((dbCommon*)plo, &plo->out);
+  return init_record((dbCommon*)prec, &prec->out);
+}
+
+static long init_ao(aoRecord *prec)
+{
+  return init_record((dbCommon*)prec, &prec->out);
 }
 
 static long read_long(longinRecord *pli)
@@ -89,6 +95,28 @@ try {
 }
 }
 
+static long write_analog(aoRecord *prec)
+{
+try {
+
+  PreScaler* scaler=static_cast<PreScaler*>(prec->dpvt);
+
+  double val=scaler->owner.clock();
+
+  val /= prec->val;
+
+  scaler->setPrescaler(val);
+
+  prec->rval=val;
+  prec->rbv=scaler->prescaler();
+
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return 1;
+}
+}
+
 extern "C" {
 
 struct {
@@ -102,7 +130,7 @@ struct {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_in,
+  (DEVSUPFUN) init_li,
   NULL,
   (DEVSUPFUN) read_long
 };
@@ -119,10 +147,29 @@ struct {
   5,
   NULL,
   NULL,
-  (DEVSUPFUN) init_out,
+  (DEVSUPFUN) init_lo,
   NULL,
   (DEVSUPFUN) write_long
 };
 epicsExportAddress(dset,devLOEVRPreScaler);
+
+struct {
+  long num;
+  DEVSUPFUN  report;
+  DEVSUPFUN  init;
+  DEVSUPFUN  init_record;
+  DEVSUPFUN  get_ioint_info;
+  DEVSUPFUN  write_long;
+  DEVSUPFUN  special_linconv;
+} devAOEVRPreScaler = {
+  6,
+  NULL,
+  NULL,
+  (DEVSUPFUN) init_ao,
+  NULL,
+  (DEVSUPFUN) write_analog,
+  NULL
+};
+epicsExportAddress(dset,devAOEVRPreScaler);
 
 }; // extern "C"
