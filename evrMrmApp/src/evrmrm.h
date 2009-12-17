@@ -71,10 +71,10 @@ public:
   virtual IOSCANPVT heartbeatOccured();
 
   static void isr(void*);
-private:
 
   const int id;
   volatile unsigned char * const base;
+private:
 
   epicsUInt32 count_recv_error;
   epicsUInt32 count_hardware_irq;

@@ -98,6 +98,26 @@ setupPCI(int id,int b,int d,int f)
   }
 }
 
+static
+void
+printRamEvt(EVRMRM *evr,int evt,int ram)
+{
+  if(evt<=0 || evt>255)
+    return;
+  if(ram<0 || ram>1)
+    return;
+
+  epicsUInt32 map[4];
+
+  map[0]=NAT_READ32(evr->base, MappingRam(ram,evt,Internal));
+  map[1]=NAT_READ32(evr->base, MappingRam(ram,evt,Trigger));
+  map[2]=NAT_READ32(evr->base, MappingRam(ram,evt,Set));
+  map[3]=NAT_READ32(evr->base, MappingRam(ram,evt,Reset));
+
+  printf("Event 0x%02x %3d ",evt,evt);
+  printf("%08x %08x %08x %08x\n",map[0],map[1],map[2],map[3]);
+}
+
 /**
  * Automatic discovery and configuration of all
  * compatible EVRs in the system.
@@ -135,9 +155,42 @@ static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 }
 
 extern "C"
+void
+mrmEvrDumpMap(int id,int evt,int ram)
+{
+  EVRMRM *card=getEVR<EVRMRM>(id);
+  if(!card){
+    printf("Invalid card\n");
+    return;
+  }
+  printf("Print ram #%d\n",ram);
+  if(evt>0){
+    // Print a single event
+    printRamEvt(card,evt,ram);
+    return;
+  }
+  for(evt=1;evt<=255;evt++){
+    printRamEvt(card,evt,ram);
+  }
+}
+
+static const iocshArg mrmEvrDumpMapArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrDumpMapArg1 = { "Event code",iocshArgInt};
+static const iocshArg mrmEvrDumpMapArg2 = { "Mapping select 0 or 1",iocshArgInt};
+static const iocshArg * const mrmEvrDumpMapArgs[3] =
+{&mrmEvrDumpMapArg0,&mrmEvrDumpMapArg1,&mrmEvrDumpMapArg2};
+static const iocshFuncDef mrmEvrDumpMapFuncDef =
+    {"mrmEvrDumpMap",3,mrmEvrDumpMapArgs};
+static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
+{
+    mrmEvrDumpMap(args[0].ival,args[1].ival,args[2].ival);
+}
+
+extern "C"
 void mrmsetupreg()
 {
   iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
+  iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
 }
 
 epicsExportRegistrar(mrmsetupreg);

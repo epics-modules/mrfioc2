@@ -2,6 +2,7 @@
 record(longout, "$(P)map:$(M)") {
   field( DTYP, "EVR Mapping" )
   field( OUT , "#C$(C) S$(func) @")
+  field( PINI, "YES")
   field( DESC, "Mapping for $(M)")
-  field( VAL , 0) # default to disabled
+  field( VAL , $(EVT))
 }
