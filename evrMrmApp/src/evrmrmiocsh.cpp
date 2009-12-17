@@ -36,76 +36,66 @@ static const epicsPCIID mrmevrs[] = {
 };
 
 static
-int
-setupAutoPCI(int inst)
+void
+setupPCI(int id,int b,int d,int f)
 {
+  const epicsPCIDevice *cur=0;
+  if( devPCIFindBDF(mrmevrs,b,d,f,&cur) ){
+    printf("PCI Device not found\n");
+    return;
+  }
 
-  if(DBG)
-    printf("Searching for PCI EVRs\n");
+  printf("Device %u  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
 
-  // 10 is an arbitrary number to prevent an infinite loop
-  for(; inst<10; inst++)
+  volatile epicsUInt8 *plx, *evr;
+
+  if( devPCIToLocalAddr(cur,0,(volatile void**)&plx) ||
+      devPCIToLocalAddr(cur,2,(volatile void**)&evr))
   {
-    const epicsPCIDevice *cur=0;
-    if( devPCIFind(mrmevrs,inst,&cur) ){
-      if(DBG) printf("Done\n");
-      break;
-    }
+      printf("Failed to map BARs 0 and 2\n");
+      return;
+  }
+  if(!plx || !evr){
+      printf("BARs mapped to zero? (%08lx,%08lx)\n",
+              (unsigned long)plx,(unsigned long)evr);
+      return;
+  }
 
-    printf("Device %u  %u:%u.%u\n",inst,cur->bus,cur->device,cur->function);
-
-    volatile epicsUInt8 *plx, *evr;
-
-    if( devPCIToLocalAddr(cur,0,(volatile void**)&plx) ||
-        devPCIToLocalAddr(cur,2,(volatile void**)&evr))
-    {
-        printf("Failed to map BARs 0 and 2\n");
-        continue;
-    }
-    if(!plx || !evr){
-        printf("BARs mapped to zero? (%08lx,%08lx)\n",
-                (unsigned long)plx,(unsigned long)evr);
-        continue;
-    }
-
-    /* Use the PLX device on the EVR to swap access on
-     * little endian systems so we don't have no worry about
-     * byte order :)
-     */
+  /* Use the PLX device on the EVR to swap access on
+   * little endian systems so we don't have no worry about
+   * byte order :)
+   */
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-    BITSET(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
+  BITSET(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-    BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
+  BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
 
-    /* Enable active high interrupt1 through the PLX to the PCI bus.
-     */
-    LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
+  /* Enable active high interrupt1 through the PLX to the PCI bus.
+   */
+  LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
                             INTCSR_INT1_Polarity|
                             INTCSR_PCI_Enable);
 
-    // Install ISR
+  // Install ISR
 
-    NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
+  NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    // Acknowledge missed interrupts
-    //TODO: This avoids a spurious FIFO Full
-    NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
+  // Acknowledge missed interrupts
+  //TODO: This avoids a spurious FIFO Full
+  NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
-    EVRMRM *receiver=new EVRMRM(inst,evr);
+  EVRMRM *receiver=new EVRMRM(id,evr);
 
-    if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
-        printf("Failed to install ISR\n");
-    }else{
-        NAT_WRITE32(evr, IRQEnable,
-            IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr|IRQ_HWMapped|IRQ_Event
-        );
+  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
+      printf("Failed to install ISR\n");
+  }else{
+      NAT_WRITE32(evr, IRQEnable,
+          IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr|IRQ_HWMapped|IRQ_Event
+      );
 
-        storeEVR(inst,receiver);
-    }
+      storeEVR(id,receiver);
   }
-
-  return inst;
 }
 
 /**
@@ -118,39 +108,36 @@ setupAutoPCI(int inst)
  */
 extern "C"
 void
-mrmevrSetupAuto(void)
+mrmEvrSetupPCI(int id,int b,int d,int f)
 {
 try {
-  if(!!getEVR<EVR>(0))
-    printf("mrmevrSetupAuto was already run\n");
+  if(!!getEVR<EVR>(id))
+    printf("ID %d already used run\n",id);
 
-  unsigned int inst=0;
-
-  inst=setupAutoPCI(inst);
-
-  //inst=setupAutoVME64(inst);
-
-  if(DBG)
-    printf("%u EVRs\n",inst);
+  setupPCI(id,b,d,f);
 
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
 }
 }
 
-static const iocshArg * const mrmevrSetupAutoArgs[0] =
-{};
-static const iocshFuncDef mrmevrSetupAutoFuncDef =
-    {"mrmevrSetupAuto",0,mrmevrSetupAutoArgs};
-static void mrmevrSetupAutoCallFunc(const iocshArgBuf *args)
+static const iocshArg mrmEvrSetupPCIArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg3 = { "Function number",iocshArgInt};
+static const iocshArg * const mrmEvrSetupPCIArgs[4] =
+{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2,&mrmEvrSetupPCIArg3};
+static const iocshFuncDef mrmEvrSetupPCIFuncDef =
+    {"mrmEvrSetupPCI",4,mrmEvrSetupPCIArgs};
+static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmevrSetupAuto();
+    mrmEvrSetupPCI(args[0].ival,args[1].ival,args[2].ival,args[3].ival);
 }
 
 extern "C"
 void mrmsetupreg()
 {
-  iocshRegister(&mrmevrSetupAutoFuncDef,mrmevrSetupAutoCallFunc);
+  iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
 }
 
 epicsExportRegistrar(mrmsetupreg);
