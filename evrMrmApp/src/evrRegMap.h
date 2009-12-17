@@ -184,15 +184,16 @@ enum evrForm {
 
 /* 0 <= M <= 1   ram select
  * 0 <= E <= 255 event code number
+ * 0 <= N <= 15  Byte
  *
  * Internal, Trigger, Set, or Reset - Block select
  */
 #define U32_MappingRam_base 0x4000
 
-#define MappingRamBlockInternal  0
-#define MappingRamBlockTrigger   1
-#define MappingRamBlockSet       2
-#define MappingRamBlockReset     3
+#define MappingRamBlockInternal  0x0
+#define MappingRamBlockTrigger   0x4
+#define MappingRamBlockSet       0x8
+#define MappingRamBlockReset     0xc
 
 #define U32__MappingRam(M,E,N) (U32_MappingRam_base + (0x2000*(M)) + (0x10*(E)) + (N))
 #define U32_MappingRam(M,E,N) U32__MappingRam(M,E, MappingRamBlock##N)
