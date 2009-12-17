@@ -12,7 +12,6 @@ LIBRARY_IOC = pci
 
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
-INC += pciEndian.h
 pci_SRCS += devLibPCI.c
 
 pci_SRCS += osdPCI.c
