@@ -34,6 +34,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
   ,outputs()
+  ,prescalers()
+  ,pulsers()
 {
     epicsUInt32 v = READ32(base, FWVersion),evr;
 
@@ -55,6 +57,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
 
+    size_t nPul=10;
     size_t nPS=3;
     size_t nOFP=0, nOFPUV=0, nORB=0;
 
@@ -93,6 +96,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     prescalers.resize(nPS);
     for(size_t i=0; i<nPS; i++){
         prescalers[i]=new MRMPreScaler(*this,base+U32_Scaler(i));
+    }
+
+    pulsers.resize(nPul);
+    for(size_t i=0; i<nPul; i++){
+        pulsers[i]=new MRMPulser(i,*this);
     }
 }
 
@@ -143,16 +151,20 @@ EVRMRM::enable(bool v)
         BITCLR(NAT,32,base, Control, Control_enable);
 }
 
-Pulser*
-EVRMRM::pulser(epicsUInt32)
+MRMPulser*
+EVRMRM::pulser(epicsUInt32 i)
 {
-    return 0;
+    if(i>=pulsers.size())
+        throw std::range_error("Pulser id is out of range");
+    return pulsers[i];
 }
 
-const Pulser*
-EVRMRM::pulser(epicsUInt32) const
+const MRMPulser*
+EVRMRM::pulser(epicsUInt32 i) const
 {
-    return 0;
+    if(i>=pulsers.size())
+        throw std::range_error("Pulser id is out of range");
+    return pulsers[i];
 }
 
 MRMOutput*
@@ -201,6 +213,9 @@ EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
     {
         throw std::range_error("Special function code is out of range");
     }
+
+    if(code==0)
+        return false;
 
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;

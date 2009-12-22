@@ -14,6 +14,7 @@
 
 #include "drvemOutput.h"
 #include "drvemPrescaler.h"
+#include "drvemPulser.h"
 
 /**@brief Modular Register Map Event Receivers
  *
@@ -33,8 +34,8 @@ public:
   virtual bool enabled() const;
   virtual void enable(bool v);
 
-  virtual Pulser* pulser(epicsUInt32);
-  virtual const Pulser* pulser(epicsUInt32) const;
+  virtual MRMPulser* pulser(epicsUInt32);
+  virtual const MRMPulser* pulser(epicsUInt32) const;
 
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
@@ -90,6 +91,9 @@ private:
 
   typedef std::vector<MRMPreScaler*> prescalers_t;
   prescalers_t prescalers;
+
+  typedef std::vector<MRMPulser*> pulsers_t;
+  pulsers_t pulsers;
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC
