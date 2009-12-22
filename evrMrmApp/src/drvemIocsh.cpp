@@ -1,5 +1,5 @@
 
-#include "evrmrmiocsh.h"
+#include "drvemIocsh.h"
 
 #include <cstdio>
 
@@ -13,7 +13,7 @@
 #include <epicsInterrupt.h>
 #include "mrmpci.h"
 
-#include "evrmrm.h"
+#include "drvem.h"
 #include "evrRegMap.h"
 #include "plx9030.h"
 

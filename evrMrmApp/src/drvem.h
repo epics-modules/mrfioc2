@@ -12,8 +12,8 @@
 
 #include <dbScan.h>
 
-#include "evrmrmoutput.h"
-#include "evrmrmprescaler.h"
+#include "drvemOutput.h"
+#include "drvemPrescaler.h"
 
 /**@brief Modular Register Map Event Receivers
  *

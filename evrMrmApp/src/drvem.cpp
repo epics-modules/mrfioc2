@@ -1,5 +1,5 @@
 
-#include "evrmrm.h"
+#include "drvem.h"
 
 #include <cstdio>
 #include <stdexcept>
@@ -11,7 +11,7 @@
 
 #include "mrfFracSynth.h"
 
-#include "evrmrmiocsh.h"
+#include "drvemIocsh.h"
 
 #include <dbScan.h>
 #include <epicsInterrupt.h>
