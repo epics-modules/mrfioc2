@@ -102,7 +102,7 @@ static
 void
 printRamEvt(EVRMRM *evr,int evt,int ram)
 {
-  if(evt<=0 || evt>255)
+  if(evt<0 || evt>255)
     return;
   if(ram<0 || ram>1)
     return;
@@ -164,12 +164,12 @@ mrmEvrDumpMap(int id,int evt,int ram)
     return;
   }
   printf("Print ram #%d\n",ram);
-  if(evt>0){
+  if(evt>=0){
     // Print a single event
     printRamEvt(card,evt,ram);
     return;
   }
-  for(evt=1;evt<=255;evt++){
+  for(evt=0;evt<=255;evt++){
     printRamEvt(card,evt,ram);
   }
 }
