@@ -28,6 +28,8 @@ evr_SRCS += devEvrLongIO.cpp
 evr_SRCS += devEvrAIO.cpp
 evr_SRCS += devEvrMapping.cpp
 evr_SRCS += devEvrOutput.cpp
+evr_SRCS += devEvrPulserLongIO.cpp
+evr_SRCS += devEvrPulserAIO.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
