@@ -5,6 +5,7 @@
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
+#include <alarm.h>
 
 #include <longinRecord.h>
 #include <longoutRecord.h>
@@ -119,6 +120,13 @@ try {
   property<EVR,epicsUInt32> *priv=static_cast<property<EVR,epicsUInt32>*>(plo->dpvt);
 
   priv->set(plo->val);
+
+  long rbv=priv->get();
+
+  // Probably an indication that this is a 16-bit field
+  if(rbv!=plo->val){
+    recGblSetSevr((dbCommon*)plo,SOFT_ALARM,MINOR_ALARM);
+  }
 
   return 0;
 } catch(std::exception& e) {
