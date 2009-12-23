@@ -8,6 +8,7 @@ DB += evrmap.db
 DB += evrout.db
 DB += evrscale.db
 DB += evrpulser.db
+DB += evrpulsermap.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

@@ -1,8 +1,8 @@
 
-record(longout, "$(P)$(M)") {
+record(longout, "$(P)$(N)$(M)") {
   field( DTYP, "EVR Pulser Mapping" )
   field( OUT , "#L$(C) A$(PID) C0 S$(F) @")
   field( PINI, "YES")
-  field( DESC, "Mapping for $(M)")
+  field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , $(EVT))
 }
