@@ -24,9 +24,9 @@
 static long analog_init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==AB_IO);
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
@@ -35,7 +35,7 @@ try {
     throw std::runtime_error("Failed to lookup pulser");
 
   property<Pulser,double> *prop;
-  std::string parm(lnk->value.vmeio.parm);
+  std::string parm(lnk->value.abio.parm);
 
   if( parm=="Delay" ){
     prop=new property<Pulser,double>(

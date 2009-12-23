@@ -10,7 +10,7 @@
 
 struct MapType {
   enum type {
-    None,
+    None=0,
     Trigger,
     Reset,
     Set
