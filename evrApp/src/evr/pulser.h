@@ -43,10 +43,10 @@ public:
    * Units of event clock period.
    */
   /*@{*/
-  virtual void delay(epicsUInt32)=0;
-  virtual epicsUInt32 setDelay() const=0;
-  //virtual delayUnit(TimeUnits::type)=0;
-  //virtual TimeUnits::type setDelayUnit()=0;
+  virtual void setDelayRaw(epicsUInt32)=0;
+  virtual void setDelay(double)=0;
+  virtual epicsUInt32 delayRaw() const=0;
+  virtual double delay() const=0;
   /*@}*/
 
   /**\defgroup wth Set triggered mode width
@@ -54,10 +54,10 @@ public:
    * Units of event clock period.
    */
   /*@{*/
-  virtual void width(epicsUInt32)=0;
-  virtual epicsUInt32 setWidth() const=0;
-  //virtual widthUnit(TimeUnits::type)=0;
-  //virtual TimeUnits::type setWidthUnit()=0;
+  virtual void setWidthRaw(epicsUInt32)=0;
+  virtual void setWidth(double)=0;
+  virtual epicsUInt32 widthRaw() const=0;
+  virtual double width() const=0;
   /*@}*/
 
   /**\defgroup scaler Set triggered mode prescaler
