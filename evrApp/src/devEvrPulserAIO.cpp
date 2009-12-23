@@ -24,7 +24,7 @@
 static long analog_init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
-//  prec->dpvt=static_cast<void*>(priv);
+  assert(lnk->type==VME_IO);
 
   EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
   if(!card)

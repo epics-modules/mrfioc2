@@ -29,6 +29,7 @@
 static long init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
+  assert(lnk->type==VME_IO);
 
   EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
   if(!card)

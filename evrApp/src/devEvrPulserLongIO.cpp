@@ -22,7 +22,7 @@
 static long long_init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
-//  prec->dpvt=static_cast<void*>(priv);
+  assert(lnk->type==AB_IO);
 
   EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)

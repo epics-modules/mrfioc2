@@ -44,6 +44,8 @@ struct map_priv {
 static long init_lo(longoutRecord *plo)
 {
 try {
+  assert(plo->out.type==VME_IO);
+
   map_priv *priv=new map_priv;
   priv->last_code=0;
   priv->last_func=plo->out.value.vmeio.signal;
