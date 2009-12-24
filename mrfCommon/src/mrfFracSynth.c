@@ -372,7 +372,6 @@ static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
 |*
 \**************************************************************************************************/
 
-
 epicsStatus mrfSetEventClockSpeed (
 
     /**********************************************************************************************/

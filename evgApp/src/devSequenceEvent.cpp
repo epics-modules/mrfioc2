@@ -99,7 +99,7 @@
 
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ string class
-#include  <cstdlib>
+#include  <cstdlib>             // Standard C library
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
 #include  <alarm.h>             // EPICS Alarm status and severity definitions
@@ -119,6 +119,8 @@
 #include  <menuConvert.h>       // EPICS conversion field menu items
 
 #include  <mrfCommon.h>         // MRF Common definitions
+#include  <mrfIoLink.h>         // MRF I/O link field parser
+
 #include  <Sequence.h>          // MRF Sequence class
 #include  <SequenceEvent.h>     // MRF Sequence event class
 #include  <devSequence.h>       // MRF Sequence device support declarations
@@ -131,7 +133,22 @@
 /**************************************************************************************************/
 
 //=====================
-// Common device information structure use by all SequenceEvent records
+// Common I/O link parameter definitions used by all SequenceEvent records
+//
+static const
+mrfParmNameList SeqEventParmNames = {
+    "C",        // Logical card number
+    "Name",     // Event name
+    "Fn",       // Record function code
+    "Seq"       // Sequence number that this event belongs to
+};
+
+static const
+epicsInt32  SeqEventNumParms mrfParmNameListSize(SeqEventParmNames);
+
+
+//=====================
+// Common device information structure used by all SequenceEvent records
 //
 struct devInfoStruct {
     Sequence       *pSequence;  // Pointer to the Sequence object
@@ -196,14 +213,14 @@ void disableRecord (dbCommon *pRec)
 |*    sequence number this event is assigned to, the record function field, and the event name.
 |*
 |*    The following sanity checks are performed on the link field:
-|*      - Make sure the link type is VME_IO
+|*      - Make sure the link type is INST_IO
 |*      - Make sure the parameter field is not empty
 |*      - Make sure the record function field is not empty
 |*      - Make sure the event name field is not empty.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
-|*    parseLink (dbLink, Function, Name, SeqNum);
+|*    parseLink (dbLink, Card, Function, Name, SeqNum);
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
@@ -211,66 +228,58 @@ void disableRecord (dbCommon *pRec)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* OUTPUT PARAMETERS:
-|*    Function = (string &)     The record function string (from the link's "parm" field)
-|*    Name     = (string &)     The sequence event name (from the link's "parm" field)
+|*    Card     = (epicsInt32 &) The EVG logical card number
+|*    Function = (string &)     The record function string
+|*    Name     = (string &)     The sequence event name
 |*    SeqNum   = (epicsInt32 &) The ID number of the sequence this event belongs to
-|*                              (from the link's "signal" field)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* EXCEPTIONS:
-|*    A runtime_error is thrown if there was an error parsing the database link
+|*    A runtime_error is thrown if there was an error parsing the I/O link field
 |*
 \**************************************************************************************************/
 
 static
 void parseLink (
-    const DBLINK  &dbLink,      // Reference to the EPICS database link field
-    std::string   &Function,    // Reference to returned function name string
-    std::string   &Name,        // Reference to the returned sequence event name string
-    epicsInt32    &SeqNum)      // Reference to the returned sequence ID number
+    const DBLINK&  dbLink,      // Reference to the EPICS database I/O link field
+    epicsInt32&    Card,        // Reference to returned logical card number
+    std::string&   Function,    // Reference to returned function name string
+    std::string&   Name,        // Reference to the returned sequence event name string
+    epicsInt32&    SeqNum)      // Reference to the returned sequence ID number
 {
+    //=====================
+    // Local variables
+    //
+    mrfIoLink*   ioLink = NULL; // I/O link parsing object
+
     //=====================
     // Make sure the link type is correct
     //
-    if (VME_IO != dbLink.type)
-        throw std::runtime_error("Link type is not VME_IO");
+    if (INST_IO != dbLink.type)
+        throw std::runtime_error("I/O link type is not INST_IO");
 
     //=====================
-    // Extract the sequence number from the link
+    // Parse the link field
     //
-    SeqNum = dbLink.value.vmeio.signal;
+    try {
+        ioLink   = new mrfIoLink (dbLink.value.instio.string, SeqEventParmNames, SeqEventNumParms);
+        Name     = ioLink->getString  ("Name");
+        Function = ioLink->getString  ("Fn"  );
+        SeqNum   = ioLink->getInteger ("Seq" );
+        Card     = ioLink->getInteger ("C"   );
+        delete ioLink;
+    }//end try to parse the I/O link field
 
     //=====================
-    // Extract the parameter information from the link
+    // Catch any link parsing errors:
+    //  - Delete the ioLink object
+    //  - Rethrow the error
     //
-    std::string parm(dbLink.value.vmeio.parm);
-    std::string::size_type index = parm.find_first_not_of(" ");
-
-    if (std::string::npos == index)
-        throw std::runtime_error("Parameter field is empty");
-
-    //=====================
-    // Extract the record function field from the parameter string
-    //
-    parm = parm.substr(index);
-    index = parm.find(" ");
-
-    if (std::string::npos != index)
-        Function = parm.substr(0,index);
-
-    else throw std::runtime_error("Event name not specified");
-
-    //=====================
-    // Extract the sequence event name field from the parameter string
-    //
-    parm = parm.substr(index+1);
-    index = parm.find_first_not_of(" ");
-
-    if (std::string::npos != index)
-        Name = parm.substr(index);
-
-    else throw std::runtime_error("Event name not specified");
-
+    catch (std::exception& e) {
+        delete ioLink;
+        throw std::runtime_error(e.what());
+    }//end if there was an error parsing the link
+    
 }//end parseLink()
 
 /**************************************************************************************************/
@@ -347,6 +356,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     //=====================
     // Local variables
     //
+    epicsInt32      Card;               // Logical EVG card number (from OUT link)
     std::string     Function;           // Record function name (from OUT link)
     std::string     Name;               // Sequence event name (from OUT link)
     devInfoStruct*  pDevInfo = NULL;    // Pointer to device-specific information structure.
@@ -364,19 +374,19 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         // Parse the OUT link and extract the record function, event name, and sequence number.
         //
         status = S_dev_badOutType;
-        parseLink (pRec->out, Function, Name, SeqNum);
+        parseLink (pRec->out, Card, Function, Name, SeqNum);
 
         //=====================
         // Make sure the function code is correct
         //
-        if ("EVENT_TIME" != Function)
+        if ("Time" != Function)
             throw std::runtime_error("Invalid record function (" + Function + ")");
 
         //=====================
         // Declare the sequence number and the event name
         //
         status = -1;
-        pSequence = EgDeclareSequence (SeqNum);
+        pSequence = EgDeclareSequence (Card, SeqNum);
         pEvent = pSequence->DeclareEvent (Name);
 
         //=====================
@@ -419,7 +429,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     // disable the record, and return the error status code
     //
     catch (std::exception& e) {
-        recGblRecordError (status, pRec, e.what());
+        recGblRecordError (status, pRec, strcat("\nReason: ", e.what()));
         disableRecord ((dbCommon *)pRec);
         return (status);
     }//end if record initialization failed
@@ -488,7 +498,7 @@ epicsStatus aoWrite (aoRecord* pRec) {
 
     return OK;
 
-}// aoWrite()
+}//end aoWrite()
 
 //!
 //! @}

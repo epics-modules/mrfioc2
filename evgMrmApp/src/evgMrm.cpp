@@ -228,7 +228,7 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     //
     OutLinkFrequency(0.0),                      // Event clock frequency for the outgoing link
     InLinkFrequency(0.0),                       // Event clock frequency for the incoming link
-    SecsPerTick(8.0),                           // Seconds per event clock tick
+    SecsPerTick(8.0e-9),                        // Seconds per event clock tick
     FracSynthWord(0),                           // Fractional synthesizer control word
     OutLinkSource(EVG_CLOCK_SRC_INTERNAL)       // Clock source for outgoing event link
 

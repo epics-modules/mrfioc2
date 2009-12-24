@@ -59,8 +59,8 @@
 /*  Function Prototypes                                                                           */
 /**************************************************************************************************/
 
-Sequence  *EgDeclareSequence (epicsInt32 SeqNum);
-Sequence  *EgGetSequence     (epicsInt32 SeqNum);
+Sequence  *EgDeclareSequence (epicsInt32 CardNum, epicsInt32 SeqNum);
+Sequence  *EgGetSequence     (epicsInt32 CardNum, epicsInt32 SeqNum);
 
 
 #endif // EVG_DEV_SEQUENCE_INC

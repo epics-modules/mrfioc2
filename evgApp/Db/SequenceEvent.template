@@ -1,0 +1,9 @@
+record(ao,"$(PV):TimeStamp") {
+    field(DESC,"$(Name) Time Stamp")
+    field(DTYP,"EVG Sequence Event")
+    field(OUT,"@Name=$(Name);Fn=Time;Seq=$(Seq);C=$(C)")
+    field(SCAN,"Passive")
+    field(EGUF,"1.e-9")
+    field(EGU,"nSec")
+    field(LINR,"NO CONVERSION")
+}

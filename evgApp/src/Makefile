@@ -17,6 +17,7 @@ INC += evg/evg.h
 # Install DBD files
 #
 DBD += drvEvg.dbd
+DBD += SequenceEvent.dbd
 
 #---------------------
 # Build the generic event generator library

@@ -30,9 +30,9 @@ public:
     //=====================
     // Event Link Clock Setters
     //
-    epicsStatus SetOutLinkClockSource (epicsInt16 ClockSource);
-    epicsStatus SetOutLinkClockSpeed  (epicsFloat64 ClockSpeed);
-    epicsStatus SetInLinkClockSpeed   (epicsFloat64 ClockSpeed);
+    virtual epicsStatus SetOutLinkClockSource (epicsInt16 ClockSource)  = 0;
+    virtual epicsStatus SetOutLinkClockSpeed  (epicsFloat64 ClockSpeed) = 0;
+    virtual epicsStatus SetInLinkClockSpeed   (epicsFloat64 ClockSpeed) = 0;
 
     //=====================
     // Card Configuration and Initialization Routines
