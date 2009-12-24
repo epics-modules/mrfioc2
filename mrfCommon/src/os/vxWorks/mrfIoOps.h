@@ -1,12 +1,24 @@
-
 #ifndef MRFIOOPS_H
 #define MRFIOOPS_H
 
-#include  <vxWorks.h>
-#include  <sysLib.h>
-#include  <epicsTypes.h>
+/**************************************************************************************************/
+/*  Required Header Files                                                                         */
+/**************************************************************************************************/
 
-#include <epicsEndian.h>
+#include  <vxWorks.h>                           /* vxWorks common definitions                     */
+#include  <sysLib.h>                            /* vxWorks System Library Definitions             */
+#include  <epicsTypes.h>                        /* EPICS Common Type Definitions                  */
+#include  <epicsEndian.h>                       /* EPICS Byte Order Definitions                   */
+
+/**************************************************************************************************/
+/*  Function Prototypes for Routines Not Defined in sysLib.h                                      */
+/**************************************************************************************************/
+
+epicsUInt16 sysIn16    (volatile void*);                 /* Synchronous 16 bit read               */
+epicsUInt32 sysIn32    (volatile void*);                 /* Synchronous 32 bit read               */
+void        sysOut16   (volatile void*, epicsUInt16);    /* Synchronous 16 bit write              */
+void        sysOut32   (volatile void*, epicsUInt32);    /* Synchronous 32 bit write              */
+
 
 #define bswap16(value) ((epicsUInt16) (  \
         (((epicsUInt16)(value) & 0x00ff) << 8)    |       \
