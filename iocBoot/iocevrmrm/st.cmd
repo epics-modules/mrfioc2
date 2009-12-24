@@ -7,10 +7,10 @@ cd("/mnt")
 dbLoadDatabase("dbd/evrmrm.dbd")
 evrmrm_registerRecordDeviceDriver(pdbbase)
 
-mrmevrSetupAuto()
+mrmEvrSetupPCI(0,1,2,0)
 
 dbLoadRecords("db/evrbase.db","P=evr:,C=0")
-#dbLoadRecords("db/evrmap.db","P=evr:,M=heartbeat:,C=0,func=7")
+dbLoadRecords("db/evrmap.db","P=evr:,M=blink,C=0,func=125,EVT=2")
 #dbLoadRecords("db/evrmap.db","P=evr:,M=resetscaler1:,C=0,func=8")
 #dbLoadRecords("db/evrmap.db","P=evr:,M=resetscaler2:,C=0,func=8")
 

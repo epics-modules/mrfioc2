@@ -202,11 +202,10 @@ EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
         throw std::range_error("Special function code is out of range");
     }
 
-    epicsUInt32 block=func/(8*4),
-                bit  =func%(8*4);
+    epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
-    epicsUInt32 val=READ32(base, _MappingRam(0, code, block));
+    epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
 
     val&=mask;
 
@@ -224,14 +223,16 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
         throw std::range_error("Special function code is out of range");
     }
 
-    epicsUInt32 block=func/(8*4),
-                bit  =func%(8*4);
+    if(code==0)
+      return;
+
+    epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
     if(v)
-        BITSET(NAT,32,base, _MappingRam(0, code, block), mask);
+        BITSET(NAT,32,base, MappingRam(0, code, Internal), mask);
     else
-        BITCLR(NAT,32,base, _MappingRam(0, code, block), mask);
+        BITCLR(NAT,32,base, MappingRam(0, code, Internal), mask);
 }
 
 const char*

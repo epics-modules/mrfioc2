@@ -25,24 +25,29 @@ int fill_cache(epicsUInt16 dev,epicsUInt16 vend);
 /**************** API functions *****************/
 
 /*
- * Search for the Nth matching device in the system.
+ * Machinery for searching for PCI devices.
  *
- * Matching is implimented here for consistency
+ * This is a general function to support all possible
+ * search filtering conditions.
  */
-int devPCIFind(
+epicsShareFunc
+int
+devPCIFindCB(
      const epicsPCIID *idlist,
-         unsigned int  instance,
-const epicsPCIDevice **found
+     int (*searchfn)(void*,const epicsPCIDevice*),
+     void *arg
 )
 {
-  int err, match;
-  unsigned int I;
+  int err=0;
   ELLNODE *cur;
   const osdPCIDevice *curdev=NULL;
   const epicsPCIID *search;
 
   if(!pdevLibPCIVirtualOS)
     return 5;
+
+  if(!searchfn)
+    return 2;
 
   /*
    * Ensure all entries for the requested device/vendor pairs
@@ -66,58 +71,112 @@ const epicsPCIDevice **found
    */
 
   cur=ellFirst(&devices);
-  for(I=0; I<=instance; I++){
+  for(; cur; cur=ellNext(cur)){
+    curdev=CONTAINER(cur,const osdPCIDevice,node);
 
-    for(; cur; cur=ellNext(cur)){
-      match=0;
-      curdev=CONTAINER(cur,const osdPCIDevice,node);
+    for(search=idlist; search && !!search->device; search++){
 
-      for(search=idlist; search && !!search->device; search++){
-
-        if(search->device!=curdev->dev.id.device)
-          break;
-        else
-        if(search->vendor!=curdev->dev.id.vendor)
-          break;
-        else
-        if( search->sub_device!=DEVPCI_ANY_SUBDEVICE &&
-            search->sub_device!=curdev->dev.id.sub_device
-          )
-          break;
-        else
-        if( search->sub_vendor!=DEVPCI_ANY_SUBVENDOR &&
-            search->sub_vendor!=curdev->dev.id.sub_vendor
-          )
-          break;
-        else
-        if( search->pci_class!=DEVPCI_ANY_CLASS &&
-            search->pci_class!=curdev->dev.id.pci_class
-          )
-          break;
-        else
-        if( search->revision!=DEVPCI_ANY_REVISION &&
-            search->revision!=curdev->dev.id.revision
-          )
-          break;
-
-        match=1;
-      }
-
-      if(match && I<instance){
-        /* wrong instance */
-        search++;
-      }else if(match && I==instance){
+      if(search->device!=curdev->dev.id.device)
         break;
+      else
+      if(search->vendor!=curdev->dev.id.vendor)
+        break;
+      else
+      if( search->sub_device!=DEVPCI_ANY_SUBDEVICE &&
+          search->sub_device!=curdev->dev.id.sub_device
+        )
+        break;
+      else
+      if( search->sub_vendor!=DEVPCI_ANY_SUBVENDOR &&
+          search->sub_vendor!=curdev->dev.id.sub_vendor
+        )
+        break;
+      else
+      if( search->pci_class!=DEVPCI_ANY_CLASS &&
+          search->pci_class!=curdev->dev.id.pci_class
+        )
+        break;
+      else
+      if( search->revision!=DEVPCI_ANY_REVISION &&
+          search->revision!=curdev->dev.id.revision
+        )
+        break;
+
+      /* Match found */
+
+      err=searchfn(arg,&curdev->dev);
+      switch(err){
+      case 0: /* Continue search */
+        break;
+      case 1: /* Abort search OK */
+        return 0;
+      default:/* Abort search Err */
+        return err;
       }
 
-      curdev=NULL;
     }
+
   }
 
-  if(!curdev)
-    return 1;
+  return 0;
+}
 
-  *found=&curdev->dev;
+struct bdfmatch
+{
+  unsigned int b,d,f;
+  const epicsPCIDevice* found;
+};
+
+static
+int bdfsearch(void* ptr,const epicsPCIDevice*cur)
+{
+  struct bdfmatch *mt=ptr;
+
+  if( cur->bus==mt->b && cur->device==mt->d &&
+      cur->function==mt->f )
+  {
+    mt->found=cur;
+    return 1;
+  }
+
+  return 0;
+}
+
+/*
+ * The most common PCI search using only id fields and BDF.
+ */
+epicsShareFunc
+int devPCIFindBDF(
+     const epicsPCIID *idlist,
+     unsigned int      b,
+     unsigned int      d,
+     unsigned int      f,
+const epicsPCIDevice **found
+)
+{
+  int err;
+  struct bdfmatch find;
+
+  if(!found)
+    return 2;
+
+  find.b=b;
+  find.d=d;
+  find.f=f;
+  find.found=NULL;
+
+  err=devPCIFindCB(idlist,&bdfsearch,&find);
+  if(err!=0){
+    /* Search failed? */
+    return err;
+  }
+
+  if(!find.found){
+    /* Not found */
+    return 1;
+  }
+
+  *found=find.found;
   return 0;
 }
 

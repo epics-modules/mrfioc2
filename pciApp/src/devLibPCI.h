@@ -79,9 +79,18 @@ typedef struct {
  * Expects a NULL terminated list of identifiers
  */
 epicsShareFunc
-int devPCIFind(
+int devPCIFindCB(
      const epicsPCIID *idlist,
-         unsigned int  instance,
+     int (*searchfn)(void*,const epicsPCIDevice*),
+     void *arg
+);
+
+epicsShareFunc
+int devPCIFindBDF(
+     const epicsPCIID *idlist,
+     unsigned int      b,
+     unsigned int      d,
+     unsigned int      f,
 const epicsPCIDevice **found
 );
 

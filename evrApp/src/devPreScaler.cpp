@@ -5,6 +5,7 @@
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
+#include <alarm.h>
 
 #include <aoRecord.h>
 #include <longinRecord.h>
@@ -109,6 +110,12 @@ try {
 
   prec->rval=val;
   prec->rbv=scaler->prescaler();
+
+  // Check that input frequency can be exactly represented.
+  // The cut off here is arbitrary since there is no good way
+  // to pass it in.
+  if( val - ((double)(int)val) > 0.5 )
+    recGblSetSevr(prec,SOFT_ALARM,MINOR_ALARM);
 
   return 0;
 } catch(std::exception& e) {
