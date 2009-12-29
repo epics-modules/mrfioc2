@@ -1,0 +1,39 @@
+Things left to be done
+
+= Link status/violation and heartbeat IRQs =
+
+HW changes?
+
+= Timestamp =
+
+Display both free running and latched.
+
+= CML Outputs =
+
+Longer registers
+
+== Configure TS source ==
+
+Select: Event clock, dbus #4, or TS event code
+
+Add TS rate property
+
+How to deal with rate changes if event clock changes?
+
+= Data Buffer =
+
+Configure
+
+API to send/receive
+
+dset to send/receive
+
+= FIFO =
+
+= Event Log =
+
+Detect when stopped?
+
+= DBUS =
+
+dset?
