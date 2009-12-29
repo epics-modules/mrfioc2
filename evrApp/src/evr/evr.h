@@ -5,6 +5,7 @@
 #include "evr/util.h"
 
 #include <epicsTypes.h>
+#include <epicsTime.h>
 
 class Pulser;
 class Output;
@@ -15,6 +16,17 @@ enum OutputType {
   OutputFP=1,  //! Front Panel
   OutputFPUniv=2, //! FP Universal
   OutputRB=3 //! Rear Breakout
+};
+
+enum TSSource {
+  TSSourceInternal,
+  TSSourceEvent,
+  TSSourceDBus4
+};
+
+enum TSMode {
+  TSModeFree,
+  TSModeLatch
 };
 
 /**@brief Base interface for EVRs.
@@ -85,9 +97,34 @@ public:
   virtual bool pllLocked() const=0;
 
   virtual epicsUInt32 uSecDiv() const=0;
+  /*@}*/
+
+  /**\defgroup ts Time Stamp
+   *
+   * Configuration and access to the hardware timestamp
+   */
+  /*@{*/
+  virtual void setSourceTS(TSSource)=0;
+  virtual TSSource SourceTS() const=0;
+
+  virtual double clockTS() const=0;
+  virtual void clockTSSet(double)=0;
 
   virtual epicsUInt32 tsDiv() const=0;
-  virtual void setTsDiv(epicsUInt32)=0;
+
+  /** Gives the current time stamp as sec+nsec
+   *@param ts This pointer will be filled in with the current time
+   *@param mo Which access mode to use.
+   *@return true When ts was updated
+   *@return false When ts could not be updated
+   */
+  virtual bool getTimeStamp(epicsTimeStamp *ts,TSMode mode)=0;
+
+  /** Latch and reset the Timestamp
+   *@param latch true  - Latch
+   *@param latch false - Reset
+   */
+  virtual void tsLatch(bool latch)=0;
   /*@}*/
 
   /**\defgroup linksts Event Link Status
@@ -97,12 +134,6 @@ public:
   virtual IOSCANPVT linkChanged()=0;
   virtual epicsUInt32 recvErrorCount() const=0;
   /*@}*/
-
-
-  virtual void tsLatch()=0;
-  virtual void tsLatchReset()=0;
-  virtual epicsUInt32 tsLatchSec() const=0;
-  virtual epicsUInt32 tsLatchCount() const=0;
 
   virtual epicsUInt16 dbus() const=0;
 

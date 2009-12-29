@@ -56,18 +56,7 @@ try {
   }else if( parm=="Timestamp Prescaler" ){
     prop=new property<EVR,epicsUInt32>(
         card,
-        &EVR::tsDiv,
-        &EVR::setTsDiv
-    );
-  }else if( parm=="Timestamp Seconds" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::tsLatchSec
-    );
-  }else if( parm=="Timestamp Counter" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::tsLatchCount
+        &EVR::tsDiv
     );
   }else
     throw std::runtime_error("Invalid parm string in link");

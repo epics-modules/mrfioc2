@@ -36,6 +36,12 @@ try {
         &EVR::clock,
         &EVR::clockSet
     );
+  }else if( parm=="Timestamp Clock" ){
+    prop=new property<EVR,double>(
+        card,
+        &EVR::clockTS,
+        &EVR::clockTSSet
+    );
   }else
     throw std::runtime_error("Invalid parm string in link");
 

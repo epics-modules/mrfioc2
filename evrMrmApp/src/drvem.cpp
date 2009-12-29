@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <stdexcept>
 
+#include <math.h>
+
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
@@ -30,6 +32,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
+  ,stampClock(1.0/0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -383,33 +386,117 @@ EVRMRM::tsDiv() const
 }
 
 void
-EVRMRM::setTsDiv(epicsUInt32 val)
+EVRMRM::setSourceTS(TSSource src)
 {
-    WRITE32(base, CounterPS, val);
+    double clk=clockTS(), eclk;
+    epicsUInt16 div=0;
+
+    if(clk<=0 || !isfinite(clk))
+        throw std::range_error("TS Clock rate invalid");
+
+    switch(src){
+    case TSSourceInternal:
+        eclk=clock();
+        div=eclk/clk;
+        break;
+    case TSSourceEvent:
+        BITCLR(NAT,32, base, Control, Control_tsdbus);
+        break;
+    case TSSourceDBus4:
+        BITSET(NAT,32, base, Control, Control_tsdbus);
+        break;
+    }
+    WRITE32(base, CounterPS, div);
+}
+
+TSSource
+EVRMRM::SourceTS() const
+{
+    epicsUInt32 tdiv=tsDiv();
+
+    if(tdiv!=0)
+        return TSSourceInternal;
+
+    bool usedbus4=READ32(base, Control) & Control_tsdbus;
+
+    if(usedbus4)
+        return TSSourceDBus4;
+    else
+        return TSSourceEvent;
+}
+
+double
+EVRMRM::clockTS() const
+{
+    TSSource src=SourceTS();
+
+    if(src!=TSSourceInternal)
+        return stampClock;
+
+    epicsUInt16 div=tsDiv();
+
+    return clock()/div;
 }
 
 void
-EVRMRM::tsLatch()
+EVRMRM::clockTSSet(double clk)
 {
-    BITSET(NAT,32,base, Control, Control_tsltch);
+    if(clk<=0 || !isfinite(clk))
+        throw std::range_error("TS Clock rate invalid");
+
+    TSSource src=SourceTS();
+
+    if(src==TSSourceInternal){
+        double eclk=clock();
+        epicsUInt16 div=eclk/clk;
+        WRITE32(base, CounterPS, div);
+    }
+
+    stampClock=clk;
+}
+
+bool
+EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
+{
+    if(!ts) return false;
+
+    switch(mode){
+    case TSModeLatch:
+        ts->secPastEpoch=READ32(base, TSSecLatch);
+        ts->nsec=READ32(base, TSEvtLatch);
+        break;
+    case TSModeFree:
+        ts->secPastEpoch=READ32(base, TSSec);
+        ts->nsec=READ32(base, TSEvt);
+        break;
+    }
+
+    //validate seconds (has it been initialized)?
+    if(ts->secPastEpoch==0){
+        return false;
+    }
+
+    //Link seconds counter is POSIX time
+    ts->secPastEpoch-=POSIX_TIME_AT_EPICS_EPOCH;
+
+    // Convert ticks to nanoseconds
+    double period=1000.0/clockTS(); // in nanoseconds
+
+    if(period<=0 || !isfinite(period))
+        return false;
+
+    ts->nsec*=period;
+
+    return true;
 }
 
 void
-EVRMRM::tsLatchReset()
+EVRMRM::tsLatch(bool latch)
 {
-    BITSET(NAT,32,base, Control, Control_tsrst);
-}
-
-epicsUInt32
-EVRMRM::tsLatchSec() const
-{
-    return READ32(base, TSSecLatch);
-}
-
-epicsUInt32
-EVRMRM::tsLatchCount() const
-{
-    return READ32(base, TSEvtLatch);
+    if(latch)
+        BITSET(NAT,32,base, Control, Control_tsltch);
+    else
+        BITSET(NAT,32,base, Control, Control_tsrst);
 }
 
 epicsUInt16
