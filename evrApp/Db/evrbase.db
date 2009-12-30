@@ -154,3 +154,9 @@ record(longin, "$(P)ts:div") {
   field(INP , "#C$(C) S0 @Timestamp Prescaler")
   field(DESC, "Timestamp divider")
 }
+
+record(stringin, "$(P)ts") {
+  field(DTYP, "EVR Timestamp")
+  field(INP , "#C$(C) S0 @")
+  field(SCAN, "1 second")
+}

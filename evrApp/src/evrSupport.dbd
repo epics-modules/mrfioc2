@@ -28,6 +28,8 @@ device(bo     , VME_IO, devBOEVR, "EVR")
 device(ai     , VME_IO, devAIEVR, "EVR")
 device(ao     , VME_IO, devAOEVR, "EVR")
 
+device(stringin, VME_IO, devSIEVR, "EVR Timestamp")
+
 # '#Ccard Sfunction @'
 device(longout, VME_IO, devLOEVRMap, "EVR Mapping")
 device(stringin, VME_IO, devSIEVRMap, "EVR Mapping")
