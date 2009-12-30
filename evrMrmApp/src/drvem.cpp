@@ -407,6 +407,8 @@ EVRMRM::setSourceTS(TSSource src)
     case TSSourceDBus4:
         BITSET(NAT,32, base, Control, Control_tsdbus);
         break;
+    default:
+        throw std::range_error("TS source invalid");
     }
     WRITE32(base, CounterPS, div);
 }
@@ -471,6 +473,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
         ts->secPastEpoch=READ32(base, TSSec);
         ts->nsec=READ32(base, TSEvt);
         break;
+    default:
+        throw std::range_error("TS mode invalid");
     }
 
     //validate seconds (has it been initialized)?
