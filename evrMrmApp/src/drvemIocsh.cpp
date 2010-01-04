@@ -91,7 +91,7 @@ setupPCI(int id,int b,int d,int f)
       printf("Failed to install ISR\n");
   }else{
       NAT_WRITE32(evr, IRQEnable,
-          IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr|IRQ_HWMapped|IRQ_Event
+          IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
       );
 
       storeEVR(id,receiver);
