@@ -19,9 +19,9 @@ enum OutputType {
 };
 
 enum TSSource {
-  TSSourceInternal,
-  TSSourceEvent,
-  TSSourceDBus4
+  TSSourceInternal=0,
+  TSSourceEvent=1,
+  TSSourceDBus4=2
 };
 
 enum TSMode {
@@ -139,6 +139,16 @@ public:
 
   virtual void enableHeartbeat(bool)=0;
   virtual IOSCANPVT heartbeatOccured()=0;
+
+
+  /**\defgroup devhelp Device Support Helpers
+   *
+   * These functions exists to make life easier for device support
+   */
+  /*@{*/
+  void setSourceTSraw(epicsUInt32 r){setSourceTS((TSSource)r);};
+  epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
+  /*@}*/
 
 }; // class EVR
 

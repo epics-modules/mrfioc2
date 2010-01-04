@@ -58,6 +58,12 @@ try {
         card,
         &EVR::tsDiv
     );
+  }else if( parm=="Timestamp Source" ){
+    prop=new property<EVR,epicsUInt32>(
+        card,
+        &EVR::SourceTSraw,
+        &EVR::setSourceTSraw
+    );
   }else
     throw std::runtime_error("Invalid parm string in link");
 
