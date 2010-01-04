@@ -40,6 +40,7 @@ struct map_priv {
 
 static long init_lo(longoutRecord *plo)
 {
+  long ret=0;
 try {
   assert(plo->out.type==AB_IO);
 
@@ -61,11 +62,13 @@ try {
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)plo, e.what());
-  return S_dev_noDevice;
+  ret=S_dev_noDevice;
 } catch(std::exception& e) {
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
-  return S_db_noMemory;
+  ret=S_db_noMemory;
 }
+  plo->pact=TRUE;
+  return ret;
 }
 
 static long write_lo(longoutRecord* plo)
