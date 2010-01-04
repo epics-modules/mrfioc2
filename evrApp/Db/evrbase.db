@@ -43,8 +43,10 @@ record(ao, "$(P)clock:set") {
   field(OUT , "#C$(C) S0 @Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , 124.9135)
+  field(VAL , 124.916)
   field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
   field(PREC, 3)
   field(FLNK, "$(P)clock")
 }
@@ -57,6 +59,8 @@ record(ai, "$(P)clock") {
   field(PINI, "YES")
   field(UDF , 0)
   field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
   field(PREC, 3)
   field(FLNK, "$(P)clock:error")
 }

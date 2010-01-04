@@ -313,7 +313,7 @@ double
 EVRMRM::clock() const
 {
     return FracSynthAnalyze(READ32(base, FracDiv),
-                            fracref,0);
+                            fracref,0)*1e6;
 }
 
 void
@@ -322,6 +322,8 @@ EVRMRM::clockSet(double freq)
     double err;
     // Set both the fractional synthesiser and microsecond
     // divider.
+
+    freq/=1e6;
 
     epicsUInt32 newfrac=FracSynthControlWord(
                         freq, fracref, 0, &err);
@@ -480,7 +482,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
     ts->secPastEpoch-=POSIX_TIME_AT_EPICS_EPOCH;
 
     // Convert ticks to nanoseconds
-    double period=1000.0/clockTS(); // in nanoseconds
+    double period=1e9/clockTS(); // in nanoseconds
 
     if(period<=0 || !isfinite(period))
         return false;
