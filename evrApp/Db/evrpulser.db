@@ -1,0 +1,73 @@
+# Pulser sub-unit records for an EVR
+
+record(ao, "$(P)$(N)delay:set") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(PINI, "YES")
+  field(DESC, "Pulser delay from start")
+  field(VAL , 0
+  field(EGU , "Sec")
+  field(PREC, 6)
+  field(FLNK, "$(P)$(N)delay")
+}
+
+record(ai, "$(P)$(N)delay") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(SCAN, "1 second")
+  field(PINI, "YES")
+  field(UDF , 0)
+  field(EGU , "Sec")
+  field(PREC, 6)
+  field(FLNK, "$(P)$(N)delay:raw")
+}
+
+record(longout, "$(P)delay:raw:set") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(PINI, "YES")
+  field(DESC, "Pulser delay from start")
+  field(FLNK, "$(P)$(N)delay")
+}
+
+record(longin, "$(P)delay:raw") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(PINI, "YES")
+}
+
+record(ao, "$(P)$(N)width:set") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Width")
+  field(PINI, "YES")
+  field(DESC, "Pulser pulse width")
+  field(VAL , 0
+  field(EGU , "Sec")
+  field(PREC, 6)
+  field(FLNK, "$(P)$(N)width")
+}
+
+record(ai, "$(P)$(N)width") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "#L$(C) A$(PID) C0 S0 @Width")
+  field(SCAN, "1 second")
+  field(PINI, "YES")
+  field(UDF , 0)
+  field(EGU , "Sec")
+  field(PREC, 6)
+  field(FLNK, "$(P)$(N)width:raw")
+}
+
+record(longout, "$(P)width:raw:set") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Width")
+  field(PINI, "YES")
+  field(DESC, "Pulser delay from start")
+  field(FLNK, "$(P)$(N)width")
+}
+
+record(longin, "$(P)width:raw") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "#L$(C) A$(PID) C0 S0 @Width")
+  field(PINI, "YES")
+}
