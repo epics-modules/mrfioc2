@@ -85,17 +85,24 @@ public:
 
   /**\defgroup pll Module reference clock
    *
-   *  Conversion between frequency and clock word
-   *  Should happen outside.
+   *  Controls the local oscillator for the event
+   *  clock.
    */
   /*@{*/
 
+  /**Find current LO settings
+   *@returns Clock rate in Hz
+   */
   virtual double clock() const=0;
-  virtual void clockSet(double)=0;
+  /**Set LO frequency
+   *@param clk Clock rate in Hz
+   */
+  virtual void clockSet(double clk)=0;
 
   //! Internal PLL Status
   virtual bool pllLocked() const=0;
 
+  //! Approximate divider from event clock period to 1us
   virtual epicsUInt32 uSecDiv() const=0;
   /*@}*/
 
@@ -104,12 +111,20 @@ public:
    * Configuration and access to the hardware timestamp
    */
   /*@{*/
+  //!Select source which increments TS counter
   virtual void setSourceTS(TSSource)=0;
   virtual TSSource SourceTS() const=0;
 
+  /**Find current TS settings
+   *@returns Clock rate in Hz
+   */
   virtual double clockTS() const=0;
+  /**Set TS frequency
+   *@param clk Clock rate in Hz
+   */
   virtual void clockTSSet(double)=0;
 
+  //!When using internal TS source gives the divider from event clock period to TS period
   virtual epicsUInt32 tsDiv() const=0;
 
   /** Gives the current time stamp as sec+nsec
