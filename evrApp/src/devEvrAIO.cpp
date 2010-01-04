@@ -8,6 +8,7 @@
 
 #include <aiRecord.h>
 #include <aoRecord.h>
+#include <menuConvert.h>
 
 #include "cardmap.h"
 #include "evr/evr.h"
@@ -73,6 +74,12 @@ try {
 
   prec->val = priv->get();
 
+  if(prec->linr==menuConvertLINEAR){
+    if(prec->eslo!=0)
+        prec->val*=prec->eslo;
+    prec->val+=prec->eoff;
+  }
+
   return 2;
 } catch(std::exception& e) {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
@@ -98,7 +105,15 @@ static long write_ao(aoRecord* prec)
 try {
   property<EVR,double> *priv=static_cast<property<EVR,double>*>(prec->dpvt);
 
-  priv->set(prec->val);
+  double val=prec->val;
+
+  if(prec->linr==menuConvertLINEAR){
+    val-=prec->eoff;
+    if(prec->eslo!=0)
+        val/=prec->eslo;
+  }
+
+  priv->set(val);
 
   return 0;
 } catch(std::exception& e) {
