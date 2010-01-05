@@ -69,16 +69,6 @@ typedef struct {
 
 epicsShareExtern devLibPCIVirtualOS *pdevLibPCIVirtualOS;
 
-/* Functions for OS support implementors */
-
-epicsShareFunc
-int
-devPCIToLocalAddr_General(
-  struct osdPCIDevice* dev,
-  unsigned int bar,
-  volatile void **ppLocalAddr
-);
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
