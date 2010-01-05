@@ -1,5 +1,6 @@
 
 #include <stdlib.h>
+#include <string.h>
 #include <epicsExport.h>
 #include <dbAccess.h>
 #include <devSup.h>

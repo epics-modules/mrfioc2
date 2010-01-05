@@ -142,6 +142,7 @@
 /**************************************************************************************************/
 
 #include <errno.h>              // Standard C error variable
+#include <stdlib.h>
 
 #include <stdexcept>            // Standard C++ exception class
 #include <string>               // Standard C++ string class
