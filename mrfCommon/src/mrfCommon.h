@@ -50,8 +50,9 @@
 /*  Include Header Files from the Common Utilities                                                */
 /**************************************************************************************************/
 
-#include <epicsTypes.h>                        /* EPICS Architecture-independent type definitions */
-#include <debugPrint.h>                        /* SLAC Debug print utility                        */
+#include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
+#include  <dbCommon.h>          /* EPICS Common record field definitions                          */
+#include  <debugPrint.h>        /* SLAC Debug print utility                                       */
 
 
 /**************************************************************************************************/
@@ -107,6 +108,15 @@
 #else
     #define EVENT_CLOCK_DEFAULT    0.00                 /* Defaults to cntrl word value or 125.0  */
 #endif
+
+/**************************************************************************************************/
+/*  Function Prototype Definitions                                                                */
+/**************************************************************************************************/
+
+/*---------------------
+ * Disable an EPICS record
+ */
+void mrfDisableRecord (dbCommon *pRec);
 
 /*---------------------
  * Define the prototype for an EPICS Interrupt Service Routine

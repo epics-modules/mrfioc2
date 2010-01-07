@@ -42,31 +42,98 @@
 |*
 \**************************************************************************************************/
 
+/**************************************************************************************************/
+/*  mrfIoLink Class Description                                                                   */
+/**************************************************************************************************/
+
 //==================================================================================================
-//  mrfCommon Group Definition
-//==================================================================================================
-//! @defgroup   mrfCommon Common Utility Routines
-//! @brief      Utility routines used by the MRF timing software.
-//!
-//! The common utility routines and definitions are found in the $(TIMING)/mrfCommon directory.
-//! The utilities in this directory include:
-//! - \b  mrfFracSynth - Routines for translating between event clock frequency and
-//!                      fractional synthesizer control words
-//! - \b  mrfIoLink    - Parses the parameter list specified in the INP or OUT link fields.
-//! - \b  mrfIoOps     - Macros for performing register-based I/O operations
-//!
+//! @addtogroup mrfCommon
 //! @{
 //!
 //==================================================================================================
-
-//==================================================================================================
-// mrfIoLink Class Description
-//==================================================================================================
 //! @class      mrfIoLink
-//! @brief      I/O link field parser
+//! @brief      EPICS I/O link field parser.
 //!
-//! @par Description:
-//!   The MRF timing system record interface uses the INST_IO link type.
+//! The MRF timing system record interface uses the INST_IO link type for its INP and OUT
+//! fields.  The mrfIoLink class parses the I/O link string, checks for errors, and allows the
+//! caller to test for the presence of a particular parameter and retrieve its value as either
+//! a signed integer or a C++ string.
+//!
+//! The I/O link string consists of an arbitrary number of parameter/value pairs separated by
+//! semicolons (";").  Parameter/Value pairs are of the form:
+//!
+//!    Parameter=Value
+//!
+//! where the value is separated from the parameter name by the "=" sign.  Leading and trailing
+//! white space is removed from the value string. Embedded white space is not deleted however.
+//! Both the parameter name and the value string may contain embedded blanks.
+//!
+//! Parameter and value strings may contain any character except for the "=" sign, and the
+//! semicolon (";").  If the value string is to be interpreted as a signed integer, it must be
+//! parsable as an integer.  This typically means that it only contains decimal (or hexadecimal)
+//! digits and an optional sign character.  A typical INST_IO link string might look something
+//! like:
+//!
+//!   \@C=2; Fn = Read Raw Value; Unit=10
+//!
+//! Note that the parameter/value pairs may appear in any order.  White space is ignored before
+//! and after the "=" sign.  The semicolon after the the final parameter/value pair is not
+//! required.
+//!
+//! The class constructor is passed the parameter string and an array of legal parameter names.
+//! It parses the parameter/value pairs and stores them internally.  The \b has_a() method tests
+//! for the existence of the specified parameter.  The \b getString() method will return the
+//! parameter's value as a C++ string.  The \b getInteger() method will return the parameter's
+//! value as a signed integer.
+//!
+//! If any parsing errors occur, the class will throw a "runtime_error" exception.
+//!
+//! The following code snippet illustrates how the mrfIoLink class can be used in an EPICS
+//! record initialization routine to parse the I/O link field string:
+//! \code
+//!    #include  <mrfIoLink.h>         // MRF I/O link field parser
+//!
+//!    //=====================
+//!    // Table of legal parameter nazmes
+//!    //
+//!    static const mrfParmNameList
+//!    LegalNames = {
+//!        "C",        // Logical card number
+//!        "Fn",       // Record function code
+//!        "Unit"      // Unit number
+//!    };
+//!
+//!    //=====================
+//!    // Number of entries in the table
+//!    //
+//!    static const epicsInt32
+//!    NumParms mrfParmNameListSize(LegalNames);
+//!
+//!    //=====================
+//!    // Parse the link field
+//!    //
+//!    try {
+//!        mrfIoLink ioLink   = new mrfIoLink (pRec->inp.value.instio.string, LegalNames, NumParms);
+//!        Card     = ioLink->getInteger ("C"   );
+//!        Function = ioLink->getString  ("Fn"  );
+//!        Unit = 0;
+//!        if (ioLink->has_a("Unit"))
+//!            Unit = ioLink->getString ("Unit");
+//!        delete ioLink;
+//!    }//end try to parse the I/O link field
+//!
+//!    //=====================
+//!    // Catch any parsing errors:
+//!    //  - Report the error
+//!    //  - Delete the ioLink object
+//!    //
+//!    catch (std::exception& e) {
+//!        recGblRecordError (S_dev_badInpType, pRec, e.what());
+//!        delete ioLink;
+//!        return S_dev_badInpType;
+//!    }//end if there was an error parsing the link
+//!
+//! \endcode
 //!
 //==================================================================================================
 
@@ -111,10 +178,6 @@
 //**************************************************************************************************
 
 mrfIoLink::mrfIoLink (
-
-    //=====================
-    // Argument declarations
-    //
     const char*             parmString,         // Parameter string from the I/O link field
     const mrfParmNameList   nameList,           // Table of valid parameter names
     const epicsInt32        numNames) :         // Number of entries in the table of parameter names
@@ -123,7 +186,7 @@ mrfIoLink::mrfIoLink (
     // Initialize the data members
     // 
     LegalNames(nameList),                       // Table of legal parameter names
-    NumLegalNames(numNames)                     // Number of entries in the parameter name parameter
+    NumLegalNames(numNames)                     // Number of entries in the parameter name table
 {
     //=====================
     // Local variables
@@ -180,7 +243,7 @@ mrfIoLink::mrfIoLink (
 //!             Returns "fales" if the parameter was not specified in the I/O link field
 //!
 //! @par Member Variables Referenced:
-//! - \e        ParmMap = (input) Maps parameter names to values.
+//!   \e        ParmMap = (input) Maps parameter names to values.
 //!
 //**************************************************************************************************
 
@@ -214,7 +277,7 @@ mrfIoLink::has_a (const char* parm) {
 //! @throw      runtime_error is thrown if the requested parameter was not in the I/O link string
 //!
 //! @par Member Variables Referenced:
-//! - \e        ParmMap = (input) Maps parameter names to values.
+//!   \e        ParmMap = (input) Maps parameter names to values.
 //!
 //**************************************************************************************************
 
@@ -263,7 +326,7 @@ mrfIoLink::getString (const char* parm) {
 //!             or the value did not represent a valid signed integer.
 //!
 //! @par Member Variables Referenced:
-//! - \e        ParmMap = (input) Maps parameter names to values.
+//!   \e        ParmMap = (input) Maps parameter names to values.
 //!
 //**************************************************************************************************
 

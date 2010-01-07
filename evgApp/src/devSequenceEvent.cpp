@@ -176,36 +176,6 @@ struct AnalogDSET {
 
 
 /**************************************************************************************************
-|* disableRecord () -- Disable a Record From Ever Being Processed
-|*-------------------------------------------------------------------------------------------------
-|* FUNCTION:
-|*    o Set the "Processing Active" (PACT) field to "true"
-|*    o Set the "Disable putFields" (DISP) field to "true"
-|*    o Set the "Disable Value" (DISV) equal to the "Disable Link Value" (DISA)
-|*    o Set the record status field (STAT) to "DISABLE_ALARM"
-|*    o Set the record severity field (SEVR) to "INVALID_ALARM"
-|*
-|*-------------------------------------------------------------------------------------------------
-|* CALLING SEQUENCE:
-|*    disableRecord (pRec)
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*    pRec  = (dbCommon *)  Pointer to the record to disable.
-|*
-\**************************************************************************************************/
-
-static
-void disableRecord (dbCommon *pRec)
-{
-    pRec->pact = pRec->disp = true;
-    pRec->disv = pRec->disa;
-    pRec->stat = DISABLE_ALARM;
-    pRec->sevr = pRec->diss = INVALID_ALARM;
-
-}//end disableRecord()
-
-/**************************************************************************************************
 |* parseLink () -- Parse An EPICS Database Link Structure
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
@@ -430,7 +400,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     //
     catch (std::exception& e) {
         recGblRecordError (status, pRec, strcat("\nReason: ", e.what()));
-        disableRecord ((dbCommon *)pRec);
+        mrfDisableRecord ((dbCommon *)pRec);
         return (status);
     }//end if record initialization failed
 

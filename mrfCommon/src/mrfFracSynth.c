@@ -15,68 +15,15 @@
 |* Micrel SY87739L Product Description.  Available at:
 |*        http://www.micrel.com
 |*
-|*--------------------------------------------------------------------------------------------------
-|* MODULE DESCRIPTION:
-|*
-|* This module contains routines to create and analyze the control word for the Micrel SY87739L
-|* Fractional-N synthesizer chip.  This chip is used in the MRF Series-200 event receiver cards to
-|* synchronize with the expected event clock frequency.  It is also in the event generator card
-|* where it can be used to generate the event clock in the absence of an RF source.
-|*
-|* Three routines are provided in this module:
-|*
-|*    mrfSetEventClockSpeed (InputClockSpeed, InputControlWord, ReferenceFreq,
-|*                           &OutputClockSpeed, &OutputControlWord, PrintFlag);
-|*        Determines the event clock speed and/or the fractional synthesizer control word given
-|*        the knowledge of one or the other of these paramters.
-|*
-|*    FracSynthControlWord (DesiredFreq, ReferenceFreq, debugFlag, &Error):
-|*        Creates an SY87739L control word which will generate the desired frequency from
-|*        the specified reference frequency. If it can not generate the desired frequency
-|*        exactly, it will generate a frequency as close to the desired frequency as it can.
-|*        The routine will return the "error" (expressed in parts-per-million) between the desired
-|*        and generated frequencies.
-|*
-|*        For the MRF Series-200 event system, the error must be below +/- 100 ppm.
-|*
-|*    FracSynthAnalyze (ControlWord, ReferenceFreq, PrintFlag):
-|*        Examines the specified SY87739L control word and returns the output frequency
-|*        that will be generated given the specified reference frequency.  Depending on
-|*        the value of the "PrintFlag" parameter, it will also display the values of the
-|*        control word fields and how the output frequency is created from them.  It will
-|*        also analyze the control word for programming errors.
-|*
-|* For convenience, this module also defines EPICS IOC Shell versions of the "FracSynth" routines.
-|* The IOC Shell versions only take the first argument.  The reference frequency defaults to
-|* the MRF input reference frequency (24 MHz) and the debugFlag/PrintFlag are defaulted to
-|* produce the maximum amount of printed output.
-|*
-|*--------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o For the MRF Series-200 cards, the input reference frequency is 24 Mhz.
-|*
-|* o To use the EPICS IOC shell definitions, the "Data Base Definition" (dbd) file should include
-|*   the following line:
-|*
-|*        registrar (FracSynthRegistrar)
-|*
-|* o These routines are not suitable for calling from the vxWorks shell as they require
-|*   floating point input.
-|*
 \**************************************************************************************************/
 
 /**************************************************************************************************
 |*                                     COPYRIGHT NOTIFICATION
 |**************************************************************************************************
-|*  
+|*
 |* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
 |* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
 |* AND IN ALL SOURCE LISTINGS OF THE CODE.
-|*
-|**************************************************************************************************
-|*
-|* Copyright (c) 2006 Los Alamos National Security, LLC
-|* as Operator of Los Alamos National Laboratory.
 |*
 |**************************************************************************************************
 |*
@@ -84,6 +31,58 @@
 |* can be found in the file, LICENSE, included with this distribution.
 |*
 \*************************************************************************************************/
+
+/***************************************************************************************************
+ *  mrfFracSynth File Description
+ **************************************************************************************************/
+/**
+ * @addtogroup mrfCommon
+ * @{
+ **************************************************************************************************/
+/** 
+ * @file       mrfFracSynth.c
+ * @brief      Support routines for the Micrel SY87739L Fractional-N Synthesizer
+ *
+ * This module contains routines to create and analyze the control word for the Micrel SY87739L
+ * Fractional-N synthesizer chip.  This chip is used in the MRF Series-200 event receiver cards to
+ * synchronize with the expected event clock frequency.  It is also in the event generator card
+ * where it can be used to generate the event clock in the absence of an RF source.
+ *
+ * Three routines are provided in this module:
+ *
+ * - \e  mrfSetEventClockSpeed -
+ *          Determines the event clock speed and/or the fractional synthesizer control word given
+ *          the knowledge of one or the other of these paramters.
+ *
+ * - \e  FracSynthControlWord -
+ *          Creates an SY87739L control word which will generate the desired frequency from
+ *          the specified reference frequency. If it can not generate the desired frequency
+ *          exactly, it will generate a frequency as close to the desired frequency as it can.
+ *          The routine will return the "error" (expressed in parts-per-million) between the desired
+ *          and generated frequencies. For the MRF Series-2xx event system, the error must be
+ *          below +/- 100 ppm.
+ *
+ * - \e  FracSynthAnalyze -
+ *          Examines the specified SY87739L control word and returns the output frequency
+ *           that will be generated given the specified reference frequency.  Depending on
+ *          the value of the "PrintFlag" parameter, it will also display the values of the
+ *          control word fields and how the output frequency is created from them.  It will
+ *          also analyze the control word for programming errors.<p>
+ *
+ * For convenience, this module also defines EPICS IOC Shell versions of the "FracSynth" routines.
+ * The IOC Shell versions only take the first argument.  The reference frequency defaults to
+ * the MRF input reference frequency (24 MHz) and the debugFlag/PrintFlag are defaulted to
+ * produce the maximum amount of printed output.
+ *
+ * @note For the MRF Series-2xx cards, the input reference frequency is 24 Mhz.
+ *
+ * @note To use the EPICS IOC shell definitions, the "Data Base Definition" (dbd) file should
+ *       include the line:<br> \e "registrar(FracSynthRegistrar)"
+ *
+ * @note These routines are not suitable for calling from the vxWorks shell as they require
+ *       floating point input.
+ *
+ **************************************************************************************************/
 
 /**************************************************************************************************/
 /*  Imported Header Files                                                                         */
@@ -170,6 +169,7 @@
 /*---------------------
  * Define the field values for the correction factor components
  */
+
 #define CORRECTION_DIV_14        5       /* Numerator or denominator of 14                        */
 #define CORRECTION_DIV_15        7       /* Numerator or denominator of 15                        */
 #define CORRECTION_DIV_16        1       /* Numerator or denominator of 16                        */
@@ -294,90 +294,70 @@ static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
 };/* CorrectionValList*/
 
 /**************************************************************************************************
-|* mrfSetEventClockSpeed () -- Determine the Desired Event Clock Speed and Frac Synth Control Word
-|*-------------------------------------------------------------------------------------------------
-|*
-|* This routine will determine the system's event clock speed (in Megahertz) and/or the value for
-|* the fractional synthesizer control word given at least one of these two values.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* FUNCTION:
-|*
-|* If the InputClockSpeed parameter is specified (not zero), the routine will compute the value
-|* of the fractional synthesizer control word to produce that frequency.
-|*
-|* If the InputControlWord parameter is specified (not zero), the routine will check the control
-|* word for programming errors and return the actual frequency (in Megahertz) produced by that
-|* control word.
-|*
-|* If neither parameter is specified, the routine will output a default event clock frequency and
-|* a default control word.
-|*
-|* If both parameters are specified, the routine will make sure the frequency generated by the
-|* control word is within 100 ppm of the desired clock speed.
-|*
-|* If no errors are encountered, the routine will return both the final event clock speed and
-|* the fractional synthesizer control word.  If errors are encountered, both output parameters
-|* will contain zero.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* CALLING SEQUENCE:
-|*      status = mrfSetEventClockSpeed (InputClockSpeed, InputControlWord, ReferenceFreq,
-|*                                      &OutputClockSpeed, &OutputControlWord, PrintFlag);
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      InputClockSpeed     = (epicsFloat64)  Desired event clock speed in Megahertz.
-|*                                            0.0 means no clock speed specified.      
-|*      InputControlWord    = (epicsUInt32)   Desired value for the fractional synthesizer
-|*                                            control word. 0 means no control word specified.
-|*      ReferenceFreq       = (epicsFloat64)  SY87739L input reference frequency in MegaHertz.
-|*      PrintFlag           = (epicsInt32)    Flag to control output messages.  Output levels
-|*                                            correspond to the DEBUGPRINT output levels:
-|*                                            DP_NONE  (0) = Only display errors that prevent us
-|*                                                           from returning the event clock speed
-|*                                                           and the control word.
-|*                                            DP_ERROR (2) = Display any programming errors
-|*                                                           detected in the control word
-|*                                            DP_WARN  (3) = Display warning messages such as
-|*                                                           the one warning that we are using
-|*                                                           the default event clock frequency.
-|*                                            DP_INFO  (4) = Display the value of the computed
-|*                                                           control word, its actual output
-|*                                                           frequency, and the error (in ppm)
-|*                                                           between the desired and actual
-|*                                                           frequencies.
-|*                                            DP_DEBUG (5) = Display the actual values of the
-|*                                                           fields in the control word, along
-|*                                                           with the constituent parts of the
-|*                                                           output frequency (VCO frequency,
-|*                                                           correction term, reference freq.)
-|*
-|*-------------------------------------------------------------------------------------------------
-|* OUTPUT PARAMETERS:
-|*      OutputClockSpeed    = (epicsFloat64)  The input or computed value for the event clock speed
-|*      OutputControlWord   = (epicsUInt32)   The input or computed value for the fractional
-|*                                            synthesizer control word.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* IMPLICIT INPUTS:
-|*      MRF_DEF_CLOCK_SPEED = (epicsFloat64)  Default clock speed if neither InputeClockSpeed or
-|*                                            InputControlWord were specified.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      status              = (epicsStatus)   OK if we were able to return both an event clock
-|*                                            frequency and a fractional synthesizer control word.
-|*                                            ERROR if we could not.
-|*
-\**************************************************************************************************/
+ * mrfSetEventClockSpeed () -- Determine the Desired Event Clock Speed and Frac Synth Control Word
+ *************************************************************************************************/
+/**
+ * @par Description:
+ *
+ *   This routine will determine the system's event clock speed (in Megahertz) and/or the value for
+ *   the fractional synthesizer control word given at least one of these two values.
+ *
+ * @par Function:
+ *
+ *    If the InputClockSpeed parameter is specified (not zero), the routine will compute the value
+ *    of the fractional synthesizer control word to produce that frequency.
+ *
+ *    If the InputControlWord parameter is specified (not zero), the routine will check the control
+ *    word for programming errors and return the actual frequency (in Megahertz) produced by that
+ *    control word.
+ *
+ *    If neither parameter is specified, the routine will output a default event clock frequency and
+ *    a default control word.
+ *
+ *    If both parameters are specified, the routine will make sure the frequency generated by the
+ *    control word is within 100 ppm of the desired clock speed.
+ *
+ *    If no errors are encountered, the routine will return both the final event clock speed and
+ *    the fractional synthesizer control word.  If errors are encountered, both output parameters
+ *    will contain zero.
+ *
+ * @param   InputClockSpeed   = (input)   Desired event clock speed in Megahertz.
+ *                                        0.0 means no clock speed specified.      
+ * @param   InputControlWord  = (input)   Desired value for the fractional synthesizer
+ *                                        control word. 0 means no control word specified.
+ * @param   ReferenceFreq     = (input)   SY87739L input reference frequency in MegaHertz.
+ * @param   OutputClockSpeed  = (output)  The input or computed value for the event clock speed
+ * @param   OutputControlWord = (output)  The input or computed value for the fractional
+ *                                        synthesizer control word.
+ * @param   PrintFlag          = (input)  Flag to control output messages.  Output levels
+ *                                        correspond to the DEBUGPRINT output levels:<br>
+ *                                            DP_NONE  (0) = Only display errors that prevent us
+ *                                                           from returning the event clock speed
+ *                                                           and the control word.<br>
+ *                                            DP_ERROR (2) = Display any programming errors
+ *                                                           detected in the control word.<br>
+ *                                            DP_WARN  (3) = Display warning messages such as
+ *                                                           the one warning that we are using
+ *                                                           the default event clock frequency.<br>
+ *                                            DP_INFO  (4) = Display the value of the computed
+ *                                                           control word, its actual output
+ *                                                           frequency, and the error (in ppm)
+ *                                                           between the desired and actual
+ *                                                           frequencies.<br>
+ *                                            DP_DEBUG (5) = Display the actual values of the
+ *                                                           fields in the control word, along
+ *                                                           with the constituent parts of the
+ *                                                           output frequency (VCO frequency,
+ *                                                           correction term, reference freq.)
+ *
+ * @return
+ *    OK if we were able to return both an event clock frequency and a fractional
+ *             synthesizer control word.<br>
+ *    ERROR if we could not.
+ *
+ **************************************************************************************************/
 
 epicsStatus mrfSetEventClockSpeed (
-
-    /**********************************************************************************************/
-    /*  Parameter Declarations                                                                    */
-    /**********************************************************************************************/
-
     epicsFloat64   InputClockSpeed,             /* Desired event clock speed in MHz (or zero)     */
     epicsUInt32    InputControlWord,            /* Fractional synthesizer control word (or zero)  */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency (in MHz)    */
@@ -385,16 +365,11 @@ epicsStatus mrfSetEventClockSpeed (
     epicsUInt32   *OutputControlWord,           /* Resulting synthesizer control word             */
     epicsInt32     PrintFlag)                   /* Flag to control what we print in this routine  */
 {
-    /**********************************************************************************************/
-    /*  Local Variables                                                                           */
-    /**********************************************************************************************/
-
+   /*---------------------
+    *  Local Variables
+    */
     epicsFloat64   ActualClockSpeed;            /* Actual frequency generated by the control word */
     epicsFloat64   Error = 0.0;                 /* Error (in ppm) between desired & actual freq.  */
-
-    /**********************************************************************************************/
-    /*  Code                                                                                      */
-    /**********************************************************************************************/
 
    /*---------------------
     * Zero the output clock speed and control word parameters just in case there is an error.
@@ -482,122 +457,103 @@ epicsStatus mrfSetEventClockSpeed (
 }/*end mrfSetEventClockSpeed()*/
 
 /**************************************************************************************************
-|* FracSynthControlWord () -- Construct Control Word For SY87739L Fractional Synthesizer
-|*-------------------------------------------------------------------------------------------------
-|*
-|* This routine will take a desired output frequency (expressed in MegaHertz)and a reference
-|* frequency (also expressed in MegaHertz) and create a control word for the Micrel SY877391L
-|* Fractional-N Synthesizer chip that will produce an output frequency as close as possible to
-|* the desired frequency.  The routine also returns an error value (expressed in parts-per-million)
-|* between the actual output frequency and the desired output frequency.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* FUNCTION:
-|*
-|* A complete description of how the Micrel SY87739L chip works is way beyond the scope of a
-|* function header comment.  The reader who wants a complete understanding of what this routine
-|* is doing should refer to the Micrel SY87739L product description sheet available at:
-|*         www.micrel.com
-|*
-|* A brief description of the chip programming is useful, however, and is provided here:
-|*
-|* The output frequency is described by the following formulae:
-|*
-|*      F(out) = F(vco) / PostDiv
-|*
-|* where F(vco) is the frequency generated by a voltage-controlled oscillator, and PostDiv is
-|* a frequency divider value between 1 and 60 (not inclusive).  The PostDiv value must be chosen
-|* so that the VCO frequency is within its operating range of 540 - 729 MHz.  The VCO frequency
-|* is given by:
-|*
-|*      F(vco) = C * F(frac) * F(ref)
-|*
-|* where C is a "Correction Factor" (also referred to as the "wrapper correction" in the
-|* documentation0 expressed as (N/M) where N and M are from the set {14, 15, 16, 17, 18, 31, 32}.
-|* Not all combinations, however, are legal.  F(frac) is the fractional frequency produced by a
-|* fractional-N P/P-1 divider circuit.  F(ref) is the input reference frequency to the Micrel chip.
-|* Typically it is 27 MHz, although in the MRF timing boards it is 24 MHz.  The fractional frequency
-|* is basically a multiplier for the reference frequency.  It is expressed as a rational number
-|* with a divisor less than 32 and is given by:
-|*
-|*      F(frac) = P - (Q(p-1) / (Q(p) + Q(p-1)))
-|*
-|* where P is the integer part of the fractional frequency, Q(p) is the number of clock periods
-|* where the reference clock is divided by P and Q(p-1) is the number of clock periods where the
-|* reference clock is divided by P-1.  A hardware implementation of Bresenham's algorithm is
-|* used to evenly space out the P and P-1 divisions.  Beyond this, you'll have to read the
-|* manual for further details.
-|*
-|* The routine works by doing an exhaustive search (with some optimizations) of the parameter space
-|* {C, Q(p), Q(p-1), PostDiv}.  P is predetermined by F(out) and PostDiv, so it does not need to
-|* be searched.  The Q(p), Q(p-1) search is accomplished by searching all the numerators for
-|* the denominator (Q(p) + Q(p-1)) that produce a fraction less than 1.  Although an exhaustive
-|* search is not the most efficient way to optimize a 4-parameter space, it turns out that the
-|* dimensions of each parameter are not that big.  PostDiv only has 31 unique values, and we
-|* only search the values that produce a valid F(vco).  When you rule out duplications and
-|* illegal combinations it turns out that C only has 22 valid values, and if you arrange them
-|* in ascending order, you only have to search until the error value stops decreasing.  For
-|* Q(p) and Q(p-1), we only have to search 31 denominators and for each denominator we only have
-|* to search n-1 numerators.  This gives us n(n+1)/2, or 465 (for n=30) possible
-|* numerator/denominator pairs to search, although we stop immediately if we find a denominator
-|* that exactly divides the desired fractional frequency.
-|*
-|* If we search 22 correction factors for each numerator/denominator pair, and we repeat the
-|* process for each of 31 possible PostDiv values, we get a worst case number of 317,130 possible
-|* combinations. In practice, the VCO frequency limitations (between 540 and 729 Megahertz) will
-|* usually eliminate most of the 31 possible PostDiv values.  Given the other optimizations
-|* mentioned above, the worst case number is a pretty pathological example.  In most cases the
-|* number of combinations actually searched will be far less than that.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* CALLING SEQUENCE:
-|*      controlWord = FracSynthControlWord (DesiredFreq, ReferenceFreq, debugFlag, &Error);
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      DesiredFreq    = (epicsFloat64)      Desired output frequency in MegaHertz.
-|*      ReferenceFreq  = (epicsFloat64)      SY87739L input reference frequency in MegaHertz.
-|*      debugFlag      = (epicsInt32)        Flag for debug output.  If the value is 4 (DP_INFO)
-|*                                           or higher, the routine will print the value of the
-|*                                           control word and the frequency actually produced.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* OUTPUT PARAMETERS:
-|*      Error          = (epicsFloat64)      Error between the actual output frequency and the
-|*                                           desired output frequency.  Expressed in
-|*                                           parts-per-million.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* IMPLICIT INPUTS:
-|*      CorrectionList = (CorrectionStruct)  List of all valid correction factors and their
-|*                                           control-word encodings.
-|*
-|*      PostDivideList = (PostDivideStruct)  List of valid post-divide values and their
-|*                                           control-word encodings.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      controlWord    = (epicsUInt32)       SY87739L Control Word for the desired frequency.
-|*
-\**************************************************************************************************/
+ * FracSynthControlWord () -- Construct Control Word For SY87739L Fractional Synthesizer
+ **************************************************************************************************/
+/**
+ * @par Description:
+ *
+ *   This routine will take a desired output frequency (expressed in MegaHertz)and a reference
+ *   frequency (also expressed in MegaHertz) and create a control word for the Micrel SY877391L
+ *   Fractional-N Synthesizer chip that will produce an output frequency as close as possible to
+ *   the desired frequency.  The routine also returns an error value (expressed in
+ *   parts-per-million) between the actual output frequency and the desired output frequency.
+ *
+ * @par Function:
+ *
+ *   A complete description of how the Micrel SY87739L chip works is way beyond the scope of a
+ *   function header comment.  The reader who wants a complete understanding of what this routine
+ *   is doing should refer to the Micrel SY87739L product description sheet available at:
+ *         www.micrel.com
+ *
+ *   A brief description of the chip programming is useful, however, and is provided here:
+ *
+ *   The output frequency is described by the following formulae:
+ *
+ *      F(out) = F(vco) / PostDiv
+ *
+ *   where F(vco) is the frequency generated by a voltage-controlled oscillator, and PostDiv is
+ *   a frequency divider value between 1 and 60 (not inclusive).  The PostDiv value must be chosen
+ *   so that the VCO frequency is within its operating range of 540 - 729 MHz.  The VCO frequency
+ *   is given by:
+ *
+ *      F(vco) = C * F(frac) * F(ref)
+ *
+ *   where C is a "Correction Factor" (also referred to as the "wrapper correction" in the
+ *   documentation0 expressed as (N/M) where N and M are from the set {14, 15, 16, 17, 18, 31, 32}.
+ *   Not all combinations, however, are legal.  F(frac) is the fractional frequency produced by a
+ *   fractional-N P/P-1 divider circuit.  F(ref) is the input reference frequency to the Micrel
+ *   chip. Typically it is 27 MHz, although in the MRF timing boards it is 24 MHz.  The fractional
+ *   frequency is basically a multiplier for the reference frequency.  It is expressed as a
+ *   rational number with a divisor less than 32 and is given by:
+ *
+ *      F(frac) = P - (Q(p-1) / (Q(p) + Q(p-1)))
+ *
+ *   where P is the integer part of the fractional frequency, Q(p) is the number of clock periods
+ *   where the reference clock is divided by P and Q(p-1) is the number of clock periods where the
+ *   reference clock is divided by P-1.  A hardware implementation of Bresenham's algorithm is
+ *   used to evenly space out the P and P-1 divisions.  Beyond this, you'll have to read the
+ *   manual for further details.
+ *
+ *   The routine works by doing an exhaustive search (with some optimizations) of the parameter
+ *   space {C, Q(p), Q(p-1), PostDiv}.  P is predetermined by F(out) and PostDiv, so it does not
+ *   need to be searched.  The Q(p), Q(p-1) search is accomplished by searching all the numerators
+ *   for the denominator (Q(p) + Q(p-1)) that produce a fraction less than 1.  Although an
+ *   exhaustive search is not the most efficient way to optimize a 4-parameter space, it turns out
+ *   that the dimensions of each parameter are not that big.  PostDiv only has 31 unique values,
+ *   and we  only search the values that produce a valid F(vco).  When you rule out duplications and
+ *   illegal combinations it turns out that C only has 22 valid values, and if you arrange them
+ *   in ascending order, you only have to search until the error value stops decreasing.  For
+ *   Q(p) and Q(p-1), we only have to search 31 denominators and for each denominator we only have
+ *   to search n-1 numerators.  This gives us n(n+1)/2, or 465 (for n=30) possible
+ *   numerator/denominator pairs to search, although we stop immediately if we find a denominator
+ *   that exactly divides the desired fractional frequency.
+ *
+ *   If we search 22 correction factors for each numerator/denominator pair, and we repeat the
+ *   process for each of 31 possible PostDiv values, we get a worst case number of 317,130 possible
+ *   combinations. In practice, the VCO frequency limitations (between 540 and 729 Megahertz) will
+ *   usually eliminate most of the 31 possible PostDiv values.  Given the other optimizations
+ *   mentioned above, the worst case number is a pretty pathological example.  In most cases the
+ *   number of combinations actually searched will be far less than that.
+ *
+ * @param   DesiredFreq    = (input)  Desired output frequency in MegaHertz.
+ * @param   ReferenceFreq  = (input)  SY87739L input reference frequency in MegaHertz.
+ * @param   debugFlag      = (input)  Flag for debug output.  If the value is 4 (DP_INFO)
+ *                                    or higher, the routine will print the value of the
+ *                                    control word and the frequency actually produced.
+ * @param   Error          = (output) Error between the actual output frequency and the
+ *                                    desired output frequency.  Expressed in parts-per-million.
+ *
+ * @par Implicit Inputs:
+ *   \e CorrectionList = (CorrectionStruct)  List of all valid correction factors and their
+ *                                           control-word encodings.<br>
+ *   \e PostDivideList = (PostDivideStruct)  List of valid post-divide values and their
+ *                                           control-word encodings.
+ *
+ * @return Returns the SY87739L Control Word for the desired frequency.
+ *
+ **************************************************************************************************/
 
 
 epicsUInt32 FracSynthControlWord (
-
-    /**********************************************************************************************/
-    /*  Parameter Declarations                                                                    */
-    /**********************************************************************************************/
-
     epicsFloat64         DesiredFreq,         /* Desired output frequency                         */
     epicsFloat64         ReferenceFreq,       /* SY87739L input reference frequency               */
     epicsInt32           debugFlag,           /* Flag for debug/informational output              */
     epicsFloat64        *Error)               /* Error value (in parts per million)               */
 {
 
-    /**********************************************************************************************/
-    /*  Local Variables                                                                           */
-    /**********************************************************************************************/
-
+   /*---------------------
+    *  Local Variables
+    */
     FracSynthComponents  Best;                /* Best overall parameters seen so far              */
     FracSynthComponents  BestFracFreq;        /* Best fractional frequency parameters seen so far */
     epicsUInt32          ControlWord;         /* Computed control word value                      */
@@ -619,10 +575,6 @@ epicsUInt32 FracSynthControlWord (
     epicsInt32           Qpm1;                /* Number of "P-1" pulses in the frac. div. circuit */
     epicsFloat64         TestFreq;            /* Fractional frequency to try in correction loop   */
     epicsFloat64         VcoFreq;             /* Desired VCO frequency                            */
-
-    /**********************************************************************************************/
-    /*  Code                                                                                      */
-    /**********************************************************************************************/
 
    /*---------------------
     * Initialize the "Best Fractional Frequency So Far" parameters
@@ -847,68 +799,54 @@ epicsUInt32 FracSynthControlWord (
 }/*end FracSynthControlWord()*/
 
 /**************************************************************************************************
-|* FracSynthAnalyze () -- Analyze an SY87739L Fractional Synthesizer Control Word
-|*-------------------------------------------------------------------------------------------------
-|*
-|* This routine will take a bit pattern representing an SY87739L fractional synthesizer
-|* control word, break it down into its constituent parts, and return the effective output
-|* frequency (in MegaHertz) that the control word will generate.  Depending on the value of
-|* the "PrintFlag" parameter, it will also display the constituent parts of the the control
-|* word and the resulting values that make up the output frequency, and analyze the control
-|* word for programming errors.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* CALLING SEQUENCE:
-|*      OutputFreq = FracSynthAnalyze (ControlWord, ReferenceFreq, PrintFlag);
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      ControlWord       = (epicsUInt32)         The control word bit pattern to analyze.
-|*      ReferenceFreq     = (epicsFloat64)        SY87739L input reference frequency in MegaHertz.
-|*      PrintFlag         = (epicsInt32)          Flag to control output messages.  Output levels
-|*                                                correspond to the DEBUGPRINT output levels:
-|*                                                DP_NONE  (0) = No printed output, just return the
-|*                                                               effective output frequency.
-|*                                                DP_ERROR (2) = Display any programming errors
-|*                                                               detected in the control word
-|*                                                DP_DEBUG (5) = Display the actual values of the
-|*                                                               fields in the control word, along
-|*                                                               with the constituent parts of the
-|*                                                               output frequency (VCO frequency,
-|*                                                               correction term, reference freq.)
-|*
-|*-------------------------------------------------------------------------------------------------
-|* IMPLICIT INPUTS:
-|*      CorrectionValList = (CorrectionValStruct) Array to translate correction term components
-|*                                                from their coded values to actual values and
-|*                                                classes.
-|*
-|*      PostDivideValList = (epicsInt32)          Array to translate the post-divider field from
-|*                                                its coded value to its actual value.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      OutputFreq        = (epicsFloat64)        Output frequency generated by the control word.
-|*                                                Returns 0.0 if the analysis discovered
-|*                                                programming errors in the control word.
-|*
-\**************************************************************************************************/
+ * FracSynthAnalyze () -- Analyze an SY87739L Fractional Synthesizer Control Word
+ **************************************************************************************************/
+/**
+ * @par Description:
+ *   This routine will take a bit pattern representing an SY87739L fractional synthesizer
+ *   control word, break it down into its constituent parts, and return the effective output
+ *   frequency (in MegaHertz) that the control word will generate.  Depending on the value of
+ *   the "PrintFlag" parameter, it will also display the constituent parts of the the control
+ *   word and the resulting values that make up the output frequency, and analyze the control
+ *   word for programming errors.
+ *
+ * @param   ControlWord    = (input)  The control word bit pattern to analyze.
+ * @param   ReferenceFreq  = (input)  SY87739L input reference frequency in MegaHertz.
+ * @param   PrintFlag      = (input)  Flag to control output messages.  Output levels
+ *                                    correspond to the DEBUGPRINT output levels:<br>
+ *                                        DP_NONE  (0) = No printed output, just return the
+ *                                                       effective output frequency.<br>
+ *                                        DP_ERROR (2) = Display any programming errors
+ *                                                       detected in the control word<br>
+ *                                        DP_DEBUG (5) = Display the actual values of the
+ *                                                       fields in the control word, along
+ *                                                       with the constituent parts of the
+ *                                                       output frequency (VCO frequency,
+ *                                                       correction term, reference freq.)
+ *
+ * @par Implicit Inputs:
+ *   \e CorrectionValList = (CorrectionValStruct) Array to translate correction term components
+ *                                                from their coded values to actual values and
+ *                                                classes.
+ *   \e PostDivideValList = (epicsInt32)          Array to translate the post-divider field from
+ *                                                its coded value to its actual value.
+ *
+ * @return
+ *    Returns the output frequency generated by the control word.<br>
+ *    Returns 0.0 if the analysis discovered programming errors in the control word.
+ *
+ **************************************************************************************************/
 
 
 epicsFloat64 FracSynthAnalyze (
-
-    /**********************************************************************************************/
-    /*  Parameter Declarations                                                                    */
-    /**********************************************************************************************/
-
     epicsUInt32    ControlWord,                 /* Control word to analyze                        */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency             */
     epicsInt32     PrintFlag)                   /* Flag to control what we print in this routine  */
 {
-    /**********************************************************************************************/
-    /*  Local Variables                                                                           */
-    /**********************************************************************************************/
 
+   /*---------------------
+    *  Local Variables
+    */
     epicsFloat64   CorrectionTerm;
     epicsFloat64   EffectiveFreq = 0.0;         /* Computed effective output frequency            */
     epicsBoolean   Error = epicsFalse;          /* Error flag from control word analysis          */
@@ -928,10 +866,6 @@ epicsFloat64 FracSynthAnalyze (
     epicsUInt32    Qp;                          /* Number of times to divide by P                 */
     epicsUInt32    Qpm1;                        /* Number of times to divide by P-1               */
     epicsFloat64   VcoFreq;                     /* Computed VCO frequency                         */
-
-    /**********************************************************************************************/
-    /*                                        Code                                                */
-    /*                                                                                            */
 
    /*---------------------
     * Decompose the control word into its constituent elements
@@ -1157,3 +1091,7 @@ void FracSynthRegistrar () {
 epicsExportRegistrar (FracSynthRegistrar);
 
 #endif
+
+/**
+ * @}
+ */

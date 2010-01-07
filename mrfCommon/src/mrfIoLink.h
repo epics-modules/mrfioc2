@@ -93,7 +93,7 @@ public:
     //=====================
     // Constructor
     //
-    mrfIoLink (const char*  parmString, const mrfParmNameList nameList, epicsInt32 numElements);
+    mrfIoLink (const char*  parmString, const mrfParmNameList nameList, epicsInt32 numNames);
 
     //=====================
     // Tester functions
