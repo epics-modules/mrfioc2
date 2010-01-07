@@ -399,7 +399,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     // disable the record, and return the error status code
     //
     catch (std::exception& e) {
-        recGblRecordError (status, pRec, strcat("\nReason: ", e.what()));
+        recGblRecordError (status, pRec, (std::string("\nReason: ") + e.what()).c_str());
         mrfDisableRecord ((dbCommon *)pRec);
         return (status);
     }//end if record initialization failed
