@@ -12,8 +12,9 @@
 
 #include <dbScan.h>
 
-#include "evrmrmoutput.h"
-#include "evrmrmprescaler.h"
+#include "drvemOutput.h"
+#include "drvemPrescaler.h"
+#include "drvemPulser.h"
 
 /**@brief Modular Register Map Event Receivers
  *
@@ -33,8 +34,8 @@ public:
   virtual bool enabled() const;
   virtual void enable(bool v);
 
-  virtual Pulser* pulser(epicsUInt32);
-  virtual const Pulser* pulser(epicsUInt32) const;
+  virtual MRMPulser* pulser(epicsUInt32);
+  virtual const MRMPulser* pulser(epicsUInt32) const;
 
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
@@ -58,12 +59,13 @@ public:
   virtual epicsUInt32 uSecDiv() const;
 
   virtual epicsUInt32 tsDiv() const;
-  virtual void setTsDiv(epicsUInt32);
 
-  virtual void tsLatch();
-  virtual void tsLatchReset();
-  virtual epicsUInt32 tsLatchSec() const;
-  virtual epicsUInt32 tsLatchCount() const;
+  virtual void setSourceTS(TSSource);
+  virtual TSSource SourceTS() const;
+  virtual double clockTS() const;
+  virtual void clockTSSet(double);
+  virtual bool getTimeStamp(epicsTimeStamp *ts,TSMode mode);
+  virtual void tsLatch(bool latch);
 
   virtual epicsUInt16 dbus() const;
 
@@ -75,6 +77,7 @@ public:
   const int id;
   volatile unsigned char * const base;
 private:
+  double stampClock;
 
   epicsUInt32 count_recv_error;
   epicsUInt32 count_hardware_irq;
@@ -90,6 +93,9 @@ private:
 
   typedef std::vector<MRMPreScaler*> prescalers_t;
   prescalers_t prescalers;
+
+  typedef std::vector<MRMPulser*> pulsers_t;
+  pulsers_t pulsers;
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

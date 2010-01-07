@@ -43,8 +43,10 @@ record(ao, "$(P)clock:set") {
   field(OUT , "#C$(C) S0 @Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , 124.9135)
+  field(VAL , 124.916)
   field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
   field(PREC, 3)
   field(FLNK, "$(P)clock")
 }
@@ -57,6 +59,8 @@ record(ai, "$(P)clock") {
   field(PINI, "YES")
   field(UDF , 0)
   field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
   field(PREC, 3)
   field(FLNK, "$(P)clock:error")
 }
@@ -93,30 +97,70 @@ record(longin, "$(P)ver") {
   field(DESC, "Firmware version")
 }
 
-record(longout, "$(P)ts:div:set") {
-  field(DTYP, "EVR")
-  field(OUT , "#C$(C) S0 @Timestamp Prescaler")
+record(fanout, "$(P)ts:init") {
   field(PINI, "YES")
-  field(DESC, "Timestamp divider")
+  field(LNK1, "$(P)ts:clock:set")
+  field(LNK2, "$(P)ts:source")
+}
+
+record(mbbo, "$(P)ts:source") {
+  field( DTYP, "Raw Soft Channel")
+  field( OUT , "$(P)ts:source:raw")
+  field( ZRST, "Event clock")
+  field( ONST, "Mapped code(s)")
+  field( TWST, "DBus 4")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field(FLNK, "$(P)ts:source:raw")
+}
+
+record(longout, "$(P)ts:source:raw") {
+  field(DTYP, "EVR")
+  field(OUT , "#C$(C) S0 @Timestamp Source")
+  field(FLNK, "$(P)ts:source:rbv")
+}
+
+record(longin, "$(P)ts:source:rbv") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Timestamp Source")
+  field(FLNK, "$(P)ts:clock")
+}
+
+record(ao, "$(P)ts:clock:set") {
+  field(DTYP, "EVR")
+  field(OUT , "#C$(C) S0 @Timestamp Clock")
+  field(DESC, "Timestamp speed")
+  field(VAL , 10.0)
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
+  field(PREC, 3)
+  field(FLNK, "$(P)ts:clock")
+}
+
+record(ai, "$(P)ts:clock") {
+  field(DTYP, "EVR")
+  field(INP , "#C$(C) S0 @Timestamp Clock")
+  field(SCAN, "1 second")
+  field(DESC, "Timestamp speed")
+  field(PINI, "YES")
+  field(UDF , 0)
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, 1e-6)
+  field(PREC, 3)
   field(FLNK, "$(P)ts:div")
 }
 
 record(longin, "$(P)ts:div") {
   field(DTYP, "EVR")
   field(INP , "#C$(C) S0 @Timestamp Prescaler")
-  field(PINI, "YES")
   field(DESC, "Timestamp divider")
 }
 
-record(longin, "$(P)ts:sec") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Timestamp Seconds")
-  field(SCAN, "1 second")
-  field(EGU , "sec")
-}
-
-record(longin, "$(P)ts:cnt") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Timestamp Counter")
+record(stringin, "$(P)ts") {
+  field(DTYP, "EVR Timestamp")
+  field(INP , "#C$(C) S0 @")
   field(SCAN, "1 second")
 }

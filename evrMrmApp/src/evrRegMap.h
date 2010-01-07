@@ -124,6 +124,15 @@ enum evrForm {
 
 /* 0 <= N <= 9 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
+#  define PulserCtrl_ena  0x01
+#  define PulserCtrl_mtrg 0x02
+#  define PulserCtrl_mset 0x04
+#  define PulserCtrl_mrst 0x08
+#  define PulserCtrl_pol  0x10
+#  define PulserCtrl_srst 0x20
+#  define PulserCtrl_sset 0x40
+#  define PulserCtrl_rbv  0x80
+
 #define U32_PulserScal(N) (U32_PulserNScal + (16*(N)))
 #define U32_PulserDely(N) (U32_PulserNDely + (16*(N)))
 #define U32_PulserWdth(N) (U32_PulserNWdth + (16*(N)))

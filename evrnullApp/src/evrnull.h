@@ -79,13 +79,15 @@ public:
 
   virtual epicsUInt32 uSecDiv() const{return 0;};
 
-  virtual epicsUInt32 tsDiv() const{return 0;};
-  virtual void setTsDiv(epicsUInt32){};
+  virtual void setSourceTS(TSSource){};
+  virtual TSSource SourceTS() const{return TSSourceInternal;};
 
-  virtual void tsLatch(){};
-  virtual void tsLatchReset(){};
-  virtual epicsUInt32 tsLatchSec() const{return 0;};
-  virtual epicsUInt32 tsLatchCount() const{return 0;};
+  virtual double clockTS() const{return 0;};
+  virtual void clockTSSet(double){};
+
+  virtual epicsUInt32 tsDiv() const{return 0;};
+  virtual bool getTimeStamp(epicsTimeStamp *,TSMode){return false;};
+  virtual void tsLatch(bool){};
 
   virtual epicsUInt16 dbus() const{return 0;};
 

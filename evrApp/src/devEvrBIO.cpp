@@ -20,8 +20,9 @@
 
 static long binary_init_record(dbCommon *prec, DBLINK* lnk)
 {
+  long ret=0;
 try {
-//  prec->dpvt=static_cast<void*>(priv);
+  assert(lnk->type==VME_IO);
 
   EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
   if(!card)
@@ -58,11 +59,13 @@ try {
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-  return S_dev_noDevice;
+  ret=S_dev_noDevice;
 } catch(std::exception& e) {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
+  ret=S_db_noMemory;
 }
+  prec->pact=TRUE;
+  return ret;
 }
 
 static long init_bi(biRecord *pbi)

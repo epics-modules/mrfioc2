@@ -1,5 +1,5 @@
 
-#include "evrmrmiocsh.h"
+#include "drvemIocsh.h"
 
 #include <cstdio>
 
@@ -13,7 +13,7 @@
 #include <epicsInterrupt.h>
 #include "mrmpci.h"
 
-#include "evrmrm.h"
+#include "drvem.h"
 #include "evrRegMap.h"
 #include "plx9030.h"
 
@@ -91,7 +91,7 @@ setupPCI(int id,int b,int d,int f)
       printf("Failed to install ISR\n");
   }else{
       NAT_WRITE32(evr, IRQEnable,
-          IRQ_Enable|IRQ_Heartbeat|IRQ_RXErr|IRQ_HWMapped|IRQ_Event
+          IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
       );
 
       storeEVR(id,receiver);
@@ -102,7 +102,7 @@ static
 void
 printRamEvt(EVRMRM *evr,int evt,int ram)
 {
-  if(evt<=0 || evt>255)
+  if(evt<0 || evt>255)
     return;
   if(ram<0 || ram>1)
     return;
@@ -164,12 +164,12 @@ mrmEvrDumpMap(int id,int evt,int ram)
     return;
   }
   printf("Print ram #%d\n",ram);
-  if(evt>0){
+  if(evt>=0){
     // Print a single event
     printRamEvt(card,evt,ram);
     return;
   }
-  for(evt=1;evt<=255;evt++){
+  for(evt=0;evt<=255;evt++){
     printRamEvt(card,evt,ram);
   }
 }

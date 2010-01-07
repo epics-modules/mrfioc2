@@ -1,21 +1,24 @@
 
 #include <stdlib.h>
+#include <math.h>
 #include <epicsExport.h>
 #include <dbAccess.h>
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
+#include <alarm.h>
 
 #include <aiRecord.h>
 #include <aoRecord.h>
 #include <menuConvert.h>
 
 #include "cardmap.h"
-#include "evr/evr.h"
+#include "evr/pulser.h"
 #include "property.h"
 
 #include <stdexcept>
 #include <string>
+#include <cfloat>
 
 /***************** AI/AO *****************/
 
@@ -23,26 +26,30 @@ static long analog_init_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==AB_IO);
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  property<EVR,double> *prop;
-  std::string parm(lnk->value.vmeio.parm);
+  Pulser* pul=card->pulser(lnk->value.abio.adapter);
+  if(!pul)
+    throw std::runtime_error("Failed to lookup pulser");
 
-  if( parm=="Clock" ){
-    prop=new property<EVR,double>(
-        card,
-        &EVR::clock,
-        &EVR::clockSet
+  property<Pulser,double> *prop;
+  std::string parm(lnk->value.abio.parm);
+
+  if( parm=="Delay" ){
+    prop=new property<Pulser,double>(
+        pul,
+        &Pulser::delay,
+        &Pulser::setDelay
     );
-  }else if( parm=="Timestamp Clock" ){
-    prop=new property<EVR,double>(
-        card,
-        &EVR::clockTS,
-        &EVR::clockTSSet
+  }else if( parm=="Width" ){
+    prop=new property<Pulser,double>(
+        pul,
+        &Pulser::width,
+        &Pulser::setWidth
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
@@ -70,7 +77,7 @@ static long init_ai(aiRecord *prec)
 static long read_ai(aiRecord* prec)
 {
 try {
-  property<EVR,double> *priv=static_cast<property<EVR,double>*>(prec->dpvt);
+  property<Pulser,double> *priv=static_cast<property<Pulser,double>*>(prec->dpvt);
 
   prec->val = priv->get();
 
@@ -97,13 +104,13 @@ static long init_ao(aoRecord *prec)
 
 static long get_ioint_info_ai(int dir,dbCommon* prec,IOSCANPVT* io)
 {
-  return get_ioint_info<EVR,double,double>(dir,prec,io);
+  return get_ioint_info<Pulser,double,double>(dir,prec,io);
 }
 
 static long write_ao(aoRecord* prec)
 {
 try {
-  property<EVR,double> *priv=static_cast<property<EVR,double>*>(prec->dpvt);
+  property<Pulser,double> *priv=static_cast<property<Pulser,double>*>(prec->dpvt);
 
   double val=prec->val;
 
@@ -114,6 +121,19 @@ try {
   }
 
   priv->set(val);
+
+  double rbv=priv->get();
+
+  if(prec->linr==menuConvertLINEAR){
+    if(prec->eslo!=0)
+        rbv*=prec->eslo;
+    rbv+=prec->eoff;
+  }
+
+  // NOTE: this test is perhaps too conservative.
+  if(fabs(rbv-prec->val)>DBL_EPSILON){
+    recGblSetSevr((dbCommon*)prec,SOFT_ALARM,MINOR_ALARM);
+  }
 
   return 0;
 } catch(std::exception& e) {
@@ -132,7 +152,7 @@ struct {
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  read;
   DEVSUPFUN  special_linconv;
-} devAIEVR = {
+} devAIEVRPulser = {
   6,
   NULL,
   NULL,
@@ -141,7 +161,7 @@ struct {
   (DEVSUPFUN) read_ai,
   NULL
 };
-epicsExportAddress(dset,devAIEVR);
+epicsExportAddress(dset,devAIEVRPulser);
 
 struct {
   long num;
@@ -151,7 +171,7 @@ struct {
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  write;
   DEVSUPFUN  special_linconv;
-} devAOEVR = {
+} devAOEVRPulser = {
   6,
   NULL,
   NULL,
@@ -160,6 +180,6 @@ struct {
   (DEVSUPFUN) write_ao,
   NULL
 };
-epicsExportAddress(dset,devAOEVR);
+epicsExportAddress(dset,devAOEVRPulser);
 
 };

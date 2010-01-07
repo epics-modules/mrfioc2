@@ -11,7 +11,7 @@
 #include <longoutRecord.h>
 
 #include "cardmap.h"
-#include "evr/evr.h"
+#include "evr/pulser.h"
 #include "property.h"
 
 #include <stdexcept>
@@ -23,47 +23,36 @@ static long long_init_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==AB_IO);
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  property<EVR,epicsUInt32> *prop;
-  std::string parm(lnk->value.vmeio.parm);
+  Pulser* pul=card->pulser(lnk->value.abio.adapter);
+  if(!pul)
+    throw std::runtime_error("Failed to lookup pulser");
 
-  if( parm=="Model" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::model
+  property<Pulser,epicsUInt32> *prop;
+  std::string parm(lnk->value.abio.parm);
+
+  if( parm=="Delay" ){
+    prop=new property<Pulser,epicsUInt32>(
+        pul,
+        &Pulser::delayRaw,
+        &Pulser::setDelayRaw
     );
-  }else if( parm=="Version" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::version
+  }else if( parm=="Width" ){
+    prop=new property<Pulser,epicsUInt32>(
+        pul,
+        &Pulser::widthRaw,
+        &Pulser::setWidthRaw
     );
-  }else if( parm=="Event Clock TS Div" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::uSecDiv
-    );
-  }else if( parm=="Receive Error Count" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::recvErrorCount,
-        0,
-        &EVR::linkChanged
-    );
-  }else if( parm=="Timestamp Prescaler" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::tsDiv
-    );
-  }else if( parm=="Timestamp Source" ){
-    prop=new property<EVR,epicsUInt32>(
-        card,
-        &EVR::SourceTSraw,
-        &EVR::setSourceTSraw
+  }else if( parm=="Prescaler" ){
+    prop=new property<Pulser,epicsUInt32>(
+        pul,
+        &Pulser::prescaler,
+        &Pulser::setPrescaler
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
@@ -91,7 +80,7 @@ static long init_li(longinRecord *pli)
 static long read_li(longinRecord* pli)
 {
 try {
-  property<EVR,epicsUInt32> *priv=static_cast<property<EVR,epicsUInt32>*>(pli->dpvt);
+  property<Pulser,epicsUInt32> *priv=static_cast<property<Pulser,epicsUInt32>*>(pli->dpvt);
 
   pli->val = priv->get();
 
@@ -109,13 +98,13 @@ static long init_lo(longoutRecord *plo)
 
 static long get_ioint_info_li(int dir,dbCommon* prec,IOSCANPVT* io)
 {
-  return get_ioint_info<EVR,epicsUInt32,epicsUInt32>(dir,prec,io);
+  return get_ioint_info<Pulser,epicsUInt32,epicsUInt32>(dir,prec,io);
 }
 
 static long write_lo(longoutRecord* plo)
 {
 try {
-  property<EVR,epicsUInt32> *priv=static_cast<property<EVR,epicsUInt32>*>(plo->dpvt);
+  property<Pulser,epicsUInt32> *priv=static_cast<property<Pulser,epicsUInt32>*>(plo->dpvt);
 
   priv->set(plo->val);
 
@@ -142,7 +131,7 @@ struct {
   DEVSUPFUN  init_record;
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  read;
-} devLIEVR = {
+} devLIEVRPulser = {
   5,
   NULL,
   NULL,
@@ -150,7 +139,7 @@ struct {
   (DEVSUPFUN) get_ioint_info_li,
   (DEVSUPFUN) read_li
 };
-epicsExportAddress(dset,devLIEVR);
+epicsExportAddress(dset,devLIEVRPulser);
 
 struct {
   long num;
@@ -159,7 +148,7 @@ struct {
   DEVSUPFUN  init_record;
   DEVSUPFUN  get_ioint_info;
   DEVSUPFUN  write;
-} devLOEVR = {
+} devLOEVRPulser = {
   5,
   NULL,
   NULL,
@@ -167,6 +156,6 @@ struct {
   NULL,
   (DEVSUPFUN) write_lo
 };
-epicsExportAddress(dset,devLOEVR);
+epicsExportAddress(dset,devLOEVRPulser);
 
 };

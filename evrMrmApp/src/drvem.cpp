@@ -1,8 +1,10 @@
 
-#include "evrmrm.h"
+#include "drvem.h"
 
 #include <cstdio>
 #include <stdexcept>
+
+#include <math.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -11,7 +13,7 @@
 
 #include "mrfFracSynth.h"
 
-#include "evrmrmiocsh.h"
+#include "drvemIocsh.h"
 
 #include <dbScan.h>
 #include <epicsInterrupt.h>
@@ -30,10 +32,13 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
+  ,stampClock(1.0/0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
   ,outputs()
+  ,prescalers()
+  ,pulsers()
 {
     epicsUInt32 v = READ32(base, FWVersion),evr;
 
@@ -55,6 +60,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
 
+    size_t nPul=10;
     size_t nPS=3;
     size_t nOFP=0, nOFPUV=0, nORB=0;
 
@@ -93,6 +99,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     prescalers.resize(nPS);
     for(size_t i=0; i<nPS; i++){
         prescalers[i]=new MRMPreScaler(*this,base+U32_Scaler(i));
+    }
+
+    pulsers.resize(nPul);
+    for(size_t i=0; i<nPul; i++){
+        pulsers[i]=new MRMPulser(i,*this);
     }
 }
 
@@ -143,16 +154,20 @@ EVRMRM::enable(bool v)
         BITCLR(NAT,32,base, Control, Control_enable);
 }
 
-Pulser*
-EVRMRM::pulser(epicsUInt32)
+MRMPulser*
+EVRMRM::pulser(epicsUInt32 i)
 {
-    return 0;
+    if(i>=pulsers.size())
+        throw std::range_error("Pulser id is out of range");
+    return pulsers[i];
 }
 
-const Pulser*
-EVRMRM::pulser(epicsUInt32) const
+const MRMPulser*
+EVRMRM::pulser(epicsUInt32 i) const
 {
-    return 0;
+    if(i>=pulsers.size())
+        throw std::range_error("Pulser id is out of range");
+    return pulsers[i];
 }
 
 MRMOutput*
@@ -201,6 +216,9 @@ EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
     {
         throw std::range_error("Special function code is out of range");
     }
+
+    if(code==0)
+        return false;
 
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
@@ -295,7 +313,7 @@ double
 EVRMRM::clock() const
 {
     return FracSynthAnalyze(READ32(base, FracDiv),
-                            fracref,0);
+                            fracref,0)*1e6;
 }
 
 void
@@ -304,6 +322,8 @@ EVRMRM::clockSet(double freq)
     double err;
     // Set both the fractional synthesiser and microsecond
     // divider.
+
+    freq/=1e6;
 
     epicsUInt32 newfrac=FracSynthControlWord(
                         freq, fracref, 0, &err);
@@ -368,33 +388,121 @@ EVRMRM::tsDiv() const
 }
 
 void
-EVRMRM::setTsDiv(epicsUInt32 val)
+EVRMRM::setSourceTS(TSSource src)
 {
-    WRITE32(base, CounterPS, val);
+    double clk=clockTS(), eclk;
+    epicsUInt16 div=0;
+
+    if(clk<=0 || !isfinite(clk))
+        throw std::range_error("TS Clock rate invalid");
+
+    switch(src){
+    case TSSourceInternal:
+        eclk=clock();
+        div=eclk/clk;
+        break;
+    case TSSourceEvent:
+        BITCLR(NAT,32, base, Control, Control_tsdbus);
+        break;
+    case TSSourceDBus4:
+        BITSET(NAT,32, base, Control, Control_tsdbus);
+        break;
+    default:
+        throw std::range_error("TS source invalid");
+    }
+    WRITE32(base, CounterPS, div);
+}
+
+TSSource
+EVRMRM::SourceTS() const
+{
+    epicsUInt32 tdiv=tsDiv();
+
+    if(tdiv!=0)
+        return TSSourceInternal;
+
+    bool usedbus4=READ32(base, Control) & Control_tsdbus;
+
+    if(usedbus4)
+        return TSSourceDBus4;
+    else
+        return TSSourceEvent;
+}
+
+double
+EVRMRM::clockTS() const
+{
+    TSSource src=SourceTS();
+
+    if(src!=TSSourceInternal)
+        return stampClock;
+
+    epicsUInt16 div=tsDiv();
+
+    return clock()/div;
 }
 
 void
-EVRMRM::tsLatch()
+EVRMRM::clockTSSet(double clk)
 {
-    BITSET(NAT,32,base, Control, Control_tsltch);
+    if(clk<=0 || !isfinite(clk))
+        throw std::range_error("TS Clock rate invalid");
+
+    TSSource src=SourceTS();
+
+    if(src==TSSourceInternal){
+        double eclk=clock();
+        epicsUInt16 div=eclk/clk;
+        WRITE32(base, CounterPS, div);
+    }
+
+    stampClock=clk;
+}
+
+bool
+EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
+{
+    if(!ts) return false;
+
+    switch(mode){
+    case TSModeLatch:
+        ts->secPastEpoch=READ32(base, TSSecLatch);
+        ts->nsec=READ32(base, TSEvtLatch);
+        break;
+    case TSModeFree:
+        ts->secPastEpoch=READ32(base, TSSec);
+        ts->nsec=READ32(base, TSEvt);
+        break;
+    default:
+        throw std::range_error("TS mode invalid");
+    }
+
+    //validate seconds (has it been initialized)?
+    if(ts->secPastEpoch==0){
+        return false;
+    }
+
+    //Link seconds counter is POSIX time
+    ts->secPastEpoch-=POSIX_TIME_AT_EPICS_EPOCH;
+
+    // Convert ticks to nanoseconds
+    double period=1e9/clockTS(); // in nanoseconds
+
+    if(period<=0 || !isfinite(period))
+        return false;
+
+    ts->nsec*=period;
+
+    return true;
 }
 
 void
-EVRMRM::tsLatchReset()
+EVRMRM::tsLatch(bool latch)
 {
-    BITSET(NAT,32,base, Control, Control_tsrst);
-}
-
-epicsUInt32
-EVRMRM::tsLatchSec() const
-{
-    return READ32(base, TSSecLatch);
-}
-
-epicsUInt32
-EVRMRM::tsLatchCount() const
-{
-    return READ32(base, TSEvtLatch);
+    if(latch)
+        BITSET(NAT,32,base, Control, Control_tsltch);
+    else
+        BITSET(NAT,32,base, Control, Control_tsrst);
 }
 
 epicsUInt16
