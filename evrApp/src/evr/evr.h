@@ -10,6 +10,7 @@
 class Pulser;
 class Output;
 class PreScaler;
+class Input;
 
 enum OutputType {
   OutputInt=0, //! Internal
@@ -63,6 +64,10 @@ public:
   //! Output id number is device specific
   virtual Output* output(OutputType otype,epicsUInt32 idx)=0;
   virtual const Output* output(OutputType,epicsUInt32) const=0;
+
+  //! Output id number is device specific
+  virtual Input* input(epicsUInt32 idx)=0;
+  virtual const Input* input(epicsUInt32) const=0;
 
   //! Prescaler id number is device specific
   virtual PreScaler* prescaler(epicsUInt32)=0;

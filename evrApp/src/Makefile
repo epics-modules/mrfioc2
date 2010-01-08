@@ -14,6 +14,7 @@ DBD += evrSupport.dbd
 INC += evr/util.h
 INC += evr/pulser.h
 INC += evr/output.h
+INC += evr/input.h
 INC += evr/prescaler.h
 INC += evr/evr.h
 

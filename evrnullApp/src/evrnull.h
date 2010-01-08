@@ -61,6 +61,9 @@ public:
      return it!=outmap.end() ? it->second : NULL;
     };
 
+  virtual Input* input(epicsUInt32 idx){return 0;};
+  virtual const Input* input(epicsUInt32) const{return 0;};
+
   virtual PreScaler* prescaler(epicsUInt32){return 0;};
   virtual const PreScaler* prescaler(epicsUInt32) const{return 0;};
 

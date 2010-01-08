@@ -40,6 +40,9 @@ public:
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
+  virtual Input* input(epicsUInt32 idx);
+  virtual const Input* input(epicsUInt32) const;
+
   virtual MRMPreScaler* prescaler(epicsUInt32);
   virtual const MRMPreScaler* prescaler(epicsUInt32) const;
 

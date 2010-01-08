@@ -2,6 +2,7 @@
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
+#include "evr/input.h"
 #include "evr/prescaler.h"
 #include "evr/util.h"
 
@@ -25,6 +26,10 @@ Pulser::~Pulser()
 }
 
 Output::~Output()
+{
+}
+
+Input::~Input()
 {
 }
 

@@ -190,6 +190,18 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
+Input*
+EVRMRM::input(epicsUInt32 idx)
+{
+    return 0;
+}
+
+const Input*
+EVRMRM::input(epicsUInt32) const
+{
+    return 0;
+}
+
 MRMPreScaler*
 EVRMRM::prescaler(epicsUInt32 i)
 {
