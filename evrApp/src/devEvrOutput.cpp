@@ -28,6 +28,7 @@
 static long init_record(dbCommon *prec, DBLINK* lnk)
 {
 try {
+  assert(lnk->type==AB_IO);
 
   EVR* card=getEVR<EVR>(lnk->value.abio.link);
   if(!card)
