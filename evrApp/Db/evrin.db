@@ -1,0 +1,74 @@
+
+record(bo, "$(P)$(I)level") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @Active Level")
+  field( PINI, "YES")
+  field( ZNAM, "Active Low")
+  field( ONAM, "Active High")
+}
+
+record(bo, "$(P)$(I)edge") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @Active Edge")
+  field( PINI, "YES")
+  field( ZNAM, "Active Falling")
+  field( ONAM, "Active Rising")
+}
+
+record(mbbo, "$(P)$(I)ext:trig") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @External Mode")
+  field( PINI, "YES")
+  field( ZRST, "Off")
+  field( ONST, "Level")
+  field( TWST, "Edge")
+  field( ZRVL, 0)
+  field( ONVL, 1)
+  field( TWVL, 2)
+}
+
+record(longout, "$(P)$(I)ext:code") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @External Code")
+  field( PINI, "YES")
+}
+
+record(mbbo, "$(P)$(I)back:trig") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @Backwards Mode")
+  field( PINI, "YES")
+  field( ZRST, "Off")
+  field( ONST, "Level")
+  field( TWST, "Edge")
+  field( ZRVL, 0)
+  field( ONVL, 1)
+  field( TWVL, 2)
+}
+
+record(longout, "$(P)$(I)back:code") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @Backwards Code")
+  field( PINI, "YES")
+}
+
+record(mbbo, "$(P)$(I)dbus") {
+  field( DTYP, "EVR Input")
+  field( OUT , "#C$(C) S$(IDX) @DBus Mask")
+  field( PINI, "YES")
+  field( ZRST, "Bit 0")
+  field( ONST, "Bit 1")
+  field( TWST, "Bit 2")
+  field( THST, "Bit 3")
+  field( FRST, "Bit 4")
+  field( FVST, "Bit 5")
+  field( SXST, "Bit 6")
+  field( SVST, "Bit 7")
+  field( ZRVL, 0x1)
+  field( ONVL, 0x2)
+  field( TWVL, 0x4)
+  field( THVL, 0x8)
+  field( FRVL, 0x10)
+  field( FVVL, 0x20)
+  field( SXVL, 0x40)
+  field( SVVL, 0x80)
+}

@@ -44,6 +44,17 @@ public:
   //! Set the event code sent by an a backwards event
   virtual void backEvtSet(epicsUInt32)=0;
   virtual epicsUInt32 backEvt() const=0;
+
+
+  /**\ingroup devhelp
+   */
+  /*@{*/
+  void extModeSetraw(epicsUInt16 r){extModeSet((TrigMode)r);};
+  epicsUInt16 extModeraw() const{return (TrigMode)extMode();};
+
+  void backModeSetraw(epicsUInt16 r){backModeSet((TrigMode)r);};
+  epicsUInt16 backModeraw() const{return (TrigMode)backMode();};
+  /*@}*/
 };
 
 #endif /* INPUT_HPP_INC */
