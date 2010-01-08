@@ -159,11 +159,23 @@ enum evrForm {
 #define U16_OutputMapRB(N) (U16_OutputMapRBN + (2*(N)))
 
 /* Front panel inputs */
-#define U16_InputMapFPN 0x500
+#define U8_InputMapFPCfgN  0x500
+#  define InputMapFPCfg_lvl  0x20
+#  define InputMapFPCfg_blvl 0x10
+#  define InputMapFPCfg_elvl 0x08
+#  define InputMapFPCfg_edge 0x04
+#  define InputMapFPCfg_bedg 0x02
+#  define InputMapFPCfg_eedg 0x01
+#define U8_InputMapFPDBusN 0x501
+#define U8_InputMapFPDBEvt 0x502
+#define U8_InputMapFPDEEvt 0x503
 #  define InputMapFPMax 2
 
 /* 0 <= N <= 1 */
-#define U16_InputMapFP(N) (U16_InputMapFPN + (2*(N)))
+#define U8_InputMapFPCfg(N)  (U8_InputMapFPCfgN  + (4*(N)))
+#define U8_InputMapFPDBus(N) (U8_InputMapFPDBusN + (4*(N)))
+#define U8_InputMapFPBEvt(N) (U8_InputMapFPDBEvt + (4*(N)))
+#define U8_InputMapFPEEvt(N) (U8_InputMapFPDEEvt + (4*(N)))
 
 /* Current mode logic (CML) outputs */
 #define U16_OutputCMLNLow  0x600

@@ -12,6 +12,7 @@
 
 #include <dbScan.h>
 
+#include "drvemInput.h"
 #include "drvemOutput.h"
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
@@ -40,8 +41,8 @@ public:
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
-  virtual Input* input(epicsUInt32 idx);
-  virtual const Input* input(epicsUInt32) const;
+  virtual MRMInput* input(epicsUInt32 idx);
+  virtual const MRMInput* input(epicsUInt32) const;
 
   virtual MRMPreScaler* prescaler(epicsUInt32);
   virtual const MRMPreScaler* prescaler(epicsUInt32) const;
@@ -90,6 +91,9 @@ private:
   IOSCANPVT IRQbufferReady;
   IOSCANPVT IRQheadbeat;
   IOSCANPVT IRQrxError;
+
+  typedef std::vector<MRMInput*> inputs_t;
+  inputs_t inputs;
 
   typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
   outputs_t outputs;

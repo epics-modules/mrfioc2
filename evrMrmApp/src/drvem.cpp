@@ -63,6 +63,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     size_t nPul=10;
     size_t nPS=3;
     size_t nOFP=0, nOFPUV=0, nORB=0;
+    size_t nIFP=0;
 
     switch(v){
     case evrFormCPCI:
@@ -70,7 +71,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         break;
     case evrFormPMC:
         if(DBG) printf("PMC ");
-        nOFP=3;
+        nOFP=4;
+        nIFP=2;
         break;
     case evrFormVME64:
         if(DBG) printf("VME64 ");
@@ -79,10 +81,15 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         nORB=16;
         break;
     }
-    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u\n",nOFP,nOFPUV,nORB);
+    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
+
+    inputs.resize(nIFP);
+    for(size_t i=0; i<nIFP; i++){
+        inputs[i]=new MRMInput(base,i);
+    }
 
     for(size_t i=0; i<nOFP; i++){
         outputs[std::make_pair(OutputFP,i)]=new MRMOutput(base+U16_OutputMapFP(i));
@@ -190,16 +197,20 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
-Input*
-EVRMRM::input(epicsUInt32 idx)
+MRMInput*
+EVRMRM::input(epicsUInt32 i)
 {
-    return 0;
+    if(i>=inputs.size())
+        throw std::range_error("Input id is out of range");
+    return inputs[i];
 }
 
-const Input*
-EVRMRM::input(epicsUInt32) const
+const MRMInput*
+EVRMRM::input(epicsUInt32 i) const
 {
-    return 0;
+    if(i>=inputs.size())
+        throw std::range_error("Input id is out of range");
+    return inputs[i];
 }
 
 MRMPreScaler*

@@ -23,6 +23,7 @@ evrmrm_SRCS += pcisearch.c
 evrmrm_SRCS += drvemIocsh.c
 evrmrm_SRCS += drvem.cpp
 evrmrm_SRCS += drvemOutput.cpp
+evrmrm_SRCS += drvemInput.cpp
 evrmrm_SRCS += drvemPrescaler.cpp
 evrmrm_SRCS += drvemPulser.cpp
 
