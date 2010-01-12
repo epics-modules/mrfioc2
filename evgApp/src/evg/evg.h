@@ -52,6 +52,13 @@ public:
     virtual epicsStatus  Report    (epicsInt32 level) const = 0;
 
     //=====================
+    // Sequence RAM Control Routines
+    //
+    virtual epicsStatus  SetSeqEvent (epicsUInt32 RamNum, 
+                                      epicsUInt32 event,
+                                      epicsUInt32 timestamp) = 0;
+
+    //=====================
     // Class Destructor
     //
     virtual ~EVG () = 0;
