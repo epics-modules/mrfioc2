@@ -10,14 +10,15 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 #---------------------
 # Install include files
 #
-INC += drvEvg.h
 INC += evg/evg.h
+INC += evg/Sequence.h
+INC += drvEvg.h
+INC += drvSequence.h
 
 #---------------------
 # Install DBD files
 #
 DBD += drvEvg.dbd
-DBD += SequenceEvent.dbd
 
 #---------------------
 # Build the generic event generator library
@@ -26,21 +27,7 @@ LIBRARY_IOC += evg
 
 evg_SRCS    += evg.cpp
 evg_SRCS    += drvEvg.cpp
-
-#OBJS_IOC += $(evg_OBJS)
-
-#---------------------
-# Build the default sequencer library
-#
-LIBRARY_IOC      += evgSequence
-
-evgSequence_SRCS += Sequence.cpp
-evgSequence_SRCS += SequenceEvent.cpp
-
-evgSequence_SRCS += devSequence.cpp
-evgSequence_SRCS += devSequenceEvent.cpp
-
-#OBJS_IOC += $(evgSequence_OBJS)
+evg_SRCS    += drvSequence.cpp
 
 #---------------------
 # Generic EPICS build rules

@@ -1,8 +1,56 @@
+/**************************************************************************************************
+|* $(MRF)/evgApp/src/evg/evg.h -- Event Generator Base Class Definition
+|*
+|*-------------------------------------------------------------------------------------------------
+|* Authors:  Eric Bjorklund (LANSCE)
+|* Date:     4 November 2009
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODIFICATION HISTORY:
+|* 04 Nov 2009  E.Bjorklund     Original
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODULE DESCRIPTION:
+|*   This header file contains the virtual function definitions required to implement an
+|*   MRF event generator class.
+|*
+|*--------------------------------------------------------------------------------------------------
+|* HARDWARE SUPPORTED:
+|*   Series 2xx Event Generator Cards
+|*
+|*--------------------------------------------------------------------------------------------------
+|* OPERATING SYSTEMS SUPPORTED:
+|*   All
+|*
+\*************************************************************************************************/
+
+/**************************************************************************************************
+|*                                     COPYRIGHT NOTIFICATION
+|**************************************************************************************************
+|*
+|* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
+|* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
+|* AND IN ALL SOURCE LISTINGS OF THE CODE.
+|*
+|**************************************************************************************************
+|*
+|* This software is distributed under the EPICS Open License Agreement which
+|* can be found in the file, LICENSE, included with this distribution.
+|*
+\*************************************************************************************************/
 
 #ifndef EVG_HPP_INC
 #define EVG_HPP_INC
 
-#include <epicsTypes.h>
+/**************************************************************************************************/
+/*  Imported Header Files                                                                         */
+/**************************************************************************************************/
+
+#include <epicsTypes.h>         // EPICS Architecture-independent type definitions
+
+/**************************************************************************************************/
+/*                               EVG Abstract Class Definition                                    */
+/*                                                                                                */
 
 class EVG
 {
@@ -54,9 +102,9 @@ public:
     //=====================
     // Sequence RAM Control Routines
     //
-    virtual epicsStatus  SetSeqEvent (epicsUInt32 RamNum, 
-                                      epicsUInt32 event,
-                                      epicsUInt32 timestamp) = 0;
+    //    virtual epicsStatus  SetSeqEvent (epicsUInt32 RamNum, 
+    //                                      epicsUInt32 event,
+    //                                      epicsUInt32 timestamp) = 0;
 
     //=====================
     // Class Destructor

@@ -1,33 +1,28 @@
 /**************************************************************************************************
-|* $(TIMING)/evgApp/src/devSequence.h -- EPICS Driver Support for EVG Sequencers
+|* $(MRF)/evgApp/src/evg/Sequence.h -- Event Generator Sequence Base Class Definition
+|*
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
-|* Date:     23 November 2009
+|* Date:     13 January 2010
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODIFICATION HISTORY:
-|* 23 Nov 2009  E.Bjorklund     Original
+|* 13 Jan 2010  E.Bjorklund     Original
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains the implementation of the Sequence class
+|*   This header file contains the virtual function definitions required to implement an
+|*   MRF event generator sequence class.
 |*
-|*-------------------------------------------------------------------------------------------------
+|*--------------------------------------------------------------------------------------------------
 |* HARDWARE SUPPORTED:
 |*   Series 2xx Event Generator Cards
-|*     Modular Register Mask
 |*
-|*-------------------------------------------------------------------------------------------------
+|*--------------------------------------------------------------------------------------------------
 |* OPERATING SYSTEMS SUPPORTED:
-|*   vxWorks
-|*   RTEMS
+|*   All
 |*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|*  o This module does not support the APS-style register map because it relies on interrupts
-|*    from the event generator card.  EVG interrupts are not supported in the APS register map.
-|*
-\**************************************************************************************************/
+\*************************************************************************************************/
 
 /**************************************************************************************************
 |*                                     COPYRIGHT NOTIFICATION
@@ -44,23 +39,43 @@
 |*
 \*************************************************************************************************/
 
-#ifndef EVG_DEV_SEQUENCE_INC
-#define EVG_DEV_SEQUENCE_INC
-
+#ifndef EVG_SEQUENCE_H_INC
+#define EVG_SEQUENCE_H_INC
+
 /**************************************************************************************************/
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-#include  <Sequence.h>          // MRF Sequence Class
 
+
+/**************************************************************************************************/
+/*                                  Sequence Class Definition                                     */
+/*                                                                                                */
+
+class Sequence
+{
 
 /**************************************************************************************************/
-/*  Function Prototypes                                                                           */
+/*  Public Methods                                                                                */
 /**************************************************************************************************/
 
-Sequence  *EgDeclareSequence (epicsInt32 CardNum, epicsInt32 SeqNum);
-Sequence  *EgGetSequence     (epicsInt32 CardNum, epicsInt32 SeqNum);
+public:
 
+    //=====================
+    // Getter Routines
+    //
+    virtual epicsInt32     getCardNum        () const = 0; // Return the logical card number
+    virtual epicsInt32     getSeqNum         () const = 0; // Return sequence number
+    virtual epicsInt32     getNumEvents      () const = 0; // Return number of events in sequence
+    virtual epicsInt32    *getEventArray     () const = 0; // Return ptr to array of event numbers
+    virtual epicsFloat64  *getTimestampArray () const = 0; // Return ptr to array of timestamps
 
-#endif // EVG_DEV_SEQUENCE_INC
+    //=====================
+    // Class Destructor
+    //
+    virtual ~Sequence () = 0;
+
+};// end class Sequence //
+
+#endif // EVG_SEQUENCE_H_INC //

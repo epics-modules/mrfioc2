@@ -1,5 +1,5 @@
 /**************************************************************************************************
-|* $(TIMING)/evgApp/src/devSequence.cpp -- EPICS Device Support for EVG Sequences
+|* $(MRF)/evgApp/src/drvSequence.cpp -- EPICS Device Support for EVG Sequences
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
 |* Date:     23 November 2009
@@ -10,24 +10,11 @@
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains EPICS device support for event generator Sequence objects.
-|*    It also contains some global utility routines used by Sequence, SequenceEvent, and
-|*    SequenceRAM objects.
+|*    This module contains EPICS driver support for event generator Sequence objects.
 |*
-|*-------------------------------------------------------------------------------------------------
-|* HARDWARE SUPPORTED:
-|*   Series 2xx Event Generator Cards
-|*     Modular Register Mask
-|*
-|*-------------------------------------------------------------------------------------------------
-|* OPERATING SYSTEMS SUPPORTED:
-|*   vxWorks
-|*   RTEMS
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|*  o This module does not support the APS-style register map because it relies on interrupts
-|*    from the event generator card.  EVG interrupts are not supported in the APS register map.
+|*    An event generator sequence is an abstract object that has no hardware implementation.
+|*    Its purpose is to provide the event and timestamp lists used by the EVG Sequence RAM
+|*    objects.
 |*
 \**************************************************************************************************/
 
@@ -55,25 +42,25 @@
 //! A "Sequence" is an ordered list of event codes and timestamps.
 //!
 //! There may be any number of sequences defined for a given event generator card, even though
-//! an event generator card only has two sequence RAMs.
+//! an event generator card typically only has two sequence RAMs.
 //! 
 //! @{
 //!
 //==================================================================================================
 
 //==================================================================================================
-//  devSequence File Description
+//  drvSequence File Description
 //==================================================================================================
-//! @file       devSequence.cpp
+//! @file       drvSequence.cpp
 //! @brief      EPICS Device Support for Event Generator Sequencers.
 //!
 //! @par Description:
-//!    This file provides EPICS Device support for event generator Sequence objects.
+//!    This file provides EPICS driver support for event generator Sequence objects.
 //!
-//! @note
-//!    This module does not support the APS-style register map because it relies on interrupts
-//!    from the event generator module to determine when it is safe to update the sequence RAMs.
-//!    The APS-style register map does not support event generator interrupts.
+//!    Although sequences are associated with event generator cards, an event generator
+//!    sequence is an abstract object that has no hardware implementation.
+//!    Its purpose is to provide the event and timestamp lists used by the EVG Sequence RAM
+//!    objects.
 //!
 //==================================================================================================
 
@@ -81,21 +68,21 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
-#include <stdexcept>            // Standard C++ exception definitions
-#include <map>                  // Standard C++ map template
+#include  <stdexcept>           // Standard C++ exception definitions
+#include  <string>              // Standard C++ sring class
+#include  <map>                 // Standard C++ map template
 
-#include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-#include <devSup.h>             // EPICS Device support definitions
-#include <initHooks.h>          // EPICS IOC Initialization hooks support library
-#include <iocsh.h>              // EPICS IOC shell support library
-#include <registryFunction.h>   // EPICS Registry support library
+#include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <devSup.h>            // EPICS Device support definitions
+#include  <initHooks.h>         // EPICS IOC Initialization hooks support library
+#include  <iocsh.h>             // EPICS IOC shell support library
+#include  <registryFunction.h>  // EPICS Registry support library
 
-#include  <Sequence.h>          // MRF Sequence Class
-#include  <SequenceEvent.h>     // MRF Sequence Event Class
-#include  <devSequence.h>       // MRF Sequence device support declarations
+#include  <evg/Sequence.h>      // MRF Sequence Base Class
+#include  <drvSequence.h>       // MRF Sequencer driver support declarations
 #include  <drvEvg.h>            // MRF Event Generator driver infrastructure routines
 
-#include <epicsExport.h>        // EPICS Symbol exporting macro definitions
+#include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
 /*  Type Definitions                                                                              */
@@ -122,20 +109,18 @@ static
 CardList   CardSequences;
 
 //**************************************************************************************************
-//  EgDeclareSequence () -- Declare The Existence Of A Sequence
+//  EgAddSequence () -- Add A Sequence To The List Of Known Sequences For Each Card
 //**************************************************************************************************
 //! @par Description:
-//!   Declare the existence of a sequence and return a pointer to its Sequence object.
+//!   Add a Sequence object to the list of known sequences for the EVG card it belongs to.
 //!
 //! @par Function:
-//!   First check to see if the requested sequence is already in our list.  If so, just return a
-//!   pointer to the Sequenc object.  If the sequence was not found, create a new Sequence
-//!   object, add it to the list, and return a pointer to its object.
+//!  -  Check for various error conditions such as card not initilialized and card/seq pair
+//!     already on list.
+//!  -  Create a sequence list for the card, if one does not already exist.
+//!  -  Add the Sequence object to the sequence list for its EVG card.
 //!
-//! @param      CardNum  = (input) Card number of the event generator this sequence belongs to.
-//! @param      SeqNum   = (input) Sequence ID number of the sequence to declare
-//!
-//! @return     Returns a pointer to the Sequence object.
+//! @param      pSeq  = (input) Address of Sequence object to add to the list.
 //!
 //! @throw      runtime_error is thrown if we needed to create a new Sequence object but couldn't.
 //!
@@ -144,75 +129,80 @@ CardList   CardSequences;
 //!
 //**************************************************************************************************
 
-Sequence*
-EgDeclareSequence (epicsInt32 CardNum, epicsInt32 SeqNum)
+void
+EgAddSequence (Sequence*  pSeq)
 {
     //=====================
     // Local variables
     //
     SequenceList*   List;       // Reference to the sequence list for the specified EVG card
-    EVG*            pEvg;       // Pointer to the associated event generator object
-    Sequence*       pSeq;       // Pointer to the desired Sequence object
+    char            SeqId [32]; // Sequence ID string
 
     //=====================
-    // Abort if the EVG card has not been initialized
+    // Extract the EVG card and sequence numbers
     //
-    if (NULL == (pEvg = EgGetCard(CardNum)))
-        throw std::runtime_error("Event Generator card not configured");
+    epicsInt32 CardNum = pSeq->getCardNum();
+    epicsInt32 SeqNum  = pSeq->getSeqNum();
+    sprintf (SeqId, "Card %d Seq %d: ", CardNum, SeqNum);
 
     //=====================
-    // Get the sequence list for this card
+    // Try to add this Sequence to the sequence list for its EVG card
     //
-    CardList::iterator card = CardSequences.find(CardNum);
-    if (card != CardSequences.end())
-        List = card->second;
+    try {
+        //=====================
+        // Abort if the EVG card has not been initialized
+        //
+        if (NULL == EgGetCard(CardNum))
+            throw std::runtime_error("Event Generator card not configured");
 
-    //=====================
-    // If we don't have a sequence list for this EVG card, create one
-    //
-    else {
-        try {List = new SequenceList();}
+        //=====================
+        // Get the sequence list for this card
+        //
+        CardList::iterator card = CardSequences.find(CardNum);
+        if (card != CardSequences.end())
+            List = card->second;
 
-       /* Abort if we could not create the sequence list */
-        catch (std::exception& e) {
-            throw std::runtime_error(std::string("Unable to create sequence list - ") + e.what());
-        }//end if we could not create a sequence list
+        //=====================
+        // If we don't have a sequence list for this EVG card, create one
+        //
+        else {
+            try {List = new SequenceList();}
 
-       /* Add the sequence list to this card */
-        CardSequences[CardNum] = List;
+            /* Abort if we could not create the sequence list */
+            catch (std::exception& e) {
+                throw std::runtime_error(std::string("Can't create sequence list: ") + e.what());
+            }//end if we could not create a sequence list
 
-    }//end if we didn't already have a sequence list for this card
+            /* Add the sequence list to this card */
+            CardSequences[CardNum] = List;
 
-    //=====================
-    // Get the desired Sequence object
-    // 
-    SequenceList::iterator index = List->find(SeqNum);
-    if (index != List->end())
-        pSeq = index->second;
+        }//end if we didn't already have a sequence list for this card
 
-    //=====================
-    // If we don't have a Sequence object for this ID, create one
-    //
-    else {
-        try {pSeq = new Sequence(SeqNum, pEvg);}
+        //=====================
+        // See if we already have a sequence with this number for this card.
+        // 
+        SequenceList::iterator index = List->find(SeqNum);
+        if (index != List->end())
+            throw std::runtime_error("Sequence already exists");
 
-       /* Abort if we could not create the Sequence object */
-        catch (std::exception& e) {
-            throw std::runtime_error(
-                  std::string("Unable to create new Sequence object - ") + e.what());
-        }//end if could not create a new Sequence object
-
-       /* Add the Sequence object to this list */
+        //=====================
+        // Add the Sequence object to the list
+        //
         (*List)[SeqNum] = pSeq;
 
-    }//end if we didn't already have a Sequence object
+    }//end try
 
     //=====================
-    // Return the pointer to the desired Sequence object
+    // Catch any errors and rethrow them with a standard message context
     //
-    return pSeq;
+    catch (std::exception& e) {
+        throw std::runtime_error(
+              std::string("Can't create sequence for ") +
+              std::string(SeqId) +
+              std::string(e.what()));
+    }//end rethrow error
 
-}//end EgDeclareSequence()
+}//end EgAddSequence()
 
 //**************************************************************************************************
 //  EgGetSequence () -- Retrieve A Sequence Object
