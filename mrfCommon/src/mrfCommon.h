@@ -113,6 +113,10 @@
 /*  Function Prototype Definitions                                                                */
 /**************************************************************************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*---------------------
  * Disable an EPICS record
  */
@@ -123,6 +127,10 @@ void mrfDisableRecord (dbCommon *pRec);
  * (for some reason, devLib.h neglects to define this for us).
  */
 typedef void (*EPICS_ISR_FUNC) (void *);
+
+#ifdef __cplusplus
+}
+#endif
 
 /**************************************************************************************************/
 /*  Special Macros to Define Commonly Used Symbols                                                */

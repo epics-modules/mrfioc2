@@ -14,14 +14,6 @@
 |*   This header file contains the virtual function definitions required to implement an
 |*   MRF event generator sequence class.
 |*
-|*--------------------------------------------------------------------------------------------------
-|* HARDWARE SUPPORTED:
-|*   Series 2xx Event Generator Cards
-|*
-|*--------------------------------------------------------------------------------------------------
-|* OPERATING SYSTEMS SUPPORTED:
-|*   All
-|*
 \*************************************************************************************************/
 
 /**************************************************************************************************
@@ -46,8 +38,8 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
+#include <string>               // Standard C++ string class
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-
 
 /**************************************************************************************************/
 /*                                  Sequence Class Definition                                     */
@@ -65,11 +57,13 @@ public:
     //=====================
     // Getter Routines
     //
-    virtual epicsInt32     getCardNum        () const = 0; // Return the logical card number
-    virtual epicsInt32     getSeqNum         () const = 0; // Return sequence number
-    virtual epicsInt32     getNumEvents      () const = 0; // Return number of events in sequence
-    virtual epicsInt32    *getEventArray     () const = 0; // Return ptr to array of event numbers
-    virtual epicsFloat64  *getTimestampArray () const = 0; // Return ptr to array of timestamps
+    virtual const std::string&  GetClassID        () const = 0; // Return the class ID string
+    virtual const char*         GetSeqID          () const = 0; // Return the sequence ID string
+    virtual epicsInt32          GetCardNum        () const = 0; // Return the logical card number
+    virtual epicsInt32          GetSeqNum         () const = 0; // Return sequence number
+    virtual epicsInt32          GetNumEvents      () const = 0; // Return num events in sequence
+    virtual const epicsInt32   *GetEventArray     () const = 0; // Return ptr to array of events
+    virtual const epicsUInt32  *GetTimestampArray () const = 0; // Return ptr to array of timestamps
 
     //=====================
     // Class Destructor

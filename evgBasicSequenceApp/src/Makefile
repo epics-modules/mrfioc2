@@ -1,33 +1,26 @@
+#---------------------
+# Set up the Environment
+#
 TOP=../..
-
 include $(TOP)/configure/CONFIG
-#----------------------------------------
-#  ADD MACRO DEFINITIONS AFTER THIS LINE
-#=============================
 
-#==================================================
-# build a support library
+#---------------------
+# Install DBD files
+#
+DBD += BasicSequence.dbd
 
-LIBRARY_IOC += evgBasicSequence
+#---------------------
+# Build the basic sequencer library
+#
+LIBRARY_IOC += BasicSequence
 
-# xxxRecord.h will be created from xxxRecord.dbd
-#DBDINC += xxxRecord
-# install evgBasicSequence.dbd into <top>/dbd
-DBD += evgBasicSequence.dbd
+BasicSequence_SRCS += BasicSequence.cpp
+BasicSequence_SRCS += BasicSequenceEvent.cpp
+BasicSequence_SRCS += devBasicSequence.cpp
+BasicSequence_SRCS += devBasicSequenceEvent.cpp
 
-# specify all source files to be compiled and added to the library
-#evgBasicSequence_SRCS += xxx
-
-evgBasicSequence_LIBS += $(EPICS_BASE_IOC_LIBS)
-
-#==================================================
-# Install all protocol files in the data directory
-
-DATA += $(patsubst ../%, %, $(wildcard ../*.proto))
-
-#===========================
-
+#---------------------
+# Generic EPICS build rules
+#
 include $(TOP)/configure/RULES
-#----------------------------------------
-#  ADD RULES AFTER THIS LINE
 

@@ -36,13 +36,34 @@
 //==================================================================================================
 //  Sequencer Group Definition
 //==================================================================================================
-//! @defgroup   Sequencer Event Generator Sequence Control Library
-//! @brief      Defines how the event sequencer works.
+//! @defgroup   Sequencer Event Generator Sequence Control Libraries
+//! @brief      Libraries for implementing event generator sequences.
 //!
-//! A "Sequence" is an ordered list of event codes and timestamps.
+//! An "Event Sequence" is a method of transmitting sequences of events stored in a "Sequence RAM".
+//! An event generator card typically contains two sequence RAMs. However, an event generator may
+//! have any number of defined sequences.  A sequence becomes active by assigning it to a sequence
+//! RAM and starting it.
 //!
-//! There may be any number of sequences defined for a given event generator card, even though
-//! an event generator card typically only has two sequence RAMs.
+//! Several types of sequences are possible.  This software implements three sequence libraries:
+//!  - \b libBasicSequence - Implements the "Basic" sequence in which each "Sequence Event" has
+//!                          an event code, a timestamp (to determine when the event should occur
+//!                          relative to the start of the sequence), an enable/disable record,
+//!                          and a priority (used for resolving timestamp conflicts).  Basic
+//!                          Sequences are useful for machines with single (or a relative few)
+//!                          timelines that have no relationships between the individual events.
+//!  - \b libDAGSequence   - (not yet implemented) Implements the "Directed Acyclic Graph" sequence.
+//!                          A DAG sequence is like the Basic sequence but with the addition of
+//!                          optional "Time Base" records.  "Time Base" records declare that the
+//!                          event's "Timestamp" record is relative to the timestamp of another
+//!                          event rather than the start of the sequence.  The "Time Base" records
+//!                          implement a directed acylic graph which is traversed whenever a
+//!                          DAG sequence is loaded (or updated).  DAG sequences are useful for
+//!                          machines with timelines that contain sub-sequences.
+//!  - \b libWFSequence    - (not yet implemented) Implements the "Waveform" sequence. A Waveform
+//!                          sequence contains two waveform records -- an "Event Waveform" and
+//!                          a "Timestamp" waveform.  Waveform sequences are useful for machines
+//!                          with timelines that need to be set from external sources such as
+//!                          operator interface screens.
 //! 
 //! @{
 //!
@@ -52,10 +73,10 @@
 //  drvSequence File Description
 //==================================================================================================
 //! @file       drvSequence.cpp
-//! @brief      EPICS Device Support for Event Generator Sequencers.
+//! @brief      EPICS Generic Driver Support for Event Generator Sequencers.
 //!
 //! @par Description:
-//!    This file provides EPICS driver support for event generator Sequence objects.
+//!    This file provides EPICS generic driver support for event generator Sequence objects.
 //!
 //!    Although sequences are associated with event generator cards, an event generator
 //!    sequence is an abstract object that has no hardware implementation.
@@ -136,24 +157,18 @@ EgAddSequence (Sequence*  pSeq)
     // Local variables
     //
     SequenceList*   List;       // Reference to the sequence list for the specified EVG card
-    char            SeqId [32]; // Sequence ID string
 
     //=====================
     // Extract the EVG card and sequence numbers
+    // Note that a sequence can not be created if the event generator card was not configured
     //
-    epicsInt32 CardNum = pSeq->getCardNum();
-    epicsInt32 SeqNum  = pSeq->getSeqNum();
-    sprintf (SeqId, "Card %d Seq %d: ", CardNum, SeqNum);
+    epicsInt32 CardNum = pSeq->GetCardNum();
+    epicsInt32 SeqNum  = pSeq->GetSeqNum();
 
     //=====================
     // Try to add this Sequence to the sequence list for its EVG card
     //
     try {
-        //=====================
-        // Abort if the EVG card has not been initialized
-        //
-        if (NULL == EgGetCard(CardNum))
-            throw std::runtime_error("Event Generator card not configured");
 
         //=====================
         // Get the sequence list for this card
@@ -198,8 +213,7 @@ EgAddSequence (Sequence*  pSeq)
     catch (std::exception& e) {
         throw std::runtime_error(
               std::string("Can't create sequence for ") +
-              std::string(SeqId) +
-              std::string(e.what()));
+              pSeq->GetSeqID() + ": " + e.what());
     }//end rethrow error
 
 }//end EgAddSequence()

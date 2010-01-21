@@ -191,17 +191,16 @@ mrfIoLink::mrfIoLink (
     //=====================
     // Local variables
     //
-    std::string::size_type     listSize;        // Length of the parameter string
-    std::string                parmList;        // Parameter string from the I/O link
-    std::string::size_type     parmLength;      // Length of the parameter/value pair
-    std::string::size_type     startIndex;      // Marks the start of a parameter/value pair
-    std::string::size_type     stopIndex = 0;   // Marks the end of a parameter/value pair
+    std::string::size_type     listSize;             // Length of the parameter string
+    std::string                parmList(parmString); // Parameter string from the I/O link
+    std::string::size_type     parmLength;           // Length of the parameter/value pair
+    std::string::size_type     startIndex;           // Marks the start of a parameter/value pair
+    std::string::size_type     stopIndex = 0;        // Marks the end of a parameter/value pair
 
 
     //=====================
     // Convert the parameter string to a string class in order to expedite parsing
     //
-    parmList = parmString;
     listSize = parmList.length();
     if (0 == listSize) return;
 
@@ -223,7 +222,6 @@ mrfIoLink::mrfIoLink (
         // Parse the parameter/value pair
         //
         parseParameter (parmList.substr(startIndex, parmLength));
-        startIndex = stopIndex + 1;
 
     }//end for each parameter in the string
 

@@ -1,27 +1,17 @@
 /**************************************************************************************************
-|* $(TIMING)/evgApp/src/devSequenceEvent.cpp -- EPICS Device Support for EVG Sequence Events
+|* $(MRF)/evgBasicSequenceApp/src/devBasicSequenceEvent.cpp
+|* EPICS Device Support for Basic Sequence Events
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
-|* Date:     23 November 2009
+|* Date:     14 January 2010
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODIFICATION HISTORY:
-|* 23 Nov 2009  E.Bjorklund     Original
+|* 14 Jan 2010  E.Bjorklund     Original
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains EPICS device support for event generator Sequence Event objects.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* HARDWARE SUPPORTED:
-|*   Series 2xx Event Generator Cards
-|*     Modular Register Mask
-|*     APS Register Mask
-|*
-|*-------------------------------------------------------------------------------------------------
-|* OPERATING SYSTEMS SUPPORTED:
-|*   vxWorks
-|*   RTEMS
+|*    This module contains EPICS device support for event generator Basic Sequence Event objects.
 |*
 \**************************************************************************************************/
 
@@ -41,7 +31,7 @@
 \*************************************************************************************************/
 
 /**************************************************************************************************/
-/*  devSequenceEvent File Description                                                             */
+/*  devBasicSequenceEvent File Description                                                        */
 /**************************************************************************************************/
 
 //==================================================================================================
@@ -49,46 +39,44 @@
 //! @{
 //!
 //==================================================================================================
-//! @file       devSequenceEvent.cpp
-//! @brief      EPICS Device Suppport for Sequence Events.
+//! @file       devBasicSequenceEvent.cpp
+//! @brief      EPICS Device Suppport for Basic Sequence Events.
 //!
 //! @par Description:
 //!   This file contains EPICS device support for event generator sequence events.
 //!   A sequence event can be represented in the EPICS data base by two required records and
-//!   up to three more optional records:
-//!   - \b EVENT_CODE     (longout, required) Which event code to transmit.
-//!   - \b EVENT_TIME     (ao, required) Specifies when in the sequence the event
-//!                       should be transmitted.
-//!   - \b EVENT_TIME     (ai, optional) Displays the actual timestamp assigned to the event.
-//!                       This could differ from the requested timestamp because of event clock
-//!                       quantization or because another event was assigned to that time.
-//!   - \b EVENT_ENABLE   (bo, optional) Enables or disables event transmission.
-//!   - \b EVENT_PRIORITY (longout, optional) When two sequence events end up with the same
-//!                       timestamp, the relative priorities will determine which one gets
-//!                       "jostled".
+//!   up to three more optional records.  The records are distinguished by function codes specified
+//!   in their I/O link fields (see below).  Basic Sequence Event records, may have the following
+//!   function codes:
+//!   - \b Code     (longout, required) Which event code to transmit.
+//!   - \b Time     (ao, required) Specifies when in the sequence the event
+//!                 should be transmitted.
+//!   - \b Time     (ai, optional) Displays the actual timestamp assigned to the event.
+//!                 This could differ from the requested timestamp because of event clock
+//!                 quantization or because another event was assigned to that time.
+//!   - \b Enable   (bo, optional) Enables or disables event transmission.
+//!   - \b Priority (longout, optional) When two sequence events end up with the same
+//!                 timestamp, the relative priorities will determine which one gets
+//!                 "jostled".
 //!   @par
 //!   Every event in a sequence must have a unique name associated with it -- even if the
-//!   event code is duplicated.  The unique name is assigned when the SequenceEvent object is
-//!   created.
+//!   event code is duplicated.  The unique name is defined in the I/O link (see below) and
+//!   assigned when the BasicSequenceEvent object is created.
 //!
-//! @par Device Type
-//!   A sequence event record will have the "Device Type" field (DTYP) set to:
-//!   @verbatim
-//!      "EVG Sequence Event"
-//!   @endverbatim
+//! @par Device Type Field:
+//!   A basic sequence event record will have the "Device Type" field (DTYP) set to:<br>
+//!      "EVG Basic Seq Event"
 //!
-//! @par Link Format
-//!   For sequence event records, the INP or OUT link has the following format:
-//!   @verbatim
-//!      #C0 Ss @FUNCTION Name
-//!   @endverbatim
+//! @par Link Format:
+//!   Basic sequence event records use the INST_IO I/O link format. The INP or OUT links have the
+//!   following format:<br>
+//!      \@Name=\<name\>; C=n; Seq=m; Fn=\<function\>
+//!
 //!   Where:
-//!   - \b C0         = Not used
-//!   - \b Ss         = Specifies the ID number of the sequence that this event belongs to
-//!   - \b \@FUNCTION = The record's function name (see list above)
-//!   - \b Name       = The sequence event name.
-//!   @par
-//!   Note that the sequence event name may contain blanks.
+//!   - \b Name  = The sequence event name (note that the name may contain blanks).
+//!   - \b C     = Logical card number for the event generator card this sequence event belongs to.
+//!   - \b Seq   = Specifies the ID number of the sequence that this event belongs to
+//!   - \b Fn    = The record's function name (see list above)
 //!
 //==================================================================================================
 
@@ -109,7 +97,6 @@
 #include  <iocsh.h>             // EPICS IOC shell support library
 #include  <link.h>              // EPICS Database link definitions
 #include  <recGbl.h>            // EPICS Global record support routines
-#include  <registryFunction.h>  // EPICS Registry support library
 
 #include  <aiRecord.h>          // EPICS Analog input record definition
 #include  <aoRecord.h>          // EPICS Analog output record definition
@@ -121,10 +108,11 @@
 #include  <mrfCommon.h>         // MRF Common definitions
 #include  <mrfIoLink.h>         // MRF I/O link field parser
 
-#include  <Sequence.h>          // MRF Sequence class
-#include  <SequenceEvent.h>     // MRF Sequence event class
-#include  <devSequence.h>       // MRF Sequence device support declarations
+#include  <BasicSequence.h>     // MRF Basic Sequence class
+#include  <BasicSequenceEvent.h>// MRF Basic Sequence Event class
+#include  <drvSequence.h>       // MRF Generic Sequence driver support declarations
 #include  <drvEvg.h>            // MRF Event Generator driver infrastructure routines
+#include  <devBasicSequence.h>  // MRF EPICS device support for the Basic Sequence class
 
 #include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
@@ -148,12 +136,12 @@ epicsInt32  SeqEventNumParms mrfParmNameListSize(SeqEventParmNames);
 
 
 //=====================
-// Common device information structure used by all SequenceEvent records
+// Common device information structure used by all BasicSequenceEvent records
 //
 struct devInfoStruct {
-    Sequence       *pSequence;  // Pointer to the Sequence object
-    SequenceEvent  *pEvent;     // Pointer to the SequenceEvent object
-    epicsInt32      Function;   // Function code
+    BasicSequence*       pSequence;  // Pointer to the BasicSequence object
+    BasicSequenceEvent*  pEvent;     // Pointer to the BasicSequenceEvent object
+    epicsInt32           Function;   // Function code
 };//end devInfoStruct
 
 
@@ -253,7 +241,7 @@ void parseLink (
 }//end parseLink()
 
 /**************************************************************************************************/
-/*                    Device Support for Sequence Event Analog Output Records                     */
+/*                 Device Support for Basic Sequence Event Analog Output Records                  */
 /*                                                                                                */
 
 
@@ -271,7 +259,7 @@ static epicsStatus aoWrite      (aoRecord* pRec);
 
 extern "C" {
 static
-AnalogDSET devAoSeqEvent = {
+AnalogDSET devAoBasicSeqEvent = {
     6,                                  // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
@@ -281,7 +269,7 @@ AnalogDSET devAoSeqEvent = {
     NULL                                // -- No special linear conversion routine
 };
 
-epicsExportAddress (dset, devAoSeqEvent);
+epicsExportAddress (dset, devAoBasicSeqEvent);
 
 };//end extern "C"
 
@@ -289,7 +277,7 @@ epicsExportAddress (dset, devAoSeqEvent);
 |* aoInitRecord () -- Initialize an Analog Output Record
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|*    This routine is called during IOC initialization to initialize a Sequence Event
+|*    This routine is called during IOC initialization to initialize a BasicSequence Event
 |*    analog output record.  It performs the following functions:
 |*      - Extract the card number, sequence number, record function, and event name from
 |*        the OUT field.
@@ -298,7 +286,7 @@ epicsExportAddress (dset, devAoSeqEvent);
 |*      - Create and initialize the device information structure.
 |*      - Initialize the LINR and ESLO fields.
 |*      - Call the aoWrite routine to convert the initial value to ticks and
-|*        write it to the SequenceEvent object.
+|*        write it to the BasicSequenceEvent object.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTIONS:
@@ -326,14 +314,14 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     //=====================
     // Local variables
     //
-    epicsInt32      Card;               // Logical EVG card number (from OUT link)
-    std::string     Function;           // Record function name (from OUT link)
-    std::string     Name;               // Sequence event name (from OUT link)
-    devInfoStruct*  pDevInfo = NULL;    // Pointer to device-specific information structure.
-    Sequence*       pSequence;          // Pointer to the Sequence object for this event
-    SequenceEvent*  pEvent;             // Pointer to our SequenceEvent object
-    epicsInt32      SeqNum;             // Sequence ID number for this event (from OUT link)
-    epicsStatus     status;             // Anticipated error status
+    epicsInt32           Card;               // Logical EVG card number (from OUT link)
+    std::string          Function;           // Record function name (from OUT link)
+    std::string          Name;               // Sequence event name (from OUT link)
+    devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
+    BasicSequence*       pSequence;          // Pointer to the BasicSequence object for this event
+    BasicSequenceEvent*  pEvent;             // Pointer to our BasicSequenceEvent object
+    epicsInt32           SeqNum;             // Sequence ID number for this event (from OUT link)
+    epicsStatus          status;             // Anticipated error status
 
     //=====================
     // Try to initialize the record
@@ -355,8 +343,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         //=====================
         // Declare the sequence number and the event name
         //
-        status = -1;
-        pSequence = EgDeclareSequence (Card, SeqNum);
+        pSequence = EgDeclareBasicSequence (Card, SeqNum);
         pEvent = pSequence->DeclareEvent (Name);
 
         //=====================
@@ -407,13 +394,13 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 }//end aoInitRecord()
 
 /**************************************************************************************************
-|* aoWrite () -- Write the Timestamp to the SequenceEvent Object.
+|* aoWrite () -- Write the Timestamp to the BasicSequenceEvent Object.
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
 |*    This routine is called from the aoRecord's "process()" routine.
 |*
 |*    It converts the timestamp in the VAL field from engineering units to event clock ticks
-|*    and writes it to the SequenceEvent object.
+|*    and writes it to the BasicSequenceEvent object.
 |*
 |*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
 |*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
@@ -446,9 +433,9 @@ epicsStatus aoWrite (aoRecord* pRec) {
     //=====================
     // Extract the Sequence and SequenceEvent objects from the dpvt structure
     //
-    devInfoStruct*  pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
-    Sequence*       pSequence = pDevInfo->pSequence;
-    SequenceEvent*  pEvent    = pDevInfo->pEvent;
+    devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+    BasicSequence*       pSequence = pDevInfo->pSequence;
+    BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
 
     //=====================
     // Re-compute the slope (in case EGUF has changed)
@@ -462,7 +449,7 @@ epicsStatus aoWrite (aoRecord* pRec) {
 
     //=====================
     // Convert the VAL field to "Event Clock Ticks" and write
-    // it to the SequenceEvent object.
+    // it to the BasicSequenceEvent object.
     //
     pEvent->SetEventTime (pRec->val / pRec->eslo);
 

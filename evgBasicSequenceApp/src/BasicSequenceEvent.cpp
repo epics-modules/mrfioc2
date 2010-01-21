@@ -1,5 +1,5 @@
 /**************************************************************************************************
-|* $(TIMING)/evgApp/src/SequenceEvent.cpp -- Event Generator Sequence Event Class
+|* $(MRF)/evgBasicSequenceApp/src/BasicSequenceEvent.cpp -- Basic Sequence Event Class
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
 |* Date:     18 November 2009
@@ -10,18 +10,12 @@
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains the implementation of the SequenceEvent class
+|*    This module contains the implementation of the BasicSequenceEvent class
 |*
-|*--------------------------------------------------------------------------------------------------
-|* HARDWARE SUPPORTED:
-|*   Series 2xx Event Generator Cards
-|*     Modular Register Mask
-|*     APS Register Mask
+|*   The BasicSequenceEvent class uses individual EPICS records to define a sequence event's
+|*   properties such as event code, timestamp, enable/disable status, and collision priority.
 |*
-|*--------------------------------------------------------------------------------------------------
-|* OPERATING SYSTEMS SUPPORTED:
-|*   vxWorks
-|*   RTEMS
+|*   BasicSequenceEvent objects define the sequence events in a BasicSequence object.
 |*
 \*************************************************************************************************/
 
@@ -41,7 +35,7 @@
 \*************************************************************************************************/
 
 /**************************************************************************************************/
-/*  SequenceEvent Class Description                                                               */
+/*  BasicSequenceEvent Class Description                                                          */
 /**************************************************************************************************/
 
 //==================================================================================================
@@ -49,13 +43,13 @@
 //! @{
 //!
 //==================================================================================================
-//! @class      SequenceEvent
-//! @brief      Event Generator SequenceEvent Class.
+//! @class      BasicSequenceEvent
+//! @brief      Event Generator BasicSequenceEvent Class.
 //!
 //! @par Description:
-//!   The \b SequenceEvent object represents a single event in an event generator sequence.
+//!   The \b BasicSequenceEvent object represents a single event in an event generator sequence.
 //!   Every event in a sequence must have a unique name associated with it -- even if the
-//!   event code is duplicated.  The unique name is assigned at the time the SequenceEvent
+//!   event code is duplicated.  The unique name is assigned at the time the BasicSequenceEvent
 //!   object is created.
 //!
 //==================================================================================================
@@ -73,15 +67,15 @@
 
 #include <mrfCommon.h>          // MRF Common definitions
 
-#include <Sequence.h>           // Sequence class definition
-#include <SequenceEvent.h>      // Sequence event class definition
+#include <BasicSequence.h>      // Basic Sequence class definition
+#include <BasicSequenceEvent.h> // Basic Sequence event class definition
 
 /**************************************************************************************************/
 /*                              Class Member Function Definitions                                 */
 /*                                                                                                */
 
 //**************************************************************************************************
-//  SequenceEvent () -- Class Constructor
+//  BasicSequenceEvent () -- Class Constructor
 //**************************************************************************************************
 //! @par Description:
 //!   Class Constructor
@@ -92,11 +86,11 @@
 //! @param Name = (input) Name to be assigned to this event.<br>
 //!               Every event assigned to a specific sequence must have a unique name -- even
 //!               if the event codes are identical.
-//! @param pSeq = (input) Pointer to the Sequence object that this event belongs to.
+//! @param pSeq = (input) Pointer to the Basic Sequence object that this event belongs to.
 //!
 //**************************************************************************************************
 
-SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
+BasicSequenceEvent::BasicSequenceEvent (const std::string& Name, BasicSequence* pSeq) :
 
     //=====================
     // Initialize the data members
@@ -123,11 +117,11 @@ SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
 //  SetEventTime () -- Set or Change This Event's Timestamp
 //**************************************************************************************************
 //! @par Description:
-//!   Changes the requested timestamp for this event and notifies the Sequence object
+//!   Changes the requested timestamp for this event and notifies the Basic Sequence object
 //!
 //! @par Function:
 //!   Set the new requested timestamp.
-//!   Signal the Sequence object that the timestamp has changed.
+//!   Signal the Basic Sequence object that the timestamp has changed.
 //!
 //! @param      Ticks  = (input) New requested timestamp expressed in "Event Clock Ticks"
 //!
@@ -137,16 +131,16 @@ SequenceEvent::SequenceEvent (const std::string& Name, Sequence* pSeq) :
 //**************************************************************************************************
 
 void
-SequenceEvent::SetEventTime (epicsFloat64 Ticks)
+BasicSequenceEvent::SetEventTime (epicsFloat64 Ticks)
 {
     RequestedTime = Ticks;
 }
 
 //**************************************************************************************************
-//  RegisterTimeRecord () -- Register The Existence Of A SequenceEvent Timestamp Record
+//  RegisterTimeRecord () -- Register The Existence Of A BasicSequenceEvent Timestamp Record
 //**************************************************************************************************
 //! @par Description:
-//!   Declare the existence of a SequenceEvent timestamp record
+//!   Declare the existence of a BasicSequenceEvent timestamp record
 //!
 //! @par Function:
 //!   First check to see if a timestamp record has already been registered for this event.
@@ -163,7 +157,7 @@ SequenceEvent::SetEventTime (epicsFloat64 Ticks)
 //**************************************************************************************************
 
 void
-SequenceEvent::RegisterTimeRecord (dbCommon *pRec)
+BasicSequenceEvent::RegisterTimeRecord (dbCommon *pRec)
 {
     //=====================
     // Make this the timestamp record if it was the first to be declared
@@ -175,9 +169,9 @@ SequenceEvent::RegisterTimeRecord (dbCommon *pRec)
     // Throw an error if we already have a timestamp record
     //
     else throw std::runtime_error (
-        std::string("Duplicate EVENT_TIME records declared for Event '") + EventName +
-        std::string("' in Sequence ") + pSequence->GetSequenceString() +
-        std::string("\nPreviously declared record is: ") + TimeRecord->name);
+        std::string (pSequence->GetSeqID()) +
+        std::string (": Duplicate \"Event Time\" records declared for Event '") + EventName +
+        std::string ("'\nPreviously declared record is: ") + TimeRecord->name);
 
 }//end RegisterTimeRecord()
 

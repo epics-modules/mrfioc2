@@ -1,5 +1,5 @@
 /**************************************************************************************************
-|* $(TIMING)/evgApp/src/Sequence.cpp -- Event Generator Sequence Class
+|* $(MRF)/evgBasicSequenceApp/src/BasicSequence.cpp -- Event Generator Basic Sequence Class
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
 |* Date:     19 November 2009
@@ -10,18 +10,15 @@
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains the implementation of the Sequence class
+|*    This module contains the implementation of the BasicSequence class
 |*
-|*-------------------------------------------------------------------------------------------------
-|* HARDWARE SUPPORTED:
-|*   Series 2xx Event Generator Cards
-|*     Modular Register Mask
-|*     APS Register Mask
+|*   The BasicSequence class uses BasicSequenceEvent objects --collections of individual
+|*   records that define a sequence event's properties -- to construct an event sequence
+|*   that can be loaded into an event generator's sequence RAMs.
 |*
-|*-------------------------------------------------------------------------------------------------
-|* OPERATING SYSTEMS SUPPORTED:
-|*   vxWorks
-|*   RTEMS
+|*   BasicSequences are useful for machines with single (or relatively few) timelines that
+|*   have no relationships between the individual events.
+|*
 \**************************************************************************************************/
 
 /**************************************************************************************************
@@ -40,7 +37,7 @@
 \*************************************************************************************************/
 
 /**************************************************************************************************/
-/*  Sequence Class Description                                                                    */
+/*  BasicSequence Class Description                                                               */
 /**************************************************************************************************/
 
 //==================================================================================================
@@ -48,16 +45,22 @@
 //! @{
 //!
 //==================================================================================================
-//! @class      Sequence
-//! @brief      Event Generator Sequence Class.
+//! @class      BasicSequence
+//! @brief      Event Generator BasicSequence Class.
 //!
 //! @par Description:
-//!    A \b Sequence object represents a list of events and timestamps.  The timestamp determines
-//!    when the event should be delivered relative to the start of the sequence.  A system may
-//!    have mulitple sequences.  Each sequence must have a unique ID number. The ID number is
-//!    assigned when the Sequence object is created. A Sequence object only becomes active when
-//!    it is assigned to a "Sequence RAM". The same Sequence object may not be assigned to
-//!    more than one Sequence RAM.
+//!    A \b BasicSequence object represents a list of events and timestamps.  The timestamp
+//!    determines when the event should be delivered relative to the start of the sequence.
+//!
+//!    Although sequences are associated with event generator cards, A sequence is an abstract
+//!    concept and does not in itself reference any hardware.   An event generator may "posses"
+//!    mulitple sequences.  Each BasicSequence must have a unique ID number.  The ID number is
+//!    assigned when the BasicSequence object is created. A BasicSequence object only becomes
+//!    active when it is assigned to a "Sequence RAM". The same BasicSequence object may not be
+//!    assigned to more than one Sequence RAM.
+//!
+//!    BasicSequences are useful for machines with single (or relatively few) timelines that
+//!    have no relationships between the individual events.
 //!
 //==================================================================================================
 
@@ -73,40 +76,42 @@
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
 
 #include <mrfCommon.h>          // MRF Common definitions
-
-#include <Sequence.h>           // Sequence class definition
-#include <SequenceEvent.h>      // SequenceEvent class definition
+#include  <drvEvg.h>            // MRF Event Generator driver infrastructure routines
+#include <BasicSequence.h>      // MRF BasicSequence class definition
+#include <BasicSequenceEvent.h> // MRF BasicSequenceEvent class definition
 
 /**************************************************************************************************/
-/*                                  Sequence Class Definition                                     */
+/*                               BasicSequence Class Definition                                   */
 /*                                                                                                */
 
 
 //**************************************************************************************************
-//  Sequence () -- Class Constructor
+//  BasicSequence () -- Class Constructor
 //**************************************************************************************************
 //! @par Description:
 //!   Class Constructor
 //!
 //! @par Function:
-//!   Create an event generator Sequence object and assign it to the specified event generator
+//!   Create an event generator BasicSequence object and assign it to the specified event generator
 //!   card using the specified sequence ID number.
 //!
+//! @param Card    = (input) Event generator logical card number
 //! @param Number  = (input) Sequence ID number.
-//! @param pEvg    = (input) Pointer to the event generator card object that this sequence
-//!                  belongs to.
+//!
+//! @throw         runtime_error is thrown if the event generator card was not configured.
 //!
 //**************************************************************************************************
 
-Sequence::Sequence (epicsInt32  Number, EVG* pEvg):
+BasicSequence::BasicSequence (epicsInt32 Card, epicsInt32  Number):
+    ClassID(BASIC_SEQ_CLASS_ID),
+    CardNumber(Card),
     SequenceNumber(Number),
-    pEvg(pEvg),
     NumEvents(0)
 {
     //=====================
-    // Convert the sequence ID number to a string
+    // Create the sequence ID string
     //
-    sprintf (SeqNumString, "%d", Number);
+    sprintf (SeqID, "Card %d, Seq %d", Card, Number);
 
     //=====================
     // Initialize the event array
@@ -114,39 +119,46 @@ Sequence::Sequence (epicsInt32  Number, EVG* pEvg):
     for (int i = 0;  i < MRF_MAX_SEQUENCE_EVENTS;  i++)
         EventList[i] = NULL;
 
+    //=====================
+    // Try to get the EVG object for the card we belong to
+    //
+    if (NULL == (pEvg = EgGetCard(Card)))
+        throw std::runtime_error (std::string(SeqID) + ": Event generator card not configured");
+
 }//end Constructor
 
 //**************************************************************************************************
-//  DeclareEvent () -- Declare The Existence Of A Sequence Event
+//  DeclareEvent () -- Declare The Existence Of A Basic Sequence Event
 //**************************************************************************************************
 //! @par Description:
-//!   Declare the existence of a sequence event and return a pointer to its SequenceEvent object.
+//!   Declare the existence of a basic sequence event and return a pointer to its
+//!   BasicSequenceEvent object.
 //!
 //! @par Function:
 //!   First check to see if the named event is already in this sequence.  If so, just return a
-//!   pointer to the SequenceEvent object.  If the event was not found, create a new SequenceEvent
-//!   object, add it to the sequence, and return a pointer to its object.
+//!   pointer to the BasicSequenceEvent object.  If the event was not found, create a new
+//!   BasicSequenceEvent object, add it to the sequence, and return a pointer to its object.
 //!
 //! @param      Name  = (input) Name of the event to create
 //!
-//! @return     Returns a pointer to the named SequenceEvent object.
+//! @return     Returns a pointer to the named BasicSequenceEvent object.
 //!
 //! @throw      runtime_error is thrown if the event was not in the list and we could not
 //!             create a new event.
 //!
 //! @par Member Variables Referenced:
 //! - \e        NumEvents = (modified) Number of events in this sequence
-//! - \e        EventList = (modified) List of SequenceEvent objects in this sequence
+//! - \e        EventList = (modified) List of BasicSequenceEvent objects in this sequence
 //!
 //**************************************************************************************************
 
-SequenceEvent*
-Sequence::DeclareEvent (const std::string &Name)
+BasicSequenceEvent*
+BasicSequence::DeclareEvent (const std::string &Name)
 {
     //=====================
     // If the event is already in the event list, just return a pointer to its object
     //
-    SequenceEvent  *Event = GetEvent(Name);
+    BasicSequenceEvent  *Event = GetEvent(Name);
     if (NULL != Event) return Event;
 
     //=====================
@@ -156,16 +168,16 @@ Sequence::DeclareEvent (const std::string &Name)
         throw std::runtime_error("Sequence is full");
 
     //=====================
-    // If there is still room, try and create a new SequenceEvent object
+    // If there is still room, try and create a new BasicSequenceEvent object
     //
-    try {Event = new SequenceEvent (Name, this);}
+    try {Event = new BasicSequenceEvent (Name, this);}
     catch (std::exception& e) {
         throw std::runtime_error(
-              std::string("Unable to create new SequenceEvent object - ") + e.what());
-    }//end if could not create a new SequenceEvent object
+              std::string("Unable to create new BasicSequenceEvent object - ") + e.what());
+    }//end if could not create a new BasicSequenceEvent object
 
     //=====================
-    // Add the new SequenceEvent to the list and return a pointer to it.
+    // Add the new BasicSequenceEvent to the list and return a pointer to it.
     //
     EventList[NumEvents++] = Event;
     return Event;
@@ -180,21 +192,21 @@ Sequence::DeclareEvent (const std::string &Name)
 //!
 //! @par Function:
 //!   Searches the sequence's event table for an event whose name matches the name in the input
-//!   parameter.  Returns a pointer to the SequenceEvent object if it is found.
+//!   parameter.  Returns a pointer to the BasicSequenceEvent object if it is found.
 //!
 //! @param      Name  = (input) Name of the event to retrieve
 //!
-//! @return     Returns a pointer to the named SequenceEvent object.<br>
+//! @return     Returns a pointer to the named BasicSequenceEvent object.<br>
 //!             Returns NULL if the requested object was not found
 //!
 //! @par Member Variables Referenced:
 //! - \e        NumEvents = (input) Number of events in this sequence
-//! - \e        EventList = (input) List of SequenceEvent objects in this sequence
+//! - \e        EventList = (input) List of BasicSequenceEvent objects in this sequence
 //!
 //**************************************************************************************************
 
-SequenceEvent*
-Sequence::GetEvent (const std::string &Name)
+BasicSequenceEvent*
+BasicSequence::GetEvent (const std::string &Name)
 {
     //=====================
     // Loop to look for the requested event

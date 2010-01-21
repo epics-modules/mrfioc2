@@ -14,11 +14,19 @@
 /*  Function Prototypes for Routines Not Defined in sysLib.h                                      */
 /**************************************************************************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 epicsUInt16 sysIn16    (volatile void*);                 /* Synchronous 16 bit read               */
 epicsUInt32 sysIn32    (volatile void*);                 /* Synchronous 32 bit read               */
 void        sysOut16   (volatile void*, epicsUInt16);    /* Synchronous 16 bit write              */
 void        sysOut32   (volatile void*, epicsUInt32);    /* Synchronous 32 bit write              */
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #define bswap16(value) ((epicsUInt16) (  \
         (((epicsUInt16)(value) & 0x00ff) << 8)    |       \

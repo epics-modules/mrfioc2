@@ -1,5 +1,44 @@
-#ifndef EVG_SEQUENCE_H_INC
-#define EVG_SEQUENCE_H_INC
+/**************************************************************************************************
+|* $(MRF)/evgBasicSequenceApp/src/BasicSequence.h -- Event Generator BasicSequence Class Definition
+|*
+|*-------------------------------------------------------------------------------------------------
+|* Authors:  Eric Bjorklund (LANSCE)
+|* Date:     14 January 2010
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODIFICATION HISTORY:
+|* 14 Jan 2010  E.Bjorklund     Original
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODULE DESCRIPTION:
+|*   This header file contains the definition of a BasicSequence class.
+|*
+|*   The BasicSequence class uses BasicSequenceEvent objects --collections of individual
+|*   records that define a sequence event's properties -- to construct an event sequence
+|*   that can be loaded into an event generator's sequence RAMs.
+|*
+|*   BasicSequences are useful for machines with single (or relatively few) timelines that
+|*   have no relationships between the individual events.
+|*
+\*************************************************************************************************/
+
+/**************************************************************************************************
+|*                                     COPYRIGHT NOTIFICATION
+|**************************************************************************************************
+|*
+|* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
+|* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
+|* AND IN ALL SOURCE LISTINGS OF THE CODE.
+|*
+|**************************************************************************************************
+|*
+|* This software is distributed under the EPICS Open License Agreement which
+|* can be found in the file, LICENSE, included with this distribution.
+|*
+\*************************************************************************************************/
+
+#ifndef EVG_BASIC_SEQUENCE_H_INC
+#define EVG_BASIC_SEQUENCE_H_INC
 
 /**************************************************************************************************/
 /*  Imported Header Files                                                                         */
@@ -10,39 +49,90 @@
 
 #include <mrfCommon.h>          // MRF Common definitions
 
-#include <SequenceEvent.h>      // SequenceEvent class definition
-#include <evg/evg.h>            // Event generator class definition
+#include <evg/evg.h>            // Event generator base class definition
+#include <evg/Sequence.h>       // Event generator Sequence base class definition
+#include <BasicSequenceEvent.h> // Basic Sequence Event class definition
+
 
 /**************************************************************************************************/
-/*  Configuration Parameters                                                                      */
+/*  Basic Sequence Class ID String                                                                */
 /**************************************************************************************************/
 
-#define MAX_SEQUENCE_CHARS  10  //Maximimum number of characters in a sequence number
+#define  BASIC_SEQ_CLASS_ID  "BasicSequence"
 
 /**************************************************************************************************/
-/*                                  Sequence Class Definition                                     */
+/*                               Basic Sequence Class Definition                                  */
 /*                                                                                                */
 
-class Sequence
+class BasicSequence: public Sequence
 {
 
 /**************************************************************************************************/
-/*  Public Methods                                                                                */
+/*  Public Methods (Required By The Base Class)                                                   */
 /**************************************************************************************************/
 
 public:
 
     //=====================
-    // Class Constructor
+    // Get the class ID string
     //
-    Sequence (epicsInt32 Number, EVG* pEvg);
+    inline const std::string& GetClassID() const {
+        return (ClassID);
+    }//end GetClassID()
 
     //=====================
-    // Get the sequence number as an ASCII string
+    // Get the sequence ID string
     //
-    inline const char *GetSequenceString() const {
-        return (SeqNumString);
-    }//end GetSequenceNumber()
+    inline const char* GetSeqID() const {
+        return (SeqID);
+    }//end GetSeqID()
+
+    //=====================
+    // Get the card number
+    //
+    inline epicsInt32 GetCardNum() const {
+        return (CardNumber);
+    }//end GetCardNum()
+
+    //=====================
+    // Get the sequence number as an integer
+    //
+    inline epicsInt32 GetSeqNum () const {
+        return (SequenceNumber);
+    }//end GetSeqNum()
+
+    //=====================
+    // Get the number of events in the sequence
+    //
+    inline epicsInt32 GetNumEvents() const {
+        return (NumEvents);
+    }//end GetNumEvents()
+
+    //=====================
+    // Get the address of the event code array
+    //
+    inline const epicsInt32 *GetEventArray() const {
+        return (EventArray);
+    }//end GetEventArray()
+
+    //=====================
+    //Get the address of the timestamp array
+    //
+    inline const epicsUInt32 *GetTimestampArray() const {
+        return (TimestampArray);
+    }//end GetTimestampArray()
+
+
+/**************************************************************************************************/
+/*  Public Methods (Specific To The BasicSequence Class)                                          */
+/**************************************************************************************************/
+
+public:
+
+    //=====================
+    // Class constructor
+    //
+    BasicSequence (epicsInt32 Card, epicsInt32 Number);
 
     //=====================
     // Get the number of seconds per event clock tick
@@ -54,12 +144,12 @@ public:
     //=====================
     // Create a new event and add it to the sequence
     //
-    SequenceEvent *DeclareEvent (const std::string &Name);
+    BasicSequenceEvent *DeclareEvent (const std::string &Name);
 
     //=====================
     // Get an event by name
     //
-    SequenceEvent *GetEvent (const std::string &Name);
+    BasicSequenceEvent *GetEvent (const std::string &Name);
 
 
 /**************************************************************************************************/
@@ -68,16 +158,27 @@ public:
 
 private:
 
-    epicsInt32      SequenceNumber;                      // Unique sequence number for this sequence
-    char            SeqNumString [MAX_SEQUENCE_CHARS];   // Sequence number as an ASCII string
-    EVG*            pEvg;                                // Event generator card
+    //=====================
+    // Sequence and Sequence ID variables
+    //
+    std::string          ClassID;            // Basic Sequence Class ID string
+    epicsInt32           CardNumber;         // EVG card this sequence belongs to.
+    epicsInt32           SequenceNumber;     // Unique sequence number for this sequence
+    char                 SeqID [32];         // Sequence ID string
+    EVG*                 pEvg;               // Event generator card object
 
     //=====================
-    // Event List
+    // Sequence Event Object List
     //
-    epicsInt32      NumEvents;                           // Number of events in the array
-    SequenceEvent  *EventList [MRF_MAX_SEQUENCE_EVENTS]; // Array of sequence event pointers
+    epicsInt32           NumEvents;
+    BasicSequenceEvent  *EventList      [MRF_MAX_SEQUENCE_EVENTS];
 
-};// end class Sequence //
+    //=====================
+    // Event and Timestamp Arrays for the Sequence RAMs
+    //
+    epicsInt32           EventArray     [MRF_MAX_SEQUENCE_EVENTS];
+    epicsUInt32          TimestampArray [MRF_MAX_SEQUENCE_EVENTS];
 
-#endif // EVG_SEQUENCE_H_INC //
+};// end class BasicSequence //
+
+#endif // EVG_BASIC_SEQUENCE_H_INC //

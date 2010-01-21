@@ -1,6 +1,1 @@
-# provide definitions such as
-#include "xxxRecord.dbd"
-#device(xxx,CONSTANT,devXxxSoft,"SoftChannel")
-#driver(myDriver)
-#registrar(myRegistrar)
-#variable(myVariable)
+device(ao, INST_IO, devAoBasicSeqEvent, "EVG Basic Seq Event")
