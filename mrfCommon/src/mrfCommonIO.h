@@ -11,38 +11,25 @@
 |* 21 Oct 2009  E.Bjorklund     Removed array macros.
 |*                              Reorganized register "typing" mechanism.
 |*                              Expanded to handle both big-endian and little-endian busses
+|* 22 Jan 2009  E.Bjorklund     Defined macros for use with all MRF hardware.
 |*
 |*--------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
 |*
 |* This header file contains macro definitions for performing basic I/O operations on the hardware
-|* registers of the MRF Event System VME and PMC cards.  Both big-endian and little-endian busses
-|* are supported:
+|* registers of the MRF Event System VME and PMC cards.
 |*
 |* The following operations are supported:
 |*   o 8-bit, 16-bit, and 32-bit scalar reads and writes.
-|*   o 8-bit, 16-bit, and 32-bit register clear operations.
 |*   o 8-bit, 16-bit, and 32-bit scalar bit set operations (read/modify/write).
 |*   o 8-bit, 16-bit, and 32-bit scalar bit clear operations (read/modify/write).
+|*   o 8-bit, 16-bit, and 32-bit scalar bit "flip" operations (read/modify/write),
 |*
-|* Synchronous versions of each of the above operations are also provided.  Synchronous I/O
-|* operations rely on underlying operating system routines to ensure that hardware pipelines
+|* All I/O operations use underlying operating system routines to ensure that hardware pipelines
 |* are flushed so that the operations are executed in the order in which they were specified.
-|* The file "osiSyncIO.h", located in the OS-dependent directories (e.g., ./os/vxWorks/osiSyncIO,
-|* or ./os/RTEMS/osiSyncIO) maps synchronous I/O operations onto their OS-dependent routines or
+|* The file "mrfIoOps.h", located in the OS-dependent directories (e.g., ./os/vxWorks/mrfIoOps.h,
+|* or ./os/RTEMS/mrfIoOps.h) maps synchronous I/O operations onto their OS-dependent routines or
 |* macros.
-|*
-|* Usually, synchronous I/O is not required and using synchronous I/O operations can hurt
-|* the performance of your processor. Synchronous I/O is required, however, in the following cases:
-|*   o In an interrupt service routine (ISR), synchronous I/O is required to ensure that the
-|*     interrupt is acknowledged (and the interrupt line de-asserted) before the ISR exits.
-|*   o In a situation where a value is read from one register by first writing a value
-|*     (such as an address or an index) to a different register, the write operation must be
-|*     synchronous in order to ensure that it occurs before the "value register" is read.
-|*
-|* If desired, all I/O operations can be forced to be synchronous by specifying SYNC_IO=YES in
-|* the MRF_CONFIG_SITE files, or by defining the symbol, MRF_SYNC_IO, before including this header
-|* file for the first time.
 |*
 |* The I/O macros in this file are designed to be easily understood and to minimize errors.
 |* Each macro begins with a "base" and an "offset" parameter.  The "base" parameter specifies
@@ -60,27 +47,32 @@
 |*--------------------------------------------------------------------------------------------------
 |* DEFINED MACROS:
 |*
-|* The macros defined in this file can be classified within the following 4 catagories:
+|* The macros defined in this file can be classified within the following 6 catagories:
 |*
-|* Big-Endian Read Operations:
-|*     BE_READ8  (base,offset)
-|*     BE_READ16 (base,offset)
-|*     BE_READ32 (base,offset)
+|* Read Operations:
+|*     READ8  (base,offset)
+|*     READ16 (base,offset)
+|*     READ32 (base,offset)
 |*
-|* Big-Endian Write Operations:
-|*     BE_WRITE8  (base,offset,value)
-|*     BE_WRITE16 (base,offset,value)
-|*     BE_WRITE32 (base,offset,value)
+|* Write Operations:
+|*     WRITE8  (base,offset,value)
+|*     WRITE16 (base,offset,value)
+|*     WRITE32 (base,offset,value)
 |*
-|* Little-Endian Read Operations:
-|*     LE_READ8  (base,offset)
-|*     LE_READ16 (base,offset)
-|*     LE_READ32 (base,offset)
+|* Bit Set Operations:
+|*     BITSET8  (base,offset,mask)
+|*     BITSET16 (base,offset,mask)
+|*     BITSET32 (base,offset,mask)
 |*
-|* Little-Endian Write Operations:
-|*     LE_WRITE8  (base,offset,value)
-|*     LE_WRITE16 (base,offset,value)
-|*     LE_WRITE32 (base,offset,value)
+|* Bit Clear Operations:
+|*     BITCLR8  (base,offset,mask)
+|*     BITCLR16 (base,offset,mask)
+|*     BITCLR32 (base,offset,mask)
+|*
+|* Bit Flip Operations:
+|*     BITFLIP8  (base,offset,mask)
+|*     BITFLIP16 (base,offset,mask)
+|*     BITFLIP32 (base,offset,mask)
 |*
 \**************************************************************************************************/
 
@@ -98,18 +90,58 @@
 |* can be found in the file, LICENSE, included with this distribution.
 |*
 \*************************************************************************************************/
-
+
 #ifndef MRF_COMMON_IO_H
 #define MRF_COMMON_IO_H
-
+
 /**************************************************************************************************/
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <mrfIoOps.h>
-#include <mrfBitOps.h>
+#include <mrfIoOps.h>           /* OS-dependent synchronous I/O routines                          */
+#include <mrfBitOps.h>          /* Generic bit operations                                         */
 
 
+/**************************************************************************************************/
+/*                            Macros For Accessing MRF Timing Modules                             */
+/*            (Note that MRF timing modules are always accessed using native mode I/O             */
+/**************************************************************************************************/
+
+/*---------------------
+ * Synchronous Read Operations
+ */
+#define READ8(base,offset)  NAT_READ8(base,offset)
+#define READ16(base,offset) NAT_READ16(base,offset)
+#define READ32(base,offset) NAT_READ32(base,offset)
+
+/*---------------------
+ * Synchronous Write Operations
+ */
+#define WRITE8(base,offset,value)  NAT_WRITE8(base,offset,value)
+#define WRITE16(base,offset,value) NAT_WRITE16(base,offset,value)
+#define WRITE32(base,offset,value) NAT_WRITE32(base,offset,value)
+
+/*---------------------
+ * Bit Set Operations
+ */
+#define BITSET8(base,offset,mask)   BITSET(NAT,8,base,offset,mask)
+#define BITSET16(base,offset,mask)  BITSET(NAT,16,base,offset,mask)
+#define BITSET32(base,offset,mask)  BITSET(NAT,32,base,offset,mask)
+
+/*---------------------
+ * Bit Clear Operations
+ */
+#define BITCLR8(base,offset,mask)   BITCLR(NAT,8,base,offset,mask)
+#define BITCLR16(base,offset,mask)  BITCLR(NAT,16,base,offset,mask)
+#define BITCLR32(base,offset,mask)  BITCLR(NAT,32,base,offset,mask)
+
+/*---------------------
+ * Bit Flip Operations
+ */
+#define BITFLIP8(base,offset,mask)   BITFLIP(NAT,8,base,offset,mask)
+#define BITFLIP16(base,offset,mask)  BITFLIP(NAT,16,base,offset,mask)
+#define BITFLIP32(base,offset,mask)  BITFLIP(NAT,32,base,offset,mask)
+
 /**************************************************************************************************/
 /*                                 Macros For Native Order I/O                                    */
 /*                                                                                                */

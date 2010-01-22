@@ -353,14 +353,14 @@ evgMrm::Configure ()
     // Disable all interupt sources
     // Then try to connect the interrupt service routine
     //
-    NAT_WRITE32 (pReg, InterruptEnable, 0);
+    WRITE32 (pReg, InterruptEnable, 0);
     if (OK != BusInterface->ConfigBusInterrupt((EPICS_ISR_FUNC)EgInterrupt, (void *)this))
         throw std::runtime_error(BusInterface->GetErrorText());
 
     //=====================
     // Initialize some member variables from the current hardware values
     //
-    FPGAVersion = NAT_READ32 (pReg, FPGAVersion);
+    FPGAVersion = READ32 (pReg, FPGAVersion);
 
     //=====================
     // Output some debug informational messages if desired
@@ -405,7 +405,7 @@ evgMrm::IntEnable() {
 
 void
 evgMrm::Interrupt () {
-    BITCLR(NAT,32, pReg, InterruptEnable, EVG_IRQ_ENABLE);
+    BITCLR32 (pReg, InterruptEnable, EVG_IRQ_ENABLE);
 }//end Interrupt()
 
 epicsStatus
@@ -498,11 +498,11 @@ evgMrm::SetOutLinkClockSource (epicsInt16 ClockSource)
         switch (ClockSource) {
 
         case EVG_CLOCK_SRC_INTERNAL:  // Use internal fractional synthesizer to generate the clock
-            BITCLR (NAT, 8, pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+            BITCLR8 (pReg, ClockSource, EVG_CLK_SRC_EXTRF);
             break;
 
         case EVG_CLOCK_SRC_RF:        // Use external RF source to generate the clock
-            BITSET (NAT, 8, pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+            BITSET8 (pReg, ClockSource, EVG_CLK_SRC_EXTRF);
             break;
 
         }//end switch
@@ -724,7 +724,7 @@ evgMrm::SetFracSynth ()
     // use whatever the current hardware is set to.
     //
     if (!FracSynthWord) {
-        FracSynthWord = NAT_READ32 (pReg, FracSynthWord);
+        FracSynthWord = READ32 (pReg, FracSynthWord);
         return;
     }//end if nobody set the control word.
 
@@ -733,7 +733,7 @@ evgMrm::SetFracSynth ()
     // control word, exit without writing the control word so that we don't cause a "bump"
     // in the gate outputs.
     //
-    if (NAT_READ32(pReg, FracSynthWord) == FracSynthWord)
+    if (READ32(pReg, FracSynthWord) == FracSynthWord)
         return;
 
     //=====================
@@ -742,27 +742,27 @@ evgMrm::SetFracSynth ()
     //
     CardMutex->lock();
     Key = epicsInterruptLock();
-    EnableMask = NAT_READ32 (pReg, InterruptEnable);
-    NAT_WRITE32 (pReg, InterruptEnable, (EnableMask & ~(EVG_IRQ_RXVIO)));
+    EnableMask = READ32 (pReg, InterruptEnable);
+    WRITE32 (pReg, InterruptEnable, (EnableMask & ~(EVG_IRQ_RXVIO)));
     epicsInterruptUnlock (Key);
 
     //=====================
     // Set the new fractional synthesizer control word and wait for it to synch up.
     //
-    NAT_WRITE32 (pReg, FracSynthWord, FracSynthWord);
+    WRITE32 (pReg, FracSynthWord, FracSynthWord);
     epicsThreadSleep (0.5);
 
     //=====================
     // Reset the "Receiver Violation" error that this probably caused.
     //
     Key = epicsInterruptLock();
-    BITCLR (NAT, 32, pReg, InterruptFlag, EVG_IRQ_RXVIO);
+    BITCLR32 (pReg, InterruptFlag, EVG_IRQ_RXVIO);
 
     //=====================
     // Reset the interrupt enable mask.
     //
     if (EnableMask & EVG_IRQ_RXVIO)
-        NAT_WRITE32 (pReg, InterruptEnable, EnableMask);
+        WRITE32 (pReg, InterruptEnable, EnableMask);
 
     //=====================
     // Release the card lock, and return
