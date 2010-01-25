@@ -25,7 +25,6 @@ DBD += drvEvg.dbd
 #
 LIBRARY_IOC += evg
 
-evg_SRCS    += evg.cpp
 evg_SRCS    += drvEvg.cpp
 evg_SRCS    += drvSequence.cpp
 

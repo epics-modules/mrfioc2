@@ -1,5 +1,5 @@
 /**************************************************************************************************
-|* $(MRF)/evgApp/src/drvSequence.cpp -- EPICS Device Support for EVG Sequences
+|* $(MRF)/evgApp/src/drvSequence.cpp -- EPICS Generic Driver Support for EVG Sequences
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
 |* Date:     23 November 2009
@@ -128,6 +128,12 @@ typedef std::map <epicsInt32, SequenceList*>  CardList;
 //
 static
 CardList   CardSequences;
+
+/**************************************************************************************************/
+/*  Sequence Base Class Destructor                                                                */
+/**************************************************************************************************/
+
+Sequence::~Sequence() {}
 
 //**************************************************************************************************
 //  EgAddSequence () -- Add A Sequence To The List Of Known Sequences For Each Card

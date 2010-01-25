@@ -1,3 +1,45 @@
+/**************************************************************************************************
+|* $(MRF)/evgApp/src/drvEvg.cpp -- EPICS Generic Driver Support for Event Generator Cards
+|*-------------------------------------------------------------------------------------------------
+|* Authors:  Eric Bjorklund (LANSCE)
+|* Date:     25 January 2010
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODIFICATION HISTORY:
+|* 25 Jan 2010  E.Bjorklund     Original
+|*
+|*-------------------------------------------------------------------------------------------------
+|* MODULE DESCRIPTION:
+|*    This module contains EPICS generic driver support for event generator cards. It contains
+|*    code that is not specific to any particular hardware implementation.  This includes:
+|*      o Event Generator card configuration routines.
+|*      o Routines for maintaining the global list of all event generator cards.
+|*      o "InitHooks" routines for performing phased initialization
+|*      o Driver entry table, driver initialization routine, and driver report routine
+|*      o Event Generator top-level interrupt service routine
+|*      o Other shell-callable driver support routines.
+|*
+\**************************************************************************************************/
+
+/**************************************************************************************************
+|*                                     COPYRIGHT NOTIFICATION
+|**************************************************************************************************
+|*
+|* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
+|* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
+|* AND IN ALL SOURCE LISTINGS OF THE CODE.
+|*
+|**************************************************************************************************
+|*
+|* This software is distributed under the EPICS Open License Agreement which
+|* can be found in the file, LICENSE, included with this distribution.
+|*
+\*************************************************************************************************/
+
+/**************************************************************************************************/
+/*  Imported Header Files                                                                         */
+/**************************************************************************************************/
+
 #define EVG_DRIVER_SUPPORT_MODULE
 
 #include <stdexcept>            // Standard C++ exception definitions
@@ -18,12 +60,28 @@
 
 #include <epicsExport.h>        // EPICS Symbol exporting macro definitions
 
+/**************************************************************************************************/
+/*  Type Definitions                                                                              */
+/**************************************************************************************************/
+
+//=====================
+// CardList:  Associates logical card numbers with EVG objects
+//
 typedef std::map <epicsInt32, EVG*> CardList;
 
-static bool       ConfigureLock = false;
-static bool       InitDone      = false;
+/**************************************************************************************************/
+/*  Variables Global To This Module                                                               */
+/**************************************************************************************************/
 
-static CardList   EvgCardList;
+static bool       ConfigureLock = false;        // Disables further calls to configuration rtns.
+static bool       InitDone      = false;        // Indicates IOC initialization is complete
+static CardList   EvgCardList;                  // List of EVG objects
+
+/**************************************************************************************************/
+/*  EVG Base Class Destructor                                                                     */
+/**************************************************************************************************/
+
+EVG::~EVG() {}
 
 /**************************************************************************************************/
 /*                            Event Generator Configuration Routines                              */
