@@ -17,6 +17,10 @@
 |* 29 Oct 2009  E.Bjorklund     Renamed mrfSetIrqLevel() to mrfSetIrq() and modified it to set
 |*                              both the IRQ vector and level (needed by modular register map).
 |*                              Also modified vmeUserCSRShow to display the IRQ vector.
+|* 26 Jan 2010  E.Bjorklund     Added a (hopefully) temporary kludge to mrfSetIrq for the latest
+|*                              EVG firmware patch.  After writing the IRQ level the EVG will not
+|*                              read the correct value back from that address until some other
+|*                              address has been read first.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
@@ -977,9 +981,14 @@ epicsStatus mrfSetIrq (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level)
 
    /*---------------------
     * If the write succeeded, try to read the level back to make sure it was really set.
+    * ~~~ Kludge: Added a superfluous read before the actual data readback in order to get
+    * ~~~ the correct data from the level.
     */
-    if (OK == status)
+    if (OK == status) {
+        vmeCSRMemProbe ((pUCSR + UCSR_IRQ_VECTOR), CSR_READ, 1, &tmp);
+        tmp = 999;
         status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_LEVEL), CSR_READ, 1, &tmp);
+    }/*end if write succeeded*/
 
    /*---------------------
     * If the read call failed, or if it read back a different value than we wrote,
