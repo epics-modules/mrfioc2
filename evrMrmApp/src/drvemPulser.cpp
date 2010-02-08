@@ -11,9 +11,6 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-#define READ32 NAT_READ32
-#define WRITE32 NAT_WRITE32
-
 MRMPulser::MRMPulser(epicsUInt32 i,EVRMRM& o)
   :id(i)
   ,owner(o)

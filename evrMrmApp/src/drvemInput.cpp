@@ -6,13 +6,6 @@
 
 #include "evrRegMap.h"
 
-#define READ8 NAT_READ8
-#define READ16 NAT_READ16
-#define READ32 NAT_READ32
-#define WRITE8 NAT_WRITE8
-#define WRITE16 NAT_WRITE16
-#define WRITE32 NAT_WRITE32
-
 #include <stdexcept>
 
 #define DBG evrmrmVerb

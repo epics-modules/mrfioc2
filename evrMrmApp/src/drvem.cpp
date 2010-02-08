@@ -18,11 +18,6 @@
 #include <dbScan.h>
 #include <epicsInterrupt.h>
 
-#define READ16 NAT_READ16
-#define READ32 NAT_READ32
-#define WRITE16 NAT_WRITE16
-#define WRITE32 NAT_WRITE32
-
 #define DBG evrmrmVerb
 
 static
