@@ -5,6 +5,8 @@ include $(TOP)/configure/CONFIG
 
 DB += mrmevrout.db
 
+DB += evr-pmc-230.db
+
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
