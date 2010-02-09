@@ -51,6 +51,7 @@
 /**************************************************************************************************/
 
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
+#include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
 #include  <dbCommon.h>          /* EPICS Common record field definitions                          */
 #include  <debugPrint.h>        /* SLAC Debug print utility                                       */
 
@@ -114,13 +115,38 @@
 /**************************************************************************************************/
 
 #ifdef __cplusplus
+
+/***************************************************************************************************
+ * mrfDisableRecord () -- Disable a Record From Ever Being Processed
+ **************************************************************************************************/
+ /**
+ * @par Description:
+ *   Renders an EPICS record incapable of ever being processed.
+ *
+ * @par Function:
+ * - Set the "Processing Active" (PACT) field to "true"
+ * - Set the "Disable putFields" (DISP) field to "true"
+ * - Set the "Disable Value" (DISV) equal to the "Disable Link Value" (DISA)
+ * - Set the record status field (STAT) to "DISABLE_ALARM"
+ * - Set the record severity field (SEVR) to "INVALID_ALARM"
+ *
+ * @param   pRec = (input) Pointer to the record to be disabled.
+ *
+ **************************************************************************************************/
+inline void mrfDisableRecord (dbCommon *pRec)
+{
+    pRec->pact = pRec->disp = 1;
+    pRec->disv = pRec->disa;
+    pRec->stat = DISABLE_ALARM;
+    pRec->sevr = pRec->diss = INVALID_ALARM;
+
+}
+
+#endif /* __cpluplus */
+
+#ifdef __cplusplus
 extern "C" {
 #endif
-
-/*---------------------
- * Disable an EPICS record
- */
-void mrfDisableRecord (dbCommon *pRec);
 
 /*---------------------
  * Define the prototype for an EPICS Interrupt Service Routine
