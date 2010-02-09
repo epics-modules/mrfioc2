@@ -12,6 +12,8 @@
 #include <longoutRecord.h>
 #include <stringinRecord.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "property.h"
@@ -66,7 +68,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
   ret=S_db_noMemory;
 }
-  plo->pact=TRUE;
+  mrfDisableRecord((dbCommon*)plo);
   return ret;
 }
 

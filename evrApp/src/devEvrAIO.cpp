@@ -10,6 +10,8 @@
 #include <aoRecord.h>
 #include <menuConvert.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "property.h"
@@ -58,7 +60,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  prec->pact=TRUE;
+  mrfDisableRecord(prec);
   return ret;
 }
 

@@ -9,6 +9,8 @@
 
 #include <mbboRecord.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/input.h"
@@ -68,7 +70,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  prec->pact=TRUE;
+  mrfDisableRecord(prec);
   return ret;
 }
 
@@ -89,6 +91,7 @@ try {
     priv->set((epicsUInt16)prec->rval);
 
     prec->rbv=priv->get();
+    break;
   default:
     throw std::range_error("Invalid Input trigger mode");
   }

@@ -9,6 +9,8 @@
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/input.h"
@@ -18,6 +20,7 @@
 
 static long init_record(dbCommon *prec, DBLINK* lnk)
 {
+  long ret=0;
 try {
   assert(lnk->type==VME_IO);
 
@@ -48,17 +51,19 @@ try {
   }else
     throw std::runtime_error("Invalid parm string in link");
 
-  prec->dpvt=static_cast<void*>(inp);
+  prec->dpvt=static_cast<void*>(prop);
 
   return 0;
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-  return S_dev_noDevice;
+  ret=S_dev_noDevice;
 } catch(std::exception& e) {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
+  ret=S_db_noMemory;
 }
+  mrfDisableRecord(prec);
+  return ret;
 }
 
 /********** LONGOUT **************/

@@ -9,6 +9,8 @@
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/output.h"
@@ -48,9 +50,11 @@ try {
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
+  mrfDisableRecord(prec);
   return S_dev_noDevice;
 } catch(std::exception& e) {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  mrfDisableRecord(prec);
   return S_db_noMemory;
 }
 }
