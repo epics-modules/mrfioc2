@@ -57,7 +57,7 @@
 //!                          event's "Timestamp" record is relative to the timestamp of another
 //!                          event rather than the start of the sequence.  The "Time Base" records
 //!                          implement a directed acylic graph which is traversed whenever a
-//!                          DAG sequence is loaded (or updated).  DAG sequences are useful for
+//!                          DAG sequence is loaded or updated.  DAG sequences are useful for
 //!                          machines with timelines that contain sub-sequences.
 //!  - \b libWFSequence    - (not yet implemented) Implements the "Waveform" sequence. A Waveform
 //!                          sequence contains two waveform records -- an "Event Waveform" and
@@ -281,6 +281,106 @@ EgGetSequence (epicsInt32 CardNum, epicsInt32 SeqNum)
     return NULL;
 
 }//end EgGetSequence()
+
+//**************************************************************************************************
+//  EgFinalizeSequences () -- Finalize the Sequences Assigned to an Event Generator Card
+//**************************************************************************************************
+//! @par Description:
+//!   This routine is called during the "After Interrupt Accept" phase of the iocInit() process.
+//!   It performs the "finalization" process for all the sequences attached to a particular
+//!   event generator card.  The "finalization" process involves different steps, depending on the
+//!   type of sequence defined, but typically results in the construction of an event sequence
+//!   that can be loaded into the event generator's sequence RAMS.
+//!
+//! @par Function:
+//!   Invoke the Finalize() method for each sequence object connected to the specified
+//!   event generator card.
+//!
+//! @param   CardNum       = (input) Card number of the event generator
+//!
+//! @par External Data Referenced:
+//! - \e     CardSequences = (input) List of sequences for each EVG card.
+//!
+//**************************************************************************************************
+
+void
+EgFinalizeSequences (epicsInt32 CardNum)
+{
+    //=====================
+    // Local variables
+    //
+    SequenceList*   List;       // Reference to the sequence list for the specified EVG card
+    Sequence*       pSequence;  // Sequence object to be finalized.
+
+    //=====================
+    // Get the sequence list for this card.
+    // Quit if no sequences have been defined for this card.
+    //
+    CardList::iterator Card = CardSequences.find(CardNum);
+    if (Card == CardSequences.end())
+        return;
+        
+    //=====================
+    // Loop to finalize each defined sequence
+    //
+    List = Card->second;
+    for (SequenceList::iterator index = List->begin();  index != List->end();  index++) {
+        pSequence = index->second;
+        pSequence->Finalize();
+    }//end for each Sequence object in the list
+
+}//end EgFinalizeSequences()
+
+//**************************************************************************************************
+//  EgReportSequences () -- Display Each Sequence Assigned to an Event Generator Card
+//**************************************************************************************************
+//! @par Description:
+//!   This routine is called by the event generator driver report routine to report on the
+//!   sequences defined for the specified event generator card.
+//!
+//! @par Function:
+//!   Invoke the Report() method for each sequence object connected to the specified
+//!   event generator card.
+//!
+//! @param   CardNum       = (input) Card number of the event generator
+//! @param   Level         = (input) Report detail level<br>
+//!                                  Level  = 0: No Report<br>
+//!                                  Level >= 1: Display the sequence headers<br>
+//!                                  Level >= 2: Display the sequence events
+//!
+//! @par External Data Referenced:
+//! - \e     CardSequences = (input) List of sequences for each EVG card.
+//!
+//**************************************************************************************************
+
+void
+EgReportSequences (epicsInt32 CardNum, epicsInt32 Level)
+{
+    //=====================
+    // Local variables
+    //
+    SequenceList*   List;       // Reference to the sequence list for the specified EVG card
+    Sequence*       pSequence;  // Sequence object to be finalized.
+
+    //=====================
+    // Get the sequence list for this card.
+    // Quit if no sequences have been defined for this card.
+    //
+    CardList::iterator Card = CardSequences.find(CardNum);
+    if (Card == CardSequences.end())
+        return;
+        
+    //=====================
+    // Loop to report on each sequence defined for this card
+    //
+    List = Card->second;
+    for (SequenceList::iterator index = List->begin();  index != List->end();  index++) {
+        pSequence = index->second;
+        pSequence->Report(Level);
+    }//end for eac Sequence object in the list
+
+}//end EgReportSequences()
+
 
 //!
 //| @}

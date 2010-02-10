@@ -66,6 +66,16 @@ public:
     virtual const epicsUInt32  *GetTimestampArray () const = 0; // Return ptr to array of timestamps
 
     //=====================
+    // Sequence Finalizer
+    //
+    virtual void  Finalize () = 0;
+
+    //=====================
+    // Sequence Report
+    //
+    virtual void Report (epicsInt32 Level) const = 0;
+
+    //=====================
     // Class Destructor
     //
     virtual ~Sequence () = 0;

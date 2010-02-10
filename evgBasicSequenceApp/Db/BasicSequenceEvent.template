@@ -1,9 +1,79 @@
+#
+# Event Code Record
+#
+record(longout,"$(PV):EventCode") {
+    field(DESC,"$(Event): Event Code")
+    field(DTYP,"EVG Basic Seq Event")
+    field(OUT,"@Name=$(Event);Fn=Event Code;C=$(C);Seq=$(Seq)")
+    field(SCAN,"Passive")
+    field(PINI,"YES")
+    field(EGU,"")
+    field(DRVH,"255")
+    field(DRVL,"0")
+    field(HOPR,"255")
+    field(LOPR,"0")
+    field(VAL,"$(Code)")
+}
+
+#
+# Time Stamp Record
+#
 record(ao,"$(PV):TimeStamp") {
-    field(DESC,"$(Event) Time Stamp")
+    field(DESC,"$(Event): Time Stamp")
     field(DTYP,"EVG Basic Seq Event")
     field(OUT,"@Name=$(Event);Fn=Time;C=$(C);Seq=$(Seq)")
     field(SCAN,"Passive")
-    field(EGUF,"1.e-9")
-    field(EGU,"nSec")
+    field(PINI,"YES")
+    field(PREC,"3")
+    field(EGUF,"1.e-6")
+    field(EGUL,"0")
+    field(EGU,"uSec")
+    field(LINR,"NO CONVERSION")
+    field(VAL,"$(Time)")
+}
+
+#
+# Event Enable Record
+#
+record(bo,"$(PV):Enable") {
+    field(DESC,"$(Event): Enable")
+    field(DTYP,"EVG Basic Seq Event")
+    field(OUT,"@Name=$(Event);Fn=Enable;C=$(C);Seq=$(Seq)")
+    field(SCAN,"Passive")
+    field(PINI,"YES")
+    field(HIGH,"0.000000")
+    field(ZNAM,"Disable")
+    field(ONAM,"Enable")
+    field(ZSV,"NO_ALARM")
+    field(OSV,"NO_ALARM")
+    field(VAL,"$(Ena)")
+}
+
+#
+# Event Priority Record
+#
+record(longout,"$(PV):Priority") {
+    field(DESC,"$(Event) Event Priority")
+    field(DTYP,"EVG Basic Seq Event")
+    field(OUT,"@Name=$(Event);Fn=Priority;C=$(C);Seq=$(Seq)")
+    field(SCAN,"Passive")
+    field(PINI,"YES")
+    field(EGU,"")
+    field(VAL,"$(Priority)")
+}
+
+#
+# Timestamp Readback Record
+#
+record(ai,"$(PV):TSReadBack") {
+    field(DESC,"$(Event): TS Readback")
+    field(DTYP,"EVG Basic Seq Event")
+    field(INP,"@Name=$(Event);Fn=Time;C=$(C);Seq=$(Seq)")
+    field(SCAN,"1 second")
+    field(PINI,"NO")
+    field(PREC,"3")
+    field(EGUF,"1e-6")
+    field(EGUL,"0")
+    field(EGU,"uSec")
     field(LINR,"NO CONVERSION")
 }

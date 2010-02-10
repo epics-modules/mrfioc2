@@ -985,7 +985,7 @@ epicsStatus mrfSetIrq (epicsInt32 Slot, epicsInt32 Vector, epicsInt32 Level)
     * ~~~ the correct data from the level.
     */
     if (OK == status) {
-        vmeCSRMemProbe ((pUCSR + UCSR_IRQ_VECTOR), CSR_READ, 1, &tmp);
+        vmeCSRMemProbe ((pUCSR + UCSR_SERIAL_NUMBER), CSR_READ, 1, &tmp);
         tmp = 999;
         status = vmeCSRMemProbe ((pUCSR + UCSR_IRQ_LEVEL), CSR_READ, 1, &tmp);
     }/*end if write succeeded*/

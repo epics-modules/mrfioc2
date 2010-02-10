@@ -45,8 +45,10 @@
 #include <stdexcept>            // Standard C++ exception definitions
 #include <map>                  // Standard C++ map template
 
-#include <string.h>             // Standard C string processing routines
+#include <float.h>
 #include <errno.h>              // Standard C global error number definitions
+#include <math.h>               // Standard C math library
+#include <string.h>             // Standard C string processing routines
 
 #include <epicsStdlib.h>        // EPICS Standard C library support routines
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
@@ -56,6 +58,8 @@
 #include <registryFunction.h>   // EPICS Registry support library
 
 #include  <drvEvg.h>            // Event Generator driver infrastructure routines
+#include  <drvSequence.h>       // Event Generator sequence driver infrastructure routines
+
 #include  <evg/evg.h>           // Event Generator base class definitions
 
 #include <epicsExport.h>        // EPICS Symbol exporting macro definitions
@@ -431,9 +435,9 @@ void EgInitHooks (initHookState State)
     * After It Is Safe To Accept Interrupts                                                       *
     *---------------------------------------------------------------------------------------------*
     * At this point we know that the IOC initialization process is almost complete and the
-    * system is ready to start accepting interrupts.  We also know that all egevent records
-    * have been initially processed, either during the "Initialize Database" phase or
-    * the "Initial Process" phase (depending on the value of their PINI fields), and that 
+    * system is ready to start accepting interrupts.  We also know that all sequence and
+    * sequence event records have been initially processed, either during the "Initialize Database"
+    * phase or the "Initial Process" phase (depending on the value of their PINI fields), and that 
     * their definitions can now be loaded into the Event Generator's sequence RAMs.
     */
     case initHookAfterInterruptAccept:
@@ -446,11 +450,21 @@ void EgInitHooks (initHookState State)
         InitDone = true;
 
         //=====================
-        // Loop to perform a "reboot initialization" for every event generator card we know about.
+        // Loop to complete the initialization for every event generator card we know about.
         //
         for (CardList::iterator Card = EvgCardList.begin();  Card != EvgCardList.end();  Card++) {
             pEvg = Card->second;
+
+            //=====================
+            // Finalize the sequences associated with this EVG
+            //
+            EgFinalizeSequences (pEvg->GetCardNum());
+
+            //=====================
+            // Enable interrupts on this EVG
+            //
             pEvg->IntEnable();
+
         }//end for each configured event generator card
 
         break;
@@ -560,7 +574,18 @@ epicsStatus EgDrvReport (epicsInt32 level)
     //
     for (CardList::iterator Card = EvgCardList.begin();  Card != EvgCardList.end();  Card++) {
         pEvg = Card->second;
+
+        //=====================
+        // Hardware-specific report
+        //
         pEvg->Report(level);
+
+        //=====================
+        // Report any associated event sequences
+        //
+        if (level > 0)
+            EgReportSequences (pEvg->GetCardNum(), level);
+
         NumCards++;
     }//end for each configured Event Generator Card
 
@@ -744,7 +769,9 @@ epicsStatus EgReport (epicsInt32 CardNum, epicsInt32 level) {
     //=====================
     // If the requested card was configured, call its Report() routine
     //
-    return pEvg->Report(level);
+    pEvg->Report(level);
+    if (level > 0) EgReportSequences (pEvg->GetCardNum(), level);
+    return OK;
  
 }//end EgReport()
 }//end extern "C"

@@ -80,15 +80,41 @@ public:
         return (EventName);
     }//end GetName()
 
+    inline const epicsFloat64 GetEventTime() const {
+        return (ActualTime);
+    }//end GetEventTime()
+
     //=====================
     // Setter Functions
     //
-    void SetEventTime (epicsFloat64 Ticks);
+    epicsStatus  SetEventCode     (epicsInt32 Code);
+    epicsStatus  SetEventEnable   (bool Value);
+    epicsStatus  SetEventPriority (epicsInt32 Level);
+    epicsStatus  SetEventTime     (epicsFloat64 Ticks);
 
     //=====================
-    // Register the timestamp record
+    // Record Registration Functions
     //
-    void RegisterTimeRecord (dbCommon *pRec);
+    void RegisterCodeRecord       (dbCommon *pRec);
+    void RegisterEnableRecord     (dbCommon *pRec);
+    void RegisterPriorityRecord   (dbCommon *pRec);
+    void RegisterTimeRecord       (dbCommon *pRec);
+
+    //=====================
+    // Sanity Check Function
+    //
+    epicsStatus  SanityCheck ();
+
+    //=====================
+    // Report Function
+    //
+    void Report() const;
+
+    //=====================
+    // Comparison Operators
+    //
+    bool operator < (const BasicSequenceEvent& Event) const;
+
 
 /**************************************************************************************************/
 /*  Private Data                                                                                  */

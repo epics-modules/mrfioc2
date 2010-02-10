@@ -1,1 +1,4 @@
-device(ao, INST_IO, devAoBasicSeqEvent, "EVG Basic Seq Event")
+device(ai,      INST_IO, devAiBasicSeqEvent, "EVG Basic Seq Event")
+device(ao,      INST_IO, devAoBasicSeqEvent, "EVG Basic Seq Event")
+device(bo,      INST_IO, devBoBasicSeqEvent, "EVG Basic Seq Event")
+device(longout, INST_IO, devLoBasicSeqEvent, "EVG Basic Seq Event")

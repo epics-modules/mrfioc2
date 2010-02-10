@@ -52,6 +52,8 @@
 
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
 #include  <dbCommon.h>          /* EPICS Common record field definitions                          */
+#include  <menuYesNo.h>         /* EPICS Yes/No record-support menu                               */
+
 #include  <debugPrint.h>        /* SLAC Debug print utility                                       */
 
 
@@ -158,5 +160,12 @@ typedef void (*EPICS_ISR_FUNC) (void *);
 #ifndef NO_CONVERT
 #define NO_CONVERT (2)
 #endif
+
+/**************************************************************************************************/
+/*  Special Macros to Make the EPICS "menuYesNo" symbols easier to read                           */
+/**************************************************************************************************/
+
+#define menuNO    menuYesNoNO
+#define menuYES   menuYesNoYES
 
 #endif

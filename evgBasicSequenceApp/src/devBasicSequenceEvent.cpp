@@ -48,16 +48,16 @@
 //!   up to three more optional records.  The records are distinguished by function codes specified
 //!   in their I/O link fields (see below).  Basic Sequence Event records, may have the following
 //!   function codes:
-//!   - \b Code     (longout, required) Which event code to transmit.
-//!   - \b Time     (ao, required) Specifies when in the sequence the event
-//!                 should be transmitted.
-//!   - \b Time     (ai, optional) Displays the actual timestamp assigned to the event.
-//!                 This could differ from the requested timestamp because of event clock
-//!                 quantization or because another event was assigned to that time.
-//!   - \b Enable   (bo, optional) Enables or disables event transmission.
-//!   - \b Priority (longout, optional) When two sequence events end up with the same
-//!                 timestamp, the relative priorities will determine which one gets
-//!                 "jostled".
+//!   - \b Event Code  (longout, required) Which event code to transmit.
+//!   - \b Time        (ao, required) Specifies when in the sequence the event
+//!                    should be transmitted.
+//!   - \b Time        (ai, optional) Displays the actual timestamp assigned to the event.
+//!                    This could differ from the requested timestamp because of event clock
+//!                    quantization or because another event was assigned to that time.
+//!   - \b Enable      (bo, optional) Enables or disables event transmission.
+//!   - \b Priority    (longout, optional) When two sequence events end up with the same
+//!                    timestamp, the relative priorities will determine which one gets
+//!                    "jostled".
 //!   @par
 //!   Every event in a sequence must have a unique name associated with it -- even if the
 //!   event code is duplicated.  The unique name is defined in the I/O link (see below) and
@@ -102,12 +102,10 @@
 #include  <aoRecord.h>          // EPICS Analog output record definition
 #include  <boRecord.h>          // EPICS Binary output record definition
 #include  <longoutRecord.h>     // EPICS Long output record definition
-
 #include  <menuConvert.h>       // EPICS conversion field menu items
 
 #include  <mrfCommon.h>         // MRF Common definitions
 #include  <mrfIoLink.h>         // MRF I/O link field parser
-
 #include  <BasicSequence.h>     // MRF Basic Sequence class
 #include  <BasicSequenceEvent.h>// MRF Basic Sequence Event class
 #include  <drvSequence.h>       // MRF Generic Sequence driver support declarations
@@ -117,11 +115,11 @@
 #include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
-/*  Structure Definitions                                                                         */
+/*  Structure And Type Definitions                                                                */
 /**************************************************************************************************/
 
 //=====================
-// Common I/O link parameter definitions used by all SequenceEvent records
+// Common I/O link parameter definitions used by all BasicSequenceEvent records
 //
 static const
 mrfParmNameList SeqEventParmNames = {
@@ -136,12 +134,18 @@ epicsInt32  SeqEventNumParms mrfParmNameListSize(SeqEventParmNames);
 
 
 //=====================
+// Generic BasicSequenceEvent setter function type definition
+//
+typedef  epicsStatus (BasicSequenceEvent::*SetFunction) (epicsInt32);
+
+
+//=====================
 // Common device information structure used by all BasicSequenceEvent records
 //
 struct devInfoStruct {
     BasicSequence*       pSequence;  // Pointer to the BasicSequence object
     BasicSequenceEvent*  pEvent;     // Pointer to the BasicSequenceEvent object
-    epicsInt32           Function;   // Function code
+    SetFunction          Set;        // Setter Function
 };//end devInfoStruct
 
 
@@ -157,6 +161,32 @@ struct AnalogDSET {
     DEVSUPFUN   perform_io;      // Read or Write routine
     DEVSUPFUN   special_linconv; // Special linear-conversion routine
 };//end AnalogDSET
+
+
+//=====================
+// Device Support Entry Table (DSET) for binary output records
+//
+struct BinaryDSET {
+    long	number;	         // Number of support routines
+    DEVSUPFUN	report;		 // Report routine
+    DEVSUPFUN	init;	         // Device suppport initialization routine
+    DEVSUPFUN	init_record;     // Record initialization routine
+    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
+    DEVSUPFUN   perform_io;      // Read or Write routine
+};//end BinaryDSET
+
+
+//=====================
+// Device Support Entry Table (DSET) for long output records
+//
+struct LongOutDSET {
+    long	number;	         // Number of support routines
+    DEVSUPFUN	report;		 // Report routine
+    DEVSUPFUN	init;	         // Device suppport initialization routine
+    DEVSUPFUN	init_record;     // Record initialization routine
+    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
+    DEVSUPFUN   write;           // Write routine
+};//end AnalogDSET
 
 /**************************************************************************************************/
 /*                                Common Utility Routines                                         */
@@ -167,18 +197,23 @@ struct AnalogDSET {
 |* parseLink () -- Parse An EPICS Database Link Structure
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|*    Parse the record's EPICS Database input (INP) or output (OUT) field and return the
-|*    sequence number this event is assigned to, the record function field, and the event name.
+|*    o Parse the record's EPICS Database input (INP) or output (OUT) field.
+|*      The following sanity checks are performed on the link field:
+|*       - Make sure the link type is INST_IO
+|*       - Make sure the parameter field is not empty
+|*       - Make sure the record function field is not empty
+|*       - Make sure the event name field is not empty.
 |*
-|*    The following sanity checks are performed on the link field:
-|*      - Make sure the link type is INST_IO
-|*      - Make sure the parameter field is not empty
-|*      - Make sure the record function field is not empty
-|*      - Make sure the event name field is not empty.
+|*    o Lookup the BasicSequenceEvent and BasicSequence objects that belong to this record.
+|*      If these objects do not already exist, they will be created.
+|*
+|*    o Create a device information structure and initialize it with pointers to the
+|*      BasicSequenceEvent object and the BasicSequenceEvent object associated with
+|*      this record.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
-|*    parseLink (dbLink, Card, Function, Name, SeqNum);
+|*    pDevInfo = parseLink (dbLink, Function);
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
@@ -186,10 +221,11 @@ struct AnalogDSET {
 |*
 |*-------------------------------------------------------------------------------------------------
 |* OUTPUT PARAMETERS:
-|*    Card     = (epicsInt32 &) The EVG logical card number
 |*    Function = (string &)     The record function string
-|*    Name     = (string &)     The sequence event name
-|*    SeqNum   = (epicsInt32 &) The ID number of the sequence this event belongs to
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    pDevInfo = (devInfoStruct *) Pointer to partially filled in device information structure
 |*
 |*-------------------------------------------------------------------------------------------------
 |* EXCEPTIONS:
@@ -198,17 +234,20 @@ struct AnalogDSET {
 \**************************************************************************************************/
 
 static
-void parseLink (
-    const DBLINK&  dbLink,      // Reference to the EPICS database I/O link field
-    epicsInt32&    Card,        // Reference to returned logical card number
-    std::string&   Function,    // Reference to returned function name string
-    std::string&   Name,        // Reference to the returned sequence event name string
-    epicsInt32&    SeqNum)      // Reference to the returned sequence ID number
+devInfoStruct* parseLink (
+    const DBLINK&        dbLink,             // Reference to the EPICS database I/O link field
+    std::string&         Function)           // Reference to returned function name string
 {
     //=====================
     // Local variables
     //
-    mrfIoLink*   ioLink = NULL; // I/O link parsing object
+    epicsInt32           Card;               // Logical EVG card number (from OUT link)
+    std::string          Name;               // Sequence event name (from OUT link)
+    epicsInt32           SeqNum;             // Sequence ID number for this event (from OUT link)
+    mrfIoLink*           ioLink = NULL;      // I/O link parsing object
+    devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
+    BasicSequenceEvent*  pEvent;             // Pointer to our BasicSequenceEvent object
+    BasicSequence*       pSequence;          // Pointer to the BasicSequence object for this event
 
     //=====================
     // Make sure the link type is correct
@@ -217,28 +256,247 @@ void parseLink (
         throw std::runtime_error("I/O link type is not INST_IO");
 
     //=====================
-    // Parse the link field
+    // Try to parse the link field
     //
     try {
+
+        //=====================
+        // Parse the link field
+        //
         ioLink   = new mrfIoLink (dbLink.value.instio.string, SeqEventParmNames, SeqEventNumParms);
         Name     = ioLink->getString  ("Name");
         Function = ioLink->getString  ("Fn"  );
-        SeqNum   = ioLink->getInteger ("Seq" );
         Card     = ioLink->getInteger ("C"   );
+        SeqNum   = ioLink->getInteger ("Seq" );
         delete ioLink;
+
+        //=====================
+        // Declare the sequence number and the event name
+        //
+        pSequence = EgDeclareBasicSequence (Card, SeqNum);
+        pEvent = pSequence->DeclareEvent (Name);
+
+        //=====================
+        // Create and initialize the device information structure
+        //
+        pDevInfo = new devInfoStruct;
+        pDevInfo->pSequence = pSequence;
+        pDevInfo->pEvent = pEvent;
+
+        //=====================
+        // Return the address of the device information structure
+        //
+        return pDevInfo;
+
     }//end try to parse the I/O link field
 
     //=====================
     // Catch any link parsing errors:
     //  - Delete the ioLink object
+    //  - Delete the device information structure
     //  - Rethrow the error
     //
     catch (std::exception& e) {
         delete ioLink;
+        if (NULL != pDevInfo) delete pDevInfo;
         throw std::runtime_error(e.what());
     }//end if there was an error parsing the link
     
 }//end parseLink()
+
+/**************************************************************************************************/
+/*                 Device Support for Basic Sequence Event Analog Input Records                   */
+/*                                                                                                */
+
+
+/**************************************************************************************************/
+/*  Analog Input Device Support Routines                                                          */
+/**************************************************************************************************/
+
+static epicsStatus aiInitRecord (aiRecord* pRec);
+static epicsStatus aiRead       (aiRecord* pRec);
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Analog Input Records                                    */
+/**************************************************************************************************/
+
+extern "C" {
+static
+AnalogDSET devAiBasicSeqEvent = {
+    6,                                  // Number of entries in the table
+    NULL,                               // -- No device report routine
+    NULL,                               // -- No device support initialization routine
+    (DEVSUPFUN)aiInitRecord,            // Record initialization routine
+    NULL,                               // -- No get I/O interrupt information routine
+    (DEVSUPFUN)aiRead,                  // Read routine
+    NULL                                // -- No special linear conversion routine
+};
+
+epicsExportAddress (dset, devAiBasicSeqEvent);
+
+};//end extern "C"
+
+/**************************************************************************************************
+|* aiInitRecord () -- Initialize an Analog Input Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called during IOC initialization to initialize a BasicSequenceEvent
+|*    analog input record.  It performs the following functions:
+|*      - Parse the OUT field.
+|*      - Initialize the LINR and ESLO fields.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Time  = Reads the actual time this event is scheduled to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aiInitRecord (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (aiRecord *)     Address of the ai record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    NO_CONVERT:  Successful initialization, do not perform
+|*                                           value conversion
+|*                              Other        Failure code
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus aiInitRecord (aiRecord *pRec)
+{
+    //=====================
+    // Local variables
+    //
+    std::string          Function;           // Record function name (from INP link)
+    devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
+    epicsStatus          status;             // Anticipated error status
+
+    //=====================
+    // Try to initialize the record
+    //
+    try {
+
+        //=====================
+        // Parse the INP link
+        //
+        status = S_dev_badInpType;
+        pDevInfo = parseLink (pRec->inp, Function);
+
+        //=====================
+        // Make sure the function code is correct
+        //
+        if ("Time" != Function)
+            throw std::runtime_error("Invalid record function (" + Function + ")");
+
+        //=====================
+        // Disable automatic value conversion by record support.
+        // We have to do our own conversion because the raw timestamp could
+        // exceed 32 bits.
+        //
+        pRec->linr = menuConvertNO_CONVERSION;
+
+        //=====================
+        // Compute the slope.
+        // If EGUF is 0, it means we want event clock ticks.
+        //
+        if (0.0 == pRec->eguf)
+            pRec->eslo = 1.0;
+        else
+            pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
+
+        //=====================
+        // Attach the device information structure to the record and return
+        // Do not attempt a raw value conversion
+        //
+        pRec->dpvt = (void *)pDevInfo;
+        return NO_CONVERT;
+
+    }//end try
+
+    //=====================
+    // If record initialization failed, report the error,
+    // disable the record, and return the error status code
+    //
+    catch (std::exception& e) {
+        recGblRecordError (status, pRec, (std::string("\nReason: ") + e.what()).c_str());
+        mrfDisableRecord ((dbCommon *)pRec);
+        if (NULL != pDevInfo) delete pDevInfo;
+        return (status);
+    }//end if record initialization failed
+
+}//end aiInitRecord()
+
+/**************************************************************************************************
+|* aiRead () -- Read the Timestamp from the BasicSequenceEvent Object.
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called from the aiRecord's "process()" routine.
+|*
+|*    It reads the assigned timestamp for this event (in ticks) from the BasicSequenceEvent object,
+|*    converts the timestamp into engineering units, and stores it in the record's VAL field.
+|*
+|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
+|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
+|*    use the ai record's built in linear, slope, or breakpoint table conversion features.
+|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
+|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
+|*    case EGUF was changed).
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Time  = Reads the actual time this event is scheduled to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aiRead (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (aiRecord *)     Address of the ai record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    Always returns NO_CONVERT.
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus aiRead (aiRecord* pRec) {
+
+    //=====================
+    // Extract the BasicSequence and BasicSequenceEvent objects from the dpvt structure
+    //
+    devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+    BasicSequence*       pSequence = pDevInfo->pSequence;
+    BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
+
+    //=====================
+    // Re-compute the slope (in case EGUF has changed)
+    // If EGUF is 0, it means we want event clock ticks.
+    //
+    if (0.0 == pRec->eguf)
+        pRec->eslo = 1.0;
+    else
+        pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
+
+    //=====================
+    // Get the actual time value (in ticks) from the BasicSequenceEvent object and
+    // convert to the units of the ai record.
+    //
+    pRec->val = pEvent->GetEventTime() * pRec->eslo;
+    pRec->udf = 0;
+
+    //=====================
+    // Don't use the ai record's conversion
+    //
+    return NO_CONVERT;
+
+}//end aiRead()
 
 /**************************************************************************************************/
 /*                 Device Support for Basic Sequence Event Analog Output Records                  */
@@ -246,7 +504,7 @@ void parseLink (
 
 
 /**************************************************************************************************/
-/*  Analog Output Devise Support Routines                                                         */
+/*  Analog Output Device Support Routines                                                         */
 /**************************************************************************************************/
 
 static epicsStatus aoInitRecord (aoRecord* pRec);
@@ -277,20 +535,15 @@ epicsExportAddress (dset, devAoBasicSeqEvent);
 |* aoInitRecord () -- Initialize an Analog Output Record
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|*    This routine is called during IOC initialization to initialize a BasicSequence Event
+|*    This routine is called during IOC initialization to initialize a BasicSequenceEvent
 |*    analog output record.  It performs the following functions:
-|*      - Extract the card number, sequence number, record function, and event name from
-|*        the OUT field.
-|*      - Declare the sequence number and the event name.
+|*      - Parse the OUT field.
 |*      - Register the record as this event's timestamp record.
-|*      - Create and initialize the device information structure.
 |*      - Initialize the LINR and ESLO fields.
-|*      - Call the aoWrite routine to convert the initial value to ticks and
-|*        write it to the BasicSequenceEvent object.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTIONS:
-|*    EVENT_TIME  = Sets the requested time for this event to occur.
+|*    Time  = Sets the requested time for this event to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
@@ -314,13 +567,8 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     //=====================
     // Local variables
     //
-    epicsInt32           Card;               // Logical EVG card number (from OUT link)
     std::string          Function;           // Record function name (from OUT link)
-    std::string          Name;               // Sequence event name (from OUT link)
     devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
-    BasicSequence*       pSequence;          // Pointer to the BasicSequence object for this event
-    BasicSequenceEvent*  pEvent;             // Pointer to our BasicSequenceEvent object
-    epicsInt32           SeqNum;             // Sequence ID number for this event (from OUT link)
     epicsStatus          status;             // Anticipated error status
 
     //=====================
@@ -329,10 +577,10 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     try {
 
         //=====================
-        // Parse the OUT link and extract the record function, event name, and sequence number.
+        // Parse the OUT link
         //
         status = S_dev_badOutType;
-        parseLink (pRec->out, Card, Function, Name, SeqNum);
+        pDevInfo = parseLink (pRec->out, Function);
 
         //=====================
         // Make sure the function code is correct
@@ -341,30 +589,10 @@ epicsStatus aoInitRecord (aoRecord *pRec)
             throw std::runtime_error("Invalid record function (" + Function + ")");
 
         //=====================
-        // Declare the sequence number and the event name
-        //
-        pSequence = EgDeclareBasicSequence (Card, SeqNum);
-        pEvent = pSequence->DeclareEvent (Name);
-
-        //=====================
         // Register the timestamp record
         //
         status = S_dev_Conflict;
-        pEvent->RegisterTimeRecord ((dbCommon *)pRec);
-
-        //=====================
-        // Create the device information structure
-        //
-        status = S_db_noMemory;
-        if (NULL == (pDevInfo = (devInfoStruct *)malloc(sizeof(devInfoStruct))))
-            throw std::runtime_error("Unable to create device information structure");
-
-        //=====================
-        // Fill in the device information structure and attach it to the record.
-        //
-        pDevInfo->pSequence = pSequence;
-        pDevInfo->pEvent = pEvent;
-        pRec->dpvt = (void *)pDevInfo;
+        pDevInfo->pEvent->RegisterTimeRecord ((dbCommon *)pRec);
 
         //=====================
         // Disable automatic value conversion by record support.
@@ -374,9 +602,19 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         pRec->linr = menuConvertNO_CONVERSION;
 
         //=====================
-        // Set the initial value 
+        // Compute the slope.
+        // If EGUF is 0, it means we want event clock ticks.
         //
-        aoWrite (pRec);
+        if (0.0 == pRec->eguf)
+            pRec->eslo = 1.0;
+        else
+            pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
+
+        //=====================
+        // Attach the device information structure to the record and return
+        // Do not attempt a raw value conversion
+        //
+        pRec->dpvt = (void *)pDevInfo;
         return NO_CONVERT;
 
     }//end try
@@ -388,6 +626,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
     catch (std::exception& e) {
         recGblRecordError (status, pRec, (std::string("\nReason: ") + e.what()).c_str());
         mrfDisableRecord ((dbCommon *)pRec);
+        if (NULL != pDevInfo) delete pDevInfo;
         return (status);
     }//end if record initialization failed
 
@@ -411,7 +650,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTIONS:
-|*    EVENT_TIME  = Sets the requested time for this event to occur.
+|*    Time  = Sets the requested time for this event to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
@@ -431,7 +670,7 @@ static
 epicsStatus aoWrite (aoRecord* pRec) {
 
     //=====================
-    // Extract the Sequence and SequenceEvent objects from the dpvt structure
+    // Extract the BasicSequence and BasicSequenceEvent objects from the dpvt structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     BasicSequence*       pSequence = pDevInfo->pSequence;
@@ -456,6 +695,372 @@ epicsStatus aoWrite (aoRecord* pRec) {
     return OK;
 
 }//end aoWrite()
+
+/**************************************************************************************************/
+/*                 Device Support for Basic Sequence Event Binary Output Records                  */
+/*                                                                                                */
+
+
+/**************************************************************************************************/
+/*  Binary Output Device Support Routines                                                         */
+/**************************************************************************************************/
+
+static epicsStatus boInitRecord (boRecord* pRec);
+static epicsStatus boWrite      (boRecord* pRec);
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Binary Output Records                                   */
+/**************************************************************************************************/
+
+extern "C" {
+static
+BinaryDSET devBoBasicSeqEvent = {
+    5,                                  // Number of entries in the table
+    NULL,                               // -- No device report routine
+    NULL,                               // -- No device support initialization routine
+    (DEVSUPFUN)boInitRecord,            // Record initialization routine
+    NULL,                               // -- No get I/O interrupt information routine
+    (DEVSUPFUN)boWrite                  // Write routine
+};
+
+epicsExportAddress (dset, devBoBasicSeqEvent);
+
+};//end extern "C"
+
+/**************************************************************************************************
+|* boInitRecord () -- Initialize a Binary Output Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called during IOC initialization to initialize a BasicSequenceEvent
+|*    binary output record.  It performs the following functions:
+|*      - Parse the OUT field.
+|*      - Register the record as this event's enable record.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Enable  = Enables or disables this event.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = boInitRecord (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (boRecord *)     Address of the bo record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    OK:     Successful initialization.
+|*                              Other:  Failure code
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus boInitRecord (boRecord *pRec)
+{
+    //=====================
+    // Local variables
+    //
+    std::string          Function;           // Record function name (from OUT link)
+    devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
+    epicsStatus          status;             // Anticipated error status
+
+    //=====================
+    // Try to initialize the record
+    //
+    try {
+
+        //=====================
+        // Parse the OUT link
+        //
+        status = S_dev_badOutType;
+        pDevInfo = parseLink (pRec->out, Function);
+
+        //=====================
+        // Make sure the function code is correct
+        //
+        if ("Enable" != Function)
+            throw std::runtime_error("Invalid record function (" + Function + ")");
+
+        //=====================
+        // Register the enable record
+        //
+        status = S_dev_Conflict;
+        pDevInfo->pEvent->RegisterEnableRecord ((dbCommon *)pRec);
+
+        //=====================
+        // Attach the device information structure to the record.
+        //
+        pRec->dpvt = (void *)pDevInfo;
+
+        //=====================
+        // Set RVAL and return success
+        //
+        pRec->rval = (epicsUInt32)pRec->val;
+        return OK;
+
+    }//end try
+
+    //=====================
+    // If record initialization failed, report the error,
+    // disable the record, and return the error status code
+    //
+    catch (std::exception& e) {
+        recGblRecordError (status, pRec, (std::string("\nReason: ") + e.what()).c_str());
+        mrfDisableRecord ((dbCommon *)pRec);
+        if (NULL != pDevInfo) delete pDevInfo;
+        return (status);
+    }//end if record initialization failed
+
+}//end boInitRecord()
+
+/**************************************************************************************************
+|* boWrite () -- Write the Enable/Disable State to the BasicSequenceEvent Object.
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called from the boRecord's "process()" routine.
+|*
+|*    It converts the timestamp in the VAL field from engineering units to event clock ticks
+|*    and writes it to the BasicSequenceEvent object.
+|*
+|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
+|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
+|*    use the bo record's built in linear, slope, or breakpoint table conversion features.
+|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
+|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
+|*    case EGUF was changed).
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Enable  = Enables or disables this event.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = boWrite (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (boRecord *)     Address of the bo record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    Always returns OK
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus boWrite (boRecord* pRec) {
+
+    //=====================
+    // Extract the BasicSequenceEvent object from the dpvt structure
+    //
+    devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+    BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
+
+    //=====================
+    // Convert the VAL field to a boolean and
+    //write it to the BasicSequenceEvent object.
+    //
+    pEvent->SetEventEnable (0 != pRec->val);
+
+    return OK;
+
+}//end boWrite()
+
+/**************************************************************************************************/
+/*                  Device Support for Basic Sequence Event Long Output Records                   */
+/*                                                                                                */
+
+
+/**************************************************************************************************/
+/*  Long Output Device Support Routines                                                           */
+/**************************************************************************************************/
+
+static epicsStatus loInitRecord (longoutRecord* pRec);
+static epicsStatus loWrite      (longoutRecord* pRec);
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Long Output Records                                     */
+/**************************************************************************************************/
+
+extern "C" {
+static
+LongOutDSET devLoBasicSeqEvent = {
+    5,                                  // Number of entries in the table
+    NULL,                               // -- No device report routine
+    NULL,                               // -- No device support initialization routine
+    (DEVSUPFUN)loInitRecord,            // Record initialization routine
+    NULL,                               // -- No get I/O interrupt information routine
+    (DEVSUPFUN)loWrite,                 // Write routine
+};
+
+epicsExportAddress (dset, devLoBasicSeqEvent);
+
+};//end extern "C"
+
+/**************************************************************************************************
+|* loInitRecord () -- Initialize an Long Output Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called during IOC initialization to initialize a BasicSequenceEvent
+|*    longout record.  Longout records are used to set the event code and the event priority.
+|*    This routine performs the following functions:
+|*      - Parse the OUT field.
+|*      - Register the record as the event code or the priority record for this event.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Event Code  = Sets the event code for this event.
+|*    Priority    = Sets the jostle priority for this event
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = loInitRecord (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (loRecord *)     Address of the lo record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    NO_CONVERT:  Successful initialization, do not perform
+|*                                           value conversion
+|*                              Other        Failure code
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus loInitRecord (longoutRecord *pRec)
+{
+    //=====================
+    // Local variables
+    //
+    std::string          Function;           // Record function name (from OUT link)
+    devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
+    epicsStatus          status;             // Anticipated error status
+
+    //=====================
+    // Try to initialize the record
+    //
+    try {
+
+        //=====================
+        // Parse the OUT link
+        //
+        status = S_dev_badOutType;
+        pDevInfo = parseLink (pRec->out, Function);
+
+        //=====================
+        // Initialize an Event Code record
+        //
+        if ("Event Code" == Function) {
+            status = S_dev_Conflict;
+            pDevInfo->Set = &BasicSequenceEvent::SetEventCode;
+            pDevInfo->pEvent->RegisterCodeRecord ((dbCommon *)pRec);
+        }//end if this is an event code record
+
+        //=====================
+        // Initialize an Event Priority record
+        //
+        else if ("Priority" == Function) {
+            status = S_dev_Conflict;
+            pDevInfo->Set = &BasicSequenceEvent::SetEventPriority;
+            pDevInfo->pEvent->RegisterPriorityRecord ((dbCommon *)pRec);
+        }//end if this is an event code record
+
+        //=====================
+        // Throw an error if we did not recognize the function code.
+        //
+        else
+            throw std::runtime_error("Invalid record function (" + Function + ")");
+
+        //=====================
+        // Record is successfully initialized.
+        //
+        pRec->dpvt = (void *)pDevInfo;
+        return OK;
+
+    }//end try
+
+    //=====================
+    // If record initialization failed, report the error,
+    // disable the record, and return the error status code
+    //
+    catch (std::exception& e) {
+        recGblRecordError (status, pRec, (std::string("\nReason: ") + e.what()).c_str());
+        mrfDisableRecord ((dbCommon *)pRec);
+        if (NULL != pDevInfo) delete pDevInfo;
+        return (status);
+    }//end if record initialization failed
+
+}//end loInitRecord()
+
+/**************************************************************************************************
+|* loWrite () -- Write the Timestamp to the BasicSequenceEvent Object.
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called from the longoutRecord's "process()" routine.
+|*
+|*    It invokes the appropriate BasicSequenceEvent "setter" routine (as determined from the
+|*    information in the device private structure).  If the setter routine returns an error,
+|*    the record is placed in "WRITE_ALARM" state.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTIONS:
+|*    Event Code  = Sets the event code for this event.
+|*    Priority    = Sets the jostle priority for this event
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = loWrite (pRec);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec   = (longoutRecord *)     Address of the longout record structure
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status = (epicsStatus)    Always returns OK
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus loWrite (longoutRecord* pRec) {
+
+    //=====================
+    // Local variables
+    //
+    devInfoStruct*       pDevInfo;      // Device private information structure
+    BasicSequenceEvent*  pEvent;        // BasicSequenceEvent object
+    epicsStatus          status;        // Local status variable
+
+    //=====================
+    // Extract the SequenceEvent object from the dpvt structure
+    //
+    pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+    pEvent    = pDevInfo->pEvent;
+
+    //=====================
+    // Invoke the appropriate BasicSequenceEvent setter routine
+    //
+    status = (pEvent->*(pDevInfo->Set)) (pRec->val);
+
+    //=====================
+    // If the write failed, put the record in WRITE_ALARM state
+    //
+    if (OK != status) {
+        recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+    }//end if write failed
+
+    //=====================
+    // Return the status code
+    //
+    return status;
+
+}//end loWrite()
+
 
 //!
 //! @}

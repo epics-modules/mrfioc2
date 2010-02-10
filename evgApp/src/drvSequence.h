@@ -56,8 +56,9 @@
 /*  Function Prototypes                                                                           */
 /**************************************************************************************************/
 
-void       EgAddSequence (Sequence* pSeq);
-Sequence  *EgGetSequence (epicsInt32 CardNum, epicsInt32 SeqNum);
-
+void       EgAddSequence       (Sequence* pSeq);
+Sequence  *EgGetSequence       (epicsInt32 CardNum, epicsInt32 SeqNum);
+void       EgFinalizeSequences (epicsInt32 CardNum);
+void       EgReportSequences   (epicsInt32 CardNum, epicsInt32 Level);
 
 #endif // EVG_DRV_SEQUENCE_INC

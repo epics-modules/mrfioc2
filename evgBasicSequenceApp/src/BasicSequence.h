@@ -122,6 +122,15 @@ public:
         return (TimestampArray);
     }//end GetTimestampArray()
 
+    //=====================
+    // Finalize the sequence
+    //
+    void Finalize ();
+
+    //=====================
+    // Sequence Report Function
+    //
+    void Report (epicsInt32 Level) const;
 
 /**************************************************************************************************/
 /*  Public Methods (Specific To The BasicSequence Class)                                          */

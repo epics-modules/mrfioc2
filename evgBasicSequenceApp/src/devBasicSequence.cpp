@@ -39,10 +39,10 @@
 //!
 //==================================================================================================
 //! @file       devBasicSequence.cpp
-//! @brief      EPICS Device Suppport for Basic Sequence Events.
+//! @brief      EPICS Device Suppport for Basic Sequences
 //!
 //! @par Description:
-//!   This file contains EPICS device support for event generator sequence events.
+//!   This file contains EPICS device support for event generator basic sequences.
 //!   A sequence event can be represented in the EPICS data base by two required records and
 //!   up to three more optional records. The records are distinguished by function codes specified
 //!   in their I/O link fields (see below).  Basic Sequence records, may have the following
