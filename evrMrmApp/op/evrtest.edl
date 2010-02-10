@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1009
-y 165
-w 465
-h 476
+x 672
+y 25
+w 399
+h 381
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -415,8 +415,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 23
-y 277
+x 20
+y 276
 w 81
 h 22
 fgColor index 14
@@ -435,17 +435,18 @@ displayFileName {
   4 "evrouttest.edl"
 }
 menuLabel {
-  0 "Output Mappings"
-  1 "IRQ"
+  0 "IRQ"
+  1 "FP0"
   2 "FP1"
   3 "FP2"
   4 "FP3"
 }
 symbols {
-  1 "O=irqmap:"
-  2 "O=fp1:"
-  3 "O=fp2:"
-  4 "O=fp3:"
+  0 "O=irqmap:"
+  1 "O=fpout0:"
+  2 "O=fpout1:"
+  3 "O=fpout2:"
+  4 "O=fpout3:"
 }
 endObjectProperties
 
@@ -479,11 +480,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 128
-y 275
+x 210
+y 290
 w 86
 h 22
-controlPv "$(P)scale1"
+controlPv "$(P)scale0"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 fgAlarm
@@ -506,11 +507,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 126
-y 309
-w 96
+x 303
+y 290
+w 57
 h 22
-controlPv "$(P)scale1.RVAL"
+controlPv "$(P)scale0.RVAL"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 fgAlarm
@@ -523,58 +524,6 @@ useHexPrefix
 useAlarmBorder
 newPos
 objType "monitors"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 229
-y 275
-w 68
-h 22
-controlPv "$(P)scale1:raw:set"
-format "decimal"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-useDisplayBg
-editable
-autoHeight
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-clipToDspLimits
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 109
-y 133
-w 354
-h 25
-fgColor index 14
-fgAlarm
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)ts:source"
-indicatorPv "$(P)ts:source:rbv"
-font "helvetica-medium-r-18.0"
-orientation "horizontal"
 endObjectProperties
 
 # (Static Text)
@@ -638,5 +587,334 @@ fgAlarm
 bgColor index 1
 fill
 font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 12
+y 310
+w 96
+h 22
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Pulse Gen."
+numPvs 4
+numDsps 9
+displayFileName {
+  0 "evrpulsertest.edl"
+  1 "evrpulsertest.edl"
+  2 "evrpulsertest.edl"
+  3 "evrpulsertest.edl"
+  4 "evrpulsertest.edl"
+  5 "evrpulsertest.edl"
+  6 "evrpulsertest.edl"
+  7 "evrpulsertest.edl"
+  8 "evrpulsertest.edl"
+}
+menuLabel {
+  0 "Pulser 0"
+  1 "Pulser 1"
+  2 "Pulser 2"
+  3 "Pulser 3"
+  4 "Pulser 4"
+  5 "Pulser 5"
+  6 "Pulser 6"
+  7 "Pulser 7"
+  8 "Pulser 8"
+}
+symbols {
+  0 "N=pul0:"
+  1 "N=pul1:"
+  2 "N=pul2:"
+  3 "N=pul3:"
+  4 "N=pul4:"
+  5 "N=pul5:"
+  6 "N=pul6:"
+  7 "N=pul7:"
+  8 "N=pul8:"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 110
+y 131
+w 156
+h 27
+fgColor index 14
+bgColor index 0
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(P)ts:source"
+indicatorPv "$(P)ts:source:rbv"
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 117
+y 290
+w 72
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Divider 0"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 117
+y 261
+w 102
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Output Freq."
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 117
+y 316
+w 72
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Divider 1"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 211
+y 316
+w 86
+h 22
+controlPv "$(P)scale1"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 304
+y 316
+w 57
+h 22
+controlPv "$(P)scale1.RVAL"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+useAlarmBorder
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 117
+y 342
+w 72
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Divider 2"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 211
+y 342
+w 86
+h 22
+controlPv "$(P)scale2"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 304
+y 342
+w 57
+h 22
+controlPv "$(P)scale2.RVAL"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+useAlarmBorder
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 21
+y 341
+w 76
+h 26
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Inputs"
+numPvs 4
+numDsps 2
+displayFileName {
+  0 "evrintest.edl"
+  1 "evrintest.edl"
+}
+menuLabel {
+  0 "Input 0"
+  1 "Input 1"
+}
+symbols {
+  0 "I=in0:"
+  1 "I=in1:"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 244
+y 261
+w 28
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Set"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 323
+y 261
+w 40
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "RBV"
+}
+autoSize
 endObjectProperties
 

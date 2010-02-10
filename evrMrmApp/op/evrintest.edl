@@ -3,15 +3,15 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 672
-y 353
-w 505
-h 279
+x 714
+y 86
+w 394
+h 270
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
 fgColor index 14
-bgColor index 3
+bgColor index 0
 textColor index 14
 ctlFgColor1 index 14
 ctlFgColor2 index 0
@@ -27,8 +27,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 28
-y 16
+x 26
+y 10
 w 40
 h 22
 font "helvetica-medium-r-18.0"
@@ -41,184 +41,250 @@ value {
 autoSize
 endObjectProperties
 
-# (Choice Button)
-object activeChoiceButtonClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
-x 141
-y 55
-w 112
-h 161
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:dbus:set"
-indicatorPv "$(P)$(O)src:dbus"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 11
-y 55
-w 112
-h 192
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:pulse:set"
-indicatorPv "$(P)$(O)src:pulse"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 12
-y 256
-w 114
-h 22
-controlPv "$(P)$(O)src:pulse"
-format "string"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 140
-y 224
-w 114
-h 22
-controlPv "$(P)$(O)src:dbus"
-format "string"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 266
-y 56
-w 112
-h 113
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:scale:set"
-indicatorPv "$(P)$(O)src:scale"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 392
+x 8
 y 54
-w 97
-h 81
+w 110
+h 22
+font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
-selectColor index 0
+useDisplayBg
+value {
+  "Level Trigger:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 8
+y 99
+w 110
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Edge Trigger:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 129
+y 151
+w 95
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Local Event"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 263
+y 155
+w 103
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Uplink Event"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 3
+y 183
+w 113
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Trigger Mode:"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 131
+y 187
+w 104
+h 21
+fgColor index 14
+bgColor index 0
 inconsistentColor index 14
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P)$(O)src:force:set"
-indicatorPv "$(P)$(O)src:force"
+controlPv "$(P)$(I)ext:trig"
 font "helvetica-medium-r-18.0"
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Menu Button)
+object activeMenuButtonClass
 beginObjectProperties
 major 4
-minor 5
+minor 0
 release 0
-x 266
-y 185
-w 114
-h 22
-controlPv "$(P)$(O)src:scale"
-format "string"
-font "helvetica-medium-r-18.0"
+x 135
+y 52
+w 155
+h 26
 fgColor index 14
 bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(P)$(I)level"
+font "helvetica-medium-r-18.0"
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Menu Button)
+object activeMenuButtonClass
 beginObjectProperties
 major 4
-minor 5
+minor 0
 release 0
-x 391
-y 145
+x 135
+y 96
+w 155
+h 26
+fgColor index 14
+bgColor index 0
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(P)$(I)edge"
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 267
+y 187
 w 104
+h 21
+fgColor index 14
+bgColor index 0
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(P)$(I)back:trig"
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 24
+y 225
+w 62
 h 22
-controlPv "$(P)$(O)src:force"
-format "string"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
+value {
+  "Event #"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 134
+y 228
+w 69
+h 22
+controlPv "$(P)$(I)ext:code"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+editable
 autoHeight
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
-objType "monitors"
+objType "controls"
+clipToDspLimits
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 275
+y 231
+w 69
+h 22
+controlPv "$(P)$(I)back:code"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+clipToDspLimits
 endObjectProperties
 
 # (Text Monitor)
@@ -227,11 +293,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 89
-y 16
-w 82
+x 81
+y 10
+w 60
 h 22
-controlPv "$(P)$(O)src:set.DESC"
+controlPv "$(P)$(I)level.DESC"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
@@ -250,16 +316,16 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 211
-y 16
-w 72
+x 169
+y 10
+w 62
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "$(P)$(O)"
+  "$(P)$(I)"
 }
 autoSize
 endObjectProperties
