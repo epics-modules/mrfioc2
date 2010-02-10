@@ -2,7 +2,7 @@
 record(ao, "$(P)$(O)") {
   field( DTYP, "EVR Prescaler")
   field( OUT , "#C$(C) S$(IDX) @Divide")
-  field( DESC, "PreScaler $(IDX) Output freq")
+  field( DESC, "PreScaler $(IDX)")
   field( PREC, 6)
   field( FLNK, "$(P)$(O):raw")
 }

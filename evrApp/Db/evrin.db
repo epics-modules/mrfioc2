@@ -1,6 +1,7 @@
 
 record(bo, "$(P)$(I)level") {
   field( DTYP, "EVR Input")
+  field( DESC, "Input $(IDX)")
   field( OUT , "#C$(C) S$(IDX) @Active Level")
   field( PINI, "YES")
   field( ZNAM, "Active Low")
@@ -31,6 +32,8 @@ record(longout, "$(P)$(I)ext:code") {
   field( DTYP, "EVR Input")
   field( OUT , "#C$(C) S$(IDX) @External Code")
   field( PINI, "YES")
+  field( LOPR, "0")
+  field( HOPR, "255")
 }
 
 record(mbbo, "$(P)$(I)back:trig") {
@@ -49,6 +52,8 @@ record(longout, "$(P)$(I)back:code") {
   field( DTYP, "EVR Input")
   field( OUT , "#C$(C) S$(IDX) @Backwards Code")
   field( PINI, "YES")
+  field( LOPR, "0")
+  field( HOPR, "255")
 }
 
 record(mbbo, "$(P)$(I)dbus") {

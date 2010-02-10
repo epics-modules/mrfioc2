@@ -3,6 +3,7 @@
 
 record(longout, "$(P)$(O)src:set") {
   field( DTYP, "EVR Output")
+  field( DESC, "Output $(IDX)")
   field( OUT , "#L$(C) A$(OT) C$(IDX) S0 @Map")
   field( FLNK, "$(P)$(O)src")
 }
