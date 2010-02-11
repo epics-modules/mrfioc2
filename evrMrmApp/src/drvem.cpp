@@ -66,8 +66,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         break;
     case evrFormPMC:
         if(DBG) printf("PMC ");
-        nOFP=4;
-        nIFP=2;
+        nOFP=3;
+        nIFP=1;
         break;
     case evrFormVME64:
         if(DBG) printf("VME64 ");

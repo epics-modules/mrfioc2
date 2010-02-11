@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 672
-y 25
+x 4
+y 355
 w 399
 h 381
 font "helvetica-medium-r-18.0"
@@ -426,27 +426,24 @@ botShadowColor index 14
 font "helvetica-medium-r-18.0"
 buttonLabel "Outputs"
 numPvs 4
-numDsps 5
+numDsps 4
 displayFileName {
   0 "evrouttest.edl"
   1 "evrouttest.edl"
   2 "evrouttest.edl"
   3 "evrouttest.edl"
-  4 "evrouttest.edl"
 }
 menuLabel {
   0 "IRQ"
   1 "FP0"
   2 "FP1"
   3 "FP2"
-  4 "FP3"
 }
 symbols {
   0 "O=irqmap:"
   1 "O=fpout0:"
   2 "O=fpout1:"
   3 "O=fpout2:"
-  4 "O=fpout3:"
 }
 endObjectProperties
 
@@ -870,11 +867,9 @@ displayFileName {
 }
 menuLabel {
   0 "Input 0"
-  1 "Input 1"
 }
 symbols {
   0 "I=in0:"
-  1 "I=in1:"
 }
 endObjectProperties
 
