@@ -13,8 +13,7 @@ record(bo, "$(P)enable:set") {
   field(OUT , "#C$(C) S0 @Enable")
   field(DESC, "Master enable for EVR device")
   field(PINI, "YES")
-  field(VAL , 1)
-  field(UDF , 0)
+  field(VAL , "1")
   field(FLNK, "$(P)enable")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
@@ -43,11 +42,11 @@ record(ao, "$(P)clock:set") {
   field(OUT , "#C$(C) S0 @Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , 124.916)
+  field(VAL , "124.916")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
-  field(ESLO, 1e-6)
-  field(PREC, 3)
+  field(ESLO, "1e-6")
+  field(PREC, "3")
   field(FLNK, "$(P)clock")
 }
 
@@ -57,18 +56,18 @@ record(ai, "$(P)clock") {
   field(SCAN, "1 second")
   field(DESC, "Event Link speed")
   field(PINI, "YES")
-  field(UDF , 0)
+  field(UDF , "0")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
-  field(ESLO, 1e-6)
-  field(PREC, 3)
+  field(ESLO, "1e-6")
+  field(PREC, "3")
   field(FLNK, "$(P)clock:error")
 }
 
 record(calc, "$(P)clock:error") {
   field(CALC, "(A-B)*1000")
   field(EGU , "KHz")
-  field(PREC, 3)
+  field(PREC, "3")
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock")
 }
@@ -131,11 +130,11 @@ record(ao, "$(P)ts:clock:set") {
   field(DTYP, "EVR")
   field(OUT , "#C$(C) S0 @Timestamp Clock")
   field(DESC, "Timestamp speed")
-  field(VAL , 10.0)
+  field(VAL , "10.0")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
-  field(ESLO, 1e-6)
-  field(PREC, 3)
+  field(ESLO, "1e-6")
+  field(PREC, "3")
   field(FLNK, "$(P)ts:clock")
 }
 
@@ -145,11 +144,11 @@ record(ai, "$(P)ts:clock") {
   field(SCAN, "1 second")
   field(DESC, "Timestamp speed")
   field(PINI, "YES")
-  field(UDF , 0)
+  field(UDF , "0")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
-  field(ESLO, 1e-6)
-  field(PREC, 3)
+  field(ESLO, "1e-6")
+  field(PREC, "3")
   field(FLNK, "$(P)ts:div")
 }
 
