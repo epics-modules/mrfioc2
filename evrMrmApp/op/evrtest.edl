@@ -95,7 +95,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 14
+x 17
 y 60
 w 81
 h 22
@@ -184,7 +184,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 44
+x 46
 y 91
 w 51
 h 22
@@ -280,7 +280,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 35
+x 37
 y 166
 w 61
 h 22
@@ -371,7 +371,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 40
+x 43
 y 233
 w 58
 h 22
@@ -529,7 +529,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 33
+x 36
 y 133
 w 62
 h 22
@@ -575,7 +575,7 @@ major 10
 minor 0
 release 0
 x 112
-y 198
+y 193
 w 265
 h 25
 controlPv "$(P)ts"
@@ -686,15 +686,15 @@ major 4
 minor 1
 release 0
 x 117
-y 261
-w 102
-h 22
-font "helvetica-medium-r-18.0"
+y 264
+w 99
+h 17
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Output Freq."
+  "Prescaler Freq."
 }
 autoSize
 endObjectProperties
