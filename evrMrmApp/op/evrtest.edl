@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 4
-y 355
+x 22
+y 343
 w 399
 h 381
 font "helvetica-medium-r-18.0"
@@ -72,7 +72,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 154
+x 139
 y 24
 w 74
 h 22
@@ -911,5 +911,49 @@ value {
   "RBV"
 }
 autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 267
+y 22
+w 77
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Blink Evt:"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 347
+y 22
+w 26
+h 22
+controlPv "$(P)map:blink"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
 endObjectProperties
 

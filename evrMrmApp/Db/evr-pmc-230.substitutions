@@ -4,6 +4,12 @@ file "evrbase.db"
 {$(P), $(C)}
 }
 
+file "evrmap.db"
+{pattern
+{P, C, M, func, EVT}
+{$(P), $(C), "blink", 125, 0}
+}
+
 file "evrscale.db"
 {pattern
 {P, C, IDX, O}
