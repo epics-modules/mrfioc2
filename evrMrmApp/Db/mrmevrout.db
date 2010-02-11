@@ -13,7 +13,7 @@ record(longout, "$(P)$(O)src:set") {
 
 record(mbbo, "$(P)$(O)src:pulse:set") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set")
+  field( OUT , "$(P)$(O)src:set PP")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -34,12 +34,11 @@ record(mbbo, "$(P)$(O)src:pulse:set") {
   field( SVVL, "7")
   field( EIVL, "8")
   field( NIVL, "9")
-  field( FLNK, "$(P)$(O)src:set")
 }
 
 record(mbbo, "$(P)$(O)src:dbus:set") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set")
+  field( OUT , "$(P)$(O)src:set PP")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -56,29 +55,26 @@ record(mbbo, "$(P)$(O)src:dbus:set") {
   field( FVVL, "37")
   field( SXVL, "38")
   field( SVVL, "39")
-  field( FLNK, "$(P)$(O)src:set")
 }
 
 record(mbbo, "$(P)$(O)src:scale:set") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set")
+  field( OUT , "$(P)$(O)src:set PP")
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")
   field( ZRVL, "40")
   field( ONVL, "41")
   field( TWVL, "42")
-  field( FLNK, "$(P)$(O)src:set")
 }
 
 record(mbbo, "$(P)$(O)src:force:set") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set")
+  field( OUT , "$(P)$(O)src:set PP")
   field( ZRST, "Force Low")
   field( ONST, "Force High")
   field( ZRVL, "63")
   field( ONVL, "62")
-  field( FLNK, "$(P)$(O)src:set")
 }
 
 # Mapping readback
@@ -87,14 +83,7 @@ record(longin, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
   field( INP , "#L$(C) A$(OT) C$(IDX) S0 @Map")
   field( PINI, "YES")
-  field( FLNK, "$(P)$(O)src:fan")
-}
-
-record(fanout, "$(P)$(O)src:fan") {
-  field(LNK1, "$(P)$(O)src:pulse")
-  field(LNK2, "$(P)$(O)src:dbus")
-  field(LNK3, "$(P)$(O)src:scale")
-  field(LNK4, "$(P)$(O)src:force")
+  field( FLNK, "$(P)$(O)src:pulse")
 }
 
 record(mbbi, "$(P)$(O)src:pulse") {
@@ -120,6 +109,7 @@ record(mbbi, "$(P)$(O)src:pulse") {
   field( SVVL, "7")
   field( EIVL, "8")
   field( NIVL, "9")
+  field( FLNK, "$(P)$(O)src:dbus")
 }
 
 record(mbbi, "$(P)$(O)src:dbus") {
@@ -141,6 +131,7 @@ record(mbbi, "$(P)$(O)src:dbus") {
   field( FVVL, "37")
   field( SXVL, "38")
   field( SVVL, "39")
+  field( FLNK, "$(P)$(O)src:scale")
 }
 
 record(mbbi, "$(P)$(O)src:scale") {
@@ -152,6 +143,7 @@ record(mbbi, "$(P)$(O)src:scale") {
   field( ZRVL, "40")
   field( ONVL, "41")
   field( TWVL, "42")
+  field( FLNK, "$(P)$(O)src:force")
 }
 
 record(mbbi, "$(P)$(O)src:force") {
