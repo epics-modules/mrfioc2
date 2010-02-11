@@ -48,11 +48,11 @@ Pulser::mapDesc(epicsUInt32 src,MapType::type action) const
     return name+" triggers the pulser";
   case MapType::Set:
     name+=" sets the output to ";
-    name+=polarityNorm() ? "High" : "Low";
+    name+=polarityInvert() ? "Low" : "High";
     return name;
   case MapType::Reset:
     name+=" resets the output to ";
-    name+=polarityNorm() ? "Low" : "High";
+    name+=polarityInvert() ? "High" : "Low";
     return name;
   }
 

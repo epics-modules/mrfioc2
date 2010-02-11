@@ -72,8 +72,8 @@ public:
    * Selects normal or inverted.
    */
   /*@{*/
-  virtual bool polarityNorm() const=0;
-  virtual void setPolarityNorm(bool)=0;
+  virtual bool polarityInvert() const=0;
+  virtual void setPolarityInvert(bool)=0;
   /*@}*/
 
   /**\defgroup map Control which source(s) effect this pulser.

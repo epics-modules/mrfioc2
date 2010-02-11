@@ -47,8 +47,8 @@ try {
   }else if( parm=="Polarity" ){
     prop=new property<Pulser,bool>(
         pul,
-        &Pulser::polarityNorm,
-        &Pulser::setPolarityNorm
+        &Pulser::polarityInvert,
+        &Pulser::setPolarityInvert
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
