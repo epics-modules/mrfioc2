@@ -151,9 +151,9 @@ void
 EVRMRM::enable(bool v)
 {
     if(v)
-        BITSET(NAT,32,base, Control, Control_enable);
+        BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
     else
-        BITCLR(NAT,32,base, Control, Control_enable);
+        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena);
 }
 
 MRMPulser*
