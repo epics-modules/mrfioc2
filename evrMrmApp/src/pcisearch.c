@@ -56,7 +56,11 @@ REGINFO("Pul0Dely",PulserDely(0),32,5),
 REGINFO("Pul0Wdth",PulserWdth(0),32,5),
 REGINFO("FP0MAP",OutputMapFP(0),16,5),
 REGINFO("FPU0MAP",OutputMapFPUniv(0),16,5),
-REGINFO("RB0MAP",OutputMapRB(0),16,5)
+REGINFO("RB0MAP",OutputMapRB(0),16,5),
+REGINFO("FPIN0CFG",InputMapFPCfg(0),8,5),
+REGINFO("FPIN0DBs",InputMapFPDBus(0),8,5),
+REGINFO("FPIN0Bck",InputMapFPBEvt(0),8,5),
+REGINFO("FPIN0Ext",InputMapFPEEvt(0),8,5)
 #undef REGINFO
 };
 
