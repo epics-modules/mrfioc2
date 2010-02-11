@@ -4,6 +4,7 @@ record(bo, "$(P)$(I)level") {
   field( DESC, "Input $(IDX)")
   field( OUT , "#C$(C) S$(IDX) @Active Level")
   field( PINI, "YES")
+  field( VAL , "1")
   field( ZNAM, "Active Low")
   field( ONAM, "Active High")
 }
@@ -12,6 +13,7 @@ record(bo, "$(P)$(I)edge") {
   field( DTYP, "EVR Input")
   field( OUT , "#C$(C) S$(IDX) @Active Edge")
   field( PINI, "YES")
+  field( VAL , "1")
   field( ZNAM, "Active Falling")
   field( ONAM, "Active Rising")
 }
