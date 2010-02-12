@@ -23,6 +23,8 @@ device(longin,     AB_IO, devLIEVRPulser, "EVR Pulser")
 device(longout,    AB_IO, devLOEVRPulser, "EVR Pulser")
 device(ai,         AB_IO, devAIEVRPulser, "EVR Pulser")
 device(ao,         AB_IO, devAOEVRPulser, "EVR Pulser")
+device(bi,         AB_IO, devBIEVRPulser, "EVR Pulser")
+device(bo,         AB_IO, devBOEVRPulser, "EVR Pulser")
 
 # '#Lcard Apulser Cmappingram Sfunction @'
 device(longout,    AB_IO, devLOEVRPulserMap, "EVR Pulser Mapping")

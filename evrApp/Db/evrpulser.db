@@ -1,5 +1,23 @@
 # Pulser sub-unit records for an EVR
 
+record(bo, "$(P)$(N)enable") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Enable")
+  field(PINI, "YES")
+  field(VAL, "1")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+}
+
+record(bo, "$(P)$(N)polarity") {
+  field(DTYP, "EVR Pulser")
+  field(OUT , "#L$(C) A$(PID) C0 S0 @Polarity")
+  field(PINI, "YES")
+  field(VAL, "0")
+  field(ZNAM, "Normal")
+  field(ONAM, "Inverted")
+}
+
 record(ao, "$(P)$(N)delay:set") {
   field(DTYP, "EVR Pulser")
   field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")

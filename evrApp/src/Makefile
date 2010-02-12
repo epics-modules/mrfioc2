@@ -35,6 +35,7 @@ evr_SRCS += devEvrInputLongIO.cpp
 evr_SRCS += devEvrInputBIO.cpp
 evr_SRCS += devEvrPulserLongIO.cpp
 evr_SRCS += devEvrPulserAIO.cpp
+evr_SRCS += devEvrPulserBIO.cpp
 evr_SRCS += devEvrPulserMapping.cpp
 
 
