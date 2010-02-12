@@ -57,7 +57,7 @@ try {
 
   prec->dpvt=static_cast<void*>(prop);
 
-  return 0;
+  return 2;
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
