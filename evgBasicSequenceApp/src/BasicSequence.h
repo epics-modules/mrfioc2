@@ -112,7 +112,7 @@ public:
     // Get the address of the event code array
     //
     inline const epicsInt32 *GetEventArray() const {
-        return (EventArray);
+        return (EventCodeArray);
     }//end GetEventArray()
 
     //=====================
@@ -131,6 +131,11 @@ public:
     // Sequence Report Function
     //
     void Report (epicsInt32 Level) const;
+
+    //=====================
+    // Destructor
+    //
+    ~BasicSequence ();
 
 /**************************************************************************************************/
 /*  Public Methods (Specific To The BasicSequence Class)                                          */
@@ -179,14 +184,14 @@ private:
     //=====================
     // Sequence Event Object List
     //
-    epicsInt32           NumEvents;
-    BasicSequenceEvent  *EventList      [MRF_MAX_SEQUENCE_EVENTS];
+    epicsInt32           NumEvents;          // Number of events defined for this sequence
+    BasicSequenceEvent** EventList;          // Array of sequence event pointers
 
     //=====================
     // Event and Timestamp Arrays for the Sequence RAMs
     //
-    epicsInt32           EventArray     [MRF_MAX_SEQUENCE_EVENTS];
-    epicsUInt32          TimestampArray [MRF_MAX_SEQUENCE_EVENTS];
+    epicsInt32*          EventCodeArray;     // Array of event codes
+    epicsUInt32*         TimestampArray;     // Array of time stamps
 
 };// end class BasicSequence //
 

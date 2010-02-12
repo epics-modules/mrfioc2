@@ -12,6 +12,8 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 #
 INC += evg/evg.h
 INC += evg/Sequence.h
+INC += evg/SequenceRAM.h
+
 INC += drvEvg.h
 INC += drvSequence.h
 

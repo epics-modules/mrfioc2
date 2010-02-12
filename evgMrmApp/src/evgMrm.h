@@ -45,8 +45,7 @@
 
 #ifndef EVG_MRM_HPP_INC
 #define EVG_MRM_HPP_INC
-
-
+
 /**************************************************************************************************/
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
@@ -56,6 +55,17 @@
 #include <mrfBusInterface.h>    // MRF Bus interface
 
 #include <evg/evg.h>            // EVG base class definition
+
+/**************************************************************************************************/
+/*  Architectural Definitions                                                                     */
+/**************************************************************************************************/
+
+//=====================
+// Sequence RAM Definitions
+//
+#define EVG_SEQ_RAM_NUM            2    // Number of sequence RAMs per card
+#define EVG_SEQ_RAM_SIZE        2048    // Number of event/timestamp pairs per sequence RAM
+#define EVG_SEQ_RAM_MAX_INDEX   2046    // Maximum addressable element
 
 /**************************************************************************************************/
 /*                                  evgMrm Class Definition                                       */
@@ -118,7 +128,7 @@ public:
     //=====================
     // Event Link Clock Setters
     //
-    epicsStatus SetOutLinkClockSource (epicsInt16 ClockSource);
+    epicsStatus SetOutLinkClockSource (epicsInt16   ClockSource);
     epicsStatus SetOutLinkClockSpeed  (epicsFloat64 ClockSpeed);
     epicsStatus SetInLinkClockSpeed   (epicsFloat64 ClockSpeed);
 
@@ -128,6 +138,21 @@ public:
     void Configure  ();
     void RebootInit ();
     void IntEnable  ();
+
+    //=====================
+    // Sequence RAM Routines
+    //
+    inline epicsInt32  GetSeqRamCount    () const {
+        return EVG_SEQ_RAM_NUM;
+    }//end GetSeqRamCount()
+
+    inline epicsInt32  GetSeqRamSize     () const {
+        return EVG_SEQ_RAM_SIZE;
+    }//end GetSeqRamSize()
+
+    inline epicsInt32  GetSeqRamMaxIndex () const {
+        return EVG_SEQ_RAM_MAX_INDEX;
+    }//end GetSeqRamMaxIndex()
 
     //=====================
     // Interrupt Handling Routine

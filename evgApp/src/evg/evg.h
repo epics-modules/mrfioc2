@@ -100,8 +100,12 @@ public:
     virtual epicsStatus  Report    (epicsInt32 level) const = 0;
 
     //=====================
-    // Sequence RAM Control Routines
+    // Sequence RAM Routines
     //
+    virtual epicsInt32  GetSeqRamCount    () const = 0;
+    virtual epicsInt32  GetSeqRamSize     () const = 0;
+    virtual epicsInt32  GetSeqRamMaxIndex () const = 0;
+
     //    virtual epicsStatus  SetSeqEvent (epicsUInt32 RamNum, 
     //                                      epicsUInt32 event,
     //                                      epicsUInt32 timestamp) = 0;

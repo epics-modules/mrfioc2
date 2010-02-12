@@ -111,10 +111,13 @@ static void SiftUp (BasicSequenceEvent* EventArray[], const epicsInt32 Start);
 //**************************************************************************************************
 
 BasicSequence::BasicSequence (epicsInt32 Card, epicsInt32  Number):
-    ClassID(BASIC_SEQ_CLASS_ID),
-    CardNumber(Card),
-    SequenceNumber(Number),
-    NumEvents(0)
+    ClassID        (BASIC_SEQ_CLASS_ID),
+    CardNumber     (Card),
+    SequenceNumber (Number),
+    NumEvents      (0),
+    EventList      (NULL),
+    EventCodeArray (NULL),
+    TimestampArray (NULL)
 {
     //=====================
     // Create the sequence ID string
@@ -122,16 +125,40 @@ BasicSequence::BasicSequence (epicsInt32 Card, epicsInt32  Number):
     sprintf (SeqID, "Card %d, Seq %d", Card, Number);
 
     //=====================
-    // Initialize the event array
-    //
-    for (int i = 0;  i < MRF_MAX_SEQUENCE_EVENTS;  i++)
-        EventList[i] = NULL;
-
-    //=====================
     // Try to get the EVG object for the card we belong to
     //
     if (NULL == (pEvg = EgGetCard(Card)))
         throw std::runtime_error (std::string(SeqID) + ": Event generator card not configured");
+
+    //=====================
+    // Create and initialize the sequence event array
+    //
+    epicsInt32 SeqRamSize = pEvg->GetSeqRamSize();
+    EventList = (BasicSequenceEvent**) calloc (SeqRamSize, sizeof(BasicSequenceEvent*));
+    if (NULL == EventList)
+        throw std::runtime_error (std::string(SeqID) + ": Insufficient memory");
+
+    for (int i = 0;  i < pEvg->GetSeqRamSize();  i++)
+        EventList[i] = NULL;
+
+    //=====================
+    // Create the event code array
+    //
+    EventCodeArray = (epicsInt32*) calloc (SeqRamSize, sizeof(epicsInt32));
+    if (NULL == EventCodeArray) {
+        free (EventList);
+        throw std::runtime_error (std::string(SeqID) + ": Insufficient memory");
+    }//end if could not create the event code array
+
+    //=====================
+    // Create the timestamp array
+    //
+    TimestampArray = (epicsUInt32*) calloc (SeqRamSize, sizeof(epicsUInt32));
+    if (NULL == TimestampArray) {
+        free (EventList);
+        free (EventCodeArray);
+        throw std::runtime_error (std::string(SeqID) + ": Insufficient memory");
+    }//end if could not create the timestamp array
 
 }//end Constructor
 
@@ -172,7 +199,7 @@ BasicSequence::DeclareEvent (const std::string &Name)
     //=====================
     // If the event is not already in the list, see if there is room to create one.
     //
-    if (NumEvents >= MRF_MAX_SEQUENCE_EVENTS)
+    if (NumEvents > pEvg->GetSeqRamMaxIndex())
         throw std::runtime_error("Sequence is full");
 
     //=====================
@@ -328,6 +355,12 @@ BasicSequence::Report (epicsInt32 Level) const {
     printf ("\n");
 
 }//end Report()
+
+BasicSequence::~BasicSequence () {
+    free (EventList);
+    free (EventCodeArray);
+    free (TimestampArray);
+}//end Destructor
 
 /**************************************************************************************************/
 /*                             BasicSequence Non-Member Functions                                 */

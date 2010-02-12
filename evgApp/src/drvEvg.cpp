@@ -42,27 +42,27 @@
 
 #define EVG_DRIVER_SUPPORT_MODULE
 
-#include <stdexcept>            // Standard C++ exception definitions
-#include <map>                  // Standard C++ map template
+#include  <stdexcept>           // Standard C++ exception definitions
+#include  <map>                 // Standard C++ map template
 
-#include <float.h>
-#include <errno.h>              // Standard C global error number definitions
-#include <math.h>               // Standard C math library
-#include <string.h>             // Standard C string processing routines
+#include  <errno.h>             // Standard C global error number definitions
+#include  <math.h>              // Standard C math library
+#include  <string.h>            // Standard C string processing routines
 
-#include <epicsStdlib.h>        // EPICS Standard C library support routines
-#include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-#include <drvSup.h>             // EPICS Driver support definitions
-#include <initHooks.h>          // EPICS IOC Initialization hooks support library
-#include <iocsh.h>              // EPICS IOC shell support library
-#include <registryFunction.h>   // EPICS Registry support library
+#include  <epicsStdlib.h>       // EPICS Standard C library support routines
+#include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <drvSup.h>            // EPICS Driver support definitions
+#include  <initHooks.h>         // EPICS IOC Initialization hooks support library
+#include  <iocsh.h>             // EPICS IOC shell support library
+#include  <registryFunction.h>  // EPICS Registry support library
 
 #include  <drvEvg.h>            // Event Generator driver infrastructure routines
 #include  <drvSequence.h>       // Event Generator sequence driver infrastructure routines
 
-#include  <evg/evg.h>           // Event Generator base class definitions
+#include  <evg/evg.h>           // Event Generator base class definition
+#include  <evg/SequenceRAM.h>   // Event Generator SequenceRAM base class definition
 
-#include <epicsExport.h>        // EPICS Symbol exporting macro definitions
+#include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
 /*  Type Definitions                                                                              */
@@ -82,10 +82,18 @@ static bool       InitDone      = false;        // Indicates IOC initialization 
 static CardList   EvgCardList;                  // List of EVG objects
 
 /**************************************************************************************************/
-/*  EVG Base Class Destructor                                                                     */
+/*  Base Class Destructors                                                                        */
 /**************************************************************************************************/
 
+//=====================
+// EVG Base Class Destructor
+//
 EVG::~EVG() {}
+
+//=====================
+// SequenceRAM Base Class Destructor
+//
+SequenceRAM::~SequenceRAM() {}
 
 /**************************************************************************************************/
 /*                            Event Generator Configuration Routines                              */
