@@ -548,7 +548,6 @@ EVRMRM::isr(void *arg)
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     //TODO: Locking...
-    epicsInterruptContextMessage("IRQ\n");
 
     if(flags&IRQ_BufFull){
         scanIoRequest(evr->IRQbufferReady);
