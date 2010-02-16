@@ -67,7 +67,7 @@ devPCIFindCB(
    * If not then the next device is searched.
    *
    * After the loops, 'curdev' can be non-NULL only if
-   * control hit one of the break statements.
+   * control did not hit one of the break statements.
    */
 
   cur=ellFirst(&devices);

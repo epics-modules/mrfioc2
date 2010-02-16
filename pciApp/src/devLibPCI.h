@@ -15,7 +15,7 @@ extern "C" {
  */
 
 typedef struct {
-  epicsUInt16 device, vendor;
+  epicsUInt32 device, vendor;
   epicsUInt32 sub_device, sub_vendor;
   epicsUInt32 pci_class;
   epicsUInt16 revision;
@@ -24,6 +24,8 @@ typedef struct {
 /* sub*, class, and revision are oversized to allow a
  * distinct wildcard match value.
  */
+#define DEVPCI_ANY_DEVICE 0x10000
+#define DEVPCI_ANY_VENDOR 0x10000
 #define DEVPCI_ANY_SUBDEVICE 0x10000
 #define DEVPCI_ANY_SUBVENDOR 0x10000
 #define DEVPCI_ANY_CLASS 0x1000000
