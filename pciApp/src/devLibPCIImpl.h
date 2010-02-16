@@ -31,7 +31,8 @@ typedef struct {
                                  void  *parameter);
 
   int (*pDevPCIDisconnectInterrupt)(epicsPCIDevice *id,
-                                    void (*pFunction)(void *));
+                                    void (*pFunction)(void *),
+                                    void  *parameter);
 
 } devLibPCIVirtualOS;
 

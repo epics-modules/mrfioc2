@@ -140,12 +140,13 @@ int devPCIConnectInterrupt(
 epicsShareFunc
 int devPCIDisconnectInterrupt(
   epicsPCIDevice *curdev,
-  void (*pFunction)(void *)
+  void (*pFunction)(void *),
+  void  *parameter
 )
 {
   if(!pdevLibPCIVirtualOS)
     return 5;
 
   return (*pdevLibPCIVirtualOS->pDevPCIDisconnectInterrupt)
-                (curdev,pFunction);
+                (curdev,pFunction,parameter);
 }

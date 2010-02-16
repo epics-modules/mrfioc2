@@ -126,7 +126,8 @@ int devPCIConnectInterrupt(
 epicsShareFunc
 int devPCIDisconnectInterrupt(
         epicsPCIDevice *id,
-  void (*pFunction)(void *)
+  void (*pFunction)(void *),
+  void  *parameter
 );
 
 #ifdef __cplusplus

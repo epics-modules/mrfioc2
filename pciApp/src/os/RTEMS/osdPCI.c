@@ -6,7 +6,6 @@
 #include <rtems/endian.h>
 #include <rtems/irq.h>
 
-#include <ellLib.h>
 #include <dbDefs.h>
 
 #include "devLibPCIImpl.h"
@@ -48,7 +47,8 @@ int rtemsDevPCIConnectInterrupt(
 static
 int rtemsDevPCIDisconnectInterrupt(
   epicsPCIDevice *dev,
-  void (*pFunction)(void *)
+  void (*pFunction)(void *),
+  void  *parameter
 )
 {
   struct osdPCIDevice *id=pcidev2osd(dev);
@@ -57,7 +57,7 @@ int rtemsDevPCIDisconnectInterrupt(
 
   isr.name = id->dev.irq;
   isr.hdl = pFunction;
-  isr.handle = 0;
+  isr.handle = parameter;
 
   isr.on = NULL;
   isr.off= NULL;
