@@ -14,6 +14,8 @@ INC += devLibPCI.h
 INC += devLibPCIImpl.h
 pci_SRCS += devLibPCI.c
 
+pci_SRCS_RTEMS += osdPciShared.c
+
 pci_SRCS += osdPCI.c
 
 pci_LIBS += Com
