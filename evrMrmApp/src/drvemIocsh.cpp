@@ -39,8 +39,8 @@ static
 void
 setupPCI(int id,int b,int d,int f)
 {
-  const epicsPCIDevice *cur=0;
-  if( devPCIFindBDF(mrmevrs,b,d,f,&cur) ){
+  epicsPCIDevice *cur=0;
+  if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
     printf("PCI Device not found\n");
     return;
   }
@@ -49,8 +49,8 @@ setupPCI(int id,int b,int d,int f)
 
   volatile epicsUInt8 *plx, *evr;
 
-  if( devPCIToLocalAddr(cur,0,(volatile void**)&plx) ||
-      devPCIToLocalAddr(cur,2,(volatile void**)&evr))
+  if( devPCIToLocalAddr(cur,0,(volatile void**)&plx,0) ||
+      devPCIToLocalAddr(cur,2,(volatile void**)&evr,0))
   {
       printf("Failed to map BARs 0 and 2\n");
       return;

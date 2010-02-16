@@ -73,7 +73,7 @@ struct evrshow
 
 static
 int
-evrshow(void* arg,const epicsPCIDevice *cur)
+evrshow(void* arg,epicsPCIDevice *cur)
 {
   size_t reg,i;
   epicsUInt32 blen;
@@ -91,7 +91,7 @@ evrshow(void* arg,const epicsPCIDevice *cur)
   }
 
   for(i=0;i<PCIBARCOUNT;i++){
-    if(devPCIToLocalAddr(cur,i,&base)){
+    if(devPCIToLocalAddr(cur,i,&base,0)){
       if(verb>4)
         printf("Failed to map BAR %u\n",i);
       continue;
@@ -172,7 +172,7 @@ mrmevrdump(int verb)
 
   printf("Searching for PCI EVRs\n");
 
-  err=devPCIFindCB(mrmevrs,&evrshow,&p);
+  err=devPCIFindCB(mrmevrs,&evrshow,&p,0);
   if(!err){
     printf("Search error: %d\n",err);
   }else if(verb>=1){
