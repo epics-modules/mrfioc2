@@ -72,7 +72,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     case evrFormVME64:
         if(DBG) printf("VME64 ");
         nOFP=4;
-        nOFPUV=2;
+        nIFP=2;
+        nOFPUV=4;
         nORB=16;
         break;
     }

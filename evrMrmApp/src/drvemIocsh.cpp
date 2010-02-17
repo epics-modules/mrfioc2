@@ -10,8 +10,10 @@
 #include <epicsExport.h>
 
 #include <devLibPCI.h>
+#include <devcsr.h>
 #include <epicsInterrupt.h>
 #include "mrmpci.h"
+#include "mrfcsr.h"
 
 #include "drvem.h"
 #include "evrRegMap.h"
@@ -33,6 +35,12 @@ static const epicsPCIID mrmevrs[] = {
    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
                               PCI_DEVICE_ID_MRF_EVR_230, PCI_VENDOR_ID_MRF)
   ,DEVPCI_END
+};
+
+static const struct VMECSRDevice vmeevrs[] = {
+   // VME EVR RF 230
+   {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
+   ,VMECSR_END
 };
 
 static
@@ -156,6 +164,75 @@ static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 
 extern "C"
 void
+mrmEvrSetupVME(int id,int slot,int base)
+{
+try {
+  if(!!getEVR<EVR>(id))
+    printf("ID %d already used run\n",id);
+
+  struct VMECSRDevice info;
+
+  volatile unsigned char* csr=devCSRTestSlot(vmeevrs,slot,&info);
+  if(!csr){
+    printf("No EVR in slot %d\n",slot);
+    return;
+  }
+
+  printf("Setting up EVR in VME Slot %d\n",slot);
+
+  printf("Found vendor: %08x board: %08x rev.: %08x\n",
+    info.vendor, info.board, info.revision);
+
+  // Set base address
+
+  /* Use function 0 for 16-bit addressing (length 0x00800 bytes)
+   * and function 1 for 24-bit addressing (length 0x10000 bytes)
+   *
+   * Both expose the same registers, but not all registers are
+   * visible through function 0.
+   */
+
+  CSRbase(csr, 1, base, VME_AM_STD_SUP_DATA);
+
+  volatile unsigned char* evr;
+
+  if(devBusToLocalAddr(atVMEA24, base, (volatile void**)&evr))
+  {
+    printf("Failed to map address %08x\n",base);
+    return;
+  }
+
+  //TODO: Install ISR
+
+  NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
+
+  // Acknowledge missed interrupts
+  //TODO: This avoids a spurious FIFO Full
+  NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
+
+  EVRMRM *receiver=new EVRMRM(id,evr);
+
+  storeEVR(id,receiver);
+
+} catch(std::exception& e) {
+  printf("Error: %s\n",e.what());
+}
+}
+
+static const iocshArg mrmEvrSetupVMEArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg1 = { "Bus number",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg2 = { "Device number",iocshArgInt};
+static const iocshArg * const mrmEvrSetupVMEArgs[3] =
+{&mrmEvrSetupVMEArg0,&mrmEvrSetupVMEArg1,&mrmEvrSetupVMEArg2};
+static const iocshFuncDef mrmEvrSetupVMEFuncDef =
+    {"mrmEvrSetupVME",3,mrmEvrSetupVMEArgs};
+static void mrmEvrSetupVMECallFunc(const iocshArgBuf *args)
+{
+    mrmEvrSetupVME(args[0].ival,args[1].ival,args[2].ival);
+}
+
+extern "C"
+void
 mrmEvrDumpMap(int id,int evt,int ram)
 {
   EVRMRM *card=getEVR<EVRMRM>(id);
@@ -190,6 +267,7 @@ extern "C"
 void mrmsetupreg()
 {
   iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
+  iocshRegister(&mrmEvrSetupVMEFuncDef,mrmEvrSetupVMECallFunc);
   iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
 }
 

@@ -15,8 +15,9 @@ DBD += evrmrm.dbd
 # evrmrm.dbd will be made up from these files:
 evrmrm_DBD += base.dbd
 evrmrm_DBD += drvemSupport.dbd
+evrmrm_DBD += vmecsr.dbd
 
-evrmrm_LIBS += pci evr mrfCommon
+evrmrm_LIBS += pci vme evr mrfCommon
 evrmrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 evrmrm_SRCS += pcisearch.c
