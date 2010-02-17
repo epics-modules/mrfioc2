@@ -20,7 +20,6 @@ evrmrm_DBD += vmecsr.dbd
 evrmrm_LIBS += pci vme evr mrfCommon
 evrmrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrmrm_SRCS += pcisearch.c
 evrmrm_SRCS += drvemIocsh.c
 evrmrm_SRCS += drvem.cpp
 evrmrm_SRCS += drvemOutput.cpp
