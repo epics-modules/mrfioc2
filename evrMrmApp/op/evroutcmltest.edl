@@ -3,15 +3,15 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 918
-y 359
-w 505
-h 279
+x 553
+y 465
+w 703
+h 374
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
 fgColor index 14
-bgColor index 3
+bgColor index 4
 textColor index 14
 ctlFgColor1 index 14
 ctlFgColor2 index 0
@@ -27,16 +27,16 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 28
-y 16
-w 40
+x 6
+y 18
+w 117
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EVR"
+  "CML $(P)$(O)"
 }
 autoSize
 endObjectProperties
@@ -47,19 +47,19 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 141
-y 55
-w 112
-h 161
+x 12
+y 64
+w 136
+h 30
 fgColor index 14
 bgColor index 0
 selectColor index 0
 inconsistentColor index 14
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P)$(O)src:dbus:set"
-indicatorPv "$(P)$(O)src:dbus"
-font "helvetica-medium-r-18.0"
+controlPv "$(P)$(O)enable"
+font "helvetica-medium-r-14.0"
+orientation "horizontal"
 endObjectProperties
 
 # (Choice Button)
@@ -67,68 +67,20 @@ object activeChoiceButtonClass
 beginObjectProperties
 major 4
 minor 0
-release 0
-x 11
-y 55
-w 112
-h 192
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:pulse:set"
-indicatorPv "$(P)$(O)src:pulse"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
 release 0
 x 12
-y 256
-w 114
-h 22
-controlPv "$(P)$(O)src:pulse"
-format "string"
-font "helvetica-medium-r-18.0"
+y 109
+w 136
+h 30
 fgColor index 14
 bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 140
-y 224
-w 114
-h 22
-controlPv "$(P)$(O)src:dbus"
-format "string"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
+selectColor index 0
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(P)$(O)power"
+font "helvetica-medium-r-14.0"
+orientation "horizontal"
 endObjectProperties
 
 # (Choice Button)
@@ -137,111 +89,115 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 266
-y 56
-w 112
-h 113
+x 12
+y 153
+w 136
+h 30
 fgColor index 14
 bgColor index 0
 selectColor index 0
 inconsistentColor index 14
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P)$(O)src:scale:set"
-indicatorPv "$(P)$(O)src:scale"
-font "helvetica-medium-r-18.0"
+controlPv "$(P)$(O)reset"
+font "helvetica-medium-r-14.0"
+orientation "horizontal"
 endObjectProperties
 
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 392
-y 54
-w 97
-h 81
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:force:set"
-indicatorPv "$(P)$(O)src:force"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Text Control)
+object activeXTextDspClass
 beginObjectProperties
 major 4
 minor 5
 release 0
-x 266
-y 185
-w 114
+x 66
+y 213
+w 80
 h 22
-controlPv "$(P)$(O)src:scale"
-format "string"
+controlPv "$(P)$(O)rise"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
+editable
 autoHeight
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
-objType "monitors"
+objType "controls"
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Text Control)
+object activeXTextDspClass
 beginObjectProperties
 major 4
 minor 5
 release 0
-x 391
-y 145
-w 104
+x 66
+y 245
+w 80
 h 22
-controlPv "$(P)$(O)src:force"
-format "string"
+controlPv "$(P)$(O)high"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
+editable
 autoHeight
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
-objType "monitors"
+objType "controls"
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Text Control)
+object activeXTextDspClass
 beginObjectProperties
 major 4
 minor 5
 release 0
-x 89
-y 16
-w 82
+x 66
+y 280
+w 80
 h 22
-controlPv "$(P)$(O)src:set.DESC"
+controlPv "$(P)$(O)fall"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
+editable
 autoHeight
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
-objType "monitors"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 66
+y 312
+w 80
+h 22
+controlPv "$(P)$(O)low"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
 endObjectProperties
 
 # (Static Text)
@@ -250,52 +206,97 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 211
-y 16
-w 72
+x 14
+y 213
+w 42
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "$(P)$(O)"
+  "Rise:"
 }
 autoSize
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 2
+minor 1
 release 0
-x 366
-y 231
-w 97
-h 28
+x 14
+y 245
+w 43
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "High:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 14
+y 280
+w 34
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Fall:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 14
+y 312
+w 39
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Low:"
+}
+autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 153
+y 13
+w 542
+h 343
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
 botShadowColor index 14
-font "helvetica-medium-r-18.0"
-buttonLabel "CML"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "evroutcmltest.edl"
-}
-menuLabel {
-  0 "CML"
-}
-closeAction {
-  0 1
-}
-setPosition {
-  0 "parentWindow"
-}
-closeDisplay {
-  0 1
-}
+displaySource "file"
+file "evrouttest.edl"
+sizeOfs 5
+numDsps 0
 endObjectProperties
 
