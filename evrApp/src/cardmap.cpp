@@ -34,3 +34,16 @@ getEVRBase(short id)
 
   return it->second;
 }
+
+void
+visitEVRBase(void* raw, int (*fptr)(void*,short,EVR*))
+{
+  if(!fptr) return;
+
+  for(devices_t::iterator it=devices.begin();
+      it!=devices.end(); ++it)
+  {
+    if(fptr(raw,it->first, it->second))
+      return;
+  }
+}

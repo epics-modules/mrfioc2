@@ -41,6 +41,9 @@ void storeEVR(short id,EVRSubclass *dev)
   storeEVRBase(id,static_cast<EVR*>(dev));
 };
 
+void
+visitEVRBase(void*, int (*fptr)(void*,short,EVR*));
+
 } // extern C++
 
 #endif /* CARDMAP_H_INC */
