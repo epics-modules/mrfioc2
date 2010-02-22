@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 22
-y 343
+x 735
+y 322
 w 399
-h 381
+h 398
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -28,7 +28,7 @@ major 4
 minor 1
 release 0
 x 16
-y 26
+y 45
 w 62
 h 22
 font "helvetica-medium-r-18.0"
@@ -48,7 +48,7 @@ major 4
 minor 0
 release 0
 x 86
-y 24
+y 43
 w 44
 h 23
 fgColor index 14
@@ -73,7 +73,7 @@ major 4
 minor 5
 release 0
 x 139
-y 24
+y 43
 w 74
 h 22
 controlPv "$(P)enable"
@@ -96,7 +96,7 @@ major 4
 minor 1
 release 0
 x 17
-y 60
+y 79
 w 81
 h 22
 font "helvetica-medium-r-18.0"
@@ -116,7 +116,7 @@ major 4
 minor 5
 release 0
 x 103
-y 60
+y 79
 w 74
 h 22
 controlPv "$(P)pll"
@@ -141,7 +141,7 @@ major 4
 minor 1
 release 0
 x 231
-y 59
+y 78
 w 68
 h 22
 font "helvetica-medium-r-18.0"
@@ -161,7 +161,7 @@ major 4
 minor 5
 release 0
 x 311
-y 60
+y 79
 w 85
 h 22
 controlPv "$(P)ver"
@@ -185,7 +185,7 @@ major 4
 minor 1
 release 0
 x 46
-y 91
+y 110
 w 51
 h 22
 font "helvetica-medium-r-18.0"
@@ -205,7 +205,7 @@ major 4
 minor 5
 release 0
 x 105
-y 92
+y 111
 w 81
 h 22
 controlPv "$(P)clock:set"
@@ -231,7 +231,7 @@ major 4
 minor 5
 release 0
 x 205
-y 93
+y 112
 w 63
 h 22
 controlPv "$(P)clock"
@@ -256,7 +256,7 @@ major 4
 minor 5
 release 0
 x 277
-y 93
+y 112
 w 63
 h 22
 controlPv "$(P)clock:error"
@@ -281,7 +281,7 @@ major 4
 minor 1
 release 0
 x 37
-y 166
+y 185
 w 61
 h 22
 font "helvetica-medium-r-18.0"
@@ -301,7 +301,7 @@ major 4
 minor 5
 release 0
 x 108
-y 165
+y 184
 w 63
 h 22
 controlPv "$(P)ts:clock:set"
@@ -327,7 +327,7 @@ major 4
 minor 5
 release 0
 x 268
-y 165
+y 184
 w 63
 h 22
 controlPv "$(P)ts:div"
@@ -352,7 +352,7 @@ major 4
 minor 1
 release 0
 x 69
-y 195
+y 214
 w 29
 h 22
 font "helvetica-medium-r-18.0"
@@ -372,7 +372,7 @@ major 4
 minor 1
 release 0
 x 43
-y 233
+y 252
 w 58
 h 22
 font "helvetica-medium-r-18.0"
@@ -392,7 +392,7 @@ major 4
 minor 5
 release 0
 x 206
-y 233
+y 252
 w 73
 h 22
 controlPv "$(P)link:cnt"
@@ -416,7 +416,7 @@ major 4
 minor 2
 release 0
 x 20
-y 276
+y 295
 w 81
 h 22
 fgColor index 14
@@ -426,24 +426,36 @@ botShadowColor index 14
 font "helvetica-medium-r-18.0"
 buttonLabel "Outputs"
 numPvs 4
-numDsps 4
+numDsps 8
 displayFileName {
   0 "evrouttest.edl"
   1 "evrouttest.edl"
   2 "evrouttest.edl"
   3 "evrouttest.edl"
+  4 "evrouttest.edl"
+  5 "evrouttest.edl"
+  6 "evrouttest.edl"
+  7 "evrouttest.edl"
 }
 menuLabel {
-  0 "IRQ"
-  1 "FP0"
-  2 "FP1"
-  3 "FP2"
+  0 "FP0"
+  1 "FP1"
+  2 "FP2"
+  3 "FP3"
+  4 "CML FP4"
+  5 "CML FP5"
+  6 "CML FP6"
+  7 "IRQ"
 }
 symbols {
-  0 "O=irqmap:"
-  1 "O=fpout0:"
-  2 "O=fpout1:"
-  3 "O=fpout2:"
+  0 "O=fpout0:"
+  1 "O=fpout1:"
+  2 "O=fpout2:"
+  3 "O=fpout3:"
+  4 "O=fpout4:"
+  5 "O=fpout5:"
+  6 "O=fpout6:"
+  7 "O=irqmap:"
 }
 endObjectProperties
 
@@ -454,7 +466,7 @@ major 4
 minor 5
 release 0
 x 112
-y 233
+y 252
 w 73
 h 22
 controlPv "$(P)link:sts"
@@ -478,7 +490,7 @@ major 4
 minor 5
 release 0
 x 210
-y 290
+y 309
 w 86
 h 22
 controlPv "$(P)scale0"
@@ -505,7 +517,7 @@ major 4
 minor 5
 release 0
 x 303
-y 290
+y 309
 w 57
 h 22
 controlPv "$(P)scale0.RVAL"
@@ -530,7 +542,7 @@ major 4
 minor 1
 release 0
 x 36
-y 133
+y 152
 w 62
 h 22
 font "helvetica-medium-r-18.0"
@@ -550,7 +562,7 @@ major 4
 minor 5
 release 0
 x 192
-y 166
+y 185
 w 63
 h 22
 controlPv "$(P)ts:clock"
@@ -575,7 +587,7 @@ major 10
 minor 0
 release 0
 x 112
-y 193
+y 212
 w 265
 h 25
 controlPv "$(P)ts"
@@ -593,7 +605,7 @@ major 4
 minor 2
 release 0
 x 12
-y 310
+y 329
 w 96
 h 22
 fgColor index 14
@@ -646,7 +658,7 @@ major 4
 minor 0
 release 0
 x 110
-y 131
+y 150
 w 156
 h 27
 fgColor index 14
@@ -666,7 +678,7 @@ major 4
 minor 1
 release 0
 x 117
-y 290
+y 309
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -686,7 +698,7 @@ major 4
 minor 1
 release 0
 x 117
-y 264
+y 283
 w 99
 h 17
 font "helvetica-medium-r-14.0"
@@ -706,7 +718,7 @@ major 4
 minor 1
 release 0
 x 117
-y 316
+y 335
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -726,7 +738,7 @@ major 4
 minor 5
 release 0
 x 211
-y 316
+y 335
 w 86
 h 22
 controlPv "$(P)scale1"
@@ -753,7 +765,7 @@ major 4
 minor 5
 release 0
 x 304
-y 316
+y 335
 w 57
 h 22
 controlPv "$(P)scale1.RVAL"
@@ -778,7 +790,7 @@ major 4
 minor 1
 release 0
 x 117
-y 342
+y 361
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -798,7 +810,7 @@ major 4
 minor 5
 release 0
 x 211
-y 342
+y 361
 w 86
 h 22
 controlPv "$(P)scale2"
@@ -825,7 +837,7 @@ major 4
 minor 5
 release 0
 x 304
-y 342
+y 361
 w 57
 h 22
 controlPv "$(P)scale2.RVAL"
@@ -850,7 +862,7 @@ major 4
 minor 2
 release 0
 x 21
-y 341
+y 360
 w 76
 h 26
 fgColor index 14
@@ -867,9 +879,11 @@ displayFileName {
 }
 menuLabel {
   0 "Input 0"
+  1 "Input 1"
 }
 symbols {
   0 "I=in0:"
+  1 "I=in1:"
 }
 endObjectProperties
 
@@ -880,7 +894,7 @@ major 4
 minor 1
 release 0
 x 244
-y 261
+y 280
 w 28
 h 22
 font "helvetica-medium-r-18.0"
@@ -900,7 +914,7 @@ major 4
 minor 1
 release 0
 x 323
-y 261
+y 280
 w 40
 h 22
 font "helvetica-medium-r-18.0"
@@ -920,7 +934,7 @@ major 4
 minor 1
 release 0
 x 267
-y 22
+y 41
 w 77
 h 22
 font "helvetica-medium-r-18.0"
@@ -940,7 +954,7 @@ major 4
 minor 5
 release 0
 x 347
-y 22
+y 41
 w 26
 h 22
 controlPv "$(P)map:blink"
@@ -955,5 +969,24 @@ nullColor index 0
 useHexPrefix
 newPos
 objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 11
+w 191
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EVR: $(P)"
+}
 endObjectProperties
 
