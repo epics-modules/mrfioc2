@@ -1,4 +1,5 @@
 variable(evrmrmVerb,int)
 registrar(mrmsearchreg)
 registrar(mrmsetupreg)
+driver(drvEvrMrm)
 include evrSupport.dbd

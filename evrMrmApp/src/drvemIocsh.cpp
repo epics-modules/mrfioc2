@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <map>
 
+#include <drvSup.h>
 #include <iocsh.h>
 #include <epicsExport.h>
 
@@ -42,6 +43,117 @@ static const struct VMECSRDevice vmeevrs[] = {
    {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
    ,VMECSR_END
 };
+
+static
+const
+struct printreg
+{
+  char label[10];
+  epicsUInt32 offset;
+  int rsize;
+} printreg[] = {
+#define REGINFO(label, name, size) {label, U##size##_##name, size}
+REGINFO("Version", FWVersion, 32),
+REGINFO("Control", Control, 32),
+REGINFO("Status",  Status, 32),
+REGINFO("IRQ Flag",IRQFlag, 32),
+REGINFO("IRQ Ena", IRQEnable, 32),
+REGINFO("IRQPlsmap",IRQPulseMap, 16),
+REGINFO("DBufCtrl",DataBufCtrl, 32),
+REGINFO("DBufTxCt",DataTxCtrl, 32),
+REGINFO("CountPS", CounterPS, 32),
+REGINFO("USecDiv", USecDiv, 32),
+REGINFO("ClkCtrl", ClkCtrl, 32),
+REGINFO("LogSts",  LogStatus, 32),
+REGINFO("TSSec",TSSec, 32),
+REGINFO("TSEvt",TSEvt, 32),
+REGINFO("TSSecLath",TSSecLatch, 32),
+REGINFO("TSEvtLath",TSEvtLatch, 32),
+REGINFO("FracDiv", FracDiv, 32),
+REGINFO("Scaler0",Scaler(0),32),
+REGINFO("Pul0Ctrl",PulserCtrl(0),32),
+REGINFO("Pul0Scal",PulserScal(0),32),
+REGINFO("Pul0Dely",PulserDely(0),32),
+REGINFO("Pul0Wdth",PulserWdth(0),32),
+REGINFO("FP0MAP",OutputMapFP(0),16),
+REGINFO("FPU0MAP",OutputMapFPUniv(0),16),
+REGINFO("RB0MAP",OutputMapRB(0),16),
+REGINFO("FPIN0CFG",InputMapFPCfg(0),8),
+REGINFO("FPIN0DBs",InputMapFPDBus(0),8),
+REGINFO("FPIN0Bck",InputMapFPBEvt(0),8),
+REGINFO("FPIN0Ext",InputMapFPEEvt(0),8),
+REGINFO("CML4Low",OutputCMLLow(0),32),
+REGINFO("CML4Rise",OutputCMLRise(0),32),
+REGINFO("CML4High",OutputCMLHigh(0),32),
+REGINFO("CML4Fall",OutputCMLFall(0),32),
+REGINFO("CML4Ena",OutputCMLEna(0),32)
+#undef REGINFO
+};
+
+static
+void
+printregisters(volatile epicsUInt8 *evr)
+{
+    size_t reg;
+
+    printf("EVR\n");
+    for(reg=0; reg<NELEMENTS(printreg); reg++){
+
+      switch(printreg[reg].rsize){
+      case 8:
+        printf("%9s: %02x\n",
+                printreg[reg].label,
+                ioread8(evr+printreg[reg].offset));
+        break;
+      case 16:
+        printf("%9s: %04x\n",
+               printreg[reg].label,
+               nat_ioread16(evr+printreg[reg].offset));
+        break;
+      case 32:
+        printf("%9s: %08x\n",
+               printreg[reg].label,
+               nat_ioread32(evr+printreg[reg].offset));
+        break;
+      }
+    }
+}
+
+static
+int reportCard(void* val,short id,EVR* evr)
+{
+  int level=*(int*)val;
+
+  printf("--- EVR %d ---\n",id);
+
+  if(!evr){
+    printf("NULL!?!?!\n");
+    return 1;
+  }
+
+  printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
+
+  printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
+
+  EVRMRM* mrm=dynamic_cast<EVRMRM*>(evr);
+  if(!mrm)
+    return 0;
+
+  if(level>=2){
+    printregisters(mrm->base);
+  }
+
+  return 0;
+}
+
+static
+long report(int level)
+{
+  printf("=== Begin MRF EVR support ===\n");
+  visitEVRBase((void*)&level, &reportCard);
+  printf("=== End MRF EVR support ===\n");
+  return 0;
+}
 
 static
 void
@@ -263,7 +375,7 @@ static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
     mrmEvrDumpMap(args[0].ival,args[1].ival,args[2].ival);
 }
 
-extern "C"
+static
 void mrmsetupreg()
 {
   iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
@@ -272,3 +384,12 @@ void mrmsetupreg()
 }
 
 epicsExportRegistrar(mrmsetupreg);
+
+static
+drvet drvEvrMrm = {
+    2,
+    (DRVSUPFUN)report,
+    NULL
+};
+
+epicsExportAddress (drvet, drvEvrMrm);
