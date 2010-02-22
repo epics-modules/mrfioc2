@@ -34,6 +34,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,outputs()
   ,prescalers()
   ,pulsers()
+  ,shortcmls()
 {
     epicsUInt32 v = READ32(base, FWVersion),evr;
 
@@ -55,9 +56,13 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
 
-    size_t nPul=10;
-    size_t nPS=3;
+    size_t nPul=10; // number of pulsers
+    size_t nPS=3;   // number of prescalers
+    // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
+    // # of CML outputs
+    size_t nCMLShort=0;
+    // # of FP inputs
     size_t nIFP=0;
 
     switch(v){
@@ -71,10 +76,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         break;
     case evrFormVME64:
         if(DBG) printf("VME64 ");
-        nOFP=4;
-        nIFP=2;
+        nOFP=7;
+        nCMLShort=3; // OFP 4-6 are CML
         nOFPUV=4;
         nORB=16;
+        nIFP=2;
         break;
     }
     if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
@@ -107,6 +113,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     pulsers.resize(nPul);
     for(size_t i=0; i<nPul; i++){
         pulsers[i]=new MRMPulser(i,*this);
+    }
+
+    shortcmls.resize(nCMLShort);
+    for(size_t i=0; i<nCMLShort; i++){
+        shortcmls[i]=new MRMCMLShort(i,base);
     }
 }
 
@@ -223,6 +234,22 @@ EVRMRM::prescaler(epicsUInt32 i) const
     if(i>=prescalers.size())
         throw std::range_error("PreScaler id is out of range");
     return prescalers[i];
+}
+
+MRMCMLShort*
+EVRMRM::cmlshort(epicsUInt32 i)
+{
+    if(i>=shortcmls.size())
+        throw std::range_error("CML Short id is out of range");
+    return shortcmls[i];
+}
+
+const MRMCMLShort*
+EVRMRM::cmlshort(epicsUInt32 i) const
+{
+    if(i>=shortcmls.size())
+        throw std::range_error("CML Short id is out of range");
+    return shortcmls[i];
 }
 
 bool

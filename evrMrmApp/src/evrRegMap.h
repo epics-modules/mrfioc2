@@ -178,19 +178,23 @@ enum evrForm {
 #define U8_InputMapFPEEvt(N) (U8_InputMapFPDEEvt + (4*(N)))
 
 /* Current mode logic (CML) outputs */
-#define U16_OutputCMLNLow  0x600
-#define U16_OutputCMLNRise 0x604
-#define U16_OutputCMLNFall 0x608
-#define U16_OutputCMLNHigh 0x60c
-#define U16_OutputCMLNEna  0x610
+#define U32_OutputCMLNLow  0x600
+#define U32_OutputCMLNRise 0x604
+#define U32_OutputCMLNFall 0x608
+#define U32_OutputCMLNHigh 0x60c
+#define U32_OutputCMLNEna  0x610
+#  define OutputCMLEna_rst 0x04
+#  define OutputCMLEna_pow 0x02
+#  define OutputCMLEna_ena 0x01
+
 #  define OutputCMLMax 3
 
 /* 0 <= N <= 2 */
-#define U16_OutputCMLLow(N)  (U16_OutputCMLNLow +(0x20*(N)))
-#define U16_OutputCMLRise(N) (U16_OutputCMLNRise +(0x20*(N)))
-#define U16_OutputCMLFall(N) (U16_OutputCMLNFall +(0x20*(N)))
-#define U16_OutputCMLHigh(N) (U16_OutputCMLNHigh +(0x20*(N)))
-#define U16_OutputCMLEna(N)  (U16_OutputCMLNEna +(0x20*(N)))
+#define U32_OutputCMLLow(N)  (U32_OutputCMLNLow +(0x20*(N)))
+#define U32_OutputCMLRise(N) (U32_OutputCMLNRise +(0x20*(N)))
+#define U32_OutputCMLFall(N) (U32_OutputCMLNFall +(0x20*(N)))
+#define U32_OutputCMLHigh(N) (U32_OutputCMLNHigh +(0x20*(N)))
+#define U32_OutputCMLEna(N)  (U32_OutputCMLNEna +(0x20*(N)))
 
 #define U8_DataRx_base     0x0800
 #define U8_DataTx_base     0x1800

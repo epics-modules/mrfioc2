@@ -27,6 +27,7 @@ evrmrm_SRCS += drvemOutput.cpp
 evrmrm_SRCS += drvemInput.cpp
 evrmrm_SRCS += drvemPrescaler.cpp
 evrmrm_SRCS += drvemPulser.cpp
+evrmrm_SRCS += drvemCMLShort.cpp
 
 # evrmrm_registerRecordDeviceDriver.cpp derives from evrmrm.dbd
 evrmrm_SRCS += evrmrm_registerRecordDeviceDriver.cpp
