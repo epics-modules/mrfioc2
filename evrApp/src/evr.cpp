@@ -4,6 +4,7 @@
 #include "evr/output.h"
 #include "evr/input.h"
 #include "evr/prescaler.h"
+#include "evr/cml_short.h"
 #include "evr/util.h"
 
 #include "dbCommon.h"
@@ -34,6 +35,10 @@ Input::~Input()
 }
 
 PreScaler::~PreScaler()
+{
+}
+
+CMLShort::~CMLShort()
 {
 }
 
