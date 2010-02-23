@@ -9,6 +9,13 @@ device(ao     , VME_IO, devAOEVRPreScaler, "EVR Prescaler")
 device(longin,     AB_IO, devLIOutput, "EVR Output")
 device(longout,    AB_IO, devLOOutput, "EVR Output")
 
+# CML Output devices
+# '#Ccard Sindex @'
+device(bo,      VME_IO, devBOEVRCMLShort, "EVR CML Short")
+device(bi ,     VME_IO, devBIEVRCMLShort, "EVR CML Short")
+device(longout, VME_IO, devLOEVRCMLShort, "EVR CML Short")
+device(longin , VME_IO, devLIEVRCMLShort, "EVR CML Short")
+
 # Input devices
 # '#Ccard Sinput @'
 device(mbbo,    VME_IO, devMBBOInput, "EVR Input")
