@@ -17,9 +17,10 @@ extern "C" {
 
 typedef struct {
 
-  /*
-   * Find all by Device and Vender only.  Append to the list 'store'.
-   */
+  int (*pDevInit)(void);
+
+  int (*pDevFinal)(void);
+
   int (*pDevPCIFind)(const epicsPCIID *ids, devPCISearchFn searchfn, void *arg, unsigned int o);
 
   int (*pDevPCIToLocalAddr)(epicsPCIDevice* dev,unsigned int bar,volatile void **a,unsigned int o);

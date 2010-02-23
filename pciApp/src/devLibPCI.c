@@ -8,6 +8,19 @@
 #define epicsExportSharedSymbols
 #include "devLibPCI.h"
 
+static
+int devInit(void)
+{
+  if(!pdevLibPCIVirtualOS)
+    return 5;
+
+  if(!!pdevLibPCIVirtualOS->pDevInit)
+    return (*pdevLibPCIVirtualOS->pDevInit)();
+
+  return 0;
+}
+
+
 /**************** API functions *****************/
 
 epicsShareFunc
@@ -18,11 +31,13 @@ int devPCIFindCB(
      unsigned int opt /* always 0 */
 )
 {
+  int status;
+
   if(!idlist || !searchfn)
     return 2;
 
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  status=devInit();
+  if(status) return status;
 
   return (*pdevLibPCIVirtualOS->pDevPCIFind)(idlist,searchfn,arg,opt);
 }
@@ -96,8 +111,10 @@ devPCIToLocalAddr(
   unsigned int opt
 )
 {
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  int status;
+
+  status=devInit();
+  if(status) return status;
 
   if(bar>=PCIBARCOUNT)
     return 2;
@@ -114,8 +131,10 @@ devPCIBarLen(
           unsigned int  bar
 )
 {
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  int status;
+
+  status=devInit();
+  if(status) return status;
 
   if(bar>=PCIBARCOUNT)
     return 2;
@@ -130,8 +149,10 @@ int devPCIConnectInterrupt(
   void  *parameter
 )
 {
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  int status;
+
+  status=devInit();
+  if(status) return status;
 
   return (*pdevLibPCIVirtualOS->pDevPCIConnectInterrupt)
                 (curdev,pFunction,parameter);
@@ -144,8 +165,10 @@ int devPCIDisconnectInterrupt(
   void  *parameter
 )
 {
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  int status;
+
+  status=devInit();
+  if(status) return status;
 
   return (*pdevLibPCIVirtualOS->pDevPCIDisconnectInterrupt)
                 (curdev,pFunction,parameter);

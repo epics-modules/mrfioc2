@@ -75,6 +75,7 @@ int rtemsDevPCIDisconnectInterrupt(
 
 
 devLibPCIVirtualOS prtemsPCIVirtualOS = {
+  NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
   sharedDevPCIBarLen,
