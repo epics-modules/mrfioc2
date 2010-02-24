@@ -9,7 +9,6 @@ DIRS := $(DIRS) $(filter-out $(DIRS), evgApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgBasicSequenceApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evrApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), evrnullApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evrMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
 

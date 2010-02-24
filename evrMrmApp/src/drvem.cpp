@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <stdexcept>
 
-#include <math.h>
+#include <epicsMath.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -19,6 +19,11 @@
 #include <epicsInterrupt.h>
 
 #define DBG evrmrmVerb
+
+/*  Backwards Compatability with R3.14.9 */
+#ifndef POSIX_TIME_AT_EPICS_EPOCH
+#define POSIX_TIME_AT_EPICS_EPOCH 631152000u
+#endif
 
 static
 const double fracref=24.0; // MHz
@@ -439,7 +444,7 @@ EVRMRM::setSourceTS(TSSource src)
     double clk=clockTS(), eclk;
     epicsUInt16 div=0;
 
-    if(clk<=0 || !isfinite(clk))
+    if(clk<=0 || !finite(clk))
         throw std::range_error("TS Clock rate invalid");
 
     switch(src){
@@ -491,7 +496,7 @@ EVRMRM::clockTS() const
 void
 EVRMRM::clockTSSet(double clk)
 {
-    if(clk<=0 || !isfinite(clk))
+    if(clk<=0 || !finite(clk))
         throw std::range_error("TS Clock rate invalid");
 
     TSSource src=SourceTS();
@@ -534,7 +539,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
     // Convert ticks to nanoseconds
     double period=1e9/clockTS(); // in nanoseconds
 
-    if(period<=0 || !isfinite(period))
+    if(period<=0 || !finite(period))
         return false;
 
     ts->nsec*=period;
