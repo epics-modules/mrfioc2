@@ -33,6 +33,16 @@
 #define MRF_VME_EVR230_BID   (MRF_VME_EVR_BID    | MRF_SERIES_230) /* VME Event Receiver 230      */
 #define MRF_VME_EVR230RF_BID (MRF_VME_EVR_RF_BID | MRF_SERIES_230) /* VME EVR 230 w/ RF Recovery  */
 
+/**************************************************************************************************/
+/*  CR/CSR User-CSR Space Offsets (MRF Specific)                                                  */
+/*                                                                                                */
+/* Register address is slot base address + read(base + CR_BEG_UCSR) + UCSR_*                      */
+/**************************************************************************************************/
 
+#define  UCSR_IRQ_LEVEL                0x0000   /* Interrupt request level                        */
+#define  UCSR_IRQ_VECTOR               0x0004   /* Interrupt request vector                       */
+#define  UCSR_SERIAL_NUMBER            0x0010   /* Board serial number (MAC Address)              */
+
+#define  UCSR_SN_BYTES                 6
 
 #endif /* MRFCSR_H */
