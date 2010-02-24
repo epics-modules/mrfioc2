@@ -232,7 +232,14 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     FracSynthWord(0),                           // Fractional synthesizer control word
     OutLinkSource(EVG_CLOCK_SRC_INTERNAL)       // Clock source for outgoing event link
 
-{}//end Constructor
+{
+    //=====================
+    // Create the sequence RAM objects
+    //
+    for (epicsInt32 i = 0;  i <= EVG_SEQ_RAM_NUM;  i++)
+        SeqRam[i] = NULL;
+
+}//end Constructor
 
 /**************************************************************************************************
 |* SetDebugLevel () -- Set The Debug Level That Will Be Used For This Card
@@ -652,6 +659,39 @@ evgMrm::SetInLinkClockSpeed (epicsFloat64 ClockSpeed)
 
 }//end SetInLinkClockSpeed()
 
+//**************************************************************************************************
+//  GetSeqRam () -- Return the Sequence RAM Object
+//**************************************************************************************************
+//! @par Description:
+//!   Returns the address of the sequence RAM object for the requested RAM number
+//!
+//! @param      Ram     = (input)  RAM number of the sequence RAM object to be returned
+//!
+//! @return     Returns NULL if the Ram number was out of range.<br>
+//!             Otherwise returns the address of the requested sequence RAM object.
+//!
+//! @par Member Variables Referenced:
+//! - \e        SeqRam  = (input)    Array of sequence RAM objects
+//!
+//**************************************************************************************************
+
+SequenceRAM*
+evgMrm::GetSeqRam (epicsInt32 Ram) const {
+
+    //=====================
+    // Return NULL if the sequence RAM number is out of range
+    //
+    if ((Ram < 0) || (Ram > EVG_SEQ_RAM_NUM))
+        return NULL;
+
+    //=====================
+    // Otherwise, return the address of the sequence RAM object
+    //
+    else
+        return SeqRam[Ram];
+
+}//end GetSeqRam()
+
 /**************************************************************************************************
 |* ~evgMrm () -- Class Destructor
 |*
@@ -660,6 +700,7 @@ evgMrm::SetInLinkClockSpeed (epicsFloat64 ClockSpeed)
 |*   Free up the hardware and software resources associated with this event generator card.
 |*     o Delete the bus interface
 |*     o Delete the card mutex
+|*     o Delete the SequenceRAM objects.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* CALLING SEQUENCE:
@@ -669,6 +710,7 @@ evgMrm::SetInLinkClockSpeed (epicsFloat64 ClockSpeed)
 |* IMPLICIT INPUTS (member variables):
 |*      BusInterface  (mrfBusInterface *) Pointer to the hardware bus interface object
 |*      CardMutex     (epicsMutex *)      Mutex to lock access to the card.
+|*      SeqRam        (SequenceRAM *)     Array of sequence RAM objects.
 |*
 \**************************************************************************************************/
 
@@ -684,6 +726,12 @@ evgMrm::~evgMrm () {
     //
     delete BusInterface;
     delete CardMutex;
+
+    //=====================
+    // Delete the sequence RAM objects
+    //
+    for (epicsInt32 i = 0;  i <= EVG_SEQ_RAM_NUM;  i++)
+        if (NULL == SeqRam[i]) delete SeqRam[i];
 
 }//end destructor
 

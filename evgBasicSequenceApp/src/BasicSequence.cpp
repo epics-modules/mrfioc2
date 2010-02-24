@@ -10,7 +10,7 @@
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module contains the implementation of the BasicSequence class
+|*   This module contains the implementation of the BasicSequence class
 |*
 |*   The BasicSequence class uses BasicSequenceEvent objects --collections of individual
 |*   records that define a sequence event's properties -- to construct an event sequence
@@ -296,10 +296,12 @@ BasicSequence::Finalize () {
 
         //=====================
         // If the current event did not pass its sanity check,
-        // replace it with the last event in the list and decrement
-        // the event count.
+        // delete the event, replace it with the last event in the list,
+        // and decrement the event count.
         else {
+            delete EventList[index];
             EventList[index] = EventList[listEnd];
+            EventList[listEnd] = NULL;
             NumEvents--;
             listEnd--;
         }//end if we discarded an event
@@ -356,11 +358,37 @@ BasicSequence::Report (epicsInt32 Level) const {
 
 }//end Report()
 
+//**************************************************************************************************
+//  ~BasicSequence() -- Class Destructor
+//**************************************************************************************************
+//! @par Description:
+//!   Free up all resources owned by this object before it is destroyed.
+//!
+//! @par Member Variables Referenced:
+//! - \e     NumEvents      = (input)     The number of sequence events in this sequence
+//! - \e     EventList      = (destroyed) Deallocate the list of BasicSequenceEvent objects
+//!                                       assigned to this sequence.
+//! - \e     EventCodeArray = (destroyed) Deallocate the event code array for this sequence.
+//! - \e     TimestampArray = (destroyed) Deallocate the timestamp array for this sequence.
+//!
+//**************************************************************************************************
+
 BasicSequence::~BasicSequence () {
+
+    //=====================
+    // Delete the sequence events and the sequence event list
+    //
+    for (epicsInt32 i = 0;  i < NumEvents;  i++)
+        if (NULL != EventList[i]) delete EventList[i];
     free (EventList);
+
+    //=====================
+    // Delete the sequence arrays
+    //
     free (EventCodeArray);
     free (TimestampArray);
-}//end Destructor
+
+}//end ~BasicSequence()
 
 /**************************************************************************************************/
 /*                             BasicSequence Non-Member Functions                                 */

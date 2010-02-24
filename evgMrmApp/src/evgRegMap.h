@@ -75,6 +75,11 @@
 #define  U32_Seq1Control        0x0070  // Sequencer 1 Control Register
 #define  U32_Seq2Control        0x0074  // Sequencer 2 Control Register
 
+#define  U32_SeqControl_base    0x0070  // Sequencer Control Register Array Base Offset
+
+#define  U32_SeqControl(n)  \
+             (U32_SeqControl_base + (4*(n))
+
 //=====================
 // Fractional Synthesizer Control Word
 //
@@ -180,10 +185,10 @@
 /**************************************************************************************************/
 
 #define EVG_IRQ_ENABLE          0x80000000     // Master Interrupt Enable Bit
-#define EVG_IRQ_STOP_RAM1       0x00002000     // Sequence RAM 1 Stop Interrupt Bit
-#define EVG_IRQ_STOP_RAM0       0x00001000     // Sequence RAM 0 Stop Interrupt Bit
-#define EVG_IRQ_START_RAM1      0x00000200     // Sequence RAM 1 Start Interrupt Bit
-#define EVG_IRQ_START_RAM0      0x00000100     // Sequence RAM 0 Start Interrupt Bit
+#define EVG_IRQ_STOP_RAM2       0x00002000     // Sequence RAM 2 Stop Interrupt Bit
+#define EVG_IRQ_STOP_RAM1       0x00001000     // Sequence RAM 1 Stop Interrupt Bit
+#define EVG_IRQ_START_RAM2      0x00000200     // Sequence RAM 2 Start Interrupt Bit
+#define EVG_IRQ_START_RAM1      0x00000100     // Sequence RAM 1 Start Interrupt Bit
 #define EVG_IRQ_DBUFF           0x00000020     // Data Buffer Interrupt Bit
 #define EVG_IRQ_FIFO            0x00000002     // Event FIFO Full Interrupt Bit
 #define EVG_IRQ_RXVIO           0x00000001     // Receiver Violation Bit
@@ -193,3 +198,34 @@
 /**************************************************************************************************/
 
 #define EVG_CLK_SRC_EXTRF             0x01     // External/Internal reference clock select
+
+/**************************************************************************************************/
+/*  Sequence RAM Control Register (0x0070, 0x0074) Bit Assignments                                */
+/**************************************************************************************************/
+
+#define EVG_SEQ_RAM_RUNNING     0x02000000     // Sequence RAM is Running (read only)
+#define EVG_SEQ_RAM_ENABLED     0x01000000     // Sequence RAM is Enabled (read only)
+
+#define EVG_SEQ_RAM_SW_TRIG     0x00200000     // Sequence RAM Software Trigger Bit
+#define EVG_SEQ_RAM_RESET       0x00040000     // Sequence RAM Reset
+#define EVG_SEQ_RAM_DISABLE     0x00020000     // Sequence RAM Disable
+#define EVG_SEQ_RAM_ARM         0x00010000     // Sequence RAM Enable/Arm
+
+#define EVG_SEQ_RAM_REPEAT_MASK 0x00180000     // Sequence RAM Repeat Mode Mask
+#define EVG_SEQ_RAM_NORMAL      0x00000000       // Normal Mode: Repeat every trigger
+#define EVG_SEQ_RAM_SINGLE      0x00100000       // Single-Shot Mode: Disable on completion
+#define EVG_SEQ_RAM_CONTINUOUS  0x00080000       // Continuous Mode: Repeat on completion
+
+#define EVG_SEQ_RAM_TRIG_MASK   0x000000ff     // Sequence RAM Trigger Select Mask
+#define EVG_SEQ_RAM_TRIG_MXC0   0x00000000        // Trigger from Mux Counter 0
+#define EVG_SEQ_RAM_TRIG_MXC1   0x00000001        // Trigger from Mux Counter 1
+#define EVG_SEQ_RAM_TRIG_MXC2   0x00000002        // Trigger from Mux Counter 2
+#define EVG_SEQ_RAM_TRIG_MXC3   0x00000003        // Trigger from Mux Counter 3
+#define EVG_SEQ_RAM_TRIG_MXC4   0x00000004        // Trigger from Mux Counter 4
+#define EVG_SEQ_RAM_TRIG_MXC5   0x00000005        // Trigger from Mux Counter 5
+#define EVG_SEQ_RAM_TRIG_MXC6   0x00000006        // Trigger from Mux Counter 6
+#define EVG_SEQ_RAM_TRIG_MXC7   0x00000007        // Trigger from Mux Counter 7
+#define EVG_SEQ_RAM_TRIG_AC     0x00000010        // Trigger from AC Synchronization Logic
+#define EVG_SEQ_RAM_TRIG_RAM1   0x00000011        // Trigger from Sequence RAM 1 Soft Trigger
+#define EVG_SEQ_RAM_TRIG_RAM2   0x00000012        // Trigger from Sequence RAM 2 Soft Trigger
+

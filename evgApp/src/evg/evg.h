@@ -41,12 +41,13 @@
 
 #ifndef EVG_HPP_INC
 #define EVG_HPP_INC
-
+
 /**************************************************************************************************/
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
+#include <evg/SequenceRAM.h>    // MRM Sequence RAM abstract class definitions
 
 /**************************************************************************************************/
 /*                               EVG Abstract Class Definition                                    */
@@ -102,10 +103,10 @@ public:
     //=====================
     // Sequence RAM Routines
     //
-    virtual epicsInt32  GetSeqRamCount    () const = 0;
-    virtual epicsInt32  GetSeqRamSize     () const = 0;
-    virtual epicsInt32  GetSeqRamMaxIndex () const = 0;
-
+    virtual epicsInt32    GetSeqRamCount    ()               const = 0;
+    virtual epicsInt32    GetSeqRamSize     ()               const = 0;
+    virtual epicsInt32    GetSeqRamMaxIndex ()               const = 0;
+    virtual SequenceRAM*  GetSeqRam         (epicsInt32 Ram) const = 0;
     //    virtual epicsStatus  SetSeqEvent (epicsUInt32 RamNum, 
     //                                      epicsUInt32 event,
     //                                      epicsUInt32 timestamp) = 0;

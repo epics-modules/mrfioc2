@@ -139,9 +139,10 @@ public:
     void RebootInit ();
     void IntEnable  ();
 
-    //=====================
+    //==============================================================================================
     // Sequence RAM Routines
-    //
+    //==============================================================================================
+
     inline epicsInt32  GetSeqRamCount    () const {
         return EVG_SEQ_RAM_NUM;
     }//end GetSeqRamCount()
@@ -153,6 +154,8 @@ public:
     inline epicsInt32  GetSeqRamMaxIndex () const {
         return EVG_SEQ_RAM_MAX_INDEX;
     }//end GetSeqRamMaxIndex()
+
+    SequenceRAM*  GetSeqRam (epicsInt32 Ram) const;
 
     //=====================
     // Interrupt Handling Routine
@@ -213,6 +216,11 @@ private:
     epicsFloat64      SecsPerTick;      // Seconds per event clock tick (outgoing link)
     epicsUInt32       FracSynthWord;    // Fractional synthesizer control word
     epicsInt16        OutLinkSource;    // Clock source for outgoing event link
+
+    //=====================
+    // Sequence RAM Data
+    //
+    SequenceRAM*      SeqRam [EVG_SEQ_RAM_NUM+1];      // Array of sequence RAM objects;
 
 };// end class evgMrm //
 

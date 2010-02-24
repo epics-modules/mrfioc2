@@ -76,7 +76,7 @@
 //!   - \b Name  = The sequence event name (note that the name may contain blanks).
 //!   - \b C     = Logical card number for the event generator card this sequence event belongs to.
 //!   - \b Seq   = Specifies the ID number of the sequence that this event belongs to
-//!   - \b Fn    = The record's function name (see list above)
+//!   - \b Fn    = The record's function (see list above)
 //!
 //==================================================================================================
 
@@ -93,7 +93,6 @@
 #include  <alarm.h>             // EPICS Alarm status and severity definitions
 #include  <dbAccess.h>          // EPICS Database access messages and definitions
 #include  <devSup.h>            // EPICS Device support messages and definitions
-#include  <initHooks.h>         // EPICS IOC Initialization hooks support library
 #include  <iocsh.h>             // EPICS IOC shell support library
 #include  <link.h>              // EPICS Database link definitions
 #include  <recGbl.h>            // EPICS Global record support routines
@@ -132,12 +131,10 @@ mrfParmNameList SeqEventParmNames = {
 static const
 epicsInt32  SeqEventNumParms mrfParmNameListSize(SeqEventParmNames);
 
-
 //=====================
 // Generic BasicSequenceEvent setter function type definition
 //
 typedef  epicsStatus (BasicSequenceEvent::*SetFunction) (epicsInt32);
-
 
 //=====================
 // Common device information structure used by all BasicSequenceEvent records
@@ -147,7 +144,6 @@ struct devInfoStruct {
     BasicSequenceEvent*  pEvent;     // Pointer to the BasicSequenceEvent object
     SetFunction          Set;        // Setter Function
 };//end devInfoStruct
-
 
 //=====================
 // Device Support Entry Table (DSET) for analog input and analog output records
@@ -162,7 +158,6 @@ struct AnalogDSET {
     DEVSUPFUN   special_linconv; // Special linear-conversion routine
 };//end AnalogDSET
 
-
 //=====================
 // Device Support Entry Table (DSET) for binary output records
 //
@@ -175,7 +170,6 @@ struct BinaryDSET {
     DEVSUPFUN   perform_io;      // Read or Write routine
 };//end BinaryDSET
 
-
 //=====================
 // Device Support Entry Table (DSET) for long output records
 //
@@ -186,7 +180,7 @@ struct LongOutDSET {
     DEVSUPFUN	init_record;     // Record initialization routine
     DEVSUPFUN	get_ioint_info;  // Get io interrupt information
     DEVSUPFUN   write;           // Write routine
-};//end AnalogDSET
+};//end LongOutDSET
 
 /**************************************************************************************************/
 /*                                Common Utility Routines                                         */
@@ -241,9 +235,9 @@ devInfoStruct* parseLink (
     //=====================
     // Local variables
     //
-    epicsInt32           Card;               // Logical EVG card number (from OUT link)
-    std::string          Name;               // Sequence event name (from OUT link)
-    epicsInt32           SeqNum;             // Sequence ID number for this event (from OUT link)
+    epicsInt32           Card;               // Logical EVG card number
+    std::string          Name;               // Sequence event name
+    epicsInt32           SeqNum;             // Sequence ID number for this event
     mrfIoLink*           ioLink = NULL;      // I/O link parsing object
     devInfoStruct*       pDevInfo = NULL;    // Pointer to device-specific information structure.
     BasicSequenceEvent*  pEvent;             // Pointer to our BasicSequenceEvent object
@@ -297,7 +291,7 @@ devInfoStruct* parseLink (
     //  - Rethrow the error
     //
     catch (std::exception& e) {
-        delete ioLink;
+        if (NULL != ioLink)   delete ioLink;
         if (NULL != pDevInfo) delete pDevInfo;
         throw std::runtime_error(e.what());
     }//end if there was an error parsing the link
