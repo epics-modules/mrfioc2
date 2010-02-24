@@ -5,4 +5,6 @@ record(longout, "$(P)map:$(M)") {
   field( PINI, "YES")
   field( DESC, "Mapping for $(M)")
   field( VAL , $(EVT))
+  field( LOPR, "0")
+  field( HOPR, "255")
 }

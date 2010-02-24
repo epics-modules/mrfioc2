@@ -14,8 +14,10 @@ DBD += evrSupport.dbd
 INC += evr/util.h
 INC += evr/pulser.h
 INC += evr/output.h
+INC += evr/input.h
 INC += evr/prescaler.h
 INC += evr/evr.h
+INC += evr/cml_short.h
 
 evr_SRCS += evr.cpp
 
@@ -29,9 +31,15 @@ evr_SRCS += devEvrAIO.cpp
 evr_SRCS += devEvrStringIO.cpp
 evr_SRCS += devEvrMapping.cpp
 evr_SRCS += devEvrOutput.cpp
+evr_SRCS += devEvrInputMBBIO.cpp
+evr_SRCS += devEvrInputLongIO.cpp
+evr_SRCS += devEvrInputBIO.cpp
 evr_SRCS += devEvrPulserLongIO.cpp
 evr_SRCS += devEvrPulserAIO.cpp
+evr_SRCS += devEvrPulserBIO.cpp
 evr_SRCS += devEvrPulserMapping.cpp
+evr_SRCS += devEvrCMLShortBIO.cpp
+evr_SRCS += devEvrCMLShortLongIO.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp

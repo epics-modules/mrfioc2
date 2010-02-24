@@ -6,9 +6,11 @@ include $(TOP)/configure/CONFIG
 DB += evrbase.db
 DB += evrmap.db
 DB += evrout.db
+DB += evrin.db
 DB += evrscale.db
 DB += evrpulser.db
 DB += evrpulsermap.db
+DB += evrcmlshort.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

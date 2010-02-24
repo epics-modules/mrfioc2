@@ -15,7 +15,7 @@ extern "C" {
  */
 
 typedef struct {
-  epicsUInt16 device, vendor;
+  epicsUInt32 device, vendor;
   epicsUInt32 sub_device, sub_vendor;
   epicsUInt32 pci_class;
   epicsUInt16 revision;
@@ -24,6 +24,8 @@ typedef struct {
 /* sub*, class, and revision are oversized to allow a
  * distinct wildcard match value.
  */
+#define DEVPCI_ANY_DEVICE 0x10000
+#define DEVPCI_ANY_VENDOR 0x10000
 #define DEVPCI_ANY_SUBDEVICE 0x10000
 #define DEVPCI_ANY_SUBVENDOR 0x10000
 #define DEVPCI_ANY_CLASS 0x1000000
@@ -75,14 +77,17 @@ typedef struct {
 
 #define PCIBARCOUNT NELEMENTS( ((epicsPCIDevice*)0)->bar )
 
+typedef int (*devPCISearchFn)(void*,epicsPCIDevice*);
+
 /*
  * Expects a NULL terminated list of identifiers
  */
 epicsShareFunc
 int devPCIFindCB(
      const epicsPCIID *idlist,
-     int (*searchfn)(void*,const epicsPCIDevice*),
-     void *arg
+     devPCISearchFn searchfn,
+     void *arg,
+     unsigned int opt /* always 0 */
 );
 
 epicsShareFunc
@@ -91,35 +96,38 @@ int devPCIFindBDF(
      unsigned int      b,
      unsigned int      d,
      unsigned int      f,
-const epicsPCIDevice **found
+      epicsPCIDevice **found,
+     unsigned int opt /* always 0 */
 );
 
 epicsShareFunc
 int
 devPCIToLocalAddr(
-  const epicsPCIDevice *id,
+        epicsPCIDevice *id,
           unsigned int  bar,
-        volatile void **ppLocalAddr
+        volatile void **ppLocalAddr,
+           unsigned int opt /* always 0 */
 );
 
 epicsShareFunc
 epicsUInt32
 devPCIBarLen(
-  const epicsPCIDevice *id,
+        epicsPCIDevice *id,
           unsigned int  bar
 );
 
 epicsShareFunc
 int devPCIConnectInterrupt(
-  const epicsPCIDevice *id,
+        epicsPCIDevice *id,
   void (*pFunction)(void *),
   void  *parameter
 );
 
 epicsShareFunc
 int devPCIDisconnectInterrupt(
-  const epicsPCIDevice *id,
-  void (*pFunction)(void *)
+        epicsPCIDevice *id,
+  void (*pFunction)(void *),
+  void  *parameter
 );
 
 #ifdef __cplusplus

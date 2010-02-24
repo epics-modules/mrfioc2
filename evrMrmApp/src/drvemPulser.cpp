@@ -11,9 +11,6 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-#define READ32 NAT_READ32
-#define WRITE32 NAT_WRITE32
-
 MRMPulser::MRMPulser(epicsUInt32 i,EVRMRM& o)
   :id(i)
   ,owner(o)
@@ -118,15 +115,15 @@ MRMPulser::setPrescaler(epicsUInt32 v)
 }
 
 bool
-MRMPulser::polarityNorm() const
+MRMPulser::polarityInvert() const
 {
     return READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol;
 }
 
 void
-MRMPulser::setPolarityNorm(bool s)
+MRMPulser::setPolarityInvert(bool s)
 {
-    if(!s)
+    if(s)
         BITSET(NAT,32,owner.base, PulserCtrl(id), PulserCtrl_pol);
     else
         BITCLR(NAT,32,owner.base, PulserCtrl(id), PulserCtrl_pol);

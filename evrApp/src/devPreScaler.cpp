@@ -6,10 +6,13 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
+#include <menuConvert.h>
 
 #include <aoRecord.h>
 #include <longinRecord.h>
 #include <longoutRecord.h>
+
+#include <mrfCommon.h> // for mrfDisableRecord
 
 #include "cardmap.h"
 #include "evr/evr.h"
@@ -51,7 +54,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  prec->pact=TRUE;
+  mrfDisableRecord(prec);
   return ret;
 }
 
@@ -106,9 +109,16 @@ try {
 
   PreScaler* scaler=static_cast<PreScaler*>(prec->dpvt);
 
-  double val=scaler->owner.clock();
+  double val=prec->val;
 
-  val /= prec->val;
+  if(prec->linr==menuConvertLINEAR){
+    val-=prec->eoff;
+    if(prec->eslo!=0)
+        val/=prec->eslo;
+  }
+
+  // event freq / desired scaler freq
+  val=scaler->owner.clock()/val;
 
   scaler->setPrescaler(val);
 

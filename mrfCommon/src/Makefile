@@ -59,7 +59,6 @@ DBD += mrfCommon.dbd
 # Build the MRF Common Library
 #
 LIBRARY_IOC += mrfCommon
-mrfCommon_SRCS += mrfCommon.c
 mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += mrfBusInterface.cpp
 mrfCommon_SRCS += mrfIoLink.cpp

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 976
-y 322
+x 918
+y 359
 w 505
 h 279
 font "helvetica-medium-r-18.0"
@@ -29,14 +29,14 @@ minor 1
 release 0
 x 28
 y 16
-w 119
+w 40
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Set Mapping"
+  "EVR"
 }
 autoSize
 endObjectProperties
@@ -219,5 +219,83 @@ nullColor index 0
 useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 89
+y 16
+w 82
+h 22
+controlPv "$(P)$(O)src:set.DESC"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 211
+y 16
+w 72
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "$(P)$(O)"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 366
+y 231
+w 97
+h 28
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "CML"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcmltest.edl"
+}
+menuLabel {
+  0 "CML"
+}
+closeAction {
+  0 1
+}
+setPosition {
+  0 "parentWindow"
+}
+closeDisplay {
+  0 1
+}
 endObjectProperties
 

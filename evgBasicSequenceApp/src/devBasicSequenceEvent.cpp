@@ -88,6 +88,7 @@
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ string class
 #include  <cstdlib>             // Standard C library
+#include  <cstring>
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
 #include  <alarm.h>             // EPICS Alarm status and severity definitions

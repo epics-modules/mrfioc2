@@ -12,9 +12,11 @@
 
 #include <dbScan.h>
 
+#include "drvemInput.h"
 #include "drvemOutput.h"
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
+#include "drvemCMLShort.h"
 
 /**@brief Modular Register Map Event Receivers
  *
@@ -40,8 +42,14 @@ public:
   virtual MRMOutput* output(OutputType,epicsUInt32 o);
   virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
+  virtual MRMInput* input(epicsUInt32 idx);
+  virtual const MRMInput* input(epicsUInt32) const;
+
   virtual MRMPreScaler* prescaler(epicsUInt32);
   virtual const MRMPreScaler* prescaler(epicsUInt32) const;
+
+  virtual MRMCMLShort* cmlshort(epicsUInt32 idx);
+  virtual const MRMCMLShort* cmlshort(epicsUInt32) const;
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -88,6 +96,9 @@ private:
   IOSCANPVT IRQheadbeat;
   IOSCANPVT IRQrxError;
 
+  typedef std::vector<MRMInput*> inputs_t;
+  inputs_t inputs;
+
   typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
   outputs_t outputs;
 
@@ -96,6 +107,9 @@ private:
 
   typedef std::vector<MRMPulser*> pulsers_t;
   pulsers_t pulsers;
+
+  typedef std::vector<MRMCMLShort*> shortcmls_t;
+  shortcmls_t shortcmls;
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

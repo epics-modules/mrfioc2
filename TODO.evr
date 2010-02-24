@@ -6,17 +6,15 @@ HW changes?
 
 = Timestamp =
 
-Display both free running and latched.
+Add dset for event record
 
 = CML Outputs =
 
-Longer registers
+Longer registers.  Need updated register map
 
 == Configure TS source ==
 
-Select: Event clock, dbus #4, or TS event code
-
-Add TS rate property
+Needs testing.
 
 How to deal with rate changes if event clock changes?
 
@@ -33,7 +31,3 @@ dset to send/receive
 = Event Log =
 
 Detect when stopped?
-
-= DBUS =
-
-dset?

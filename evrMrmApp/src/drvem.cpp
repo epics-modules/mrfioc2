@@ -18,11 +18,6 @@
 #include <dbScan.h>
 #include <epicsInterrupt.h>
 
-#define READ16 NAT_READ16
-#define READ32 NAT_READ32
-#define WRITE16 NAT_WRITE16
-#define WRITE32 NAT_WRITE32
-
 #define DBG evrmrmVerb
 
 static
@@ -39,6 +34,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,outputs()
   ,prescalers()
   ,pulsers()
+  ,shortcmls()
 {
     epicsUInt32 v = READ32(base, FWVersion),evr;
 
@@ -60,9 +56,14 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
 
-    size_t nPul=10;
-    size_t nPS=3;
+    size_t nPul=10; // number of pulsers
+    size_t nPS=3;   // number of prescalers
+    // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
+    // # of CML outputs
+    size_t nCMLShort=0;
+    // # of FP inputs
+    size_t nIFP=0;
 
     switch(v){
     case evrFormCPCI:
@@ -71,18 +72,26 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     case evrFormPMC:
         if(DBG) printf("PMC ");
         nOFP=3;
+        nIFP=1;
         break;
     case evrFormVME64:
         if(DBG) printf("VME64 ");
-        nOFP=4;
-        nOFPUV=2;
+        nOFP=7;
+        nCMLShort=3; // OFP 4-6 are CML
+        nOFPUV=4;
         nORB=16;
+        nIFP=2;
         break;
     }
-    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u\n",nOFP,nOFPUV,nORB);
+    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
+
+    inputs.resize(nIFP);
+    for(size_t i=0; i<nIFP; i++){
+        inputs[i]=new MRMInput(base,i);
+    }
 
     for(size_t i=0; i<nOFP; i++){
         outputs[std::make_pair(OutputFP,i)]=new MRMOutput(base+U16_OutputMapFP(i));
@@ -104,6 +113,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     pulsers.resize(nPul);
     for(size_t i=0; i<nPul; i++){
         pulsers[i]=new MRMPulser(i,*this);
+    }
+
+    shortcmls.resize(nCMLShort);
+    for(size_t i=0; i<nCMLShort; i++){
+        shortcmls[i]=new MRMCMLShort(i,base);
     }
 }
 
@@ -149,9 +163,9 @@ void
 EVRMRM::enable(bool v)
 {
     if(v)
-        BITSET(NAT,32,base, Control, Control_enable);
+        BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
     else
-        BITCLR(NAT,32,base, Control, Control_enable);
+        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena);
 }
 
 MRMPulser*
@@ -190,6 +204,22 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
+MRMInput*
+EVRMRM::input(epicsUInt32 i)
+{
+    if(i>=inputs.size())
+        throw std::range_error("Input id is out of range");
+    return inputs[i];
+}
+
+const MRMInput*
+EVRMRM::input(epicsUInt32 i) const
+{
+    if(i>=inputs.size())
+        throw std::range_error("Input id is out of range");
+    return inputs[i];
+}
+
 MRMPreScaler*
 EVRMRM::prescaler(epicsUInt32 i)
 {
@@ -204,6 +234,22 @@ EVRMRM::prescaler(epicsUInt32 i) const
     if(i>=prescalers.size())
         throw std::range_error("PreScaler id is out of range");
     return prescalers[i];
+}
+
+MRMCMLShort*
+EVRMRM::cmlshort(epicsUInt32 i)
+{
+    if(i>=shortcmls.size())
+        throw std::range_error("CML Short id is out of range");
+    return shortcmls[i];
+}
+
+const MRMCMLShort*
+EVRMRM::cmlshort(epicsUInt32 i) const
+{
+    if(i>=shortcmls.size())
+        throw std::range_error("CML Short id is out of range");
+    return shortcmls[i];
 }
 
 bool
@@ -530,7 +576,6 @@ EVRMRM::isr(void *arg)
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     //TODO: Locking...
-    epicsInterruptContextMessage("IRQ\n");
 
     if(flags&IRQ_BufFull){
         scanIoRequest(evr->IRQbufferReady);

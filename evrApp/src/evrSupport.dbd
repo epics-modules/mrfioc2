@@ -9,12 +9,29 @@ device(ao     , VME_IO, devAOEVRPreScaler, "EVR Prescaler")
 device(longin,     AB_IO, devLIOutput, "EVR Output")
 device(longout,    AB_IO, devLOOutput, "EVR Output")
 
+# CML Output devices
+# '#Ccard Sindex @'
+device(bo,      VME_IO, devBOEVRCMLShort, "EVR CML Short")
+device(bi ,     VME_IO, devBIEVRCMLShort, "EVR CML Short")
+device(longout, VME_IO, devLOEVRCMLShort, "EVR CML Short")
+device(longin , VME_IO, devLIEVRCMLShort, "EVR CML Short")
+
+# Input devices
+# '#Ccard Sinput @'
+device(mbbo,    VME_IO, devMBBOInput, "EVR Input")
+device(longout, VME_IO, devLOInput, "EVR Input")
+device(longin , VME_IO, devLIInput, "EVR Input")
+device(bo,      VME_IO, devBOInput, "EVR Input")
+device(bi ,     VME_IO, devBIInput, "EVR Input")
+
 # Pulser devices
 # '#Lcard Apulser Cmappingram S0 @'
 device(longin,     AB_IO, devLIEVRPulser, "EVR Pulser")
 device(longout,    AB_IO, devLOEVRPulser, "EVR Pulser")
 device(ai,         AB_IO, devAIEVRPulser, "EVR Pulser")
 device(ao,         AB_IO, devAOEVRPulser, "EVR Pulser")
+device(bi,         AB_IO, devBIEVRPulser, "EVR Pulser")
+device(bo,         AB_IO, devBOEVRPulser, "EVR Pulser")
 
 # '#Lcard Apulser Cmappingram Sfunction @'
 device(longout,    AB_IO, devLOEVRPulserMap, "EVR Pulser Mapping")

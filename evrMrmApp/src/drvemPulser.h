@@ -31,8 +31,8 @@ public:
     virtual epicsUInt32 prescaler() const;
     virtual void setPrescaler(epicsUInt32);
 
-    virtual bool polarityNorm() const;
-    virtual void setPolarityNorm(bool);
+    virtual bool polarityInvert() const;
+    virtual void setPolarityInvert(bool);
 
     virtual MapType::type mappedSource(epicsUInt32 src) const;
     virtual void sourceSetMap(epicsUInt32 src,MapType::type action);

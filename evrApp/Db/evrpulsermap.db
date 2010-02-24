@@ -5,4 +5,6 @@ record(longout, "$(P)$(N)$(M)") {
   field( PINI, "YES")
   field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , $(EVT))
+  field( LOPR, "0")
+  field( HOPR, "255")
 }

@@ -9,6 +9,8 @@
 #include <biRecord.h>
 #include <boRecord.h>
 
+#include <mrfCommon.h> // for mrfDisableRecord
+
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "property.h"
@@ -55,7 +57,7 @@ try {
 
   prec->dpvt=static_cast<void*>(prop);
 
-  return 0;
+  return 2;
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
@@ -64,7 +66,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  prec->pact=TRUE;
+  mrfDisableRecord(prec);
   return ret;
 }
 

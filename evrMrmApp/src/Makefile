@@ -15,16 +15,18 @@ DBD += evrmrm.dbd
 # evrmrm.dbd will be made up from these files:
 evrmrm_DBD += base.dbd
 evrmrm_DBD += drvemSupport.dbd
+evrmrm_DBD += vmecsr.dbd
 
-evrmrm_LIBS += pci evr mrfCommon
+evrmrm_LIBS += pci vme evr mrfCommon
 evrmrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrmrm_SRCS += pcisearch.c
 evrmrm_SRCS += drvemIocsh.c
 evrmrm_SRCS += drvem.cpp
 evrmrm_SRCS += drvemOutput.cpp
+evrmrm_SRCS += drvemInput.cpp
 evrmrm_SRCS += drvemPrescaler.cpp
 evrmrm_SRCS += drvemPulser.cpp
+evrmrm_SRCS += drvemCMLShort.cpp
 
 # evrmrm_registerRecordDeviceDriver.cpp derives from evrmrm.dbd
 evrmrm_SRCS += evrmrm_registerRecordDeviceDriver.cpp

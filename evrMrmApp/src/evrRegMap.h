@@ -159,26 +159,42 @@ enum evrForm {
 #define U16_OutputMapRB(N) (U16_OutputMapRBN + (2*(N)))
 
 /* Front panel inputs */
-#define U16_InputMapFPN 0x500
+#define U8_InputMapFPCfgN  0x500
+#  define InputMapFPCfg_lvl  0x20
+#  define InputMapFPCfg_blvl 0x10
+#  define InputMapFPCfg_elvl 0x08
+#  define InputMapFPCfg_edge 0x04
+#  define InputMapFPCfg_bedg 0x02
+#  define InputMapFPCfg_eedg 0x01
+#define U8_InputMapFPDBusN 0x501
+#define U8_InputMapFPDBEvt 0x502
+#define U8_InputMapFPDEEvt 0x503
 #  define InputMapFPMax 2
 
 /* 0 <= N <= 1 */
-#define U16_InputMapFP(N) (U16_InputMapFPN + (2*(N)))
+#define U8_InputMapFPCfg(N)  (U8_InputMapFPCfgN  + (4*(N)))
+#define U8_InputMapFPDBus(N) (U8_InputMapFPDBusN + (4*(N)))
+#define U8_InputMapFPBEvt(N) (U8_InputMapFPDBEvt + (4*(N)))
+#define U8_InputMapFPEEvt(N) (U8_InputMapFPDEEvt + (4*(N)))
 
 /* Current mode logic (CML) outputs */
-#define U16_OutputCMLNLow  0x600
-#define U16_OutputCMLNRise 0x604
-#define U16_OutputCMLNFall 0x608
-#define U16_OutputCMLNHigh 0x60c
-#define U16_OutputCMLNEna  0x610
+#define U32_OutputCMLNLow  0x600
+#define U32_OutputCMLNRise 0x604
+#define U32_OutputCMLNFall 0x608
+#define U32_OutputCMLNHigh 0x60c
+#define U32_OutputCMLNEna  0x610
+#  define OutputCMLEna_rst 0x04
+#  define OutputCMLEna_pow 0x02
+#  define OutputCMLEna_ena 0x01
+
 #  define OutputCMLMax 3
 
 /* 0 <= N <= 2 */
-#define U16_OutputCMLLow(N)  (U16_OutputCMLNLow +(0x20*(N)))
-#define U16_OutputCMLRise(N) (U16_OutputCMLNRise +(0x20*(N)))
-#define U16_OutputCMLFall(N) (U16_OutputCMLNFall +(0x20*(N)))
-#define U16_OutputCMLHigh(N) (U16_OutputCMLNHigh +(0x20*(N)))
-#define U16_OutputCMLEna(N)  (U16_OutputCMLNEna +(0x20*(N)))
+#define U32_OutputCMLLow(N)  (U32_OutputCMLNLow +(0x20*(N)))
+#define U32_OutputCMLRise(N) (U32_OutputCMLNRise +(0x20*(N)))
+#define U32_OutputCMLFall(N) (U32_OutputCMLNFall +(0x20*(N)))
+#define U32_OutputCMLHigh(N) (U32_OutputCMLNHigh +(0x20*(N)))
+#define U32_OutputCMLEna(N)  (U32_OutputCMLNEna +(0x20*(N)))
 
 #define U8_DataRx_base     0x0800
 #define U8_DataTx_base     0x1800
