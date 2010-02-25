@@ -74,8 +74,8 @@ public:
   virtual TSSource SourceTS() const;
   virtual double clockTS() const;
   virtual void clockTSSet(double);
-  virtual bool getTimeStamp(epicsTimeStamp *ts,TSMode mode);
-  virtual void tsLatch(bool latch);
+  virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
+  virtual bool getTicks(epicsUInt32 *tks);
 
   virtual epicsUInt16 dbus() const;
 

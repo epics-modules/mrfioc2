@@ -308,6 +308,15 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     if(code==0)
       return;
 
+    /* The way the latch timestamp is implimented in hardware (no status bit)
+     * makes it impossible to use the latch mapping and the latch control register
+     * bits at the same time.  We use the control register bits.
+     * However, there is not much loss of functionality since all events
+     * can be timestamped in the FIFO.
+     */
+    if(func==126)
+        throw std::range_error("Use of latch timestamp special function code is not allowed");
+
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
@@ -524,22 +533,14 @@ EVRMRM::clockTSSet(double clk)
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
+EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) return false;
 
-    switch(mode){
-    case TSModeLatch:
-        ts->secPastEpoch=READ32(base, TSSecLatch);
-        ts->nsec=READ32(base, TSEvtLatch);
-        break;
-    case TSModeFree:
-        ts->secPastEpoch=READ32(base, TSSec);
-        ts->nsec=READ32(base, TSEvt);
-        break;
-    default:
-        throw std::range_error("TS mode invalid");
-    }
+    BITSET(NAT,32, base, Control, Control_tsltch);
+    ts->secPastEpoch=READ32(base, TSSecLatch);
+    ts->nsec=READ32(base, TSEvtLatch);
+    BITSET(NAT,32, base, Control, Control_tsrst);
 
     //validate seconds (has it been initialized)?
     if(ts->secPastEpoch==0){
@@ -560,13 +561,11 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
     return true;
 }
 
-void
-EVRMRM::tsLatch(bool latch)
+bool
+EVRMRM::getTicks(epicsUInt32 *tks)
 {
-    if(latch)
-        BITSET(NAT,32,base, Control, Control_tsltch);
-    else
-        BITSET(NAT,32,base, Control, Control_tsrst);
+  *tks=READ32(base, TSEvt);
+  return true;
 }
 
 epicsUInt16
@@ -610,7 +609,8 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQmappedEvent);
     }
     if(active&IRQ_Event){
-        //What is this?
+        //FIFO not-full
+        epicsInterruptContextMessage("IRQ Event\n");
     }
     if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
