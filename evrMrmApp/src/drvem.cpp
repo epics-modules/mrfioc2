@@ -25,6 +25,14 @@
 #define POSIX_TIME_AT_EPICS_EPOCH 631152000u
 #endif
 
+#define CBINIT(ptr, prio, fn, valptr) \
+do { \
+  callbackSetPriority(prio, ptr); \
+  callbackSetCallback(fn, ptr);   \
+  callbackSetUser(valptr, ptr);   \
+  (ptr)->timer=NULL;              \
+} while(0)
+
 static
 const double fracref=24.0; // MHz
 
@@ -53,6 +61,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     scanIoInit(&IRQbufferReady);
     scanIoInit(&IRQheadbeat);
     scanIoInit(&IRQrxError);
+    scanIoInit(&IRQfifofull);
+
+    CBINIT(&drain_fifo_cb, priorityLow, &EVRMRM::drain_fifo, this);
+    CBINIT(&drain_log_cb , priorityLow, &EVRMRM::drain_log , this);
+    CBINIT(&poll_link_cb , priorityLow, &EVRMRM::poll_link , this);
 
     /*
      * Create subunit instances
@@ -580,28 +593,69 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
+    epicsUInt32 enable=READ32(evr->base, IRQEnable);
+
+    epicsUInt32 active=flags&enable;
+
+    if(!active)
+      return;
+
     //TODO: Locking...
 
-    if(flags&IRQ_BufFull){
+    if(active&IRQ_BufFull){
         scanIoRequest(evr->IRQbufferReady);
     }
-    if(flags&IRQ_HWMapped){
+    if(active&IRQ_HWMapped){
         evr->count_hardware_irq++;
         scanIoRequest(evr->IRQmappedEvent);
     }
-    if(flags&IRQ_Event){
+    if(active&IRQ_Event){
         //What is this?
     }
-    if(flags&IRQ_Heartbeat){
+    if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
         scanIoRequest(evr->IRQheadbeat);
     }
-    if(flags&IRQ_FIFOFull){
+    if(active&IRQ_FIFOFull){
     }
-    if(flags&IRQ_RXErr){
+    if(active&IRQ_RXErr){
         evr->count_recv_error++;
         scanIoRequest(evr->IRQrxError);
+        // IRQ needs to be masked and polled since it will
+        // recur _very_ frequently when the link is unplugged.
+        BITCLR(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+        callbackRequest(&evr->poll_link_cb);
     }
 
     WRITE32(evr->base, IRQFlag, flags);
+}
+
+void
+EVRMRM::drain_fifo(CALLBACK*)
+{
+}
+
+void
+EVRMRM::drain_log(CALLBACK*)
+{
+}
+
+void
+EVRMRM::poll_link(CALLBACK* cb)
+{
+    void *vptr;
+    callbackGetUser(vptr,cb);
+    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+
+    epicsUInt32 flags=READ32(evr->base, IRQFlag);
+
+    if(flags&IRQ_RXErr){
+        // Still down
+        callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
+    }else{
+        scanIoRequest(evr->IRQrxError);
+        int iflags=epicsInterruptLock();
+        BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+        epicsInterruptUnlock(iflags);
+    }
 }
