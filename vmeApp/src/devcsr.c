@@ -115,7 +115,7 @@ volatile unsigned char* devCSRTestSlot(
 void vmecsrprint(int N,int v)
 {
     volatile unsigned char* addr;
-    char cr[3], ctrlsts;
+    char ctrlsts;
     int i,j,space;
     size_t ader;
 
@@ -132,9 +132,6 @@ void vmecsrprint(int N,int v)
       return;
     }
 
-    cr[1]=*(addr+CR_ASCII_R);
-    cr[2]='\0';
-
     if(v>=2){
       for(i=0;i<512;i++){
         if(i%16==0)
@@ -147,11 +144,6 @@ void vmecsrprint(int N,int v)
         else if(i%4==3)
           printf(" ");
       }
-    }
-
-    if( cr[0]!='C' || cr[1]!='R' ){
-      printf("Error: CR in slot %d does not correctly identify itself. (%s)\n",N,cr);
-      return;
     }
 
     if(v>=1){
@@ -187,6 +179,10 @@ void vmecsrprint(int N,int v)
     }
 
     if(space>=2){
+      printf("User CR      : %08x -> %08x\n",
+        CSRRead24(addr + CR_BEG_UCR),CSRRead24(addr + CR_END_UCR));
+      printf("User CSR     : %08x -> %08x\n",
+        CSRRead24(addr + CR_BEG_UCSR),CSRRead24(addr + CR_END_UCSR));
       printf("CSR Owned    : %s\n",ctrlsts&CSR_BITSET_CRAM_OWNED?"Yes":"No");
       printf("Owner        : 0x%02x\n",CSRRead8(addr + CSR_CRAM_OWNER));
       printf("User bits    : 0x%02x\n",CSRRead8(addr + CSR_UD_BIT_SET));
