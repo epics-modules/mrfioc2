@@ -8,6 +8,7 @@
 
 #include <drvSup.h>
 #include <iocsh.h>
+#include <initHooks.h>
 #include <epicsExport.h>
 
 #include <devLibPCI.h>
@@ -211,9 +212,7 @@ setupPCI(int id,int b,int d,int f)
       printf("Failed to install ISR\n");
       delete receiver;
   }else{
-      NAT_WRITE32(evr, IRQEnable,
-          IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
-      );
+      // Interrupts will be enabled during iocInit()
 
       storeEVR(id,receiver);
   }
@@ -237,6 +236,34 @@ printRamEvt(EVRMRM *evr,int evt,int ram)
 
   printf("Event 0x%02x %3d ",evt,evt);
   printf("%08x %08x %08x %08x\n",map[0],map[1],map[2],map[3]);
+}
+
+static
+int
+enableIRQ(void*,short,EVR* evr)
+{
+  EVRMRM *mrm=dynamic_cast<EVRMRM*>(evr);
+  if(!mrm)
+    return 0;
+
+  WRITE32(mrm->base, IRQEnable,
+      IRQ_Enable|IRQ_RXErr|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
+  );
+
+  return 0;
+}
+
+static
+void inithooks(initHookState state)
+{
+  switch(state)
+  {
+  case initHookAfterInterruptAccept:
+    visitEVRBase(NULL, &enableIRQ);
+    break;
+  default:
+    break;
+  }
 }
 
 extern "C"
@@ -347,9 +374,7 @@ try {
       return;
     }
 
-    NAT_WRITE32(evr, IRQEnable,
-        IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
-    );
+    // Interrupts will be enabled during iocInit()
   }
 
   storeEVR(id,receiver);
@@ -408,6 +433,7 @@ static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
 static
 void mrmsetupreg()
 {
+  initHookRegister(&inithooks);
   iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
   iocshRegister(&mrmEvrSetupVMEFuncDef,mrmEvrSetupVMECallFunc);
   iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
