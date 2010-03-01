@@ -49,6 +49,12 @@ INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += mrfIoLink.h        # I/O link field parser
 INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += debugPrint.h       # SLAC debug print utility
+INC += linkoptions.h
+
+TESTPROD_HOST += linkoptionsTest
+linkoptionsTest_SRCS += linkoptionsTest.c
+linkoptionsTest_LIBS += mrfCommon
+TESTS += linkoptionsTest
 
 #---------------------
 # Install DBD files
@@ -62,6 +68,7 @@ LIBRARY_IOC += mrfCommon
 mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += mrfBusInterface.cpp
 mrfCommon_SRCS += mrfIoLink.cpp
+mrfCommon_SRCS += linkoptions.c
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 
