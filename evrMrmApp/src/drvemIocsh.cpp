@@ -209,6 +209,7 @@ setupPCI(int id,int b,int d,int f)
 
   if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
       printf("Failed to install ISR\n");
+      delete receiver;
   }else{
       NAT_WRITE32(evr, IRQEnable,
           IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
@@ -238,14 +239,6 @@ printRamEvt(EVRMRM *evr,int evt,int ram)
   printf("%08x %08x %08x %08x\n",map[0],map[1],map[2],map[3]);
 }
 
-/**
- * Automatic discovery and configuration of all
- * compatible EVRs in the system.
- *
- * Searchs first the PCI bus and then the VME bus
- * in a reproducable order.  Each device is assigned
- * an incrementing id number starting from 0.
- */
 extern "C"
 void
 mrmEvrSetupPCI(int id,int b,int d,int f)
@@ -276,7 +269,7 @@ static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 
 extern "C"
 void
-mrmEvrSetupVME(int id,int slot,int base)
+mrmEvrSetupVME(int id,int slot,int base,int level, int vector)
 {
 try {
   if(!!getEVR<EVR>(id))
@@ -314,15 +307,50 @@ try {
     return;
   }
 
-  //TODO: Install ISR
+  // Read offset from start of CSR to start of user (card specific) CSR.
+  size_t user_offset=CSRRead24(csr+CR_BEG_UCSR);
+  // Currently that value read from the UCSR pointer is
+  // actually little endian.
+  user_offset= (( user_offset & 0x00ff0000 ) >> 16 ) |
+               (( user_offset & 0x0000ff00 )       ) |
+               (( user_offset & 0x000000ff ) << 16 );
+  volatile unsigned char* user_csr=csr+user_offset;
 
   NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-  // Acknowledge missed interrupts
-  //TODO: This avoids a spurious FIFO Full
-  NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
-
   EVRMRM *receiver=new EVRMRM(id,evr);
+
+  if(level>0 && vector>=0) {
+    CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);
+    CSRWrite8(user_csr+UCSR_IRQ_VECTOR, vector&0xff);
+
+    printf("Using IRQ %d:%2d\n",
+      CSRRead8(user_csr+UCSR_IRQ_LEVEL),
+      CSRRead8(user_csr+UCSR_IRQ_VECTOR)
+    );
+
+    // Acknowledge missed interrupts
+    //TODO: This avoids a spurious FIFO Full
+    NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
+
+    if(devEnableInterruptLevelVME(level&0x7))
+    {
+      printf("Failed to enable interrupt level %d\n",level&0x7);
+      delete receiver;
+      return;
+    }
+
+    if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
+    {
+      printf("Failed to connection VME IRQ %d\n",vector&0xff);
+      delete receiver;
+      return;
+    }
+
+    NAT_WRITE32(evr, IRQEnable,
+        IRQ_Enable|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
+    );
+  }
 
   storeEVR(id,receiver);
 
@@ -333,14 +361,16 @@ try {
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "ID number",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg1 = { "Bus number",iocshArgInt};
-static const iocshArg mrmEvrSetupVMEArg2 = { "Device number",iocshArgInt};
-static const iocshArg * const mrmEvrSetupVMEArgs[3] =
-{&mrmEvrSetupVMEArg0,&mrmEvrSetupVMEArg1,&mrmEvrSetupVMEArg2};
+static const iocshArg mrmEvrSetupVMEArg2 = { "A24 base address",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg3 = { "IRQ Level 1-7 (0 - disable)",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg4 = { "IRQ vector 0-255",iocshArgInt};
+static const iocshArg * const mrmEvrSetupVMEArgs[5] =
+{&mrmEvrSetupVMEArg0,&mrmEvrSetupVMEArg1,&mrmEvrSetupVMEArg2,&mrmEvrSetupVMEArg3,&mrmEvrSetupVMEArg4};
 static const iocshFuncDef mrmEvrSetupVMEFuncDef =
-    {"mrmEvrSetupVME",3,mrmEvrSetupVMEArgs};
+    {"mrmEvrSetupVME",5,mrmEvrSetupVMEArgs};
 static void mrmEvrSetupVMECallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupVME(args[0].ival,args[1].ival,args[2].ival);
+    mrmEvrSetupVME(args[0].ival,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
 }
 
 extern "C"
