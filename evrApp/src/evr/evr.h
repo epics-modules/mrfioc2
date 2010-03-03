@@ -146,6 +146,8 @@ public:
    *@return false if the counter value is not valid
    */
   virtual bool getTicks(epicsUInt32 *tks)=0;
+
+  virtual IOSCANPVT eventOccurred(epicsUInt32 event)=0;
   /*@}*/
 
   /**\defgroup linksts Event Link Status
