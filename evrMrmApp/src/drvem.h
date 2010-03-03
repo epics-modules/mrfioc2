@@ -76,6 +76,7 @@ public:
   virtual void clockTSSet(double);
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
   virtual bool getTicks(epicsUInt32 *tks);
+  virtual IOSCANPVT eventOccurred(epicsUInt32 event);
 
   virtual epicsUInt16 dbus() const;
 

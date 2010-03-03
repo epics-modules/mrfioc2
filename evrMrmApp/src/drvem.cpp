@@ -568,6 +568,12 @@ EVRMRM::getTicks(epicsUInt32 *tks)
   return true;
 }
 
+IOSCANPVT
+EVRMRM::eventOccurred(epicsUInt32 event)
+{
+  return NULL;
+}
+
 epicsUInt16
 EVRMRM::dbus() const
 {
