@@ -71,6 +71,7 @@
 #include <stdexcept>            // Standard C++ exception class
 #include <string>               // Standard C++ string class
 
+#include <stdlib.h>
 #include <stdio.h>              // Standard C I/O library
 
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
