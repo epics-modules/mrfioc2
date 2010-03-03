@@ -115,7 +115,7 @@ volatile unsigned char* devCSRTestSlot(
 void vmecsrprint(int N,int v)
 {
     volatile unsigned char* addr;
-    char ctrlsts;
+    char ctrlsts=0;
     int i,j,space;
     size_t ader;
 

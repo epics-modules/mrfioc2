@@ -40,7 +40,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
-  ,stampClock(1.0/0.0)
+  ,stampClock(0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -472,7 +472,7 @@ EVRMRM::setSourceTS(TSSource src)
     switch(src){
     case TSSourceInternal:
         eclk=clock();
-        div=eclk/clk;
+        div=(epicsUInt16)(eclk/clk);
         break;
     case TSSourceEvent:
         BITCLR(NAT,32, base, Control, Control_tsdbus);
@@ -525,7 +525,7 @@ EVRMRM::clockTSSet(double clk)
 
     if(src==TSSourceInternal){
         double eclk=clock();
-        epicsUInt16 div=eclk/clk;
+        epicsUInt16 div=(epicsUInt16)(eclk/clk);
         WRITE32(base, CounterPS, div);
     }
 
@@ -556,7 +556,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     if(period<=0 || !finite(period))
         return false;
 
-    ts->nsec*=period;
+    ts->nsec*=(epicsUInt32)period;
 
     return true;
 }

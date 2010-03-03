@@ -48,7 +48,7 @@ MRMPulser::setDelay(double v)
     double scal=double(prescaler());
     double clk=owner.clock(); // in MHz.  MTicks/second
 
-    epicsUInt32 ticks=(v*clk)/scal;
+    epicsUInt32 ticks=(epicsUInt32)((v*clk)/scal);
 
     setDelayRaw(ticks);
 }
@@ -81,7 +81,7 @@ MRMPulser::setWidth(double v)
     double scal=double(prescaler());
     double clk=owner.clock(); // in MHz.  MTicks/second
 
-    epicsUInt32 ticks=(v*clk)/scal;
+    epicsUInt32 ticks=(epicsUInt32)((v*clk)/scal);
 
     setWidthRaw(ticks);
 }
