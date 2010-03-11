@@ -377,7 +377,7 @@ EgReportSequences (epicsInt32 CardNum, epicsInt32 Level)
     for (SequenceList::iterator index = List->begin();  index != List->end();  index++) {
         pSequence = index->second;
         pSequence->Report(Level);
-    }//end for eac Sequence object in the list
+    }//end for each Sequence object in the list
 
 }//end EgReportSequences()
 

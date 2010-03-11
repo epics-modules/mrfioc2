@@ -16,6 +16,7 @@ INC += evg/SequenceRAM.h
 
 INC += drvEvg.h
 INC += drvSequence.h
+INC += devSequence.h
 
 #---------------------
 # Install DBD files
@@ -26,9 +27,16 @@ DBD += drvEvg.dbd
 # Build the generic event generator library
 #
 LIBRARY_IOC += evg
-
 evg_SRCS    += drvEvg.cpp
-evg_SRCS    += drvSequence.cpp
+
+#---------------------
+# Build the generic sequencer library
+#
+LIBRARY_IOC   += Sequence
+
+Sequence_SRCS += drvSequence.cpp
+Sequence_SRCS += devSequence.cpp
+
 
 #---------------------
 # Generic EPICS build rules

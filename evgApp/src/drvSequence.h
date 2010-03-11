@@ -10,7 +10,7 @@
 |*
 |*-------------------------------------------------------------------------------------------------
 |* MODULE DESCRIPTION:
-|*    This module provides function prototypes for the MRF event generator sequence driver
+|*    This module provides function prototypes for the MRF event generator sequence driver module
 |*
 |*    An event generator sequence is an abstract object that has no hardware implementation.
 |*    Its purpose is to provide the event and timestamp lists used by the EVG sequence RAM
