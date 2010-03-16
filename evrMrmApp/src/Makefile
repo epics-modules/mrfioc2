@@ -23,6 +23,11 @@ evrMrm_SRCS += drvemCMLShort.cpp
 
 DBD += drvemSupport.dbd
 
+ifneq ($(DEVIOCSTATS),)
+evrmrm_DBD += devIocStats.dbd
+evrmrm_LIBS += devIocStats
+endif
+
 #===========================
 
 include $(TOP)/configure/RULES
