@@ -7,7 +7,13 @@ file "evrbase.db"
 file "evrmap.db"
 {pattern
 {P, C, M, func, EVT}
-{$(P), $(C), "blink", 125, 0}
+{$(P), $(C), "blink", 125, 15}
+}
+
+file "evrevent.db"
+{pattern
+{P, C, N, CODE, EVNT}
+{$(P), $(C), "dbevt", 15, 15}
 }
 
 file "evrscale.db"
