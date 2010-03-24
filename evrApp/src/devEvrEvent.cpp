@@ -104,6 +104,8 @@ get_ioint_info(int dir,dbCommon* precord,IOSCANPVT* io)
   long ret=0;
 try {
 
+  if(!p) return 1;
+
   if(!dir)
     *io=p->evr->eventOccurred(p->event);
   else
