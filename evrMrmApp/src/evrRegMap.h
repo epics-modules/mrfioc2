@@ -99,7 +99,7 @@ enum evrForm {
 
 #define U32_EvtFIFOSec  0x070
 #define U32_EvtFIFOEvt  0x074
-#define U16_EvtFIFOCode 0x078
+#define U32_EvtFIFOCode 0x078
 
 #define U32_LogStatus   0x07C
 

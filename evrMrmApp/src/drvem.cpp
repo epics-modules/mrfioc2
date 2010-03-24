@@ -15,6 +15,7 @@
 
 #include "drvemIocsh.h"
 
+#include <dbDefs.h>
 #include <dbScan.h>
 #include <epicsInterrupt.h>
 
@@ -33,6 +34,19 @@ do { \
   (ptr)->timer=NULL;              \
 } while(0)
 
+/*Note: All locking involving the ISR done by disabling interrupts
+ *      since the OSI library doesn't provide more efficient
+ *      constructs like a ISR safe spinlock.
+ *
+ *      Since OSI does not provide r/w locks either, writing to
+ *      infrequently modified member variables and register
+ *      bit fields is also done with interrupts disabled.
+ *
+ *      This will not be a problem as long as the system
+ *      has only one cpu...
+ */
+
+// Fractional synthesizer reference clock frequency
 static
 const double fracref=24.0; // MHz
 
@@ -100,6 +114,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         nORB=16;
         nIFP=2;
         break;
+    default:
+        printf("Unknown EVR variant %d\n",v);
     }
     if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
 
@@ -137,6 +153,18 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     for(size_t i=0; i<nCMLShort; i++){
         shortcmls[i]=new MRMCMLShort(i,base);
     }
+
+    events_lock=epicsMutexMustCreate();
+    for(size_t i=0; i<NELEMENTS(this->events); i++) {
+        events[i].code=0;
+
+        events[i].interested=0;
+
+        events[i].last_sec=0;
+        events[i].last_evt=0;
+
+        scanIoInit(&events[i].occured);
+    }
 }
 
 EVRMRM::~EVRMRM()
@@ -152,6 +180,7 @@ EVRMRM::~EVRMRM()
     {
         delete &(*it);
     }
+    //TODO: cleanup the rest
 }
 
 epicsUInt32
@@ -180,10 +209,12 @@ EVRMRM::enabled() const
 void
 EVRMRM::enable(bool v)
 {
+    int iflags=epicsInterruptLock();
     if(v)
         BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
     else
         BITCLR(NAT,32,base, Control, Control_enable|Control_mapena);
+    epicsInterruptUnlock(iflags);
 }
 
 MRMPulser*
@@ -469,16 +500,21 @@ EVRMRM::setSourceTS(TSSource src)
     if(clk<=0 || !finite(clk))
         throw std::range_error("TS Clock rate invalid");
 
+    int iflags;
     switch(src){
     case TSSourceInternal:
         eclk=clock();
         div=(epicsUInt16)(eclk/clk);
         break;
     case TSSourceEvent:
+        iflags=epicsInterruptLock();
         BITCLR(NAT,32, base, Control, Control_tsdbus);
+        epicsInterruptUnlock(iflags);
         break;
     case TSSourceDBus4:
+        iflags=epicsInterruptLock();
         BITSET(NAT,32, base, Control, Control_tsdbus);
+        epicsInterruptUnlock(iflags);
         break;
     default:
         throw std::range_error("TS source invalid");
@@ -529,7 +565,34 @@ EVRMRM::clockTSSet(double clk)
         WRITE32(base, CounterPS, div);
     }
 
+    int iflags=epicsInterruptLock();
     stampClock=clk;
+    epicsInterruptUnlock(iflags);
+}
+
+bool
+EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
+{
+    if (!event || event>255) return false;
+
+    eventCode *entry=&events[event];
+
+    epicsMutexLock(events_lock);
+
+    if (   (set  && entry->interested==0) // first interested
+        || (!set && entry->interested==1) // or last un-interested
+    ) {
+        specialSetMap(event, 127, set);
+    }
+
+    if (set)
+        entry->interested++;
+    else
+        entry->interested--;
+
+    epicsMutexUnlock(events_lock);
+
+    return true;
 }
 
 bool
@@ -537,14 +600,53 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) return false;
 
-    BITSET(NAT,32, base, Control, Control_tsltch);
-    ts->secPastEpoch=READ32(base, TSSecLatch);
-    ts->nsec=READ32(base, TSEvtLatch);
-    BITSET(NAT,32, base, Control, Control_tsrst);
+    if(event>0 && event<=255) {
+        // Get time of last event code #
 
-    //validate seconds (has it been initialized)?
-    if(ts->secPastEpoch==0){
-        return false;
+        eventCode *entry=&events[event];
+
+        epicsMutexLock(events_lock);
+
+        // The timestamp service registers permenant interest
+        if (!entry->interested ||
+            ( entry->last_sec==0 &&
+              entry->last_evt==0) )
+        {
+
+            epicsMutexUnlock(events_lock);
+            return false;
+        }
+
+        ts->secPastEpoch=entry->last_sec;
+        ts->nsec=entry->last_evt;
+
+        epicsMutexUnlock(events_lock);
+
+
+    } else {
+        // Get current absolute time
+
+        int iflags=epicsInterruptLock();
+
+        epicsUInt32 ctrl=READ32(base, Control);
+
+        // Latch on
+        ctrl|= Control_tsltch;
+        WRITE32(base, Control, ctrl);
+
+        ts->secPastEpoch=READ32(base, TSSecLatch);
+        ts->nsec=READ32(base, TSEvtLatch);
+
+        // Latch off
+        ctrl&= ~Control_tsltch;
+        WRITE32(base, Control, ctrl);
+
+        epicsInterruptUnlock(iflags);
+
+        //validate seconds (has it been initialized)?
+        if(ts->secPastEpoch==0){
+            return false;
+        }
     }
 
     //Link seconds counter is POSIX time
@@ -564,14 +666,17 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 bool
 EVRMRM::getTicks(epicsUInt32 *tks)
 {
-  *tks=READ32(base, TSEvt);
-  return true;
+    *tks=READ32(base, TSEvt);
+    return true;
 }
 
 IOSCANPVT
 EVRMRM::eventOccurred(epicsUInt32 event)
 {
-  return NULL;
+    if (event>0 && event<=255)
+        return events[event].occured;
+    else
+        return NULL;
 }
 
 epicsUInt16
@@ -610,8 +715,6 @@ EVRMRM::isr(void *arg)
     if(!active)
       return;
 
-    //TODO: Locking...
-
     if(active&IRQ_BufFull){
         scanIoRequest(evr->IRQbufferReady);
     }
@@ -621,30 +724,82 @@ EVRMRM::isr(void *arg)
     }
     if(active&IRQ_Event){
         //FIFO not-full
-        epicsInterruptContextMessage("IRQ Event\n");
+        enable &= ~IRQ_Event;
+        callbackRequest(&evr->drain_fifo_cb);
     }
     if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
         scanIoRequest(evr->IRQheadbeat);
     }
     if(active&IRQ_FIFOFull){
+        enable &= ~IRQ_FIFOFull;
+        callbackRequest(&evr->drain_fifo_cb);
+
+        scanIoRequest(evr->IRQfifofull);
     }
     if(active&IRQ_RXErr){
         evr->count_recv_error++;
         scanIoRequest(evr->IRQrxError);
-        // IRQ needs to be masked and polled since it will
-        // recur _very_ frequently when the link is unplugged.
-        BITCLR(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+
+        enable &= ~IRQ_RXErr;
         callbackRequest(&evr->poll_link_cb);
     }
 
+    WRITE32(evr->base, IRQEnable, enable);
     WRITE32(evr->base, IRQFlag, flags);
+    // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
 }
 
 void
-EVRMRM::drain_fifo(CALLBACK*)
+EVRMRM::drain_fifo(CALLBACK* cb)
 {
+    void *vptr;
+    callbackGetUser(vptr,cb);
+    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+
+    epicsMutexLock(evr->events_lock);
+
+    epicsUInt32 status;
+
+    // Bound the number of events taken from the FIFO
+    // at one time.
+    for(size_t i=0; i<512; i++) {
+
+        status=READ32(evr->base, IRQFlag);
+        if (!(status&IRQ_Event))
+            break;
+
+        epicsUInt32 evt=READ32(evr->base, EvtFIFOCode);
+        if (!evt)
+            break;
+
+        if (evt>NELEMENTS(evr->events)) {
+            printf("Weird event 0x%08x\n", evt);
+            break;
+        }
+        evt &= 0xff;
+
+        evr->events[evt].last_sec=READ32(evr->base, EvtFIFOSec);
+        evr->events[evt].last_evt=READ32(evr->base, EvtFIFOEvt);
+
+        scanIoRequest(evr->events[evt].occured);
+    }
+
+    epicsMutexUnlock(evr->events_lock);
+
+    // It is possible that we could silently lose events at this point
+    // since the FIFO could re-fill and overflow before we clear it
+
+    int iflags=epicsInterruptLock();
+
+    if (status&Status_fifostop) {
+        BITSET(NAT,32, evr->base, Control, Control_fiforst);
+    }
+
+    BITSET(NAT,32, evr->base, IRQEnable, IRQ_Event|IRQ_BufFull);
+
+    epicsInterruptUnlock(iflags);
 }
 
 void
