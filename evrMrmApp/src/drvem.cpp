@@ -591,6 +591,11 @@ EVRMRM::heartbeatOccured()
     return IRQheadbeat;
 }
 
+// A place to write to which will keep the read
+// at the end of the ISR from being optimized out.
+// This value should never be used anywhere else.
+volatile epicsUInt32 evrMrmIsrFlagsTrashCan;
+
 void
 EVRMRM::isr(void *arg)
 {
@@ -634,6 +639,7 @@ EVRMRM::isr(void *arg)
     }
 
     WRITE32(evr->base, IRQFlag, flags);
+    evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
 }
 
 void
