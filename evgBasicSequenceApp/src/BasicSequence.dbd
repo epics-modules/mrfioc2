@@ -1,4 +1,14 @@
-device(ai,      INST_IO, devAiBasicSeqEvent, "EVG Basic Seq Event")
-device(ao,      INST_IO, devAoBasicSeqEvent, "EVG Basic Seq Event")
-device(bo,      INST_IO, devBoBasicSeqEvent, "EVG Basic Seq Event")
-device(longout, INST_IO, devLoBasicSeqEvent, "EVG Basic Seq Event")
+#
+# Device Support for Basic Sequence Objects
+#
+device(ao,      INST_IO, devAoBasicSequence,   "EVG Basic Seq")
+device(bo,      INST_IO, devBoBasicSequence,   "EVG Basic Seq")
+device(mbbo,    INST_IO, devMbboBasicSequence, "EVG Basic Seq")
+
+#
+# Device Suport for Basic Sequence Event Objects
+#
+device(ai,      INST_IO, devAiBasicSeqEvent,   "EVG Basic Seq Event")
+device(ao,      INST_IO, devAoBasicSeqEvent,   "EVG Basic Seq Event")
+device(bo,      INST_IO, devBoBasicSeqEvent,   "EVG Basic Seq Event")
+device(longout, INST_IO, devLoBasicSeqEvent,   "EVG Basic Seq Event")

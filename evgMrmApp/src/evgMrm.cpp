@@ -45,28 +45,31 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
-#include <stdexcept>               // Standard C++ exception class
+#include  <stdexcept>               // Standard C++ exception class
+#include  <queue>                   // Standard C++ queue template
 
-#include <epicsTypes.h>            // EPICS Architecture-independent type definitions
-#include <epicsInterrupt.h>        // EPICS Interrupt context support routines
-#include <epicsMutex.h>            // EPICS Mutex support library
-#include <epicsThread.h>           // EPICS Thread support library
+#include  <epicsTypes.h>            // EPICS Architecture-independent type definitions
+#include  <epicsInterrupt.h>        // EPICS Interrupt context support routines
+#include  <epicsEvent.h>            // EPICS Event semaphore support library
+#include  <epicsMutex.h>            // EPICS Mutex support library
+#include  <epicsThread.h>           // EPICS Thread support library
 
-#include <errlog.h>                // EPICS Error logging support library
-#include <iocsh.h>                 // EPICS IOC shell support library
-#include <registryFunction.h>      // EPICS Registry support library
+#include  <errlog.h>                // EPICS Error logging support library
+#include  <iocsh.h>                 // EPICS IOC shell support library
+#include  <registryFunction.h>      // EPICS Registry support library
 
-#include <mrfCommon.h>             // MRF Common definitions
-#include <mrfCommonIO.h>           // MRF Common I/O macros
-#include <mrfBusInterface.h>       // MRF Bus interface base class definition
-#include <mrfFracSynth.h>          // MRF fractional synthesizer support routines
-#include <mrfVmeBusInterface.h>    // MRF VME Bus interface class definition
+#include  <mrfCommon.h>             // MRF Common definitions
+#include  <mrfCommonIO.h>           // MRF Common I/O macros
+#include  <mrfBusInterface.h>       // MRF Bus interface base class definition
+#include  <mrfFracSynth.h>          // MRF fractional synthesizer support routines
+#include  <mrfVmeBusInterface.h>    // MRF VME Bus interface class definition
 
-#include <drvEvg.h>                // Event generator driver infrastructure declarations
-#include <evgMrm.h>                // Modular register map event generator class definition
-#include <evgRegMap.h>             // Modular register map event generator register definitions
+#include  <drvEvg.h>                // Event generator driver infrastructure declarations
+#include  <evgMrm.h>                // Modular register map event generator class definition
+#include  <evgRegMap.h>             // Modular register map event generator register definitions
+#include  <evg/Sequence.h>          // Event generator Sequence base class
 
-#include <epicsExport.h>           // EPICS Symbol exporting macro definitions
+#include  <epicsExport.h>           // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
 /*                          Bus-Specific Configuration Routines                                   */
@@ -230,7 +233,13 @@ evgMrm::evgMrm (mrfBusInterface *BusInterface) :
     InLinkFrequency(0.0),                       // Event clock frequency for the incoming link
     SecsPerTick(8.0e-9),                        // Seconds per event clock tick
     FracSynthWord(0),                           // Fractional synthesizer control word
-    OutLinkSource(EVG_CLOCK_SRC_INTERNAL)       // Clock source for outgoing event link
+    OutLinkSource(EVG_CLOCK_SRC_INTERNAL),      // Clock source for outgoing event link
+
+    //=====================
+    // Create the Sequence update request queue and event
+    //
+    SeqUpdateEvent(new epicsEvent),             // Sequence update request event
+    SeqUpdateQueue(new SequenceUpdateQueue)     // Sequence update request queue
 
 {
     //=====================
@@ -692,6 +701,28 @@ evgMrm::GetSeqRam (epicsInt32 Ram) const {
 
 }//end GetSeqRam()
 
+//**************************************************************************************************
+//  UpdateSequence () -- Queue A Sequence Update Request to the Card's Sequence Update Task
+//**************************************************************************************************
+//! @par Description:
+//!   Queue a Sequence update request to this EVG card's Sequence update task.
+//!
+//! @param      pSequence       = (input)  Pointer to the Sequence object to be queued.
+//!
+//! @par Member Variables Referenced:
+//! - \e        SeqUpdateEvent  = (modified) Set to indicate a new request has been queued
+//! - \e        SeqUpdateQueue  = (modified) Sequence update request queue.
+//!
+//**************************************************************************************************
+
+void
+evgMrm::UpdateSequence (Sequence* pSequence) {
+
+    SeqUpdateQueue->push(pSequence);    // Push the Sequence pointer onto the update request queue
+    SeqUpdateEvent->signal();           // Signal that there is a Sequence update request
+
+}//end UpdateSequence()
+
 /**************************************************************************************************
 |* ~evgMrm () -- Class Destructor
 |*
@@ -711,6 +742,8 @@ evgMrm::GetSeqRam (epicsInt32 Ram) const {
 |*      BusInterface  (mrfBusInterface *) Pointer to the hardware bus interface object
 |*      CardMutex     (epicsMutex *)      Mutex to lock access to the card.
 |*      SeqRam        (SequenceRAM *)     Array of sequence RAM objects.
+|*      SeqUpdateEvent (epicsEvent *)     Sequence update request event
+|*      SeqUpdateQueue (SequenceUpdateQueue *) Sequeuence update request queue.
 |*
 \**************************************************************************************************/
 
@@ -726,6 +759,12 @@ evgMrm::~evgMrm () {
     //
     delete BusInterface;
     delete CardMutex;
+
+    //=====================
+    // Delete the Sequence update request queue and event
+    //
+    delete SeqUpdateEvent;
+    delete SeqUpdateQueue;
 
     //=====================
     // Delete the sequence RAM objects

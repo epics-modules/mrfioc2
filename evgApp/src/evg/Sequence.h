@@ -38,6 +38,7 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
+#include  <queue>               // Standard C++ queue template
 #include  <string>              // Standard C++ string class
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
@@ -54,16 +55,19 @@
 enum SequenceStatus {
     SeqStat_Idle,       // Sequence is not updating
     SeqStat_Start,	// Sequence update started
-    SeqStat_Busy        // Accumulate update is in progress
+    SeqStat_Busy,       // Update is in progress
+    SeqStat_Error       // Error occurred while trying to update
 };//end SequenceUpdateMode
 
 //=====================
 // State values for the Sequence Update Mode
 //
 enum SequenceUpdateMode {
-    SeqUpdateModeImmediate = 0, // Update sequence on each change
-    SeqUpdateModeOnTrigger = 1  // Accumulate changes and update on trigger
+    SeqUpdateMode_Immediate = 0, // Update sequence on each change
+    SeqUpdateMode_OnTrigger = 1  // Accumulate changes and update on trigger
 };//end SequenceUpdateMode
+
+#define SeqUpdateMode_Max  SeqUpdateMode_OnTrigger
 
 /**************************************************************************************************/
 /*                                  Sequence Class Definition                                     */
@@ -79,6 +83,17 @@ class Sequence
 public:
 
     //=====================
+    // Class Destructor
+    //
+    virtual ~Sequence () = 0;
+
+    //=====================
+    // Required device support routines
+    //
+    virtual void  Report   (epicsInt32 Level) const = 0;
+    virtual void  Finalize ()                       = 0;
+
+    //=====================
     // Sequence exclusive access routines
     //
     virtual void  lock   () = 0;  // Acquire exclusive access to the Sequence
@@ -92,8 +107,15 @@ public:
     virtual epicsInt32          GetCardNum        () const = 0; // Return the logical card number
     virtual epicsInt32          GetSeqNum         () const = 0; // Return sequence number
     virtual epicsInt32          GetNumEvents      () const = 0; // Return num events in sequence
+    virtual epicsFloat64        GetSecsPerTick    () const = 0; // Return Seconds/EventClockTick
     virtual const epicsInt32   *GetEventArray     () const = 0; // Return ptr to array of events
     virtual const epicsUInt32  *GetTimeStampArray () const = 0; // Return ptr to array of timestamps
+
+    //=====================
+    // Sequence Update Routines
+    //
+    virtual void             Update       () = 0;       // Update the Sequence object
+    virtual void             FinishUpdate () = 0;       // Sequence update cleanup
 
     //=====================
     // Support for "Update Mode" records
@@ -109,20 +131,21 @@ public:
     virtual SequenceStatus   StartUpdate                 ()               = 0;
 
     //=====================
-    // Sequence Finalizer
+    //  Support for "Max TimeStamp" Records
     //
-    virtual void  Finalize () = 0;
-
-    //=====================
-    // Sequence Report
-    //
-    virtual void Report (epicsInt32 Level) const = 0;
-
-    //=====================
-    // Class Destructor
-    //
-    virtual ~Sequence () = 0;
+    virtual void            RegisterMaxTimeStampRecord (dbCommon *pRec) = 0;
+    virtual SequenceStatus  SetMaxTimeStamp            (epicsFloat64 MaxTime) = 0;
+    virtual epicsFloat64    GetMaxTimeStamp            ()               const = 0;
 
 };// end class Sequence //
+
+/**************************************************************************************************/
+/*                      Additional Definitions Involving Generic Sequences                        */
+/*                                                                                                */
+
+//=====================
+// Sequence Update Queue Type
+//
+typedef std::queue <Sequence*>  SequenceUpdateQueue;
 
 #endif // EVG_SEQUENCE_H_INC //

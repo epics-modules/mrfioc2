@@ -1,6 +1,6 @@
 /**************************************************************************************************
-|* $(TIMING)/vmeApp/src/evgMrm.h -- Class Definition for Event Generator Card
-|*                                  With Modular Register Map
+|* $(TIMING)/evgMrmApp/src/evgMrm.h -- Class Definition for Event Generator Card
+|*                                     With Modular Register Map
 |*
 |*-------------------------------------------------------------------------------------------------
 |* Authors:  Eric Bjorklund (LANSCE)
@@ -50,11 +50,16 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
-#include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-#include <mrfCommon.h>          // MRF Common definitions
-#include <mrfBusInterface.h>    // MRF Bus interface
+#include  <queue>               // Standard C++ queue template
 
-#include <evg/evg.h>            // EVG base class definition
+#include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <epicsEvent.h>        // EPICS Architecture-independent event semaphore
+
+#include  <mrfCommon.h>         // MRF Common definitions
+#include  <mrfBusInterface.h>   // MRF Bus interface
+
+#include  <evg/evg.h>           // EVG base class definition
+#include  <evg/Sequence.h>      // EVG Sequence base class definition
 
 /**************************************************************************************************/
 /*  Architectural Definitions                                                                     */
@@ -84,6 +89,11 @@ public:
     // Class Constructor
     //
     evgMrm (mrfBusInterface *BusInterface);
+
+    //=====================
+    // Class Destructor
+    //
+    ~evgMrm ();
 
     //=====================
     // Return card's bus type (VME, PMC, PCI, etc.)
@@ -167,11 +177,19 @@ public:
     //
     epicsStatus Report (epicsInt32 level) const;
 
-    //=====================
-    // Class Destructor
-    //
-    ~evgMrm ();
+    //==============================================================================================
+    // Sequence Update Routines
+    //==============================================================================================
 
+    inline epicsEvent* GetSeqUpdateEvent () const {
+        return SeqUpdateEvent;
+    }//end GetSeqUpdateEvent()
+
+    inline SequenceUpdateQueue* GetSeqUpdateQueue () const {
+        return SeqUpdateQueue;
+    }//end GetSeqUpdateQueue()
+
+    void UpdateSequence (Sequence* pSequence);
 
 /**************************************************************************************************/
 /*  Private Methods                                                                               */
@@ -190,37 +208,43 @@ private:
     //=====================
     // Card-Related Data
     //
-    epicsInt32        CardNum;          // Logical card number for this card
-    epicsMutex*       CardMutex;        // Mutex to lock access to the card
-    epicsInt32*       DebugFlag;        // Pointer to which debug flag we should use
-    epicsInt32        LocalDebugFlag;   // Card-specific debug level
+    epicsInt32            CardNum;          // Logical card number for this card
+    epicsMutex*           CardMutex;        // Mutex to lock access to the card
+    epicsInt32*           DebugFlag;        // Pointer to which debug flag we should use
+    epicsInt32            LocalDebugFlag;   // Card-specific debug level
 
     //=====================
     // Bus-Related Data
     //
-    mrfBusInterface*  BusInterface;     // Address of bus interface object
-    epicsInt32        BusType;          // Bus type for this card (VME, PCI, etc.)
-    epicsInt32        SubUnit;          // Bus sub-unit address (e.g. VME Slot, PCI Index, etc.)
+    mrfBusInterface*      BusInterface;     // Address of bus interface object
+    epicsInt32            BusType;          // Bus type for this card (VME, PCI, etc.)
+    epicsInt32            SubUnit;          // Bus sub-unit address (e.g. VME Slot, PCI Index, etc.)
 
     //=====================
     // Hardware-Related Data
     //
-    epicsUInt32       pReg;             // CPU Address for accessing the card's register map
-    epicsUInt32       FPGAVersion;      // Firmware version number
+    epicsUInt32           pReg;             // CPU Address for accessing the card's register map
+    epicsUInt32           FPGAVersion;      // Firmware version number
 
     //=====================
     // Event Link Clock Data
     //
-    epicsFloat64      OutLinkFrequency; // Event clock frequency for the outgoing link
-    epicsFloat64      InLinkFrequency;  // Event clock frequency for the incoming link
-    epicsFloat64      SecsPerTick;      // Seconds per event clock tick (outgoing link)
-    epicsUInt32       FracSynthWord;    // Fractional synthesizer control word
-    epicsInt16        OutLinkSource;    // Clock source for outgoing event link
+    epicsFloat64          OutLinkFrequency; // Event clock frequency for the outgoing link
+    epicsFloat64          InLinkFrequency;  // Event clock frequency for the incoming link
+    epicsFloat64          SecsPerTick;      // Seconds per event clock tick (outgoing link)
+    epicsUInt32           FracSynthWord;    // Fractional synthesizer control word
+    epicsInt16            OutLinkSource;    // Clock source for outgoing event link
+
+    //=====================
+    // Sequence Update Queue and Event Semaphore
+    //
+    epicsEvent*           SeqUpdateEvent;   // Sequence update event
+    SequenceUpdateQueue*  SeqUpdateQueue;   // Sequence update queue
 
     //=====================
     // Sequence RAM Data
     //
-    SequenceRAM*      SeqRam [EVG_SEQ_RAM_NUM+1];      // Array of sequence RAM objects;
+    SequenceRAM*          SeqRam [EVG_SEQ_RAM_NUM+1];  // Array of sequence RAM objects;
 
 };// end class evgMrm //
 

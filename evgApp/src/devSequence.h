@@ -52,6 +52,7 @@
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
 #include  <devSup.h>            // EPICS Device support messages and definitions
 
+#include  <aoRecord.h>          // EPICS Analog output record definition
 #include  <boRecord.h>          // EPICS Binary output record definition
 #include  <mbboRecord.h>        // EPICS Multi-Bit Binary output record definition
 
@@ -65,12 +66,27 @@
 //=====================
 // Function Type for Declaring a Sequence Object to the Event Generator
 //
-typedef Sequence* (*EgDeclareSequence) (epicsInt32 Card, epicsInt32 SeqNum);
+typedef Sequence* (*SEQ_DECLARE_FUN) (epicsInt32 Card, epicsInt32 SeqNum);
 
 
 /**************************************************************************************************/
 /*  Augmented Device Support Entry Table Definitions for Sequence Records                         */
 /**************************************************************************************************/
+
+/*=====================
+ * Augmented Device Support Entry Table (DSET) for analog input and analog output records
+ */
+#define DSET_SEQ_ANALOG_NUM  7     // Number of entries in an augmented analog I/O DSET
+struct SeqAnalogDSET {
+    long                number;	         // Number of support routines
+    DEVSUPFUN           report;	         // Report routine
+    DEVSUPFUN           init;	         // Device suppport initialization routine
+    DEVSUPFUN           init_record;     // Record initialization routine
+    DEVSUPFUN           get_ioint_info;  // Get io interrupt information
+    DEVSUPFUN           perform_io;      // Read or Write routine
+    DEVSUPFUN           special_linconv; // Special linear-conversion routine
+    SEQ_DECLARE_FUN     declare_sequence;// Sequence declaration routine
+};/*end SeqAnalogDSET*/
 
 //=====================
 // Augmented Device Support Entry Table (DSET) for binary input and binary output records
@@ -83,7 +99,7 @@ struct SeqBinaryDSET {
     DEVSUPFUN	        init_record;     // Record initialization routine
     DEVSUPFUN	        get_ioint_info;  // Get io interrupt information
     DEVSUPFUN           perform_io;      // Read or Write routine
-    EgDeclareSequence   declare_sequence;// Sequence declaration routine
+    SEQ_DECLARE_FUN     declare_sequence;// Sequence declaration routine
 };//end SeqBinaryDSET
 
 
@@ -98,12 +114,19 @@ struct SeqMbbDSET {
     DEVSUPFUN	        init_record;     // Record initialization routine
     DEVSUPFUN	        get_ioint_info;  // Get io interrupt information
     DEVSUPFUN           perform_io;      // Read or Write routine
-    EgDeclareSequence   declare_sequence;// Sequence declaration routine
+    SEQ_DECLARE_FUN     declare_sequence;// Sequence declaration routine
 };//end SeqMbbDSET
 
 /**************************************************************************************************/
 /*  Prototypes for Exported Functions                                                             */
 /**************************************************************************************************/
+
+//=====================
+// Analog Output Device Support Routines
+//
+epicsStatus EgSeqAoInitRecord   (aoRecord *pRec);
+epicsStatus EgSeqAoWrite        (aoRecord *pRec);
+
 
 //=====================
 // Binary Output Device Support Routines

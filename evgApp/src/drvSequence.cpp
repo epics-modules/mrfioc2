@@ -78,6 +78,7 @@
 //! @par Description:
 //!    This file provides EPICS generic driver support for event generator Sequence objects.
 //!
+//!    @par
 //!    Although sequences are associated with event generator cards, an event generator
 //!    sequence is an abstract object that has no hardware implementation.
 //!    Its purpose is to provide the event and timestamp lists used by the EVG Sequence RAM
@@ -89,11 +90,17 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
+#include  <map>                 // Standard C++ map template
+#include  <queue>               // Standard C++ queue template
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ sring class
-#include  <map>                 // Standard C++ map template
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <epicsEvent.h>        // EPICS Event semaphore library
+#include  <epicsMutex.h>        // EPICS Mutex semaphore library
+#include  <epicsThread.h>       // EPICS Thread library
+
+#include  <callback.h>          // EPICS Callback support library
 #include  <devSup.h>            // EPICS Device support definitions
 #include  <initHooks.h>         // EPICS IOC Initialization hooks support library
 #include  <iocsh.h>             // EPICS IOC shell support library
@@ -106,7 +113,7 @@
 #include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
-/*  Type Definitions                                                                              */
+/*  Structure and Type Definitions                                                                */
 /**************************************************************************************************/
 
 //=====================
@@ -118,6 +125,22 @@ typedef std::map <epicsInt32, Sequence*>      SequenceList;
 // CardList:  Associates card numbers with sequence lists
 //
 typedef std::map <epicsInt32, SequenceList*>  CardList;
+
+//=====================
+// Sequence Update Callback Structure
+//
+struct SequenceCallbackStruct {
+    CALLBACK     Callback;
+    epicsMutex*  pCallbackMutex;
+    Sequence*    pSequence;
+};//end SequenceCallbackStruct
+
+/**************************************************************************************************/
+/*  Forward Declarations                                                                          */
+/**************************************************************************************************/
+
+static void SequenceUpdateTask  (EVG* pEvg);
+static void SequenceCallbackRtn (CALLBACK* pCallback);
 
 /**************************************************************************************************/
 /*  Variables Global To This Module                                                               */
@@ -293,8 +316,9 @@ EgGetSequence (epicsInt32 CardNum, epicsInt32 SeqNum)
 //!   that can be loaded into the event generator's sequence RAMS.
 //!
 //! @par Function:
-//!   Invoke the Finalize() method for each sequence object connected to the specified
-//!   event generator card.
+//!   - Start the sequence update task for this EVG
+//!   - Invoke the Finalize() method for each sequence object connected to the specified
+//!     event generator card.
 //!
 //! @param   CardNum       = (input) Card number of the event generator
 //!
@@ -309,8 +333,10 @@ EgFinalizeSequences (epicsInt32 CardNum)
     //=====================
     // Local variables
     //
-    SequenceList*   List;       // Reference to the sequence list for the specified EVG card
-    Sequence*       pSequence;  // Sequence object to be finalized.
+    SequenceList*   List;               // Reference to the sequence list for the specified EVG card
+    Sequence*       pSequence;          // Sequence object to be finalized.
+    char            UpdateTaskName[16]; // Name string for the sequence update task
+    epicsUInt32     UpdateTaskPriority; // Task priority for the sequence update task
 
     //=====================
     // Get the sequence list for this card.
@@ -320,6 +346,22 @@ EgFinalizeSequences (epicsInt32 CardNum)
     if (Card == CardSequences.end())
         return;
         
+    //=====================
+    // Set the thread name and priority for the sequence update task
+    //
+    sprintf (UpdateTaskName, "EVG%d_Update", CardNum);
+    epicsThreadHighestPriorityLevelBelow (epicsThreadPriorityCAServerLow, &UpdateTaskPriority);
+
+    //=====================
+    // Start the Sequence Update task for this event generator
+    //
+    epicsThreadCreate (
+        UpdateTaskName,                                         // Thread name
+        UpdateTaskPriority,                                     // Thread priority
+        epicsThreadGetStackSize(epicsThreadStackMedium),        // Stack size
+        (EPICSTHREADFUNC)SequenceUpdateTask,                    // Entry point
+        (void *)EgGetCard(CardNum) );                           // Parm is pointer to EVG object.
+
     //=====================
     // Loop to finalize each defined sequence
     //
@@ -380,7 +422,131 @@ EgReportSequences (epicsInt32 CardNum, epicsInt32 Level)
     }//end for each Sequence object in the list
 
 }//end EgReportSequences()
+
+/**************************************************************************************************/
+/*                              Sequence Update Routines                                          */
+/*                                                                                                */
 
+
+//**************************************************************************************************
+//  SequenceCallbackRtn () -- Routine to Complete Sequence Update Requests
+//**************************************************************************************************
+//! @par Description:
+//!   Complete a Sequence update request.
+//!
+//!   @par
+//!   This routine is intended to run from the context of an EPICS callback task at a priority
+//!   slightly higer than the EPICS scan tasks.  It is specifically intended for handling
+//!   asynchronous record processing callbacks, but may be used for other tasks that require
+//!   elevated priorities as well.  What the task does will be determined by the Sequence's
+//!   "FinishUpdate()" method.
+//!
+//! @param   pCallback  = (input) Pointer to the CALLBACK structure for this event generator.
+//!
+//**************************************************************************************************
+
+static void
+SequenceCallbackRtn (CALLBACK* pCallback)
+{
+    //=====================
+    // Local variables
+    //
+    void*  pUser;       // Pointer to the callback user value
+
+    //=====================
+    // Get the sequence callback structure
+    //
+    callbackGetUser (pUser, pCallback);
+
+    //=====================
+    // Lock access to the callback structure and complete the sequence update
+    //
+    static_cast<SequenceCallbackStruct*>(pUser)->pCallbackMutex->lock();
+    static_cast<SequenceCallbackStruct*>(pUser)->pSequence->FinishUpdate();
+    static_cast<SequenceCallbackStruct*>(pUser)->pCallbackMutex->unlock();
+
+}//end SequenceCallbackRtn();
+
+//**************************************************************************************************
+//  SequenceUpdateTask () -- Task to Process Sequence Update Requests
+//**************************************************************************************************
+//! @par Description:
+//!   Task to process Sequence update requests for one event generator card.
+//!
+//!   @par
+//!   This task runs at a priority slightly lower than the EPICS scan tasks and handles all the
+//!   asynchronous parts of updating a sequence such as re-sorting the events, updating the 
+//!   Sequence RAM (if the sequence is attached to a Sequence RAM) and handling all the
+//!   asynchronous record processing completions.
+//!
+//! @param   pEvg  = (input) Pointer to the event generator object for which we will be
+//!                          processing update requests.
+//!
+//**************************************************************************************************
+
+static void
+SequenceUpdateTask (EVG* pEvg) {
+
+    //=====================
+    // Local variables
+    //
+    SequenceCallbackStruct   CallbackStruct;    // Callback structure
+    Sequence*                pSequence;         // Pointer to Sequence object to update
+    epicsEvent*              UpdatePending;     // Pointer to "Update Pending" event.
+    SequenceUpdateQueue*     UpdateQueue;       // Pointer to queue of pending update requests
+
+    //=====================
+    // Get the update queue and the update semaphore for this EVG
+    //
+    UpdateQueue   = pEvg->GetSeqUpdateQueue();
+    UpdatePending = pEvg->GetSeqUpdateEvent();
+
+    //=====================
+    // Initialize the callback structure
+    //
+    CallbackStruct.pCallbackMutex = new (epicsMutex);
+    callbackSetCallback (SequenceCallbackRtn, &CallbackStruct.Callback);
+    callbackSetPriority (priorityHigh, &CallbackStruct.Callback);
+    callbackSetUser     (&CallbackStruct, &CallbackStruct.Callback);
+
+    //=====================
+    // Loop forever
+    //
+    while (true) {
+
+        //=====================
+        // Wait until we have a request on the queue.
+        // Then loop until there are no more update requests.
+        //
+        UpdatePending->wait();
+        while (!UpdateQueue->empty()) {
+
+            //======================
+            // Get the next Sequence to update
+            //
+            pSequence = UpdateQueue->front();
+            UpdateQueue->pop();
+
+            //=====================
+            // Perform the first part of the update
+            // from the context of the Sequence Update task
+            //
+            epicsThreadSleep (60.0);/*~~~*/
+            pSequence->Update();
+
+            //=====================
+            // Complete the update from the context of the callback task
+            //
+            CallbackStruct.pCallbackMutex->lock();
+            CallbackStruct.pSequence = pSequence;
+            callbackRequest (&CallbackStruct.Callback);
+            CallbackStruct.pCallbackMutex->unlock();
+
+        }//end while update queue is not empty
+
+    }//end forever
+
+}//end SequenceUpdateTask()
 
 //!
 //| @}

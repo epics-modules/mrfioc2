@@ -74,46 +74,70 @@ public:
     BasicSequenceEvent (const std::string&  Name, BasicSequence *pSequence);
 
     //=====================
-    // Getter Functions
+    // Comparison Operator
     //
-    inline const std::string& GetName() const {
+    const bool operator < (const BasicSequenceEvent& Event) const;
+
+    //=============================================================================================
+    // Required Device Support Routines
+    //=============================================================================================
+
+    void            Report       () const;                      // Report Function
+    bool            FinishUpdate ();                            // Sequence Update Completion Rtn.
+    epicsStatus     SanityCheck  ();                            // Event Sanity Check Function
+
+    //=============================================================================================
+    // General Getter Routines
+    //=============================================================================================
+
+    inline const std::string& GetName() const {                 // Get event name
         return (EventName);
     }//end GetName()
 
-    inline const epicsFloat64 GetEventTime() const {
-        return (ActualTime);
+    //=============================================================================================
+    //  Support for "Event Code" Records
+    //=============================================================================================
+
+    void            RegisterCodeRecord (dbCommon *pRec);        // Register an "Event Code" record
+    epicsStatus     SetEventCode       (epicsInt32 Code);       // Set the event code
+
+    //=============================================================================================
+    //  Support for "Enable" Records
+    //=============================================================================================
+
+    void            RegisterEnableRecord (dbCommon *pRec);      // Register an "Enable" record
+    epicsStatus     SetEventEnable       (bool Value);          // Set the enable/disable status
+
+    inline const bool Enabled () const {                       // Determine if event is enabled
+        return (Enable);
+    }//end TimeStampLegal()
+
+    //=============================================================================================
+    //  Support for "Priority" Records
+    //=============================================================================================
+
+    void            RegisterPriorityRecord (dbCommon *pRec);    // Register a "Priority" record
+    epicsStatus     SetEventPriority       (epicsInt32 Level);  // Set the event's jostle priority
+
+    //=============================================================================================
+    //  Support for "Time" Records
+    //=============================================================================================
+
+    void            RegisterTimeRecord (dbCommon *pRec);        // Register a "Time" record
+    SequenceStatus  SetEventTime       (epicsFloat64 Ticks);    // Set the desired event time
+    bool            SetActualTime      (epicsFloat64 Ticks);    // Set the actual event time
+
+    inline const epicsFloat64 GetEventTime  () const {          // Get the requested timestamp
+        return (RequestedTime);
     }//end GetEventTime()
 
-    //=====================
-    // Setter Functions
-    //
-    epicsStatus  SetEventCode     (epicsInt32 Code);
-    epicsStatus  SetEventEnable   (bool Value);
-    epicsStatus  SetEventPriority (epicsInt32 Level);
-    epicsStatus  SetEventTime     (epicsFloat64 Ticks);
+    inline const epicsFloat64 GetActualTime () const {          // Get the actual timestamp
+        return (ActualTime);
+    }//end GetActualTime()
 
-    //=====================
-    // Record Registration Functions
-    //
-    void RegisterCodeRecord       (dbCommon *pRec);
-    void RegisterEnableRecord     (dbCommon *pRec);
-    void RegisterPriorityRecord   (dbCommon *pRec);
-    void RegisterTimeRecord       (dbCommon *pRec);
-
-    //=====================
-    // Sanity Check Function
-    //
-    epicsStatus  SanityCheck ();
-
-    //=====================
-    // Report Function
-    //
-    void Report() const;
-
-    //=====================
-    // Comparison Operators
-    //
-    bool operator < (const BasicSequenceEvent& Event) const;
+    inline const bool TimeStampLegal        () const {          // Determine if timestamp is legal
+        return (ActualTimeLegal);
+    }//end TimeStampLegal()
 
 
 /**************************************************************************************************/
@@ -138,6 +162,7 @@ private:
     //
     epicsUInt8     EventCode;           // Event code
     dbCommon*      EventCodeRecord;     // Pointer to the event code record
+    bool           EventCodeChanged;    // True if event code has changed
 
     //=====================
     // Event timestamp variables
@@ -145,18 +170,22 @@ private:
     epicsFloat64   RequestedTime;       // Requested timestamp (in ticks) for this event
     epicsFloat64   ActualTime;          // Timestamp (in ticks) actually assigned to this event
     dbCommon*      TimeRecord;          // Pointer to the timestamp record
+    bool           TimeChanged;         // True if timestamp has changed
+    bool           ActualTimeLegal;     // True if actual timestamp is inside the legal range
 
     //=====================
     // Event enable/disable variables
     //
     bool           Enable;              // Event enable/disable flag
     dbCommon*      EnableRecord;        // Pointer to the enable/disable record
+    bool           EnableChanged;       // True if enable state has changed
 
     //=====================
     // Event priority variables
     //
     epicsInt32     Priority;            // Event's relative priority (to resolve sorting conflicts)
     dbCommon*      PriorityRecord;      // Pointer to the event priority record
+    bool           PriorityChanged;     // True if the jostle priority has changed
 
 };// end class BasicSequenceEvent //
 

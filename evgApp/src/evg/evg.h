@@ -46,8 +46,11 @@
 /*  Imported Header Files                                                                         */
 /**************************************************************************************************/
 
-#include <epicsTypes.h>         // EPICS Architecture-independent type definitions
-#include <evg/SequenceRAM.h>    // MRM Sequence RAM abstract class definitions
+#include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <epicsEvent.h>        // EPICS Architecture-independent event semaphore
+
+#include  <evg/Sequence.h>      // MRF Sequence abstract class definition
+#include  <evg/SequenceRAM.h>   // MRF Sequence RAM abstract class definitions
 
 /**************************************************************************************************/
 /*                               EVG Abstract Class Definition                                    */
@@ -61,6 +64,11 @@ class EVG
 /**************************************************************************************************/
 
 public:
+
+    //=====================
+    // Class Destructor
+    //
+    virtual ~EVG () = 0;
 
     //=====================
     // Getter Routines
@@ -112,10 +120,12 @@ public:
     //                                      epicsUInt32 timestamp) = 0;
 
     //=====================
-    // Class Destructor
+    // Sequence Update Routines
     //
-    virtual ~EVG () = 0;
-
+    virtual epicsEvent*          GetSeqUpdateEvent ()              const = 0;
+    virtual SequenceUpdateQueue* GetSeqUpdateQueue ()              const = 0;
+    virtual void                 UpdateSequence    (Sequence* pSequence) = 0;
+ 
 };// end class EVG //
 
 #endif // EVG_HPP_INC //

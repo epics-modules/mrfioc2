@@ -48,16 +48,16 @@
 //!   up to three more optional records.  The records are distinguished by function codes specified
 //!   in their I/O link fields (see below).  Basic Sequence Event records, may have the following
 //!   function codes:
-//!   - \b Event Code  (longout, required) Which event code to transmit.
-//!   - \b Time        (ao, required) Specifies when in the sequence the event
-//!                    should be transmitted.
-//!   - \b Time        (ai, optional) Displays the actual timestamp assigned to the event.
-//!                    This could differ from the requested timestamp because of event clock
-//!                    quantization or because another event was assigned to that time.
-//!   - \b Enable      (bo, optional) Enables or disables event transmission.
-//!   - \b Priority    (longout, optional) When two sequence events end up with the same
-//!                    timestamp, the relative priorities will determine which one gets
-//!                    "jostled".
+//!   - <b> Event Code </b> (longout, required) Which event code to transmit.
+//!   - <b> Time </b>       (ao, required) Specifies when in the sequence the event
+//!                         should be transmitted.
+//!   - <b> Time </b>       (ai, optional) Displays the actual timestamp assigned to the event.
+//!                         This could differ from the requested timestamp because of event clock
+//!                         quantization or because another event was assigned to that time.
+//!   - <b> Enable </b>     (bo, optional) Enables or disables event transmission.
+//!   - <b> Priority </b>   (longout, optional) When two sequence events end up with the same
+//!                         timestamp, the relative priorities will determine which one gets
+//!                         "jostled".
 //!   @par
 //!   Every event in a sequence must have a unique name associated with it -- even if the
 //!   event code is duplicated.  The unique name is defined in the I/O link (see below) and
@@ -65,13 +65,14 @@
 //!
 //! @par Device Type Field:
 //!   A basic sequence event record will have the "Device Type" field (DTYP) set to:<br>
-//!      "EVG Basic Seq Event"
+//!      <b> "EVG Basic Seq Event" </b>
 //!
 //! @par Link Format:
 //!   Basic sequence event records use the INST_IO I/O link format. The INP or OUT links have the
 //!   following format:<br>
-//!      \@Name=\<name\>; C=n; Seq=m; Fn=\<function\>
+//!      <b> \@Name=\<name\>; C=n; Seq=m; Fn=\<function\> </b>
 //!
+//!   @par
 //!   Where:
 //!   - \b Name  = The sequence event name (note that the name may contain blanks).
 //!   - \b C     = Logical card number for the event generator card this sequence event belongs to.
@@ -87,8 +88,9 @@
 
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ string class
+
 #include  <cstdlib>             // Standard C library
-#include  <cstring>
+#include  <cstring>             // Standard C string library
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
 #include  <alarm.h>             // EPICS Alarm status and severity definitions
@@ -127,7 +129,7 @@ mrfParmNameList SeqEventParmNames = {
     "Name",     // Event name
     "Fn",       // Record function code
     "Seq"       // Sequence number that this event belongs to
-};
+};//end parameter name table
 
 static const
 epicsInt32  SeqEventNumParms mrfParmNameListSize(SeqEventParmNames);
@@ -141,47 +143,12 @@ typedef  epicsStatus (BasicSequenceEvent::*SetFunction) (epicsInt32);
 // Common device information structure used by all BasicSequenceEvent records
 //
 struct devInfoStruct {
-    BasicSequence*       pSequence;  // Pointer to the BasicSequence object
-    BasicSequenceEvent*  pEvent;     // Pointer to the BasicSequenceEvent object
-    SetFunction          Set;        // Setter Function
+    BasicSequence*       pSequence;       // Pointer to the BasicSequence object
+    BasicSequenceEvent*  pEvent;          // Pointer to the BasicSequenceEvent object
+    SetFunction          Set;             // Setter Function
+    epicsFloat64         LastActualTime;  // Used by TimeStamp record
+    bool                 ValueSet;        // Lets asynchronous completion know if the value was set
 };//end devInfoStruct
-
-//=====================
-// Device Support Entry Table (DSET) for analog input and analog output records
-//
-struct AnalogDSET {
-    long	number;	         // Number of support routines
-    DEVSUPFUN	report;		 // Report routine
-    DEVSUPFUN	init;	         // Device suppport initialization routine
-    DEVSUPFUN	init_record;     // Record initialization routine
-    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
-    DEVSUPFUN   perform_io;      // Read or Write routine
-    DEVSUPFUN   special_linconv; // Special linear-conversion routine
-};//end AnalogDSET
-
-//=====================
-// Device Support Entry Table (DSET) for binary output records
-//
-struct BinaryDSET {
-    long	number;	         // Number of support routines
-    DEVSUPFUN	report;		 // Report routine
-    DEVSUPFUN	init;	         // Device suppport initialization routine
-    DEVSUPFUN	init_record;     // Record initialization routine
-    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
-    DEVSUPFUN   perform_io;      // Read or Write routine
-};//end BinaryDSET
-
-//=====================
-// Device Support Entry Table (DSET) for long output records
-//
-struct LongOutDSET {
-    long	number;	         // Number of support routines
-    DEVSUPFUN	report;		 // Report routine
-    DEVSUPFUN	init;	         // Device suppport initialization routine
-    DEVSUPFUN	init_record;     // Record initialization routine
-    DEVSUPFUN	get_ioint_info;  // Get io interrupt information
-    DEVSUPFUN   write;           // Write routine
-};//end LongOutDSET
 
 /**************************************************************************************************/
 /*                                Common Utility Routines                                         */
@@ -319,7 +286,7 @@ static epicsStatus aiRead       (aiRecord* pRec);
 extern "C" {
 static
 AnalogDSET devAiBasicSeqEvent = {
-    6,                                  // Number of entries in the table
+    DSET_ANALOG_NUM,                    // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
     (DEVSUPFUN)aiInitRecord,            // Record initialization routine
@@ -342,7 +309,7 @@ epicsExportAddress (dset, devAiBasicSeqEvent);
 |*      - Initialize the LINR and ESLO fields.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Time  = Reads the actual time this event is scheduled to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -443,7 +410,7 @@ epicsStatus aiInitRecord (aiRecord *pRec)
 |*    case EGUF was changed).
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Time  = Reads the actual time this event is scheduled to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -464,7 +431,7 @@ static
 epicsStatus aiRead (aiRecord* pRec) {
 
     //=====================
-    // Extract the BasicSequence and BasicSequenceEvent objects from the dpvt structure
+    // Extract the BasicSequence and BasicSequenceEvent objects from the DPVT structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     BasicSequence*       pSequence = pDevInfo->pSequence;
@@ -483,7 +450,7 @@ epicsStatus aiRead (aiRecord* pRec) {
     // Get the actual time value (in ticks) from the BasicSequenceEvent object and
     // convert to the units of the ai record.
     //
-    pRec->val = pEvent->GetEventTime() * pRec->eslo;
+    pRec->val = pEvent->GetActualTime() * pRec->eslo;
     pRec->udf = 0;
 
     //=====================
@@ -513,7 +480,7 @@ static epicsStatus aoWrite      (aoRecord* pRec);
 extern "C" {
 static
 AnalogDSET devAoBasicSeqEvent = {
-    6,                                  // Number of entries in the table
+    DSET_ANALOG_NUM,                    // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
     (DEVSUPFUN)aoInitRecord,            // Record initialization routine
@@ -537,7 +504,7 @@ epicsExportAddress (dset, devAoBasicSeqEvent);
 |*      - Initialize the LINR and ESLO fields.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Time  = Sets the requested time for this event to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -606,9 +573,11 @@ epicsStatus aoInitRecord (aoRecord *pRec)
             pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
 
         //=====================
-        // Attach the device information structure to the record and return
+        // Finish initializing the device information structure and return
         // Do not attempt a raw value conversion
         //
+        pDevInfo->LastActualTime = -1.0;
+        pDevInfo->ValueSet = false;
         pRec->dpvt = (void *)pDevInfo;
         return NO_CONVERT;
 
@@ -644,7 +613,7 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 |*    case EGUF was changed).
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Time  = Sets the requested time for this event to occur.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -665,28 +634,120 @@ static
 epicsStatus aoWrite (aoRecord* pRec) {
 
     //=====================
-    // Extract the BasicSequence and BasicSequenceEvent objects from the dpvt structure
+    // Local variables
+    //
+    epicsFloat64  ActualTicks;          // Actual timestamp (in ticks) after update completes
+     
+    //=====================
+    // Extract the BasicSequence and BasicSequenceEvent objects from the DPVT structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     BasicSequence*       pSequence = pDevInfo->pSequence;
     BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
+    printf ("%s: PACT = %d, ValueSet = %d\n", pRec->name, pRec->pact, pDevInfo->ValueSet);/*~~~~*/
+
+    //=====================
+    // Check to see if this is an asynchronous completion
+    //
+    if (pRec->pact) {
+        pRec->pact = false;
+        ActualTicks = pEvent->GetActualTime();
+
+        //=====================
+        // If a sequence update changed the actual timestamp,
+        // reset the RBV field.
+        //
+        if (ActualTicks != pDevInfo->LastActualTime) {
+            pDevInfo->LastActualTime = ActualTicks;
+            pRec->rbv = (epicsInt32)ActualTicks;        
+        }//end if the actual timestamp changed during the update
+
+        //=====================
+        // If we've already written the new value,
+        // complete the asynchronous write operation now.
+        //
+        if (pDevInfo->ValueSet) {
+            if (!pEvent->TimeStampLegal())
+                recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+
+            pRec->udf = false;
+            return OK;
+        }//end if we don't need to do a delayed write
+
+    }//end if this is an asynchronous completion
+
+    //==============================================================================================
+    // If we get here, then this is either the start of a new write, or it is the
+    // the asynchronous completion of a write that was not able to set the new value
+    // because the Sequence was busy updating. In either case, we will treat it like a
+    // new write.
+    //==============================================================================================
 
     //=====================
     // Re-compute the slope (in case EGUF has changed)
     // If EGUF is 0, it means we want event clock ticks.
     //
-    if (0.0 == pRec->eguf)
-        pRec->eslo = 1.0;
-
-    else
-        pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
+    if (0.0 == pRec->eguf) pRec->eslo = 1.0;
+    else  pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
 
     //=====================
-    // Convert the VAL field to "Event Clock Ticks" and write
-    // it to the BasicSequenceEvent object.
+    // Lock access to the sequence while we try to update this event's timestamp
     //
-    pEvent->SetEventTime (pRec->val / pRec->eslo);
+    pSequence->lock();
 
+    //=====================
+    // Convert the VAL field to "Event Clock Ticks" and write it to the BasicSequenceEvent object.
+    // Store the actual timestamp (in ticks) in the RBV field.
+    //
+    pDevInfo->ValueSet = true;
+    SequenceStatus status = pEvent->SetEventTime (pRec->val / pRec->eslo);
+    ActualTicks = pEvent->GetActualTime();
+    pRec->rbv = (epicsInt32)ActualTicks;
+
+    //=====================
+    // Switch on the returned Sequence status
+    //
+    switch (status) {
+
+        //=====================
+        // Put the record in an alarm state if we tried to set it to
+        // an invalid value.
+        //
+        case SeqStat_Error:
+            recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+            break;
+
+        //=====================
+        // If the Sequence is currently updating, schedule an asynchronous completion
+        // to postpone the write until after the update completes.
+        //
+        case SeqStat_Busy:
+            pRec->pact = true;
+            pDevInfo->ValueSet = false;
+            break;
+
+        //=====================
+        // If the value was written and it started a sequence update,
+        // do a standard asynchronous completion.
+        //
+        case SeqStat_Start:
+            pRec->pact = true;
+            break;
+
+        //=====================
+        // If the value was written but did not start a sequence update,
+        // make this a synchronous completion (this will happen if the
+        // Sequence update mode is set to "On Trigger").
+        //
+        case SeqStat_Idle:
+            pRec->udf = false;
+
+    }//end switch on Sequence status
+
+    //=====================
+    // Unlock the Sequence object and return
+    //
+    pSequence->unlock();
     return OK;
 
 }//end aoWrite()
@@ -711,7 +772,7 @@ static epicsStatus boWrite      (boRecord* pRec);
 extern "C" {
 static
 BinaryDSET devBoBasicSeqEvent = {
-    5,                                  // Number of entries in the table
+    DSET_BINARY_NUM,                    // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
     (DEVSUPFUN)boInitRecord,            // Record initialization routine
@@ -733,7 +794,7 @@ epicsExportAddress (dset, devBoBasicSeqEvent);
 |*      - Register the record as this event's enable record.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Enable  = Enables or disables this event.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -814,20 +875,11 @@ epicsStatus boInitRecord (boRecord *pRec)
 |* boWrite () -- Write the Enable/Disable State to the BasicSequenceEvent Object.
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|*    This routine is called from the boRecord's "process()" routine.
-|*
-|*    It converts the timestamp in the VAL field from engineering units to event clock ticks
-|*    and writes it to the BasicSequenceEvent object.
-|*
-|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
-|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
-|*    use the bo record's built in linear, slope, or breakpoint table conversion features.
-|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
-|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
-|*    case EGUF was changed).
+|*    This routine is called from the boRecord's "process()" routine to enable or disable
+|*    the BasicSequenceEvent object.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Enable  = Enables or disables this event.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -848,7 +900,7 @@ static
 epicsStatus boWrite (boRecord* pRec) {
 
     //=====================
-    // Extract the BasicSequenceEvent object from the dpvt structure
+    // Extract the BasicSequenceEvent object from the DPVT structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
@@ -882,8 +934,8 @@ static epicsStatus loWrite      (longoutRecord* pRec);
 
 extern "C" {
 static
-LongOutDSET devLoBasicSeqEvent = {
-    5,                                  // Number of entries in the table
+LongDSET devLoBasicSeqEvent = {
+    DSET_LONG_NUM,                      // Number of entries in the table
     NULL,                               // -- No device report routine
     NULL,                               // -- No device support initialization routine
     (DEVSUPFUN)loInitRecord,            // Record initialization routine
@@ -906,7 +958,7 @@ epicsExportAddress (dset, devLoBasicSeqEvent);
 |*      - Register the record as the event code or the priority record for this event.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Event Code  = Sets the event code for this event.
 |*    Priority    = Sets the jostle priority for this event
 |*
@@ -1003,7 +1055,7 @@ epicsStatus loInitRecord (longoutRecord *pRec)
 |*    the record is placed in "WRITE_ALARM" state.
 |*
 |*-------------------------------------------------------------------------------------------------
-|* IMPLEMENTED FUNCTIONS:
+|* IMPLEMENTED FUNCTION CODES:
 |*    Event Code  = Sets the event code for this event.
 |*    Priority    = Sets the jostle priority for this event
 |*
@@ -1032,7 +1084,7 @@ epicsStatus loWrite (longoutRecord* pRec) {
     epicsStatus          status;        // Local status variable
 
     //=====================
-    // Extract the SequenceEvent object from the dpvt structure
+    // Extract the SequenceEvent object from the DPVT structure
     //
     pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     pEvent    = pDevInfo->pEvent;

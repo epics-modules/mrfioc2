@@ -42,35 +42,38 @@
 //! @brief      EPICS Device Suppport for Basic Sequences
 //!
 //! @par Description:
-//!   This file contains EPICS device support for event generator basic sequences.
-//!   A sequence event can be represented in the EPICS data base by two required records and
-//!   up to three more optional records. The records are distinguished by function codes specified
-//!   in their I/O link fields (see below).  Basic Sequence records, may have the following
-//!   function codes:
-//!   - \b EVENT_CODE     (longout, required) Which event code to transmit.
-//!   - \b EVENT_TIME     (ao, required) Specifies when in the sequence the event
-//!                       should be transmitted.
-//!   - \b EVENT_TIME     (ai, optional) Displays the actual timestamp assigned to the event.
-//!                       This could differ from the requested timestamp because of event clock
-//!                       quantization or because another event was assigned to that time.
-//!   - \b EVENT_ENABLE   (bo, optional) Enables or disables event transmission.
-//!   - \b EVENT_PRIORITY (longout, optional) When two sequence events end up with the same
-//!                       timestamp, the relative priorities will determine which one gets
-//!                       "jostled".
+//!   This file contains EPICS device support for event generator Basic Sequence objects.
+//!
 //!   @par
-//!   Every event in a sequence must have a unique name associated with it -- even if the
-//!   event code is duplicated.  The unique name is assigned when the SequenceEvent object is
-//!   created.
+//!   A Basic Sequence can be represented in the EPICS data base by up to three optional records
+//!   with the following function codes:
+//!   - <b> Update Mode </b>   (mbbo, optional) Determines whether sequence updates should occur
+//!                             immediately upon the update of any of the sequence's event records
+//!                             or whether updates should accumulate and not effect the sequence
+//!                             until an "Update Trigger" reccord is activated.
+//!   - <b> Update Trigger </b> (bo, optional) Causes the sequence to be immediately updated.
+//!   - <b> Max Time </b>       (ao, optional) Sets the maximum timestamp value for this sequence.
+//!
+//!   @par
+//!   Note that it is not necessary for the Basic Sequence to have any records in the database.
+//!   The existence of BasicSequenceEvent records are sufficient to declare the Basic Sequence.
+//!
+//!   @par
+//!   Every sequence must have an event generator and a sequence number associated with it.
+//!   The sequence number must be unique to the event generator.  Sequences belonging to different
+//!   event generator cards may have the same sequence number (although this practice could be
+//!   confusing).  Sequences are not allowed to be shared between event generators.
 //!
 //! @par Device Type Field:
 //!   A basic sequence record will have the "Device Type" field (DTYP) set to:<br>
-//!      "EVG Basic Seq"
+//!      <b> "EVG Basic Seq" </b>
 //!
 //! @par Link Format:
 //!   Basic sequence records use the INST_IO I/O link format. The INP or OUT links have the
 //!   following format:<br>
-//!      \@C=n; Seq=m; Fn=\<function\>
+//!      <b> \@C=n; Seq=m; Fn=\<function\> </b>
 //!
+//!   @par
 //!   Where:
 //!   - \b C     = Logical card number for the event generator card this sequence belongs to.
 //!   - \b Seq   = Specifies the ID number of the sequence
@@ -85,21 +88,33 @@
 
 #include  <stdexcept>           // Standard C++ exception definitions
 #include  <string>              // Standard C++ string class
+#include  <cstring>             // Standard C string library
 
 #include  <epicsTypes.h>        // EPICS Architecture-independent type definitions
+#include  <alarm.h>             // EPICS Alarm status and severity definitions
+#include  <dbAccess.h>          // EPICS Database access messages and definitions
+#include  <devSup.h>            // EPICS Device support messages and definitions
+#include  <link.h>              // EPICS Database link definitions
+#include  <recGbl.h>            // EPICS Global record support routines
 
 #include  <mrfCommon.h>         // MRF Common definitions
 #include  <mrfIoLink.h>         // MRF I/O link field parser
 #include  <drvSequence.h>       // MRF Sequence driver support declarations
+#include  <devSequence.h>       // MRF Sequence device support declarations
 #include  <evg/Sequence.h>      // MRF Sequence base class
-#include  <BasicSequence.h>     // MRF Basic Sequence class
-#include  <BasicSequenceEvent.h>// MRF Basic Sequence Event class
+#include  <BasicSequence.h>     // MRF BasicSequence class
+#include  <BasicSequenceEvent.h>// MRF BasicSequenceEvent class
 
 #include  <epicsExport.h>       // EPICS Symbol exporting macro definitions
 
 /**************************************************************************************************/
-/*  Structure Definitions                                                                         */
+/*  Structure And Type Definitions                                                                */
 /**************************************************************************************************/
+
+//=====================
+// BasicSequence Class ID String
+//
+const std::string BasicSequenceClassID(BASIC_SEQ_CLASS_ID);
 
 //=====================
 // Common I/O link parameter definitions used by all BasicSequence records
@@ -109,15 +124,10 @@ mrfParmNameList BasicSeqParmNames = {
     "C",        // Logical card number
     "Seq",      // Sequence number
     "Fn"        // Record function code
-};
+};//end parameter name table
 
 static const
 epicsInt32  BasicSeqNumParms mrfParmNameListSize(BasicSeqParmNames);
-
-//=====================
-// BasicSequence Class ID String
-//
-const std::string BasicSequenceClassID(BASIC_SEQ_CLASS_ID);
 
 /**************************************************************************************************/
 /*                                Global Utility Routines                                         */
@@ -200,3 +210,81 @@ EgDeclareBasicSequence (epicsInt32 Card, epicsInt32 SeqNum) {
     return (pNewSeq);
 
 }//end EgDeclareBasicSequence()
+
+/**************************************************************************************************/
+/*                    Device Support for Basic Sequence Binary Output Records                     */
+/*                                                                                                */
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Analog Output Records                                   */
+/**************************************************************************************************/
+
+extern "C" {
+static
+SeqAnalogDSET devAoBasicSequence = {
+    DSET_SEQ_ANALOG_NUM,                        // Number of entries in the table
+    NULL,                                       // -- No device report routine
+    NULL,                                       // -- No device support initialization routine
+    (DEVSUPFUN)EgSeqAoInitRecord,               // Use generic record initialization routine
+    NULL,                                       // -- No get I/O interrupt information routine
+    (DEVSUPFUN)EgSeqAoWrite,                    // Use generic write routine
+    NULL,                                       // -- No special linear-conversion routine
+    (SEQ_DECLARE_FUN)EgDeclareBasicSequence     // Use BasicSequence declaration routine
+};
+
+epicsExportAddress (dset, devAoBasicSequence);
+
+};//end extern "C"
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Binary Output Records                                   */
+/**************************************************************************************************/
+
+extern "C" {
+static
+SeqBinaryDSET devBoBasicSequence = {
+    DSET_SEQ_BINARY_NUM,                        // Number of entries in the table
+    NULL,                                       // -- No device report routine
+    NULL,                                       // -- No device support initialization routine
+    (DEVSUPFUN)EgSeqBoInitRecord,               // Use generic record initialization routine
+    NULL,                                       // -- No get I/O interrupt information routine
+    (DEVSUPFUN)EgSeqBoWrite,                    // Use generic write routine
+    (SEQ_DECLARE_FUN)EgDeclareBasicSequence     // Use BasicSequence declaration routine
+};
+
+epicsExportAddress (dset, devBoBasicSequence);
+
+};//end extern "C"
+
+
+/**************************************************************************************************/
+/*               Device Support for Basic Sequence Multi-Bit Binary Output Records                */
+/*                                                                                                */
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET) For Multi-Bit Binary Output Records                         */
+/**************************************************************************************************/
+
+extern "C" {
+static
+SeqMbbDSET devMbboBasicSequence = {
+    DSET_SEQ_MBB_NUM,                           // Number of entries in the table
+    NULL,                                       // -- No device report routine
+    NULL,                                       // -- No device support initialization routine
+    (DEVSUPFUN)EgSeqMbboInitRecord,             // Use generic record initialization routine
+    NULL,                                       // -- No get I/O interrupt information routine
+    (DEVSUPFUN)EgSeqMbboWrite,                  // Use generic write routine
+    (SEQ_DECLARE_FUN)EgDeclareBasicSequence     // Use BasicSequence declaration routine
+};
+
+epicsExportAddress (dset, devMbboBasicSequence);
+
+};//end extern "C"
+
+
+//!
+//| @}
+//end group Sequencer
