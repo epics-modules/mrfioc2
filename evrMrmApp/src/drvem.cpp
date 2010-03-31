@@ -351,10 +351,22 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
-    if(v)
-        BITSET(NAT,32,base, MappingRam(0, code, Internal), mask);
-    else
-        BITCLR(NAT,32,base, MappingRam(0, code, Internal), mask);
+    int iflags=epicsInterruptLock();
+
+    epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
+
+    if (v && (val&mask)) {
+        // already set
+        epicsInterruptUnlock(iflags);
+        throw std::runtime_error("Ignore duplicate mapping");
+
+    } else if(v) {
+        WRITE32(base, MappingRam(0, code, Internal), val|mask);
+    } else {
+        WRITE32(base, MappingRam(0, code, Internal), val&~mask);
+    }
+
+    epicsInterruptUnlock(iflags);
 }
 
 const char*

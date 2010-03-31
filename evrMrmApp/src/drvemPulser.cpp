@@ -4,8 +4,10 @@
 #include "drvem.h"
 
 #include <stdexcept>
+#include <cstring>
 
 #include <errlog.h>
+#include <dbDefs.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -17,6 +19,8 @@ MRMPulser::MRMPulser(epicsUInt32 i,EVRMRM& o)
 {
     if(id>31)
         throw std::range_error("pulser id is out of range");
+
+    std::memset(&this->mapped, 0, NELEMENTS(this->mapped));
 }
 
 bool
@@ -164,6 +168,12 @@ MRMPulser::mappedSource(epicsUInt32 evt) const
         errlogPrintf("EVR #%d pulser #%d code %02x maps too many actions %08x %08x %08x\n",
             owner.id,id,evt,map[0],map[1],map[2]);
     }
+
+    if( (ret==MapType::None) ^ _ismap(evt) ){
+        errlogPrintf("EVR #%d pulser #%d code %02x mapping (%08x %08x %08x) is out of sync with view (%d)\n",
+            owner.id,id,evt,map[0],map[1],map[2],_ismap(evt));
+    }
+
     return ret;
 }
 
@@ -177,6 +187,17 @@ MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
         return;
 
     epicsUInt32 pmask=1<<id;
+
+    if( (action!=MapType::None) && _ismap(evt) )
+        throw std::runtime_error("Ignore request for duplicate mapping");
+
+    if(action!=MapType::None)
+        _map(evt);
+    else
+        _unmap(evt);
+
+    errlogPrintf("EVR #%d pulser #%d code %02x action %d\n",
+        owner.id,id,evt, action);
 
     if(action==MapType::Trigger)
         BITSET(NAT,32, owner.base, MappingRam(0,evt,Trigger), pmask);
