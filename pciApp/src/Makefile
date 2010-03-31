@@ -10,8 +10,11 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC = pci
 
+USR_INCLUDES += -I../os/$(OS_CLASS)
+
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
+
 pci_SRCS += devLibPCI.c
 
 pci_SRCS_RTEMS += osdPciShared.c
