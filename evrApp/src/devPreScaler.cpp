@@ -120,9 +120,9 @@ try {
   // event freq / desired scaler freq
   val=scaler->owner.clock()/val;
 
-  scaler->setPrescaler(val);
+  scaler->setPrescaler((epicsUInt32)val);
 
-  prec->rval=val;
+  prec->rval=(epicsUInt32)val;
   prec->rbv=scaler->prescaler();
 
   // Check that input frequency can be exactly represented.

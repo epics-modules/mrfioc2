@@ -25,6 +25,14 @@
 #define POSIX_TIME_AT_EPICS_EPOCH 631152000u
 #endif
 
+#define CBINIT(ptr, prio, fn, valptr) \
+do { \
+  callbackSetPriority(prio, ptr); \
+  callbackSetCallback(fn, ptr);   \
+  callbackSetUser(valptr, ptr);   \
+  (ptr)->timer=NULL;              \
+} while(0)
+
 static
 const double fracref=24.0; // MHz
 
@@ -32,7 +40,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
-  ,stampClock(1.0/0.0)
+  ,stampClock(0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -53,6 +61,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     scanIoInit(&IRQbufferReady);
     scanIoInit(&IRQheadbeat);
     scanIoInit(&IRQrxError);
+    scanIoInit(&IRQfifofull);
+
+    CBINIT(&drain_fifo_cb, priorityLow, &EVRMRM::drain_fifo, this);
+    CBINIT(&drain_log_cb , priorityLow, &EVRMRM::drain_log , this);
+    CBINIT(&poll_link_cb , priorityLow, &EVRMRM::poll_link , this);
 
     /*
      * Create subunit instances
@@ -295,6 +308,15 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     if(code==0)
       return;
 
+    /* The way the latch timestamp is implimented in hardware (no status bit)
+     * makes it impossible to use the latch mapping and the latch control register
+     * bits at the same time.  We use the control register bits.
+     * However, there is not much loss of functionality since all events
+     * can be timestamped in the FIFO.
+     */
+    if(func==126)
+        throw std::range_error("Use of latch timestamp special function code is not allowed");
+
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
@@ -450,7 +472,7 @@ EVRMRM::setSourceTS(TSSource src)
     switch(src){
     case TSSourceInternal:
         eclk=clock();
-        div=eclk/clk;
+        div=(epicsUInt16)(eclk/clk);
         break;
     case TSSourceEvent:
         BITCLR(NAT,32, base, Control, Control_tsdbus);
@@ -503,7 +525,7 @@ EVRMRM::clockTSSet(double clk)
 
     if(src==TSSourceInternal){
         double eclk=clock();
-        epicsUInt16 div=eclk/clk;
+        epicsUInt16 div=(epicsUInt16)(eclk/clk);
         WRITE32(base, CounterPS, div);
     }
 
@@ -511,22 +533,14 @@ EVRMRM::clockTSSet(double clk)
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
+EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) return false;
 
-    switch(mode){
-    case TSModeLatch:
-        ts->secPastEpoch=READ32(base, TSSecLatch);
-        ts->nsec=READ32(base, TSEvtLatch);
-        break;
-    case TSModeFree:
-        ts->secPastEpoch=READ32(base, TSSec);
-        ts->nsec=READ32(base, TSEvt);
-        break;
-    default:
-        throw std::range_error("TS mode invalid");
-    }
+    BITSET(NAT,32, base, Control, Control_tsltch);
+    ts->secPastEpoch=READ32(base, TSSecLatch);
+    ts->nsec=READ32(base, TSEvtLatch);
+    BITSET(NAT,32, base, Control, Control_tsrst);
 
     //validate seconds (has it been initialized)?
     if(ts->secPastEpoch==0){
@@ -542,18 +556,22 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,TSMode mode)
     if(period<=0 || !finite(period))
         return false;
 
-    ts->nsec*=period;
+    ts->nsec*=(epicsUInt32)period;
 
     return true;
 }
 
-void
-EVRMRM::tsLatch(bool latch)
+bool
+EVRMRM::getTicks(epicsUInt32 *tks)
 {
-    if(latch)
-        BITSET(NAT,32,base, Control, Control_tsltch);
-    else
-        BITSET(NAT,32,base, Control, Control_tsrst);
+  *tks=READ32(base, TSEvt);
+  return true;
+}
+
+IOSCANPVT
+EVRMRM::eventOccurred(epicsUInt32 event)
+{
+  return NULL;
 }
 
 epicsUInt16
@@ -580,28 +598,70 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
+    epicsUInt32 enable=READ32(evr->base, IRQEnable);
+
+    epicsUInt32 active=flags&enable;
+
+    if(!active)
+      return;
+
     //TODO: Locking...
 
-    if(flags&IRQ_BufFull){
+    if(active&IRQ_BufFull){
         scanIoRequest(evr->IRQbufferReady);
     }
-    if(flags&IRQ_HWMapped){
+    if(active&IRQ_HWMapped){
         evr->count_hardware_irq++;
         scanIoRequest(evr->IRQmappedEvent);
     }
-    if(flags&IRQ_Event){
-        //What is this?
+    if(active&IRQ_Event){
+        //FIFO not-full
+        epicsInterruptContextMessage("IRQ Event\n");
     }
-    if(flags&IRQ_Heartbeat){
+    if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
         scanIoRequest(evr->IRQheadbeat);
     }
-    if(flags&IRQ_FIFOFull){
+    if(active&IRQ_FIFOFull){
     }
-    if(flags&IRQ_RXErr){
+    if(active&IRQ_RXErr){
         evr->count_recv_error++;
         scanIoRequest(evr->IRQrxError);
+        // IRQ needs to be masked and polled since it will
+        // recur _very_ frequently when the link is unplugged.
+        BITCLR(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+        callbackRequest(&evr->poll_link_cb);
     }
 
     WRITE32(evr->base, IRQFlag, flags);
+}
+
+void
+EVRMRM::drain_fifo(CALLBACK*)
+{
+}
+
+void
+EVRMRM::drain_log(CALLBACK*)
+{
+}
+
+void
+EVRMRM::poll_link(CALLBACK* cb)
+{
+    void *vptr;
+    callbackGetUser(vptr,cb);
+    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+
+    epicsUInt32 flags=READ32(evr->base, IRQFlag);
+
+    if(flags&IRQ_RXErr){
+        // Still down
+        callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
+    }else{
+        scanIoRequest(evr->IRQrxError);
+        int iflags=epicsInterruptLock();
+        BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+        epicsInterruptUnlock(iflags);
+    }
 }

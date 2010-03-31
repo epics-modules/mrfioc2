@@ -26,11 +26,6 @@ enum TSSource {
   TSSourceDBus4=2
 };
 
-enum TSMode {
-  TSModeFree,
-  TSModeLatch
-};
-
 /**@brief Base interface for EVRs.
  *
  * This is the interface which the generic EVR device support
@@ -139,17 +134,20 @@ public:
 
   /** Gives the current time stamp as sec+nsec
    *@param ts This pointer will be filled in with the current time
-   *@param mo Which access mode to use.
+   *@param event N<=0 Return the current wall clock time
+   *@param event N>0  Return the time the most recent event # N was received.
    *@return true When ts was updated
    *@return false When ts could not be updated
    */
-  virtual bool getTimeStamp(epicsTimeStamp *ts,TSMode mode)=0;
+  virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)=0;
 
-  /** Latch and reset the Timestamp
-   *@param latch true  - Latch
-   *@param latch false - Reset
+  /** Returns the current value of the Timestamp Event Counter
+   *@param tks Pointer to be filled with the counter value
+   *@return false if the counter value is not valid
    */
-  virtual void tsLatch(bool latch)=0;
+  virtual bool getTicks(epicsUInt32 *tks)=0;
+
+  virtual IOSCANPVT eventOccurred(epicsUInt32 event)=0;
   /*@}*/
 
   /**\defgroup linksts Event Link Status

@@ -11,6 +11,8 @@
 #include <utility>
 
 #include <dbScan.h>
+#include <epicsTime.h>
+#include <callback.h>
 
 #include "drvemInput.h"
 #include "drvemOutput.h"
@@ -72,8 +74,9 @@ public:
   virtual TSSource SourceTS() const;
   virtual double clockTS() const;
   virtual void clockTSSet(double);
-  virtual bool getTimeStamp(epicsTimeStamp *ts,TSMode mode);
-  virtual void tsLatch(bool latch);
+  virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
+  virtual bool getTicks(epicsUInt32 *tks);
+  virtual IOSCANPVT eventOccurred(epicsUInt32 event);
 
   virtual epicsUInt16 dbus() const;
 
@@ -91,10 +94,11 @@ private:
   epicsUInt32 count_hardware_irq;
   epicsUInt32 count_heartbeat;
 
-  IOSCANPVT IRQmappedEvent;
-  IOSCANPVT IRQbufferReady;
-  IOSCANPVT IRQheadbeat;
-  IOSCANPVT IRQrxError;
+  IOSCANPVT IRQmappedEvent; // Hardware mapped IRQ
+  IOSCANPVT IRQbufferReady; // Event log ready
+  IOSCANPVT IRQheadbeat;    // Heartbeat rx
+  IOSCANPVT IRQrxError;     // Rx link state change
+  IOSCANPVT IRQfifofull;    // Fifo overflow
 
   typedef std::vector<MRMInput*> inputs_t;
   inputs_t inputs;
@@ -110,6 +114,18 @@ private:
 
   typedef std::vector<MRMCMLShort*> shortcmls_t;
   shortcmls_t shortcmls;
+
+  // Called when FIFO not-full IRQ is received
+  CALLBACK drain_fifo_cb;
+  static void drain_fifo(CALLBACK*);
+
+  // Called when the Event Log is stopped
+  CALLBACK drain_log_cb;
+  static void drain_log(CALLBACK*);
+
+  // Periodic callback to detect when link state goes from down to up
+  CALLBACK poll_link_cb;
+  static void poll_link(CALLBACK*);
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

@@ -45,7 +45,9 @@ device(bo     , VME_IO, devBOEVR, "EVR")
 device(ai     , VME_IO, devAIEVR, "EVR")
 device(ao     , VME_IO, devAOEVR, "EVR")
 
+# '#Ccard Sevent @'
 device(stringin, VME_IO, devSIEVR, "EVR Timestamp")
+device(event,    VME_IO, devEventEVR, "EVR")
 
 # '#Ccard Sfunction @'
 device(longout, VME_IO, devLOEVRMap, "EVR Mapping")

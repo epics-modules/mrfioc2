@@ -383,13 +383,13 @@ mrfIoLink::getInteger (const char* parm) {
     //=====================
     // Make sure the value string can be converted to an integer of the specified base
     //
-    if (std::string::npos != valueString.find_first_not_of(*validChars,startIndex))
+    if (std::string::npos != valueString.find_first_not_of(*validChars,startIndex)) {
         status = ERROR;
-
+        value = 0;
     //=====================
     // Try to convert the value string to an integer
     //
-    else {
+    } else {
         errno = 0;
         value = strtol(valueString.c_str(), &pTail, base);
         if (0 != errno) status = ERROR;

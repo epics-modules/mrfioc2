@@ -54,7 +54,7 @@ try {
 
   epicsTimeStamp ts;
 
-  if(!priv->getTimeStamp(&ts,TSModeFree)){
+  if(!priv->getTimeStamp(&ts,prec->inp.value.vmeio.signal)){
     strncpy(prec->val,"EVR time unavailable",sizeof(prec->val));
     return S_dev_deviceTMO;
   }
