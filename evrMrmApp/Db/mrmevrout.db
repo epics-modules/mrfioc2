@@ -68,15 +68,11 @@ record(mbbo, "$(P)$(O)src:scale:set") {
   field( ZRVL, "40")
   field( ONVL, "41")
   field( TWVL, "42")
-}
-
-record(mbbo, "$(P)$(O)src:force:set") {
-  field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set PP")
-  field( ZRST, "Force Low")
-  field( ONST, "Force High")
-  field( ZRVL, "63")
-  field( ONVL, "62")
+  field( THST, "Force Low")
+  field( FRST, "Force High")
+  field( THVL, "63")
+  field( FRVL, "62")
+  field( VAL , "63")
 }
 
 # Mapping readback
@@ -145,18 +141,10 @@ record(mbbi, "$(P)$(O)src:scale") {
   field( ZRVL, "40")
   field( ONVL, "41")
   field( TWVL, "42")
-  field( FLNK, "$(P)$(O)src:force")
-}
-
-record(mbbi, "$(P)$(O)src:force") {
-  field( DTYP, "Raw Soft Channel")
-  field( INP , "$(P)$(O)src")
-  field( ZRST, "Force Low")
-  field( ONST, "Force High")
-  field( ZRVL, "63")
-  field( ONVL, "62")
+  field( THST, "Force Low")
+  field( FRST, "Force High")
+  field( THVL, "63")
+  field( FRVL, "62")
 }
 
 # Select which is displayed
-
-

@@ -18,10 +18,10 @@ file "evrevent.db"
 
 file "evrscale.db"
 {pattern
-{P, C, IDX, O}
-{$(P), $(C), 0, "scale0"}
-{$(P), $(C), 1, "scale1"}
-{$(P), $(C), 2, "scale2"}
+{P, C, IDX, O, MAX}
+{$(P), $(C), 0, "scale0", "0xffff"}
+{$(P), $(C), 1, "scale1", "0xffff"}
+{$(P), $(C), 2, "scale2", "0xffff"}
 }
 
 file "mrmevrout.db"
@@ -33,18 +33,19 @@ file "mrmevrout.db"
 {$(P), $(C), 1, 2, "fpout2:"}
 }
 
+# Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"
 {pattern
-{P, C, PID, N}
-{$(P), $(C), 0, "pul0:"}
-{$(P), $(C), 1, "pul1:"}
-{$(P), $(C), 2, "pul2:"}
-{$(P), $(C), 3, "pul3:"}
-{$(P), $(C), 4, "pul4:"}
-{$(P), $(C), 5, "pul5:"}
-{$(P), $(C), 6, "pul6:"}
-{$(P), $(C), 7, "pul7:"}
-{$(P), $(C), 8, "pul8:"}
+{P, C, PID, N, DMAX, WMAX, PMAX, NOPS}
+{$(P), $(C), 0, "pul0:", "0xfffffff", "0xffff", "0xff", 0}
+{$(P), $(C), 1, "pul1:", "0xfffffff", "0xffff", "0xff", 0}
+{$(P), $(C), 2, "pul2:", "0xfffffff", "0xffff", "0xff", 0}
+{$(P), $(C), 3, "pul3:", "0xfffffff", "0xffff", "0xff", 0}
+{$(P), $(C), 4, "pul4:", "0xfffffff", "0xffff", "1", 1}
+{$(P), $(C), 5, "pul5:", "0xfffffff", "0xffff", "1", 1}
+{$(P), $(C), 6, "pul6:", "0xfffffff", "0xffff", "1", 1}
+{$(P), $(C), 7, "pul7:", "0xfffffff", "0xffff", "1", 1}
+{$(P), $(C), 8, "pul8:", "0xfffffff", "0xffff", "1", 1}
 }
 
 # Default to 3 possible trigger mappings per pulser
