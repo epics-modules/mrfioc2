@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 714
-y 86
+x 790
+y 204
 w 394
 h 270
 font "helvetica-medium-r-18.0"
@@ -19,6 +19,7 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "EVR Input $(P)"
 endScreenProperties
 
 # (Static Text)
@@ -246,7 +247,7 @@ release 0
 x 134
 y 228
 w 69
-h 22
+h 26
 controlPv "$(P)$(I)ext:code"
 font "helvetica-medium-r-18.0"
 fgColor index 14
@@ -254,6 +255,7 @@ bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
@@ -271,7 +273,7 @@ release 0
 x 275
 y 231
 w 69
-h 22
+h 26
 controlPv "$(P)$(I)back:code"
 font "helvetica-medium-r-18.0"
 fgColor index 14
@@ -279,6 +281,7 @@ bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1157
-y 214
+x 1139
+y 363
 w 215
 h 377
 font "helvetica-medium-r-18.0"
@@ -19,7 +19,34 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "EVR Pulse $(P)"
 endScreenProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 81
+y 104
+w 116
+h 26
+controlPv "$(P)$(N)prescaler:set"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+clipToDspLimits
+endObjectProperties
 
 # (Static Text)
 object activeXTextClass
@@ -50,19 +77,21 @@ release 0
 x 81
 y 135
 w 116
-h 22
-controlPv "$(P)$(N)delay:set"
+h 26
+controlPv "$(P)$(N)delay"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
 objType "controls"
+clipToDspLimits
 endObjectProperties
 
 # (Static Text)
@@ -94,19 +123,21 @@ release 0
 x 81
 y 165
 w 116
-h 22
-controlPv "$(P)$(N)width:set"
+h 26
+controlPv "$(P)$(N)width"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
 newPos
 objType "controls"
+clipToDspLimits
 endObjectProperties
 
 # (Static Text)
@@ -157,17 +188,20 @@ release 0
 x 129
 y 259
 w 34
-h 22
+h 26
 controlPv "$(P)$(N)trig0"
 font "helvetica-medium-r-18.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 clipToDspLimits
@@ -201,17 +235,20 @@ release 0
 x 129
 y 297
 w 33
-h 22
+h 26
 controlPv "$(P)$(N)trig1"
 font "helvetica-medium-r-18.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 clipToDspLimits
@@ -226,17 +263,20 @@ release 0
 x 129
 y 334
 w 35
-h 22
+h 26
 controlPv "$(P)$(N)trig2"
 font "helvetica-medium-r-18.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 clipToDspLimits
@@ -322,31 +362,6 @@ value {
 autoSize
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 81
-y 104
-w 116
-h 22
-controlPv "$(P)$(N)prescaler:set"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-editable
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-clipToDspLimits
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -357,7 +372,7 @@ x 50
 y 11
 w 155
 h 22
-controlPv "$(P)$(N)delay:set.DESC"
+controlPv "$(P)$(N)delay.DESC"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
