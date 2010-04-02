@@ -126,7 +126,7 @@ struct SeqMbbDSET {
 //
 epicsStatus EgSeqAoInitRecord   (aoRecord *pRec);
 epicsStatus EgSeqAoWrite        (aoRecord *pRec);
-
+epicsStatus EgSeqAoLinConv      (aoRecord *pRec, bool AfterChange);
 
 //=====================
 // Binary Output Device Support Routines

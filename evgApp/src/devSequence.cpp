@@ -239,7 +239,7 @@ devInfoStruct* parseLink (
 }//end parseLink()
 
 /**************************************************************************************************/
-/*                    Device Support for Basic Sequence Analog Output Records                     */
+/*                       Device Support for Sequence Analog Output Records                        */
 /*                                                                                                */
 
 
@@ -313,26 +313,11 @@ epicsStatus EgSeqAoInitRecord (aoRecord *pRec)
         pDevInfo->pSequence->RegisterMaxTimeStampRecord ((dbCommon *)pRec);
 
         //=====================
-        // Disable automatic value conversion by record support.
-        // We have to do our own conversion because the raw timestamp could
-        // exceed 32 bits.
-        //
-        pRec->linr = menuConvertNO_CONVERSION;
-
-        //=====================
-        // Compute the slope.
-        // If EGUF is 0, it means we want event clock ticks.
-        //
-        if (0.0 == pRec->eguf)
-            pRec->eslo = 1.0;
-        else
-            pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
-
-        //=====================
         // Attach the device information structure to the record and return
         // Do not attempt a raw value conversion
         //
         pRec->dpvt = (void *)pDevInfo;
+        EgSeqAoLinConv (pRec, true);
         return NO_CONVERT;
 
     }//end try
@@ -351,12 +336,12 @@ epicsStatus EgSeqAoInitRecord (aoRecord *pRec)
 }//end EgSeqAoInitRecord()
 
 //*************************************************************************************************
-// EgSeqAoWrite () -- Write the Maximum Timestamp Value to the BasicSequenceEvent Object.
+// EgSeqAoWrite () -- Write the Maximum Timestamp Value to the Sequence Object.
 //*************************************************************************************************
 //! @par Description:
 //!   This routine is called from the aoRecord's "process()" routine.  It converts the maximum
 //!   timestamp value in the VAL field from engineering units to event clock ticks and writes it
-//!   to the BasicSequence object.
+//!   to the Sequence object.
 //!
 //!   @par
 //!   This routine can be called either as a result of standard record processing, or as
@@ -366,11 +351,10 @@ epicsStatus EgSeqAoInitRecord (aoRecord *pRec)
 //!
 //!   @par
 //!   Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
-//!   because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
-//!   use the ao record's built in linear, slope, or breakpoint table conversion features.
-//!   Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
-//!   special linear conversion routine, so we recompute ESLO every time we are called (just in
-//!   case EGUF was changed).
+//!   because a sequence event timestamp can be as big as 2**44 ticks.
+//!
+//!   @par
+//!   To use this routine, place its address in the "perform_io" field of the ao DSET.
 //!
 //! @par Implemented Function Codes:
 //! - <b> Max Time </b> Sets the maximum timestamp value for the sequence
@@ -379,26 +363,15 @@ epicsStatus EgSeqAoInitRecord (aoRecord *pRec)
 //!
 //! @return     Always returns OK
 //!
-//! @note
-//!   This routine expects an "augmented" ao device support entry table (DSET) which contains
-//!   an entry for a sequence declaration function.
-//!
 //**************************************************************************************************
 
 epicsStatus EgSeqAoWrite (aoRecord* pRec) {
 
     //=====================
-    // Extract the BasicSequence object from the DPVT structure
+    // Extract the Sequence object from the DPVT structure
     //
     devInfoStruct*  pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     Sequence*       pSequence = pDevInfo->pSequence;
-
-    //=====================
-    // Re-compute the slope (in case EGUF has changed)
-    // If EGUF is 0, it means we want event clock ticks.
-    //
-    if (0.0 == pRec->eguf) pRec->eslo = 1.0;
-    else  pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
 
     //=====================
     // Lock access to the sequence while we try to update the maximum timestamp value
@@ -408,7 +381,7 @@ epicsStatus EgSeqAoWrite (aoRecord* pRec) {
 
     //=====================
     // Convert the VAL field to "Event Clock Ticks" and write
-    // it to the BasicSequence object.
+    // it to the Sequence object.
     //
     SequenceStatus status = pSequence->SetMaxTimeStamp (pRec->val / pRec->eslo);
 
@@ -452,8 +425,56 @@ epicsStatus EgSeqAoWrite (aoRecord* pRec) {
 
 }//end EgSeqAoWrite()
 
+//*************************************************************************************************
+// EgSeqAoLinConv () -- Special Linear Conversion Routine for TimeStamp Record
+//*************************************************************************************************
+//! @par Description:
+//!   This routine is called from the aoRecord's "process()" routine.  It converts the maximum
+//!   This routine is called by EPICS database processing whenever the LINR, EGUF, or EGUL
+//!   fields are changed.  It computes a new value for the ESLO field based on the value
+//!   of the EGUF field and the time (in seconds) between event clock ticks, which it gets
+//!   from the Sequence object.
+//!
+//!   @par
+//!   To use this routine, place its address in the "special_linconv" field of the ao DSET.
+//!
+//! @par Implemented Function Codes:
+//! - <b> Max Time </b> Sets the maximum timestamp value for the sequence
+//!
+//! @param   pRec        = (input) Pointer to the ao record structure
+//! @param   AfterChange = (input) True if this is the second call to the special linear conversion
+//!                                routine (after the new value has been written)
+//!
+//! @return     Always returns OK
+//!
+//**************************************************************************************************
+
+epicsStatus EgSeqAoLinConv (aoRecord *pRec, bool AfterChange)
+{
+    //=====================
+    // Ignore this call if the new value hasn't been changed yet.
+    //
+    if (!AfterChange) return OK;
+
+    //=====================
+    // If EGUF is greater than zero, it represents seconds per engineering unit.
+    //
+    if (pRec->eguf > 0.0) {
+        devInfoStruct* pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+        pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
+    }//end if EGUF is greater than 0
+
+    //=====================
+    // If EGUF is 0 or negative, it means we want event clock ticks
+    //
+    else pRec->eslo = 1.0;
+
+    return OK;
+
+}//end EgSeqAoLinConv()
+
 /**************************************************************************************************/
-/*                    Device Support for Basic Sequence Binary Output Records                     */
+/*                       Device Support for Sequence Binary Output Records                        */
 /*                                                                                                */
 
 
@@ -665,7 +686,7 @@ epicsStatus EgSeqBoWrite (boRecord* pRec) {
 }//end EgSeqBoWrite()
 
 /**************************************************************************************************/
-/*               Device Support for Basic Sequence Multi-Bit Binary Output Records                */
+/*                  Device Support for Sequence Multi-Bit Binary Output Records                   */
 /*                                                                                                */
 
 

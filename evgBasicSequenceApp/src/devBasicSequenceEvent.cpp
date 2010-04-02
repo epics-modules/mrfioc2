@@ -277,6 +277,7 @@ devInfoStruct* parseLink (
 
 static epicsStatus aiInitRecord (aiRecord* pRec);
 static epicsStatus aiRead       (aiRecord* pRec);
+static epicsStatus aiLinConv    (aiRecord* pRec, bool AfterChange);
 
 
 /**************************************************************************************************/
@@ -292,7 +293,7 @@ AnalogDSET devAiBasicSeqEvent = {
     (DEVSUPFUN)aiInitRecord,            // Record initialization routine
     NULL,                               // -- No get I/O interrupt information routine
     (DEVSUPFUN)aiRead,                  // Read routine
-    NULL                                // -- No special linear conversion routine
+    (DEVSUPFUN)aiLinConv                // Special linear conversion routine
 };
 
 epicsExportAddress (dset, devAiBasicSeqEvent);
@@ -305,7 +306,7 @@ epicsExportAddress (dset, devAiBasicSeqEvent);
 |* FUNCTION:
 |*    This routine is called during IOC initialization to initialize a BasicSequenceEvent
 |*    analog input record.  It performs the following functions:
-|*      - Parse the OUT field.
+|*      - Parse the INP field.
 |*      - Initialize the LINR and ESLO fields.
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -356,27 +357,11 @@ epicsStatus aiInitRecord (aiRecord *pRec)
             throw std::runtime_error("Invalid record function (" + Function + ")");
 
         //=====================
-        // Disable automatic value conversion by record support.
-        // We have to do our own conversion because the raw timestamp could
-        // exceed 32 bits.
-        //
-        pRec->linr = menuConvertNO_CONVERSION;
-
-        //=====================
-        // Compute the slope.
-        // If EGUF is 0, it means we want event clock ticks.
-        //
-        if (0.0 == pRec->eguf)
-            pRec->eslo = 1.0;
-        else
-            pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
-
-        //=====================
-        // Attach the device information structure to the record and return
-        // Do not attempt a raw value conversion
+        // Finish record initialization.
         //
         pRec->dpvt = (void *)pDevInfo;
-        return NO_CONVERT;
+        aiLinConv (pRec, true);
+        return OK;
 
     }//end try
 
@@ -402,13 +387,6 @@ epicsStatus aiInitRecord (aiRecord *pRec)
 |*    It reads the assigned timestamp for this event (in ticks) from the BasicSequenceEvent object,
 |*    converts the timestamp into engineering units, and stores it in the record's VAL field.
 |*
-|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
-|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
-|*    use the ai record's built in linear, slope, or breakpoint table conversion features.
-|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
-|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
-|*    case EGUF was changed).
-|*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTION CODES:
 |*    Time  = Reads the actual time this event is scheduled to occur.
@@ -431,20 +409,10 @@ static
 epicsStatus aiRead (aiRecord* pRec) {
 
     //=====================
-    // Extract the BasicSequence and BasicSequenceEvent objects from the DPVT structure
+    // Extract the BasicSequenceEvent object from the DPVT structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
-    BasicSequence*       pSequence = pDevInfo->pSequence;
     BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
-
-    //=====================
-    // Re-compute the slope (in case EGUF has changed)
-    // If EGUF is 0, it means we want event clock ticks.
-    //
-    if (0.0 == pRec->eguf)
-        pRec->eslo = 1.0;
-    else
-        pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
 
     //=====================
     // Get the actual time value (in ticks) from the BasicSequenceEvent object and
@@ -454,11 +422,84 @@ epicsStatus aiRead (aiRecord* pRec) {
     pRec->udf = 0;
 
     //=====================
+    // If the timestamp was set to an illegal value, put the record into an alarm state.
+    //
+    if (!pEvent->TimeStampLegal())
+        recGblSetSevr ((dbCommon *)pRec, READ_ALARM, INVALID_ALARM);
+
+    //=====================
     // Don't use the ai record's conversion
     //
     return NO_CONVERT;
 
 }//end aiRead()
+
+/**************************************************************************************************
+|* aiLinConv () -- Special Linear Conversion Routine for TimeStamp Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called by EPICS database processing whenever the LINR, EGUF, or EGUL
+|*    fields are changed.
+|*
+|*    It computes a new value for the ESLO field based on the value of the EGUF field and
+|*    the time (in seconds) between event clock ticks, which it gets from the Sequence object.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTION CODES:
+|*    Time  = Reads the actual time this event is scheduled to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aiLinConv (pRec, AfterChange);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec        = (aiRecord *) Address of the ai record structure
+|*    AfterChange = (bool)       True if this is the second call to the special linear conversion
+|*                               routine (after the new value has been written)
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT INPUT:
+|*    pRec->eguf  = (double)      New value for EGUF
+|*                                EGUF = 0:  No conversion (units are event clock ticks)
+|*                                EGUF > 0:  EGUF represents the number of seconds per
+|*                                           engineering unit.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT OUTPUTS:
+|*    pRec->eslo  = (double)      New computed slope.  ESLO represents the smallest engineering
+|*                                unit of change for this record.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status      = (epicsStatus) Always returns OK
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus aiLinConv (aiRecord *pRec, bool AfterChange)
+{
+    //=====================
+    // Ignore this call if the new value hasn't been changed yet.
+    //
+    if (!AfterChange) return OK;
+
+    //=====================
+    // If EGUF is greater than zero, it represents seconds per engineering unit.
+    //
+    if (pRec->eguf > 0.0) {
+        devInfoStruct* pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+        pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
+    }//end if EGUF is greater than 0
+
+    //=====================
+    // If EGUF is 0 or negative, it means we want event clock ticks
+    //
+    else pRec->eslo = 1.0;
+
+    return OK;
+
+}//end aiLinConv()
 
 /**************************************************************************************************/
 /*                 Device Support for Basic Sequence Event Analog Output Records                  */
@@ -471,7 +512,7 @@ epicsStatus aiRead (aiRecord* pRec) {
 
 static epicsStatus aoInitRecord (aoRecord* pRec);
 static epicsStatus aoWrite      (aoRecord* pRec);
-
+static epicsStatus aoLinConv    (aoRecord* pRec, bool AfterChange);
 
 /**************************************************************************************************/
 /*  Device Support Entry Table (DSET) For Analog Output Records                                   */
@@ -486,7 +527,7 @@ AnalogDSET devAoBasicSeqEvent = {
     (DEVSUPFUN)aoInitRecord,            // Record initialization routine
     NULL,                               // -- No get I/O interrupt information routine
     (DEVSUPFUN)aoWrite,                 // Write routine
-    NULL                                // -- No special linear conversion routine
+    (DEVSUPFUN)aoLinConv                // Special linear conversion routine
 };
 
 epicsExportAddress (dset, devAoBasicSeqEvent);
@@ -501,7 +542,6 @@ epicsExportAddress (dset, devAoBasicSeqEvent);
 |*    analog output record.  It performs the following functions:
 |*      - Parse the OUT field.
 |*      - Register the record as this event's timestamp record.
-|*      - Initialize the LINR and ESLO fields.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTION CODES:
@@ -557,28 +597,13 @@ epicsStatus aoInitRecord (aoRecord *pRec)
         pDevInfo->pEvent->RegisterTimeRecord ((dbCommon *)pRec);
 
         //=====================
-        // Disable automatic value conversion by record support.
-        // We have to do our own conversion because the raw timestamp could
-        // exceed 32 bits.
-        //
-        pRec->linr = menuConvertNO_CONVERSION;
-
-        //=====================
-        // Compute the slope.
-        // If EGUF is 0, it means we want event clock ticks.
-        //
-        if (0.0 == pRec->eguf)
-            pRec->eslo = 1.0;
-        else
-            pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
-
-        //=====================
         // Finish initializing the device information structure and return
         // Do not attempt a raw value conversion
         //
         pDevInfo->LastActualTime = -1.0;
         pDevInfo->ValueSet = false;
         pRec->dpvt = (void *)pDevInfo;
+        aoLinConv (pRec, true);
         return NO_CONVERT;
 
     }//end try
@@ -604,13 +629,6 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 |*
 |*    It converts the timestamp in the VAL field from engineering units to event clock ticks
 |*    and writes it to the BasicSequenceEvent object.
-|*
-|*    Note that the "raw" value (ticks) is represented by a 64-bit floating point number. This is
-|*    because a sequence event timestamp can be as big as 2**44 ticks.  This means that we can't
-|*    use the ao record's built in linear, slope, or breakpoint table conversion features.
-|*    Consequently, the LINR field should be set to "NO CONVERSION".  This will disable the
-|*    special linear conversion routine, so we recompute ESLO every time we are called (just in
-|*    case EGUF was changed).
 |*
 |*-------------------------------------------------------------------------------------------------
 |* IMPLEMENTED FUNCTION CODES:
@@ -684,13 +702,6 @@ epicsStatus aoWrite (aoRecord* pRec) {
     //==============================================================================================
 
     //=====================
-    // Re-compute the slope (in case EGUF has changed)
-    // If EGUF is 0, it means we want event clock ticks.
-    //
-    if (0.0 == pRec->eguf) pRec->eslo = 1.0;
-    else  pRec->eslo = pSequence->GetSecsPerTick() / pRec->eguf;
-
-    //=====================
     // Lock access to the sequence while we try to update this event's timestamp
     //
     pSequence->lock();
@@ -751,6 +762,73 @@ epicsStatus aoWrite (aoRecord* pRec) {
     return OK;
 
 }//end aoWrite()
+
+/**************************************************************************************************
+|* aoLinConv () -- Special Linear Conversion Routine for TimeStamp Record
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*    This routine is called by EPICS database processing whenever the LINR, EGUF, or EGUL
+|*    fields are changed.
+|*
+|*    It computes a new value for the ESLO field based on the value of the EGUF field and
+|*    the time (in seconds) between event clock ticks, which it gets from the Sequence object.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLEMENTED FUNCTION CODES:
+|*    Time  = Sets the requested time for this event to occur.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* CALLING SEQUENCE:
+|*    status = aoLinConv (pRec, AfterChange);
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*    pRec        = (aoRecord *) Address of the ao record structure
+|*    AfterChange = (bool)       True if this is the second call to the special linear conversion
+|*                               routine (after the new value has been written)
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT INPUT:
+|*    pRec->eguf  = (double)      New value for EGUF
+|*                                EGUF = 0:  No conversion (units are event clock ticks)
+|*                                EGUF > 0:  EGUF represents the number of seconds per
+|*                                           engineering unit.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* IMPLICIT OUTPUTS:
+|*    pRec->eslo  = (double)      New computed slope.  ESLO represents the smallest engineering
+|*                                unit of change for this record.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*    status      = (epicsStatus) Always returns OK
+|*
+\**************************************************************************************************/
+
+static
+epicsStatus aoLinConv (aoRecord *pRec, bool AfterChange)
+{
+    //=====================
+    // Ignore this call if the new value hasn't been changed yet.
+    //
+    if (!AfterChange) return OK;
+
+    //=====================
+    // If EGUF is greater than zero, it represents seconds per engineering unit.
+    //
+    if (pRec->eguf > 0.0) {
+        devInfoStruct* pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
+        pRec->eslo = pDevInfo->pSequence->GetSecsPerTick() / pRec->eguf;
+    }//end if EGUF is greater than 0
+
+    //=====================
+    // If EGUF is 0 or negative, it means we want event clock ticks
+    //
+    else pRec->eslo = 1.0;
+
+    return OK;
+
+}//end aoLinConv()
 
 /**************************************************************************************************/
 /*                 Device Support for Basic Sequence Event Binary Output Records                  */

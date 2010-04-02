@@ -212,7 +212,7 @@ EgDeclareBasicSequence (epicsInt32 Card, epicsInt32 SeqNum) {
 }//end EgDeclareBasicSequence()
 
 /**************************************************************************************************/
-/*                    Device Support for Basic Sequence Binary Output Records                     */
+/*                Device Support Entry Tables (DSET) for Basic Sequence Records                   */
 /*                                                                                                */
 
 
@@ -229,7 +229,7 @@ SeqAnalogDSET devAoBasicSequence = {
     (DEVSUPFUN)EgSeqAoInitRecord,               // Use generic record initialization routine
     NULL,                                       // -- No get I/O interrupt information routine
     (DEVSUPFUN)EgSeqAoWrite,                    // Use generic write routine
-    NULL,                                       // -- No special linear-conversion routine
+    (DEVSUPFUN)EgSeqAoLinConv,                  // Use generic linear-conversion routine
     (SEQ_DECLARE_FUN)EgDeclareBasicSequence     // Use BasicSequence declaration routine
 };
 
@@ -257,11 +257,6 @@ SeqBinaryDSET devBoBasicSequence = {
 epicsExportAddress (dset, devBoBasicSequence);
 
 };//end extern "C"
-
-
-/**************************************************************************************************/
-/*               Device Support for Basic Sequence Multi-Bit Binary Output Records                */
-/*                                                                                                */
 
 
 /**************************************************************************************************/

@@ -28,7 +28,7 @@ record(ao,"$(PV):TimeStamp") {
     field(EGUF,"1.e-6")
     field(EGUL,"0")
     field(EGU,"uSec")
-    field(LINR,"NO CONVERSION")
+    field(LINR,"LINEAR")
     field(VAL,"$(Time)")
 }
 
@@ -75,5 +75,5 @@ record(ai,"$(PV):TSReadBack") {
     field(EGUF,"1e-6")
     field(EGUL,"0")
     field(EGU,"uSec")
-    field(LINR,"NO CONVERSION")
+    field(LINR,"LINEAR")
 }
