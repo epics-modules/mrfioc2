@@ -18,24 +18,13 @@ record(bo, "$(P)$(N)polarity") {
   field(ONAM, "Inverted")
 }
 
-record(ao, "$(P)$(N)delay:set") {
+record(ao, "$(P)$(N)delay") {
   field(DTYP, "EVR Pulser")
   field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")
   field(PINI, "YES")
   field(DESC, "Pulse Generator $(PID)")
   field(VAL , 0)
-  field(EGU , "uSec")
-  field(LINR, "LINEAR")
-  field(ESLO, 1e6)
-  field(PREC, 6)
-  field(FLNK, "$(P)$(N)delay")
-}
-
-record(ai, "$(P)$(N)delay") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
-  field(UDF , 0)
-  field(EGU , "uSec")
+  field(EGU , "us")
   field(LINR, "LINEAR")
   field(ESLO, 1e6)
   field(PREC, 6)
@@ -45,31 +34,24 @@ record(ai, "$(P)$(N)delay") {
 record(longin, "$(P)$(N)delay:raw") {
   field(DTYP, "EVR Pulser")
   field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(EGU , "cnts")
+  field(HOPR, "$(DMAX=0xffff)")
+  field(LOPR, "0")
+  field(HIGH, "$(DMAX=0xffff)")
+  field( HSV, "MAJOR")
 }
 
-record(ao, "$(P)$(N)width:set") {
+record(ao, "$(P)$(N)width") {
   field(DTYP, "EVR Pulser")
   field(OUT , "#L$(C) A$(PID) C0 S0 @Width")
   field(PINI, "YES")
   field(DESC, "Pulser pulse width")
   field(VAL , 0)
-  field(EGU , "uSec")
+  field(EGU , "us")
   field(LINR, "LINEAR")
   field(ESLO, 1e6)
   field(PREC, 6)
   field(FLNK, "$(P)$(N)width")
-}
-
-record(ai, "$(P)$(N)width") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "#L$(C) A$(PID) C0 S0 @Width")
-  field(SCAN, "1 second")
-  field(PINI, "YES")
-  field(UDF , 0)
-  field(EGU , "uSec")
-  field(LINR, "LINEAR")
-  field(ESLO, 1e6)
-  field(PREC, 6)
   field(FLNK, "$(P)$(N)width:raw")
 }
 
@@ -77,6 +59,10 @@ record(longin, "$(P)$(N)width:raw") {
   field(DTYP, "EVR Pulser")
   field(INP , "#L$(C) A$(PID) C0 S0 @Width")
   field(PINI, "YES")
+  field(HOPR, "$(WMAX=0xffff)")
+  field(LOPR, "0")
+  field(HIGH, "$(WMAX=0xffff)")
+  field( HSV, "MAJOR")
 }
 
 record(longout, "$(P)$(N)prescaler:set") {
@@ -84,20 +70,37 @@ record(longout, "$(P)$(N)prescaler:set") {
   field(OUT , "#L$(C) A$(PID) C0 S0 @Prescaler")
   field(DESC, "Event clock to Pulser clock divider")
   field(PINI, "YES")
+  field(HOPR, "$(PMAX)")
   field(LOPR, "1")
-  field(HOPR, "0xffffffff")
+  field(DRVH, "$(PMAX)")
+  field(DRVL, "1")
   field(VAL , "1")
   field(FLNK, "$(P)$(N)prescaler:set:update")
+  field(DISP, "$(NOPS=0)")
+  field(DISA, "$(NOPS=0)")
 }
 
 record(fanout, "$(P)$(N)prescaler:set:update") {
-  field(LNK1, "$(P)$(N)delay:set")
-  field(LNK2, "$(P)$(N)width:set")
+  field(LNK1, "$(P)$(N)delay")
+  field(LNK2, "$(P)$(N)width")
   field(LNK3, "$(P)$(N)prescaler")
+  field(LNK4, "$(P)$(N)res")
 }
 
 record(longin, "$(P)$(N)prescaler") {
   field(DTYP, "EVR Pulser")
   field(INP , "#L$(C) A$(PID) C0 S0 @Prescaler")
+  field(HOPR, "$(PMAX=0xffff)")
+  field(LOPR, "1")
+  field(HIGH, "$(PMAX=0xffff)")
+  field( HSV, "MAJOR")
+}
+
+record(calc, "$(P)$(N)res") {
+  field(DESC, "Resolution")
+  field(INPA, "$(P)$(N)prescaler MS")
+  field(INPB, "$(P)clock CP")
+  field(CALC, "1000*A/B")
+  field(EGU, "ns")
 }
 

@@ -7,4 +7,6 @@ record(longout, "$(P)map:$(M)") {
   field( VAL , $(EVT))
   field( LOPR, "0")
   field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
 }
