@@ -41,8 +41,12 @@ try {
 
   p->event=prec->inp.value.vmeio.signal;
 
+  if (!p->evr->interestedInEvent(p->event, true))
+    throw std::runtime_error("Failed to register interest");
+
   prec->dpvt=static_cast<void*>(p);
 
+  return 0;
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
   ret=S_dev_noDevice;
@@ -61,6 +65,8 @@ long del_record(struct dbCommon *precord)
   priv *p=static_cast<priv*>(prec->dpvt);
   long ret=0;
 try {
+
+  p->evr->interestedInEvent(p->event, false);
 
   delete p;
 
@@ -98,7 +104,9 @@ get_ioint_info(int dir,dbCommon* precord,IOSCANPVT* io)
   long ret=0;
 try {
 
-  if(dir)
+  if(!p) return 1;
+
+  if(!dir)
     *io=p->evr->eventOccurred(p->event);
   else
     *io=NULL;

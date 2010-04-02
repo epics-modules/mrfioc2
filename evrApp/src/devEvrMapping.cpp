@@ -86,7 +86,28 @@ try {
 
   priv->card->specialSetMap(priv->last_code,priv->last_func,false);
 
-  priv->card->specialSetMap(code,func,true);
+  bool restore=false;
+  try {
+    priv->card->specialSetMap(code,func,true);
+  } catch (std::runtime_error& e){
+    restore=true;
+  }
+
+  if (restore && func==priv->last_func) {
+    // Can  (try) to recover previous setting unless
+    // function (OUT link) changed.
+    priv->card->specialSetMap(priv->last_code,priv->last_func,true);
+
+    plo->val = priv->last_code;
+    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
+
+    return -5;
+  } else if (restore) {
+    // Can't recover
+    plo->val = 0;
+    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+    return -5;
+  }
 
   priv->last_code=code;
   priv->last_func=func;

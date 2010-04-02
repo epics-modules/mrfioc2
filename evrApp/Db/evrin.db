@@ -36,6 +36,8 @@ record(longout, "$(P)$(I)ext:code") {
   field( PINI, "YES")
   field( LOPR, "0")
   field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
 }
 
 record(mbbo, "$(P)$(I)back:trig") {
@@ -56,6 +58,8 @@ record(longout, "$(P)$(I)back:code") {
   field( PINI, "YES")
   field( LOPR, "0")
   field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
 }
 
 record(mbbo, "$(P)$(I)dbus") {

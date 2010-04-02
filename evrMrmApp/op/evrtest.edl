@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 735
-y 322
+x 1055
+y 555
 w 399
 h 398
 font "helvetica-medium-r-18.0"
@@ -19,6 +19,8 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "EVR $(P)"
+showGrid
 endScreenProperties
 
 # (Static Text)
@@ -57,36 +59,13 @@ offColor index 0
 inconsistentColor index 14
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P)enable:set"
+controlPv "$(P)enable"
 onLabel "On"
 offLabel "Off"
 labelType "literal"
 3d
 font "helvetica-medium-r-18.0"
 objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 139
-y 43
-w 74
-h 22
-controlPv "$(P)enable"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
 endObjectProperties
 
 # (Static Text)
@@ -207,7 +186,7 @@ release 0
 x 105
 y 111
 w 81
-h 22
+h 26
 controlPv "$(P)clock:set"
 format "float"
 font "helvetica-medium-r-18.0"
@@ -217,6 +196,7 @@ bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useAlarmBorder
@@ -302,8 +282,8 @@ minor 5
 release 0
 x 108
 y 184
-w 63
-h 22
+w 77
+h 26
 controlPv "$(P)ts:clock:set"
 format "float"
 font "helvetica-medium-r-18.0"
@@ -313,11 +293,13 @@ bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useAlarmBorder
 newPos
 objType "controls"
+clipToDspLimits
 endObjectProperties
 
 # (Text Control)
@@ -492,22 +474,24 @@ release 0
 x 210
 y 309
 w 86
-h 22
+h 26
 controlPv "$(P)scale0"
 font "helvetica-medium-r-18.0"
+fontAlign "right"
 fgColor index 14
 fgAlarm
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
-useKp
 useHexPrefix
 useAlarmBorder
 newPos
 objType "controls"
+clipToDspLimits
 endObjectProperties
 
 # (Text Monitor)
@@ -517,10 +501,10 @@ major 4
 minor 5
 release 0
 x 303
-y 309
-w 57
+y 313
+w 86
 h 22
-controlPv "$(P)scale0.RVAL"
+controlPv "$(P)scale0:rate"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 fgAlarm
@@ -530,6 +514,7 @@ autoHeight
 limitsFromDb
 nullColor index 0
 useHexPrefix
+showUnits
 useAlarmBorder
 newPos
 objType "monitors"
@@ -667,7 +652,6 @@ inconsistentColor index 14
 topShadowColor index 0
 botShadowColor index 14
 controlPv "$(P)ts:source"
-indicatorPv "$(P)ts:source:rbv"
 font "helvetica-medium-r-18.0"
 endObjectProperties
 
@@ -678,7 +662,7 @@ major 4
 minor 1
 release 0
 x 117
-y 309
+y 311
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -718,7 +702,7 @@ major 4
 minor 1
 release 0
 x 117
-y 335
+y 337
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -731,58 +715,6 @@ value {
 autoSize
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 211
-y 335
-w 86
-h 22
-controlPv "$(P)scale1"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-useDisplayBg
-editable
-autoHeight
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 304
-y 335
-w 57
-h 22
-controlPv "$(P)scale1.RVAL"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-useAlarmBorder
-newPos
-objType "monitors"
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -790,7 +722,7 @@ major 4
 minor 1
 release 0
 x 117
-y 361
+y 365
 w 72
 h 22
 font "helvetica-medium-r-18.0"
@@ -801,58 +733,6 @@ value {
   "Divider 2"
 }
 autoSize
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 211
-y 361
-w 86
-h 22
-controlPv "$(P)scale2"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-useDisplayBg
-editable
-autoHeight
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 304
-y 361
-w 57
-h 22
-controlPv "$(P)scale2.RVAL"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-useAlarmBorder
-newPos
-objType "monitors"
 endObjectProperties
 
 # (Related Display)
@@ -915,14 +795,14 @@ minor 1
 release 0
 x 323
 y 280
-w 40
+w 39
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "RBV"
+  "Rate"
 }
 autoSize
 endObjectProperties
@@ -988,5 +868,115 @@ useDisplayBg
 value {
   "EVR: $(P)"
 }
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 210
+y 337
+w 86
+h 26
+controlPv "$(P)scale1"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+clipToDspLimits
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 210
+y 365
+w 86
+h 26
+controlPv "$(P)scale2"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+clipToDspLimits
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 303
+y 341
+w 86
+h 22
+controlPv "$(P)scale1:rate"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+showUnits
+useAlarmBorder
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 303
+y 369
+w 86
+h 22
+controlPv "$(P)scale2:rate"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+showUnits
+useAlarmBorder
+newPos
+objType "monitors"
 endObjectProperties
 

@@ -247,7 +247,10 @@ enableIRQ(void*,short,EVR* evr)
     return 0;
 
   WRITE32(mrm->base, IRQEnable,
-      IRQ_Enable|IRQ_RXErr|IRQ_Heartbeat|IRQ_HWMapped|IRQ_Event
+       IRQ_Enable
+      |IRQ_RXErr
+      |IRQ_Heartbeat|IRQ_HWMapped
+      |IRQ_Event    |IRQ_FIFOFull
   );
 
   return 0;

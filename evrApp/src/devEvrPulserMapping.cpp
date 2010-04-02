@@ -103,7 +103,28 @@ try {
   if(code==0)
     return 0;
 
-  priv->pulser->sourceSetMap(code,func);
+  bool restore=false;
+  try {
+    priv->pulser->sourceSetMap(code,func);
+  } catch(std::runtime_error& e) {
+    restore=true;
+  }
+
+  if (restore && func==priv->last_func) {
+    // Can  (try) to recover previous setting unless
+    // function (OUT link) changed.
+    priv->pulser->sourceSetMap(priv->last_code,priv->last_func);
+
+    plo->val = priv->last_code;
+    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
+
+    return -5;
+  } else if (restore) {
+    // Can't recover
+    plo->val = 0;
+    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+    return -5;
+  }
 
   priv->last_code=code;
   priv->last_func=func;

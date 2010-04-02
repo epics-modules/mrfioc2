@@ -1,28 +1,20 @@
 
-record(ao, "$(P)$(O)") {
+record(longout, "$(P)$(O)") {
   field( DTYP, "EVR Prescaler")
   field( OUT , "#C$(C) S$(IDX) @Divide")
-  field( DESC, "PreScaler $(IDX)")
-  field( EGU , "MHz")
-  field( LINR, "LINEAR")
-  field( ESLO, 1e-6)
-  field( PREC, 6)
-  field( FLNK, "$(P)$(O):raw")
+  field( PINI, "YES")
+  field( VAL , "1")
+  field( HOPR, "$(MAX=0xffff)")
+  field( LOPR, 1)
+  field( DRVH, "$(MAX=0xffff)")
+  field( DRVL, "1")
+  field( FLNK, "$(P)$(O):rate")
 }
 
-record(longout, "$(P)$(O):raw:set") {
-  field( DTYP, "EVR Prescaler")
-  field( OUT , "#C$(C) S$(IDX) @Divide")
-  field( HOPR, 0xffff)
-  field( HIGH, 0xffff)
-  field( LOW , 0)
-  field( LOPR, 0)
-  field( HSV , MAJOR)
-  field( LSV , MAJOR)
-  field( FLNK, "$(P)$(O):raw")
-}
-
-record(longin, "$(P)$(O):raw") {
-  field( DTYP, "EVR Prescaler")
-  field( INP , "#C$(C) S$(IDX) @Divide")
+record(calc, "$(P)$(O):rate") {
+  field(INPA, "$(P)$(O)")
+  field(INPB, "$(P)clock CP")
+  field(CALC, "B/A")
+  field(EGU, "MHz")
+  field(PREC, "2")
 }

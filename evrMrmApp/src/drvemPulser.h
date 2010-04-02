@@ -38,6 +38,15 @@ public:
     virtual void sourceSetMap(epicsUInt32 src,MapType::type action);
 
     virtual const char* sourceName(epicsUInt32 src) const;
+
+private:
+    // bit map of which event #'s are mapped
+    // used as a safty check to avoid overloaded mappings
+    unsigned char mapped[256/8];
+
+    void _map(epicsUInt8 evt)   {        mapped[evt/8] |=    1<<(evt%8);  }
+    void _unmap(epicsUInt8 evt) {        mapped[evt/8] &= ~( 1<<(evt%8) );}
+    bool _ismap(epicsUInt8 evt) const { return mapped[evt/8]  &    1<<(evt%8);  }
 };
 
 #endif // EVRMRMPULSER_H_INC

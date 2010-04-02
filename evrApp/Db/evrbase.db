@@ -1,20 +1,11 @@
 # Base record set for an EVR
 
-record(bi, "$(P)enable") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Enable")
-  field(DESC, "Master enable status for EVR device")
-  field(ZNAM, "Disabled")
-  field(ONAM, "Enabled")
-}
-
-record(bo, "$(P)enable:set") {
+record(bo, "$(P)enable") {
   field(DTYP, "EVR")
   field(OUT , "#C$(C) S0 @Enable")
   field(DESC, "Master enable for EVR device")
   field(PINI, "YES")
   field(VAL , "1")
-  field(FLNK, "$(P)enable")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
 }
@@ -26,6 +17,7 @@ record(bi, "$(P)link:sts") {
   field(SCAN, "1 second")
   field(ZNAM, "Fail")
   field(ONAM, "OK")
+  field(ZSV , "MAJOR")
 }
 
 record(longin, "$(P)link:cnt") {
@@ -46,6 +38,10 @@ record(ao, "$(P)clock:set") {
   field(EGU , "MHz")
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
+  field(HOPR, "150")
+  field(LOPR, "50")
+  field(DRVH, "150")
+  field(DRVL, "50")
   field(PREC, "3")
   field(FLNK, "$(P)clock")
 }
@@ -80,6 +76,7 @@ record(bi, "$(P)pll") {
   field(DESC, "Status of PLL")
   field(ZNAM, "Error")
   field(ONAM, "OK")
+  field(ZSV , "MAJOR")
 }
 
 record(longin, "$(P)hwtype") {
@@ -117,12 +114,6 @@ record(mbbo, "$(P)ts:source") {
 record(longout, "$(P)ts:source:raw") {
   field(DTYP, "EVR")
   field(OUT , "#C$(C) S0 @Timestamp Source")
-  field(FLNK, "$(P)ts:source:rbv")
-}
-
-record(longin, "$(P)ts:source:rbv") {
-  field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Timestamp Source")
   field(FLNK, "$(P)ts:clock")
 }
 
@@ -134,6 +125,10 @@ record(ao, "$(P)ts:clock:set") {
   field(EGU , "MHz")
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
+  field(HOPR, "150")
+  field(LOPR, "1")
+  field(DRVH, "150")
+  field(DRVL, "1")
   field(PREC, "3")
   field(FLNK, "$(P)ts:clock")
 }

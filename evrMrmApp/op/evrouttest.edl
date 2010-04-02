@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 918
-y 359
-w 505
-h 279
+x 1048
+y 122
+w 395
+h 282
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -19,6 +19,7 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "EVR Out $(P)"
 endScreenProperties
 
 # (Static Text)
@@ -54,7 +55,7 @@ h 161
 fgColor index 14
 bgColor index 0
 selectColor index 0
-inconsistentColor index 14
+inconsistentColor index 25
 topShadowColor index 0
 botShadowColor index 14
 controlPv "$(P)$(O)src:dbus:set"
@@ -75,7 +76,7 @@ h 192
 fgColor index 14
 bgColor index 0
 selectColor index 0
-inconsistentColor index 14
+inconsistentColor index 25
 topShadowColor index 0
 botShadowColor index 14
 controlPv "$(P)$(O)src:pulse:set"
@@ -140,36 +141,15 @@ release 0
 x 266
 y 56
 w 112
-h 113
+h 129
 fgColor index 14
 bgColor index 0
 selectColor index 0
-inconsistentColor index 14
+inconsistentColor index 21
 topShadowColor index 0
 botShadowColor index 14
 controlPv "$(P)$(O)src:scale:set"
 indicatorPv "$(P)$(O)src:scale"
-font "helvetica-medium-r-18.0"
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 392
-y 54
-w 97
-h 81
-fgColor index 14
-bgColor index 0
-selectColor index 0
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(P)$(O)src:force:set"
-indicatorPv "$(P)$(O)src:force"
 font "helvetica-medium-r-18.0"
 endObjectProperties
 
@@ -180,34 +160,10 @@ major 4
 minor 5
 release 0
 x 266
-y 185
+y 211
 w 114
 h 22
 controlPv "$(P)$(O)src:scale"
-format "string"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 391
-y 145
-w 104
-h 22
-controlPv "$(P)$(O)src:force"
 format "string"
 font "helvetica-medium-r-18.0"
 fgColor index 14
@@ -270,8 +226,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 366
-y 231
+x 277
+y 240
 w 97
 h 28
 fgColor index 14

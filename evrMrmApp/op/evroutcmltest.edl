@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 553
-y 465
-w 703
-h 374
+x 934
+y 459
+w 580
+h 342
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -19,6 +19,7 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "EVR CML $(P)"
 endScreenProperties
 
 # (Static Text)
@@ -110,17 +111,19 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 66
+x 53
 y 213
-w 80
-h 22
+w 92
+h 21
 controlPv "$(P)$(O)rise"
-font "helvetica-medium-r-18.0"
+format "hex"
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
@@ -134,17 +137,19 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 66
+x 53
 y 245
-w 80
-h 22
+w 92
+h 21
 controlPv "$(P)$(O)high"
-font "helvetica-medium-r-18.0"
+format "hex"
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
@@ -158,17 +163,19 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 66
+x 53
 y 280
-w 80
-h 22
+w 92
+h 21
 controlPv "$(P)$(O)fall"
-font "helvetica-medium-r-18.0"
+format "hex"
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
@@ -182,17 +189,19 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 66
+x 53
 y 312
-w 80
-h 22
+w 92
+h 21
 controlPv "$(P)$(O)low"
-font "helvetica-medium-r-18.0"
+format "hex"
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 0
 useHexPrefix
@@ -206,7 +215,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 14
+x 8
 y 213
 w 42
 h 22
@@ -226,7 +235,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 14
+x 8
 y 245
 w 43
 h 22
@@ -246,7 +255,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 14
+x 8
 y 280
 w 34
 h 22
@@ -266,7 +275,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 14
+x 8
 y 312
 w 39
 h 22
@@ -288,8 +297,8 @@ minor 1
 release 0
 x 153
 y 13
-w 542
-h 343
+w 411
+h 291
 fgColor index 14
 bgColor index 0
 topShadowColor index 0

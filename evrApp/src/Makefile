@@ -23,6 +23,7 @@ evr_SRCS += evr.cpp
 
 INC += cardmap.h
 evr_SRCS += cardmap.cpp
+evr_SRCS += evrGTIF.cpp
 
 evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvrBIO.cpp

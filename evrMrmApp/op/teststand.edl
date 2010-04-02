@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 51
-y 123
-w 176
-h 137
+x 1222
+y 56
+w 170
+h 196
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -19,6 +19,10 @@ ctlBgColor1 index 0
 ctlBgColor2 index 14
 topShadowColor index 0
 botShadowColor index 14
+title "Test Stand"
+showGrid
+snapToGrid
+gridSize 5
 endScreenProperties
 
 # (Related Display)
@@ -27,9 +31,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 7
-y 54
-w 161
+x 5
+y 50
+w 160
 h 35
 fgColor index 14
 bgColor index 0
@@ -56,26 +60,29 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 6
-y 94
-w 161
+x 5
+y 85
+w 160
 h 35
 fgColor index 14
 bgColor index 0
 topShadowColor index 0
 botShadowColor index 14
 font "helvetica-medium-r-18.0"
-buttonLabel "VME EVR"
+buttonLabel "VME EVR (1)"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrtest.edl"
+  0 "evrmain.edl"
 }
 menuLabel {
-  0 "VME EVR"
+  0 "VME EVR (1)"
+}
+setPosition {
+  0 "parentWindow"
 }
 symbols {
-  0 "P=evr2:"
+  0 "P=evr2"
 }
 endObjectProperties
 
@@ -95,6 +102,64 @@ bgColor index 0
 useDisplayBg
 value {
   "Timing Test Stand"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 15
+y 160
+w 140
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "IOC Status"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_rtems_none.edl"
+}
+menuLabel {
+  0 "IOC Status"
+}
+symbols {
+  0 "ioc=mrftest,HOME=teststand.edl"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 120
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVR (2)"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrtest.edl"
+}
+menuLabel {
+  0 "VME EVR"
+}
+symbols {
+  0 "P=evr3:"
 }
 endObjectProperties
 

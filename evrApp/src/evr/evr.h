@@ -132,6 +132,11 @@ public:
   //!When using internal TS source gives the divider from event clock period to TS period
   virtual epicsUInt32 tsDiv() const=0;
 
+  /** Indicate (lack of) interest in a particular event code.
+   *  This allows an EVR to ignore event codes which are not needed.
+   */
+  virtual bool interestedInEvent(epicsUInt32 event,bool set)=0;
+
   /** Gives the current time stamp as sec+nsec
    *@param ts This pointer will be filled in with the current time
    *@param event N<=0 Return the current wall clock time
