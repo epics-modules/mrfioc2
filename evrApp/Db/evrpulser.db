@@ -5,6 +5,7 @@ record(bo, "$(P)$(N)enable") {
   field(OUT , "#L$(C) A$(PID) C0 S0 @Enable")
   field(PINI, "YES")
   field(VAL , "1")
+  field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
 }
@@ -14,6 +15,7 @@ record(bo, "$(P)$(N)polarity") {
   field(OUT , "#L$(C) A$(PID) C0 S0 @Polarity")
   field(PINI, "YES")
   field(VAL , "0")
+  field(MASK, "1")
   field(ZNAM, "Normal")
   field(ONAM, "Inverted")
 }
