@@ -100,7 +100,7 @@ record(calc, "$(P)$(N)res") {
   field(DESC, "Resolution")
   field(INPA, "$(P)$(N)prescaler MS")
   field(INPB, "$(P)clock CP")
-  field(CALC, "1000*A/B")
+  field(CALC, "1000*(A?A:1)/B")
   field(EGU, "ns")
 }
 
