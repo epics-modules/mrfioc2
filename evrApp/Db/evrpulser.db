@@ -16,8 +16,8 @@ record(bo, "$(P)$(N)polarity") {
   field(PINI, "YES")
   field(VAL , "0")
   field(MASK, "1")
-  field(ZNAM, "Normal")
-  field(ONAM, "Inverted")
+  field(ZNAM, "Active High")
+  field(ONAM, "Active Low")
 }
 
 record(ao, "$(P)$(N)delay") {
