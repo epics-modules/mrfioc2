@@ -662,7 +662,6 @@ epicsStatus aoWrite (aoRecord* pRec) {
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     BasicSequence*       pSequence = pDevInfo->pSequence;
     BasicSequenceEvent*  pEvent    = pDevInfo->pEvent;
-    printf ("%s: PACT = %d, ValueSet = %d\n", pRec->name, pRec->pact, pDevInfo->ValueSet);/*~~~~*/
 
     //=====================
     // Check to see if this is an asynchronous completion

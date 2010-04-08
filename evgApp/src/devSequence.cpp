@@ -610,8 +610,6 @@ epicsStatus EgSeqBoWrite (boRecord* pRec) {
     //
     pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
     pSequence = pDevInfo->pSequence;
-    printf ("Update Trigger. VAL = %d, PACT=%d, Waiting = %d\n",
-            pRec->val, pRec->pact, pDevInfo->waiting); /*~~~~*/
      
     //=====================
     // If this is an asynchronous completion callback, and we are not waiting to start another

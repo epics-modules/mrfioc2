@@ -38,13 +38,6 @@ USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
 #---------------------
-# Only build for "hardware" IOC's
-#
-ifneq ($(findstring Host, $(VALID_BUILDS)),)
-    VALID_BUILDS = Host
-endif
-
-#---------------------
 # Install include files
 #
 INC += evgMrm.h

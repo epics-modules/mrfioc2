@@ -531,7 +531,6 @@ SequenceUpdateTask (EVG* pEvg) {
             // Perform the first part of the update
             // from the context of the Sequence Update task
             //
-            epicsThreadSleep (60.0);/*~~~*/
             pSequence->Update();
 
             //=====================

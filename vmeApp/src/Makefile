@@ -63,10 +63,10 @@ vme_LIBS += Com
 LIBRARY_IOC += mrfVme
 
 mrfVme_LIBS += Com
-#mrfVme_SRCS += mrfVme64x  #~~~#
+mrfVme_SRCS += mrfVme64x  #~~~#
 mrfVme_SRCS += mrfVmeBusInterface.cpp
 
-#mrfVme_OBJS += vmeCSRMemProbeOSI #~~~~~#
+mrfVme_OBJS += vmeCSRMemProbeOSI #~~~~~#
 
 #---------------------
 # Generic EPICS build rules

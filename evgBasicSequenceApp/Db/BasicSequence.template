@@ -62,5 +62,5 @@ record(ao,"$(PV):MaxTimeStamp") {
     field(EGUL,"0")
     field(EGU,"uSec")
     field(LINR,"LINEAR")
-    field(VAL,"8000")
+    field(VAL,"0")
 }

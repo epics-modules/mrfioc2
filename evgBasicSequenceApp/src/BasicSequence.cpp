@@ -738,8 +738,6 @@ BasicSequence::Update ()
     BasicSequenceEvent*  pEvent;                // Pointer to the current BasicSequenceEvent object
     bool                 SortNeeded;            // True if event list needs to be sorted.
 
-    printf ("Starting Sequence Update\n"); /*~~~*/
-
     //=====================
     // Reset the actual timestamp of each event back to its requested value
     //
@@ -793,8 +791,8 @@ BasicSequence::Update ()
                 }//end if timestamps were different.
 
             }//end if event is enabled and has a legal timestamp
+
         }//end for each event in the event list
-        Report(2); /*~~~*/
     }//end while sorting is still needed
 
 }//end Update()
@@ -852,7 +850,6 @@ BasicSequence::FinishUpdate ()
     //   as a result of asynchronous record completion can be processed with a single update.
     // o Inhibit updates from starting until we finish this process.
     //
-    printf ("Starting to Finish Sequence Update\n"); /*~~~~*/
     lock();
     SequenceBusy = false;
     EffectiveUpdateMode = SeqUpdateMode_OnTrigger;

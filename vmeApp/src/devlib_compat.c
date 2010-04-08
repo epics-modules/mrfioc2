@@ -15,10 +15,22 @@ epicsShareFunc long devEnableInterruptLevelVME (unsigned vectorNumber)
   return -1;
 }
 
-epicsShareFunc long devConnectInterruptVME(
+epicsShareFunc long devConnectInterruptVME (
                         unsigned vectorNumber,
                         void (*pFunction)(void *),
                         void  *parameter)
 {
   return -1;
+}
+
+epicsShareFunc long devDisconnectInterruptVME (
+			unsigned vectorNumber,
+			void (*pFunction)(void *))
+{
+  return -1;
+}
+
+epicsShareFunc int  devInterruptInUseVME (unsigned vectorNumber)
+{
+   return -1;
 }

@@ -274,7 +274,6 @@ BasicSequenceEvent::FinishUpdate () {
         (*((REC_PROC_FN)pRset->process)) (TimeRecord);
         if (TimeChanged) reprocess = true;
         dbScanUnlock (TimeRecord);
-        printf ("Record %s reprocessed, TimeChanged=%d\n",TimeRecord->name,TimeChanged);/*~~~*/
             
     }//end if we have a timestamp record
 
