@@ -1,14 +1,4 @@
-
-#=====================
-# Setup command line editing
-#
-tyBackspaceSet(0177)
-
-#=====================
-# Load the EPICS application.
-#
-cd timingbin
-ld < evgMrmIOC.munch
+cd ("/mnt")
 
 #=====================
 # Configure the timing cards
@@ -19,7 +9,6 @@ EgDebug (0, 3)
 #=====================
 # Register all support components
 #
-cd timing
 dbLoadDatabase("dbd/evgMrmIOC.dbd",0,0)
 evgMrmIOC_registerRecordDeviceDriver(pdbbase)
 
@@ -31,4 +20,5 @@ dbLoadRecords("db/evgMrmIOC.db")
 #=====================
 # Start the IOC
 #
+cd("${TOP}/iocBoot/${IOC}")
 iocInit()
