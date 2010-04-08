@@ -28,7 +28,7 @@ MRMOutput::setSource(epicsUInt32 v)
             (v<=42 && v>=32) ||
             (v<=9) )
     )
-        throw std::range_error("Mapping code is out of range");
+        throw std::out_of_range("Mapping code is out of range");
 
     nat_iowrite16(base, v);
 }

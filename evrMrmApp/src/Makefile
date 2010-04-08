@@ -6,6 +6,24 @@ include $(TOP)/configure/CONFIG
 #=============================
 
 #=============================
+# Build the modular register map event receiver library
+
+LIBRARY_IOC += evrMrm
+
+evrMrm_SRCS += drvemIocsh.c
+evrMrm_SRCS += drvem.cpp
+evrMrm_SRCS += drvemOutput.cpp
+evrMrm_SRCS += drvemInput.cpp
+evrMrm_SRCS += drvemPrescaler.cpp
+evrMrm_SRCS += drvemPulser.cpp
+evrMrm_SRCS += drvemCMLShort.cpp
+
+#=============================
+# Install the modular register map event receiver support dbd
+
+DBD += drvemSupport.dbd
+
+#=============================
 # Build the IOC application
 
 PROD_IOC = evrmrm
@@ -20,13 +38,7 @@ evrmrm_DBD += vmecsr.dbd
 evrmrm_LIBS += pci vme evr mrfCommon
 evrmrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrmrm_SRCS += drvemIocsh.c
-evrmrm_SRCS += drvem.cpp
-evrmrm_SRCS += drvemOutput.cpp
-evrmrm_SRCS += drvemInput.cpp
-evrmrm_SRCS += drvemPrescaler.cpp
-evrmrm_SRCS += drvemPulser.cpp
-evrmrm_SRCS += drvemCMLShort.cpp
+evrmrm_SRCS += $(evrMrm_SRCS)
 
 # evrmrm_registerRecordDeviceDriver.cpp derives from evrmrm.dbd
 evrmrm_SRCS += evrmrm_registerRecordDeviceDriver.cpp

@@ -18,7 +18,7 @@ MRMPulser::MRMPulser(epicsUInt32 i,EVRMRM& o)
   ,owner(o)
 {
     if(id>31)
-        throw std::range_error("pulser id is out of range");
+        throw std::out_of_range("pulser id is out of range");
 
     std::memset(&this->mapped, 0, NELEMENTS(this->mapped));
 }
@@ -141,7 +141,7 @@ MapType::type
 MRMPulser::mappedSource(epicsUInt32 evt) const
 {
     if(evt>255)
-        throw std::range_error("Event code is out of range");
+        throw std::out_of_range("Event code is out of range");
 
     if(evt==0)
         return MapType::None;
@@ -185,7 +185,7 @@ void
 MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
 {
     if(evt>255)
-        throw std::range_error("Event code is out of range");
+        throw std::out_of_range("Event code is out of range");
 
     if(evt==0)
         return;

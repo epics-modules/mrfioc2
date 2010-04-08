@@ -221,7 +221,7 @@ MRMPulser*
 EVRMRM::pulser(epicsUInt32 i)
 {
     if(i>=pulsers.size())
-        throw std::range_error("Pulser id is out of range");
+        throw std::out_of_range("Pulser id is out of range");
     return pulsers[i];
 }
 
@@ -229,7 +229,7 @@ const MRMPulser*
 EVRMRM::pulser(epicsUInt32 i) const
 {
     if(i>=pulsers.size())
-        throw std::range_error("Pulser id is out of range");
+        throw std::out_of_range("Pulser id is out of range");
     return pulsers[i];
 }
 
@@ -257,7 +257,7 @@ MRMInput*
 EVRMRM::input(epicsUInt32 i)
 {
     if(i>=inputs.size())
-        throw std::range_error("Input id is out of range");
+        throw std::out_of_range("Input id is out of range");
     return inputs[i];
 }
 
@@ -265,7 +265,7 @@ const MRMInput*
 EVRMRM::input(epicsUInt32 i) const
 {
     if(i>=inputs.size())
-        throw std::range_error("Input id is out of range");
+        throw std::out_of_range("Input id is out of range");
     return inputs[i];
 }
 
@@ -273,7 +273,7 @@ MRMPreScaler*
 EVRMRM::prescaler(epicsUInt32 i)
 {
     if(i>=prescalers.size())
-        throw std::range_error("PreScaler id is out of range");
+        throw std::out_of_range("PreScaler id is out of range");
     return prescalers[i];
 }
 
@@ -281,7 +281,7 @@ const MRMPreScaler*
 EVRMRM::prescaler(epicsUInt32 i) const
 {
     if(i>=prescalers.size())
-        throw std::range_error("PreScaler id is out of range");
+        throw std::out_of_range("PreScaler id is out of range");
     return prescalers[i];
 }
 
@@ -289,7 +289,7 @@ MRMCMLShort*
 EVRMRM::cmlshort(epicsUInt32 i)
 {
     if(i>=shortcmls.size())
-        throw std::range_error("CML Short id is out of range");
+        throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
 
@@ -297,7 +297,7 @@ const MRMCMLShort*
 EVRMRM::cmlshort(epicsUInt32 i) const
 {
     if(i>=shortcmls.size())
-        throw std::range_error("CML Short id is out of range");
+        throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
 
@@ -305,11 +305,11 @@ bool
 EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
 {
     if(code>255)
-        throw std::range_error("Event code is out of range");
+        throw std::out_of_range("Event code is out of range");
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        throw std::range_error("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range");
     }
 
     if(code==0)
@@ -329,11 +329,11 @@ void
 EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 {
     if(code>255)
-        throw std::range_error("Event code is out of range");
+        throw std::out_of_range("Event code is out of range");
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        throw std::range_error("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range");
     }
 
     if(code==0)
@@ -346,7 +346,7 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
      * can be timestamped in the FIFO.
      */
     if(func==126)
-        throw std::range_error("Use of latch timestamp special function code is not allowed");
+        throw std::out_of_range("Use of latch timestamp special function code is not allowed");
 
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
@@ -445,7 +445,7 @@ EVRMRM::clockSet(double freq)
                         freq, fracref, 0, &err);
 
     if(newfrac==0)
-        throw std::range_error("New frequency can't be used");
+        throw std::out_of_range("New frequency can't be used");
 
     epicsUInt32 oldfrac=READ32(base, FracDiv);
 
@@ -510,7 +510,7 @@ EVRMRM::setSourceTS(TSSource src)
     epicsUInt16 div=0;
 
     if(clk<=0 || !finite(clk))
-        throw std::range_error("TS Clock rate invalid");
+        throw std::out_of_range("TS Clock rate invalid");
 
     int iflags;
     switch(src){
@@ -529,7 +529,7 @@ EVRMRM::setSourceTS(TSSource src)
         epicsInterruptUnlock(iflags);
         break;
     default:
-        throw std::range_error("TS source invalid");
+        throw std::out_of_range("TS source invalid");
     }
     WRITE32(base, CounterPS, div);
 }
@@ -567,7 +567,7 @@ void
 EVRMRM::clockTSSet(double clk)
 {
     if(clk<=0 || !finite(clk))
-        throw std::range_error("TS Clock rate invalid");
+        throw std::out_of_range("TS Clock rate invalid");
 
     TSSource src=SourceTS();
 

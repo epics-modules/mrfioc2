@@ -104,7 +104,7 @@ void
 MRMInput::extEvtSet(epicsUInt32 e)
 {
 	if(e>255)
-		std::range_error("Event code # out of range");
+		std::out_of_range("Event code # out of range");
 
 	WRITE8(base, InputMapFPEEvt(idx), (epicsUInt8)e);
 }
@@ -159,7 +159,7 @@ void
 MRMInput::backEvtSet(epicsUInt32 e)
 {
 	if(e>255)
-		std::range_error("Event code # out of range");
+		std::out_of_range("Event code # out of range");
 
 	WRITE8(base, InputMapFPBEvt(idx), (epicsUInt8)e);
 }

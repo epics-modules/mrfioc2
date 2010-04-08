@@ -93,7 +93,7 @@ try {
     prec->rbv=priv->get();
     break;
   default:
-    throw std::range_error("Invalid Input trigger mode");
+    throw std::out_of_range("Invalid Input trigger mode");
   }
 
   return 0;
