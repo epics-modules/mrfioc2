@@ -373,6 +373,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
+        errlogPrintf("EVR %d code %02x func %3d out of range\n",
+            id, code, func);
         throw std::out_of_range("Special function code is out of range");
     }
 
@@ -409,6 +411,9 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     }
 
     epicsInterruptUnlock(iflags);
+
+    errlogPrintf("EVR #%d code %02x func %3d %s\n",
+        id, code, func, v?"Set":"Clear");
 }
 
 void
