@@ -33,7 +33,6 @@ evgMrmIOC_LIBS += BasicSequence
 evgMrmIOC_LIBS += Sequence
 evgMrmIOC_LIBS += evgMrm
 evgMrmIOC_LIBS += vme
-evgMrmIOC_LIBS += mrfVme
 evgMrmIOC_LIBS += evg
 evgMrmIOC_LIBS += mrfCommon
 evgMrmIOC_LIBS += $(EPICS_BASE_IOC_LIBS)

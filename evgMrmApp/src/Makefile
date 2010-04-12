@@ -49,7 +49,6 @@ DBD += evgMrm.dbd
 
 evgMrm_DBD += mrfCommon.dbd
 evgMrm_DBD += drvEvg.dbd
-evgMrm_DBD += mrfVme.dbd
 evgMrm_DBD += evgMrmConfig.dbd
 
 #---------------------
