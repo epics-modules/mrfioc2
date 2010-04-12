@@ -156,10 +156,17 @@ long report(int level)
   return 0;
 }
 
-static
+
+extern "C"
 void
-setupPCI(int id,int b,int d,int f)
+mrmEvrSetupPCI(int id,int b,int d,int f)
 {
+try {
+  if(!!getEVR<EVR>(id)){
+    printf("ID %d already in use\n",id);
+    return;
+  }
+
   epicsPCIDevice *cur=0;
   if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
     printf("PCI Device not found\n");
@@ -216,6 +223,9 @@ setupPCI(int id,int b,int d,int f)
 
       storeEVR(id,receiver);
   }
+} catch(std::exception& e) {
+  printf("Error: %s\n",e.what());
+}
 }
 
 static
@@ -269,21 +279,6 @@ void inithooks(initHookState state)
   }
 }
 
-extern "C"
-void
-mrmEvrSetupPCI(int id,int b,int d,int f)
-{
-try {
-  if(!!getEVR<EVR>(id))
-    printf("ID %d already used run\n",id);
-
-  setupPCI(id,b,d,f);
-
-} catch(std::exception& e) {
-  printf("Error: %s\n",e.what());
-}
-}
-
 static const iocshArg mrmEvrSetupPCIArg0 = { "ID number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
@@ -302,8 +297,10 @@ void
 mrmEvrSetupVME(int id,int slot,int base,int level, int vector)
 {
 try {
-  if(!!getEVR<EVR>(id))
-    printf("ID %d already used run\n",id);
+  if(!!getEVR<EVR>(id)){
+    printf("ID %d already in use\n",id);
+    return;
+  }
 
   struct VMECSRDevice info;
 
