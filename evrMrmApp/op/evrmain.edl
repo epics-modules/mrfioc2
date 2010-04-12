@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 357
-y 178
+x 815
+y 366
 w 664
 h 663
 font "helvetica-medium-r-12.0"
@@ -988,7 +988,6 @@ controlPv "$(P):$(N):enable"
 3d
 font "helvetica-medium-r-10.0"
 objType "controls"
-controlBitPos 1
 endObjectProperties
 
 # (Menu Button)
