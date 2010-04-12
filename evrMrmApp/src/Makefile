@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the modular register map event receiver library
 
-LIBRARY_IOC += evrMrm
+LIBRARY_IOC_vxWorks += evrMrm
 
 evrMrm_SRCS += drvemIocsh.c
 evrMrm_SRCS += drvem.cpp
