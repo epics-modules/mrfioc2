@@ -83,9 +83,9 @@ try {
 dsxt devext={add_record,del_record};
 
 static
-long init(void)
+long init(int i)
 {
-  devExtend(&devext);
+  if (i==0) devExtend(&devext);
   return 0;
 }
 
