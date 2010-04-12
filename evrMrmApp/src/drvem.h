@@ -151,6 +151,15 @@ private:
   // Periodic callback to detect when link state goes from down to up
   CALLBACK poll_link_cb;
   static void poll_link(CALLBACK*);
+
+
+  // bit map of which event #'s are mapped
+  // used as a safty check to avoid overloaded mappings
+  epicsUInt32 _mapped[256];
+
+  void _map(epicsUInt8 evt, epicsUInt8 func)   { _mapped[evt] |=    1<<(func);  }
+  void _unmap(epicsUInt8 evt, epicsUInt8 func) { _mapped[evt] &= ~( 1<<(func) );}
+  bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return _mapped[evt] & 1<<(func); }
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

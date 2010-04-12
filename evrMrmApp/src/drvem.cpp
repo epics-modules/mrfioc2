@@ -330,6 +330,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 {
     if(code>255)
         throw std::out_of_range("Event code is out of range");
+    /* The special function codes are the range 96 to 127
+     */
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
@@ -355,14 +357,16 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 
     epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
 
-    if (v && (val&mask)) {
+    if (v && _ismap(code,func-96)) {
         // already set
         epicsInterruptUnlock(iflags);
         throw std::runtime_error("Ignore duplicate mapping");
 
     } else if(v) {
+        _map(code,func-96);
         WRITE32(base, MappingRam(0, code, Internal), val|mask);
     } else {
+        _unmap(code,func-96);
         WRITE32(base, MappingRam(0, code, Internal), val&~mask);
     }
 
