@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1222
-y 56
+x 1348
+y 54
 w 170
 h 196
 font "helvetica-medium-r-18.0"
@@ -153,13 +153,13 @@ buttonLabel "VME EVR (2)"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrtest.edl"
+  0 "evrmain.edl"
 }
 menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "P=evr3:"
+  0 "P=evr3"
 }
 endObjectProperties
 

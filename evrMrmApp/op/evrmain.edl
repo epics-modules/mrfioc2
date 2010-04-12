@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 815
-y 366
-w 664
-h 663
+x 786
+y 231
+w 643
+h 654
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -998,7 +998,7 @@ minor 0
 release 0
 x 350
 y 270
-w 80
+w 100
 h 20
 fgColor index 14
 bgColor index 4
@@ -2191,6 +2191,77 @@ motifWidget
 limitsFromDb
 nullColor index 14
 useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 30
+y 140
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Blink on event rx."
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 40
+y 170
+w 30
+h 19
+controlPv "$(P):map:blink1"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 80
+y 170
+w 30
+h 19
+controlPv "$(P):map:blink2"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
