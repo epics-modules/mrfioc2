@@ -36,6 +36,14 @@ record(mbbo, "$(P)$(O)src:pulse:set") {
   field( SVVL, "7")
   field( EIVL, "8")
   field( NIVL, "9")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
 }
 
 record(mbbo, "$(P)$(O)src:dbus:set") {
@@ -57,6 +65,16 @@ record(mbbo, "$(P)$(O)src:dbus:set") {
   field( FVVL, "37")
   field( SXVL, "38")
   field( SVVL, "39")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
 }
 
 record(mbbo, "$(P)$(O)src:scale:set") {
@@ -73,6 +91,19 @@ record(mbbo, "$(P)$(O)src:scale:set") {
   field( THVL, "63")
   field( FRVL, "62")
   field( VAL , "63")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
 }
 
 # Mapping readback
@@ -107,6 +138,13 @@ record(mbbi, "$(P)$(O)src:pulse") {
   field( SVVL, "7")
   field( EIVL, "8")
   field( NIVL, "9")
+  field( TESV, "MAJOR")
+  field( ELSV, "MAJOR")
+  field( TVSV, "MAJOR")
+  field( TTSV, "MAJOR")
+  field( FTSV, "MAJOR")
+  field( FFSV, "MAJOR")
+  field( UNSV, "MAJOR")
   field( FLNK, "$(P)$(O)src:dbus")
 }
 
@@ -129,6 +167,15 @@ record(mbbi, "$(P)$(O)src:dbus") {
   field( FVVL, "37")
   field( SXVL, "38")
   field( SVVL, "39")
+  field( EISV, "MAJOR")
+  field( NISV, "MAJOR")
+  field( TESV, "MAJOR")
+  field( ELSV, "MAJOR")
+  field( TVSV, "MAJOR")
+  field( TTSV, "MAJOR")
+  field( FTSV, "MAJOR")
+  field( FFSV, "MAJOR")
+  field( UNSV, "MAJOR")
   field( FLNK, "$(P)$(O)src:scale")
 }
 
@@ -145,6 +192,19 @@ record(mbbi, "$(P)$(O)src:scale") {
   field( FRST, "Force High")
   field( THVL, "63")
   field( FRVL, "62")
+  field( FVSV, "MAJOR")
+  field( SXSV, "MAJOR")
+  field( SVSV, "MAJOR")
+  field( EISV, "MAJOR")
+  field( NISV, "MAJOR")
+  field( TESV, "MAJOR")
+  field( ELSV, "MAJOR")
+  field( TVSV, "MAJOR")
+  field( TTSV, "MAJOR")
+  field( FTSV, "MAJOR")
+  field( FFSV, "MAJOR")
+  field( UNSV, "MAJOR")
+  field( UNSV, "MAJOR")
 }
 
 # Select which is displayed
