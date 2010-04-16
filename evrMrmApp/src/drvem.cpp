@@ -744,8 +744,10 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 active=flags&enable;
 
-    if(!active)
-      return;
+    if(!active){
+        epicsInterruptContextMessage("ISR does nothing\n");
+        return;
+    }
 
     if(active&IRQ_BufFull){
         // Silence interrupt
