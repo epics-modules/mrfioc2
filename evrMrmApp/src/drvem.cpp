@@ -835,6 +835,7 @@ EVRMRM::poll_link(CALLBACK* cb)
     if(flags&IRQ_RXErr){
         // Still down
         callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
+        WRITE32(evr->base, IRQFlag, IRQ_RXErr);
     }else{
         scanIoRequest(evr->IRQrxError);
         int iflags=epicsInterruptLock();
