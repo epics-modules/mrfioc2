@@ -58,7 +58,7 @@ volatile unsigned char* devCSRTestSlot(
  * This macro gives the VME CSR base address for a slot.
  * Give this address to devBusToLocalAddr() with type atVMECSR
  */
-#define CSRBase(slot) ( (slot)<<19 )
+#define CSRSlotBase(slot) ( (slot)<<19 )
 
 #define CSRADER(addr,mod) ( ((addr)&0xFfffFf00) | ( ((mod)&0x3f)<<2 ) )
 
@@ -229,9 +229,10 @@ epicsShareExtern void vmecsrdump(int verb);
 /* Set base address for VME64x function N */
 INLINE
 void
-CSRbase(volatile void* base, epicsUInt8 N, epicsUInt32 addr, epicsUInt8 amod)
+CSRSetBase(volatile void* base, epicsUInt8 N, epicsUInt32 addr, epicsUInt8 amod)
 {
   volatile char* ptr=(volatile char*)base;
+  if (N>7) return;
   CSRWrite32((ptr) + CSR_FN_ADER(N), CSRADER(addr,amod) );
 }
 

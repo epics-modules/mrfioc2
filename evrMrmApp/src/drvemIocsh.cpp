@@ -324,7 +324,7 @@ try {
    * visible through function 0.
    */
 
-  CSRbase(csr, 1, base, VME_AM_STD_SUP_DATA);
+  CSRSetBase(csr, 1, base, VME_AM_STD_SUP_DATA);
 
   volatile unsigned char* evr;
 
