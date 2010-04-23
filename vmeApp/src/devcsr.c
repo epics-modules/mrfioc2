@@ -91,7 +91,7 @@ volatile unsigned char* devCSRTestSlot(
   test.board=CSRRead32(addr + CR_BOARD_ID);
   test.revision=CSRRead32(addr + CR_REVISION_ID);
 
-  for(; !!devs; devs--){
+  for(; devs && devs->vendor; devs++){
     if(csrMatch(devs,&test)){
       if(!!info){
         info->vendor=test.vendor;
