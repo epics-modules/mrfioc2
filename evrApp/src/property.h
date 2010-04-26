@@ -2,6 +2,23 @@
 #ifndef PROPERTY_H_INC
 #define PROPERTY_H_INC
 
+#include <stdexcept>
+
+#include <devSup.h>
+#include <dbScan.h>
+#include <dbAccess.h>
+#include <dbCommon.h>
+#include <recGbl.h>
+
+#include <aoRecord.h>
+#include <aiRecord.h>
+#include <boRecord.h>
+#include <biRecord.h>
+#include <longoutRecord.h>
+#include <longinRecord.h>
+
+#include <menuConvert.h>
+
 /**@brief Getter/Setter access to a pair of member functions
  *
  * Acts as an adapter for a pair of class member functions
@@ -24,8 +41,20 @@ public:
   typedef P (C::*getter_t)() const;
   typedef IOSCANPVT (C::*updater_t)();
 
+  property() :
+    inst(0), setter(0), getter(0),updater(0) {};
+
   property(class_type* o,getter_t g, setter_t s=0, updater_t u=0) :
     inst(o), setter(s), getter(g),updater(u) {};
+
+  property(const property& o) :
+    inst(o.inst), setter(o.setter), getter(o.getter), updater(o.updater) {};
+
+  property& operator=(const property& o)
+  {
+    inst=o.inst; setter=o.setter; getter=o.getter; updater=o.updater;
+    return *this;
+  }
 
   P get() const
   {
@@ -51,14 +80,201 @@ private:
   updater_t updater;
 };
 
-template<class C,typename P,typename S>
-static long get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
+struct common_dset{
+  long num;
+  DEVSUPFUN  report;
+  DEVSUPFUN  init;
+  DEVSUPFUN  init_record;
+  DEVSUPFUN  get_ioint_info;
+  DEVSUPFUN  readwrite;
+  DEVSUPFUN  special_linconv;
+};
+
+
+template<dsxt* D>
+static inline
+long init_dset(int i)
 {
-  property<C,P,S> *prop=static_cast<property<C,P,S>*>(prec->dpvt);
-
-  *io = prop->update();
-
+  if (i==0) devExtend(D);
   return 0;
+}
+
+extern "C" {
+
+long init_record_empty(void *);
+long init_record_return2(void *);
+long del_record_empty(dbCommon*);
+
+}
+
+/**@brief Templetized device support functions
+ */
+template<class C>
+struct dsetshared {
+
+  typedef C unit_type;
+
+  template<typename P>
+  static long get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,P> *prop=static_cast<property<unit_type,P>*>(prec->dpvt);
+
+    *io = prop->update();
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  /************** Analog *************/
+
+  // When converting between VAL and RVAL the following
+  // convention is used.  (ROFF omitted when RVAL is double)
+  // VAL = ((RVAL+ROFF) * ASLO + AOFF) * ESLO + EOFF
+  // RVAL = ((VAL - EOFF)/ESLO - AOFF)/ASLO + ROFF
+
+  static long read_ai(aiRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,double> *priv=static_cast<property<unit_type,double>*>(prec->dpvt);
+
+    prec->val = priv->get(); // Read "raw" value
+
+    if(prec->aslo!=0)
+      prec->val*=prec->aslo;
+    prec->val+=prec->aoff;
+
+    if(prec->linr==menuConvertLINEAR){
+      if(prec->eslo!=0)
+        prec->val*=prec->eslo;
+      prec->val+=prec->eoff;
+    }
+
+    return 2;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  static long write_ao(aoRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,double> *priv=static_cast<property<unit_type,double>*>(prec->dpvt);
+
+    double val=prec->val;
+
+    if(prec->linr==menuConvertLINEAR){
+      val-=prec->eoff;
+      if(prec->eslo!=0)
+        val/=prec->eslo;
+    }
+
+    prec->val-=prec->aoff;
+    if(prec->aslo!=0)
+      prec->val/=prec->aslo;
+
+    priv->set(val);
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  /************** Long *************/
+
+  static long read_li(longinRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,epicsUInt32> *priv=static_cast<property<unit_type,epicsUInt32>*>(prec->dpvt);
+
+    prec->val = priv->get();
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  static long write_lo(longoutRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,epicsUInt32> *priv=static_cast<property<unit_type,epicsUInt32>*>(prec->dpvt);
+
+    priv->set(prec->val);
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  /************** Binary *************/
+
+  static long read_bi(biRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,bool> *priv=static_cast<property<unit_type,bool>*>(prec->dpvt);
+
+    prec->rval = priv->get();
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+  static long write_bo(boRecord* prec)
+  {
+  if (!prec->dpvt) return -1;
+  try {
+    property<unit_type,bool> *priv=static_cast<property<unit_type,bool>*>(prec->dpvt);
+
+    priv->set(prec->rval);
+
+    return 0;
+  } catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    return S_db_noMemory;
+  }
+  }
+
+}; // struct dsetshared
+
+template<typename REC>
+static inline
+DEVSUPFUN
+dset_cast(long (*fn)(REC*))
+{
+  return (DEVSUPFUN)fn;
+}
+
+DEVSUPFUN
+static inline
+dset_cast(long (*fn)(int,dbCommon*,IOSCANPVT*))
+{
+  return (DEVSUPFUN)fn;
+}
+
+DEVSUPFUN
+static inline
+dset_cast(long (*fn)(int))
+{
+  return (DEVSUPFUN)fn;
 }
 
 #endif // PROPERTY_H_INC
