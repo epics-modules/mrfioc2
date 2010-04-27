@@ -10,8 +10,6 @@
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/cml_short.h"
 #include "property.h"
@@ -21,7 +19,7 @@
 
 /***************** Longin/Longout *****************/
 
-static long long_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -36,6 +34,12 @@ try {
     throw std::runtime_error("Failed to lookup CML short registers");
 
   property<CMLShort,epicsUInt32> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<CMLShort,epicsUInt32>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<CMLShort,epicsUInt32>;
+
   std::string parm(lnk->value.vmeio.parm);
   if( parm=="Pattern Low" ){
     prop=new property<CMLShort,epicsUInt32>(
@@ -75,93 +79,45 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_li(longinRecord *pli)
+static long add_li(dbCommon *prec)
 {
-  return long_init_record((dbCommon*)pli, &pli->inp);
+  longinRecord *pli=(longinRecord*)prec;
+  return add_record((dbCommon*)pli, &pli->inp);
 }
 
-static long read_li(longinRecord* pli)
+
+static long add_lo(dbCommon *prec)
 {
-try {
-  property<CMLShort,epicsUInt32> *priv=static_cast<property<CMLShort,epicsUInt32>*>(pli->dpvt);
-
-  pli->val = priv->get();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pli, e.what());
-  return S_db_noMemory;
-}
-}
-
-static long init_lo(longoutRecord *plo)
-{
-  return long_init_record((dbCommon*)plo, &plo->out);
-}
-
-static long get_ioint_info_li(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<CMLShort,epicsUInt32,epicsUInt32>(dir,prec,io);
-}
-
-static long write_lo(longoutRecord* plo)
-{
-try {
-  property<CMLShort,epicsUInt32> *priv=static_cast<property<CMLShort,epicsUInt32>*>(plo->dpvt);
-
-  priv->set(plo->val);
-
-  long rbv=priv->get();
-
-  // Probably an indication that this is a 16-bit field
-  if(rbv!=plo->val){
-    recGblSetSevr((dbCommon*)plo,SOFT_ALARM,MINOR_ALARM);
-  }
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)plo, e.what());
-  return S_db_noMemory;
-}
+  longoutRecord *plo=(longoutRecord*)prec;
+  return add_record((dbCommon*)plo, &plo->out);
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devLIEVRCMLShort = {
+dsxt dxtLIEVRCMLShort={add_li,del_record_empty};
+static
+common_dset devLIEVRCMLShort = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_li,
-  (DEVSUPFUN) get_ioint_info_li,
-  (DEVSUPFUN) read_li
+  dset_cast(&init_dset<&dxtLIEVRCMLShort>),
+  (DEVSUPFUN) init_record_empty,
+  dset_cast(&dsetshared<CMLShort>::get_ioint_info<epicsUInt32>),
+  dset_cast(&dsetshared<CMLShort>::read_li)
 };
 epicsExportAddress(dset,devLIEVRCMLShort);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOEVRCMLShort = {
+dsxt dxtLOEVRCMLShort={add_lo,del_record_empty};
+static
+common_dset devLOEVRCMLShort = {
   5,
   NULL,
+  dset_cast(&init_dset<&dxtLOEVRCMLShort>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
-  (DEVSUPFUN) init_lo,
-  NULL,
-  (DEVSUPFUN) write_lo
+  dset_cast(&dsetshared<CMLShort>::write_lo)
 };
 epicsExportAddress(dset,devLOEVRCMLShort);
 

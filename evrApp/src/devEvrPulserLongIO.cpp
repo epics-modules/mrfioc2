@@ -10,8 +10,6 @@
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/pulser.h"
 #include "property.h"
@@ -21,7 +19,7 @@
 
 /***************** Longin/Longout *****************/
 
-static long long_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -36,22 +34,28 @@ try {
     throw std::runtime_error("Failed to lookup pulser");
 
   property<Pulser,epicsUInt32> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<Pulser,epicsUInt32>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<Pulser,epicsUInt32>;
+
   std::string parm(lnk->value.abio.parm);
 
   if( parm=="Delay" ){
-    prop=new property<Pulser,epicsUInt32>(
+    *prop=property<Pulser,epicsUInt32>(
         pul,
         &Pulser::delayRaw,
         &Pulser::setDelayRaw
     );
   }else if( parm=="Width" ){
-    prop=new property<Pulser,epicsUInt32>(
+    *prop=property<Pulser,epicsUInt32>(
         pul,
         &Pulser::widthRaw,
         &Pulser::setWidthRaw
     );
   }else if( parm=="Prescaler" ){
-    prop=new property<Pulser,epicsUInt32>(
+    *prop=property<Pulser,epicsUInt32>(
         pul,
         &Pulser::prescaler,
         &Pulser::setPrescaler
@@ -70,93 +74,44 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_li(longinRecord *pli)
+static long add_li(dbCommon *prec)
 {
-  return long_init_record((dbCommon*)pli, &pli->inp);
+  longinRecord *pli=(longinRecord*)prec;
+  return add_record((dbCommon*)pli, &pli->inp);
 }
 
-static long read_li(longinRecord* pli)
+static long add_lo(dbCommon *prec)
 {
-try {
-  property<Pulser,epicsUInt32> *priv=static_cast<property<Pulser,epicsUInt32>*>(pli->dpvt);
-
-  pli->val = priv->get();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pli, e.what());
-  return S_db_noMemory;
-}
-}
-
-static long init_lo(longoutRecord *plo)
-{
-  return long_init_record((dbCommon*)plo, &plo->out);
-}
-
-static long get_ioint_info_li(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<Pulser,epicsUInt32,epicsUInt32>(dir,prec,io);
-}
-
-static long write_lo(longoutRecord* plo)
-{
-try {
-  property<Pulser,epicsUInt32> *priv=static_cast<property<Pulser,epicsUInt32>*>(plo->dpvt);
-
-  priv->set(plo->val);
-
-  long rbv=priv->get();
-
-  // Probably an indication that this is a 16-bit field
-  if(rbv!=plo->val){
-    recGblSetSevr((dbCommon*)plo,SOFT_ALARM,MINOR_ALARM);
-  }
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)plo, e.what());
-  return S_db_noMemory;
-}
+  longoutRecord *plo=(longoutRecord*)prec;
+  return add_record((dbCommon*)plo, &plo->out);
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devLIEVRPulser = {
+dsxt dxtLIEVRPulser={add_li,del_record_empty};
+static
+common_dset devLIEVRPulser = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_li,
-  (DEVSUPFUN) get_ioint_info_li,
-  (DEVSUPFUN) read_li
+  dset_cast(&init_dset<&dxtLIEVRPulser>),
+  (DEVSUPFUN) init_record_empty,
+  dset_cast(&dsetshared<Pulser>::get_ioint_info<epicsUInt32>),
+  dset_cast(&dsetshared<Pulser>::read_li)
 };
 epicsExportAddress(dset,devLIEVRPulser);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOEVRPulser = {
+dsxt dxtLOEVRPulser={add_lo,del_record_empty};
+static
+common_dset devLOEVRPulser = {
   5,
   NULL,
+  dset_cast(&init_dset<&dxtLOEVRPulser>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
-  (DEVSUPFUN) init_lo,
-  NULL,
-  (DEVSUPFUN) write_lo
+  dset_cast(&dsetshared<Pulser>::write_lo)
 };
 epicsExportAddress(dset,devLOEVRPulser);
 

@@ -10,8 +10,6 @@
 #include <aoRecord.h>
 #include <menuConvert.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "property.h"
@@ -21,7 +19,7 @@
 
 /***************** AI/AO *****************/
 
-static long analog_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -32,16 +30,22 @@ try {
     throw std::runtime_error("Failed to lookup device");
 
   property<EVR,double> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<EVR,double>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<EVR,double>;
+
   std::string parm(lnk->value.vmeio.parm);
 
   if( parm=="Clock" ){
-    prop=new property<EVR,double>(
+    *prop=property<EVR,double>(
         card,
         &EVR::clock,
         &EVR::clockSet
     );
   }else if( parm=="Timestamp Clock" ){
-    prop=new property<EVR,double>(
+    *prop=property<EVR,double>(
         card,
         &EVR::clockTS,
         &EVR::clockTSSet
@@ -60,106 +64,56 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_ai(aiRecord *prec)
+static long add_ai(dbCommon *raw)
 {
-  return analog_init_record((dbCommon*)prec, &prec->inp);
+  aiRecord *prec=(aiRecord*)raw;
+  return add_record((dbCommon*)prec, &prec->inp);
 }
 
-static long read_ai(aiRecord* prec)
+static long add_ao(dbCommon *raw)
 {
-try {
-  property<EVR,double> *priv=static_cast<property<EVR,double>*>(prec->dpvt);
-
-  prec->val = priv->get();
-
-  if(prec->linr==menuConvertLINEAR){
-    if(prec->eslo!=0)
-        prec->val*=prec->eslo;
-    prec->val+=prec->eoff;
-  }
-
-  return 2;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
-}
+  aoRecord *prec=(aoRecord*)raw;
+  return add_record((dbCommon*)prec, &prec->out);
 }
 
-static long init_ao(aoRecord *prec)
+
+static long init_ai_record(dbCommon *)
 {
-  long r=analog_init_record((dbCommon*)prec, &prec->out);
-  if(r==0)
-    return 2;
-  return r;
-}
-
-static long get_ioint_info_ai(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<EVR,double,double>(dir,prec,io);
-}
-
-static long write_ao(aoRecord* prec)
-{
-try {
-  property<EVR,double> *priv=static_cast<property<EVR,double>*>(prec->dpvt);
-
-  double val=prec->val;
-
-  if(prec->linr==menuConvertLINEAR){
-    val-=prec->eoff;
-    if(prec->eslo!=0)
-        val/=prec->eslo;
-  }
-
-  priv->set(val);
-
   return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
 }
+
+static long init_ao_record(dbCommon *)
+{
+  return 2;
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-  DEVSUPFUN  special_linconv;
-} devAIEVR = {
+dsxt dxtAIEVR={add_ai,del_record_empty};
+static
+common_dset devAIEVR = {
   6,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_ai,
-  (DEVSUPFUN) get_ioint_info_ai,
-  (DEVSUPFUN) read_ai,
+  dset_cast(&init_dset<&dxtAIEVR>),
+  (DEVSUPFUN) init_ai_record,
+  dset_cast(&dsetshared<EVR>::get_ioint_info<double>),
+  dset_cast(&dsetshared<EVR>::read_ai),
   NULL
 };
 epicsExportAddress(dset,devAIEVR);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-  DEVSUPFUN  special_linconv;
-} devAOEVR = {
+dsxt dxtAOEVR={add_ao,del_record_empty};
+static
+common_dset devAOEVR = {
   6,
   NULL,
+  dset_cast(&init_dset<&dxtAOEVR>),
+  (DEVSUPFUN) init_ao_record,
   NULL,
-  (DEVSUPFUN) init_ao,
-  NULL,
-  (DEVSUPFUN) write_ao,
+  dset_cast(&dsetshared<EVR>::write_ao),
   NULL
 };
 epicsExportAddress(dset,devAOEVR);

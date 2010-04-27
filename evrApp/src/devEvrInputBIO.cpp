@@ -9,8 +9,6 @@
 #include <biRecord.h>
 #include <boRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/input.h"
@@ -21,7 +19,7 @@
 
 /***************** BI/BO *****************/
 
-static long binary_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -37,16 +35,22 @@ try {
     throw std::runtime_error("Input Type is out of range");
 
   property<Input,bool> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<Input,bool>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<Input,bool>;
+
   std::string parm(lnk->value.vmeio.parm);
 
   if( parm=="Active Level" ){
-    prop=new property<Input,bool>(
+    *prop=property<Input,bool>(
         inp,
         &Input::levelHigh,
         &Input::levelHighSet
     );
   }else if( parm=="Active Edge" ){
-    prop=new property<Input,bool>(
+    *prop=property<Input,bool>(
         inp,
         &Input::edgeRise,
         &Input::edgeRiseSet
@@ -65,86 +69,44 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_bi(biRecord *pbi)
+static long add_bi(dbCommon *prec)
 {
-  return binary_init_record((dbCommon*)pbi, &pbi->inp);
+  biRecord *pbi=(biRecord*)prec;
+  return add_record((dbCommon*)pbi, &pbi->inp);
 }
 
-static long read_bi(biRecord* pbi)
+static long add_bo(dbCommon *prec)
 {
-try {
-  property<Input,bool> *priv=static_cast<property<Input,bool>*>(pbi->dpvt);
-
-  pbi->rval = priv->get();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pbi, e.what());
-  return S_db_noMemory;
-}
-}
-
-static long init_bo(boRecord *pbo)
-{
-  return binary_init_record((dbCommon*)pbo, &pbo->out);
-}
-
-static long get_ioint_info_bi(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<EVR,bool,bool>(dir,prec,io);
-}
-
-static long write_bo(boRecord* pbo)
-{
-try {
-  property<Input,bool> *priv=static_cast<property<Input,bool>*>(pbo->dpvt);
-
-  priv->set(pbo->rval);
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pbo, e.what());
-  return S_db_noMemory;
-}
+  boRecord *pbo=(boRecord*)prec;
+  return add_record((dbCommon*)pbo, &pbo->out);
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devBIInput = {
+dsxt dxtBIInput={add_bi,del_record_empty};
+static
+common_dset devBIInput = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_bi,
-  (DEVSUPFUN) get_ioint_info_bi,
-  (DEVSUPFUN) read_bi
+  dset_cast(&init_dset<&dxtBIInput>),
+  (DEVSUPFUN) init_record_empty,
+  dset_cast(&dsetshared<Input>::get_ioint_info<bool>),
+  dset_cast(&dsetshared<Input>::read_bi)
 };
 epicsExportAddress(dset,devBIInput);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devBOInput = {
+dsxt dxtBOInput={add_bo,del_record_empty};
+static
+common_dset devBOInput = {
   5,
   NULL,
+  dset_cast(&init_dset<&dxtBOInput>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
-  (DEVSUPFUN) init_bo,
-  NULL,
-  (DEVSUPFUN) write_bo
+  dset_cast(&dsetshared<EVR>::write_bo)
 };
 epicsExportAddress(dset,devBOInput);
 

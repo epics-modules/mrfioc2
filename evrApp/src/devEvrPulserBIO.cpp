@@ -9,8 +9,6 @@
 #include <biRecord.h>
 #include <boRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/pulser.h"
@@ -21,7 +19,7 @@
 
 /***************** BI/BO *****************/
 
-static long binary_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -36,16 +34,22 @@ try {
     throw std::runtime_error("Failed to lookup pulser");
 
   property<Pulser,bool> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<Pulser,bool>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<Pulser,bool>;
+
   std::string parm(lnk->value.abio.parm);
 
   if( parm=="Enable" ){
-    prop=new property<Pulser,bool>(
+    *prop=property<Pulser,bool>(
         pul,
         &Pulser::enabled,
         &Pulser::enable
     );
   }else if( parm=="Polarity" ){
-    prop=new property<Pulser,bool>(
+    *prop=property<Pulser,bool>(
         pul,
         &Pulser::polarityInvert,
         &Pulser::setPolarityInvert
@@ -64,86 +68,44 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_bi(biRecord *pbi)
+static long add_bi(dbCommon *prec)
 {
-  return binary_init_record((dbCommon*)pbi, &pbi->inp);
+  biRecord *pbi=(biRecord*)prec;
+  return add_record((dbCommon*)pbi, &pbi->inp);
 }
 
-static long read_bi(biRecord* pbi)
+static long add_bo(dbCommon *prec)
 {
-try {
-  property<Pulser,bool> *priv=static_cast<property<Pulser,bool>*>(pbi->dpvt);
-
-  pbi->rval = priv->get();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pbi, e.what());
-  return S_db_noMemory;
-}
-}
-
-static long init_bo(boRecord *pbo)
-{
-  return binary_init_record((dbCommon*)pbo, &pbo->out);
-}
-
-static long get_ioint_info_bi(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<EVR,bool,bool>(dir,prec,io);
-}
-
-static long write_bo(boRecord* pbo)
-{
-try {
-  property<Pulser,bool> *priv=static_cast<property<Pulser,bool>*>(pbo->dpvt);
-
-  priv->set(pbo->rval);
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pbo, e.what());
-  return S_db_noMemory;
-}
+  boRecord *pbo=(boRecord*)prec;
+  return add_record((dbCommon*)pbo, &pbo->out);
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devBIEVRPulser = {
+dsxt dxtBIEVRPulser={add_bi,del_record_empty};
+static
+common_dset devBIEVRPulser = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_bi,
-  (DEVSUPFUN) get_ioint_info_bi,
-  (DEVSUPFUN) read_bi
+  dset_cast(&init_dset<&dxtBIEVRPulser>),
+  (DEVSUPFUN) init_record_empty,
+  dset_cast(&dsetshared<Pulser>::get_ioint_info<bool>),
+  dset_cast(&dsetshared<Pulser>::read_bi)
 };
 epicsExportAddress(dset,devBIEVRPulser);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devBOEVRPulser = {
+dsxt dxtBOEVRPulser={add_bo,del_record_empty};
+static
+common_dset devBOEVRPulser = {
   5,
   NULL,
+  dset_cast(&init_dset<&dxtBOEVRPulser>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
-  (DEVSUPFUN) init_bo,
-  NULL,
-  (DEVSUPFUN) write_bo
+  dset_cast(&dsetshared<Pulser>::write_bo)
 };
 epicsExportAddress(dset,devBOEVRPulser);
 

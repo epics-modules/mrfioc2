@@ -12,8 +12,6 @@
 #include <aoRecord.h>
 #include <menuConvert.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "cardmap.h"
 #include "evr/pulser.h"
 #include "property.h"
@@ -24,7 +22,7 @@
 
 /***************** AI/AO *****************/
 
-static long analog_init_record(dbCommon *prec, DBLINK* lnk)
+static long add_record(dbCommon *prec, DBLINK* lnk)
 {
   long ret=0;
 try {
@@ -39,16 +37,22 @@ try {
     throw std::runtime_error("Failed to lookup pulser");
 
   property<Pulser,double> *prop;
+  if (prec->dpvt) {
+    prop=static_cast<property<Pulser,double>* >(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    prop=new property<Pulser,double>;
+
   std::string parm(lnk->value.abio.parm);
 
   if( parm=="Delay" ){
-    prop=new property<Pulser,double>(
+    *prop=property<Pulser,double>(
         pul,
         &Pulser::delay,
         &Pulser::setDelay
     );
   }else if( parm=="Width" ){
-    prop=new property<Pulser,double>(
+    *prop=property<Pulser,double>(
         pul,
         &Pulser::width,
         &Pulser::setWidth
@@ -67,119 +71,55 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord(prec);
   return ret;
 }
 
-static long init_ai(aiRecord *prec)
+static long add_ai(dbCommon *raw)
 {
-  return analog_init_record((dbCommon*)prec, &prec->inp);
+  aiRecord *prec=(aiRecord*)raw;
+  return add_record((dbCommon*)prec, &prec->inp);
 }
 
-static long read_ai(aiRecord* prec)
+static long add_ao(dbCommon *raw)
 {
-try {
-  property<Pulser,double> *priv=static_cast<property<Pulser,double>*>(prec->dpvt);
-
-  prec->val = priv->get();
-
-  if(prec->linr==menuConvertLINEAR){
-    if(prec->eslo!=0)
-        prec->val*=prec->eslo;
-    prec->val+=prec->eoff;
-  }
-
-  return 2;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
-}
+  aoRecord *prec=(aoRecord*)raw;
+  return add_record((dbCommon*)prec, &prec->out);
 }
 
-static long init_ao(aoRecord *prec)
+static long init_ai_record(dbCommon *)
 {
-  long r=analog_init_record((dbCommon*)prec, &prec->out);
-  if(r==0)
-    return 2;
-  return r;
-}
-
-static long get_ioint_info_ai(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-  return get_ioint_info<Pulser,double,double>(dir,prec,io);
-}
-
-static long write_ao(aoRecord* prec)
-{
-try {
-  property<Pulser,double> *priv=static_cast<property<Pulser,double>*>(prec->dpvt);
-
-  double val=prec->val;
-
-  if(prec->linr==menuConvertLINEAR){
-    val-=prec->eoff;
-    if(prec->eslo!=0)
-        val/=prec->eslo;
-  }
-
-  priv->set(val);
-
-  double rbv=priv->get();
-
-  if(prec->linr==menuConvertLINEAR){
-    if(prec->eslo!=0)
-        rbv*=prec->eslo;
-    rbv+=prec->eoff;
-  }
-
-  // NOTE: this test is perhaps too conservative.
-  if(fabs(rbv-prec->val)>DBL_EPSILON){
-    recGblSetSevr((dbCommon*)prec,SOFT_ALARM,MINOR_ALARM);
-  }
-
   return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
 }
+
+static long init_ao_record(dbCommon *)
+{
+  return 2;
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-  DEVSUPFUN  special_linconv;
-} devAIEVRPulser = {
+dsxt dxtAIEVRPulser={add_ai,del_record_empty};
+static
+common_dset devAIEVRPulser = {
   6,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_ai,
-  (DEVSUPFUN) get_ioint_info_ai,
-  (DEVSUPFUN) read_ai,
+  dset_cast(&init_dset<&dxtAIEVRPulser>),
+  (DEVSUPFUN) init_ai_record,
+  dset_cast(&dsetshared<Pulser>::get_ioint_info<double>),
+  dset_cast(&dsetshared<Pulser>::read_ai),
   NULL
 };
 epicsExportAddress(dset,devAIEVRPulser);
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-  DEVSUPFUN  special_linconv;
-} devAOEVRPulser = {
+dsxt dxtAOEVRPulser={add_ao,del_record_empty};
+static
+common_dset devAOEVRPulser = {
   6,
   NULL,
+  dset_cast(&init_dset<&dxtAOEVRPulser>),
+  (DEVSUPFUN) init_ao_record,
   NULL,
-  (DEVSUPFUN) init_ao,
-  NULL,
-  (DEVSUPFUN) write_ao,
+  dset_cast(&dsetshared<Pulser>::write_ao),
   NULL
 };
 epicsExportAddress(dset,devAOEVRPulser);
