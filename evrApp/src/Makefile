@@ -27,14 +27,14 @@ evr_SRCS += evrGTIF.cpp
 evr_SRCS += property.cpp
 
 evr_SRCS += devEvr.cpp
-evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvrStringIO.cpp
+
+evr_SRCS += devEvrInput.cpp
+
+evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
 evr_SRCS += devEvrOutput.cpp
-evr_SRCS += devEvrInputMBBIO.cpp
-evr_SRCS += devEvrInputLongIO.cpp
-evr_SRCS += devEvrInputBIO.cpp
 evr_SRCS += devEvrPulserLongIO.cpp
 evr_SRCS += devEvrPulserAIO.cpp
 evr_SRCS += devEvrPulserBIO.cpp
