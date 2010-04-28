@@ -26,10 +26,8 @@ evr_SRCS += cardmap.cpp
 evr_SRCS += evrGTIF.cpp
 evr_SRCS += property.cpp
 
+evr_SRCS += devEvr.cpp
 evr_SRCS += devPreScaler.cpp
-evr_SRCS += devEvrBIO.cpp
-evr_SRCS += devEvrLongIO.cpp
-evr_SRCS += devEvrAIO.cpp
 evr_SRCS += devEvrStringIO.cpp
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
