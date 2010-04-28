@@ -35,10 +35,10 @@ evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
 evr_SRCS += devEvrOutput.cpp
-evr_SRCS += devEvrPulserLongIO.cpp
-evr_SRCS += devEvrPulserAIO.cpp
-evr_SRCS += devEvrPulserBIO.cpp
+
+evr_SRCS += devEvrPulser.cpp
 evr_SRCS += devEvrPulserMapping.cpp
+
 evr_SRCS += devEvrCMLShortBIO.cpp
 evr_SRCS += devEvrCMLShortLongIO.cpp
 
