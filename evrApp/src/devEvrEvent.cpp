@@ -15,6 +15,8 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 
+#include "linkoptions.h"
+
 #include <stdexcept>
 #include <string>
 
@@ -22,7 +24,17 @@
 
 struct priv {
   EVR* evr;
+  epicsUInt32 card;
   int event;
+};
+typedef struct priv priv;
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (priv, card , "Card" , 1, 0),
+  linkInt32   (priv, event, "Code", 1, 0),
+  linkOptionEnd
 };
 
 static
@@ -30,16 +42,24 @@ long add_record(struct dbCommon *precord)
 {
   eventRecord* prec=(eventRecord*)(precord);
   long ret=0;
+  priv *p=NULL;
 try {
-  assert(prec->inp.type==VME_IO);
+  assert(prec->inp.type==INST_IO);
 
-  priv *p=new priv;
+  if (prec->dpvt) {
+    p=static_cast<priv*>(prec->dpvt);
+    prec->dpvt=NULL;
+  } else
+    p=new priv;
+  p->card=0;
+  p->event=0;
 
-  p->evr=getEVR<EVR>(prec->inp.value.vmeio.card);
+  if (linkOptionsStore(eventdef, p, prec->inp.value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  p->evr=getEVR<EVR>(p->card);
   if(!p->evr)
     throw std::runtime_error("Failed to lookup device");
-
-  p->event=prec->inp.value.vmeio.signal;
 
   if (!p->evr->interestedInEvent(p->event, true))
     throw std::runtime_error("Failed to register interest");
@@ -54,7 +74,7 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  mrfDisableRecord((dbCommon*)prec);
+  if (!prec->dpvt) delete p;
   return ret;
 }
 
@@ -67,8 +87,6 @@ long del_record(struct dbCommon *precord)
 try {
 
   p->evr->interestedInEvent(p->event, false);
-
-  delete p;
 
 } catch(std::runtime_error& e) {
   recGblRecordError(S_dev_noDevice, (void*)prec, e.what());

@@ -4,7 +4,7 @@
 record(event, "$(P)$(N)") {
   field(DTYP, "EVR")
   field(SCAN, "I/O Intr")
-  field(INP , "#C$(C) S$(CODE) @")
+  field(INP , "@Card=$(C),Code=$(CODE)")
   field(VAL , "$(EVNT)")
 }
 

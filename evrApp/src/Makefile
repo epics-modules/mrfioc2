@@ -52,7 +52,7 @@ PROD_IOC += evrtest
 
 evrtest_SRCS += evrMain.cpp
 
-evrtest_LIBS += evr
+evrtest_LIBS += evr mrfCommon
 evrtest_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 include $(TOP)/configure/RULES
