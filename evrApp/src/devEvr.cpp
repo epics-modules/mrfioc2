@@ -13,9 +13,24 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "property.h"
+#include "linkoptions.h"
 
 #include <stdexcept>
 #include <string>
+
+struct addr {
+  epicsUInt32 card;
+  char prop[20];
+};
+typedef struct priv priv;
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (addr, card , "Card" , 1, 0),
+  linkString  (addr, prop , "Prop"  , 1, 0),
+  linkOptionEnd
+};
 
 /***************** long *****************/
 
@@ -24,9 +39,13 @@ static long add_record_long(dbCommon *prec, DBLINK* lnk)
   long ret=0;
   property<EVR,epicsUInt32> *prop=NULL;
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==INST_IO);
+  addr inst_addr;
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  if (linkOptionsStore(eventdef, &inst_addr, lnk->value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR* card=getEVR<EVR>(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
@@ -36,7 +55,7 @@ try {
   } else
     prop=new property<EVR,epicsUInt32>;
 
-  std::string parm(lnk->value.vmeio.parm);
+  std::string parm(inst_addr.prop);
 
   if( parm=="Model" ){
     *prop=property<EVR,epicsUInt32>(
@@ -96,9 +115,13 @@ static long add_record_binary(dbCommon *prec, DBLINK* lnk)
   long ret=0;
   property<EVR,bool> *prop=NULL;
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==INST_IO);
+  addr inst_addr;
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  if (linkOptionsStore(eventdef, &inst_addr, lnk->value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR* card=getEVR<EVR>(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
@@ -108,7 +131,7 @@ try {
   } else
     prop=new property<EVR,bool>;
 
-  std::string parm(lnk->value.vmeio.parm);
+  std::string parm(inst_addr.prop);
 
   if( parm=="Enable" ){
     *prop=property<EVR,bool>(
@@ -154,9 +177,13 @@ static long add_record_analog(dbCommon *prec, DBLINK* lnk)
   long ret=0;
   property<EVR,double> *prop=NULL;
 try {
-  assert(lnk->type==VME_IO);
+  assert(lnk->type==INST_IO);
+  addr inst_addr;
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+  if (linkOptionsStore(eventdef, &inst_addr, lnk->value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR* card=getEVR<EVR>(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
@@ -166,7 +193,7 @@ try {
   } else
     prop=new property<EVR,double>;
 
-  std::string parm(lnk->value.vmeio.parm);
+  std::string parm(inst_addr.prop);
 
   if( parm=="Clock" ){
     *prop=property<EVR,double>(

@@ -38,12 +38,12 @@ device(longout,    AB_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
 
 # EVR devices
 # '#Ccard S0 @'
-device(longin , VME_IO, devLIEVR, "EVR")
-device(longout, VME_IO, devLOEVR, "EVR")
-device(bi     , VME_IO, devBIEVR, "EVR")
-device(bo     , VME_IO, devBOEVR, "EVR")
-device(ai     , VME_IO, devAIEVR, "EVR")
-device(ao     , VME_IO, devAOEVR, "EVR")
+device(longin , INST_IO, devLIEVR, "EVR")
+device(longout, INST_IO, devLOEVR, "EVR")
+device(bi     , INST_IO, devBIEVR, "EVR")
+device(bo     , INST_IO, devBOEVR, "EVR")
+device(ai     , INST_IO, devAIEVR, "EVR")
+device(ao     , INST_IO, devAOEVR, "EVR")
 
 # '#Ccard Sevent @'
 device(stringin, VME_IO, devSIEVR, "EVR Timestamp")

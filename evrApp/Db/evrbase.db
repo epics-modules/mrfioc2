@@ -2,7 +2,7 @@
 
 record(bo, "$(P)enable") {
   field(DTYP, "EVR")
-  field(OUT , "#C$(C) S0 @Enable")
+  field(OUT , "@Card=$(C), Prop=Enable")
   field(DESC, "Master enable for EVR device")
   field(PINI, "YES")
   field(VAL , "1")
@@ -13,7 +13,7 @@ record(bo, "$(P)enable") {
 
 record(bi, "$(P)link:sts") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Link Status")
+  field(INP , "@Card=$(C), Prop=Link Status")
   field(DESC, "Status of event link")
   field(SCAN, "1 second")
   field(ZNAM, "Fail")
@@ -24,7 +24,7 @@ record(bi, "$(P)link:sts") {
 record(longin, "$(P)link:cnt") {
   field(DTYP, "EVR")
   field(DESC, "Receive Error Count")
-  field(INP , "#C$(C) S0 @Receive Error Count")
+  field(INP , "@Card=$(C), Prop=Receive Error Count")
   field(PINI, "YES")
   field(SCAN, "1 second")
   field(DESC, "Rx error count")
@@ -32,7 +32,7 @@ record(longin, "$(P)link:cnt") {
 
 record(ao, "$(P)clock:set") {
   field(DTYP, "EVR")
-  field(OUT , "#C$(C) S0 @Clock")
+  field(OUT , "@Card=$(C), Prop=Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
   field(VAL , "124.916")
@@ -49,7 +49,7 @@ record(ao, "$(P)clock:set") {
 
 record(ai, "$(P)clock") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Clock")
+  field(INP , "@Card=$(C), Prop=Clock")
   field(SCAN, "1 second")
   field(DESC, "Event Link speed")
   field(PINI, "YES")
@@ -71,7 +71,7 @@ record(calc, "$(P)clock:error") {
 
 record(bi, "$(P)pll") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @PLL Lock Status")
+  field(INP , "@Card=$(C), Prop=PLL Lock Status")
   field(SCAN, "1 second")
   field(PINI, "YES")
   field(DESC, "Status of PLL")
@@ -82,14 +82,14 @@ record(bi, "$(P)pll") {
 
 record(longin, "$(P)hwtype") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Model")
+  field(INP , "@Card=$(C), Prop=Model")
   field(PINI, "YES")
   field(DESC, "Hardware type code")
 }
 
 record(longin, "$(P)ver") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Version")
+  field(INP , "@Card=$(C), Prop=Version")
   field(PINI, "YES")
   field(DESC, "Firmware version")
 }
@@ -129,13 +129,13 @@ record(mbbo, "$(P)ts:source") {
 
 record(longout, "$(P)ts:source:raw") {
   field(DTYP, "EVR")
-  field(OUT , "#C$(C) S0 @Timestamp Source")
+  field(OUT , "@Card=$(C), Prop=Timestamp Source")
   field(FLNK, "$(P)ts:clock")
 }
 
 record(ao, "$(P)ts:clock:set") {
   field(DTYP, "EVR")
-  field(OUT , "#C$(C) S0 @Timestamp Clock")
+  field(OUT , "@Card=$(C), Prop=Timestamp Clock")
   field(DESC, "Timestamp speed")
   field(VAL , "10.0")
   field(EGU , "MHz")
@@ -151,7 +151,7 @@ record(ao, "$(P)ts:clock:set") {
 
 record(ai, "$(P)ts:clock") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Timestamp Clock")
+  field(INP , "@Card=$(C), Prop=Timestamp Clock")
   field(SCAN, "1 second")
   field(DESC, "Timestamp speed")
   field(PINI, "YES")
@@ -165,7 +165,7 @@ record(ai, "$(P)ts:clock") {
 
 record(longin, "$(P)ts:div") {
   field(DTYP, "EVR")
-  field(INP , "#C$(C) S0 @Timestamp Prescaler")
+  field(INP , "@Card=$(C), Prop=Timestamp Prescaler")
   field(DESC, "Timestamp divider")
 }
 
