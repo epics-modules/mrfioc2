@@ -138,7 +138,7 @@ public:
     //=====================
     // Bus address configuration routine
     //
-    virtual epicsUInt32 ConfigBusAddress (epicsInt32 RegMapSize);
+    virtual volatile epicsUInt8* ConfigBusAddress (epicsInt32 RegMapSize);
 
     //=====================
     // Bus interrupt configuration routine
@@ -177,7 +177,7 @@ private:
     epicsInt32       CardNum;               // Logical card number
     epicsInt32       CardType;              // Card type (EVR, EVG,...)
 
-    epicsUInt32      CpuAddress;            // Card's CPU address
+    volatile epicsUInt8* CpuAddress;            // Card's CPU address
 
     epicsInt32       IrqVector;             // Card's interrupt vector
     epicsInt32       IrqLevel;              // Card's interrupt request level

@@ -213,7 +213,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT OUTPUTS (member variables):
 |*      AddressRegistered  = (bool)        True if bus address was registered with devLib
-|*      CpuAddress         = (epicsUInt32) CPU address for accessing the register map
+|*      CpuAddress         = (void*) CPU address for accessing the register map
 |*      Description        = (char *)      Card description (used to register with devLib)
 |*      ErrorText          = (char *)      Text from last error condition
 |*      Serial Number      = (char *)      Card's serial number (read from CSR space)
@@ -232,7 +232,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
 |*
 \**************************************************************************************************/
 
-epicsUInt32
+volatile epicsUInt8*
 mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
 {
     //=====================
@@ -510,7 +510,7 @@ mrfVmeBusInterface::BusInterruptEnable () const {
 |* IMPLICIT INPUTS (member variables):
 |*      BusAddress     = (epicsUInt32)    VME bus address
 |*      CardNum        = (epicsInt32)     Logical card number
-|*      CpuAddress     = (epicsUInt32)    CPU address for accessing the register map
+|*      CpuAddress     = (void*)    CPU address for accessing the register map
 |*      IrqLevel       = (epicsInt32)     Interrupt request level
 |*      IrqVector      = (epicsInt32)     Interrupt vector number
 |*      Serial Number  = (char *)         Card's serial number (read from CSR space)
@@ -525,7 +525,7 @@ mrfVmeBusInterface::BusInterruptEnable () const {
 void
 mrfVmeBusInterface::BusHwReport () const {
     printf ("  Card %d in VME slot %d.  Serial Number = %s.\n", CardNum, Slot, SerialNumber);
-    printf ("       VME Address = %8.8X.  Local Address = %8.8X.", BusAddress, CpuAddress);
+    printf ("       VME Address = %8.8X.  Local Address = %8.8X.", BusAddress, (epicsUInt32)CpuAddress);
     printf ("   Vector = %3.3X.  Level = %d.\n", IrqVector, IrqLevel);
 }//end BusHwReport()
 
