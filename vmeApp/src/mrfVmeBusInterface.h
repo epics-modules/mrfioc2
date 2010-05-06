@@ -177,7 +177,8 @@ private:
     epicsInt32       CardNum;               // Logical card number
     epicsInt32       CardType;              // Card type (EVR, EVG,...)
 
-    volatile epicsUInt8* CpuAddress;            // Card's CPU address
+    volatile epicsUInt8* CpuAddress;        // Card's CPU address
+    volatile epicsUInt8* CpuCSRAddress;     // Mapped Slot CSR base address
 
     epicsInt32       IrqVector;             // Card's interrupt vector
     epicsInt32       IrqLevel;              // Card's interrupt request level

@@ -223,7 +223,7 @@ private:
     //=====================
     // Hardware-Related Data
     //
-    epicsUInt32           pReg;             // CPU Address for accessing the card's register map
+    volatile epicsUInt8*  pReg;             // CPU Address for accessing the card's register map
     epicsUInt32           FPGAVersion;      // Firmware version number
 
     //=====================
