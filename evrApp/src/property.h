@@ -298,4 +298,25 @@ dset_cast(long (*fn)(int))
   return (DEVSUPFUN)fn;
 }
 
+typedef long (*DSXTFUN)(dbCommon*);
+
+template<typename REC, int i=sizeof(((REC*)0)->dpvt)>
+struct dsxt_cast_helper {
+
+  static inline
+  DSXTFUN
+  dsxt_cast(long (*fn)(REC*))
+  {
+    return (DSXTFUN)fn;
+  }
+};
+
+template<typename REC>
+static inline
+DSXTFUN
+dsxt_cast(long (*fn)(REC*))
+{
+  return dsxt_cast_helper<REC>::dsxt_cast(fn);
+}
+
 #endif // PROPERTY_H_INC
