@@ -197,9 +197,9 @@ struct dsetshared {
         val/=prec->eslo;
     }
 
-    prec->val-=prec->aoff;
+    val-=prec->aoff;
     if(prec->aslo!=0)
-      prec->val/=prec->aslo;
+      val/=prec->aslo;
 
     priv->set(val);
 
