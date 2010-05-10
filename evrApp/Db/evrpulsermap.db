@@ -1,7 +1,7 @@
 
 record(longout, "$(P)$(N)$(M)") {
   field( DTYP, "EVR Pulser Mapping" )
-  field( OUT , "#L$(C) A$(PID) C0 S$(F) @")
+  field( OUT , "@Card=$(C), Pulser=$(PID), Func=$(F=Trig)")
   field( PINI, "YES")
   field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , $(EVT))

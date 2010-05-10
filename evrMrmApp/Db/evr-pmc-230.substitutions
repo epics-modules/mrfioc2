@@ -53,33 +53,33 @@ file "evrpulser.db"
 file "evrpulsermap.db"
 {pattern
 {P, C, PID, F, N, M, EVT}
-{$(P), $(C), 0, 1, "pul0:", "trig0", 0}
-{$(P), $(C), 0, 1, "pul0:", "trig1", 0}
-{$(P), $(C), 0, 1, "pul0:", "trig2", 0}
-{$(P), $(C), 1, 1, "pul1:", "trig0", 0}
-{$(P), $(C), 1, 1, "pul1:", "trig1", 0}
-{$(P), $(C), 1, 1, "pul1:", "trig2", 0}
-{$(P), $(C), 2, 1, "pul2:", "trig0", 0}
-{$(P), $(C), 2, 1, "pul2:", "trig1", 0}
-{$(P), $(C), 2, 1, "pul2:", "trig2", 0}
-{$(P), $(C), 3, 1, "pul3:", "trig0", 0}
-{$(P), $(C), 3, 1, "pul3:", "trig1", 0}
-{$(P), $(C), 3, 1, "pul3:", "trig2", 0}
-{$(P), $(C), 4, 1, "pul4:", "trig0", 0}
-{$(P), $(C), 4, 1, "pul4:", "trig1", 0}
-{$(P), $(C), 4, 1, "pul4:", "trig2", 0}
-{$(P), $(C), 5, 1, "pul5:", "trig0", 0}
-{$(P), $(C), 5, 1, "pul5:", "trig1", 0}
-{$(P), $(C), 5, 1, "pul5:", "trig2", 0}
-{$(P), $(C), 6, 1, "pul6:", "trig0", 0}
-{$(P), $(C), 6, 1, "pul6:", "trig1", 0}
-{$(P), $(C), 6, 1, "pul6:", "trig2", 0}
-{$(P), $(C), 7, 1, "pul7:", "trig0", 0}
-{$(P), $(C), 7, 1, "pul7:", "trig1", 0}
-{$(P), $(C), 7, 1, "pul7:", "trig2", 0}
-{$(P), $(C), 8, 1, "pul8:", "trig0", 0}
-{$(P), $(C), 8, 1, "pul8:", "trig1", 0}
-{$(P), $(C), 8, 1, "pul8:", "trig2", 0}
+{$(P), $(C), 0, Trig, "pul0:", "trig0", 0}
+{$(P), $(C), 0, Trig, "pul0:", "trig1", 0}
+{$(P), $(C), 0, Trig, "pul0:", "trig2", 0}
+{$(P), $(C), 1, Trig, "pul1:", "trig0", 0}
+{$(P), $(C), 1, Trig, "pul1:", "trig1", 0}
+{$(P), $(C), 1, Trig, "pul1:", "trig2", 0}
+{$(P), $(C), 2, Trig, "pul2:", "trig0", 0}
+{$(P), $(C), 2, Trig, "pul2:", "trig1", 0}
+{$(P), $(C), 2, Trig, "pul2:", "trig2", 0}
+{$(P), $(C), 3, Trig, "pul3:", "trig0", 0}
+{$(P), $(C), 3, Trig, "pul3:", "trig1", 0}
+{$(P), $(C), 3, Trig, "pul3:", "trig2", 0}
+{$(P), $(C), 4, Trig, "pul4:", "trig0", 0}
+{$(P), $(C), 4, Trig, "pul4:", "trig1", 0}
+{$(P), $(C), 4, Trig, "pul4:", "trig2", 0}
+{$(P), $(C), 5, Trig, "pul5:", "trig0", 0}
+{$(P), $(C), 5, Trig, "pul5:", "trig1", 0}
+{$(P), $(C), 5, Trig, "pul5:", "trig2", 0}
+{$(P), $(C), 6, Trig, "pul6:", "trig0", 0}
+{$(P), $(C), 6, Trig, "pul6:", "trig1", 0}
+{$(P), $(C), 6, Trig, "pul6:", "trig2", 0}
+{$(P), $(C), 7, Trig, "pul7:", "trig0", 0}
+{$(P), $(C), 7, Trig, "pul7:", "trig1", 0}
+{$(P), $(C), 7, Trig, "pul7:", "trig2", 0}
+{$(P), $(C), 8, Trig, "pul8:", "trig0", 0}
+{$(P), $(C), 8, Trig, "pul8:", "trig1", 0}
+{$(P), $(C), 8, Trig, "pul8:", "trig2", 0}
 }
 
 file "evrin.db"

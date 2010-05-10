@@ -34,7 +34,7 @@ device(bi,         AB_IO, devBIEVRPulser, "EVR Pulser")
 device(bo,         AB_IO, devBOEVRPulser, "EVR Pulser")
 
 # '#Lcard Apulser Cmappingram Sfunction @'
-device(longout,    AB_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
+device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
 
 # EVR devices
 # '#Ccard S0 @'

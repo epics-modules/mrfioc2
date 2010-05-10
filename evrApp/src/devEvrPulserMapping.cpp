@@ -16,6 +16,7 @@
 
 #include "cardmap.h"
 #include "evr/pulser.h"
+#include "linkoptions.h"
 #include "dsetshared.h"
 
 #include <stdexcept>
@@ -35,26 +36,49 @@
 /***************** Mapping record ******************/
 
 struct map_priv {
+  epicsUInt32 card_id, pulser_id;
   Pulser* pulser;
   epicsUInt32 last_code;
   MapType::type last_func;
+  MapType::type next_func;
 };
 
-static long init_lo(longoutRecord *plo)
+static const
+linkOptionEnumType funcEnum[] = {
+  {"Trig", MapType::Trigger},
+  {"Set",  MapType::Set},
+  {"Reset",MapType::Reset},
+  {NULL,0}
+};
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (map_priv, card_id  , "Card"  , 1, 0),
+  linkInt32   (map_priv, pulser_id, "Pulser", 1, 0),
+  linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
+  linkOptionEnd
+};
+
+static long add_lo(dbCommon* praw)
 {
   long ret=0;
+  longoutRecord *plo = (longoutRecord*)praw;
 try {
-  assert(plo->out.type==AB_IO);
+  assert(plo->out.type==INST_IO);
 
   map_priv *priv=new map_priv;
   priv->last_code=0;
   priv->last_func=MapType::None;
 
-  EVR *card=getEVR<EVR>(plo->out.value.abio.link);
+  if (linkOptionsStore(eventdef, priv, plo->out.value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR *card=getEVR<EVR>(priv->card_id);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  priv->pulser=card->pulser(plo->out.value.abio.adapter);
+  priv->pulser=card->pulser(priv->pulser_id);
   if(!priv->pulser)
     throw std::runtime_error("Failed to lookup pulser unit");
 
@@ -78,15 +102,17 @@ static long write_lo(longoutRecord* plo)
 try {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
 
-  epicsUInt32 code=plo->val;
-  MapType::type func;
+  if (!priv)
+    return -2;
 
-  switch(plo->out.value.abio.signal){
+  epicsUInt32 code=plo->val;
+  MapType::type func=priv->next_func;
+
+  switch(func){
   case MapType::None:
   case MapType::Trigger:
   case MapType::Set:
   case MapType::Reset:
-    func=(MapType::type)plo->out.value.abio.signal;
     break;
   default:
     throw std::runtime_error("Invalid mapping type");
@@ -142,18 +168,13 @@ try {
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOEVRPulserMap = {
+dsxt dxtLOEVRPulserMap={add_lo,del_record_empty};
+static
+common_dset devLOEVRPulserMap = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_lo,
+  dset_cast(&init_dset<&dxtLOEVRPulserMap>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
   (DEVSUPFUN) write_lo
 };
