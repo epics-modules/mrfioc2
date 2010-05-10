@@ -99,6 +99,27 @@ long init_dset(int i)
   return 0;
 }
 
+template<typename T, typename R>
+static inline
+T* getdpvt(R *p)
+{
+  T* tmp=static_cast<T*>(p->dpvt);
+  if (tmp) {
+    p->dpvt = NULL;
+    return tmp;
+  } else
+    return new T;
+};
+
+template<typename T, typename R>
+static inline
+void setdpvt(R *p, T* t)
+{
+  if (p->dpvt)
+    throw std::logic_error("dpvt already set");
+  p->dpvt = static_cast<void*>(t);
+};
+
 extern "C" {
 
 long init_record_empty(void *);
