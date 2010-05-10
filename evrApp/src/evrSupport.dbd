@@ -51,6 +51,5 @@ device(stringin, VME_IO, devSIEVR, "EVR Timestamp")
 # '@Card=cardnum,Event=eventnum'
 device(event,    INST_IO, devEventEVR, "EVR")
 
-# '#Ccard Sfunction @'
-device(longout, VME_IO, devLOEVRMap, "EVR Mapping")
-device(stringin, VME_IO, devSIEVRMap, "EVR Mapping")
+# '@Card=$(C), Func=FUNCTIONNAME'
+device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
