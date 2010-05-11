@@ -99,16 +99,15 @@ try {
 
 static long write_lo(longoutRecord* plo)
 {
-try {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
+try {
 
   if (!priv)
     return -2;
 
   epicsUInt32 code=plo->val;
-  MapType::type func=priv->next_func;
 
-  switch(func){
+  switch(priv->next_func){
   case MapType::None:
   case MapType::Trigger:
   case MapType::Set:
@@ -118,7 +117,7 @@ try {
     throw std::runtime_error("Invalid mapping type");
   }
 
-  if( func==priv->last_func && code==priv->last_code )
+  if( priv->next_func==priv->last_func && code==priv->last_code )
     return 0;
 
   //TODO: sanity check to catch overloaded mappings
@@ -126,39 +125,20 @@ try {
   if(code!=priv->last_code)
     priv->pulser->sourceSetMap(priv->last_code,MapType::None);
 
-  if(code==0)
-    return 0;
-
-  bool restore=false;
-  try {
-    priv->pulser->sourceSetMap(code,func);
-  } catch(std::runtime_error& e) {
-    restore=true;
-  }
-
-  if (restore && func==priv->last_func) {
-    // Can  (try) to recover previous setting unless
-    // function (OUT link) changed.
-    priv->pulser->sourceSetMap(priv->last_code,priv->last_func);
-
-    plo->val = priv->last_code;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
-
-    return -5;
-  } else if (restore) {
-    // Can't recover
-    plo->val = 0;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
-    return -5;
+  if(code!=0) {
+    priv->pulser->sourceSetMap(code,priv->next_func);
   }
 
   priv->last_code=code;
-  priv->last_func=func;
+  priv->last_func=priv->next_func;
 
   return 0;
 
 } catch(std::exception& e) {
   plo->val=0;
+  priv->last_code=0;
+  priv->last_func=priv->next_func;
+  recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
   return S_db_noMemory;
 }

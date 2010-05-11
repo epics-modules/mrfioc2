@@ -78,18 +78,19 @@ static long add_lo(dbCommon* praw)
 try {
   assert(plo->out.type==INST_IO);
 
-  map_priv *priv=new map_priv;
-  priv->last_code=0;
-  priv->last_func=plo->out.value.vmeio.signal;
+  map_priv *priv=getdpvt<map_priv>(plo);
 
   if (linkOptionsStore(eventdef, priv, plo->out.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
+
+  priv->last_code=0;
+  priv->last_func=priv->next_func;
 
   priv->card=getEVR<EVR>(priv->card_id);
   if(!priv->card)
     throw std::runtime_error("Failed to lookup device");
 
-  plo->dpvt=static_cast<void*>(priv);
+  setdpvt(plo, priv);
 
   return 0;
 
