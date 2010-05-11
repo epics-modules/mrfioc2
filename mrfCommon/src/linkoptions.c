@@ -124,7 +124,7 @@ linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int opt
     const linkOptionDef *cur;
     char **pairs=NULL, **arg;
 
-    for(i=0, cur=opts; cur; i++, cur++) {}
+    for(i=0, cur=opts; cur && cur->name; i++, cur++) {}
 
     /* Bit array to find missing required keys */
     found=calloc( (i/32)+1, sizeof(epicsUInt32) );
