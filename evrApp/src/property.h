@@ -50,11 +50,18 @@ public:
   property(const property& o) :
     inst(o.inst), setter(o.setter), getter(o.getter), updater(o.updater) {};
 
+  property(const property& o, class_type* i) :
+    inst(i), setter(o.setter), getter(o.getter), updater(o.updater) {};
+
   property& operator=(const property& o)
   {
     inst=o.inst; setter=o.setter; getter=o.getter; updater=o.updater;
     return *this;
   }
+
+  void set_instance(class_type* i) { inst=i; }
+
+  bool valid() const { return !!inst; }
 
   P get() const
   {
@@ -79,6 +86,25 @@ private:
   getter_t getter;
   updater_t updater;
 };
+
+//! An entry in a list of properties
+template<class C,typename P,typename S=P>
+struct prop_entry {
+  const char* name;
+  property<C,P,S> prop;
+};
+
+//! Search a list of properties (terminated by {NULL, property()})
+template<class C,typename P,typename S>
+property<C,P,S>
+find_prop(const prop_entry<C,P,S>* list, std::string& name, C* c)
+{
+  for(; list->name; list++) {
+    if (name==list->name)
+      return property<C,P,S>(list->prop, c);
+  }
+  return property<C,P,S>();
+}
 
 struct common_dset{
   long num;
