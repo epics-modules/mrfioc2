@@ -83,11 +83,6 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const=0;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool set)=0;
 
-  /** Return a human readable string describing 'func'.
-   * 'func' is any mapping code which can be a special mapping.
-   */
-  virtual const char* idName(epicsUInt32 func) const=0;
-
   /**\defgroup pll Module reference clock
    *
    *  Controls the local oscillator for the event

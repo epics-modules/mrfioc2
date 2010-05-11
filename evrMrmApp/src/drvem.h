@@ -70,7 +70,6 @@ public:
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
-  virtual const char* idName(epicsUInt32 src) const;
 
   virtual double clock() const;
   virtual void clockSet(double);
