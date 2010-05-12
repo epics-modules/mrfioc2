@@ -6,6 +6,11 @@
 
 /* Device support helpers */
 
+/** Returns an instance or T from the record dpvt field
+ *  if available, or a new instance if dpvt is empty.
+ *
+ *  When this function returns dpvt will be NULL
+ */
 template<typename T, typename R>
 static inline
 T* getdpvt(R *p)
@@ -18,6 +23,9 @@ T* getdpvt(R *p)
     return new T;
 };
 
+/** Store the instance of T in dpvt.
+ * checks that dpvt==NULL first
+ */
 template<typename T, typename R>
 static inline
 void setdpvt(R *p, T* t)
@@ -27,7 +35,7 @@ void setdpvt(R *p, T* t)
   p->dpvt = static_cast<void*>(t);
 };
 
-/* A common dset structure to cover all Base types */
+/** A common dset structure to cover all Base types */
 struct common_dset{
   long num;
   DEVSUPFUN  report;
@@ -40,7 +48,7 @@ struct common_dset{
 
 /* Templateized device support functions */
 
-/* global init(int) which does nothing but install
+/** global init(int) which does nothing but install
  * extended device support functions.
  */
 template<dsxt* D>
@@ -53,11 +61,11 @@ long init_dset(int i)
 
 extern "C" {
 
-// does nothing but return 0
+//! does nothing but return 0
 long init_record_empty(void *);
-// does nothing but return 2
+//! does nothing but return 2
 long init_record_return2(void *);
-// does nothing and returns 0
+//! does nothing and returns 0
 long del_record_empty(dbCommon*);
 
 }
@@ -84,6 +92,9 @@ try {
   assert(lnk->type==INST_IO);
 
   prop = getdpvt<property<C,P> >(prec);
+  // At this point prec->dpvt is null
+  // so 'prop' must be free'd on error
+  // to avoid a memory leak
 
   std::string parm;
 
@@ -94,6 +105,9 @@ try {
   if (!prop->valid())
     throw std::runtime_error("Invalid parm string in link");
 
+  // prec->dpvt is set again to indicate
+  // This also serves to indicate sucessful
+  // initialization to other dset functions
   setdpvt(prec, prop);
 
   return 0;
@@ -253,6 +267,101 @@ try {
   return S_db_noMemory;
 }
 }
+
+/********** property dset table ************/
+
+/** Can't really simplify this any more w/ templating
+ * so the remainder can be done w/ a cpp macro
+ */
+
+/**@brief Create an add_record function for a combination of recordtype and class
+ *
+ *@param rectype record type (ie ai, bo, longin)
+ *@param proptype property data type (ie double, bool, epicsUInt32)
+ *@param linkfld name of the hardware link field (ie inp or out)
+ *@param classname Class to be wrapped
+ *@param getunit function to return an instance of the class (Class* (*fnptr)(const char*,std::string&)
+ *@param proplist a list of name and property<>() pairs (struct prop_entry[])
+ *
+ * The function will be called add_classname_rectype (ie add_Pulser_ai)
+ */
+#define PROPERTY_DSET_ADDFN(rectype, proptype, linkfld, classname, getunit, proplist) \
+static long add_ ## classname ## _ ## rectype(dbCommon *raw) \
+{ \
+  rectype ## Record *prec=(rectype ## Record*)raw; \
+  return add_record_property<classname,proptype>((dbCommon*)prec, \
+                         &prec->linkfld, getunit, proplist); \
+}
+
+/**@brief Create dset and dsxt tables for a combination of recordtype and class
+ *
+ *@param rectype record type (ie ai, bo, longin)
+ *@param proptype property data type (ie double, bool, epicsUInt32)
+ *@param classname Class to be wrapped
+ *@param addfunc an add_record function (see above)
+ *@param initfunc an init_record function (ie init_record_empty or init_record_return2)
+ *@param procfn the read or write fn
+ *
+ * The dset structure will be called devRECCLASS (ie devaiPulser).
+ */
+#define PROPERTY_DSET_TABLE(rectype, proptype, classname, addfunc, initfunc, procfn) \
+dsxt dxt ## rectype ## classname={addfunc,del_record_empty}; \
+static common_dset dev ## rectype ## classname = { \
+  6, NULL, \
+  dset_cast(&init_dset<&dxt ## rectype ## classname>), \
+  (DEVSUPFUN) initfunc, \
+  dset_cast(&get_ioint_info_property<classname,proptype>), \
+  dset_cast(&procfn), \
+  NULL };\
+epicsExportAddress(dset,dev ## rectype ## classname);
+
+/********** Analog ************/
+
+#define PROPERTY_DSET_AI(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(ai, double, inp, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(ai, double, classname, \
+                    add_ ## classname ## _ai, \
+                    init_record_empty, \
+                    read_ai_property<classname> )
+
+#define PROPERTY_DSET_AO(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(ao, double, out, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(ao, double, classname, \
+                    add_ ## classname ## _ao, \
+                    init_record_return2, \
+                    write_ao_property<classname> )
+
+/*********** Long integer *********************/
+
+#define PROPERTY_DSET_LONGIN(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(longin, epicsUInt32, inp, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(longin, epicsUInt32, classname, \
+                    add_ ## classname ## _longin, \
+                    init_record_empty, \
+                    read_li_property<classname> )
+
+#define PROPERTY_DSET_LONGOUT(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(longout, epicsUInt32, out, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(longout, epicsUInt32, classname, \
+                    add_ ## classname ## _longout, \
+                    init_record_empty, \
+                    write_lo_property<classname> )
+
+/************ binary ******************/
+
+#define PROPERTY_DSET_BI(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(bi, bool, inp, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(bi, bool, classname, \
+                    add_ ## classname ## _bi, \
+                    init_record_empty, \
+                    read_bi_property<classname> )
+
+#define PROPERTY_DSET_BO(classname, getunit, proplist) \
+PROPERTY_DSET_ADDFN(bo, bool, out, classname, getunit, proplist); \
+PROPERTY_DSET_TABLE(bo, bool, classname, \
+                    add_ ## classname ## _bo, \
+                    init_record_return2, \
+                    write_bo_property<classname> )
 
 /* Device support related casting functions */
 
