@@ -98,8 +98,8 @@ common_dset devBIEVRCMLShort = {
   NULL,
   dset_cast(&init_dset<&dxtBIEVRCMLShort>),
   (DEVSUPFUN) init_record_empty,
-  dset_cast(&dsetshared<CMLShort>::get_ioint_info<bool>),
-  dset_cast(&dsetshared<CMLShort>::read_bi)
+  dset_cast(&get_ioint_info_property<CMLShort,bool>),
+  dset_cast(&read_bi_property<CMLShort>)
 };
 epicsExportAddress(dset,devBIEVRCMLShort);
 
@@ -111,7 +111,7 @@ common_dset devBOEVRCMLShort = {
   dset_cast(&init_dset<&dxtBOEVRCMLShort>),
   (DEVSUPFUN) init_record_empty,
   NULL,
-  dset_cast(&dsetshared<CMLShort>::write_bo)
+  dset_cast(&write_bo_property<CMLShort>)
 };
 epicsExportAddress(dset,devBOEVRCMLShort);
 

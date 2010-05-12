@@ -104,8 +104,8 @@ common_dset devLIEVRCMLShort = {
   NULL,
   dset_cast(&init_dset<&dxtLIEVRCMLShort>),
   (DEVSUPFUN) init_record_empty,
-  dset_cast(&dsetshared<CMLShort>::get_ioint_info<epicsUInt32>),
-  dset_cast(&dsetshared<CMLShort>::read_li)
+  dset_cast(&get_ioint_info_property<CMLShort,epicsUInt32>),
+  dset_cast(&read_li_property<CMLShort>)
 };
 epicsExportAddress(dset,devLIEVRCMLShort);
 
@@ -117,7 +117,7 @@ common_dset devLOEVRCMLShort = {
   dset_cast(&init_dset<&dxtLOEVRCMLShort>),
   (DEVSUPFUN) init_record_empty,
   NULL,
-  dset_cast(&dsetshared<CMLShort>::write_lo)
+  dset_cast(&write_lo_property<CMLShort>)
 };
 epicsExportAddress(dset,devLOEVRCMLShort);
 
