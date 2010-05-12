@@ -7,6 +7,7 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
+#include "linkoptions.h"
 #include "dsetshared.h"
 
 #include <stringinRecord.h>
@@ -19,20 +20,40 @@
 #include <stdexcept>
 #include <string>
 
+struct addr {
+  EVR* evr;
+  epicsUInt32 card;
+  epicsUInt32 code;
+};
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (addr, card , "C" , 1, 0),
+  linkInt32   (addr, code , "Code" , 0, 0),
+  linkOptionEnd
+};
+
 /***************** Stringin (Timestamp) *****************/
 
 static
-long stringin_init(stringinRecord *prec)
+long stringin_add(dbCommon *praw)
 {
+  stringinRecord *prec=(stringinRecord*)(praw);
   long ret=0;
 try {
-  assert(prec->inp.type==VME_IO);
+  assert(prec->inp.type==INST_IO);
+  addr *priv=new addr;
+  priv->code=0;
 
-  EVR* card=getEVR<EVR>(prec->inp.value.vmeio.card);
-  if(!card)
+  if (linkOptionsStore(eventdef, priv, prec->inp.value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  priv->evr=getEVR<EVR>(priv->card);
+  if(!priv->evr)
     throw std::runtime_error("Failed to lookup device");
 
-  prec->dpvt=static_cast<void*>(card);
+  prec->dpvt=static_cast<void*>(priv);
 
   return 0;
 
@@ -51,11 +72,11 @@ try {
 static long read_si(stringinRecord* prec)
 {
 try {
-  EVR *priv=static_cast<EVR*>(prec->dpvt);
+  addr *priv=static_cast<addr*>(prec->dpvt);
 
   epicsTimeStamp ts;
 
-  if(!priv->getTimeStamp(&ts,prec->inp.value.vmeio.signal)){
+  if(!priv->evr->getTimeStamp(&ts,priv->code)){
     strncpy(prec->val,"EVR time unavailable",sizeof(prec->val));
     return S_dev_deviceTMO;
   }
@@ -79,18 +100,13 @@ try {
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devSIEVR = {
+dsxt dxtSIEVR={stringin_add,del_record_empty};
+static
+common_dset devSIEVR = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) stringin_init,
+  dset_cast(&init_dset<&dxtSIEVR>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
   (DEVSUPFUN) read_si
 };

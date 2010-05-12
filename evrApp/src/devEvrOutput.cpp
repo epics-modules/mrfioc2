@@ -14,6 +14,7 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/output.h"
+#include "linkoptions.h"
 #include "dsetshared.h"
 
 #include <stdexcept>
@@ -28,117 +29,66 @@
  * zz - Output number
  */
 
-static long init_record(dbCommon *prec, DBLINK* lnk)
+struct addr
 {
-try {
-  assert(lnk->type==AB_IO);
+  epicsUInt32 card;
+  OutputType otype;
+  epicsUInt32 output;
+  char prop[20];
+};
 
-  EVR* card=getEVR<EVR>(lnk->value.abio.link);
+static const
+linkOptionEnumType typeEnum[] = {
+  {"Int",      OutputInt},
+  {"Front",    OutputFP},
+  {"FrontUniv",OutputFPUniv},
+  {"RearUniv", OutputRB},
+  {NULL,0}
+};
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (addr, card ,  "C"  , 1, 0),
+  linkEnum    (addr, otype,  "T"  , 1, 0, typeEnum),
+  linkInt32   (addr, output ,"I", 1, 0),
+  linkString  (addr, prop ,  "P"  , 1, 0),
+  linkOptionEnd
+};
+
+static const
+prop_entry<Output,epicsUInt32> props_epicsUInt32[] = {
+  {"Map", property<Output,epicsUInt32>(0, &Output::source, &Output::setSource)},
+  {NULL,property<Output,epicsUInt32>()}
+};
+
+static
+Output* get_output(const char* hwlink, std::string& propname)
+{
+  addr inst_addr;
+
+  if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR* card=getEVR<EVR>(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  Output* output=0;
-
-  output=card->output((enum OutputType)lnk->value.abio.adapter,
-                      lnk->value.abio.card);
+  Output* output=card->output(inst_addr.otype, inst_addr.output);
 
   if(!output)
     throw std::runtime_error("Output Type is out of range");
 
-  prec->dpvt=static_cast<void*>(output);
+  propname=std::string(inst_addr.prop);
 
-  return 0;
-
-} catch(std::runtime_error& e) {
-  recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-  mrfDisableRecord(prec);
-  return S_dev_noDevice;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  mrfDisableRecord(prec);
-  return S_db_noMemory;
-}
+  return output;
 }
 
-/********** LONGOUT **************/
-
-static long init_longout(longoutRecord *prec)
-{
-  return init_record((dbCommon*)prec, &prec->out);
-}
-
-static long write_longout(longoutRecord *prec)
-{
-try{
-  Output* out=static_cast<Output*>(prec->dpvt);
-
-  out->setSource(prec->val);
-
-  return 0;
-
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
-}
-}
-
-
-/************* LONGIN ****************/
-
-static long init_longin(longinRecord *plongin)
-{
-  return init_record((dbCommon*)plongin, &plongin->inp);
-}
-
-static long read_longin(longinRecord *prec)
-{
-try{
-  Output* out=static_cast<Output*>(prec->dpvt);
-
-  prec->val=out->source();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
-}
-}
 
 /***************** DSET ********************/
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devLIOutput = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_longin,
-  NULL,
-  (DEVSUPFUN) read_longin
-};
-epicsExportAddress(dset,devLIOutput);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOOutput = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_longout,
-  NULL,
-  (DEVSUPFUN) write_longout
-};
-epicsExportAddress(dset,devLOOutput);
+PROPERTY_DSET_LONGIN (Output, get_output, props_epicsUInt32);
+PROPERTY_DSET_LONGOUT(Output, get_output, props_epicsUInt32);
 
 };

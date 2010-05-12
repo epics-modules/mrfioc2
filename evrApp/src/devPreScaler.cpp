@@ -17,6 +17,7 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/prescaler.h"
+#include "linkoptions.h"
 #include "dsetshared.h"
 
 #include <stdexcept>
@@ -30,168 +31,52 @@
  * yy - Prescaler number
  */
 
-static long init_record(dbCommon *prec, DBLINK* lnk)
+struct addr
 {
-  long ret=0;
-try {
-  assert(lnk->type==VME_IO);
+  epicsUInt32 card;
+  epicsUInt32 scaler;
+  char prop[20];
+};
 
-  EVR* card=getEVR<EVR>(lnk->value.vmeio.card);
+static const
+linkOptionDef eventdef[] =
+{
+  linkInt32   (addr, card , "C", 1, 0),
+  linkInt32   (addr, scaler,"I", 1, 0),
+  linkString  (addr, prop , "P", 1, 0),
+  linkOptionEnd
+};
+
+static const
+prop_entry<PreScaler,epicsUInt32> props_epicsUInt32[] = {
+  {"Divide", property<PreScaler,epicsUInt32>(0, &PreScaler::prescaler, &PreScaler::setPrescaler)},
+  {NULL,property<PreScaler,epicsUInt32>()}
+};
+
+static
+PreScaler* get_prescaler(const char* hwlink, std::string& propname)
+{
+  addr inst_addr;
+
+  if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR* card=getEVR<EVR>(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  PreScaler* scaler=card->prescaler(lnk->value.vmeio.signal);
-  if(!card)
+  PreScaler* ps=card->prescaler(inst_addr.scaler);
+  if(!ps)
     throw std::runtime_error("Prescaler id# is out of range");
 
-  prec->dpvt=static_cast<void*>(scaler);
+  propname=std::string(inst_addr.prop);
 
-  return 0;
-
-} catch(std::runtime_error& e) {
-  recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-  ret=S_dev_noDevice;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  ret=S_db_noMemory;
-}
-  mrfDisableRecord(prec);
-  return ret;
-}
-
-static long init_li(longinRecord *prec)
-{
-  return init_record((dbCommon*)prec, &prec->inp);
-}
-
-static long init_lo(longoutRecord *prec)
-{
-  return init_record((dbCommon*)prec, &prec->out);
-}
-
-static long init_ao(aoRecord *prec)
-{
-  return init_record((dbCommon*)prec, &prec->out);
-}
-
-static long read_long(longinRecord *pli)
-{
-try {
-
-  PreScaler* scaler=static_cast<PreScaler*>(pli->dpvt);
-
-  pli->val=scaler->prescaler();
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)pli, e.what());
-  return 1;
-}
-}
-
-static long write_long(longoutRecord *plo)
-{
-try {
-
-  PreScaler* scaler=static_cast<PreScaler*>(plo->dpvt);
-
-  scaler->setPrescaler(plo->val);
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)plo, e.what());
-  return 1;
-}
-}
-
-static long write_analog(aoRecord *prec)
-{
-try {
-
-  PreScaler* scaler=static_cast<PreScaler*>(prec->dpvt);
-
-  double val=prec->val;
-
-  if(prec->linr==menuConvertLINEAR){
-    val-=prec->eoff;
-    if(prec->eslo!=0)
-        val/=prec->eslo;
-  }
-
-  // event freq / desired scaler freq
-  val=scaler->owner.clock()/val;
-
-  scaler->setPrescaler((epicsUInt32)val);
-
-  prec->rval=(epicsUInt32)val;
-  prec->rbv=scaler->prescaler();
-
-  // Check that input frequency can be exactly represented.
-  // The cut off here is arbitrary since there is no good way
-  // to pass it in.
-  if( val - ((double)(int)val) > 0.5 )
-    recGblSetSevr(prec,SOFT_ALARM,MINOR_ALARM);
-
-  return 0;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return 1;
-}
+  return ps;
 }
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read_long;
-} devLIEVRPreScaler = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_li,
-  NULL,
-  (DEVSUPFUN) read_long
-};
-epicsExportAddress(dset,devLIEVRPreScaler);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write_long;
-} devLOEVRPreScaler = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_lo,
-  NULL,
-  (DEVSUPFUN) write_long
-};
-epicsExportAddress(dset,devLOEVRPreScaler);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write_long;
-  DEVSUPFUN  special_linconv;
-} devAOEVRPreScaler = {
-  6,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_ao,
-  NULL,
-  (DEVSUPFUN) write_analog,
-  NULL
-};
-epicsExportAddress(dset,devAOEVRPreScaler);
+PROPERTY_DSET_LONGIN (PreScaler, get_prescaler, props_epicsUInt32);
+PROPERTY_DSET_LONGOUT(PreScaler, get_prescaler, props_epicsUInt32);
 
 }; // extern "C"

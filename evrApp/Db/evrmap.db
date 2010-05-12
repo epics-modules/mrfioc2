@@ -1,7 +1,7 @@
 
 record(longout, "$(P)map:$(M)") {
   field( DTYP, "EVR Mapping" )
-  field( OUT , "@Card=$(C), Func=$(func)")
+  field( OUT , "@C=$(C), Func=$(func)")
   field( PINI, "YES")
   field( DESC, "Mapping for $(M)")
   field( VAL , $(EVT))

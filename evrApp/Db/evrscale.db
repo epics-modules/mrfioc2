@@ -1,7 +1,7 @@
 
 record(longout, "$(P)$(O)") {
   field( DTYP, "EVR Prescaler")
-  field( OUT , "#C$(C) S$(IDX) @Divide")
+  field( OUT , "@C=$(C), I=$(IDX), P=Divide")
   field( PINI, "YES")
   field( VAL , "1")
   field( HOPR, "$(MAX=0xffff)")

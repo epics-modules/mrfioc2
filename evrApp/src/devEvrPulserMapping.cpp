@@ -54,8 +54,8 @@ linkOptionEnumType funcEnum[] = {
 static const
 linkOptionDef eventdef[] = 
 {
-  linkInt32   (map_priv, card_id  , "Card"  , 1, 0),
-  linkInt32   (map_priv, pulser_id, "Pulser", 1, 0),
+  linkInt32   (map_priv, card_id  , "C"  , 1, 0),
+  linkInt32   (map_priv, pulser_id, "I", 1, 0),
   linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
   linkOptionEnd
 };
