@@ -109,153 +109,152 @@ try {
   return ret;
 }
 
-/**@brief Templetized device support functions
- */
+template<class C,typename P>
+static long get_ioint_info_property(int dir,dbCommon* prec,IOSCANPVT* io)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,P> *prop=static_cast<property<C,P>*>(prec->dpvt);
+
+  *io = prop->update();
+
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
+
+/************** Analog *************/
+
+// When converting between VAL and RVAL the following
+// convention is used.  (ROFF omitted when RVAL is double)
+// VAL = ((RVAL+ROFF) * ASLO + AOFF) * ESLO + EOFF
+// RVAL = ((VAL - EOFF)/ESLO - AOFF)/ASLO + ROFF
+
 template<class C>
-struct dsetshared {
+static long read_ai_property(aiRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,double> *priv=static_cast<property<C,double>*>(prec->dpvt);
 
-  typedef C unit_type;
+  prec->val = priv->get(); // Read "raw" value
 
-  template<typename P>
-  static long get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,P> *prop=static_cast<property<unit_type,P>*>(prec->dpvt);
+  if(prec->aslo!=0)
+    prec->val*=prec->aslo;
+  prec->val+=prec->aoff;
 
-    *io = prop->update();
-
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
+  if(prec->linr==menuConvertLINEAR){
+    if(prec->eslo!=0)
+      prec->val*=prec->eslo;
+    prec->val+=prec->eoff;
   }
 
-  /************** Analog *************/
+  return 2;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-  // When converting between VAL and RVAL the following
-  // convention is used.  (ROFF omitted when RVAL is double)
-  // VAL = ((RVAL+ROFF) * ASLO + AOFF) * ESLO + EOFF
-  // RVAL = ((VAL - EOFF)/ESLO - AOFF)/ASLO + ROFF
+template<class C>
+static long write_ao_property(aoRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,double> *priv=static_cast<property<C,double>*>(prec->dpvt);
 
-  static long read_ai(aiRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,double> *priv=static_cast<property<unit_type,double>*>(prec->dpvt);
+  double val=prec->val;
 
-    prec->val = priv->get(); // Read "raw" value
-
-    if(prec->aslo!=0)
-      prec->val*=prec->aslo;
-    prec->val+=prec->aoff;
-
-    if(prec->linr==menuConvertLINEAR){
-      if(prec->eslo!=0)
-        prec->val*=prec->eslo;
-      prec->val+=prec->eoff;
-    }
-
-    return 2;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
+  if(prec->linr==menuConvertLINEAR){
+    val-=prec->eoff;
+    if(prec->eslo!=0)
+      val/=prec->eslo;
   }
 
-  static long write_ao(aoRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,double> *priv=static_cast<property<unit_type,double>*>(prec->dpvt);
+  val-=prec->aoff;
+  if(prec->aslo!=0)
+    val/=prec->aslo;
 
-    double val=prec->val;
+  priv->set(val);
 
-    if(prec->linr==menuConvertLINEAR){
-      val-=prec->eoff;
-      if(prec->eslo!=0)
-        val/=prec->eslo;
-    }
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-    val-=prec->aoff;
-    if(prec->aslo!=0)
-      val/=prec->aslo;
+/************** Long *************/
 
-    priv->set(val);
+template<class C>
+static long read_li_property(longinRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,epicsUInt32> *priv=static_cast<property<C,epicsUInt32>*>(prec->dpvt);
 
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
-  }
+  prec->val = priv->get();
 
-  /************** Long *************/
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-  static long read_li(longinRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,epicsUInt32> *priv=static_cast<property<unit_type,epicsUInt32>*>(prec->dpvt);
+template<class C>
+static long write_lo_property(longoutRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,epicsUInt32> *priv=static_cast<property<C,epicsUInt32>*>(prec->dpvt);
 
-    prec->val = priv->get();
+  priv->set(prec->val);
 
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
-  }
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-  static long write_lo(longoutRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,epicsUInt32> *priv=static_cast<property<unit_type,epicsUInt32>*>(prec->dpvt);
+/************** Binary *************/
 
-    priv->set(prec->val);
+template<class C>
+static long read_bi_property(biRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,bool> *priv=static_cast<property<C,bool>*>(prec->dpvt);
 
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
-  }
+  prec->rval = priv->get();
 
-  /************** Binary *************/
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-  static long read_bi(biRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,bool> *priv=static_cast<property<unit_type,bool>*>(prec->dpvt);
+template<class C>
+static long write_bo_property(boRecord* prec)
+{
+if (!prec->dpvt) return -1;
+try {
+  property<C,bool> *priv=static_cast<property<C,bool>*>(prec->dpvt);
 
-    prec->rval = priv->get();
+  priv->set(prec->rval);
 
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
-  }
+  return 0;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  return S_db_noMemory;
+}
+}
 
-  static long write_bo(boRecord* prec)
-  {
-  if (!prec->dpvt) return -1;
-  try {
-    property<unit_type,bool> *priv=static_cast<property<unit_type,bool>*>(prec->dpvt);
-
-    priv->set(prec->rval);
-
-    return 0;
-  } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    return S_db_noMemory;
-  }
-  }
-
-}; // struct dsetshared
+/* Device support related casting functions */
 
 template<typename REC>
 static inline
