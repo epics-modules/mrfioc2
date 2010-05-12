@@ -62,6 +62,53 @@ long del_record_empty(dbCommon*);
 
 }
 
+/**Extended device support add_record helper
+ * which uses the getunit() function pointer
+ * to get a device instance using the provided
+ * hardware link string.
+ * The property string (string reference argument)
+ * is used to search the property list for
+ * the appropriate property() instance which will be
+ * stored in prec->dpvt
+ */
+template<class C,typename P>
+static long add_record_property(
+                       dbCommon *prec,
+                       DBLINK* lnk,
+                       C* (*getunit)(const char*, std::string&),
+                       const prop_entry<C,P>* List)
+{
+  long ret=0;
+  property<C,P> *prop=NULL;
+try {
+  assert(lnk->type==INST_IO);
+
+  prop = getdpvt<property<C,P> >(prec);
+
+  std::string parm;
+
+  C* pul=(*getunit)(lnk->value.instio.string, parm);
+
+  *prop = find_prop(List, parm, pul);
+
+  if (!prop->valid())
+    throw std::runtime_error("Invalid parm string in link");
+
+  setdpvt(prec, prop);
+
+  return 0;
+
+} catch(std::runtime_error& e) {
+  recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
+  ret=S_dev_noDevice;
+} catch(std::exception& e) {
+  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+  ret=S_db_noMemory;
+}
+  delete prop;
+  return ret;
+}
+
 /**@brief Templetized device support functions
  */
 template<class C>
