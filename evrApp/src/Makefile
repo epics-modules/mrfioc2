@@ -19,15 +19,11 @@ INC += evr/prescaler.h
 INC += evr/evr.h
 INC += evr/cml_short.h
 
-INC += property.h
-INC += dsetshared.h
-
 evr_SRCS += evr.cpp
 
 INC += cardmap.h
 evr_SRCS += cardmap.cpp
 evr_SRCS += evrGTIF.cpp
-evr_SRCS += dsetshared.cpp
 
 evr_SRCS += devEvr.cpp
 evr_SRCS += devEvrStringIO.cpp
