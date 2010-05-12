@@ -7,6 +7,7 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
+#include "dsetshared.h"
 
 #include <stringinRecord.h>
 

@@ -16,7 +16,7 @@
 
 #include "cardmap.h"
 #include "evr/pulser.h"
-#include "property.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 #include <string>

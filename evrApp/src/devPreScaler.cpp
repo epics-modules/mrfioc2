@@ -17,6 +17,7 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/prescaler.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 

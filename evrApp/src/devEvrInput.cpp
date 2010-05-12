@@ -13,7 +13,7 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/input.h"
-#include "property.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 #include <string>

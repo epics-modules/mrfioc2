@@ -12,7 +12,7 @@
 
 #include "cardmap.h"
 #include "evr/evr.h"
-#include "property.h"
+#include "dsetshared.h"
 #include "linkoptions.h"
 
 #include <stdexcept>

@@ -1,5 +1,8 @@
 
-#include "property.h"
+#include <cstdlib>
+#include <devLib.h>
+
+#include "dsetshared.h"
 
 extern "C" {
 

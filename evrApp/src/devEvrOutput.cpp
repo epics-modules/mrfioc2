@@ -14,6 +14,7 @@
 #include "cardmap.h"
 #include "evr/evr.h"
 #include "evr/output.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 
