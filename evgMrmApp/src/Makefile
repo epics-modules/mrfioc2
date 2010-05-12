@@ -1,67 +1,57 @@
-#------------------------------------------------------------------------------
-# $(TIMING)/vmeApp/src/Makefile
-#
-#------------------------------------------------------------------------------
-# Author:  Eric Bjorklund
-# Date:    20 October 2009
-#
-#------------------------------------------------------------------------------
-# Modification History:
-# 20 Oct 2008  E.Bjorklund      Original Release
-#
-#------------------------------------------------------------------------------
-# FILE DESCRIPTION:
-#   This file contains the EPICS make rules and definitions for making and
-#   installing common utilities and definitions for the Micro-Research Finland
-#   event system.
-#
-#------------------------------------------------------------------------------
-# Hardware Supported:
-#   Series 2xx Event Generator and Event Receiver Cards
-#     APS Register Mask
-#     Modular Register Mask
-#
-#------------------------------------------------------------------------------
-# Operating Systems Supported:
-#   vxWorks
-#   RTEMS
-#
-#------------------------------------------------------------------------------
-
-#---------------------
-# Set up the Environment
-#
 TOP=../..
+
 include $(TOP)/configure/CONFIG
+#----------------------------------------
+#  ADD MACRO DEFINITIONS AFTER THIS LINE
+#=============================
 
-USR_CFLAGS += -DDEBUG_PRINT
-USR_CPPFLAGS += -DDEBUG_PRINT
+LIBRARY_IOC += evgmrm
 
-#---------------------
-# Install include files
-#
-INC += evgMrm.h
+#All the source files that are compiled and put in the library.
+evgmrm_SRCS += evgInit.cpp
 
-#---------------------
-# Install DBD files
-#
+evgmrm_SRCS += evgMrm.cpp
+evgmrm_SRCS += devEvgMrm.cpp
+
+evgmrm_SRCS += evgMxc.cpp
+evgmrm_SRCS += devEvgMxc.cpp
+
+evgmrm_SRCS += evgTrigEvt.cpp
+evgmrm_SRCS += devEvgTrigEvt.cpp
+
+evgmrm_SRCS += evgDbus.cpp
+evgmrm_SRCS += devEvgDbus.cpp
+
+evgmrm_SRCS += evgFPio.cpp
+evgmrm_SRCS += devEvgFPio.cpp
+
+DBD += evgInit.dbd
+#=============================
+# Build the IOC application
+
+PROD_IOC = evgMrm
+# evgMrm.dbd will be created and installed
 DBD += evgMrm.dbd
 
-evgMrm_DBD += mrfCommon.dbd
-evgMrm_DBD += drvEvg.dbd
-evgMrm_DBD += evgMrmConfig.dbd
+# evgMrm.dbd will be made up from these files:
+evgMrm_DBD += base.dbd
+evgMrm_DBD += evgInit.dbd
+evgMrm_DBD += devIocStats.dbd
 
-#---------------------
-# Build the modular register map event generator library
-#
-LIBRARY_IOC += evgMrm
-evgMrm_SRCS += evgMrm.cpp
+# Add all the support libraries needed by this IOC
+evgMrm_LIBS += evgmrm vme mrfCommon devIocStats
 
-#OBJS_IOC += $(evgMrm_OBJS)
+# evgMrm_registerRecordDeviceDriver.cpp derives from evgMrm.dbd
+evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp
 
-#---------------------
-# Generic EPICS build rules
-#
+# Build the main IOC entry point on workstation OSs.
+evgMrm_SRCS_DEFAULT += evgMrmMain.cpp
+
+# Finally link to the EPICS Base libraries
+evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+#===========================
+
 include $(TOP)/configure/RULES
-
-
+#----------------------------------------
+#  ADD RULES AFTER THIS LINE

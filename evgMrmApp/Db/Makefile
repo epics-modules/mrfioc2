@@ -3,7 +3,27 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
-#DB += 
+#----------------------------------------------------
+#  Optimization of db files using dbst (DEFAULT: NO)
+#DB_OPT = YES
+
+#----------------------------------------------------
+# Create and install (or just install) into <top>/db
+# databases, templates, substitutions like this
+#DB += xxx.db
+DB += evgMrm.db
+DB += evgMxc.db
+DB += evgTrigEvt.db
+DB += evgDbus.db
+DB += evgFPio.db
+DB += vme-evg230.db
+
+#DB += EvgClock.substitutions
+DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+
+#----------------------------------------------------
+# If <anyname>.db template is not named <anyname>*.template add
+# <anyname>_template = <templatename>
 
 include $(TOP)/configure/RULES
 #----------------------------------------

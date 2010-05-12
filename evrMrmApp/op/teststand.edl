@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1348
-y 54
+x 1352
+y 75
 w 170
 h 196
 font "helvetica-medium-r-18.0"
@@ -159,7 +159,7 @@ menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "P=evr3"
+  0 "P=evr4"
 }
 endObjectProperties
 

@@ -40,6 +40,9 @@
 #define  U8_SwEventControl      0x001A  // Software Event Control Register
 #define  U8_SwEventCode         0x001B  // Software Event Code Register
 
+#define  SW_EVT_ENABLE			0x01
+#define  SW_EVT_PEND			0x02	
+
 //=====================
 // Data Buffer and Distributed Data Bus Control
 //
@@ -56,7 +59,7 @@
 //=====================
 // Event Clock Control
 //
-#define  U32_uSecDiv            0x004C  // Event Clock Frequency Rounded to Nearest 1 MHz
+#define  U16_uSecDiv            0x004e  // Event Clock Frequency Rounded to Nearest 1 MHz
 #define  U8_ClockSource         0x0050  // Event Clock Source (Internal or RF Input)
 #define  U8_RfDiv               0x0051  // RF Input Divider
 #define  U16_ClockStatus        0x0052  // Event Clock Status
@@ -78,7 +81,7 @@
 #define  U32_SeqControl_base    0x0070  // Sequencer Control Register Array Base Offset
 
 #define  U32_SeqControl(n)  \
-             (U32_SeqControl_base + (4*(n))
+       		(U32_SeqControl_base + (4*(n))
 
 //=====================
 // Fractional Synthesizer Control Word
@@ -96,7 +99,12 @@
 #define  U32_TrigEventCtrl_base 0x0100  // Trigger Event Control Register Array Base Offset
 
 #define  U32_TrigEventCtrl(n) \
-             (U32_TrigEventCtrl_base + (4*(n)))
+           	(U32_TrigEventCtrl_base + (4*(n)))
+
+#define	 U8_TrigEventCode(n) \
+			(U32_TrigEventCtrl(n) + 3)
+
+#define  EVG_TRIG_EVT_ENA		0x00000100
 
 //=====================
 // Multiplexed Counter Control Register Arrays
@@ -109,6 +117,9 @@
 
 #define  U32_MuxPrescaler(n)  \
              (U32_MuxPrescaler_base + (8*(n)))
+
+#define U8_MuxTrigMap(n) \
+			(U32_MuxControl(n) + 3)
 
 //=====================
 // Front Panel Output Mapping Register Array
@@ -165,10 +176,10 @@
 #define  U32_SeqRamEvent_base   0x8004  // Sequence Ram Event Code Array Base Offset
 
 #define  U32_SeqRamTS(n,m)    \
-             (U32_SeqRamTS_base + (0x4000*(n)) + (4*(n)))
+             (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
 
 #define  U32_SeqRamEvent(n,m) \
-             (U32_SeqRamEvent_base + (0x4000*(n)) + (4*(n)))
+             (U32_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
 
 //=====================
 // Size of Event Generator Register Space
@@ -229,3 +240,26 @@
 #define EVG_SEQ_RAM_TRIG_RAM1   0x00000011        // Trigger from Sequence RAM 1 Soft Trigger
 #define EVG_SEQ_RAM_TRIG_RAM2   0x00000012        // Trigger from Sequence RAM 2 Soft Trigger
 
+
+/*
+ * Mux
+ */
+
+#define EVG_MUX_POLARITY		0x40000000 
+#define EVG_MUX_STATUS			0x80000000 
+
+/*
+ * EVG Master Enable
+ */
+
+#define EVG_MASTER_ENA			0x80000000
+
+
+
+#define EVG_NUM_MXC				8
+#define EVG_NUM_EVT_TRIG		8
+#define	EVG_NUM_DBUS_BIT		8
+#define EVG_NUM_FP_OUT			4
+#define EVG_NUM_UNIV_OUT		4
+#define EVG_NUM_FP_INP			2
+#define EVG_NUM_UNIV_INP		4
