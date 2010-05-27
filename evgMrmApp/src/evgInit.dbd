@@ -13,9 +13,15 @@ device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
 device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 
 device( bo, VME_IO, devBoEvgSoftEvt, "EVG Soft Evt")
-device( bi, VME_IO, devBiEvgSoftEvt, "EVG Soft Evt")
 device( longout, VME_IO, devLoEvgSoftEvt, "EVG Soft Evt")
 
 device( longout, VME_IO, devLoEvgFPioMap, "EVG FPio")
 
 device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
+
+device( longout, VME_IO, devLoEvgLoadSeq, "EVG LOAD SEQ")
+device( longout, VME_IO, devLoEvgUnloadSeq, "EVG UNLOAD SEQ")
+device( longout, VME_IO, devLoEvgCommitSeq, "EVG COMMIT SEQ")
+device( longout, VME_IO, devLoEvgDisableSeq, "EVG DISABLE SEQ")
+device( waveform, VME_IO, devWfEvgEventCode, "EVG SET EVENT CODE")
+device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SET TIME STAMP")

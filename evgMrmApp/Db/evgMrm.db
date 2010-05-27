@@ -19,7 +19,7 @@ record(longout, "EVG$(cardNum):ClkSrc") {
 	field( DESC, "EVG Clk Source Output")
 	field( OUT, "#C$(cardNum) S @")
 	field( PINI, "YES")
-	field( VAL , "4")
+	field( VAL , "0")
 	field( UDF, "0")
 }
 
@@ -30,17 +30,8 @@ record(bo, "EVG$(cardNum):SoftEvtEna") {
 	field( UDF, "0")
   	field( ZNAM, "0")
   	field( ONAM, "1")
-	field( FLNK, "EVG$(cardNum):SoftEvtPend")
 }
 
-record(bi, "EVG$(cardNum):SoftEvtPend") {
-	field( DTYP, "EVG Soft Evt")
-  	field( DESC, "EVG Software Event Pend")
-  	field( INP , "#C$(cardNum) S @")
-	field( PINI, "YES")
-  	field( ZNAM, "Zero")
-  	field( ONAM, "One")
-}
 
 record(longout, "EVG$(cardNum):SoftEvtCode") {
 	field( DTYP, "EVG Soft Evt")

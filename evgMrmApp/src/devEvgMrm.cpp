@@ -11,6 +11,7 @@
 #include <epicsExport.h>
 
 #include <evgInit.h>
+#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -94,31 +95,6 @@ write_bo_softEvtEna(boRecord* pbo) {
 }
 
 
-/**		bi -  Software Event Enabled	**/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-init_bi_softEvtEna(biRecord* pbi) {
-	epicsStatus ret = init_record((dbCommon*)pbi, &pbi->inp);
-	if(ret == 2)
-		return 0;
-
-	return ret;
-}
-
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-read_bi_softEvtEna(biRecord* pbi) {
-	if(pbi->dpvt) {
-		evgMrm* evg = (evgMrm*)pbi->dpvt;
-		pbi->val = evg->softEvtEnabled();
-		return 2;
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", pbi->name);
-		return -1;
-	}
-}
-
-
 /** 	longout - Software Event Code	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
@@ -147,15 +123,7 @@ write_lo_softEvtCode(longoutRecord* plo) {
 extern "C" {
 
 /*		ao - Clock Speed	*/
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-	DEVSUPFUN 	special_linconv;
-} devAoEvgClock = {
+devAoEvg devAoEvgClock = {
     6,
     NULL,
     NULL,
@@ -167,14 +135,7 @@ struct {
 epicsExportAddress(dset, devAoEvgClock);
 
 /*		lo - Clock Source	*/
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgClock = {
+devLoEvg devLoEvgClock = {
     5,
     NULL,
     NULL,
@@ -185,14 +146,7 @@ struct {
 epicsExportAddress(dset, devLoEvgClock);
 
 /*		bo -  Software Event Enable	*/
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_bo;       /* bo record dependent*/
-} devBoEvgSoftEvt = {
+devBoEvg devBoEvgSoftEvt = {
     5,
     NULL,
     NULL,
@@ -202,33 +156,9 @@ struct {
 };
 epicsExportAddress(dset, devBoEvgSoftEvt);
 
-/*		bi -  Software Event Enable	*/
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   read_bi;        /* bi record dependent*/
-} devBiEvgSoftEvt = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bi_softEvtEna,
-    NULL,
-    (DEVSUPFUN)read_bi_softEvtEna,
-};
-epicsExportAddress(dset, devBiEvgSoftEvt);
 
 /* 	longout - Software Event Code	*/
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgSoftEvt = {
+devLoEvg devLoEvgSoftEvt = {
     5,
     NULL,
     NULL,

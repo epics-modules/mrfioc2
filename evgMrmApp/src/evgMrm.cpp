@@ -11,29 +11,33 @@
 
 #include "evgRegMap.h"
 
-evgMrm::evgMrm(const epicsUInt32 id, const volatile epicsUInt8* pReg):
+evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 id(id),
 pReg(pReg) {
 
-	for(int i = 0; i<EVG_NUM_MXC; i++) {
+	for(int i = 0; i < evgNumMxc; i++) {
 		muxCounter[i] = new evgMxc(i, pReg);
 	}
 
-	for(int i = 0; i<EVG_NUM_EVT_TRIG; i++) {
+	for(int i = 0; i < evgNumEvtTrig; i++) {
 		trigEvt[i] = new evgTrigEvt(i, pReg);
 	}
 
-	for(int i = 0; i<EVG_NUM_DBUS_BIT; i++) {
+	for(int i = 0; i < evgNumDbusBit; i++) {
 		dbus[i] = new evgDbus(i, pReg);
 	}
 
-	for(int i = 0; i<EVG_NUM_FP_INP; i++) {
-		FPio[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = new evgFPio(FP_Input, i, pReg);
+	for(int i = 0; i < evgNumFpInp; i++) {
+		FPio[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
+												new evgFPio(FP_Input, i, pReg);
 	}
 
-	for(int i = 0; i<EVG_NUM_FP_OUT; i++) {
-		FPio[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = new evgFPio(FP_Output, i, pReg);
+	for(int i = 0; i < evgNumFpOut; i++) {
+		FPio[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
+												new evgFPio(FP_Output, i, pReg);
 	}	
+
+	seqRamSup = new evgSeqRamSup(pReg);
 	
 }
 
@@ -76,6 +80,10 @@ evgMrm::getFPio(epicsUInt32 ioNum, std::string type) {
 	return pFPio;
 }
 
+evgSeqRamSup*
+evgMrm::getSeqRamSup() {
+	return seqRamSup;
+}
 
 /** 	Event Clock Source 	**/
 
@@ -85,7 +93,7 @@ evgMrm::setClockSource (epicsUInt8 clkSrc) {
 	if(clkSrc == ClkSrc)
 		return OK;
 
-	if (clkSrc == EVG_CLOCK_SRC_INTERNAL) {
+	if (clkSrc == evgClkSrcInternal) {
 		// Use internal fractional synthesizer to generate the clock
 		BITCLR8 (pReg, ClockSource, EVG_CLK_SRC_EXTRF);
 		ClkSrc = clkSrc;
@@ -118,7 +126,7 @@ evgMrm::getClockSource() {
 epicsStatus
 evgMrm::setClockSpeed (epicsFloat64 clkSpeed) {	
 	epicsStatus   status = OK;
-	if(ClkSrc == EVG_CLOCK_SRC_INTERNAL) {
+	if(ClkSrc == evgClkSrcInternal) {
 		// Use internal fractional synthesizer to generate the clock
 		epicsUInt32    controlWord, oldControlWord;
     	epicsFloat64   error;

@@ -11,16 +11,17 @@
 #include "evgTrigEvt.h"
 #include "evgDbus.h"
 #include "evgFPio.h"
+#include "evgSeqRamSup.h"
 
-#define EVG_CLOCK_SRC_INTERNAL  0       // Event clock is generated internally
-#define EVG_CLOCK_SRC_RF        1       // Event clock is generated from the RF input port
+const epicsUInt16 evgClkSrcInternal = 0;       // Event clock is generated internally
+const epicsUInt16 evgClkSrcRF 	    = 1;       // Event clock is generated from the RF input port
 
 
 class evgMrm {
 
 public:
 	/** EVG	**/	
-	evgMrm(const epicsUInt32 CardNum, const volatile epicsUInt8* pReg);
+	evgMrm(const epicsUInt32 CardNum, volatile epicsUInt8* const pReg);
 	~evgMrm();
 
 	/**	Event Clock Speed	**/
@@ -45,10 +46,11 @@ public:
 	evgTrigEvt* getTrigEvt(epicsUInt32);
 	evgDbus* getDbus(epicsUInt32 dbusBit);
 	evgFPio* getFPio(epicsUInt32, std::string);
-	
+	evgSeqRamSup* getSeqRamSup();
+
 private:
 	const epicsUInt32            	id;         // Logical card number for this card
-    const volatile epicsUInt8*		pReg;      	// CPU Address for accessing the card's register map
+    volatile epicsUInt8* const		pReg;      	// CPU Address for accessing the card's register map
 
     epicsFloat64          			ClkSpeed;	// In MHz
 	epicsUInt32						ClkSrc;
@@ -64,6 +66,8 @@ private:
 
 	typedef std::map< std::pair<epicsUInt32, std::string >, evgFPio*> FPio_t;
 	FPio_t FPio;
+
+	evgSeqRamSup* 					seqRamSup;
 };
 
 #endif //EVGMRM_H

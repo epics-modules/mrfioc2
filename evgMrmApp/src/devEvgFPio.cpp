@@ -8,6 +8,7 @@
 #include <epicsExport.h>
 
 #include <evgInit.h>
+#include "devEvg.h"
 
 
 static long 
@@ -49,14 +50,7 @@ write_lo(longoutRecord* plo) {
 /** 	device support entry table 		**/
 extern "C" {
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgFPioMap = {
+devLoEvg devLoEvgFPioMap = {
     5,
     NULL,
     NULL,

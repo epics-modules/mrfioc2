@@ -11,6 +11,7 @@
 #include <epicsExport.h>
 
 #include <evgInit.h>
+#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -100,14 +101,8 @@ write_mbboD(mbboDirectRecord* pmbboD) {
 
 /** 	device support entry table 		**/
 extern "C" {
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_bo;       /* bo record dependent*/
-} devBoEvgMxc = {
+
+devBoEvg devBoEvgMxc = {
     5,
     NULL,
     NULL,
@@ -117,14 +112,7 @@ struct {
 };
 epicsExportAddress(dset, devBoEvgMxc);
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   read_bi;        /* bi record dependent*/
-} devBiEvgMxc = {
+devBiEvg devBiEvgMxc = {
     5,
     NULL,
     NULL,
@@ -134,14 +122,7 @@ struct {
 };
 epicsExportAddress(dset, devBiEvgMxc);
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgMxc = {
+devLoEvg devLoEvgMxc = {
     5,
     NULL,
     NULL,
@@ -151,14 +132,7 @@ struct {
 };
 epicsExportAddress(dset, devLoEvgMxc);
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_mbbo;       /* mbboDirect record dependent*/
-} devMbboDEvgMxc = {
+devMbboDEvg devMbboDEvgMxc = {
     5,
     NULL,
     NULL,

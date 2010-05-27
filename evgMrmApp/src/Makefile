@@ -25,6 +25,11 @@ evgmrm_SRCS += devEvgDbus.cpp
 evgmrm_SRCS += evgFPio.cpp
 evgmrm_SRCS += devEvgFPio.cpp
 
+evgmrm_SRCS += evgSequence.cpp
+evgmrm_SRCS += evgSeqRam.cpp
+evgmrm_SRCS += evgSeqRamSup.cpp
+evgmrm_SRCS += devEvgSeq.cpp
+
 DBD += evgInit.dbd
 #=============================
 # Build the IOC application

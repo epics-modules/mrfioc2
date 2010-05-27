@@ -9,7 +9,7 @@
 
 #include "evgRegMap.h"
 
-evgMxc::evgMxc(const epicsUInt32 id, const volatile epicsUInt8* pReg):
+evgMxc::evgMxc(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 id(id),
 pReg(pReg) {	
 }

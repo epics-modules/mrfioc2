@@ -5,7 +5,7 @@
 
 class evgTrigEvt{
 public:
-	evgTrigEvt(const epicsUInt32, const volatile epicsUInt8*);
+	evgTrigEvt(const epicsUInt32, volatile epicsUInt8* const);
 	~evgTrigEvt();
 
 	bool enabled();
@@ -16,7 +16,7 @@ public:
 
 private:
 	const epicsUInt32 			id;
-	const volatile epicsUInt8* pReg;
+	volatile epicsUInt8* const  pReg;
 };
 
 #endif //EVGTRIGEVT_H

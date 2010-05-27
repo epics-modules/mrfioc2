@@ -16,6 +16,7 @@ DB += evgMxc.db
 DB += evgTrigEvt.db
 DB += evgDbus.db
 DB += evgFPio.db
+DB += evgSeq.db
 DB += vme-evg230.db
 
 #DB += EvgClock.substitutions

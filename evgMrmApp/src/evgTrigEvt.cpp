@@ -9,7 +9,7 @@
 
 #include "evgRegMap.h"
 
-evgTrigEvt::evgTrigEvt(const epicsUInt32 id, const volatile epicsUInt8* pReg):
+evgTrigEvt::evgTrigEvt(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 id(id),
 pReg(pReg) {
 }

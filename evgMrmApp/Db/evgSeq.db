@@ -1,0 +1,47 @@
+record(longout, "EVG$(cardNum):loadSeq") {
+	field( DTYP, "EVG LOAD SEQ")
+	field( DESC, "EVG Load Sequence")
+	field( OUT, "#C$(cardNum) S @")
+	field( VAL , "0")
+	field( UDF, "0")
+}
+
+record(longout, "EVG$(cardNum):unloadSeq") {
+	field( DTYP, "EVG UNLOAD SEQ")
+	field( DESC, "EVG Unload Sequence")
+	field( OUT, "#C$(cardNum) S @")
+	field( VAL , "0")
+	field( UDF, "0")
+}
+
+record(longout, "EVG$(cardNum):commitSeq") {
+	field( DTYP, "EVG COMMIT SEQ")
+	field( DESC, "EVG Commit Sequence")
+	field( OUT, "#C$(cardNum) S @")
+	field( VAL , "0")
+	field( UDF, "0")
+}
+
+record(longout, "EVG$(cardNum):disableSeq") {
+	field( DTYP, "EVG DISABLE SEQ")
+	field( DESC, "EVG Disable Sequence")
+	field( OUT, "#C$(cardNum) S @")
+	field( VAL , "0")
+	field( UDF, "0")
+}
+
+record(waveform, "EVG$(cardNum):setTimeStamp$(seqNum)") {
+	field( DTYP, "EVG SET TIME STAMP")
+	field( DESC, "Set the event code in sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( NELM, "$(NELM)")
+	field( FTVL, "LONG")
+}
+
+record(waveform, "EVG$(cardNum):setEventCode$(seqNum)") {
+	field( DTYP, "EVG SET EVENT CODE")
+	field( DESC, "Set the time stamp in sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( NELM, "$(NELM)")
+	field( FTVL, "CHAR")
+}

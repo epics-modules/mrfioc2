@@ -12,13 +12,13 @@ enum IOtype {
 
 class evgFPio {
 public:
-	evgFPio(const IOtype, const epicsUInt32, const volatile epicsUInt8*);
+	evgFPio(const IOtype, const epicsUInt32, volatile epicsUInt8* const);
 	~evgFPio();
 	epicsStatus setIOMap(epicsUInt32);
 
 private:
 	const IOtype 				type;
 	const epicsUInt32 			id;
-	const volatile epicsUInt8*	pReg;
+	volatile epicsUInt8* const	pReg;
 };
 #endif //EVGFPIO_H

@@ -8,7 +8,7 @@
 
 #include "evgRegMap.h"
 
-evgDbus::evgDbus(const epicsUInt32 id, const volatile epicsUInt8* pReg):
+evgDbus::evgDbus(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 id(id),
 pReg(pReg) {
 }

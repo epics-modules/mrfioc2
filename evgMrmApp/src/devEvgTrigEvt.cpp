@@ -9,6 +9,7 @@
 #include <epicsExport.h>
 
 #include <evgInit.h>
+#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -63,14 +64,8 @@ write_lo(longoutRecord* plo) {
 
 /** 	device support entry table 		**/
 extern "C" {
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_bo;       /* bo record dependent*/
-} devBoEvgTrigEvt = {
+
+devBoEvg devBoEvgTrigEvt = {
     5,
     NULL,
     NULL,
@@ -80,14 +75,8 @@ struct {
 };
 epicsExportAddress(dset, devBoEvgTrigEvt);
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgTrigEvt = {
+
+devLoEvg devLoEvgTrigEvt = {
     5,
     NULL,
     NULL,
