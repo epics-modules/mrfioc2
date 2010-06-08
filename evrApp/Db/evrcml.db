@@ -1,0 +1,167 @@
+
+record(bo, "$(P)$(CML)enable") {
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Enable")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+}
+
+record(bo, "$(P)$(CML)power") {
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Power")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+}
+
+record(bo, "$(P)$(CML)reset") {
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Reset")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Normal")
+  field(ONAM, "Reset")
+}
+
+record(mbbo, "$(P)$(CML)mode") {
+  field( DTYP, "EVR CML")
+  field( OUT , "@C=$(C), I=$(IDX), P=Mode")
+  field( PINI, "YES")
+  field( ZRST, "4x Pattern")
+  field( ONST, "Frequency")
+  field( TWST, "Waveform")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( THSV, "INVALID")
+  field( FRSV, "INVALID")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+}
+
+record(longout, "$(P)$(CML)rise") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Pat Rise")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(HOPR, "0xfffff")
+  field(LOPR, "0")
+  field(DRVH, "0xfffff")
+  field(DRVL, "0")
+}
+
+record(longout, "$(P)$(CML)high") {
+  field(DESC, "Level high pattern")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Pat High")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0xfffff")
+  field(HOPR, "0xfffff")
+  field(LOPR, "0")
+  field(DRVH, "0xfffff")
+  field(DRVL, "0")
+}
+
+record(longout, "$(P)$(CML)fall") {
+  field(DESC, "Falling edge pattern")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Pat Fall")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(HOPR, "0xfffff")
+  field(LOPR, "0")
+  field(DRVH, "0xfffff")
+  field(DRVL, "0")
+}
+
+record(longout, "$(P)$(CML)low") {
+  field(DESC, "Level low pattern")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Pat Low")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(HOPR, "0xfffff")
+  field(LOPR, "0")
+  field(DRVH, "0xfffff")
+  field(DRVL, "0")
+}
+
+record(bo, "$(P)$(CML)freq:level") {
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Freq Trig Lvl")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Active high")
+  field(ONAM, "Active low")
+}
+
+record(longout, "$(P)$(CML)freq:high") {
+  field(DESC, "# number of cnts active")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Counts High")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "20")
+  field(HOPR, "65535")
+  field(LOPR, "20")
+  field(DRVH, "65535")
+  field(DRVL, "20")
+}
+
+record(longout, "$(P)$(CML)freq:low") {
+  field(DESC, "# number of cnts active")
+  field(DTYP, "EVR CML")
+  field(OUT, "@C=$(C), I=$(IDX), P=Counts Low")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "20")
+  field(HOPR, "65535")
+  field(LOPR, "20")
+  field(DRVH, "65535")
+  field(DRVL, "20")
+}
+
+record(waveform, "$(P)$(CML)pat") {
+  field(DESC, "Pattern setting")
+  field(DTYP, "EVR CML Pattern Set")
+  field(INP, "@C=$(C), I=$(IDX), P=Pattern Set")
+  field(FTVL, "UCHAR")
+  field(NELM, "40940") # 20*2047
+  field(HOPR, "1")
+  field(LOPR, "0")
+  field(FLNK, "$(P)$(CML)pat:rbv")
+}
+
+record(waveform, "$(P)$(CML)pat:rbv") {
+  field(DESC, "Pattern readback")
+  field(DTYP, "EVR CML Pattern Get")
+  field(PINI, "YES")
+  field(INP, "@C=$(C), I=$(IDX), P=Pattern Get")
+  field(FTVL, "UCHAR")
+  field(NELM, "40940") # 20*2047
+  field(HOPR, "1")
+  field(LOPR, "0")
+}

@@ -10,7 +10,7 @@ DB += evrin.db
 DB += evrscale.db
 DB += evrpulser.db
 DB += evrpulsermap.db
-DB += evrcmlshort.db
+DB += evrcml.db
 DB += evrevent.db
 
 include $(TOP)/configure/RULES
