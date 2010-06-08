@@ -2,13 +2,13 @@
 #ifndef EVRMRMCMLSHORT_HPP_INC
 #define EVRMRMCMLSHORT_HPP_INC
 
-#include "evr/cml_short.h"
+#include "evr/cml.h"
 
-class MRMCMLShort : public CMLShort
+class MRMCML : public CML
 {
 public:
-  MRMCMLShort(unsigned char, volatile unsigned char *);
-  virtual ~MRMCMLShort();
+  MRMCML(unsigned char, volatile unsigned char *);
+  virtual ~MRMCML();
 
   virtual epicsUInt32 pattern(cmlShort) const;
   virtual void patternSet(cmlShort, epicsUInt32);

@@ -19,7 +19,7 @@
 #include "drvemOutput.h"
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
-#include "drvemCMLShort.h"
+#include "drvemCML.h"
 
 struct eventCode {
   epicsUInt8 code; // constant
@@ -65,8 +65,8 @@ public:
   virtual MRMPreScaler* prescaler(epicsUInt32);
   virtual const MRMPreScaler* prescaler(epicsUInt32) const;
 
-  virtual MRMCMLShort* cmlshort(epicsUInt32 idx);
-  virtual const MRMCMLShort* cmlshort(epicsUInt32) const;
+  virtual MRMCML* cml(epicsUInt32 idx);
+  virtual const MRMCML* cml(epicsUInt32) const;
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -132,7 +132,7 @@ private:
   typedef std::vector<MRMPulser*> pulsers_t;
   pulsers_t pulsers;
 
-  typedef std::vector<MRMCMLShort*> shortcmls_t;
+  typedef std::vector<MRMCML*> shortcmls_t;
   shortcmls_t shortcmls;
 
   // Called when FIFO not-full IRQ is received

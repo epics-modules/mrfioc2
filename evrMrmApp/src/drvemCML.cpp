@@ -1,22 +1,22 @@
 
-#include "drvemCMLShort.h"
+#include "drvemCML.h"
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-MRMCMLShort::MRMCMLShort(unsigned char i,volatile unsigned char *b)
+MRMCML::MRMCML(unsigned char i,volatile unsigned char *b)
   :base(b)
   ,N(i)
 {
 }
 
-MRMCMLShort::~MRMCMLShort()
+MRMCML::~MRMCML()
 {
 }
 
 epicsUInt32
-MRMCMLShort::pattern(cmlShort p) const
+MRMCML::pattern(cmlShort p) const
 {
   switch(p){
   case cmlShortRise:
@@ -33,7 +33,7 @@ MRMCMLShort::pattern(cmlShort p) const
 }
 
 void
-MRMCMLShort::patternSet(cmlShort p, epicsUInt32 v)
+MRMCML::patternSet(cmlShort p, epicsUInt32 v)
 {
   switch(p){
   case cmlShortRise:
@@ -50,13 +50,13 @@ MRMCMLShort::patternSet(cmlShort p, epicsUInt32 v)
 }
 
 bool
-MRMCMLShort::enabled() const
+MRMCML::enabled() const
 {
     return READ32(base, OutputCMLEna(N)) & OutputCMLEna_ena;
 }
 
 void
-MRMCMLShort::enable(bool s)
+MRMCML::enable(bool s)
 {
     if(s)
         BITSET(NAT,32,base, OutputCMLEna(N), OutputCMLEna_ena);
@@ -65,13 +65,13 @@ MRMCMLShort::enable(bool s)
 }
 
 bool
-MRMCMLShort::inReset() const
+MRMCML::inReset() const
 {
     return READ32(base, OutputCMLEna(N)) & OutputCMLEna_rst;
 }
 
 void
-MRMCMLShort::reset(bool s)
+MRMCML::reset(bool s)
 {
     if(s)
         BITSET(NAT,32,base, OutputCMLEna(N), OutputCMLEna_rst);
@@ -80,13 +80,13 @@ MRMCMLShort::reset(bool s)
 }
 
 bool
-MRMCMLShort::powered() const
+MRMCML::powered() const
 {
     return !(READ32(base, OutputCMLEna(N)) & OutputCMLEna_pow);
 }
 
 void
-MRMCMLShort::power(bool s)
+MRMCML::power(bool s)
 {
     if(!s)
         BITSET(NAT,32,base, OutputCMLEna(N), OutputCMLEna_pow);
