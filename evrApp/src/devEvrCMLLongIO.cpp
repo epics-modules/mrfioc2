@@ -11,7 +11,7 @@
 #include <longoutRecord.h>
 
 #include "cardmap.h"
-#include "evr/cml_short.h"
+#include "evr/cml.h"
 #include "dsetshared.h"
 
 #include <stdexcept>
@@ -29,41 +29,41 @@ try {
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  CMLShort* pul=card->cmlshort(lnk->value.vmeio.signal);
+  CML* pul=card->cml(lnk->value.vmeio.signal);
   if(!pul)
     throw std::runtime_error("Failed to lookup CML short registers");
 
-  property<CMLShort,epicsUInt32> *prop;
+  property<CML,epicsUInt32> *prop;
   if (prec->dpvt) {
-    prop=static_cast<property<CMLShort,epicsUInt32>* >(prec->dpvt);
+    prop=static_cast<property<CML,epicsUInt32>* >(prec->dpvt);
     prec->dpvt=NULL;
   } else
-    prop=new property<CMLShort,epicsUInt32>;
+    prop=new property<CML,epicsUInt32>;
 
   std::string parm(lnk->value.vmeio.parm);
   if( parm=="Pattern Low" ){
-    prop=new property<CMLShort,epicsUInt32>(
+    prop=new property<CML,epicsUInt32>(
         pul,
-        &CMLShort::getPattern<cmlShortLow>,
-        &CMLShort::setPattern<cmlShortLow>
+        &CML::getPattern<cmlShortLow>,
+        &CML::setPattern<cmlShortLow>
     );
   } else if( parm=="Pattern Rise" ){
-    prop=new property<CMLShort,epicsUInt32>(
+    prop=new property<CML,epicsUInt32>(
         pul,
-        &CMLShort::getPattern<cmlShortRise>,
-        &CMLShort::setPattern<cmlShortRise>
+        &CML::getPattern<cmlShortRise>,
+        &CML::setPattern<cmlShortRise>
     );
   } else if( parm=="Pattern High" ){
-    prop=new property<CMLShort,epicsUInt32>(
+    prop=new property<CML,epicsUInt32>(
         pul,
-        &CMLShort::getPattern<cmlShortHigh>,
-        &CMLShort::setPattern<cmlShortHigh>
+        &CML::getPattern<cmlShortHigh>,
+        &CML::setPattern<cmlShortHigh>
     );
   } else if( parm=="Pattern Fall" ){
-    prop=new property<CMLShort,epicsUInt32>(
+    prop=new property<CML,epicsUInt32>(
         pul,
-        &CMLShort::getPattern<cmlShortFall>,
-        &CMLShort::setPattern<cmlShortFall>
+        &CML::getPattern<cmlShortFall>,
+        &CML::setPattern<cmlShortFall>
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
@@ -97,28 +97,28 @@ static long add_lo(dbCommon *prec)
 
 extern "C" {
 
-dsxt dxtLIEVRCMLShort={add_li,del_record_empty};
+dsxt dxtLIEVRCML={add_li,del_record_empty};
 static
-common_dset devLIEVRCMLShort = {
+common_dset devLIEVRCML = {
   5,
   NULL,
-  dset_cast(&init_dset<&dxtLIEVRCMLShort>),
+  dset_cast(&init_dset<&dxtLIEVRCML>),
   (DEVSUPFUN) init_record_empty,
-  dset_cast(&get_ioint_info_property<CMLShort,epicsUInt32>),
-  dset_cast(&read_li_property<CMLShort>)
+  dset_cast(&get_ioint_info_property<CML,epicsUInt32>),
+  dset_cast(&read_li_property<CML>)
 };
-epicsExportAddress(dset,devLIEVRCMLShort);
+epicsExportAddress(dset,devLIEVRCML);
 
-dsxt dxtLOEVRCMLShort={add_lo,del_record_empty};
+dsxt dxtLOEVRCML={add_lo,del_record_empty};
 static
-common_dset devLOEVRCMLShort = {
+common_dset devLOEVRCML = {
   5,
   NULL,
-  dset_cast(&init_dset<&dxtLOEVRCMLShort>),
+  dset_cast(&init_dset<&dxtLOEVRCML>),
   (DEVSUPFUN) init_record_empty,
   NULL,
-  dset_cast(&write_lo_property<CMLShort>)
+  dset_cast(&write_lo_property<CML>)
 };
-epicsExportAddress(dset,devLOEVRCMLShort);
+epicsExportAddress(dset,devLOEVRCML);
 
 };

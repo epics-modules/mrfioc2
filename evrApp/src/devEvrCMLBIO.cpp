@@ -11,7 +11,7 @@
 
 #include "cardmap.h"
 #include "evr/evr.h"
-#include "evr/cml_short.h"
+#include "evr/cml.h"
 #include "dsetshared.h"
 
 #include <stdexcept>
@@ -29,36 +29,36 @@ try {
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  CMLShort* pul=card->cmlshort(lnk->value.vmeio.signal);
+  CML* pul=card->cml(lnk->value.vmeio.signal);
   if(!pul)
     throw std::runtime_error("Failed to lookup CML Short pattern registers");
 
-  property<CMLShort,bool> *prop;
+  property<CML,bool> *prop;
   if (prec->dpvt) {
-    prop=static_cast<property<CMLShort,bool>* >(prec->dpvt);
+    prop=static_cast<property<CML,bool>* >(prec->dpvt);
     prec->dpvt=NULL;
   } else
-    prop=new property<CMLShort,bool>;
+    prop=new property<CML,bool>;
 
   std::string parm(lnk->value.vmeio.parm);
 
   if( parm=="Enable" ){
-    *prop=property<CMLShort,bool>(
+    *prop=property<CML,bool>(
         pul,
-        &CMLShort::enabled,
-        &CMLShort::enable
+        &CML::enabled,
+        &CML::enable
     );
   }else if( parm=="Power" ){
-    *prop=property<CMLShort,bool>(
+    *prop=property<CML,bool>(
         pul,
-        &CMLShort::powered,
-        &CMLShort::power
+        &CML::powered,
+        &CML::power
     );
   }else if( parm=="Reset" ){
-    *prop=property<CMLShort,bool>(
+    *prop=property<CML,bool>(
         pul,
-        &CMLShort::inReset,
-        &CMLShort::reset
+        &CML::inReset,
+        &CML::reset
     );
   }else
     throw std::runtime_error("Invalid parm string in link");
@@ -91,28 +91,28 @@ static long add_bo(dbCommon *prec)
 
 extern "C" {
 
-dsxt dxtBIEVRCMLShort={add_bi,del_record_empty};
+dsxt dxtBIEVRCML={add_bi,del_record_empty};
 static
-common_dset devBIEVRCMLShort = {
+common_dset devBIEVRCML = {
   5,
   NULL,
-  dset_cast(&init_dset<&dxtBIEVRCMLShort>),
+  dset_cast(&init_dset<&dxtBIEVRCML>),
   (DEVSUPFUN) init_record_empty,
-  dset_cast(&get_ioint_info_property<CMLShort,bool>),
-  dset_cast(&read_bi_property<CMLShort>)
+  dset_cast(&get_ioint_info_property<CML,bool>),
+  dset_cast(&read_bi_property<CML>)
 };
-epicsExportAddress(dset,devBIEVRCMLShort);
+epicsExportAddress(dset,devBIEVRCML);
 
-dsxt dxtBOEVRCMLShort={add_bo,del_record_empty};
+dsxt dxtBOEVRCML={add_bo,del_record_empty};
 static
-common_dset devBOEVRCMLShort = {
+common_dset devBOEVRCML = {
   5,
   NULL,
-  dset_cast(&init_dset<&dxtBOEVRCMLShort>),
+  dset_cast(&init_dset<&dxtBOEVRCML>),
   (DEVSUPFUN) init_record_empty,
   NULL,
-  dset_cast(&write_bo_property<CMLShort>)
+  dset_cast(&write_bo_property<CML>)
 };
-epicsExportAddress(dset,devBOEVRCMLShort);
+epicsExportAddress(dset,devBOEVRCML);
 
 };

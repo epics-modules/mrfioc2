@@ -27,10 +27,10 @@ device(longout,    INST_IO, devlongoutOutput, "EVR Output")
 
 # CML Output devices
 # '#Ccard Sindex @'
-device(bo,      VME_IO, devBOEVRCMLShort, "EVR CML Short")
-device(bi ,     VME_IO, devBIEVRCMLShort, "EVR CML Short")
-device(longout, VME_IO, devLOEVRCMLShort, "EVR CML Short")
-device(longin , VME_IO, devLIEVRCMLShort, "EVR CML Short")
+device(bo,      VME_IO, devBOEVRCML, "EVR CML Short")
+device(bi ,     VME_IO, devBIEVRCML, "EVR CML Short")
+device(longout, VME_IO, devLOEVRCML, "EVR CML Short")
+device(longin , VME_IO, devLIEVRCML, "EVR CML Short")
 
 # Input devices
 # '@C=$(C) I=$(I), P=PROPNAME'

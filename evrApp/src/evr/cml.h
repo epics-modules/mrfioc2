@@ -15,10 +15,10 @@ enum cmlShort {
 
 /**@brief Configuration for the short (20bit x 4) CML patterns
  */
-class CMLShort : public IOStatus
+class CML : public IOStatus
 {
 public:
-  virtual ~CMLShort()=0;
+  virtual ~CML()=0;
 
   virtual epicsUInt32 pattern(cmlShort) const=0;
   virtual void patternSet(cmlShort, epicsUInt32)=0;
