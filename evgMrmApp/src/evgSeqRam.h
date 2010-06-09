@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <epicsTypes.h>
+#include <dbCommon.h>
 
 #include "evgSequence.h"
 

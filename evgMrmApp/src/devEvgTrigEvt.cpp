@@ -8,8 +8,9 @@
 #include <dbAccess.h>
 #include <epicsExport.h>
 
+#include "dsetshared.h"
+
 #include <evgInit.h>
-#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -65,7 +66,7 @@ write_lo(longoutRecord* plo) {
 /** 	device support entry table 		**/
 extern "C" {
 
-devBoEvg devBoEvgTrigEvt = {
+common_dset devBoEvgTrigEvt = {
     5,
     NULL,
     NULL,
@@ -76,7 +77,7 @@ devBoEvg devBoEvgTrigEvt = {
 epicsExportAddress(dset, devBoEvgTrigEvt);
 
 
-devLoEvg devLoEvgTrigEvt = {
+common_dset devLoEvgTrigEvt = {
     5,
     NULL,
     NULL,

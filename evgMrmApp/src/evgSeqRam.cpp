@@ -23,9 +23,8 @@ evgSeqRam::getId() {
 
 epicsStatus
 evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
-	std::vector<epicsUInt8>::iterator it = eventCode.begin();
-	for(int i = 0; it < eventCode.end(); it++, i++) {
-		WRITE8(m_pReg, SeqRamEvent(m_id,i), *it);
+	for(unsigned int i = 0; i < eventCode.size(); i++) {
+		WRITE8(m_pReg, SeqRamEvent(m_id,i), eventCode[i]);
 	}
 
 	return OK;
@@ -34,8 +33,7 @@ evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
 
 epicsStatus
 evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
-	std::vector<epicsUInt32>::iterator it = timeStamp.begin();
-	for(int i = 0; it < timeStamp.end(); it++, i++) {
+	for(unsigned int i = 0; i < timeStamp.size(); i++) {
 		WRITE32(m_pReg, SeqRamTS(m_id,i), timeStamp[i]);
 	}
 	
@@ -55,7 +53,7 @@ evgSeqRam::setSoftTrig(bool enable) {
 
 epicsStatus
 evgSeqRam::setTrigSrc(TrigSrc trigSrc) {
-	WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
+	WRITE8(m_pReg, SeqTrigSrc(m_id - 1), trigSrc);
 	return OK;
 }
 
@@ -81,10 +79,14 @@ evgSeqRam::setRunMode(RunMode mode) {
 	return OK;
 }
 
+/*Sequence Ram has to be loaded to enable it*/
 epicsStatus 
 evgSeqRam::enable() {
-	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_ARM);
-	return OK;
+	if(loaded()) {
+		BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_ARM);
+		return OK;
+	} else 
+		return ERROR;
 }
 
 
@@ -122,7 +124,9 @@ evgSeqRam::load(evgSequence* seq) {
 	return OK;
 }
 
-/*If the sequence is not loaded also means it is disabled*/
+/* Reset the sequenceRam and mark it as unloaded.
+ * If the sequence is not loaded also means it is disabled
+ */
 epicsStatus
 evgSeqRam::unload() {
 	reset();

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <exception>
 
 #include <biRecord.h>
 #include <boRecord.h>
@@ -10,8 +11,9 @@
 #include <dbAccess.h>
 #include <epicsExport.h>
 
+#include "dsetshared.h"
+
 #include <evgInit.h>
-#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -23,9 +25,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 	if(!evg)
 		throw std::runtime_error("Failed to lookup device");
-
+ 	
 	evgMxc* mxc = evg->getMuxCounter(lnk->value.vmeio.signal);
 	pRec->dpvt = mxc;
+
 	return 2;
 }
 
@@ -102,7 +105,7 @@ write_mbboD(mbboDirectRecord* pmbboD) {
 /** 	device support entry table 		**/
 extern "C" {
 
-devBoEvg devBoEvgMxc = {
+common_dset devBoEvgMxc = {
     5,
     NULL,
     NULL,
@@ -112,7 +115,7 @@ devBoEvg devBoEvgMxc = {
 };
 epicsExportAddress(dset, devBoEvgMxc);
 
-devBiEvg devBiEvgMxc = {
+common_dset devBiEvgMxc = {
     5,
     NULL,
     NULL,
@@ -122,7 +125,7 @@ devBiEvg devBiEvgMxc = {
 };
 epicsExportAddress(dset, devBiEvgMxc);
 
-devLoEvg devLoEvgMxc = {
+common_dset devLoEvgMxc = {
     5,
     NULL,
     NULL,
@@ -132,7 +135,7 @@ devLoEvg devLoEvgMxc = {
 };
 epicsExportAddress(dset, devLoEvgMxc);
 
-devMbboDEvg devMbboDEvgMxc = {
+common_dset devMbboDEvgMxc = {
     5,
     NULL,
     NULL,

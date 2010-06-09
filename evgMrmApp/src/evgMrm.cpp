@@ -9,6 +9,8 @@
 #include <mrfCommon.h> 
 #include "mrfFracSynth.h"
 
+#include <rtems/bspIo.h>
+
 #include "evgRegMap.h"
 
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
@@ -16,15 +18,15 @@ id(id),
 pReg(pReg) {
 
 	for(int i = 0; i < evgNumMxc; i++) {
-		muxCounter[i] = new evgMxc(i, pReg);
+		muxCounter.push_back(new evgMxc(i, pReg));
 	}
 
 	for(int i = 0; i < evgNumEvtTrig; i++) {
-		trigEvt[i] = new evgTrigEvt(i, pReg);
+		trigEvt.push_back(new evgTrigEvt(i, pReg));
 	}
 
 	for(int i = 0; i < evgNumDbusBit; i++) {
-		dbus[i] = new evgDbus(i, pReg);
+		dbus.push_back(new evgDbus(i, pReg));
 	}
 
 	for(int i = 0; i < evgNumFpInp; i++) {
@@ -39,9 +41,66 @@ pReg(pReg) {
 
 	seqRamSup = new evgSeqRamSup(pReg);
 	
+// 	scanIoInit(	&irqStop0 );
+// 	scanIoInit( &irqStop1 );
+// 	scanIoInit( &irqStart0 );
+// 	scanIoInit( &irqStart1 );
+// 	scanIoInit( &irqDataBuf );
+// 	scanIoInit( &irqEvtFifoFull );
+// 	scanIoInit( &irqRxVio );
 }
 
 evgMrm::~evgMrm() {
+}
+
+/**		Enable EVG	**/
+epicsStatus
+evgMrm::enable(bool ena) {
+	if(ena)
+		BITSET32(pReg, Control, EVG_MASTER_ENA);
+	else
+		BITCLR32(pReg, Control, EVG_MASTER_ENA);
+
+	BITSET32(pReg, Control, EVG_DIS_EVT_REC);
+	BITSET32(pReg, Control, EVG_REV_PWD_DOWN);
+
+	return OK;
+}
+
+void
+evgMrm::isr(void* arg) {
+
+	printk("In ISR\n");
+	evgMrm *evg = (evgMrm*)(arg);
+
+    epicsUInt32 flags = READ32(evg->pReg, IrqFlag);
+    epicsUInt32 enable = READ32(evg->pReg, IrqEnable);
+    epicsUInt32 active = flags & enable;
+	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
+
+    if(!active)
+      return;
+
+    if(active & EVG_IRQ_STOP_RAM0) {
+		printk("EVG_IRQ_STOP_RAM0\n");
+        //scanIoRequest(evg->irqStop0);
+		if(recList.size()){
+			std::vector<dbCommon*>::iterator it;
+			for( it = recList.begin(); it < recList.end(); it++) {
+				printk("callbackRequest\n");
+				//callbackRequestProcessCallback(&callback, priorityLow, (dbCommon*)*it);
+			}
+		}
+		recList.clear();
+    }
+
+	//WRITE32(evg->pReg, IrqEnable, enable);
+    WRITE32(evg->pReg, IrqFlag, flags);
+	
+	flags = READ32(evg->pReg, IrqFlag);
+    enable = READ32(evg->pReg, IrqEnable);
+    active = flags & enable;
+	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
 }
 
 evgMxc* 
@@ -209,3 +268,4 @@ epicsUInt8
 evgMrm::getSoftEvtCode() {
 	return READ8(pReg, SwEventCode);
 }
+

@@ -2,13 +2,13 @@
 #include <stdexcept>
 
 #include <longoutRecord.h>
-
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
 
+#include "dsetshared.h"
+
 #include <evgInit.h>
-#include "devEvg.h"
 
 
 static long 
@@ -50,7 +50,7 @@ write_lo(longoutRecord* plo) {
 /** 	device support entry table 		**/
 extern "C" {
 
-devLoEvg devLoEvgFPioMap = {
+common_dset devLoEvgFPioMap = {
     5,
     NULL,
     NULL,

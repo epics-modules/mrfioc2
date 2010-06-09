@@ -1,4 +1,15 @@
 ## 	Event Clock Source 	##
+record(bo, "EVG$(cardNum):Enable") {
+	field( DTYP, "EVG")
+  	field( DESC, "EVG Master Enable")
+  	field( OUT , "#C$(cardNum) S @")
+	field( UDF, "0")
+	field( PINI, "YES")
+	field( VAL, "1")
+  	field( ZNAM, "Enable")
+  	field( ONAM, "Disable")
+}
+
 record(ao, "EVG$(cardNum):ClkSpeed") {
 	field( DTYP, "EVG Clk")
 	field( DESC, "EVG Clk Speed")
@@ -28,8 +39,8 @@ record(bo, "EVG$(cardNum):SoftEvtEna") {
   	field( DESC, "EVG Software Event Enable")
   	field( OUT , "#C$(cardNum) S @")
 	field( UDF, "0")
-  	field( ZNAM, "0")
-  	field( ONAM, "1")
+  	field( ZNAM, "Enable")
+  	field( ONAM, "Disable")
 }
 
 

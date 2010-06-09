@@ -2,13 +2,13 @@
 #include <stdexcept>
 
 #include <mbboRecord.h>
-
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
 
+#include "dsetshared.h"
+
 #include <evgInit.h>
-#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -38,6 +38,11 @@ init_mbbo(mbboRecord* pmbbo) {
 static long 
 write_mbbo(mbboRecord* pmbbo) {
 	evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
+	if(! dbus) {
+		printf("ERROR: Dbus not initialized.\n");
+		return -1;
+	}
+		
 	return dbus->setDbusMap(pmbbo->val);
 }
 
@@ -45,7 +50,7 @@ write_mbbo(mbboRecord* pmbbo) {
 /** 	device support entry table 		**/
 extern "C" {
 
-devMbboEvg devMbboEvgDbusMap = {
+common_dset devMbboEvgDbusMap = {
     5,
     NULL,
     NULL,

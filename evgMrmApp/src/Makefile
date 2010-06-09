@@ -5,7 +5,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
-LIBRARY_IOC += evgmrm
+LIBRARY_IOC_RTEMS += evgmrm
 
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
@@ -34,7 +34,7 @@ DBD += evgInit.dbd
 #=============================
 # Build the IOC application
 
-PROD_IOC = evgMrm
+PROD_IOC_RTEMS = evgMrm
 # evgMrm.dbd will be created and installed
 DBD += evgMrm.dbd
 
@@ -52,6 +52,7 @@ evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp
 # Build the main IOC entry point on workstation OSs.
 evgMrm_SRCS_DEFAULT += evgMrmMain.cpp
 
+#evgMrm_INCLUDES += -I/usr/powerpc-rtems4.9/mvme3100/lib/include
 # Finally link to the EPICS Base libraries
 evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 

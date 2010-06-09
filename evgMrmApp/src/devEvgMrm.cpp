@@ -5,13 +5,13 @@
 #include <longoutRecord.h>
 #include <boRecord.h>
 #include <biRecord.h>
-
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
 
+#include "dsetshared.h"
+
 #include <evgInit.h>
-#include "devEvg.h"
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -29,7 +29,24 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 
 	pRec->dpvt = evg;
 	return 2;
+}
 
+/*returns: (0,2)=>(success,success no convert) 0==2	*/
+static long 
+init_bo_Enable(boRecord* pbo) {
+	return init_record((dbCommon*)pbo, &pbo->out);
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_Enable(boRecord* pbo) {
+	if(pbo->dpvt) {
+		evgMrm* evg = (evgMrm*)pbo->dpvt;
+		return evg->enable(pbo->val);
+	} else {
+		errlogPrintf("ERROR: Record %s is uninitailized\n", pbo->name);
+		return -1;
+	}
 }
 
 /**		ao - Clock Speed	**/
@@ -122,8 +139,19 @@ write_lo_softEvtCode(longoutRecord* plo) {
 /** 	device support entry table 	**/
 extern "C" {
 
+/*		bo -  EVG Enable	*/
+common_dset devBoEvgEnable = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo_Enable,
+    NULL,
+    (DEVSUPFUN)write_bo_Enable,
+};
+epicsExportAddress(dset, devBoEvgEnable);
+
 /*		ao - Clock Speed	*/
-devAoEvg devAoEvgClock = {
+common_dset devAoEvgClock = {
     6,
     NULL,
     NULL,
@@ -135,7 +163,7 @@ devAoEvg devAoEvgClock = {
 epicsExportAddress(dset, devAoEvgClock);
 
 /*		lo - Clock Source	*/
-devLoEvg devLoEvgClock = {
+common_dset devLoEvgClock = {
     5,
     NULL,
     NULL,
@@ -146,7 +174,7 @@ devLoEvg devLoEvgClock = {
 epicsExportAddress(dset, devLoEvgClock);
 
 /*		bo -  Software Event Enable	*/
-devBoEvg devBoEvgSoftEvt = {
+common_dset devBoEvgSoftEvt = {
     5,
     NULL,
     NULL,
@@ -158,7 +186,7 @@ epicsExportAddress(dset, devBoEvgSoftEvt);
 
 
 /* 	longout - Software Event Code	*/
-devLoEvg devLoEvgSoftEvt = {
+common_dset devLoEvgSoftEvt = {
     5,
     NULL,
     NULL,

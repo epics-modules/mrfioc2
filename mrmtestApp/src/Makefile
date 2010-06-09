@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
-PROD_IOC = mrf
+PROD_IOC_RTEMS = mrf
 # mrf.dbd will be created and installed
 DBD += mrf.dbd
 

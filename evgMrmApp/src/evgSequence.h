@@ -54,12 +54,14 @@ public:
 	RunMode getRunMode();
 
 private:
-	const epicsUInt32 m_id;
-	std::string m_desc;
-	std::vector<epicsUInt8> m_eventCode;
-	std::vector<epicsUInt32> m_timeStamp;
-	TrigSrc m_trigSrc;
-	RunMode m_runMode;	
+	const epicsUInt32 			m_id;
+	std::string 				m_desc;
+	std::vector<epicsUInt8> 	m_eventCodeV;
+	std::vector<epicsUInt32>	m_timeStampV;
+	epicsUInt8* 				m_eventCodeA;
+	epicsUInt32* 				m_timeStampA;
+	TrigSrc 					m_trigSrc;
+	RunMode 					m_runMode;	
 };
 
 #endif //EVG_SEQUENCE_H

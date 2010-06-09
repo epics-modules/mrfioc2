@@ -8,24 +8,26 @@
 
 #include "evgRegMap.h"
 
+std::vector<dbCommon*>	recList;
+
 evgSeqRamSup::evgSeqRamSup(volatile epicsUInt8* const pReg):
 m_pReg(pReg) {
-	for(int i = 0; i < evgNumSeqRam; i++) {
-		//m_seqRam[i] = new evgSeqRam(i, pReg);
+	
+	for(int i = 1; i <= 3; i++) {
+		m_sequence.push_back(new evgSequence(i));
+	}
+
+	for(int i = 1; i <= evgNumSeqRam; i++) {
 		m_seqRam.push_back(new evgSeqRam(i, pReg));
 	}
 
-	for(int i = 0; i < 3; i++) {
-		//m_sequence[i] = new evgSequence(i);
-		m_sequence.push_back(new evgSequence(i));
-	}
 }
 
 /* Functions calling this function should always 
  *  check for valid return values
  */
 evgSeqRam*
-evgSeqRamSup::getSeqRam(epicsUInt32 seqId) {
+evgSeqRamSup::findSeqRam(epicsUInt32 seqId) {
 	evgSequence* seq = 0;
 	evgSeqRam* seqRam = 0;
 
@@ -44,8 +46,8 @@ evgSeqRamSup::getSeqRam(epicsUInt32 seqId) {
  *  check for valid return values
  */
 epicsUInt32
-evgSeqRamSup::getSeqRamId(epicsUInt32 seqId) {
-	evgSeqRam* seqRam = getSeqRam(seqId);
+evgSeqRamSup::findSeqRamId(epicsUInt32 seqId) {
+	evgSeqRam* seqRam = findSeqRam(seqId);
 	if(seqRam)
 		return seqRam->getId();
 
@@ -55,17 +57,27 @@ evgSeqRamSup::getSeqRamId(epicsUInt32 seqId) {
 /* Functions calling this function should always 
  *  check for valid return values
  */
+evgSeqRam* 
+evgSeqRamSup::getSeqRam(epicsUInt32 seqRamId) {
+	if(	seqRamId && seqRamId <= m_seqRam.size() )
+		return m_seqRam[seqRamId - 1];
+	else 
+		return 0;
+}
+
+/* Functions calling this function should always 
+ *  check for valid return values
+ */
 evgSequence* 
 evgSeqRamSup::getSequence(epicsUInt32 seqId) {
-	if(	seqId < m_sequence.size() )
-		return m_sequence[seqId];
+	if(seqId &&	seqId <= m_sequence.size() )
+		return m_sequence[seqId - 1];
 	else 
 		return 0;
 }
 
 /*
  * Load()
- * @return   :	The sequenceRam ID in which this particular sequence is loaded.
  * @parm     :  The sequence Id of the sequence to be loaded.
  * @functiom : 	Check if any of the sequenceRam is available(i.e. unloaded).
  *			    if avaiable load and commit the sequence else return an error.
@@ -84,7 +96,7 @@ evgSeqRamSup::load(epicsUInt32 seqId) {
 	}
 
 	if(seqRam != 0) {
-		printf("	Loading Seq %d in SeqRam %d\n",seqId, seqRam->getId());
+		printf("Loading Seq %d in SeqRam %d\n",seqId, seqRam->getId());
 		evgSequence* seq = getSequence(seqId);
 		if(!seq) {
 			errlogPrintf("Error: Sequence %d not created.\n",seqId);
@@ -92,8 +104,8 @@ evgSeqRamSup::load(epicsUInt32 seqId) {
 		}
 		
 		seqRam->load(seq);
-		commit(seqId);
-		enable(seqId);
+		commit(seqId, 0);
+		//enable(seqId);
 		
 		printf("Leaving evgSeqRamSup::load\n");
 		return OK; 	
@@ -105,13 +117,12 @@ evgSeqRamSup::load(epicsUInt32 seqId) {
 
 /*
  * Unload()
- * @parm 	 :	The ID of the SequenceRam
- * @function : 	Unload the sequenceRam with given ID. Call reset for that sequenceRam and 
- * 				mark the sequenceRam as unloaded.
+ * @parm 	 :	The sequence Id of the sequence to be unloaded.
+ * @function : 	Unload the sequenceRam with given sequence ID. 
  */
 epicsStatus
 evgSeqRamSup::unload(epicsUInt32 seqId) {
-	evgSeqRam* seqRam = getSeqRam(seqId);
+	evgSeqRam* seqRam = findSeqRam(seqId);
 	if(seqRam) 
 		seqRam->unload();
 	
@@ -120,22 +131,24 @@ evgSeqRamSup::unload(epicsUInt32 seqId) {
 
 /*
  * Commit()
- * @parm 	 : 	The sequence to be commited and sequenceRam to which the sequence is to
- *				be committed.
- * @function :  Check if the sequenceRam is loaded and disabled, if not return an error. 
- *				If loaded and disabled then copy the Event Code and Time Stamp arrays 
- *				from passed sequence to the sequenceRam along with sequence ID.
+ * @parm 	 : 	The sequence Id of the sequence to be committed.
+ *				Pointer to a commitSeq record. 
+ * @function :  If the sequenceRam is not enabled then copy the sequence to the 
+ *				sequenceRam but if the sequenceRam is enabled then add the record 
+ *				to the list of records to be processed on seqRam stop interupt.
  */
 epicsStatus
-evgSeqRamSup::commit(epicsUInt32 seqId) {
+evgSeqRamSup::commit(epicsUInt32 seqId, dbCommon* pRec) {
 	printf("Entering evgSeqRamSup::commit\n");
-	evgSeqRam* seqRam = getSeqRam(seqId);
+	evgSeqRam* seqRam = findSeqRam(seqId);
 	if(!seqRam)
 		return OK;
-	
-	printf("	Commiting Seq %d to SeqRam %d\n", seqId, seqRam->getId());
+
+	printf("Commiting Seq %d to SeqRam %d\n", seqId, seqRam->getId());
 	if( seqRam->enabled() ) {
-		//TODO:disable it
+		//Disable the commitSeq record.
+		//Make the record single shot if not already.
+		recList.push_back(pRec);
 		printf("Leaving evgSeqRamSup::commit with Error\n");
 		return ERROR;
 	}
@@ -149,7 +162,7 @@ evgSeqRamSup::commit(epicsUInt32 seqId) {
 	seqRam->setTimeStamp(seq->getTimeStampV());
 	seqRam->setTrigSrc(seq->getTrigSrc());
 	seqRam->setRunMode(seq->getRunMode());
-	enable(seqId);
+	//enable(seqId);
 
 	printf("Leaving evgSeqRamSup::commit\n");
 	return OK;
@@ -158,7 +171,8 @@ evgSeqRamSup::commit(epicsUInt32 seqId) {
 
 epicsStatus
 evgSeqRamSup::enable(epicsUInt32 seqId) {
-	evgSeqRam* seqRam = getSeqRam(seqId);
+	evgSeqRam* seqRam = findSeqRam(seqId);
+	//printf("Enabling Seq %d in SeqRam %d\n", seqId, seqRam->getId());
 	if( (!seqRam) || seqRam->enabled() )
 		return OK;
 	else
@@ -170,7 +184,7 @@ evgSeqRamSup::enable(epicsUInt32 seqId) {
 
 epicsStatus
 evgSeqRamSup::disable(epicsUInt32 seqId) {
-	evgSeqRam* seqRam = getSeqRam(seqId);
+	evgSeqRam* seqRam = findSeqRam(seqId);
 	if( (!seqRam) || (!seqRam->enabled()) )
 		return OK;
 	else

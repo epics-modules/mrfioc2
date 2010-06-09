@@ -25,8 +25,8 @@
 //=====================
 // Interrupt Control Registers
 //
-#define  U32_InterruptFlag      0x0008  // Interrupt Flag Register
-#define  U32_InterruptEnable    0x000C  // Interrupt Enable Register
+#define  U32_IrqFlag      0x0008  // Interrupt Flag Register
+#define  U32_IrqEnable    0x000C  // Interrupt Enable Register
 
 //=====================
 // AC Trigger Control Registers
@@ -83,12 +83,12 @@
 #define  U32_SeqControl_base    0x0070  // Sequencer Control Register Array Base Offset
 
 #define  U32_SeqControl(n)  \
-       		(U32_SeqControl_base + (4*(n)))
+       		(U32_SeqControl_base + (4*(n-1)))
 
 #define  U8_SeqTrigSrc_base		0x0073
 
 #define  U8_SeqTrigSrc(n)	\
-			(U8_SeqTrigSrc_base + (4*n))
+			(U8_SeqTrigSrc_base + (4*(n-1)))
 
 
 //=====================
@@ -184,10 +184,10 @@
 #define  U8_SeqRamEvent_base    0x8007  // Sequence Ram Event Code Array Base Offset
 
 #define  U32_SeqRamTS(n,m)    \
-             (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
+             (U32_SeqRamTS_base + (0x4000*(n-1)) + (8*(m)))
 
 #define  U8_SeqRamEvent(n,m) \
-             (U8_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
+             (U8_SeqRamEvent_base + (0x4000*(n-1)) + (8*(m)))
 
 //=====================
 // Size of Event Generator Register Space
@@ -204,10 +204,10 @@
 /**************************************************************************************************/
 
 #define EVG_IRQ_ENABLE          0x80000000     // Master Interrupt Enable Bit
-#define EVG_IRQ_STOP_RAM2       0x00002000     // Sequence RAM 2 Stop Interrupt Bit
-#define EVG_IRQ_STOP_RAM1       0x00001000     // Sequence RAM 1 Stop Interrupt Bit
-#define EVG_IRQ_START_RAM2      0x00000200     // Sequence RAM 2 Start Interrupt Bit
-#define EVG_IRQ_START_RAM1      0x00000100     // Sequence RAM 1 Start Interrupt Bit
+#define EVG_IRQ_STOP_RAM1       0x00002000     // Sequence RAM 1 Stop Interrupt Bit
+#define EVG_IRQ_STOP_RAM0       0x00001000     // Sequence RAM 0 Stop Interrupt Bit
+#define EVG_IRQ_START_RAM1      0x00000200     // Sequence RAM 1 Start Interrupt Bit
+#define EVG_IRQ_START_RAM0      0x00000100     // Sequence RAM 0 Start Interrupt Bit
 #define EVG_IRQ_DBUFF           0x00000020     // Data Buffer Interrupt Bit
 #define EVG_IRQ_FIFO            0x00000002     // Event FIFO Full Interrupt Bit
 #define EVG_IRQ_RXVIO           0x00000001     // Receiver Violation Bit
@@ -250,6 +250,8 @@
  */
 
 #define EVG_MASTER_ENA			0x80000000
+#define EVG_DIS_EVT_REC			0x40000000
+#define EVG_REV_PWD_DOWN		0x20000000
 
 
 

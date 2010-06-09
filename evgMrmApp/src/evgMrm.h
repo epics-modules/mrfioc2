@@ -6,6 +6,8 @@
 #include <string>
 
 #include  <epicsTypes.h>
+#include <dbScan.h>
+#include <callback.h>
   
 #include "evgMxc.h"
 #include "evgTrigEvt.h"
@@ -16,6 +18,7 @@
 const epicsUInt16 evgClkSrcInternal = 0;       // Event clock is generated internally
 const epicsUInt16 evgClkSrcRF 	    = 1;       // Event clock is generated from the RF input port
 
+extern std::vector<dbCommon*>	recList;
 
 class evgMrm {
 
@@ -23,6 +26,10 @@ public:
 	/** EVG	**/	
 	evgMrm(const epicsUInt32 CardNum, volatile epicsUInt8* const pReg);
 	~evgMrm();
+
+	epicsStatus enable(bool ena);
+
+	static void isr(void*);
 
 	/**	Event Clock Speed	**/
 	epicsStatus setClockSpeed(epicsFloat64);
@@ -41,17 +48,27 @@ public:
 	epicsStatus setSoftEvtCode(epicsUInt8);
 	epicsUInt8 getSoftEvtCode();
 
-	/**	List Access	**/
+	/**	Access	function 	**/
 	evgMxc* getMuxCounter(epicsUInt32); 
 	evgTrigEvt* getTrigEvt(epicsUInt32);
 	evgDbus* getDbus(epicsUInt32 dbusBit);
 	evgFPio* getFPio(epicsUInt32, std::string);
 	evgSeqRamSup* getSeqRamSup();
 
-private:
+// 	IOSCANPVT 						irqStop0;
+// 	IOSCANPVT 						irqStop1;
+// 	IOSCANPVT 						irqStart0;
+// 	IOSCANPVT 						irqStart1;
+// 	IOSCANPVT 						irqDataBuf;
+// 	IOSCANPVT						irqEvtFifoFull;
+// 	IOSCANPVT						irqRxVio;
+
 	const epicsUInt32            	id;         // Logical card number for this card
     volatile epicsUInt8* const		pReg;      	// CPU Address for accessing the card's register map
 
+	CALLBACK callback;	
+
+private:
     epicsFloat64          			ClkSpeed;	// In MHz
 	epicsUInt32						ClkSrc;
 	

@@ -3,6 +3,7 @@
 #define DSETSHARED_H_INC
 
 #include "property.h"
+#include <devLib.h>
 
 /* Device support helpers */
 

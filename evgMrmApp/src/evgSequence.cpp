@@ -7,8 +7,16 @@
 
 evgSequence::evgSequence(const epicsUInt32 id):
 m_id(id),
+m_eventCodeA(0),
+m_timeStampA(0),
 m_trigSrc(mxc0),
 m_runMode(single) {
+	//For Testing purpose
+ 	epicsUInt8 eventCode[] = {1, 2, 3, 5, 127};
+ 	epicsUInt32 timeStamp[] = {125000000, 250000000, 375000000, 500000000, 625000000};
+
+ 	setEventCode(eventCode, 5);
+ 	setTimeStamp(timeStamp, 5);		
 }
 
 const epicsUInt32
@@ -27,7 +35,6 @@ evgSequence::getDescription() {
 	return m_desc.c_str();
 }
 
-
 epicsStatus
 evgSequence::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 	if(size < 0 || size > 2048) {
@@ -35,20 +42,20 @@ evgSequence::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 		return ERROR;
 	}
 		
-	m_eventCode.assign(eventCode, eventCode + size);
+	std::copy(eventCode, eventCode + size, m_eventCodeA);
+	m_eventCodeV.assign(eventCode, eventCode + size);
+	
 	return OK;
 }
 
 epicsUInt8*
 evgSequence::getEventCodeA() {
-	epicsUInt8* eventCode = 0;
-	std::copy(m_eventCode.begin(), m_eventCode.end(), eventCode);
-	return eventCode;
+	return m_eventCodeA;
 }
 
 std::vector<epicsUInt8>
 evgSequence::getEventCodeV() {
-	return m_eventCode;
+	return m_eventCodeV;
 }
 
 
@@ -58,21 +65,21 @@ evgSequence::setTimeStamp(epicsUInt32* timeStamp, epicsUInt32 size) {
 		errlogPrintf("ERROR: Number of event is too large.");
 		return ERROR;
 	}
-		
-	m_timeStamp.assign(timeStamp, timeStamp + size);
+	
+	std::copy(timeStamp, timeStamp + size, m_timeStampA);	
+	m_timeStampV.assign(timeStamp, timeStamp + size);
+
 	return OK;
 }
 
 epicsUInt32*
 evgSequence::getTimeStampA() {
-	epicsUInt32* timeStamp = 0;
-	std::copy(m_timeStamp.begin(), m_timeStamp.end(), timeStamp);
-	return timeStamp;
+	return m_timeStampA;
 }
 
 std::vector<epicsUInt32>
 evgSequence::getTimeStampV() {
-	return m_timeStamp;
+	return m_timeStampV;
 }
 
 
