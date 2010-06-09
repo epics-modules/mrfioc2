@@ -87,7 +87,12 @@ REGINFO("CML4Low",OutputCMLLow(0),32),
 REGINFO("CML4Rise",OutputCMLRise(0),32),
 REGINFO("CML4High",OutputCMLHigh(0),32),
 REGINFO("CML4Fall",OutputCMLFall(0),32),
-REGINFO("CML4Ena",OutputCMLEna(0),32)
+REGINFO("CML4Ena",OutputCMLEna(0),32),
+REGINFO("CML4High",OutputCMLCountHigh(0),16),
+REGINFO("CML4Low",OutputCMLCountLow(0),16),
+REGINFO("CML4Len",OutputCMLPatLength(0),32),
+REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
+REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
 #undef REGINFO
 };
 
