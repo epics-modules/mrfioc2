@@ -38,7 +38,7 @@ file "mrmevrout.db"
 {$(P), $(C), Front, 6, "fpout6:"}
 }
 
-file "evrcmlshort.db"
+file "evrcml.db"
 {pattern
 {P, C, IDX, CML}
 {$(P), $(C), 0, "fpout4:"}
