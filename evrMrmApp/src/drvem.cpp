@@ -83,6 +83,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
+    if(v==0xFfffFfff)
+        throw std::runtime_error("Not card present at address");
+
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
