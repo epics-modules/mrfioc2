@@ -15,8 +15,8 @@ epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","1000000")
 mrmEvrSetupPCI(0,1,2,0)
 
 bspExtVerbosity=0
-mrmEvrSetupVME(1,5,0x100000,3,0x26)
-mrmEvrSetupVME(2,8,0x200000,4,0x24)
+mrmEvrSetupVME(1,5,0x20000000,3,0x26)
+mrmEvrSetupVME(2,8,0x21000000,4,0x24)
 
 dbLoadRecords("db/evr-pmc-230.db","P=evr1:,C=0")
 
