@@ -14,16 +14,18 @@
 /*
  * Registers for Modular Register Map version of EVR
  *
- * For firmware version #3
- * as documented in cPCI-EVR-2x0_3.doc
+ * For firmware version #4
+ * as documented in EVR-MRM-001.doc
  * Jukka Pietarinen
- * 03 Oct. 2008
+ * 01 Apr 2010
  */
 
 #define U32_Status      0x000
 #  define Status_dbus_mask  0xff000000
 #  define Status_dbus_shift 24
 #  define Status_legvio     0x00010000
+#  define Status_sfpmod     0x00000080
+#  define Status_linksts    0x00000040
 #  define Status_fifostop   0x00000020
 
 #define U32_Control     0x004
@@ -51,6 +53,7 @@
 #  define Control_fiforst 0x00000008
 
 #define U32_IRQFlag     0x008
+#  define IRQ_LinkChg   0x40
 #  define IRQ_BufFull   0x20
 #  define IRQ_HWMapped  0x10
 #  define IRQ_Event     0x08
@@ -67,7 +70,21 @@
 #define U16_IRQPulseMap 0x012
 
 #define U32_DataBufCtrl 0x020
+/* Write 1 to start, read for run status */
+#  define DataBufCtrl_rx     0x8000
+/* Write 1 to stop, read for complete status */
+#  define DataBufCtrl_stop   0x4000
+#  define DataBufCtrl_sumerr 0x2000
+#  define DataBufCtrl_mode   0x1000
+#  define DataBufCtrl_len_mask 0x0fff
+
 #define U32_DataTxCtrl  0x024
+#  define DataTxCtrl_done 0x100000
+#  define DataTxCtrl_run  0x080000
+#  define DataTxCtrl_trig 0x040000
+#  define DataTxCtrl_ena  0x020000
+#  define DataTxCtrl_mode 0x010000
+#  define DataTxCtrl_len_mask 0x0007fc
 
 #define U32_FWVersion   0x02c
 #  define FWVersion_type_mask 0xf0000000
@@ -183,9 +200,24 @@ enum evrForm {
 #define U32_OutputCMLNFall 0x608
 #define U32_OutputCMLNHigh 0x60c
 #define U32_OutputCMLNEna  0x610
+#  define OutputCMLEna_cycl 0x80
+#  define OutputCMLEna_ftrg 0x40
+#  define OutputCMLEna_mode_mask 0x30
+#  define OutputCMLEna_mode_orig 0x00
+#  define OutputCMLEna_mode_freq 0x10
+#  define OutputCMLEna_mode_patt 0x20
 #  define OutputCMLEna_rst 0x04
 #  define OutputCMLEna_pow 0x02
 #  define OutputCMLEna_ena 0x01
+#define U16_OutputCMLNCountHigh 0x0614
+#define U16_OutputCMLNCountLow  0x0616
+#define U32_OutputCMLNPatLength 0x0618
+#  define OutputCMLPatLengthMax 2047
+
+#define U32_OutputCMLNPat_base 0x20000
+#define U32_OutputCMLPat(i,N) (U32_OutputCMLNPat_base + 0x4000*(i) + 4*(N))
+#  define OutputCMLPatNBit 20
+#  define OutputCMLPatMask ((1<<OutputCMLPatNBit)-1)
 
 #  define OutputCMLMax 3
 
@@ -195,6 +227,9 @@ enum evrForm {
 #define U32_OutputCMLFall(N) (U32_OutputCMLNFall +(0x20*(N)))
 #define U32_OutputCMLHigh(N) (U32_OutputCMLNHigh +(0x20*(N)))
 #define U32_OutputCMLEna(N)  (U32_OutputCMLNEna +(0x20*(N)))
+#define U16_OutputCMLCountHigh(N) (U16_OutputCMLNCountHigh +(0x20*(N)))
+#define U16_OutputCMLCountLow(N)  (U16_OutputCMLNCountLow  +(0x20*(N)))
+#define U32_OutputCMLPatLength(N) (U32_OutputCMLNPatLength +(0x20*(N)))
 
 #define U8_DataRx_base     0x0800
 #define U8_DataTx_base     0x1800
@@ -223,6 +258,7 @@ enum evrForm {
 #define U32__MappingRam(M,E,N) (U32_MappingRam_base + (0x2000*(M)) + (0x10*(E)) + (N))
 #define U32_MappingRam(M,E,N) U32__MappingRam(M,E, MappingRamBlock##N)
 
-
+#define U8_SFPDIAG_base 0x8300
+#define U8_SFPDIAG(N) (U8_SFPDIAG_base + (N))
 
 #endif /* EVRREGMAP_H */
