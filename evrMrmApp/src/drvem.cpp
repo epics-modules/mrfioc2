@@ -63,13 +63,18 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,pulsers()
   ,shortcmls()
 {
-    epicsUInt32 v = READ32(base, FWVersion),evr;
+    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
+
+    ver=v&FWVersion_ver_mask;
+    ver>>=FWVersion_ver_shift;
+    if(ver<3)
+        throw std::runtime_error("Firmware version not supported");
 
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQbufferReady);
@@ -149,9 +154,13 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         pulsers[i]=new MRMPulser(i,*this);
     }
 
-    shortcmls.resize(nCML);
-    for(size_t i=0; i<nCML; i++){
-        shortcmls[i]=new MRMCML(i,base);
+    if(nCML && ver>=4){
+        shortcmls.resize(nCML);
+        for(size_t i=0; i<nCML; i++){
+            shortcmls[i]=new MRMCML(i,base);
+        }
+    }else if(nCML){
+        printf("CML outputs not supported with this firmware\n");
     }
 
     events_lock=epicsMutexMustCreate();
