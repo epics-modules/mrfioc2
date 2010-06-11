@@ -10,6 +10,8 @@ mrf_registerRecordDeviceDriver(pdbbase)
 epicsEnvSet("ENGINEER","mdavidsaver x3698")
 epicsEnvSet("LOCATION","Blg 902 Rm 28")
 
+epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","1000000")
+
 mrmEvrSetupPCI(0,1,2,0)
 
 bspExtVerbosity=0
