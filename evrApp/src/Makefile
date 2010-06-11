@@ -38,8 +38,7 @@ evr_SRCS += devEvrOutput.cpp
 evr_SRCS += devEvrPulser.cpp
 evr_SRCS += devEvrPulserMapping.cpp
 
-evr_SRCS += devEvrCMLBIO.cpp
-evr_SRCS += devEvrCMLLongIO.cpp
+evr_SRCS += devEvrCML.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp

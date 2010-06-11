@@ -26,11 +26,14 @@ device(longin,     INST_IO, devlonginOutput, "EVR Output")
 device(longout,    INST_IO, devlongoutOutput, "EVR Output")
 
 # CML Output devices
-# '#Ccard Sindex @'
-device(bo,      VME_IO, devBOEVRCML, "EVR CML Short")
-device(bi ,     VME_IO, devBIEVRCML, "EVR CML Short")
-device(longout, VME_IO, devLOEVRCML, "EVR CML Short")
-device(longin , VME_IO, devLIEVRCML, "EVR CML Short")
+# '@C=$(C), I=$(I), P=PROPNAME'
+device(bo,      INST_IO, devboCML, "EVR CML")
+device(bi ,     INST_IO, devbiCML, "EVR CML")
+device(longout, INST_IO, devlongoutCML, "EVR CML")
+device(longin , INST_IO, devlonginCML, "EVR CML")
+device(mbbo,    INST_IO, devmbboCML, "EVR CML")
+device(waveform,INST_IO, devwaveformoutCML, "EVR CML Pattern Set")
+device(waveform,INST_IO, devwaveforminCML, "EVR CML Pattern Get")
 
 # Input devices
 # '@C=$(C) I=$(I), P=PROPNAME'
