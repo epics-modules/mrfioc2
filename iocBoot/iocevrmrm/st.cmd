@@ -4,8 +4,8 @@
 cd("/mnt")
 
 ## Register all support components
-dbLoadDatabase("dbd/evrmrm.dbd")
-evrmrm_registerRecordDeviceDriver(pdbbase)
+dbLoadDatabase("dbd/mrf.dbd")
+mrf_registerRecordDeviceDriver(pdbbase)
 
 mrmEvrSetupPCI(0,1,2,0)
 
