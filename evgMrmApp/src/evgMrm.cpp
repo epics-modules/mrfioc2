@@ -54,14 +54,16 @@
 #include  <epicsMutex.h>            // EPICS Mutex support library
 #include  <epicsThread.h>           // EPICS Thread support library
 
+#include  <devcsr.h>                // EPICS VME-64X CR/CSR support library
 #include  <errlog.h>                // EPICS Error logging support library
 #include  <iocsh.h>                 // EPICS IOC shell support library
 #include  <registryFunction.h>      // EPICS Registry support library
 
 #include  <mrfCommon.h>             // MRF Common definitions
 #include  <mrfCommonIO.h>           // MRF Common I/O macros
-#include  <mrfBusInterface.h>       // MRF Bus interface base class definition
+#include  <mrfcsr.h>                // MRF VME-64X CR/CSR space definitions
 #include  <mrfFracSynth.h>          // MRF fractional synthesizer support routines
+#include  <mrfBusInterface.h>       // MRF Bus interface base class definition
 #include  <mrfVmeBusInterface.h>    // MRF VME Bus interface class definition
 
 #include  <drvEvg.h>                // Event generator driver infrastructure declarations
@@ -70,6 +72,19 @@
 #include  <evg/Sequence.h>          // Event generator Sequence base class
 
 #include  <epicsExport.h>           // EPICS Symbol exporting macro definitions
+
+/**************************************************************************************************/
+/*                          Supported VME Event Generator Cards                                   */
+/*                                                                                                */
+
+//=====================
+// List of supported VME cards
+//
+static const
+struct VMECSRDevice SupportedVmeCards [] = {
+    {MRF_VME_IEEE_OUI, MRF_VME_EVG230_BID, VMECSRANY},   // EVG-230
+    VMECSR_END                                          // End of list
+};
 
 /**************************************************************************************************/
 /*                          Bus-Specific Configuration Routines                                   */
@@ -109,6 +124,7 @@
 |*                                  requested Event Generator card.
 |*
 \**************************************************************************************************/
+
 
 extern "C" {
 epicsStatus

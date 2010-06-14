@@ -2,18 +2,10 @@
 #ifndef VMEDEFS_H
 #define VMEDEFS_H
 
-#if defined(__vxWorks__)
+#include <osdVME.h>
 
-/* include? */
-
-#elif defined(__rtems__)
-
-#include <bsp/vme_am_defs.h>
-
-#else
-
+#ifndef VME_AM_STD_SUP_DATA
 #define VME_AM_STD_SUP_DATA 0x3d
-
 #endif
 
 #endif /* VMEDEFS_H */

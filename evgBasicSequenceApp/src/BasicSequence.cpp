@@ -819,7 +819,7 @@ BasicSequence::Update ()
 //!   - Perform asynchronous record completion (if needed) for this Sequence's "Update Trigger"
 //!     record.
 //!   - If the state of the Sequence and/or its Sequence Events changed while the Sequence was
-//!     updating, if the update mode is "Immediate", start another update.
+//!     updating, and if the update mode is "Immediate", start another update.
 //!
 //! @par Member Variables Referenced:
 //! - \e  EffectiveUpdateMode = (modified) Set to "On Trigger" during asynchronous record completion

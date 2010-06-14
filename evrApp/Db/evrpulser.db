@@ -70,7 +70,7 @@ record(longin, "$(P)$(N)width:raw") {
 record(longout, "$(P)$(N)prescaler:set") {
   field(DTYP, "EVR Pulser")
   field(OUT , "#L$(C) A$(PID) C0 S0 @Prescaler")
-  field(DESC, "Event clock to Pulser clock divider")
+  field(DESC, "Pulser clock divider")
   field(PINI, "YES")
   field(HOPR, "$(PMAX)")
   field(LOPR, "1")

@@ -11,7 +11,6 @@
 #include "devLib.h"
 #include <epicsTypes.h>
 #include "mrfIoOps.h"
-
 #include "vmedefs.h"
 
 #ifdef __cplusplus

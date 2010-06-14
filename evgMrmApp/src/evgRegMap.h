@@ -165,10 +165,10 @@
 #define  U32_SeqRamEvent_base   0x8004  // Sequence Ram Event Code Array Base Offset
 
 #define  U32_SeqRamTS(n,m)    \
-             (U32_SeqRamTS_base + (0x4000*(n)) + (4*(n)))
+             (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
 
 #define  U32_SeqRamEvent(n,m) \
-             (U32_SeqRamEvent_base + (0x4000*(n)) + (4*(n)))
+             (U32_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
 
 //=====================
 // Size of Event Generator Register Space

@@ -63,11 +63,10 @@
 #include <epicsStdlib.h>        // EPICS Standard C library support routines
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
 #include <epicsInterrupt.h>     // EPICS Interrupt context support routines
-
 #include <devLib.h>             // EPICS Device-independant hardware addressing support library
-#include <osdVME.h>             // EPICS VME address mode definitions
-#include "vmedefs.h"
+#include <devcsr.h>             // EPICS Routines for accessing VME-64X CR/CSR space
 
+#include <vmedefs.h>            // VME address mode definitions
 #include <mrfVme64x.h>          // VME-64X CR/CSR routines and definitions (with MRF extensions)
 #include <mrfVmeBusInterface.h> // Class definition file
 
@@ -245,6 +244,7 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     epicsUInt16     Junk;                  // Dummy variable for card read probe function
     epicsUInt32     status;                // Status return variable
     char            statusText [64];       // Status text string
+    volatile unsigned char*  csrAddress;    //~~~~
 
     //=====================
     // Make sure the slot number is valid
@@ -254,6 +254,15 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
                  Slot, MRF_MAX_VME_SLOT);
         return 0;
     }//end if slot number is invalid
+
+    //=====================
+    // Get the boards local address in CR/CSR space
+    //~~~~~~~~~~~~~~~
+    csrAddress = devCSRProbeSlot (Slot);
+    if (NULL == csrAddress) {
+        sprintf (ErrorText, "Unable to access CR/CSR Space for slot %d.", Slot);
+        return 0;
+    }//end if we could not access CR/CSR space for this slot
 
     //=====================
     // Try to get the board ID of the card in this slot
@@ -313,7 +322,9 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //=====================
     // Try to set the card's Function 0 or Function 1 address to the base address we just registered
     //
-    status = mrfSetAddress (Slot, BusAddress, VME_AM_STD_SUP_DATA);
+    //~~~~    status = mrfSetAddress (Slot, BusAddress, VME_AM_STD_SUP_DATA);
+    CSRSetBase (csrAddress, 1, BusAddress, VME_AM_STD_SUP_DATA);
+
     if (OK != status) {
         sprintf (ErrorText, "Unable to set bus address for slot %d.", Slot);
         return 0;
