@@ -214,7 +214,7 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   // If we are given a length that is not a multiple of 20
   // then truncate.
   if(blen%OutputCMLPatNBit)
-    blen-=blen%OutputCMLPatMask;
+    blen-=blen%OutputCMLPatNBit;
 
   if(blen>lenPatternMax())
     throw std::out_of_range("Pattern is too long");
