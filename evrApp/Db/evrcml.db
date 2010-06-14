@@ -56,6 +56,12 @@ record(mbbo, "$(P)$(CML)mode") {
   field( IVOA, "Don't drive outputs")
 }
 
+record(calcout, "$(P)$(CML)res") {
+  field(INPA, "$(P)clock:period CP")
+  field(CALC, "1e9*A/20")
+  field(EGU , "ns")
+}
+
 record(longout, "$(P)$(CML)rise") {
   field(DESC, "Rising edge pattern")
   field(DTYP, "EVR CML")
@@ -149,7 +155,7 @@ record(waveform, "$(P)$(CML)pat") {
   field(DTYP, "EVR CML Pattern Set")
   field(INP, "@C=$(C), I=$(IDX), P=Pattern Set")
   field(FTVL, "UCHAR")
-  field(NELM, "40940") # 20*2047
+  field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
   field(FLNK, "$(P)$(CML)pat:rbv")
@@ -161,7 +167,69 @@ record(waveform, "$(P)$(CML)pat:rbv") {
   field(PINI, "YES")
   field(INP, "@C=$(C), I=$(IDX), P=Pattern Get")
   field(FTVL, "UCHAR")
-  field(NELM, "40940") # 20*2047
+  field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
+  field(FLNK, "$(P)$(CML)pat:x:calc")
 }
+
+record(aSub, "$(P)$(CML)pat:x:calc") {
+  field(SNAM, "Timeline")
+  field(BRSV, "INVALID")
+  field(INPA, "0")
+  field( FTA, "DOUBLE")
+  field(INPB, "$(P)$(CML)res CP")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(P)$(CML)pat.NORD NPP")
+  field( FTC, "LONG")
+  field(OUTA, "$(P)$(CML)pat:x PP")
+  field(FTVA, "DOUBLE")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
+
+record(waveform, "$(P)$(CML)pat:x") {
+  field(FTVL, "DOUBLE")
+  field(NELM, "$(MAX=40940)")
+  field(EGU , "ns")
+}
+
+# Delay gen calculator for CML waveform
+
+record(bo, "$(P)$(CML)pat:dly:ena") {
+  field(DESC, "Disable calculator")
+  field(ONAM, "Disable")
+  field(ZNAM, "Enable")
+  field(UDF , "0")
+}
+
+record(ao, "$(P)$(CML)pat:dly") {
+  field(PINI, "YES")
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(OUT , "$(P)$(CML)pat:dly:calc.A PP")
+  field(EGU , "ns")
+  field(UDF , "0")
+  field(VAL , "16")
+}
+
+record(ao, "$(P)$(CML)pat:dly:wth") {
+  field(PINI, "YES")
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(OUT , "$(P)$(CML)pat:dly:calc.B PP")
+  field(EGU , "ns")
+  field(UDF , "0")
+  field(VAL , "50")
+}
+
+record(aSub, "$(P)$(CML)pat:dly:calc") {
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(SNAM, "Delay Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "DOUBLE")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(P)$(CML)res CP")
+  field( FTC, "DOUBLE")
+  field(OUTA, "$(P)$(CML)pat PP")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
+
