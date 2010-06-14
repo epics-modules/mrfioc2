@@ -67,6 +67,17 @@ record(calc, "$(P)clock:error") {
   field(PREC, "3")
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock")
+  field(FLNK, "$(P)clock:period")
+}
+
+# Intended for use in calculations
+record(calc, "$(P)clock:period") {
+  field(DESC, "Event period")
+  field(CALC, "B/A")
+  field(EGU , "s")
+  field(PREC, "3")
+  field(INPA, "$(P)clock:set")
+  field(INPB, "$(P)clock:set.ESLO")
 }
 
 record(bi, "$(P)pll") {
