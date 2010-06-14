@@ -75,3 +75,5 @@ device(event,    INST_IO, devEventEVR, "EVR")
 
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
+
+registrar(asub_evr)
