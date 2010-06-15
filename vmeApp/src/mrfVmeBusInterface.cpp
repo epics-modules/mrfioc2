@@ -65,9 +65,12 @@
 #include <epicsInterrupt.h>     // EPICS Interrupt context support routines
 #include <devLib.h>             // EPICS Device-independant hardware addressing support library
 #include <devcsr.h>             // EPICS Routines for accessing VME-64X CR/CSR space
-
-#include <vmedefs.h>            // VME address mode definitions
-#include <mrfVme64x.h>          // VME-64X CR/CSR routines and definitions (with MRF extensions)
+#include <devLib.h>             // EPICS Device-independant hardware addressing support library
+#include <osdVME.h>             // EPICS VME address mode definitions
+#include "vmedefs.h"
+#include "devcsr.h"
+#include "mrfcsr.h"
+#include <mrfCommon.h>          // VME-64X CR/CSR routines and definitions (with MRF extensions)
 #include <mrfVmeBusInterface.h> // Class definition file
 
 
@@ -83,6 +86,11 @@ struct SupportedCardStruct {
     epicsInt32   CardType;      // Card type (EVG, EVR, etc. of the supported card
 };//end SupportedCardStruct
 
+static const epicsUInt32 funcOneCards [] = {
+    MRF_VME_EVR230_BID,          /* Series 230 Event Receiver                                     */
+    MRF_VME_EVR230RF_BID,        /* Series 230 Event Receiver with CML outputs                    */
+    0 // Not a valid board id
+};
 
 /**************************************************************************************************/
 /*  Lookup Tables                                                                                 */
@@ -91,6 +99,13 @@ struct SupportedCardStruct {
 //=====================
 // Table of supported card types
 //
+
+static const struct VMECSRDevice vmeids[] = {
+   // VME EVG 230
+   {MRF_VME_IEEE_OUI, MRF_VME_EVG230_BID, VMECSRANY}
+   ,VMECSR_END
+};
+
 static
 SupportedCardStruct SupportedCards [] = {
     {MRF_VME_EVG_BID,    MRF_CARD_TYPE_EVG},    // VME Event Generator Card
@@ -164,6 +179,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
     CardNum           (Card),           // Initialize the logical card number from the input parm.
     CardType          (CardType),       // Initialize the card type from the input parameter
     CpuAddress        (0),              // CPU Address not yet mapped
+    CpuCSRAddress     (0),
     IrqVector         (IrqVector),      // Initialize the interrupt vector from the input parameter
     IrqLevel          (IrqLevel),       // Initialize the interrupt request level from the input
     Slot              (VmeSlot)         // Initialize the slot number from the input parameter
@@ -212,7 +228,7 @@ mrfVmeBusInterface::mrfVmeBusInterface (
 |*-------------------------------------------------------------------------------------------------
 |* IMPLICIT OUTPUTS (member variables):
 |*      AddressRegistered  = (bool)        True if bus address was registered with devLib
-|*      CpuAddress         = (epicsUInt32) CPU address for accessing the register map
+|*      CpuAddress         = (void*) CPU address for accessing the register map
 |*      Description        = (char *)      Card description (used to register with devLib)
 |*      ErrorText          = (char *)      Text from last error condition
 |*      Serial Number      = (char *)      Card's serial number (read from CSR space)
@@ -231,14 +247,15 @@ mrfVmeBusInterface::mrfVmeBusInterface (
 |*
 \**************************************************************************************************/
 
-epicsUInt32
+volatile epicsUInt8*
 mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
 {
     //=====================
     // Local Variables
     //
+    struct VMECSRDevice info;              // Probed device ID
+    volatile unsigned char* csr;           // CSR base address
     epicsInt32      ActualType;            // Card's type as read from the hardware
-    epicsUInt32     BoardID;               // Card's board ID
     epicsUInt32     BoardType;             // Card's board type (extracted from the board ID)
     epicsUInt32     BoardSeries;           // Card's board series (extracted from the board ID)
     epicsUInt16     Junk;                  // Dummy variable for card read probe function
@@ -249,36 +266,18 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //=====================
     // Make sure the slot number is valid
     //
-    if ((Slot < 1) || (Slot > MRF_MAX_VME_SLOT)) {
-        sprintf (ErrorText, "Slot number %d is invalid, must be between 1 and %d",
-                 Slot, MRF_MAX_VME_SLOT);
+    csr=devCSRTestSlot(vmeids,Slot,&info);
+    if(!csr){
+        sprintf (ErrorText, "No EVR in slot %d\n",Slot);
         return 0;
-    }//end if slot number is invalid
-
-    //=====================
-    // Get the boards local address in CR/CSR space
-    //~~~~~~~~~~~~~~~
-    csrAddress = devCSRProbeSlot (Slot);
-    if (NULL == csrAddress) {
-        sprintf (ErrorText, "Unable to access CR/CSR Space for slot %d.", Slot);
-        return 0;
-    }//end if we could not access CR/CSR space for this slot
-
-    //=====================
-    // Try to get the board ID of the card in this slot
-    //
-    status = vmeCRGetBID (Slot, &BoardID);
-    if (OK != status) {
-        sprintf (ErrorText, "Unable to access CR/CSR Space for slot %d.", Slot);
-        return 0;
-    }//end could not read the card's board ID
+    }
 
     //=====================
     // Look up the actual card type in the table of supported cards
     //
     ActualType  = 0;
-    BoardType   = BoardID & MRF_BID_TYPE_MASK;
-    BoardSeries = BoardID & MRF_BID_SERIES_MASK;
+    BoardType   = info.board & MRF_BID_TYPE_MASK;
+    BoardSeries = info.board & MRF_BID_SERIES_MASK;
 
     for (epicsInt32 i = 0;  i < NUM_SUPPORTED_CARDS;  i++) {
         if (BoardType == SupportedCards[i].CardID) {
@@ -322,13 +321,14 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //=====================
     // Try to set the card's Function 0 or Function 1 address to the base address we just registered
     //
-    //~~~~    status = mrfSetAddress (Slot, BusAddress, VME_AM_STD_SUP_DATA);
-    CSRSetBase (csrAddress, 1, BusAddress, VME_AM_STD_SUP_DATA);
-
-    if (OK != status) {
-        sprintf (ErrorText, "Unable to set bus address for slot %d.", Slot);
-        return 0;
-    }//end could not set VME address in CR/CSR space
+    epicsUInt8 function=0;
+    for(const epicsUInt32 *oneid=funcOneCards; *oneid; oneid++) {
+        if (info.board == *oneid) {
+            function=1;
+            break;
+        }
+    }
+    CSRSetBase(csr, function, BusAddress, VME_AM_STD_SUP_DATA);
 
     //=====================
     // Test to see if we can actually read the card at the address we set it to.
@@ -353,7 +353,9 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     //=====================
     // Read the card's serial number
     //
-    mrfGetSerialNumberVME (Slot, SerialNumber);
+    //mrfGetSerialNumberVME (Slot, SerialNumber); //TODO: not implimented
+
+    CpuCSRAddress = csr;
 
     //=====================
     // Return the CPU address for accessing the card's register map
@@ -416,6 +418,8 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
 |*
 \**************************************************************************************************/
 
+#define  MRF_USER_CSR_DEFAULT     0x7fb03
+
 epicsStatus
 mrfVmeBusInterface::ConfigBusInterrupt (
     EPICS_ISR_FUNC   IntHandler,        // Interrupt handler routine
@@ -433,15 +437,8 @@ mrfVmeBusInterface::ConfigBusInterrupt (
         return ERROR;
     }//end if interrupt vector is already in use
 
-    //=====================
-    //Set the card's IRQ level and vector in CR/CSR space.
-    //
-    status = mrfSetIrq (Slot, IrqVector, IrqLevel);
-    if (OK != status) {
-        sprintf (ErrorText, "Unable to set IRQ vector and level for %s Card %d in slot %d",
-                 CardTypeName[CardType], CardNum, Slot);
-        return ERROR;
-    }//end if we could not set the IRQ vector/level
+    CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_LEVEL,  IrqLevel&0x7);
+    CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_VECTOR, IrqVector&0xff);
 
     //=====================
     // Connect the interrupt handler
@@ -457,7 +454,9 @@ mrfVmeBusInterface::ConfigBusInterrupt (
         sprintf (ErrorText, "Unable to connect %s Card %d to interrupt vector 0x%04X\n  %s",
                  CardTypeName[CardType], CardNum, IrqVector, statusText);
 
-        mrfSetIrq (Slot, 0, 0);
+
+        CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_LEVEL,  0);
+        CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_VECTOR, 0);
         IntVecConnected = false;
         return ERROR;
     }//end if failed to connect to interrupt vector
@@ -521,7 +520,7 @@ mrfVmeBusInterface::BusInterruptEnable () const {
 |* IMPLICIT INPUTS (member variables):
 |*      BusAddress     = (epicsUInt32)    VME bus address
 |*      CardNum        = (epicsInt32)     Logical card number
-|*      CpuAddress     = (epicsUInt32)    CPU address for accessing the register map
+|*      CpuAddress     = (void*)    CPU address for accessing the register map
 |*      IrqLevel       = (epicsInt32)     Interrupt request level
 |*      IrqVector      = (epicsInt32)     Interrupt vector number
 |*      Serial Number  = (char *)         Card's serial number (read from CSR space)
@@ -536,7 +535,7 @@ mrfVmeBusInterface::BusInterruptEnable () const {
 void
 mrfVmeBusInterface::BusHwReport () const {
     printf ("  Card %d in VME slot %d.  Serial Number = %s.\n", CardNum, Slot, SerialNumber);
-    printf ("       VME Address = %8.8X.  Local Address = %8.8X.", BusAddress, CpuAddress);
+    printf ("       VME Address = %8.8X.  Local Address = %8.8X.", BusAddress, (epicsUInt32)CpuAddress);
     printf ("   Vector = %3.3X.  Level = %d.\n", IrqVector, IrqLevel);
 }//end BusHwReport()
 
@@ -581,8 +580,10 @@ mrfVmeBusInterface::~mrfVmeBusInterface()
     //=====================
     // Disable the card's interrupt request level
     //
-    if (IntVecConnected)
-        mrfSetIrq (Slot, 0, 0);
+    if (IntVecConnected) {
+        CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_LEVEL,  IrqLevel&0x7);
+        CSRWrite8(CpuCSRAddress+MRF_USER_CSR_DEFAULT+UCSR_IRQ_VECTOR, IrqVector&0xff);
+    }
 
     //=====================
     // Disconnect the interrupt service routine

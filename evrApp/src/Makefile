@@ -17,14 +17,13 @@ INC += evr/output.h
 INC += evr/input.h
 INC += evr/prescaler.h
 INC += evr/evr.h
-INC += evr/cml_short.h
+INC += evr/cml.h
 
 evr_SRCS += evr.cpp
 
 INC += cardmap.h
 evr_SRCS += cardmap.cpp
 evr_SRCS += evrGTIF.cpp
-evr_SRCS += property.cpp
 
 evr_SRCS += devEvr.cpp
 evr_SRCS += devEvrStringIO.cpp
@@ -39,8 +38,7 @@ evr_SRCS += devEvrOutput.cpp
 evr_SRCS += devEvrPulser.cpp
 evr_SRCS += devEvrPulserMapping.cpp
 
-evr_SRCS += devEvrCMLShortBIO.cpp
-evr_SRCS += devEvrCMLShortLongIO.cpp
+evr_SRCS += devEvrCML.cpp
 
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp

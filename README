@@ -1,0 +1,72 @@
+== What is Available? ==
+
+More infomation on the Micro Research hardware can be found on their
+website http://www.mrf.fi/[http://www.mrf.fi/].
+
+The software discussed below can be found on the EPICS application
+project on SourceForge http://sourceforge.net/projects/epics/[http://sourceforge.net/projects/epics/].
+
+The latest developments can be found in the 'mrfioc2' Mercuial VCS repository.
+
+http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary[http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary]
+
+=== Prerequisites ===
+
+The only required software is EPICS Base 3.14.x, and the MSI tool.
+
+Base: http://www.aps.anl.gov/epics/base/R3-14/index.php[http://www.aps.anl.gov/epics/base/R3-14/index.php]
+
+MSI: http://www.aps.anl.gov/epics/extensions/msi/index.php[http://www.aps.anl.gov/epics/extensions/msi/index.php]
+
+The Mercurial VCS tool is needed to checkout the development repository.
+
+Mercuial: http://mercurial.selenic.com/[http://mercurial.selenic.com/]
+
+=== The Source ===
+
+VCS Checkout
+
+-----------------------------------------------------------------------
+$ hg checkout http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2
+-----------------------------------------------------------------------
+
+Edit 'configure/CONFIG_SITE' and run "make".
+
+The following is a brief tour of the important locations in the source tree
+relating to the EVR.
+
+==== mrfCommon ====
+
+Some support functions.  Contains 'mrfCommonIO.h' which devices macros
+for access to memory mapped IO.  Also the support a library and CLI utilities
+for en/decoding the control word for the fractional synthesizer used on
+EVRs and EVGs.
+
+==== pciApp ====
+
+OS independent abstraction for working with PCI devices.
+
+==== vmeApp ====
+
+OS independent abstraction for working with VME64x devices.
+
+==== evrApp ====
+
+The MRF IOC has a strong seperation between device and driver support.
+The device support and interface definition are in this module.
+The interface is defined by the C++ abstract base classes in 
+'evrApp/src/evr/'.
+A set of device support routines using is found in 'evrApp/src/dev*.cpp'.
+Some generic database files are found in 'evrApp/Db/'.
+
+==== evrMrmApp ====
+
+The is the device support for the Modular Register Map (MRM) firmware
+version for the EVR.
+It provides a concrete implimentation of the abstract classes defined
+in 'evrApp'.
+It also provided IOC shell function in 'evrMrmApp/src/drvemIocsh.cpp'.
+'evrMrmApp/Db/evr-*.substitutions' will create a complete example
+database.
+An example IOC using the database is in 'iocBoot/iocevrmrm/'.
+

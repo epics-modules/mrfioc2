@@ -51,6 +51,10 @@ INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += debugPrint.h       # SLAC debug print utility
 INC += linkoptions.h
 
+INC += property.h
+INC += dsetshared.h
+
+
 TESTPROD_HOST += linkoptionsTest
 linkoptionsTest_SRCS += linkoptionsTest.c
 linkoptionsTest_LIBS += mrfCommon iocsh
@@ -69,6 +73,7 @@ mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += mrfBusInterface.cpp
 mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
+mrfCommon_SRCS += dsetshared.cpp
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 

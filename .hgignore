@@ -1,9 +1,8 @@
 O.*
-bin
-configure
-db
-include
-lib
-envPaths
-html
-rtf
+^bin$
+^db$
+^include$
+^lib$
+^envPaths$
+^html$
+^rtf$

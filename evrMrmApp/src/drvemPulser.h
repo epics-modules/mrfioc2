@@ -37,8 +37,6 @@ public:
     virtual MapType::type mappedSource(epicsUInt32 src) const;
     virtual void sourceSetMap(epicsUInt32 src,MapType::type action);
 
-    virtual const char* sourceName(epicsUInt32 src) const;
-
 private:
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings

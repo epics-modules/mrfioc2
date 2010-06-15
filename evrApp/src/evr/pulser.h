@@ -87,12 +87,6 @@ public:
   virtual MapType::type mappedSource(epicsUInt32 src) const=0;
   //! Set mapping of source 'src'.
   virtual void sourceSetMap(epicsUInt32 src,MapType::type action)=0;
-
-  //! Return a human readable string naming 'src'.
-  virtual const char* sourceName(epicsUInt32 src) const=0;
-
-  //! Return a human readable string describing the mapping (does not affect hardware).
-  virtual std::string mapDesc(epicsUInt32,MapType::type) const;
   /*@}*/
 };
 

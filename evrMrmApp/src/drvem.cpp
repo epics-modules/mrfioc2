@@ -63,13 +63,18 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,pulsers()
   ,shortcmls()
 {
-    epicsUInt32 v = READ32(base, FWVersion),evr;
+    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
+
+    ver=v&FWVersion_ver_mask;
+    ver>>=FWVersion_ver_shift;
+    if(ver<3)
+        throw std::runtime_error("Firmware version not supported");
 
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQbufferReady);
@@ -93,7 +98,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
     // # of CML outputs
-    size_t nCMLShort=0;
+    size_t nCML=0;
     // # of FP inputs
     size_t nIFP=0;
 
@@ -109,7 +114,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     case evrFormVME64:
         if(DBG) printf("VME64 ");
         nOFP=7;
-        nCMLShort=3; // OFP 4-6 are CML
+        nCML=3; // OFP 4-6 are CML
         nOFPUV=4;
         nORB=16;
         nIFP=2;
@@ -149,9 +154,13 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         pulsers[i]=new MRMPulser(i,*this);
     }
 
-    shortcmls.resize(nCMLShort);
-    for(size_t i=0; i<nCMLShort; i++){
-        shortcmls[i]=new MRMCMLShort(i,base);
+    if(nCML && ver>=4){
+        shortcmls.resize(nCML);
+        for(size_t i=0; i<nCML; i++){
+            shortcmls[i]=new MRMCML(i,base);
+        }
+    }else if(nCML){
+        printf("CML outputs not supported with this firmware\n");
     }
 
     events_lock=epicsMutexMustCreate();
@@ -285,16 +294,16 @@ EVRMRM::prescaler(epicsUInt32 i) const
     return prescalers[i];
 }
 
-MRMCMLShort*
-EVRMRM::cmlshort(epicsUInt32 i)
+MRMCML*
+EVRMRM::cml(epicsUInt32 i)
 {
     if(i>=shortcmls.size())
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
 
-const MRMCMLShort*
-EVRMRM::cmlshort(epicsUInt32 i) const
+const MRMCML*
+EVRMRM::cml(epicsUInt32 i) const
 {
     if(i>=shortcmls.size())
         throw std::out_of_range("CML Short id is out of range");
@@ -371,62 +380,6 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     }
 
     epicsInterruptUnlock(iflags);
-}
-
-const char*
-EVRMRM::idName(epicsUInt32 src) const
-{
-    // Special Mappings
-    switch(src){
-        case 127: return "Save FIFO";
-        case 126: return "Latch Timestamp";
-        case 125: return "Blink LED";
-        case 124: return "Forward Event";
-        case 123: return "Stop Event Log";
-        case 122: return "Log Event";
-        // 102 -> 121 are reserved
-        case 101: return "Heartbeat";
-        case 100: return "Reset Prescalers (dividers)";
-        case 99:  return "Timestamp reset";
-        case 98:  return "Timestamp clock";
-        case 97:  return "Seconds shift 1";
-        case 96:  return "Seconds shift 0";
-        // 74 -> 95 are reserved
-        case 73:  return "Trigger pulser #9";
-        case 72:  return "Trigger pulser #8";
-        case 71:  return "Trigger pulser #7";
-        case 70:  return "Trigger pulser #6";
-        case 69:  return "Trigger pulser #5";
-        case 68:  return "Trigger pulser #4";
-        case 67:  return "Trigger pulser #3";
-        case 66:  return "Trigger pulser #2";
-        case 65:  return "Trigger pulser #1";
-        case 64:  return "Trigger pulser #0";
-        // 42 -> 63 are reserved
-        case 41:  return "Set pulser #9";
-        case 40:  return "Set pulser #8";
-        case 39:  return "Set pulser #7";
-        case 38:  return "Set pulser #6";
-        case 37:  return "Set pulser #5";
-        case 36:  return "Set pulser #4";
-        case 35:  return "Set pulser #3";
-        case 34:  return "Set pulser #2";
-        case 33:  return "Set pulser #1";
-        case 32:  return "Set pulser #0";
-        // 10 -> 31 are reserved
-        case 9:   return "Reset pulser #9";
-        case 8:   return "Reset pulser #8";
-        case 7:   return "Reset pulser #7";
-        case 6:   return "Reset pulser #6";
-        case 5:   return "Reset pulser #5";
-        case 4:   return "Reset pulser #4";
-        case 3:   return "Reset pulser #3";
-        case 2:   return "Reset pulser #2";
-        case 1:   return "Reset pulser #1";
-        case 0:   return "Reset pulser #0";
-
-        default:  return "Invalid";
-    }
 }
 
 double

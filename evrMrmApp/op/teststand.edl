@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1348
-y 54
+x 1352
+y 75
 w 170
 h 196
 font "helvetica-medium-r-18.0"
@@ -124,7 +124,7 @@ buttonLabel "IOC Status"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_rtems_none.edl"
+  0 "ioc_stats.edl"
 }
 menuLabel {
   0 "IOC Status"
@@ -159,7 +159,7 @@ menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "P=evr3"
+  0 "P=evr4"
 }
 endObjectProperties
 

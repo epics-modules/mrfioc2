@@ -4,7 +4,7 @@
 record(longout, "$(P)$(O)src:set") {
   field( DTYP, "EVR Output")
   field( DESC, "Output $(IDX)")
-  field( OUT , "#L$(C) A$(OT) C$(IDX) S0 @Map")
+  field( OUT , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
   field( FLNK, "$(P)$(O)src")
   field( PINI, "YES")
   field( VAL , "63")
@@ -110,7 +110,7 @@ record(mbbo, "$(P)$(O)src:scale:set") {
 
 record(longin, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
-  field( INP , "#L$(C) A$(OT) C$(IDX) S0 @Map")
+  field( INP , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
   field( FLNK, "$(P)$(O)src:pulse")
 }
 

@@ -16,7 +16,8 @@
 
 #include "cardmap.h"
 #include "evr/evr.h"
-#include "property.h"
+#include "linkoptions.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 #include <string>
@@ -38,26 +39,58 @@
 /***************** Mapping record ******************/
 
 struct map_priv {
+  epicsUInt32 card_id;
   EVR* card;
   epicsUInt32 last_code;
   epicsUInt32 last_func;
+  int next_func;
 };
 
-static long init_lo(longoutRecord *plo)
+static const
+linkOptionEnumType funcEnum[] = {
+  {"FIFO",     127},
+  //{"Latch TS",     126}, // Not supported
+  {"Blink",    125},
+  {"Forward",  124},
+  {"Stop Log", 123},
+  {"Log",      122},
+  {"Heartbeat",101},
+  {"Reset PS", 100},
+  {"TS reset",  99},
+  {"TS tick",   98},
+  {"Shift 1",   97},
+  {"Shift 0",   96},
+  {NULL,0}
+};
+
+static const
+linkOptionDef eventdef[] = 
 {
+  linkInt32   (map_priv, card_id  , "C"  , 1, 0),
+  linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
+  linkOptionEnd
+};
+
+static long add_lo(dbCommon* praw)
+{
+  longoutRecord *plo=(longoutRecord*)praw;
   long ret=0;
 try {
-  assert(plo->out.type==VME_IO);
+  assert(plo->out.type==INST_IO);
 
-  map_priv *priv=new map_priv;
+  map_priv *priv=getdpvt<map_priv>(plo);
+
+  if (linkOptionsStore(eventdef, priv, plo->out.value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
   priv->last_code=0;
-  priv->last_func=plo->out.value.vmeio.signal;
+  priv->last_func=priv->next_func;
 
-  priv->card=getEVR<EVR>(plo->out.value.vmeio.card);
+  priv->card=getEVR<EVR>(priv->card_id);
   if(!priv->card)
     throw std::runtime_error("Failed to lookup device");
 
-  plo->dpvt=static_cast<void*>(priv);
+  setdpvt(plo, priv);
 
   return 0;
 
@@ -76,9 +109,12 @@ static long write_lo(longoutRecord* plo)
 {
 try {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
-  
-  epicsUInt32 func=plo->out.value.vmeio.signal;
-  
+
+  if (!priv)
+    return -2;
+
+  epicsUInt32 func=priv->next_func;
+
   epicsUInt32 code=plo->val;
 
   if( func==priv->last_func && code==priv->last_code )
@@ -121,116 +157,20 @@ try {
 }
 }
 
-/***************** Mapping identifier record ******************/
-
-/*
- * This record should be linked to any of the long out mapping records.
- * It will provide a text description of the meaning of the device
- * dependent mapping code.
- */
-
-static long init_si(stringinRecord *prec)
-{
-try {
-  
-  switch(prec->inp.type){
-  case CONSTANT:
-  case PV_LINK:
-  case DB_LINK:
-  case CA_LINK:
-    break;
-  default:
-    recGblRecordError(S_db_badField, (void *)prec,
-      "devSiSoft (init_record) Illegal INP field");
-    return S_db_badField;
-  }
-  
-  EVR* card=getEVR<EVR>(prec->inp.value.vmeio.card);
-  if(!card)
-    throw std::runtime_error("Failed to lookup device");
-
-  prec->dpvt=static_cast<void*>(card);
-
-  if(prec->inp.type==CONSTANT){
-    epicsUInt32 id;
-    const char* desc;
-    if (!recGblInitConstantLink(&prec->inp, DBF_LONG, &id)){
-      //TODO: invalid alarm
-    }else if( !(desc=card->idName(id)) ){
-      //TODO: invalid alarm
-    }else{
-      strncpy(prec->val,desc,sizeof(prec->val));
-      prec->udf = FALSE;
-    }
-  }
-
-  return 0;
-
-} catch(std::runtime_error& e) {
-  recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-  return S_dev_noDevice;
-} catch(std::exception& e) {
-  recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-  return S_db_noMemory;
-}
-}
-
-static long read_string(stringinRecord* prec)
-{
-  EVR *card=static_cast<EVR*>(prec->dpvt);
-
-  epicsUInt32 id;
-  long status=dbGetLink(&prec->inp, DBF_LONG, &id, 0, 0);
-  if(!status){    
-    const char* desc=card->idName(id);
-    if(!desc){
-      //TODO: invalid alarm
-      return 1;
-    }else{
-      strncpy(prec->val,desc,sizeof(prec->val));
-      prec->udf = FALSE;
-    }
-  }
-  
-  return status;
-}
-
 /********************** DSETs ***********************/
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOEVRMap = {
+dsxt dxtLOEVRMap={add_lo,del_record_empty};
+static
+common_dset devLOEVRMap = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_lo,
+  dset_cast(&init_dset<&dxtLOEVRMap>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
   (DEVSUPFUN) write_lo
 };
 epicsExportAddress(dset,devLOEVRMap);
-
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  read;
-} devSIEVRMap = {
-  5,
-  NULL,
-  NULL,
-  (DEVSUPFUN) init_si,
-  NULL,
-  (DEVSUPFUN) read_string
-};
-epicsExportAddress(dset,devSIEVRMap);
 
 };

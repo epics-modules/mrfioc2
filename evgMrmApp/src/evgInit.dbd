@@ -1,0 +1,21 @@
+registrar(evgMrmRegistrar)
+driver(drvEvgMrm)
+
+device( ao, VME_IO, devAoEvgClock, "EVG Clk")
+device( longout, VME_IO, devLoEvgClock, "EVG Clk")
+
+device( bo, VME_IO, devBoEvgMxc, "EVG Mxc")
+device( bi, VME_IO, devBiEvgMxc, "EVG Mxc")
+device( longout, VME_IO, devLoEvgMxc, "EVG Mxc")
+device( mbboDirect, VME_IO, devMbboDEvgMxc, "EVG Mxc")
+
+device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
+device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
+
+device( bo, VME_IO, devBoEvgSoftEvt, "EVG Soft Evt")
+device( bi, VME_IO, devBiEvgSoftEvt, "EVG Soft Evt")
+device( longout, VME_IO, devLoEvgSoftEvt, "EVG Soft Evt")
+
+device( longout, VME_IO, devLoEvgFPioMap, "EVG FPio")
+
+device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")

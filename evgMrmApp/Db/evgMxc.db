@@ -1,0 +1,45 @@
+record(bo, "EVG$(cardNum):Mxc$(mxcNum)Polarity") {
+	field( DTYP, "EVG Mxc")
+  	field( DESC, "EVG Mux Counter Output Polarity")
+  	field( OUT , "#C$(cardNum) S$(mxcNum) @")
+  	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
+  	field( ZNAM, "Orginal")
+  	field( ONAM, "Inverted")
+}
+
+record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
+	field( DTYP, "EVG Mxc")
+  	field( DESC, "EVG Mux Counter Output Status")
+  	field( SCAN, "1 second")
+	field( INP , "#C$(cardNum) S$(mxcNum) @")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
+}
+
+record(longout, "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Prescaler")
+	field( OUT, "#C$(cardNum) S$(mxcNum) @")
+	field( PINI, "YES")
+	field( VAL , "12500")
+	field( UDF, "0")
+}
+
+record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Trig Evt Map")
+	field( OUT, "#C$(cardNum) S$(mxcNum) @")
+	field( PINI, "YES")
+	field( NOBT, "8")
+	field( UDF, "0")
+	field( B0,"0")
+	field( B1,"0")
+	field( B2,"0")
+	field( B3,"0")
+	field( B4,"0")
+	field( B5,"0")
+	field( B6,"0")
+	field( B7,"0")
+}

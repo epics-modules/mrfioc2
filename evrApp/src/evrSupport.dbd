@@ -1,56 +1,77 @@
+# INST_IO link strings
+#
+# Format is macLib style (Key=Value, Key=Value2)
+#
+# Common keys
+#
+# C - Card index number (int)
+# T - subunit type (only Output subunit) (string)
+# I - subunit instance number (int)
+# P - Property name (string)
+#
+# Special keys
+#
+# Code - Timing system event code (not db event #) (int)
+# Func - Mapping function (string)
+#
+
 # Prescaler devices
-# '#Ccard Sindex @'
-device(longin , VME_IO, devLIEVRPreScaler, "EVR Prescaler")
-device(longout, VME_IO, devLOEVRPreScaler, "EVR Prescaler")
-device(ao     , VME_IO, devAOEVRPreScaler, "EVR Prescaler")
+# '@C=$(C), I=$(IDX), P=PROPNAME'
+device(longin , INST_IO, devlonginPreScaler, "EVR Prescaler")
+device(longout, INST_IO, devlongoutPreScaler, "EVR Prescaler")
 
 # Output devices
-# '#Lcard Atype Cindex S0 @'
-device(longin,     AB_IO, devLIOutput, "EVR Output")
-device(longout,    AB_IO, devLOOutput, "EVR Output")
+# '@C=$(C), T=Int|Front|FrontUniv|RearUniv, I=$(IDX), P=PROPNAME'
+device(longin,     INST_IO, devlonginOutput, "EVR Output")
+device(longout,    INST_IO, devlongoutOutput, "EVR Output")
 
 # CML Output devices
-# '#Ccard Sindex @'
-device(bo,      VME_IO, devBOEVRCMLShort, "EVR CML Short")
-device(bi ,     VME_IO, devBIEVRCMLShort, "EVR CML Short")
-device(longout, VME_IO, devLOEVRCMLShort, "EVR CML Short")
-device(longin , VME_IO, devLIEVRCMLShort, "EVR CML Short")
+# '@C=$(C), I=$(I), P=PROPNAME'
+device(bo,      INST_IO, devboCML, "EVR CML")
+device(bi ,     INST_IO, devbiCML, "EVR CML")
+device(longout, INST_IO, devlongoutCML, "EVR CML")
+device(longin , INST_IO, devlonginCML, "EVR CML")
+device(mbbo,    INST_IO, devmbboCML, "EVR CML")
+device(waveform,INST_IO, devwaveformoutCML, "EVR CML Pattern Set")
+device(waveform,INST_IO, devwaveforminCML, "EVR CML Pattern Get")
 
 # Input devices
-# '#Ccard Sinput @'
-device(mbbo,    VME_IO, devMBBOInput, "EVR Input")
-device(longout, VME_IO, devLOInput, "EVR Input")
-device(longin , VME_IO, devLIInput, "EVR Input")
-device(bo,      VME_IO, devBOInput, "EVR Input")
-device(bi ,     VME_IO, devBIInput, "EVR Input")
+# '@C=$(C) I=$(I), P=PROPNAME'
+device(mbbo,    INST_IO, devmbboInput, "EVR Input")
+device(longout, INST_IO, devlongoutInput, "EVR Input")
+device(longin , INST_IO, devlonginInput, "EVR Input")
+device(bo,      INST_IO, devboInput, "EVR Input")
+device(bi ,     INST_IO, devbiInput, "EVR Input")
 
 # Pulser devices
-# '#Lcard Apulser Cmappingram S0 @'
-device(longin,     AB_IO, devLIEVRPulser, "EVR Pulser")
-device(longout,    AB_IO, devLOEVRPulser, "EVR Pulser")
-device(ai,         AB_IO, devAIEVRPulser, "EVR Pulser")
-device(ao,         AB_IO, devAOEVRPulser, "EVR Pulser")
-device(bi,         AB_IO, devBIEVRPulser, "EVR Pulser")
-device(bo,         AB_IO, devBOEVRPulser, "EVR Pulser")
+# '@C=$(C), I=$(PID), P=PROPNAME'
+device(longin,     INST_IO, devlonginPulser, "EVR Pulser")
+device(longout,    INST_IO, devlongoutPulser, "EVR Pulser")
+device(ai,         INST_IO, devaiPulser, "EVR Pulser")
+device(ao,         INST_IO, devaoPulser, "EVR Pulser")
+device(bi,         INST_IO, devbiPulser, "EVR Pulser")
+device(bo,         INST_IO, devboPulser, "EVR Pulser")
 
-# '#Lcard Apulser Cmappingram Sfunction @'
-device(longout,    AB_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
+# '@C=$(C), I=$(PULIDX), Func=FUNCTIONNAME'
+device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
 
 # EVR devices
-# '#Ccard S0 @'
-device(longin , INST_IO, devLIEVR, "EVR")
-device(longout, INST_IO, devLOEVR, "EVR")
-device(bi     , INST_IO, devBIEVR, "EVR")
-device(bo     , INST_IO, devBOEVR, "EVR")
-device(ai     , INST_IO, devAIEVR, "EVR")
-device(ao     , INST_IO, devAOEVR, "EVR")
+# '@C=$(C), P=PROPNAME'
+device(longin , INST_IO, devlonginEVR,  "EVR")
+device(longout, INST_IO, devlongoutEVR, "EVR")
+device(bi     , INST_IO, devbiEVR, "EVR")
+device(bo     , INST_IO, devboEVR, "EVR")
+device(ai     , INST_IO, devaiEVR, "EVR")
+device(ao     , INST_IO, devaoEVR, "EVR")
 
-# '#Ccard Sevent @'
-device(stringin, VME_IO, devSIEVR, "EVR Timestamp")
+# '@C=$(C)'
+# or
+# '@C=$(C), Code=hweventnum'
+# If omitted then the current wallclock time is given
+device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
 
-# '@Card=cardnum,Event=eventnum'
+# '@C=$(C), Code=hweventnum'
 device(event,    INST_IO, devEventEVR, "EVR")
 
-# '#Ccard Sfunction @'
-device(longout, VME_IO, devLOEVRMap, "EVR Mapping")
-device(stringin, VME_IO, devSIEVRMap, "EVR Mapping")
+# '@C=$(C), Func=FUNCTIONNAME'
+device(longout, INST_IO, devLOEVRMap, "EVR Mapping")

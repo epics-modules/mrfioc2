@@ -16,7 +16,8 @@
 
 #include "cardmap.h"
 #include "evr/pulser.h"
-#include "property.h"
+#include "linkoptions.h"
+#include "dsetshared.h"
 
 #include <stdexcept>
 #include <string>
@@ -35,26 +36,49 @@
 /***************** Mapping record ******************/
 
 struct map_priv {
+  epicsUInt32 card_id, pulser_id;
   Pulser* pulser;
   epicsUInt32 last_code;
   MapType::type last_func;
+  MapType::type next_func;
 };
 
-static long init_lo(longoutRecord *plo)
+static const
+linkOptionEnumType funcEnum[] = {
+  {"Trig", MapType::Trigger},
+  {"Set",  MapType::Set},
+  {"Reset",MapType::Reset},
+  {NULL,0}
+};
+
+static const
+linkOptionDef eventdef[] = 
+{
+  linkInt32   (map_priv, card_id  , "C"  , 1, 0),
+  linkInt32   (map_priv, pulser_id, "I", 1, 0),
+  linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
+  linkOptionEnd
+};
+
+static long add_lo(dbCommon* praw)
 {
   long ret=0;
+  longoutRecord *plo = (longoutRecord*)praw;
 try {
-  assert(plo->out.type==AB_IO);
+  assert(plo->out.type==INST_IO);
 
   map_priv *priv=new map_priv;
   priv->last_code=0;
   priv->last_func=MapType::None;
 
-  EVR *card=getEVR<EVR>(plo->out.value.abio.link);
+  if (linkOptionsStore(eventdef, priv, plo->out.value.instio.string, 0))
+    throw std::runtime_error("Couldn't parse link string");
+
+  EVR *card=getEVR<EVR>(priv->card_id);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 
-  priv->pulser=card->pulser(plo->out.value.abio.adapter);
+  priv->pulser=card->pulser(priv->pulser_id);
   if(!priv->pulser)
     throw std::runtime_error("Failed to lookup pulser unit");
 
@@ -75,24 +99,25 @@ try {
 
 static long write_lo(longoutRecord* plo)
 {
-try {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
+try {
+
+  if (!priv)
+    return -2;
 
   epicsUInt32 code=plo->val;
-  MapType::type func;
 
-  switch(plo->out.value.abio.signal){
+  switch(priv->next_func){
   case MapType::None:
   case MapType::Trigger:
   case MapType::Set:
   case MapType::Reset:
-    func=(MapType::type)plo->out.value.abio.signal;
     break;
   default:
     throw std::runtime_error("Invalid mapping type");
   }
 
-  if( func==priv->last_func && code==priv->last_code )
+  if( priv->next_func==priv->last_func && code==priv->last_code )
     return 0;
 
   //TODO: sanity check to catch overloaded mappings
@@ -100,39 +125,20 @@ try {
   if(code!=priv->last_code)
     priv->pulser->sourceSetMap(priv->last_code,MapType::None);
 
-  if(code==0)
-    return 0;
-
-  bool restore=false;
-  try {
-    priv->pulser->sourceSetMap(code,func);
-  } catch(std::runtime_error& e) {
-    restore=true;
-  }
-
-  if (restore && func==priv->last_func) {
-    // Can  (try) to recover previous setting unless
-    // function (OUT link) changed.
-    priv->pulser->sourceSetMap(priv->last_code,priv->last_func);
-
-    plo->val = priv->last_code;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
-
-    return -5;
-  } else if (restore) {
-    // Can't recover
-    plo->val = 0;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
-    return -5;
+  if(code!=0) {
+    priv->pulser->sourceSetMap(code,priv->next_func);
   }
 
   priv->last_code=code;
-  priv->last_func=func;
+  priv->last_func=priv->next_func;
 
   return 0;
 
 } catch(std::exception& e) {
   plo->val=0;
+  priv->last_code=0;
+  priv->last_func=priv->next_func;
+  recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
   return S_db_noMemory;
 }
@@ -142,18 +148,13 @@ try {
 
 extern "C" {
 
-struct {
-  long num;
-  DEVSUPFUN  report;
-  DEVSUPFUN  init;
-  DEVSUPFUN  init_record;
-  DEVSUPFUN  get_ioint_info;
-  DEVSUPFUN  write;
-} devLOEVRPulserMap = {
+dsxt dxtLOEVRPulserMap={add_lo,del_record_empty};
+static
+common_dset devLOEVRPulserMap = {
   5,
   NULL,
-  NULL,
-  (DEVSUPFUN) init_lo,
+  dset_cast(&init_dset<&dxtLOEVRPulserMap>),
+  (DEVSUPFUN) init_record_empty,
   NULL,
   (DEVSUPFUN) write_lo
 };

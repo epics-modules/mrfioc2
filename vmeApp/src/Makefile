@@ -47,7 +47,6 @@ INC += vmedefs.h
 #---------------------
 # Install DBD files
 #
-DBD += mrfVme.dbd
 DBD += vmecsr.dbd
 
 #---------------------
@@ -58,15 +57,8 @@ LIBRARY_IOC += vme
 vme_SRCS += devcsr.c
 vme_SRCS += iocreg.c
 vme_SRCS_Linux += devlib_compat.c
+vme_SRCS += mrfVmeBusInterface.cpp
 vme_LIBS += Com
-
-LIBRARY_IOC += mrfVme
-
-mrfVme_LIBS += Com
-mrfVme_SRCS += mrfVme64x  #~~~#
-mrfVme_SRCS += mrfVmeBusInterface.cpp
-
-mrfVme_OBJS += vmeCSRMemProbeOSI #~~~~~#
 
 #---------------------
 # Generic EPICS build rules

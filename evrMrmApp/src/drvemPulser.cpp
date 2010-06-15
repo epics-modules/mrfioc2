@@ -218,9 +218,3 @@ MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
     else
         BITCLR(NAT,32, owner.base, MappingRam(0,evt,Reset), pmask);
 }
-
-const char*
-MRMPulser::sourceName(epicsUInt32 evt) const
-{
-    return ""; //TODO: how to use this?
-}

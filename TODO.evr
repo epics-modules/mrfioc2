@@ -6,7 +6,7 @@ HW changes?
 
 = Timestamp =
 
-Add dset for event record
+Testing
 
 = CML Outputs =
 
@@ -26,8 +26,8 @@ API to send/receive
 
 dset to send/receive
 
-= FIFO =
-
 = Event Log =
+
+Use waveform
 
 Detect when stopped?

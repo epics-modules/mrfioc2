@@ -81,7 +81,7 @@ public:
     //   Called early in the initialization phase to determine if the
     //   hardware actually exists and will talk to us.
     //
-    virtual epicsUInt32
+    virtual volatile epicsUInt8*
     ConfigBusAddress (epicsInt32 RegMapSize) = 0;
 
     //=====================
