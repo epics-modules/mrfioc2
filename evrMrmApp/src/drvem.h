@@ -71,7 +71,7 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
-  virtual double clock() const;
+  virtual double clock() const{return eventClock;};
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
@@ -105,6 +105,7 @@ public:
 private:
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
+  double eventClock; //!< Stored in Hz
 
   // Set by ISR
   volatile epicsUInt32 count_recv_error;
