@@ -157,7 +157,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     if(nCML && ver>=4){
         shortcmls.resize(nCML);
         for(size_t i=0; i<nCML; i++){
-            shortcmls[i]=new MRMCML(i,base);
+            shortcmls[i]=new MRMCML(i,*this);
         }
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
