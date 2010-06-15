@@ -124,30 +124,50 @@ record(bo, "$(P)$(CML)freq:level") {
   field(ONAM, "Active low")
 }
 
-record(longout, "$(P)$(CML)freq:high") {
-  field(DESC, "# number of cnts active")
+record(ao, "$(P)$(CML)freq:high") {
+  field(DESC, "Time active")
   field(DTYP, "EVR CML")
   field(OUT, "@C=$(C), I=$(IDX), P=Counts High")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "20")
-  field(HOPR, "65535")
-  field(LOPR, "20")
-  field(DRVH, "65535")
-  field(DRVL, "20")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(CML)freq:high:rbv")
 }
 
-record(longout, "$(P)$(CML)freq:low") {
-  field(DESC, "# number of cnts active")
+record(longin, "$(P)$(CML)freq:high:rbv") {
+  field(DTYP, "EVR CML")
+  field(INP, "@C=$(C), I=$(IDX), P=Counts High")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+record(ao, "$(P)$(CML)freq:low") {
+  field(DESC, "Time inactive")
   field(DTYP, "EVR CML")
   field(OUT, "@C=$(C), I=$(IDX), P=Counts Low")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "20")
-  field(HOPR, "65535")
-  field(LOPR, "20")
-  field(DRVH, "65535")
-  field(DRVL, "20")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(CML)freq:low:rbv")
+}
+
+record(longin, "$(P)$(CML)freq:low:rbv") {
+  field(DTYP, "EVR CML")
+  field(INP, "@C=$(C), I=$(IDX), P=Counts Low")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
 }
 
 record(waveform, "$(P)$(CML)pat") {
