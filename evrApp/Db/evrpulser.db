@@ -104,5 +104,11 @@ record(calc, "$(P)$(N)res") {
   field(INPB, "$(P)clock CP")
   field(CALC, "1000*(A?A:1)/B")
   field(EGU, "ns")
+  field(FLNK, "$(P)$(N)res:fo")
 }
 
+record(fanout, "$(P)$(N)res:fo") {
+  field(DESC, "Clock change resync")
+  field(LNK1, "$(P)$(N)delay")
+  field(LNK2, "$(P)$(N)width")
+}

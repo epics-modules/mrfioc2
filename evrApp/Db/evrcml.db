@@ -60,6 +60,15 @@ record(calcout, "$(P)$(CML)res") {
   field(INPA, "$(P)clock:period CP")
   field(CALC, "1e9*A/20")
   field(EGU , "ns")
+  field(FLNK, "$(P)$(CML)res:fo")
+}
+
+record(fanout, "$(P)$(CML)res:fo") {
+  field(DESC, "Clock change resync")
+  field(LNK1, "$(P)$(CML)freq:high")
+  field(LNK2, "$(P)$(CML)freq:low")
+  field(LNK3, "$(P)$(CML)pat:x:calc")
+  field(LNK4, "$(P)$(CML)pat:dly:calc")
 }
 
 record(longout, "$(P)$(CML)rise") {
@@ -198,7 +207,7 @@ record(aSub, "$(P)$(CML)pat:x:calc") {
   field(BRSV, "INVALID")
   field(INPA, "0")
   field( FTA, "DOUBLE")
-  field(INPB, "$(P)$(CML)res CP")
+  field(INPB, "$(P)$(CML)res NPP")
   field( FTB, "DOUBLE")
   field(INPC, "$(P)$(CML)pat.NORD NPP")
   field( FTC, "LONG")
@@ -246,7 +255,7 @@ record(aSub, "$(P)$(CML)pat:dly:calc") {
   field(BRSV, "INVALID")
   field( FTA, "DOUBLE")
   field( FTB, "DOUBLE")
-  field(INPC, "$(P)$(CML)res CP")
+  field(INPC, "$(P)$(CML)res NPP")
   field( FTC, "DOUBLE")
   field(OUTA, "$(P)$(CML)pat PP")
   field(FTVA, "UCHAR")
