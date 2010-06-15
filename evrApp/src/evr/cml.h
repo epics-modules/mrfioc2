@@ -52,6 +52,10 @@ public:
   virtual epicsUInt32 countLow () const=0;
   virtual void setCountHigh(epicsUInt32)=0;
   virtual void setCountLow (epicsUInt32)=0;
+  virtual double timeHigh() const=0;
+  virtual double timeLow () const=0;
+  virtual void setTimeHigh(double)=0;
+  virtual void setTimeLow (double)=0;
 
   // For Pattern mode (20bit x 2048) mode
   /* Patterns are given as an array of bytes.
@@ -59,6 +63,9 @@ public:
    * Lengths are given in bytes, but should be a
    * multiple of 20.
    */
+
+  virtual bool recyclePat() const=0;
+  virtual void setRecyclePat(bool)=0;
 
   virtual epicsUInt32 lenPattern() const=0;
   virtual epicsUInt32 lenPatternMax() const=0;
