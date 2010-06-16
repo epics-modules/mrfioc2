@@ -9,7 +9,6 @@
 #define VME_AM_EXT_SUP_DATA 0x0d
 
 
->>>>>>> other
 #endif
 
 #endif /* VMEDEFS_H */
