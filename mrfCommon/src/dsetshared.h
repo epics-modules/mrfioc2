@@ -389,7 +389,8 @@ dset_cast(long (*fn)(int))
 
 typedef long (*DSXTFUN)(dbCommon*);
 
-template<typename REC, int i=sizeof(((REC*)0)->dpvt)>
+//~~~~template<typename REC, int i=sizeof(((REC*)0)->dpvt)>
+template<typename REC>
 struct dsxt_cast_helper {
 
   static inline
@@ -407,5 +408,6 @@ dsxt_cast(long (*fn)(REC*))
 {
   return dsxt_cast_helper<REC>::dsxt_cast(fn);
 }
+
 
 #endif // DSETSHARED_H_INC

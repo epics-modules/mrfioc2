@@ -2,6 +2,7 @@
 #ifndef PROPERTY_H_INC
 #define PROPERTY_H_INC
 
+#include <string>
 #include <stdexcept>
 
 #include <devSup.h>
