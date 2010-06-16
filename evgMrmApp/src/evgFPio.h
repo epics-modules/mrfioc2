@@ -17,8 +17,8 @@ public:
 	epicsStatus setIOMap(epicsUInt32);
 
 private:
-	const IOtype 				type;
-	const epicsUInt32 			id;
-	volatile epicsUInt8* const	pReg;
+	const IOtype 				m_type;
+	const epicsUInt32 			m_id;
+	volatile epicsUInt8* const	m_pReg;
 };
 #endif //EVGFPIO_H

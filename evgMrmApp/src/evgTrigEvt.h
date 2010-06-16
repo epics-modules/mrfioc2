@@ -15,8 +15,8 @@ public:
 	epicsUInt8 getEvtCode();
 
 private:
-	const epicsUInt32 			id;
-	volatile epicsUInt8* const  pReg;
+	const epicsUInt32 			m_id;
+	volatile epicsUInt8* const  m_pReg;
 };
 
 #endif //EVGTRIGEVT_H

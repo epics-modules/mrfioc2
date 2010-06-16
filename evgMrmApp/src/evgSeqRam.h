@@ -20,8 +20,8 @@ public:
 	epicsStatus setTimeStamp(std::vector<epicsUInt32>);
 
 	epicsStatus setSoftTrig(bool);
-	epicsStatus setTrigSrc(TrigSrc);
-	epicsStatus setRunMode(RunMode);
+	epicsStatus setTrigSrc(SeqTrigSrc);
+	epicsStatus setRunMode(SeqRunMode);
 
 	epicsStatus enable();
 	epicsStatus disable();

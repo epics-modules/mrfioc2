@@ -83,12 +83,12 @@
 #define  U32_SeqControl_base    0x0070  // Sequencer Control Register Array Base Offset
 
 #define  U32_SeqControl(n)  \
-       		(U32_SeqControl_base + (4*(n-1)))
+       		(U32_SeqControl_base + (4*n))
 
 #define  U8_SeqTrigSrc_base		0x0073
 
 #define  U8_SeqTrigSrc(n)	\
-			(U8_SeqTrigSrc_base + (4*(n-1)))
+			(U8_SeqTrigSrc_base + (4*n))
 
 
 //=====================
@@ -184,10 +184,10 @@
 #define  U8_SeqRamEvent_base    0x8007  // Sequence Ram Event Code Array Base Offset
 
 #define  U32_SeqRamTS(n,m)    \
-             (U32_SeqRamTS_base + (0x4000*(n-1)) + (8*(m)))
+             (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
 
 #define  U8_SeqRamEvent(n,m) \
-             (U8_SeqRamEvent_base + (0x4000*(n-1)) + (8*(m)))
+             (U8_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
 
 //=====================
 // Size of Event Generator Register Space
@@ -253,7 +253,8 @@
 #define EVG_DIS_EVT_REC			0x40000000
 #define EVG_REV_PWD_DOWN		0x20000000
 
-
+// #ifndef EVGREGMAP_H
+// #define EVGREGMAP_H
 
 const epicsUInt16	evgNumMxc	  = 8;
 const epicsUInt16 	evgNumEvtTrig = 8;
@@ -263,3 +264,5 @@ const epicsUInt16 	evgNumUnivOut = 4;
 const epicsUInt16 	evgNumFpInp   = 2;
 const epicsUInt16 	evgNumUnivInp = 4;
 const epicsUInt16	evgNumSeqRam  = 2;
+
+// #endif //EVGREGMAP_H

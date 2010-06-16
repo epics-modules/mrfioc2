@@ -16,7 +16,7 @@
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: init_record: Hardware link not VME_IO\n");
+		errlogPrintf("ERROR: Hardware link not VME_IO\n");
 		return S_db_badField;
 	}
 	
@@ -40,13 +40,8 @@ init_bo_Enable(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_Enable(boRecord* pbo) {
-	if(pbo->dpvt) {
-		evgMrm* evg = (evgMrm*)pbo->dpvt;
-		return evg->enable(pbo->val);
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", pbo->name);
-		return -1;
-	}
+	evgMrm* evg = (evgMrm*)pbo->dpvt;
+	return evg->enable(pbo->val);
 }
 
 /**		ao - Clock Speed	**/
@@ -59,13 +54,8 @@ init_ao_clkSpeed(aoRecord* pao) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao_clkSpeed(aoRecord* pao) {
-	if(pao->dpvt) {
 		evgMrm* evg = (evgMrm*)pao->dpvt;
 		return evg->setClockSpeed(pao->val);
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", pao->name);
-		return -1;
-	}
 }
 
 
@@ -83,13 +73,8 @@ init_lo_clkSrc(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_clkSrc(longoutRecord* plo) {
-	if(plo->dpvt) {
 		evgMrm* evg = (evgMrm*)plo->dpvt;
 		return evg->setClockSource(plo->val);
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", plo->name);
-		return -1;
-	}
 }
 
 /**		bo - Software Event Enable	**/
@@ -102,13 +87,8 @@ init_bo_softEvtEna(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_softEvtEna(boRecord* pbo) {
-	if(pbo->dpvt) {
 		evgMrm* evg = (evgMrm*)pbo->dpvt;
 		return evg->softEvtEnable(pbo->val);
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", pbo->name);
-		return -1;
-	}
 }
 
 
@@ -126,13 +106,8 @@ init_lo_softEvtCode(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_softEvtCode(longoutRecord* plo) {
-	if(plo->dpvt) {
 		evgMrm* evg = (evgMrm*)plo->dpvt;
 		return evg->setSoftEvtCode(plo->val);
-	} else {
-		errlogPrintf("ERROR: Record %s is uninitailized\n", plo->name);
-		return -1;
-	}
 }
 
 

@@ -10,9 +10,9 @@
 #include "evgRegMap.h"
 
 evgFPio::evgFPio(const IOtype type, const epicsUInt32 id, volatile epicsUInt8* const pReg ):
-type(type),
-id(id),
-pReg(pReg) {
+m_type(type),
+m_id(id),
+m_pReg(pReg) {
 }
 
 epicsStatus
@@ -20,27 +20,27 @@ evgFPio::setIOMap(epicsUInt32 map) {
 
 	epicsStatus status;
 
-	switch(type) {
+	switch(m_type) {
     	
 		case(FP_Input):
-			if(id < 0 || id >= evgNumFpInp) {
+			if(m_id < 0 || m_id >= evgNumFpInp) {
 				errlogPrintf("ERROR: Front panel input number out of range.\n");
 				status = ERROR;
 				break;
 			}
 	
-			WRITE32(pReg, FPInMap(id), map);
+			WRITE32(m_pReg, FPInMap(m_id), map);
 			status = OK;
 			break;
 
 		case(FP_Output):
-			if(id < 0 || id >= evgNumFpOut) {
+			if(m_id < 0 || m_id >= evgNumFpOut) {
 				errlogPrintf("ERROR: Front panel output number out of range.\n");
 				status = ERROR;
 				break;
 			}
 
-			WRITE16(pReg, FPOutMap(id), map);
+			WRITE16(m_pReg, FPOutMap(m_id), map);
 			status = OK;
 			break;
 

@@ -32,6 +32,9 @@ device( longout, VME_IO, devLoEvgUnloadSeq, "EVG UNLOAD SEQ")
 device( longout, VME_IO, devLoEvgCommitSeq, "EVG COMMIT SEQ")
 device( longout, VME_IO, devLoEvgEnableSeq, "EVG ENABLE SEQ")
 device( longout, VME_IO, devLoEvgDisableSeq, "EVG DISABLE SEQ")
-device( waveform, VME_IO, devWfEvgEventCode, "EVG SET EVENT CODE")
-device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SET TIME STAMP")
-device( waveform, VME_IO, devWfEvgSeqLoaded, "EVG SEQ LOADED")
+
+device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
+device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")
+device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
+
+device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")

@@ -6,13 +6,13 @@
 
 #include <epicsTypes.h>
 
-enum RunMode {
-	single = 0,
-	recycle,
-	recycleOnTrigger
+enum SeqRunMode {
+	Single = 0,
+	Recycle,
+	RecycleOnTrig
 };
 
-enum TrigSrc {
+enum SeqTrigSrc {
 	mxc0 = 0,
 	mxc1 = 1,
 	mxc2 = 2,
@@ -33,9 +33,6 @@ public:
 
 	const epicsUInt32 getId() const;	
 
-	//epicsStatus setDescription(const epicsUInt8*);
-	//const epicsUInt8* getDescription();
-
 	epicsStatus setDescription(const char*);
 	const char* getDescription();
 
@@ -47,11 +44,11 @@ public:
 	epicsUInt32* getTimeStampA();
 	std::vector<epicsUInt32> getTimeStampV();
 
-	epicsStatus setTrigSrc(TrigSrc);
-	TrigSrc getTrigSrc();
+	epicsStatus setTrigSrc(SeqTrigSrc);
+	SeqTrigSrc getTrigSrc();
 
-	epicsStatus setRunMode(RunMode);
-	RunMode getRunMode();
+	epicsStatus setRunMode(SeqRunMode);
+	SeqRunMode getRunMode();
 
 private:
 	const epicsUInt32 			m_id;
@@ -60,8 +57,8 @@ private:
 	std::vector<epicsUInt32>	m_timeStampV;
 	epicsUInt8* 				m_eventCodeA;
 	epicsUInt32* 				m_timeStampA;
-	TrigSrc 					m_trigSrc;
-	RunMode 					m_runMode;	
+	SeqTrigSrc 					m_trigSrc;
+	SeqRunMode 					m_runMode;	
 };
 
 #endif //EVG_SEQUENCE_H

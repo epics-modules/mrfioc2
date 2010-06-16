@@ -13,15 +13,18 @@
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: init_record: Hardware link not VME_IO\n");
+		errlogPrintf("ERROR: Hardware link not VME_IO\n");
 		return(S_db_badField);
 	}
 
 	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 	if(!evg)
-		throw std::runtime_error("Failed to lookup device");
+		throw std::runtime_error("ERROR: Failed to lookup device");
 
 	evgDbus* dbus = evg->getDbus(lnk->value.vmeio.signal);
+	if(!dbus)
+		throw std::runtime_error("ERROR: Failed to lookup device");
+
 	pRec->dpvt = dbus;
 	return 2;
 }
@@ -38,11 +41,6 @@ init_mbbo(mbboRecord* pmbbo) {
 static long 
 write_mbbo(mbboRecord* pmbbo) {
 	evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
-	if(! dbus) {
-		printf("ERROR: Dbus not initialized.\n");
-		return -1;
-	}
-		
 	return dbus->setDbusMap(pmbbo->val);
 }
 

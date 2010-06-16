@@ -10,7 +10,7 @@ m_id(id),
 m_eventCodeA(0),
 m_timeStampA(0),
 m_trigSrc(mxc0),
-m_runMode(single) {
+m_runMode(Single) {
 	//For Testing purpose
  	epicsUInt8 eventCode[] = {1, 2, 3, 5, 127};
  	epicsUInt32 timeStamp[] = {125000000, 250000000, 375000000, 500000000, 625000000};
@@ -84,24 +84,24 @@ evgSequence::getTimeStampV() {
 
 
 epicsStatus 
-evgSequence::setTrigSrc(TrigSrc trigSrc) {
+evgSequence::setTrigSrc(SeqTrigSrc trigSrc) {
 	m_trigSrc = trigSrc;
 	return OK;
 }
 
-TrigSrc 
+SeqTrigSrc 
 evgSequence::getTrigSrc() {
 	return m_trigSrc;
 }
 
 
 epicsStatus 
-evgSequence::setRunMode(RunMode runMode) {
+evgSequence::setRunMode(SeqRunMode runMode) {
 	m_runMode = runMode;
 	return OK;
 }
 	
-RunMode 
+SeqRunMode 
 evgSequence::getRunMode() {
 	return m_runMode;
 }

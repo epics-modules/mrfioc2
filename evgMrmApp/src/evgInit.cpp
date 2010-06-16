@@ -15,24 +15,19 @@
 
 #include "evgRegMap.h"
 
+typedef std::map<epicsUInt32, evgMrm*> EvgList_t;
+EvgList_t EvgList;
 
-static volatile epicsUInt8* regCpuAddr;
-static struct VMECSRDevice info;
-static epicsUInt32 fpgaVersion;
-
-
-static const struct VMECSRDevice vmeEvgIDs[] = {
+static const 
+struct VMECSRDevice vmeEvgIDs[] = {
 	{MRF_VME_IEEE_OUI, MRF_VME_EVG_BID|MRF_SERIES_230, VMECSRANY}
    	,VMECSR_END
 };
 
-typedef std::map<epicsUInt32, evgMrm*> EvgList_t;
-EvgList_t EvgList;
-
-void
+static void
 AddEvg(epicsUInt32 id, evgMrm* evg) {
 	if(!evg)
-    	throw std::runtime_error("AddEvg: Can not store NULL.\
+    	throw std::runtime_error("AddEvg: Cannot store NULL.\
       						 (initialization probably failed)");
 
   	EvgList[id] = evg;
@@ -48,9 +43,8 @@ FindEvg(epicsUInt32 id) {
 	return it->second;
 }
 
-static
-int
-enableIRQ(volatile epicsUInt8* pReg) {
+static int
+enableIRQ(volatile epicsUInt8* const pReg) {
   if(!pReg)
     return 0;
 
@@ -60,7 +54,7 @@ enableIRQ(volatile epicsUInt8* pReg) {
 		EVG_IRQ_STOP_RAM0 	|
 		EVG_IRQ_START_RAM1 	|
 		EVG_IRQ_START_RAM0 	|
-		//EVG_IRQ_DBUFF 		|
+		//EVG_IRQ_DBUFF 	|
 		//EVG_IRQ_FIFO		|
 		EVG_IRQ_RXVIO
   );
@@ -70,14 +64,22 @@ enableIRQ(volatile epicsUInt8* pReg) {
 
 static void 
 inithooks(initHookState state) {
-  switch(state)
-  {
-  case initHookAfterInterruptAccept:
-    enableIRQ(regCpuAddr);
-    break;
-  default:
-    break;
-  }
+	evgMrm* evg;
+	EvgList_t::const_iterator it;
+
+  	switch(state)
+  	{
+  	case initHookAfterInterruptAccept:
+		for(it = EvgList.begin(); it != EvgList.end(); it++ ) {  
+			evg = it->second;
+			if(evg) 
+				enableIRQ(evg->getRegAddr());
+		}
+    	break;
+
+  	default:
+    	break;
+  	}
 }
 
 extern "C"
@@ -89,6 +91,9 @@ mrmEvgSetupVME (
     epicsInt32    irqVector,         // Desired interrupt vector number
     epicsInt32    irqLevel)          // Desired interrupt level
 {
+	volatile epicsUInt8* regCpuAddr = 0;
+	struct VMECSRDevice info;
+
   	try {
 		if(FindEvg(cardNum)) {
 			errlogPrintf("EVG Identifier %d already used", cardNum);
@@ -129,8 +134,7 @@ mrmEvgSetupVME (
       		return -1;
     	}
 
-    	fpgaVersion = READ32(regCpuAddr, FPGAVersion);
-    	printf("FPGA verion: %08x\n", fpgaVersion);
+    	printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
 
 		evgMrm* evg = new evgMrm(cardNum, regCpuAddr);
 		AddEvg(cardNum, evg);
@@ -190,16 +194,17 @@ static const iocshArg * const mrmEvgSetupVMEArgs[5] = {	&mrmEvgSetupVMEArg0,
 														&mrmEvgSetupVMEArg2,
 														&mrmEvgSetupVMEArg3,
 														&mrmEvgSetupVMEArg4 };
+
 static const iocshFuncDef mrmEvgSetupVMEFuncDef = {	"mrmEvgSetupVME",
 													5,
 													mrmEvgSetupVMEArgs };
-static void mrmEvgSetupVMECallFunc(const iocshArgBuf *args) {
+static void 
+mrmEvgSetupVMECallFunc(const iocshArgBuf *args) {
     mrmEvgSetupVME(args[0].ival,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
 }
 
-static
-void evgMrmRegistrar()
-{
+static void 
+evgMrmRegistrar() {
 	initHookRegister(&inithooks);
   	iocshRegister(&mrmEvgSetupVMEFuncDef,mrmEvgSetupVMECallFunc);
 }
@@ -210,7 +215,6 @@ epicsExportRegistrar(evgMrmRegistrar);
 /*
  * EPICS Driver Support for this module
  */
-
 static const
 struct printreg
 {
@@ -231,8 +235,8 @@ REGINFO("uSecDiv", 			uSecDiv, 			16),
 REGINFO("ClockSource", 		ClockSource, 		8),
 REGINFO("RfDiv", 			RfDiv, 				8),
 REGINFO("ClockStatus", 		ClockStatus, 		16),
+REGINFO("SeqControl(0)", 	SeqControl(0), 		32),
 REGINFO("SeqControl(1)", 	SeqControl(1), 		32),
-REGINFO("SeqControl(2)", 	SeqControl(2), 		32),
 REGINFO("FracSynthWord", 	FracSynthWord, 		32),
 REGINFO("TrigEventCtrl(0)", TrigEventCtrl(0), 	32),
 REGINFO("MuxControl(0)", 	MuxControl(0), 		32),
@@ -240,35 +244,35 @@ REGINFO("MuxPrescaler(0)", 	MuxPrescaler(0), 	32),
 REGINFO("FPOutMap(0)", 		FPOutMap(0), 		16),
 REGINFO("FPInMap(0)", 		FPInMap(0), 		32),
 REGINFO("FPInMap(1)", 		FPInMap(1), 		32),
-REGINFO("SeqRamTS(1,0)", 	SeqRamTS(1,0), 		32),
-REGINFO("SeqRamTS(1,1)", 	SeqRamTS(1,1), 		32),
-REGINFO("SeqRamTS(1,2)", 	SeqRamTS(1,2), 		32),
-REGINFO("SeqRamTS(1,3)", 	SeqRamTS(1,3), 		32),
-REGINFO("SeqRamTS(1,4)", 	SeqRamTS(1,4), 		32),
+REGINFO("SeqRamTS(0,0)", 	SeqRamTS(0,0), 		32),
+REGINFO("SeqRamTS(0,1)", 	SeqRamTS(0,1), 		32),
+REGINFO("SeqRamTS(0,2)", 	SeqRamTS(0,2), 		32),
+REGINFO("SeqRamTS(0,3)", 	SeqRamTS(0,3), 		32),
+REGINFO("SeqRamTS(0,4)", 	SeqRamTS(0,4), 		32),
+REGINFO("SeqRamEvent(0,0)", SeqRamEvent(0,0), 	8),
+REGINFO("SeqRamEvent(0,1)", SeqRamEvent(0,1), 	8),
+REGINFO("SeqRamEvent(0,2)", SeqRamEvent(0,2), 	8),
+REGINFO("SeqRamEvent(0,3)", SeqRamEvent(0,3), 	8),
+REGINFO("SeqRamEvent(0,4)", SeqRamEvent(0,4), 	8),
+REGINFO("SeqRamTS(1,0)", 	SeqRamTS(1,0),		32),
+REGINFO("SeqRamTS(1,1)", 	SeqRamTS(1,1),		32),
+REGINFO("SeqRamTS(1,2)", 	SeqRamTS(1,2),		32),
+REGINFO("SeqRamTS(1,3)", 	SeqRamTS(1,3),		32),
+REGINFO("SeqRamTS(1,4)", 	SeqRamTS(1,4),		32),
 REGINFO("SeqRamEvent(1,0)", SeqRamEvent(1,0), 	8),
 REGINFO("SeqRamEvent(1,1)", SeqRamEvent(1,1), 	8),
 REGINFO("SeqRamEvent(1,2)", SeqRamEvent(1,2), 	8),
 REGINFO("SeqRamEvent(1,3)", SeqRamEvent(1,3), 	8),
 REGINFO("SeqRamEvent(1,4)", SeqRamEvent(1,4), 	8),
-REGINFO("SeqRamTS(2,0)", 	SeqRamTS(2,0),		32),
-REGINFO("SeqRamTS(2,1)", 	SeqRamTS(2,1),		32),
-REGINFO("SeqRamTS(2,2)", 	SeqRamTS(2,2),		32),
-REGINFO("SeqRamTS(2,3)", 	SeqRamTS(2,3),		32),
-REGINFO("SeqRamTS(2,4)", 	SeqRamTS(2,4),		32),
-REGINFO("SeqRamEvent(2,0)", SeqRamEvent(2,0), 	8),
-REGINFO("SeqRamEvent(2,1)", SeqRamEvent(2,1), 	8),
-REGINFO("SeqRamEvent(2,2)", SeqRamEvent(2,2), 	8),
-REGINFO("SeqRamEvent(2,3)", SeqRamEvent(2,3), 	8),
-REGINFO("SeqRamEvent(2,4)", SeqRamEvent(2,4), 	8),
 #undef REGINFO
 };
 
-static
-void
+
+static void
 printregisters(volatile epicsUInt8 *evg)
 {
     size_t reg;
-	printf("\n--- Register Dump @%p	---\n", evg);
+	printf("\n--- Register Dump @%p		---\n", evg);
 
     for(reg=0; reg<NELEMENTS(printreg); reg++){
 
@@ -293,22 +297,25 @@ printregisters(volatile epicsUInt8 *evg)
 }
 
 
-static
-long report(int level)
-{
-	
-	printf("\n===  	MRF EVG	===\n");
+static long 
+report(int level) {
+	evgMrm* evg;
+	EvgList_t::const_iterator it;
 
-	if(level >= 1) {
-		printf("Vendor ID: %08x\nBoard ID: %08x\nRevision: %08x\n",
-				info.vendor, info.board, info.revision);
-		printf("FPGA verion: %08x\n", fpgaVersion);
-	}
+	for(it = EvgList.begin(); it != EvgList.end(); it++ ) {  
+		evg = it->second;
 	
-	if(level >= 2) {
-  		printregisters(regCpuAddr);
-  	}
-	printf("\n");
+		printf("\n===  	  MRF EVG %d 	===\n", evg->getId());
+
+		if(level >= 1) {
+			printf("	FPGA verion: %08x\n", evg->getFwVersion());
+		}
+	
+		if(level >= 2) {
+  			printregisters(evg->getRegAddr());
+  		}
+		printf("\n");
+	}
 	return 0;
 }
 

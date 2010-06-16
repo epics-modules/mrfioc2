@@ -3,7 +3,9 @@
 
 #include <devcsr.h>
 
-#include <evgMrm.h>
+#include "evgMrm.h"
 
-void AddEvg(epicsUInt32 id, evgMrm* evg);
-evgMrm* FindEvg(epicsUInt32 id);
+ evgMrm* FindEvg(epicsUInt32 id);
+
+
+

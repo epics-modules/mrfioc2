@@ -3,6 +3,7 @@
 
 #include <longoutRecord.h>
 #include <waveformRecord.h>
+#include <mbboRecord.h>
 
 #include <devSup.h>
 #include <dbAccess.h>
@@ -17,16 +18,19 @@
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: init_record: Hardware link not VME_IO\n");
+		errlogPrintf("ERROR: Hardware link not VME_IO\n");
 		return(S_db_badField);
 	}
 
 	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 	if(!evg)
-		throw std::runtime_error("Failed to lookup device");
+		throw std::runtime_error("ERROR: Failed to lookup device");
 	
-	pRec->dpvt = evg;
-
+	evgSeqRamSup* seqRamSup = evg->getSeqRamSup();
+	if(!seqRamSup)
+		throw std::runtime_error("ERROR: Failed to lookup device");
+ 
+	pRec->dpvt = seqRamSup;
 	return 0;
 }
 
@@ -44,63 +48,72 @@ init_wf(waveformRecord* pwf) {
 	return init_record((dbCommon*)pwf, &pwf->inp);
 }
 
-// /** 	longout - get_ioint-info	**/
-// static long
-// get_ioint_info_commitSeq( int cmd,
-// 				longoutRecord* plo,
-// 				IOSCANPVT* ppvt) { 	
-// 	evgMrm* evg = (evgMrm*)plo->dpvt;
-// 	*ppvt = evg->irqStop0;
-// 	return 0;
-// }
+/**		mbbo - Initialization	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long
+init_mbbo(mbboRecord* pmbbo) {
+	epicsStatus ret = init_record((dbCommon*)pmbbo, &pmbbo->out);
+	if(ret == 0)
+		ret = 2;
+	
+	return ret;
+}
+
+
+/*************** Sequence Ram Support Records ******************/
 
 /**		longout - loadSeq 	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_loadSeq(longoutRecord* plo) {
-	//evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
-	evgMrm* evg = (evgMrm*)plo->dpvt;
-	return (evg->getSeqRamSup())->load(plo->val);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
+	return seqRamSup->load(plo->val);
 }
 
 /**		longout - unloadSeq	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_unloadSeq(longoutRecord* plo) {
-	evgMrm* evg = (evgMrm*)plo->dpvt;
-	return (evg->getSeqRamSup())->unload(plo->val);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
+	return seqRamSup->unload(plo->val);
 }
 
 /** 	longout - commitSeq	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_commitSeq(longoutRecord* plo) {
-	evgMrm* evg = (evgMrm*)plo->dpvt;
-	return (evg->getSeqRamSup())->commit(plo->val, (dbCommon*)plo);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
+	return seqRamSup->commit(plo->val, (dbCommon*)plo);
 }
 
 /**		longout - enableSeq	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_enableSeq(longoutRecord* plo) {
-	evgMrm* evg = (evgMrm*)plo->dpvt;
-	return (evg->getSeqRamSup())->enable(plo->val);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
+	return seqRamSup->enable(plo->val);
 }
 
 /**		longout - disableSeq	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_disableSeq(longoutRecord* plo) {
-	evgMrm* evg = (evgMrm*)plo->dpvt;
-	return (evg->getSeqRamSup())->disable(plo->val);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)plo->dpvt;
+	return seqRamSup->disable(plo->val);
 }
+
+
+/*************** Sequence Records ******************/
 
 /**		waveform - timeStamp	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_wf_timeStamp(waveformRecord* pwf) {
-	evgMrm* evg = (evgMrm*)pwf->dpvt;
-	evgSequence* seq = evg->getSeqRamSup()->getSequence(pwf->inp.value.vmeio.signal);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)pwf->dpvt;
+	if(! seqRamSup)
+		return -1;
+
+	evgSequence* seq = seqRamSup->getSequence(pwf->inp.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -111,31 +124,54 @@ write_wf_timeStamp(waveformRecord* pwf) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_wf_eventCode(waveformRecord* pwf) {
-	evgMrm* evg = (evgMrm*)pwf->dpvt;
-	evgSequence* seq = evg->getSeqRamSup()->getSequence(pwf->inp.value.vmeio.signal);
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)pwf->dpvt;
+	if(! seqRamSup)
+		return -1;
+	
+	evgSequence* seq = seqRamSup->getSequence(pwf->inp.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
 	return seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nelm);
 }
 
+/**		mbbo - runMode		**/
+static long
+write_mbbo_runMode(mbboRecord* pmbbo) {
+	evgSeqRamSup* seqRamSup = (evgSeqRamSup*)pmbbo->dpvt;
+	if(! seqRamSup)
+		return -1;
+	
+	evgSequence* seq = seqRamSup->getSequence(pmbbo->out.value.vmeio.signal);
+	if(!seq)
+		return -1;
+
+	return seq->setRunMode((SeqRunMode)pmbbo->val);
+}
+
+
+/*************** Sequence Ram Records ******************/
+
 /**		waveform - seqLoaded	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_wf_seqLoaded(waveformRecord* pwf) {
-	evgMrm* evg = (evgMrm*)pwf->dpvt;
-	evgSeqRamSup* sup = evg->getSeqRamSup();
+write_wf_loadedSeq(waveformRecord* pwf) {
+	evgSeqRamSup* sup = (evgSeqRamSup*)pwf->dpvt;
 
 	epicsUInt32* p = (epicsUInt32*)pwf->bptr;
 
 	for(int i = 0; i < evgNumSeqRam; i++) {
 		evgSequence* seq = sup->getSeqRam(i)->getSequence();
-		if(seq)
+		if(seq) {
 			p[i] = seq->getId();
+		} else {
+			p[i] = -1;
+		}
 	}
 	
 	return 0;
 }
+
 
 /** 	device support entry table 		**/
 extern "C" {
@@ -203,7 +239,6 @@ common_dset devWfEvgTimeStamp = {
 };
 epicsExportAddress(dset, devWfEvgTimeStamp);
 
-
 common_dset devWfEvgEventCode = {
     5,
     NULL,
@@ -214,14 +249,25 @@ common_dset devWfEvgEventCode = {
 };
 epicsExportAddress(dset, devWfEvgEventCode);
 
-common_dset devWfEvgSeqLoaded = {
+common_dset devMbboEvgRunMode = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_mbbo,
+    NULL,
+    (DEVSUPFUN)write_mbbo_runMode,
+};
+epicsExportAddress(dset, devMbboEvgRunMode);
+
+
+common_dset devWfEvgLoadedSeq = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_wf,
     NULL,
-    (DEVSUPFUN)write_wf_seqLoaded,
+    (DEVSUPFUN)write_wf_loadedSeq,
 };
-epicsExportAddress(dset, devWfEvgSeqLoaded);
+epicsExportAddress(dset, devWfEvgLoadedSeq);
 
 };

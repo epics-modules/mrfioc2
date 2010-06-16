@@ -52,23 +52,23 @@ evgSeqRam::setSoftTrig(bool enable) {
 }
 
 epicsStatus
-evgSeqRam::setTrigSrc(TrigSrc trigSrc) {
+evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
 	WRITE8(m_pReg, SeqTrigSrc(m_id - 1), trigSrc);
 	return OK;
 }
 
 
 epicsStatus
-evgSeqRam::setRunMode(RunMode mode) {
+evgSeqRam::setRunMode(SeqRunMode mode) {
 	switch (mode) {
-		case(single):
+		case(Single):
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			break;
-		case(recycle):
+		case(Recycle):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;
-		case(recycleOnTrigger):
+		case(RecycleOnTrig):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;		
@@ -124,9 +124,6 @@ evgSeqRam::load(evgSequence* seq) {
 	return OK;
 }
 
-/* Reset the sequenceRam and mark it as unloaded.
- * If the sequence is not loaded also means it is disabled
- */
 epicsStatus
 evgSeqRam::unload() {
 	reset();
