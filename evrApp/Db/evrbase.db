@@ -4,8 +4,6 @@ record(bo, "$(P)enable") {
   field(DTYP, "EVR")
   field(OUT , "@C=$(C), P=Enable")
   field(DESC, "Master enable for EVR device")
-  field(PINI, "YES")
-  field(VAL , "1")
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
@@ -19,6 +17,18 @@ record(bi, "$(P)link:sts") {
   field(ZNAM, "Fail")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
+  field(FLNK, "$(P)link:sts:init")
+}
+
+# Detect the first time the event link
+# is online.  Then set master enable.
+record(calcout, "$(P)link:sts:init") {
+  field(DESC, "Detect initial link up")
+  field(INPA, "$(P)link:sts")
+  field(CALC, "A")
+  field(OUT , "$(P)enable PP")
+  field(OOPT, "Transition To Non-zero")
+  field(ODLY, "1.0")
 }
 
 record(longin, "$(P)link:cnt") {
