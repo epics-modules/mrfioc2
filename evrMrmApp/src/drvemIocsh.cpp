@@ -21,7 +21,7 @@
 #include "evrRegMap.h"
 #include "plx9030.h"
 
-#include <cardmap.h>
+#include <evrmap.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -126,37 +126,26 @@ printregisters(volatile epicsUInt8 *evr)
 }
 
 static
-int reportCard(void* val,short id,EVR* evr)
+bool reportCard(int level,short id,EVRMRM& evr)
 {
-  int level=*(int*)val;
-
   printf("--- EVR %d ---\n",id);
 
-  if(!evr){
-    printf("NULL!?!?!\n");
-    return 1;
-  }
+  printf("Model: %08x  Version: %08x\n",evr.model(),evr.version());
 
-  printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
-
-  printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
-
-  EVRMRM* mrm=dynamic_cast<EVRMRM*>(evr);
-  if(!mrm)
-    return 0;
+  printf("Clock: %.6f MHz\n",evr.clock()*1e-6);
 
   if(level>=2){
-    printregisters(mrm->base);
+    printregisters(evr.base);
   }
 
-  return 0;
+  return true;
 }
 
 static
 long report(int level)
 {
   printf("=== Begin MRF EVR support ===\n");
-  visitEVRBase((void*)&level, &reportCard);
+  evrmap.visit(level,&reportCard);
   printf("=== End MRF EVR support ===\n");
   return 0;
 }
@@ -167,7 +156,7 @@ void
 mrmEvrSetupPCI(int id,int b,int d,int f)
 {
 try {
-  if(!!getEVR<EVR>(id)){
+  if(cardIdInUse(id)){
     printf("ID %d already in use\n",id);
     return;
   }
@@ -226,7 +215,7 @@ try {
   }else{
       // Interrupts will be enabled during iocInit()
 
-      storeEVR(id,receiver);
+      evrmap.store(id,*receiver);
   }
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -254,21 +243,18 @@ printRamEvt(EVRMRM *evr,int evt,int ram)
 }
 
 static
-int
-enableIRQ(void*,short,EVR* evr)
+bool
+enableIRQ(int,short,EVRMRM& mrm)
 {
-  EVRMRM *mrm=dynamic_cast<EVRMRM*>(evr);
-  if(!mrm)
-    return 0;
 
-  WRITE32(mrm->base, IRQEnable,
+  WRITE32(mrm.base, IRQEnable,
        IRQ_Enable
       |IRQ_RXErr
       |IRQ_Heartbeat|IRQ_HWMapped
       |IRQ_Event    |IRQ_FIFOFull
   );
 
-  return 0;
+  return true;
 }
 
 static
@@ -277,7 +263,7 @@ void inithooks(initHookState state)
   switch(state)
   {
   case initHookAfterInterruptAccept:
-    visitEVRBase(NULL, &enableIRQ);
+    evrmap.visit(0, &enableIRQ);
     break;
   default:
     break;
@@ -302,7 +288,7 @@ void
 mrmEvrSetupVME(int id,int slot,int base,int level, int vector)
 {
 try {
-  if(!!getEVR<EVR>(id)){
+  if(cardIdInUse(id)){
     printf("ID %d already in use\n",id);
     return;
   }
@@ -383,7 +369,7 @@ try {
     // Interrupts will be enabled during iocInit()
   }
 
-  storeEVR(id,receiver);
+  evrmap.store(id,*receiver);
 
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -408,7 +394,7 @@ extern "C"
 void
 mrmEvrDumpMap(int id,int evt,int ram)
 {
-  EVRMRM *card=getEVR<EVRMRM>(id);
+  EVRMRM *card=&evrmap.get<EVRMRM>(id);
   if(!card){
     printf("Invalid card\n");
     return;
