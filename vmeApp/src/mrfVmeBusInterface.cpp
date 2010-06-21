@@ -261,7 +261,6 @@ mrfVmeBusInterface::ConfigBusAddress (epicsInt32 RegMapSize)
     epicsUInt16     Junk;                  // Dummy variable for card read probe function
     epicsUInt32     status;                // Status return variable
     char            statusText [64];       // Status text string
-    volatile unsigned char*  csrAddress;    //~~~~
 
     //=====================
     // Make sure the slot number is valid
