@@ -141,12 +141,12 @@ mrmEvgSetupVME (
 		
 		if(irqLevel > 0 && irqVector >= 0) {
 			/*Configure the Interrupt level and vector on the EVG board*/
-    		CSRWrite8(csrCpuAddr + 0x7fb03 + UCSR_IRQ_LEVEL,  irqLevel&0x7);
-    		CSRWrite8(csrCpuAddr + 0x7fb03 + UCSR_IRQ_VECTOR, irqVector&0xff);
+    		CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL,  irqLevel&0x7);
+    		CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR, irqVector&0xff);
 
     		printf("IRQ Level: %d\nIRQ Vector: %d\n",
-      			CSRRead8(csrCpuAddr + 0x7fb03 + UCSR_IRQ_LEVEL),
-      			CSRRead8(csrCpuAddr + 0x7fb03 + UCSR_IRQ_VECTOR)
+      			CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL),
+      			CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR)
  			);
 
 			printf("csrCpuAddr : %p\nregCpuAddr : %p\n",csrCpuAddr, regCpuAddr);

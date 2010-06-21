@@ -5,7 +5,6 @@
 
 #include "evgMrm.h"
 
- evgMrm* FindEvg(epicsUInt32 id);
+#define MRF_UCSR_DEFAULT 0x7fb03
 
-
-
+evgMrm* FindEvg(epicsUInt32 id);

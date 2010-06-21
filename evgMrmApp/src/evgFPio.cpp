@@ -45,9 +45,15 @@ evgFPio::setIOMap(epicsUInt32 map) {
 			break;
 
 		case(Univ_Output):
+			errlogPrintf("ERROR: Universal Output not yet configured.\n");
+			break;
+
 		case(Univ_Input):
+			errlogPrintf("ERROR: Universal Input not yet configured.\n");
+			break;
+
 		default:
-			errlogPrintf("ERROR: Not Configued.\n");
+			errlogPrintf("ERROR: Wrong I/O type.\n");
 			status = ERROR;
 			break;
 	}

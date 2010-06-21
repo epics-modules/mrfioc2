@@ -39,8 +39,8 @@ record(bo, "EVG$(cardNum):SoftEvtEna") {
   	field( DESC, "EVG Software Event Enable")
   	field( OUT , "#C$(cardNum) S @")
 	field( UDF, "0")
-  	field( ZNAM, "Enable")
-  	field( ONAM, "Disable")
+  	field( ZNAM, "Disable")
+  	field( ONAM, "Enable")
 }
 
 

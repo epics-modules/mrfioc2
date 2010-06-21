@@ -1,4 +1,4 @@
-#Sequence Ram Support Records
+#Sequence Ram Manager Records
 record(bo, "EVG$(cardNum):Seq$(seqNum):load") {
 	field( DTYP, "EVG LOAD SEQ")
 	field( DESC, "Load EVG Sequence")
@@ -38,6 +38,7 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):disable") {
 	field( VAL , "0")
 	field( UDF, "0")
 }
+
 
 #Sequence Records
 record(waveform, "EVG$(cardNum):Seq$(seqNum):timeStamp") {
