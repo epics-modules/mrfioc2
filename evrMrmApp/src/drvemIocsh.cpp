@@ -216,6 +216,7 @@ try {
       // Interrupts will be enabled during iocInit()
 
       evrmap.store(id,*receiver);
+      datatxmap.append(id,receiver->buftx);
   }
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -370,6 +371,7 @@ try {
   }
 
   evrmap.store(id,*receiver);
+  datatxmap.append(id,receiver->buftx);
 
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());

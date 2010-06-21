@@ -21,6 +21,8 @@
 #include "drvemPulser.h"
 #include "drvemCML.h"
 
+#include "mrmDataBufTx.h"
+
 struct eventCode {
   epicsUInt8 code; // constant
 
@@ -102,7 +104,9 @@ public:
 
   const int id;
   volatile unsigned char * const base;
+  mrmDataBufTx buftx;
 private:
+
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
   double eventClock; //!< Stored in Hz
