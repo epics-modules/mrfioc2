@@ -60,7 +60,7 @@ INC += dsetshared.h
 
 TESTPROD_HOST += linkoptionsTest
 linkoptionsTest_SRCS += linkoptionsTest.c
-linkoptionsTest_LIBS += mrfCommon iocsh
+linkoptionsTest_LIBS += mrfCommon
 TESTS += linkoptionsTest
 
 #---------------------
