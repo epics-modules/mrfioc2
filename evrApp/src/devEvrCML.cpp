@@ -11,7 +11,7 @@
 #include <waveformRecord.h>
 #include <menuFtype.h>
 
-#include "cardmap.h"
+#include "evrmap.h"
 #include "evr/cml.h"
 #include "linkoptions.h"
 #include "dsetshared.h"
@@ -83,7 +83,7 @@ CML* get_cml(const char* hwlink, std::string& propname)
   if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
     throw std::runtime_error("Couldn't parse link string");
 
-  EVR* card=getEVR<EVR>(inst_addr.card);
+  EVR* card=&evrmap.get(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 

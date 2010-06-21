@@ -12,7 +12,7 @@
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
-#include "cardmap.h"
+#include "evrmap.h"
 #include "evr/evr.h"
 
 #include "linkoptions.h"
@@ -57,7 +57,7 @@ try {
   if (linkOptionsStore(eventdef, p, prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
 
-  p->evr=getEVR<EVR>(p->card);
+  p->evr=&evrmap.get(p->card);
   if(!p->evr)
     throw std::runtime_error("Failed to lookup device");
 
