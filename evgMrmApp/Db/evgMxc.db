@@ -18,13 +18,13 @@ record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
   	field( ONAM, "1")
 }
 
-record(longout, "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
+record(longout , "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
 	field( DTYP, "EVG Mxc")
 	field( DESC, "EVG Mux Counter Prescaler")
-	field( OUT, "#C$(cardNum) S$(mxcNum) @")
+	field( OUT , "#C$(cardNum) S$(mxcNum) @")
 	field( PINI, "YES")
 	field( VAL , "12500")
-	field( UDF, "0")
+	field( UDF , "0")
 }
 
 record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap") {

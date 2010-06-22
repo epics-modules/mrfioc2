@@ -9,10 +9,10 @@
  
 #include "evgRegMap.h"
 
-evgFPio::evgFPio(const IOtype type, const epicsUInt32 id, const volatile epicsUInt8* pReg ):
-type(type),
-id(id),
-pReg(pReg) {
+evgFPio::evgFPio(const IOtype type, const epicsUInt32 id, volatile epicsUInt8* const pReg ):
+m_type(type),
+m_id(id),
+m_pReg(pReg) {
 }
 
 epicsStatus
@@ -20,34 +20,40 @@ evgFPio::setIOMap(epicsUInt32 map) {
 
 	epicsStatus status;
 
-	switch(type) {
+	switch(m_type) {
     	
 		case(FP_Input):
-			if(id < 0 || id >= EVG_NUM_FP_INP) {
+			if(m_id < 0 || m_id >= evgNumFpInp) {
 				errlogPrintf("ERROR: Front panel input number out of range.\n");
 				status = ERROR;
 				break;
 			}
 	
-			WRITE32(pReg, FPInMap(id), map);
+			WRITE32(m_pReg, FPInMap(m_id), map);
 			status = OK;
 			break;
 
 		case(FP_Output):
-			if(id < 0 || id >= EVG_NUM_FP_OUT) {
+			if(m_id < 0 || m_id >= evgNumFpOut) {
 				errlogPrintf("ERROR: Front panel output number out of range.\n");
 				status = ERROR;
 				break;
 			}
 
-			WRITE16(pReg, FPOutMap(id), map);
+			WRITE16(m_pReg, FPOutMap(m_id), map);
 			status = OK;
 			break;
 
 		case(Univ_Output):
+			errlogPrintf("ERROR: Universal Output not yet configured.\n");
+			break;
+
 		case(Univ_Input):
+			errlogPrintf("ERROR: Universal Input not yet configured.\n");
+			break;
+
 		default:
-			errlogPrintf("ERROR: Not Configued.\n");
+			errlogPrintf("ERROR: Wrong I/O type.\n");
 			status = ERROR;
 			break;
 	}

@@ -3,7 +3,8 @@
 
 #include <devcsr.h>
 
-#include <evgMrm.h>
+#include "evgMrm.h"
 
-void AddEvg(epicsUInt32 id, evgMrm* evg);
+#define MRF_UCSR_DEFAULT 0x7fb03
+
 evgMrm* FindEvg(epicsUInt32 id);

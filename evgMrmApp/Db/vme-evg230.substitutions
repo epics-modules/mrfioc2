@@ -48,3 +48,12 @@ pattern { cardNum, trigEvtNum }
 { $(cardNum), 7 }
 }
 
+file evgSeq.db {
+pattern { cardNum , seqNum, NELM}
+{ $(cardNum), 0, 5}
+{ $(cardNum), 1, 5}
+{ $(cardNum), 2, 5}
+}
+
+
+

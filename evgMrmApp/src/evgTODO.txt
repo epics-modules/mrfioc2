@@ -1,0 +1,25 @@
+TODO:
+-At the end of the sequence automatically add the 'end of sequence code'(0x7f / 127). TimeStamp?
+-Add the debug flag.
+-Extended device support
+-Software trigger for sequence Ram.
+
+Majorly complete
+	-Clock Control
+	-Software Event
+	-Trigger Event
+	-Distributed Bus
+	-Multiplexed Counter
+
+Work to be done
+	-Front Panel I/O
+
+Currently working on
+	-Sequencer
+
+Not yet started.
+	-Handle Interrupts.
+	-AC trigger
+	-Data Buffer
+	-Univeral I/O
+	-TimeStamping

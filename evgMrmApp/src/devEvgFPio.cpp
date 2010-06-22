@@ -2,29 +2,45 @@
 #include <stdexcept>
 
 #include <longoutRecord.h>
-
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
+
+#include "dsetshared.h"
 
 #include <evgInit.h>
 
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
+	long ret = 0;
+
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: init_record: Hardware link not VME_IO\n");
-		return(S_db_badField);
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
+		return S_db_badField;
 	}
 
-	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
-	if(!evg)
-		throw std::runtime_error("Failed to lookup device");
+	try {
+		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
+
+		std::string parm(lnk->value.vmeio.parm);
+		evgFPio* io = evg->getFPio(lnk->value.vmeio.signal, parm);
+		if(!io)
+			throw std::runtime_error("ERROR: Failed to lookup FPio");
 	
-	std::string parm(lnk->value.vmeio.parm);
-	evgFPio* io = evg->getFPio(lnk->value.vmeio.signal, parm);
-	pRec->dpvt = io;
-	return 2;
+		pRec->dpvt = io;
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	longout - Multiplexed Counter Prescalar	**/
@@ -49,14 +65,7 @@ write_lo(longoutRecord* plo) {
 /** 	device support entry table 		**/
 extern "C" {
 
-struct {
-    long        number;         /* number of support routines*/
-    DEVSUPFUN   report;         /* print report*/
-    DEVSUPFUN   init;           /* init support layer*/
-    DEVSUPFUN   init_record;    /* init device for particular record*/
-    DEVSUPFUN   get_ioint_info; /* get io interrupt information*/
-    DEVSUPFUN   write_lo;       /* longout record dependent*/
-} devLoEvgFPioMap = {
+common_dset devLoEvgFPioMap = {
     5,
     NULL,
     NULL,
