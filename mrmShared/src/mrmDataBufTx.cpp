@@ -99,6 +99,10 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     // TODO: Timeout needed?
     while(!dataRTS()) epicsThreadSleep(quantum);
 
+    // Zero length
+    // Seems to be required?
+    nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
+
     iowrite8(&dataBuf[0], id);
 
     len++;
