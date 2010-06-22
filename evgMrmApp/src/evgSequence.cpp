@@ -7,10 +7,8 @@
 
 evgSequence::evgSequence(const epicsUInt32 id):
 m_id(id),
-m_eventCodeA(0),
-m_timeStampA(0),
 m_trigSrc(mxc0),
-m_runMode(Single) {
+m_runMode(single) {
 	//For Testing purpose
  	epicsUInt8 eventCode[] = {1, 2, 3, 5, 127};
  	epicsUInt32 timeStamp[] = {125000000, 250000000, 375000000, 500000000, 625000000};
@@ -42,20 +40,14 @@ evgSequence::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 		return ERROR;
 	}
 		
-	std::copy(eventCode, eventCode + size, m_eventCodeA);
-	m_eventCodeV.assign(eventCode, eventCode + size);
+	m_eventCode.assign(eventCode, eventCode + size);
 	
 	return OK;
 }
 
-epicsUInt8*
-evgSequence::getEventCodeA() {
-	return m_eventCodeA;
-}
-
 std::vector<epicsUInt8>
-evgSequence::getEventCodeV() {
-	return m_eventCodeV;
+evgSequence::getEventCode() {
+	return m_eventCode;
 }
 
 
@@ -66,20 +58,14 @@ evgSequence::setTimeStamp(epicsUInt32* timeStamp, epicsUInt32 size) {
 		return ERROR;
 	}
 	
-	std::copy(timeStamp, timeStamp + size, m_timeStampA);	
-	m_timeStampV.assign(timeStamp, timeStamp + size);
+	m_timeStamp.assign(timeStamp, timeStamp + size);
 
 	return OK;
 }
 
-epicsUInt32*
-evgSequence::getTimeStampA() {
-	return m_timeStampA;
-}
-
 std::vector<epicsUInt32>
-evgSequence::getTimeStampV() {
-	return m_timeStampV;
+evgSequence::getTimeStamp() {
+	return m_timeStamp;
 }
 
 

@@ -47,7 +47,7 @@ m_pReg(pReg) {
 											new evgFPio(FP_Output, i, pReg);
 	}	
 
-	m_seqRamSup = new evgSeqRamSup(pReg, this);
+	m_seqRamMgr = new evgSeqRamMgr(pReg, this);
 
 	irqStop0.mutex = epicsMutexMustCreate();
 	irqStop1.mutex = epicsMutexMustCreate();
@@ -102,32 +102,46 @@ evgMrm::enable(bool ena) {
 
 void
 evgMrm::isr(void* arg) {
-
-	printk("In ISR\n");
-	//epicsInterruptContextMessage("In ISR");
-
 	evgMrm *evg = (evgMrm*)(arg);
 
-    epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
-    epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
+    epicsUInt32 flags = READ32(evg->getRegAddr(), IrqFlag);
+    epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
     epicsUInt32 active = flags & enable;
+	
+	#ifdef __rtems__
 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
+	#endif //_rtems_
 
     if(!active)
       return;
 
     if(active & EVG_IRQ_STOP_RAM0) {
+		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM0\n");
+		#endif //_rtems_
 		callbackRequest(&evg->irqStop0_cb);
+		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM0);
     }
 
-	//WRITE32(evg->m_pReg, IrqEnable, enable);
+	 if(active & EVG_IRQ_STOP_RAM1) {
+		#ifdef __rtems__
+		printk("EVG_IRQ_STOP_RAM1\n");
+		#endif //_rtems_
+		callbackRequest(&evg->irqStop1_cb);
+		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM1);
+    }
+
     WRITE32(evg->m_pReg, IrqFlag, flags);
-	
-	flags = READ32(evg->m_pReg, IrqFlag);
-    enable = READ32(evg->m_pReg, IrqEnable);
+
+	flags = READ32(evg->getRegAddr(), IrqFlag);
+    enable = READ32(evg->getRegAddr(), IrqEnable);
     active = flags & enable;
+
+	#ifdef __rtems__
 	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
+	#endif //_rtems_
+	
+	return;
 }
 
 void
@@ -176,7 +190,7 @@ evgDbus*
 evgMrm::getDbus(epicsUInt32 dbusBit) {
 	evgDbus* pDbus = m_dbus[dbusBit];
 	if(!pDbus)
-		throw std::runtime_error("ERROR: Event Trigger not initialized");
+		throw std::runtime_error("ERROR: Event Dbus not initialized");
 
 	return pDbus;
 }
@@ -190,9 +204,9 @@ evgMrm::getFPio(epicsUInt32 ioNum, std::string type) {
 	return pFPio;
 }
 
-evgSeqRamSup*
-evgMrm::getSeqRamSup() {
-	return m_seqRamSup;
+evgSeqRamMgr*
+evgMrm::getSeqRamMgr() {
+	return m_seqRamMgr;
 }
 
 /** 	Event Clock Source 	**/
@@ -303,7 +317,7 @@ evgMrm::softEvtPend() {
 
 	
 epicsStatus 
-evgMrm::setSoftEvtCode(epicsUInt8 evtCode) {
+evgMrm::setSoftEvtCode(epicsUInt32 evtCode) {
 	if(evtCode < 0 || evtCode > 255) {
 		errlogPrintf("ERROR: Event Code out of range.\n");
 		return ERROR;		

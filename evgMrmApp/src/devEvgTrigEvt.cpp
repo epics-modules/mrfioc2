@@ -14,20 +14,33 @@
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
+	long ret = 0;
+
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: Hardware link not VME_IO\n");
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
 		return(S_db_badField);
 	}
+	
+	try {
+		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
+	
+		evgTrigEvt*  trigEvt = evg->getTrigEvt(lnk->value.vmeio.signal);
+		if(!trigEvt)
+			throw std::runtime_error("ERROR: Failed to lookup Trig Evt");
 
-	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
-	if(!evg)
-		throw std::runtime_error("ERROR: Failed to lookup device");
+		pRec->dpvt = trigEvt;
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_db_noMemory;
+	}
 
-	evgTrigEvt*  trigEvt = evg->getTrigEvt(lnk->value.vmeio.signal);
-	if(trigEvt)
-		throw std::runtime_error("ERROR: Failed to lookup device");
-	pRec->dpvt = trigEvt;
-	return 2;
+	return ret;
 }
 
 

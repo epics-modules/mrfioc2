@@ -15,22 +15,32 @@
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
+	long ret = 0;
+
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: Hardware link not VME_IO\n");
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
 		return S_db_badField;
 	}
 	
-	evgMrm* evg = FindEvg(lnk->value.vmeio.card);
-		
-	if(!evg) {
-		errlogPrintf("ERROR: Failed to lookup EVG%d\n", lnk->value.vmeio.card);
-		return S_dev_noDevice;
+	try {
+		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
+
+		pRec->dpvt = evg;
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_db_noMemory;
 	}
 
-	pRec->dpvt = evg;
-	return 2;
+	return ret;
 }
 
+/**		bo - Enable EVG**/
 /*returns: (0,2)=>(success,success no convert) 0==2	*/
 static long 
 init_bo_Enable(boRecord* pbo) {

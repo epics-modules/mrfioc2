@@ -27,11 +27,11 @@ device( longout, VME_IO, devLoEvgFPioMap, "EVG FPio")
 device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
 
 #evgSeq.db
-device( longout, VME_IO, devLoEvgLoadSeq, "EVG LOAD SEQ")
-device( longout, VME_IO, devLoEvgUnloadSeq, "EVG UNLOAD SEQ")
-device( longout, VME_IO, devLoEvgCommitSeq, "EVG COMMIT SEQ")
-device( longout, VME_IO, devLoEvgEnableSeq, "EVG ENABLE SEQ")
-device( longout, VME_IO, devLoEvgDisableSeq, "EVG DISABLE SEQ")
+device( bo, VME_IO, devBoEvgLoadSeq, "EVG LOAD SEQ")
+device( bo, VME_IO, devBoEvgUnloadSeq, "EVG UNLOAD SEQ")
+device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
+device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
+device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
 
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")

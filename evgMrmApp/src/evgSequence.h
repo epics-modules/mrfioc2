@@ -7,9 +7,9 @@
 #include <epicsTypes.h>
 
 enum SeqRunMode {
-	Single = 0,
-	Recycle,
-	RecycleOnTrig
+	single = 0,
+	automatic,
+	normal
 };
 
 enum SeqTrigSrc {
@@ -37,12 +37,10 @@ public:
 	const char* getDescription();
 
 	epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
-	epicsUInt8* getEventCodeA();
-	std::vector<epicsUInt8> getEventCodeV();
+	std::vector<epicsUInt8> getEventCode();
 	
 	epicsStatus setTimeStamp(epicsUInt32*, epicsUInt32);
-	epicsUInt32* getTimeStampA();
-	std::vector<epicsUInt32> getTimeStampV();
+	std::vector<epicsUInt32> getTimeStamp();
 
 	epicsStatus setTrigSrc(SeqTrigSrc);
 	SeqTrigSrc getTrigSrc();
@@ -53,10 +51,8 @@ public:
 private:
 	const epicsUInt32 			m_id;
 	std::string 				m_desc;
-	std::vector<epicsUInt8> 	m_eventCodeV;
-	std::vector<epicsUInt32>	m_timeStampV;
-	epicsUInt8* 				m_eventCodeA;
-	epicsUInt32* 				m_timeStampA;
+	std::vector<epicsUInt8> 	m_eventCode;
+	std::vector<epicsUInt32>	m_timeStamp;
 	SeqTrigSrc 					m_trigSrc;
 	SeqRunMode 					m_runMode;	
 };

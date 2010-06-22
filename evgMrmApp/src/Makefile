@@ -27,7 +27,7 @@ evgmrm_SRCS += devEvgFPio.cpp
 
 evgmrm_SRCS += evgSequence.cpp
 evgmrm_SRCS += evgSeqRam.cpp
-evgmrm_SRCS += evgSeqRamSup.cpp
+evgmrm_SRCS += evgSeqRamManager.cpp
 evgmrm_SRCS += devEvgSeq.cpp
 
 DBD += evgInit.dbd

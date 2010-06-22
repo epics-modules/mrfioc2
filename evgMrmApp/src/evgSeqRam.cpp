@@ -61,14 +61,14 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
 epicsStatus
 evgSeqRam::setRunMode(SeqRunMode mode) {
 	switch (mode) {
-		case(Single):
+		case(single):
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			break;
-		case(Recycle):
+		case(automatic):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;
-		case(RecycleOnTrig):
+		case(normal):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;		

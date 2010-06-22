@@ -12,21 +12,33 @@
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
+	long ret = 0;
+
 	if(lnk->type != VME_IO) {
-		errlogPrintf("ERROR: Hardware link not VME_IO\n");
-		return(S_db_badField);
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
+		return S_db_badField;
 	}
 
-	evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
-	if(!evg)
-		throw std::runtime_error("ERROR: Failed to lookup device");
+	try {
+		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		if(!evg)
+			errlogPrintf("ERROR: Failed to lookup EVG");
 
-	evgDbus* dbus = evg->getDbus(lnk->value.vmeio.signal);
-	if(!dbus)
-		throw std::runtime_error("ERROR: Failed to lookup device");
+		evgDbus* dbus = evg->getDbus(lnk->value.vmeio.signal);
+		if(!dbus)
+			errlogPrintf("ERROR: Failed to lookup Dbus");
 
-	pRec->dpvt = dbus;
-	return 2;
+		pRec->dpvt = dbus;
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 

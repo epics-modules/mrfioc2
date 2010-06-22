@@ -10,20 +10,20 @@
 
 class evgMrm;
 
-class evgSeqRamSup {
+class evgSeqRamMgr {
 public:
-	evgSeqRamSup(volatile epicsUInt8* const, evgMrm*);
+	evgSeqRamMgr(volatile epicsUInt8* const, evgMrm*);
 	
-	epicsUInt32 findSeqRamId(epicsUInt32);
-	evgSeqRam* findSeqRam(epicsUInt32);
+	epicsUInt32 findSeqRamId(evgSequence *);
+	evgSeqRam* findSeqRam(evgSequence *);
 	evgSeqRam* getSeqRam(epicsUInt32);
 	evgSequence* getSequence(epicsUInt32);
 	
-	epicsStatus load(epicsUInt32);
-	epicsStatus unload(epicsUInt32);
-	epicsStatus commit(epicsUInt32, dbCommon*);
-	epicsStatus enable(epicsUInt32);
-	epicsStatus disable(epicsUInt32);
+	epicsStatus load(evgSequence *);
+	epicsStatus unload(evgSequence *);
+	epicsStatus commit(evgSequence *, dbCommon*);
+	epicsStatus enable(evgSequence *);
+	epicsStatus disable(evgSequence *);
 
 private:
 	evgMrm*							m_owner;

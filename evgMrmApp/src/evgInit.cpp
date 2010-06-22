@@ -48,16 +48,17 @@ enableIRQ(volatile epicsUInt8* const pReg) {
   if(!pReg)
     return 0;
 
-  WRITE32(pReg, IrqEnable,
-       	EVG_IRQ_ENABLE 		|
-		EVG_IRQ_STOP_RAM1 	|
-		EVG_IRQ_STOP_RAM0 	|
-		EVG_IRQ_START_RAM1 	|
-		EVG_IRQ_START_RAM0 	|
-		//EVG_IRQ_DBUFF 	|
-		//EVG_IRQ_FIFO		|
-		EVG_IRQ_RXVIO
-  );
+	BITSET32(pReg, IrqEnable, EVG_IRQ_ENABLE);
+//   WRITE32(pReg, IrqEnable,
+//      EVG_IRQ_ENABLE 		|
+// 		EVG_IRQ_STOP_RAM1 	|
+// 		EVG_IRQ_STOP_RAM0 	|
+// 		EVG_IRQ_START_RAM1 	|
+// 		EVG_IRQ_START_RAM0 	|
+// 		EVG_IRQ_DBUFF 		|
+// 		EVG_IRQ_FIFO		|
+// 		EVG_IRQ_RXVIO
+//  );
 
   return 0;
 }
@@ -137,7 +138,6 @@ mrmEvgSetupVME (
     	printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
 
 		evgMrm* evg = new evgMrm(cardNum, regCpuAddr);
-		AddEvg(cardNum, evg);
 		
 		if(irqLevel > 0 && irqVector >= 0) {
 			/*Configure the Interrupt level and vector on the EVG board*/
@@ -171,7 +171,8 @@ mrmEvgSetupVME (
 				return -1;
     		}	
  		}
-
+		
+		AddEvg(cardNum, evg);
     	return 0;
   	} catch(std::exception& e) {
     	errlogPrintf("Error: %s\n",e.what());

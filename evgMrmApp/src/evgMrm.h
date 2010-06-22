@@ -14,7 +14,7 @@
 #include "evgTrigEvt.h"
 #include "evgDbus.h"
 #include "evgFPio.h"
-#include "evgSeqRamSup.h"
+#include "evgSeqRamManager.h"
 
 const epicsUInt16 evgClkSrcInternal = 0;	// Event clock is generated internally
 const epicsUInt16 evgClkSrcRF 	    = 1;    // Event clock is derived from the RF input
@@ -53,7 +53,7 @@ public:
 
 	bool softEvtPend();
 	
-	epicsStatus setSoftEvtCode(epicsUInt8);
+	epicsStatus setSoftEvtCode(epicsUInt32);
 	epicsUInt8 getSoftEvtCode();
 
 	/**	Access	function 	**/
@@ -61,7 +61,7 @@ public:
 	evgTrigEvt* getTrigEvt(epicsUInt32);
 	evgDbus* getDbus(epicsUInt32 dbusBit);
 	evgFPio* getFPio(epicsUInt32, std::string);
-	evgSeqRamSup* getSeqRamSup();	
+	evgSeqRamMgr* getSeqRamMgr();	
 
 	struct irq {
 		epicsMutexId mutex;
@@ -92,7 +92,7 @@ private:
 	typedef std::map< std::pair<epicsUInt32, std::string >, evgFPio*> FPio_t;
 	FPio_t m_FPio;
 
-	evgSeqRamSup* 					m_seqRamSup;
+	evgSeqRamMgr* 					m_seqRamMgr;
 
 	CALLBACK 						irqStop0_cb;
 	CALLBACK						irqStop1_cb;
