@@ -1,6 +1,7 @@
 #include "evgFPio.h"
 
 #include <iostream>
+#include <stdexcept>
 
 #include <errlog.h>
 
@@ -13,52 +14,76 @@ evgFPio::evgFPio(const IOtype type, const epicsUInt32 id, volatile epicsUInt8* c
 m_type(type),
 m_id(id),
 m_pReg(pReg) {
+
+	switch(m_type) {
+    	
+		case(FP_Input):
+			if(m_id >= evgNumFpInp)
+				throw std::runtime_error("Front panel input ID out of range");	
+			break;
+
+		case(FP_Output):
+			if(m_id >= evgNumFpOut)
+				throw std::runtime_error("EVG Front panel output ID out of range");
+			break;
+
+		case(Univ_Input):
+			if(m_id >= evgNumUnivInp)
+				throw std::runtime_error("EVG Universal input ID out of range");
+			break;
+
+		case(Univ_Output):
+			if(m_id >= evgNumUnivOut)
+				throw std::runtime_error("EVG Universal output ID out of range");
+			break;
+
+		default:
+				throw std::runtime_error("EVG Wrong I/O type");
+			break;
+	}
 }
 
 epicsStatus
 evgFPio::setIOMap(epicsUInt32 map) {
 
-	epicsStatus status;
+	epicsStatus ret = OK;
 
 	switch(m_type) {
     	
 		case(FP_Input):
-			if(m_id < 0 || m_id >= evgNumFpInp) {
-				errlogPrintf("ERROR: Front panel input number out of range.\n");
-				status = ERROR;
-				break;
-			}
-	
-			WRITE32(m_pReg, FPInMap(m_id), map);
-			status = OK;
+			WRITE32(m_pReg, UnivInMap(m_id), map);
+			ret = OK;
 			break;
 
 		case(FP_Output):
-			if(m_id < 0 || m_id >= evgNumFpOut) {
-				errlogPrintf("ERROR: Front panel output number out of range.\n");
-				status = ERROR;
+			if(map < 32 || map > 63 ||  (map < 62 && map > 39) ) {
+				errlogPrintf("ERROR: Front panel output %d map out of range\n", map);
+				ret = ERROR;
 				break;
 			}
 
 			WRITE16(m_pReg, FPOutMap(m_id), map);
-			status = OK;
-			break;
-
-		case(Univ_Output):
-			errlogPrintf("ERROR: Universal Output not yet configured.\n");
+			ret = OK;
 			break;
 
 		case(Univ_Input):
-			errlogPrintf("ERROR: Universal Input not yet configured.\n");
+			WRITE32(m_pReg, UnivInMap(m_id), map);
+			ret = OK;
 			break;
 
-		default:
-			errlogPrintf("ERROR: Wrong I/O type.\n");
-			status = ERROR;
+		case(Univ_Output):
+			if(map < 32 || map > 63 ||  (map < 62 && map > 39) ) {
+				errlogPrintf("ERROR: Universal output %d map out of range\n", map);
+				ret = ERROR;
+				break;
+			}
+
+			WRITE16(m_pReg, UnivOutMap(m_id), map);
+			ret = OK;
 			break;
 	}
 	
-	return status;
+	return ret;
 		
 }
 

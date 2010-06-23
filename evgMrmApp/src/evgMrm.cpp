@@ -24,30 +24,33 @@
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
 m_pReg(pReg) {
+	try {
+		for(int i = 0; i < evgNumMxc; i++) {
+			m_muxCounter.push_back(new evgMxc(i, pReg));
+		}
 
-	for(int i = 0; i < evgNumMxc; i++) {
-		m_muxCounter.push_back(new evgMxc(i, pReg));
-	}
+		for(int i = 0; i < evgNumEvtTrig; i++) {
+			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
+		}
 
-	for(int i = 0; i < evgNumEvtTrig; i++) {
-		m_trigEvt.push_back(new evgTrigEvt(i, pReg));
-	}
+		for(int i = 0; i < evgNumDbusBit; i++) {
+			m_dbus.push_back(new evgDbus(i, pReg));
+		}
 
-	for(int i = 0; i < evgNumDbusBit; i++) {
-		m_dbus.push_back(new evgDbus(i, pReg));
-	}
-
-	for(int i = 0; i < evgNumFpInp; i++) {
-		m_FPio[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
+		for(int i = 0; i < evgNumFpInp; i++) {
+			m_FPio[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
 											new evgFPio(FP_Input, i, pReg);
-	}
+		}
 
-	for(int i = 0; i < evgNumFpOut; i++) {
-		m_FPio[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
+		for(int i = 0; i < evgNumFpOut; i++) {
+			m_FPio[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
 											new evgFPio(FP_Output, i, pReg);
-	}	
+		}	
 
-	m_seqRamMgr = new evgSeqRamMgr(pReg, this);
+		m_seqRamMgr = new evgSeqRamMgr(pReg, this);
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: EVG %d faied to initialise proprtly\n%s\n", id, e.what());
+	} 	
 
 	irqStop0.mutex = epicsMutexMustCreate();
 	irqStop1.mutex = epicsMutexMustCreate();
