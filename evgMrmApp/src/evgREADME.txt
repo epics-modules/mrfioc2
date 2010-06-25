@@ -28,12 +28,12 @@ EVG:
 	Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
 	Sequence Ram, Front Panel I/O etc.
 	
-		Usage:
-			caput EVG$(cardNum):Enable ena
-				ena = 1 to enable the EVG
-				ena = 0 to disable the EVG
+	Usage:
+		-Enable/Disable the EVG (Binary)
+		caput EVG$(cardNum):Enable Enable
+		caput EVG$(cardNum):Enable Disable
 
-			Macro: 	$(cardNum) = Logical card number EVG
+	Macro: 	$(cardNum) = Logical card number EVG
 
 -------------------------------------------------------------------------------
 
@@ -42,20 +42,21 @@ Event Clock:
 	from either externally provided RF clock or from an on-board fractional synthesiser.
 
 	 Usage:
+		-Set the event clock source  (longout)
 		caput EVG$(cardNum):ClkSrc clksrc(0 to 32)
-			If clksrc == 0 means clk source is internal i.e on-board fractional 
-			synthesiser. The clk speed will be set to the previously requested clkspeed. 
-
-			If clksrc > 0 means clk source is external and the clk speed will be set
-			RF frequency divided by clksrc. So to have clk speed of RF/4 command will be
-			caput EVG$(cardNum):ClkSrc 4	 
-
+		If clksrc == 0 means clk source is internal i.e on-board fractional synthesiser.
+ 	The clk speed will be set to the previously requested clkspeed. 
+		If clksrc > 0 means clk source is external and the clk speed will be set RF 
+	frequency divided by clksrc. So to have clk speed of RF/4 command will be
+	caput EVG$(cardNum):ClkSrc 4	 
+		
+		-Set the event clock frequency (longout)
 		caput EVG$(cardNum):ClkSpeed clkspeed(50 to 125)
-			This pv is used to set the clk speed if the clk source is internal(i.e. 0).
-			If the clk source is external(i.e > 0) then the requested clk speed is recorded 
-			and is used whenever the Clk Source changes to internal.
+	This pv is used to set the clk speed if the clk source is internal(i.e. 0).
+	If the clk source is external(i.e > 0) then the requested clk speed is recorded 
+	and is used whenever the Clk Source changes to internal.
 
-		Macro: 	$(cardNum) = Logical card number EVG
+	Macro: 	$(cardNum) = Logical card number EVG
 	
 -------------------------------------------------------------------------------
 
@@ -67,12 +68,15 @@ Software Events:
 	particular register in EVG.
 
 	Usage:
+		-Enable/Disable the soft event transmission(Binary)
 		caput EVG$(cardNum):SoftEvtEna Enable
 		caput EVG$(cardNum):SoftEvtEna Disable
-		caput EVG$(cardNum):SoftEvtCode eventCode(0 to 255)
-			Sends out the Event Code eventCode to the event stream
 
-		Macro: 	$(cardNum) = Logical card number EVG
+		-Sent Soft Event code(longout)
+		caput EVG$(cardNum):SoftEvtCode eventCode(0 to 255)
+	Sends out the Event Code eventCode to the event stream.
+
+	Macro: 	$(cardNum) = Logical card number EVG
 
 -------------------------------------------------------------------------------
 
@@ -134,20 +138,20 @@ Multiplexed Counter:
 
 	Usage:
 		caput EVG$(cardNum):Mxc$(mxcNum)Presacler prescaler(2) 
-			For output frequency of (event clock/2) the prescaler should be 2.
+	For output frequency of (event clock/2) the prescaler should be 2.
 			 					:
 		caput EVG$(cardNum):Mxc$(mxcNum)Presacler prescaler(2^32-1) 
-			For output frequency of (event clock/2^32-1) the prescaler should be 2^32-1.
+	For output frequency of (event clock/2^32-1) the prescaler should be 2^32-1.
 		
 		caput EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap.B0 = 1
-		 	Map rising edge of MXC mxcNum to send out trigger event 0
+	Map rising edge of MXC mxcNum to send out trigger event 0
 								:
 								:
 		caput EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap.B7 = 1
-		 	Map rising edge of MXC mxcNum to send out trigger event 7
+	Map rising edge of MXC mxcNum to send out trigger event 7
 
-		Macro: 	$(cardNum) = Logical card number EVG
-				$(mxcNum) = ID for multiplexed counter(0 to 7)
+	Macro: 	$(cardNum) = Logical card number EVG
+			$(mxcNum) = ID for multiplexed counter(0 to 7)
 
 -------------------------------------------------------------------------------
 
@@ -168,16 +172,29 @@ Front Panel Input/Output:
 -------------------------------------------------------------------------------
 
 Sequence Ram:
-	VME-EVG-230 has 2 sequenceRams or sequencers. The sequencer table can hold 
-	upto 2048 event codes, which can be transmitted at the corresponding 32-bit
-	timeStamp relative to the start of the sequence. Even though the EVG has 
-	just 2 hardware sequenceRams, the driver can maintain any number of soft 
-	sequences. At a time, maximum only 2 of these soft sequences can be loaded 
-	into sequenceRams. The idea being the user can create and manipulate any number
-	of these soft sequeunces irrespective of the fact whether the soft sequence is 
-	actually loaded in hardware or not. After creation or manipulation of soft 
-	sequence user can load that sequence into the hardware. Logic is build in the 
-	seqRamMgr so that the sequenceRam is not modified when it is active.
+		VME-EVG-230 has 2 sequenceRams or sequencers. The sequenceRam can hold 
+	upto 2048 event code, timeStamp pair. When the sequencer is triggered, an
+	internal counter starts counting. When the counter value matches the timeStamp
+	of the next event, the attched event code is transmitted.
+		All the information that is needed to run the sequenceRam can be stored in a
+	soft sequence. The user can maintain any number of soft sequences but at
+	atime, maximum of only 2 of these soft sequences can be loaded into the
+	sequenceRams. The idea being the user can create and manipulate any number of
+ 	these soft sequeunces irrespective of the fact whether the soft sequence is
+ 	actually loaded in hardware or not.
+		A soft sequence can be loaded in the hardware by using the 'load' record.
+ 	The user can modify any soft sequence anytime but if that sequence happens to
+	be loaded, the changes are not directly propogated to the hardware. 'commit'
+ 	record can be used to commit the changes to the hardware. commit makes sure that
+ 	the sequenceRam is not modified when it is active.
+		The seqRamMgr or sequenceRam itself does not do any checking on the soft
+	sequence passed to them. The soft sequence class should be doing all the error
+ 	checking. For example there should not be any collision in timeStamp of the events
+ 	in the soft sequence. It should also make sure that the last event in the
+	sequence is the end of sequence(i.e. 0x7f). Also the number of event code and
+ 	timeStamp in the soft sequence should be the same. Currently the code does not
+ 	include a proper soft sequence implementation, just a basic one, to test the
+ 	seqRamMgr and sequenceRam. 
 
 
 	Class: evgSeqRamMgr
@@ -185,26 +202,49 @@ Sequence Ram:
 
 	User uses 'evgSeqRamMgr' class to intaract with the 'evgSeqRam' class, which
 	actually manipulates the sequenceRam registers on EVG. It maintains a list of
- 	all Soft sequences and SequenceRam objects.
+ 	all Soft sequences and SequenceRam objects. 
 
 	Usage:
+		-Load the soft sequence(Binary)
 		caput EVG$(cardNum):Seq$(seqNum):load 1
-			Load the soft sequence with ID 'seqNum' into the sequencer
+	Load the soft sequence with ID 'seqNum' into the unloaded sequenceRam. 
+	If both the sequnceRam are loaded returns an error.		
 
-		caput EVG$(cardNum):Seq$(seqNum):unload 1
-			Unload the soft sequence with ID 'seqNum' from the sequencer
-
+		-Unload the soft sequence(Binary)
+	Unload the soft sequence with ID 'seqNum' from the sequencer.
+	caput EVG$(cardNum):Seq$(seqNum):unload 1
+	
+		-Commit the soft sequence(Binary)		
 		caput EVG$(cardNum):Seq$(seqNum):commit 1
-			Commit the soft sequence with ID 'seqNum' to the sequencer
+	Commit the soft sequence with ID 'seqNum' to the sequence. 
+	Commit record is used to update an sequence which is currently loaded in 
+	one of the sequenceRam. When the user commits an updated sequence and if
+	the old sequence is not running (i.e. the sequenceRam in which the old 
+	sequence is loaded is disabled) then the new updated sequence is writen to
+	the sequenceRam. 
+	Modifing the sequenceRam when it is running gives undefined behavior hence
+	if the old sequence is running(i.e. the sequenceRam in which the old sequence
+	is loaded is running) then the commit returns but before returning it sets up
+	a callback to process the commmit record again after the current old seqeuence
+	reaches the end of sequence.  
+	
 
+		-Enable the soft sequence(Binary)
 		caput EVG$(cardNum):Seq$(seqNum):enable 1
-			Enable the sequencer with soft sequence ID 'seqNum'
-
+	Enable the soft sequence with id 'seqNum'. This basically enables
+	the sequenceRam into which that soft sequence is loaded. If sequenceRam is
+ 	already loaded the record does nothing. 
+	
+			
+		-Disable the soft sequence(Binary)
 		caput EVG$(cardNum):Seq$(seqNum):disable 1
-			Disable the sequencer with soft sequence ID 'seqNum'
-
-		Macro: 	$(cardNum) = Logical card number EVG
-				$(seqNum) = ID of the soft sequence
+	Disable the soft sequence with id 'seqNum'. This basically disables the
+	sequenceRam into which that soft sequence is loaded. If the sequence is currently
+	running the record does not wait for the current sequence to complete is just
+	disables the sequenceRam. 
+	
+	Macro: 	$(cardNum) = Logical card number EVG
+			$(seqNum) = ID of the soft sequence
 
 				------------------------------
 
@@ -212,7 +252,8 @@ Sequence Ram:
 	Files: evgSeqRam.h/evgSeqRam.cpp/devEvgSeq.cpp/evgSeq.db
 
 	The EVG user doesn't deal with this class directly to manipulate the sequencer
-	registers but instead uses 'evgSeqRamMgr' which in turn uses 'evgSeqRam' interface.
+	registers but instead uses 'evgSeqRamMgr' which in turn uses 'evgSeqRam' interface
+ 	to configure the  sequenceRam.
 
 				------------------------------
 
@@ -221,7 +262,7 @@ Sequence Ram:
 
 	This class is used as soft sequence. 
 	Usage:
-		caput -a EVG$(cardNum):Seq$(seqNum):timeStamp
+		caput -a EVG$(cardNum):Seq$(seqNum):timeStamp 
 
 		caput -a EVG$(cardNum):Seq$(seqNum):eventCode
 
