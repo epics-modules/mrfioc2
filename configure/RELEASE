@@ -1,3 +1,4 @@
+#------------------------------------------------------------------------------
 #RELEASE Location of external products
 #
 # IF YOU MAKE ANY CHANGES to this file you MUST at least run
@@ -15,19 +16,199 @@
 #  RELEASE.$(EPICS_HOST_ARCH).Common
 #  RELEASE.Common.$(T_A)
 #  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
+#------------------------------------------------------------------------------
 
-TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
+#------------------------------------------------------------------------------
+# Define EPICS Base Release version and location of makeBaseApp templates
+#------------------------------------------------------------------------------
 
+EPICS_RELEASE = R3.14.9
+TEMPLATE_TOP = /ade/epics/supTop/share/R3.14.9/lcsTemplates/makeBaseApp/top
+
+#------------------------------------------------------------------------------
+# Define locations of top-level directories
+#------------------------------------------------------------------------------
+
+ADE_TOP        = /ade/epics
+DOC_TOP        = $(ADE_TOP)/docTop
+EXTENSIONS_TOP = $(ADE_TOP)/supTop/extensions/$(EPICS_RELEASE)
+SHARE_TOP      = $(ADE_TOP)/supTop/share/$(EPICS_RELEASE)
+OPIROOT        = ${TOP}
+
+#------------------------------------------------------------------------------
+# Define the location of the CapFast template files
+#------------------------------------------------------------------------------
+
+CAPFAST_TEMPLATES = $(EXTENSIONS_TOP)/src/edif/capfastCommon
+
+#------------------------------------------------------------------------------
+# If you don't want to install into $(TOP) then
+# define INSTALL_LOCATION_APP here
+#------------------------------------------------------------------------------
+#
+#INSTALL_LOCATION_APP=<fullpathname>
+
+#------------------------------------------------------------------------------
+# Define location of each external product you wish to include.
+# Note: The order the products are listed determines the order in which
+#       their include files are searched.
+#------------------------------------------------------------------------------
+
+
+###############################################################################
+#  The following shared products must be enabled for all IOCs.
+#    IOC_UTIL  = Utilities that run on every IOC
+#    IOC_STATS = IOC Health statistics
+#
+###############################################################################
+
+# ----------------------------------------------------------------------------
+# IOC_STATS: IOC Status Monitor
+# ----------------------------------------------------------------------------
+# This module provides device support for the SLAC IOC status monitoring
+# facility.
+# 
+IOC_STATS = $(SHARE_TOP)/devIocStats/prod
+
+# ----------------------------------------------------------------------------
+# IOC_UTIL: LCS Common IOC Support
+# ----------------------------------------------------------------------------
+# This is a required IOC component for all IOCs to give them access to the
+# common LCS IOC utilities such as the heartbeat, reboot, and knob_advisor
+# 
+#IOC_UTIL = $(SHARE_TOP)/iocutil/prod
+
+
+###############################################################################
+#  The following shared products may be required for compactRIO IOCs.
+#    LVSM  = Generic LabVIEW/EPICS Shared Memory Library
+#    IIO   = LabVIEW/EPICS Shared Memory Library for Industrial I/O (RICE Repl)
+#
+###############################################################################
+
+# ----------------------------------------------------------------------------
+# IIO: LabView/Shared Memory Support for Industrial I/O (RICE Replacement)
+# ----------------------------------------------------------------------------
+# This module provides device support for interfacing the LCS industrial I/O
+# device support to LabView VI's via a shared-memory interface.
+#
+#IIO = $(SHARE_TOP)/iio/prod
+
+# ----------------------------------------------------------------------------
+# LVSM: LabView/Shared Memory Support
+# ----------------------------------------------------------------------------
+# This module provides device support for interfacing to LabView VI's via
+# a shared-memory interface.
+#
+#LVSM = $(SHARE_TOP)/lv-sm/prod
+
+
+###############################################################################
+#  Other shared products you may or may not want.
+#
+###############################################################################
+
+# ----------------------------------------------------------------------------
+# ASYN: APS ASYN Support
+# ----------------------------------------------------------------------------
+# This module provides support for the APS asyn package.
+# 
+#ASYN=$(SHARE_TOP)/asyn/prod
+LINUX_GPIB=NO
+
+# ----------------------------------------------------------------------------
+# AUTOSAVE: Automatic Save/Restore Utilitiy
+# ----------------------------------------------------------------------------
+# This module provides support for the synApps autosave package.
+# 
+AUTOSAVE=$(SHARE_TOP)/autosave/prod
+
+# ----------------------------------------------------------------------------
+# CAMAC: Device and driver support for CAMAC I/O
+# ----------------------------------------------------------------------------
+# This is a common IOC component used by many IOCs to provide access to 
+# CAMAC drivers and device support modules.
+# 
+#CAMAC = $(SHARE_TOP)/camac/prod
+
+# ----------------------------------------------------------------------------
+# IPAC: Driver support for Industry Pack (IP) carrier boards
+# ----------------------------------------------------------------------------
+# This is a common IOC component used by many IOCs to provide
+# device-independent setup and control of the industry pack carrier board.
+# 
+#IPAC = $(SHARE_TOP)/ipac/prod
+
+# ----------------------------------------------------------------------------
+# KNOB: LANSCE Knob Support
+# ----------------------------------------------------------------------------
+# This component is only needed by IOCs that support LANSCE knob hardware
+# or use the knobAdvisorRecord.
+# 
+#KNOB = $(SHARE_TOP)/lansce_knobs/prod
+
+# ----------------------------------------------------------------------------
+# PCRE: Perl-Compatible Regular Expression Support
+# ----------------------------------------------------------------------------
+# This module provides support for the open-source perl-compatible regular
+# expression handler. This package is used by StreamDevice.
+# 
+#PCRE = $(SHARE_TOP)/pcre/prod
+
+# ----------------------------------------------------------------------------
+# RECORDS: Custom and Unbundled Record Support
+# ----------------------------------------------------------------------------
+# This is a common IOC component used by many IOCs to provide access to 
+# record support code and database definition files that are not
+# part of EPICS base.
+# 
+#RECORDS = $(SHARE_TOP)/rec/prod
+
+# ----------------------------------------------------------------------------
+# RPC: Sun RPC Support
+# ----------------------------------------------------------------------------
+# This module provides the configuration and rule files for building
+# Sun RPC clients and hosts.  To build RPC client and server software
+# in your application, uncomment the following two lines:
+# 
+#RPC = $(SHARE_TOP)/rpc/prod
+#-include $(RPC)/configure/CONFIG_RPC
+
+# ----------------------------------------------------------------------------
+# SNCSEQ: EPICS unbundled sequencer Support
+# ----------------------------------------------------------------------------
 #If using the sequencer, point SNCSEQ at its top directory:
-#SNCSEQ=$(EPICS_BASE)/../modules/soft/seq
+#
+#SNCSEQ=$(SHARE_TOP)/seq/prod
 
-# EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE=/usr/epics/base
+# ----------------------------------------------------------------------------
+# STREAM: StreamDevice Support from PSI
+# ----------------------------------------------------------------------------
+# This module contains the PSI StreamDevice support for devices with a
+# byte-stream based communication interface.
+# 
+#STREAM = $(SHARE_TOP)/StreamDevice/prod
 
-# IOC statistics (cpu and mem usage, ...)
-#DEVIOCSTATS=$(EPICS_BASE)
+# ----------------------------------------------------------------------------
+# TIMING: MRF timing hardware Support
+# ----------------------------------------------------------------------------
+# The is a common IOC component used by most IOCs to provide timing gates from
+# the MRF event receiver module.
+# 
+#TIMING=$(SHARE_TOP)/timing/prod
 
-#Capfast users may need the following definitions
-#CAPFAST_TEMPLATES=
-#SCH2EDIF_PATH=
+# ----------------------------------------------------------------------------
+# VXSTATS: vxWorks Status Monitor
+# ----------------------------------------------------------------------------
+# This module provides a system monitor for vxWorks systems.
+#   (It has been supplanted by IOC_STATS, which works on vxWorks and Linux
+#    soft IOCs)
+# 
+#VXSTATS = $(SHARE_TOP)/vxStats/prod
 
+#------------------------------------------------------------------------------
+# Define EPICS_BASE at the end so that any includes it
+# contains can be overridden by the applications above.
+#------------------------------------------------------------------------------
+
+EPICS_BASE = /ade/epics/supTop/base/R3.14.9
