@@ -42,8 +42,17 @@ prop_entry<CML,bool> props_bool[] = {
   {"Reset", property<CML,bool>(0, &CML::inReset, &CML::reset)},
   {"Power", property<CML,bool>(0, &CML::powered, &CML::power)},
   {"Freq Trig Lvl", property<CML,bool>(0, &CML::polarityInvert, &CML::setPolarityInvert)},
+  {"Pat Recycle", property<CML,bool>(0, &CML::recyclePat, &CML::setRecyclePat)},
   {NULL,property<CML,bool>()}
 };
+
+static const
+prop_entry<CML,double> props_double[] = {
+  {"Counts High", property<CML,double>(0, &CML::timeHigh, &CML::setTimeHigh)},
+  {"Counts Low", property<CML,double>(0, &CML::timeLow, &CML::setTimeLow)},
+  {NULL,property<CML,double>()}
+};
+
 
 static const
 prop_entry<CML,epicsUInt32> props_epicsUInt32[] = {
@@ -213,6 +222,9 @@ extern "C" {
 
 PROPERTY_DSET_LONGIN (CML, get_cml, props_epicsUInt32);
 PROPERTY_DSET_LONGOUT(CML, get_cml, props_epicsUInt32);
+
+PROPERTY_DSET_AI(CML, get_cml, props_double);
+PROPERTY_DSET_AO(CML, get_cml, props_double);
 
 PROPERTY_DSET_BI(CML, get_cml, props_bool);
 PROPERTY_DSET_BO(CML, get_cml, props_bool);

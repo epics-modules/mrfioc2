@@ -9,36 +9,36 @@
 
 #include "evgRegMap.h"
 
-evgMxc::evgMxc(const epicsUInt32 id, const volatile epicsUInt8* pReg):
-id(id),
-pReg(pReg) {	
+evgMxc::evgMxc(const epicsUInt32 id, volatile epicsUInt8* const pReg):
+m_id(id),
+m_pReg(pReg) {	
 }
 
 bool 
 evgMxc::getMxcOutStatus() {
-	epicsUInt32 muxCtrl = READ32(pReg, MuxControl(id));
+	epicsUInt32 muxCtrl = READ32(m_pReg, MuxControl(m_id));
 	return muxCtrl & EVG_MUX_STATUS;
 }
 
 bool 
 evgMxc::getMxcOutPolarity() {
-	epicsUInt32 muxCtrl = READ32(pReg, MuxControl(id));
+	epicsUInt32 muxCtrl = READ32(m_pReg, MuxControl(m_id));
 	return muxCtrl & EVG_MUX_POLARITY;
 }
 
 epicsStatus 
 evgMxc::setMxcOutPolarity(bool polarity) {
 	if(polarity)
-		BITSET32(pReg, MuxControl(id), EVG_MUX_POLARITY);
+		BITSET32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
 	else
-		BITCLR32(pReg, MuxControl(id), EVG_MUX_POLARITY);
+		BITCLR32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
 
 	return OK;
 }
 
 epicsUInt32 
 evgMxc::getMxcPrescaler() {
-	return READ32(pReg, MuxPrescaler(id));
+	return READ32(m_pReg, MuxPrescaler(m_id));
 }
 	
 epicsStatus 
@@ -47,17 +47,17 @@ evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
 		printf("ERROR: Invalid preScaler value in Multiplexed Counter : %d\n", preScaler);
 		return ERROR;
 	}
-	WRITE32(pReg, MuxPrescaler(id), preScaler);
+	WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 	return OK;
 }
 
 epicsUInt8
 evgMxc::getMxcTrigEvtMap() {
-	return READ8(pReg, MuxTrigMap(id));
+	return READ8(m_pReg, MuxTrigMap(m_id));
 }
 
 epicsStatus
 evgMxc::setMxcTrigEvtMap(epicsUInt8 map) {
-	WRITE8(pReg, MuxTrigMap(id), map);
+	WRITE8(m_pReg, MuxTrigMap(m_id), map);
 	return OK;
 }

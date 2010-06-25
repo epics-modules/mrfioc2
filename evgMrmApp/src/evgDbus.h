@@ -5,14 +5,14 @@
 
 class evgDbus {
 public:
-	evgDbus(const epicsUInt32, const volatile epicsUInt8*);
+	evgDbus(const epicsUInt32, volatile epicsUInt8* const);
 	~evgDbus();
 	
 	epicsStatus setDbusMap(epicsUInt16);
 
 private:
-	const epicsUInt32 			id;
-	const volatile epicsUInt8* 	pReg;
+	const epicsUInt32 			m_id;
+	volatile epicsUInt8* const	m_pReg;
 	
 };
 

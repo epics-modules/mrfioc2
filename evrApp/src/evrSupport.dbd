@@ -27,6 +27,8 @@ device(longout,    INST_IO, devlongoutOutput, "EVR Output")
 
 # CML Output devices
 # '@C=$(C), I=$(I), P=PROPNAME'
+device(ao,      INST_IO, devaoCML, "EVR CML")
+device(ai ,     INST_IO, devaiCML, "EVR CML")
 device(bo,      INST_IO, devboCML, "EVR CML")
 device(bi ,     INST_IO, devbiCML, "EVR CML")
 device(longout, INST_IO, devlongoutCML, "EVR CML")
@@ -75,3 +77,5 @@ device(event,    INST_IO, devEventEVR, "EVR")
 
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
+
+registrar(asub_evr)

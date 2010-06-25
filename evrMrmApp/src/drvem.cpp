@@ -157,7 +157,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     if(nCML && ver>=4){
         shortcmls.resize(nCML);
         for(size_t i=0; i<nCML; i++){
-            shortcmls[i]=new MRMCML(i,base);
+            shortcmls[i]=new MRMCML(i,*this);
         }
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
@@ -174,6 +174,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
         scanIoInit(&events[i].occured);
     }
+
+    eventClock=FracSynthAnalyze(READ32(base, FracDiv),
+                                fracref,0)*1e6;
 }
 
 EVRMRM::~EVRMRM()
@@ -382,13 +385,6 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     epicsInterruptUnlock(iflags);
 }
 
-double
-EVRMRM::clock() const
-{
-    return FracSynthAnalyze(READ32(base, FracDiv),
-                            fracref,0)*1e6;
-}
-
 void
 EVRMRM::clockSet(double freq)
 {
@@ -404,6 +400,8 @@ EVRMRM::clockSet(double freq)
     if(newfrac==0)
         throw std::out_of_range("New frequency can't be used");
 
+    int iflags=epicsInterruptLock();
+
     epicsUInt32 oldfrac=READ32(base, FracDiv);
 
     if(newfrac!=oldfrac){
@@ -412,6 +410,9 @@ EVRMRM::clockSet(double freq)
         // Don't change the control word unless needed.
 
         WRITE32(base, FracDiv, newfrac);
+
+        eventClock=FracSynthAnalyze(READ32(base, FracDiv),
+                                    fracref,0)*1e6;
     }
 
     // USecDiv is accessed as a 32 bit register, but
@@ -422,6 +423,8 @@ EVRMRM::clockSet(double freq)
     if(newudiv!=oldudiv){
         WRITE32(base, USecDiv, newudiv);
     }
+
+    epicsInterruptUnlock(iflags);
 }
 
 epicsUInt32

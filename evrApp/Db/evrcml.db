@@ -56,6 +56,21 @@ record(mbbo, "$(P)$(CML)mode") {
   field( IVOA, "Don't drive outputs")
 }
 
+record(calcout, "$(P)$(CML)res") {
+  field(INPA, "$(P)clock:period CP")
+  field(CALC, "1e9*A/20")
+  field(EGU , "ns")
+  field(FLNK, "$(P)$(CML)res:fo")
+}
+
+record(fanout, "$(P)$(CML)res:fo") {
+  field(DESC, "Clock change resync")
+  field(LNK1, "$(P)$(CML)freq:high")
+  field(LNK2, "$(P)$(CML)freq:low")
+  field(LNK3, "$(P)$(CML)pat:x:calc")
+  field(LNK4, "$(P)$(CML)pat:dly:calc")
+}
+
 record(longout, "$(P)$(CML)rise") {
   field(DESC, "Rising edge pattern")
   field(DTYP, "EVR CML")
@@ -118,30 +133,50 @@ record(bo, "$(P)$(CML)freq:level") {
   field(ONAM, "Active low")
 }
 
-record(longout, "$(P)$(CML)freq:high") {
-  field(DESC, "# number of cnts active")
+record(ao, "$(P)$(CML)freq:high") {
+  field(DESC, "Time active")
   field(DTYP, "EVR CML")
   field(OUT, "@C=$(C), I=$(IDX), P=Counts High")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "20")
-  field(HOPR, "65535")
-  field(LOPR, "20")
-  field(DRVH, "65535")
-  field(DRVL, "20")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(CML)freq:high:rbv")
 }
 
-record(longout, "$(P)$(CML)freq:low") {
-  field(DESC, "# number of cnts active")
+record(longin, "$(P)$(CML)freq:high:rbv") {
+  field(DTYP, "EVR CML")
+  field(INP, "@C=$(C), I=$(IDX), P=Counts High")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+record(ao, "$(P)$(CML)freq:low") {
+  field(DESC, "Time inactive")
   field(DTYP, "EVR CML")
   field(OUT, "@C=$(C), I=$(IDX), P=Counts Low")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "20")
-  field(HOPR, "65535")
-  field(LOPR, "20")
-  field(DRVH, "65535")
-  field(DRVL, "20")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(CML)freq:low:rbv")
+}
+
+record(longin, "$(P)$(CML)freq:low:rbv") {
+  field(DTYP, "EVR CML")
+  field(INP, "@C=$(C), I=$(IDX), P=Counts Low")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
 }
 
 record(waveform, "$(P)$(CML)pat") {
@@ -149,7 +184,7 @@ record(waveform, "$(P)$(CML)pat") {
   field(DTYP, "EVR CML Pattern Set")
   field(INP, "@C=$(C), I=$(IDX), P=Pattern Set")
   field(FTVL, "UCHAR")
-  field(NELM, "40940") # 20*2047
+  field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
   field(FLNK, "$(P)$(CML)pat:rbv")
@@ -161,7 +196,69 @@ record(waveform, "$(P)$(CML)pat:rbv") {
   field(PINI, "YES")
   field(INP, "@C=$(C), I=$(IDX), P=Pattern Get")
   field(FTVL, "UCHAR")
-  field(NELM, "40940") # 20*2047
+  field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
+  field(FLNK, "$(P)$(CML)pat:x:calc")
 }
+
+record(aSub, "$(P)$(CML)pat:x:calc") {
+  field(SNAM, "Timeline")
+  field(BRSV, "INVALID")
+  field(INPA, "0")
+  field( FTA, "DOUBLE")
+  field(INPB, "$(P)$(CML)res NPP")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(P)$(CML)pat.NORD NPP")
+  field( FTC, "LONG")
+  field(OUTA, "$(P)$(CML)pat:x PP")
+  field(FTVA, "DOUBLE")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
+
+record(waveform, "$(P)$(CML)pat:x") {
+  field(FTVL, "DOUBLE")
+  field(NELM, "$(MAX=40940)")
+  field(EGU , "ns")
+}
+
+# Delay gen calculator for CML waveform
+
+record(bo, "$(P)$(CML)pat:dly:ena") {
+  field(DESC, "Disable calculator")
+  field(ONAM, "Disable")
+  field(ZNAM, "Enable")
+  field(UDF , "0")
+}
+
+record(ao, "$(P)$(CML)pat:dly") {
+  field(PINI, "YES")
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(OUT , "$(P)$(CML)pat:dly:calc.A PP")
+  field(EGU , "ns")
+  field(UDF , "0")
+  field(VAL , "16")
+}
+
+record(ao, "$(P)$(CML)pat:dly:wth") {
+  field(PINI, "YES")
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(OUT , "$(P)$(CML)pat:dly:calc.B PP")
+  field(EGU , "ns")
+  field(UDF , "0")
+  field(VAL , "50")
+}
+
+record(aSub, "$(P)$(CML)pat:dly:calc") {
+  field(SDIS, "$(P)$(CML)pat:dly:ena")
+  field(SNAM, "Delay Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "DOUBLE")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(P)$(CML)res NPP")
+  field( FTC, "DOUBLE")
+  field(OUTA, "$(P)$(CML)pat PP")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
+

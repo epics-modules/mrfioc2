@@ -4,10 +4,12 @@
 
 #include "evr/cml.h"
 
+class EVRMRM;
+
 class MRMCML : public CML
 {
 public:
-  MRMCML(unsigned char, volatile unsigned char *);
+  MRMCML(unsigned char, EVRMRM&);
   virtual ~MRMCML();
 
   virtual cmlMode mode() const;
@@ -37,8 +39,15 @@ public:
   virtual epicsUInt32 countLow () const;
   virtual void setCountHigh(epicsUInt32);
   virtual void setCountLow (epicsUInt32);
+  virtual double timeHigh() const;
+  virtual double timeLow () const;
+  virtual void setTimeHigh(double);
+  virtual void setTimeLow (double);
 
   // For Pattern mode
+
+  virtual bool recyclePat() const;
+  virtual void setRecyclePat(bool);
 
   virtual epicsUInt32 lenPattern() const;
   virtual epicsUInt32 lenPatternMax() const;
@@ -48,6 +57,7 @@ public:
 private:
   volatile unsigned char *base;
   unsigned char N;
+  EVRMRM& owner;
 };
 
 #endif // EVRMRMCMLSHORT_HPP_INC

@@ -6,10 +6,12 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
+#include "drvem.h"
 
-MRMCML::MRMCML(unsigned char i,volatile unsigned char *b)
-  :base(b)
+MRMCML::MRMCML(unsigned char i,EVRMRM& o)
+  :base(o.base)
   ,N(i)
+  ,owner(o)
 {
 }
 
@@ -154,24 +156,67 @@ MRMCML::countLow () const
 void
 MRMCML::setCountHigh(epicsUInt32 v)
 {
-  if(v<20)
-    v=20;
-  else if(v>65535)
-    v=65535;
+  if(v<=20 || v>=65535)
+    throw std::out_of_range("Invalid CML freq. count");
   WRITE16(base, OutputCMLCountHigh(N), v);
 }
 
 void
 MRMCML::setCountLow (epicsUInt32 v)
 {
-  if(v<20)
-    v=20;
-  else if(v>65535)
-    v=65535;
+  if(v<=20 || v>=65535)
+    throw std::out_of_range("Invalid CML freq. count");
   WRITE16(base, OutputCMLCountLow(N), v);
 }
 
+double
+MRMCML::timeHigh() const
+{
+  double period=1.0/(OutputCMLPatNBit*owner.clock());
+
+  return countHigh()*period;
+}
+
+double
+MRMCML::timeLow () const
+{
+  double period=1.0/(OutputCMLPatNBit*owner.clock());
+
+  return countLow()*period;
+}
+
+void
+MRMCML::setTimeHigh(double v)
+{
+  double period=1.0/(OutputCMLPatNBit*owner.clock());
+
+  setCountHigh(v/period);
+}
+
+void
+MRMCML::setTimeLow (double v)
+{
+  double period=1.0/(OutputCMLPatNBit*owner.clock());
+
+  setCountLow(v/period);
+}
+
   // For Pattern mode
+
+bool
+MRMCML::recyclePat() const
+{
+    return READ32(base, OutputCMLEna(N)) & OutputCMLEna_cycl;
+}
+
+void
+MRMCML::setRecyclePat(bool s)
+{
+    if(s)
+        BITSET(NAT,32,base, OutputCMLEna(N), OutputCMLEna_cycl);
+    else
+        BITCLR(NAT,32,base, OutputCMLEna(N), OutputCMLEna_cycl);
+}
 
 epicsUInt32
 MRMCML::lenPattern() const
@@ -214,7 +259,7 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   // If we are given a length that is not a multiple of 20
   // then truncate.
   if(blen%OutputCMLPatNBit)
-    blen-=blen%OutputCMLPatMask;
+    blen-=blen%OutputCMLPatNBit;
 
   if(blen>lenPatternMax())
     throw std::out_of_range("Pattern is too long");

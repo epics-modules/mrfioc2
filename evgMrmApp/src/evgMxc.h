@@ -5,7 +5,7 @@
 
 class evgMxc {
 public:
-	evgMxc(const epicsUInt32, const volatile epicsUInt8*);
+	evgMxc(const epicsUInt32, volatile epicsUInt8* const);
 	~evgMxc();
 
 	bool getMxcOutStatus();
@@ -20,8 +20,8 @@ public:
 	epicsStatus setMxcTrigEvtMap(epicsUInt8);
 
 private:
-	const epicsUInt32 			id;
-	const volatile epicsUInt8*	pReg;
+	const epicsUInt32 			m_id;
+	volatile epicsUInt8* const	m_pReg;
 };
 
 #endif//EVGMXC_H

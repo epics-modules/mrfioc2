@@ -5,8 +5,8 @@ record(bo, "EVG$(cardNum):TrigEvt$(trigEvtNum)Ena") {
   	field( PINI, "YES")
 	field( VAL , "1")
 	field( UDF, "0")
-  	field( ZNAM, "Disabled")
-  	field( ONAM, "Enabled")
+  	field( ZNAM, "Disable")
+  	field( ONAM, "Enable")
 }
 
 record(longout, "EVG$(cardNum):TrigEvt$(trigEvtNum)Code") {

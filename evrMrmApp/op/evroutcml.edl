@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 27
-y 495
-w 440
-h 390
+x 4
+y 281
+w 442
+h 405
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -22,6 +22,21 @@ botShadowColor index 11
 title "EVR $(P) CML $(O)"
 pvType "$(P)"
 endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 6
+y 193
+w 427
+h 204
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -242,6 +257,7 @@ y 70
 w 89
 h 21
 controlPv "$(P):$(O):rise"
+format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -265,6 +281,7 @@ y 97
 w 89
 h 21
 controlPv "$(P):$(O):high"
+format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -288,6 +305,7 @@ y 124
 w 89
 h 21
 controlPv "$(P):$(O):fall"
+format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -311,6 +329,7 @@ y 151
 w 89
 h 21
 controlPv "$(P):$(O):low"
+format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -441,17 +460,19 @@ minor 5
 release 0
 x 341
 y 105
-w 89
+w 59
 h 21
 controlPv "$(P):$(O):freq:high"
 font "helvetica-medium-r-12.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 editable
 motifWidget
 limitsFromDb
 nullColor index 14
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
@@ -464,17 +485,19 @@ minor 5
 release 0
 x 341
 y 135
-w 89
+w 59
 h 21
 controlPv "$(P):$(O):freq:low"
 font "helvetica-medium-r-12.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 editable
 motifWidget
 limitsFromDb
 nullColor index 14
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
@@ -558,19 +581,107 @@ value {
 }
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
+# (X-Y Graph)
+object xyGraphClass
 beginObjectProperties
 major 4
-minor 0
+minor 6
 release 0
-x 6
-y 193
-w 427
-h 186
-lineColor index 3
-fill
-fillColor index 3
+# Geometry
+x 14
+y 244
+w 407
+h 147
+# Appearance
+border
+fgColor index 14
+bgColor index 0
+gridColor index 14
+font "helvetica-medium-r-12.0"
+# Operating Modes
+nPts 2
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMin 0
+xMax 1
+# Y axis properties
+showYAxis
+yAxisSrc "fromUser"
+yMin -0.1
+yMax 1.1
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 2
+xPv {
+  0 "$(P):$(O):pat:x"
+  1 "$(P):$(O):pat:x"
+}
+yPv {
+  0 "$(P):$(O):pat"
+  1 "$(P):$(O):pat:rbv"
+}
+lineStyle {
+  1 "dash"
+}
+plotUpdateMode {
+  0 "y"
+  1 "y"
+}
+plotSymbolType {
+  0 "circle"
+  1 "diamond"
+}
+plotColor {
+  0 index 21
+  1 index 26
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 402
+y 105
+w 20
+h 21
+controlPv "evr2:fpout4:freq:high.EGU"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 402
+y 135
+w 20
+h 21
+controlPv "evr2:fpout4:freq:low.EGU"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
 # (Static Text)
@@ -592,56 +703,206 @@ value {
 }
 endObjectProperties
 
-# (X-Y Graph)
-object xyGraphClass
+# (Group)
+object activeGroupClass
 beginObjectProperties
 major 4
-minor 6
+minor 0
 release 0
-# Geometry
-x 32
-y 219
-w 378
-h 147
-# Appearance
-border
+x 13
+y 202
+w 409
+h 36
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 13
+y 202
+w 409
+h 36
+lineColor index 14
+fillColor index 3
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 400
+y 212
+w 19
+h 19
+controlPv "$(P):$(O):pat:dly:wth.EGU"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 263
+y 212
+w 19
+h 19
+controlPv "$(P):$(O):pat:dly.EGU"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 292
+y 212
+w 35
+h 18
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Width"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 147
+y 212
+w 35
+h 18
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Delay"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 325
+y 212
+w 69
+h 19
+controlPv "$(P):$(O):pat:dly:wth"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
-gridColor index 14
+editable
+motifWidget
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 189
+y 212
+w 69
+h 19
+controlPv "$(P):$(O):pat:dly"
 font "helvetica-medium-r-12.0"
-# Operating Modes
-nPts 2
-# X axis properties
-showXAxis
-xAxisSrc "AutoScale"
-xMax 1
-# Y axis properties
-showYAxis
-yAxisSrc "AutoScale"
-yMax 1
-# Y2 axis properties
-y2AxisSrc "AutoScale"
-y2Max 1
-# Trace Properties
-numTraces 2
-yPv {
-  0 "$(P):$(O):pat"
-  1 "$(P):$(O):pat:rbv"
+fgColor index 14
+bgColor index 0
+editable
+motifWidget
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 21
+y 207
+w 47
+h 26
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Delay"
+  "Calculator"
 }
-lineStyle {
-  1 "dash"
-}
-plotUpdateMode {
-  0 "y"
-  1 "y"
-}
-plotSymbolType {
-  0 "circle"
-  1 "diamond"
-}
-plotColor {
-  0 index 21
-  1 index 26
-}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 79
+y 212
+w 47
+h 21
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):pat:dly:ena"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
 endObjectProperties
 
