@@ -231,6 +231,7 @@ devInfoStruct* parseLink (
         Card     = ioLink->getInteger ("C"   );
         SeqNum   = ioLink->getInteger ("Seq" );
         delete ioLink;
+        ioLink = NULL;
 
         //=====================
         // Declare the sequence number and the event name
