@@ -8,6 +8,8 @@
 
 #include "evgSequence.h"
 
+//class evgSequence;
+
 class evgSeqRam {
 
 public:
@@ -20,7 +22,7 @@ public:
 	epicsStatus setTimeStamp(std::vector<epicsUInt32>);
 
 	epicsStatus setSoftTrig(bool);
-	epicsStatus setTrigSrc(SeqTrigSrc);
+	epicsStatus setTrigSrc(epicsUInt32);
 	epicsStatus setRunMode(SeqRunMode);
 
 	epicsStatus enable();

@@ -52,7 +52,7 @@ evgSeqRam::setSoftTrig(bool enable) {
 }
 
 epicsStatus
-evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
+evgSeqRam::setTrigSrc(epicsUInt32 trigSrc) {
 	WRITE8(m_pReg, SeqTrigSrc(m_id - 1), trigSrc);
 	return OK;
 }

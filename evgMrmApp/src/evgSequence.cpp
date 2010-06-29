@@ -7,8 +7,9 @@
 
 evgSequence::evgSequence(const epicsUInt32 id):
 m_id(id),
-m_trigSrc(mxc0),
-m_runMode(single) {
+m_trigSrc(0),
+m_runMode(single),
+m_seqRam(0) {
 	//For Testing purpose
  	epicsUInt8 eventCode[] = {1, 2, 3, 5, 127};
  	epicsUInt32 timeStamp[] = {125000000, 250000000, 375000000, 500000000, 625000000};
@@ -59,7 +60,6 @@ evgSequence::setTimeStamp(epicsUInt32* timeStamp, epicsUInt32 size) {
 	}
 	
 	m_timeStamp.assign(timeStamp, timeStamp + size);
-
 	return OK;
 }
 
@@ -70,12 +70,16 @@ evgSequence::getTimeStamp() {
 
 
 epicsStatus 
-evgSequence::setTrigSrc(SeqTrigSrc trigSrc) {
+evgSequence::setTrigSrc(epicsUInt32 trigSrc) {
+	if(trigSrc > 18 || (trigSrc < 16 && trigSrc > 7)) {
+		errlogPrintf("ERROR: EVG Sequencer Trigger Src %d is not valid\n", trigSrc);
+		return ERROR;
+	}
 	m_trigSrc = trigSrc;
 	return OK;
 }
 
-SeqTrigSrc 
+epicsUInt32 
 evgSequence::getTrigSrc() {
 	return m_trigSrc;
 }
@@ -90,4 +94,16 @@ evgSequence::setRunMode(SeqRunMode runMode) {
 SeqRunMode 
 evgSequence::getRunMode() {
 	return m_runMode;
+}
+
+
+epicsStatus 
+evgSequence::setSeqRam(evgSeqRam* seqRam) {
+	m_seqRam = seqRam;
+	return OK;
+}
+
+evgSeqRam* 
+evgSequence::getSeqRam() {
+	return m_seqRam;
 }

@@ -58,22 +58,20 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	return ret;
 }
 
-/** 	bo - Initialization	**/
+/** 	Initialization	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 init_bo(boRecord* pbo) {
 	return init_record((dbCommon*)pbo, &pbo->out);
 }
 
-/**		waveform - Initialization	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long
 init_wf(waveformRecord* pwf) {
 	return init_record((dbCommon*)pwf, &pwf->inp);
 }
 
-/**		mbbo - Initialization	**/
-/*returns: (-1,0)=>(failure,success)*/
+/*returns: (0,2)=>(success,success no convert)*/
 static long
 init_mbbo(mbboRecord* pmbbo) {
 	epicsStatus ret = init_record((dbCommon*)pmbbo, &pmbbo->out);
@@ -81,6 +79,12 @@ init_mbbo(mbboRecord* pmbbo) {
 		ret = 2;
 	
 	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_lo(longoutRecord* plo) {
+	return init_record((dbCommon*)plo, &plo->out);
 }
 
 
@@ -161,12 +165,20 @@ write_wf_eventCode(waveformRecord* pwf) {
 }
 
 /**		mbbo - runMode		**/
+/*returns: (0,2)=>(success,success no convert)*/
 static long
 write_mbbo_runMode(mbboRecord* pmbbo) {
 	seqPvt* pvt = (seqPvt*)pmbbo->dpvt;
 	return pvt->seq->setRunMode((SeqRunMode)pmbbo->val);
 }
 
+/**		longout - trigSrc 	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_lo_trigSrc(longoutRecord* plo) {
+	seqPvt* pvt = (seqPvt*)plo->dpvt;
+	return pvt->seq->setTrigSrc(plo->val);
+}
 
 /*************** Sequence Ram Records ******************/
 
@@ -276,6 +288,16 @@ common_dset devMbboEvgRunMode = {
     (DEVSUPFUN)write_mbbo_runMode,
 };
 epicsExportAddress(dset, devMbboEvgRunMode);
+
+common_dset devLoEvgTrigSrc = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_lo,
+    NULL,
+    (DEVSUPFUN)write_lo_trigSrc,
+};
+epicsExportAddress(dset, devLoEvgTrigSrc);
 
 
 common_dset devWfEvgLoadedSeq = {

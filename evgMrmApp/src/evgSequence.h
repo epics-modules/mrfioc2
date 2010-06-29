@@ -12,19 +12,7 @@ enum SeqRunMode {
 	normal
 };
 
-enum SeqTrigSrc {
-	mxc0 = 0,
-	mxc1 = 1,
-	mxc2 = 2,
-	mxc3 = 3,
-	mxc4 = 4,
-	mxc5 = 5,
-	mxc6 = 6,
-	mxc7 = 7,
-	AC   = 16,
-	ram0 = 17,
-	ram1 = 18
-};
+class evgSeqRam;
 
 class evgSequence {
 public:
@@ -42,19 +30,23 @@ public:
 	epicsStatus setTimeStamp(epicsUInt32*, epicsUInt32);
 	std::vector<epicsUInt32> getTimeStamp();
 
-	epicsStatus setTrigSrc(SeqTrigSrc);
-	SeqTrigSrc getTrigSrc();
+	epicsStatus setTrigSrc(epicsUInt32);
+	epicsUInt32 getTrigSrc();
 
 	epicsStatus setRunMode(SeqRunMode);
 	SeqRunMode getRunMode();
+
+	epicsStatus setSeqRam(evgSeqRam*);
+	evgSeqRam* getSeqRam();
 
 private:
 	const epicsUInt32 			m_id;
 	std::string 				m_desc;
 	std::vector<epicsUInt8> 	m_eventCode;
 	std::vector<epicsUInt32>	m_timeStamp;
-	SeqTrigSrc 					m_trigSrc;
-	SeqRunMode 					m_runMode;	
+	epicsUInt32 				m_trigSrc;
+	SeqRunMode 					m_runMode;
+	evgSeqRam*  				m_seqRam;	
 };
 
 #endif //EVG_SEQUENCE_H

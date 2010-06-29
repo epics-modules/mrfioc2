@@ -26,25 +26,6 @@ m_pReg(pReg) {
 
 }
 
-evgSeqRam*
-evgSeqRamMgr::findSeqRam(evgSequence* seq) {
-	for(unsigned int i = 0; i < m_seqRam.size(); i++) {
-		if(seq == m_seqRam[i]->getSequence())
-			return m_seqRam[i];	
-	}
-
-	return 0;
-}
-
-epicsUInt32
-evgSeqRamMgr::findSeqRamId(evgSequence* seq) {
-	evgSeqRam* seqRam = findSeqRam(seq);
-	if(seqRam)
-		return seqRam->getId();
-
-	return -1;
-}
-
 evgSeqRam* 
 evgSeqRamMgr::getSeqRam(epicsUInt32 seqRamId) {
 	if(	seqRamId < m_seqRam.size() )
@@ -83,6 +64,7 @@ evgSeqRamMgr::load(evgSequence* seq) {
 
 	if(seqRam != 0) {
 		printf("Loading Seq %d in SeqRam %d\n",seq->getId(), seqRam->getId());
+		seq->setSeqRam(seqRam);
 		seqRam->load(seq);
 		commit(seq, 0);
 		//enable(seq);
@@ -93,18 +75,20 @@ evgSeqRamMgr::load(evgSequence* seq) {
 		return ERROR;	
 	}
 }
-
+	
+/* Unload does not wait for the sequecne to get over..Should it? */
 epicsStatus
 evgSeqRamMgr::unload(evgSequence* seq) {
-	evgSeqRam* seqRam = findSeqRam(seq);
+	evgSeqRam* seqRam = seq->getSeqRam();
 	if(seqRam) {
 		printf("Unloading seq %d in SeqRam %d\n",seq->getId(), seqRam->getId());
+		seq->setSeqRam(0);
 		seqRam->unload();
 	}
 
 	return OK;
 }
-
+	
 /*
  * If the sequenceRam is not enabled then copy the sequence to the 
  * sequenceRam but if the sequenceRam is enabled then add the record 
@@ -112,7 +96,7 @@ evgSeqRamMgr::unload(evgSequence* seq) {
  */
 epicsStatus
 evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
-	evgSeqRam* seqRam = findSeqRam(seq);
+	evgSeqRam* seqRam = seq->getSeqRam();
 	if(!seqRam)
 		return OK;
 
@@ -171,7 +155,7 @@ evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
 
 epicsStatus
 evgSeqRamMgr::enable(evgSequence* seq) {
-	evgSeqRam* seqRam = findSeqRam(seq);
+	evgSeqRam* seqRam = seq->getSeqRam();
 	printf("Enabling seq %d in seqRam %d\n",seq->getId(), seqRam->getId());
 	if( (!seqRam) || seqRam->enabled() )
 		return OK;
@@ -181,10 +165,10 @@ evgSeqRamMgr::enable(evgSequence* seq) {
 	return OK;
 }
 
-
+/* disable does not wait for the sequence to get over */
 epicsStatus
 evgSeqRamMgr::disable(evgSequence* seq) {
-	evgSeqRam* seqRam = findSeqRam(seq);
+	evgSeqRam* seqRam = seq->getSeqRam();
 	if( (!seqRam) || (!seqRam->enabled()) )
 		return OK;
 	else

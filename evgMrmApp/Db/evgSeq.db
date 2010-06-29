@@ -66,6 +66,11 @@ record(mbbo, "EVG$(cardNum):Seq$(seqNum):runMode") {
 	field( TWST, "Normal")
 }
 
+record(longout, "EVG$(cardNum):Seq$(seqNum):trigSrc") {
+  	field( DTYP, "EVG SEQ TRIG SRC")
+  	field( OUT , "#C$(cardNum) S$(seqNum) @")
+	field( UDF, "0")
+}
 
 #Sequence Ram Records
 record(waveform, "EVG$(cardNum):loadedSeq") {

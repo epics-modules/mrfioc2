@@ -36,5 +36,6 @@ device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
+device( longout, VME_IO, devLoEvgTrigSrc, "EVG SEQ TRIG SRC")
 
 device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")
