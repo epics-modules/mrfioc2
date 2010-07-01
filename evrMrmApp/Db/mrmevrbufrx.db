@@ -1,0 +1,27 @@
+
+record(bo, "$(P)dbus:recv:mode") {
+  field(DESC, "Data mode")
+  field(DTYP, "MRF Data Buf Rx")
+  field(OUT , "@C=$(C), Proto=0, P=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+}
+
+record(waveform, "$(P)dbus:recv:s8") {
+  field(DESC, "Recv Buffer")
+  field(DTYP, "MRM EVR Buf Rx")
+  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Rx")
+  field(FTVL, "CHAR")
+  field(NELM, "2046")
+}
+
+record(waveform, "$(P)dbus:recv:u32") {
+  field(DESC, "Recv Buffer")
+  field(DTYP, "MRM EVR Buf Rx")
+  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Rx")
+  field(FTVL, "ULONG")
+  field(NELM, "2046")
+}
+

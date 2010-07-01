@@ -10,6 +10,12 @@ file "databuftx.db"
 {$(P), $(C), 1}
 }
 
+file "mrmevrbufrx.db"
+{pattern
+{P, C, PROTO}
+{$(P), $(C), 1}
+}
+
 file "evrmap.db"
 {pattern
 {P, C, M, func, EVT}

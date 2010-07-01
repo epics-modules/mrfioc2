@@ -4,6 +4,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 DB += mrmevrout.db
+DB += mrmevrbufrx.db
 
 DB += evr-pmc-230.db
 DB += evr-vmerf-230.db
