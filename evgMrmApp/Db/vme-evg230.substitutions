@@ -2,14 +2,26 @@ file evgMrm.db {
 { cardNum = $(cardNum) }
 }
 
-file evgFPio.db {
-pattern { cardNum, ioType , ioNum }
-{ $(cardNum), "FP_Input", 0 }
-{ $(cardNum), "FP_Input", 1 }
-{ $(cardNum), "FP_Output", 0 }
-{ $(cardNum), "FP_Output", 1 }
-{ $(cardNum), "FP_Output", 2 }
-{ $(cardNum), "FP_Output", 3 }
+file evgInput.db {
+pattern { cardNum, inpNum, inpType }
+{ $(cardNum), 0, "FP_Input" }
+{ $(cardNum), 1, "FP_Input" }
+{ $(cardNum), 0, "Univ_Input" }
+{ $(cardNum), 1, "Univ_Input" }
+{ $(cardNum), 2, "Univ_Input" }
+{ $(cardNum), 3, "Univ_Input" }
+}
+
+file evgOutput.db {
+pattern { cardNum, outNum, outType }
+{ $(cardNum), 0, "FP_Output" }
+{ $(cardNum), 1, "FP_Output" }
+{ $(cardNum), 2, "FP_Output" }
+{ $(cardNum), 3, "FP_Output" }
+{ $(cardNum), 0, "Univ_Output" }
+{ $(cardNum), 1, "Univ_Output" }
+{ $(cardNum), 2, "Univ_Output" }
+{ $(cardNum), 3, "Univ_Output" }
 }
 
 file evgDbus.db {
@@ -54,6 +66,3 @@ pattern { cardNum , seqNum, NELM}
 { $(cardNum), 1, 5}
 { $(cardNum), 2, 5}
 }
-
-
-

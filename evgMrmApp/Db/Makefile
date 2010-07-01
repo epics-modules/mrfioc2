@@ -15,11 +15,11 @@ DB += evgMrm.db
 DB += evgMxc.db
 DB += evgTrigEvt.db
 DB += evgDbus.db
-DB += evgFPio.db
+DB += evgInput.db
+DB += evgOutput.db
 DB += evgSeq.db
 DB += vme-evg230.db
 
-#DB += EvgClock.substitutions
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
 
 #----------------------------------------------------

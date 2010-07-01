@@ -17,7 +17,9 @@
 #include <mrfCommon.h> 
 #include "mrfFracSynth.h"
 
+#ifdef __rtems__
 #include <rtems/bspIo.h>
+#endif //__rtems__
 
 #include "evgRegMap.h"
 
@@ -38,13 +40,24 @@ m_pReg(pReg) {
 		}
 
 		for(int i = 0; i < evgNumFpInp; i++) {
-			m_FPio[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
-											new evgFPio(FP_Input, i, pReg);
+			m_input[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
+											new evgInput(i, pReg, FP_Input);
+		}
+
+		for(int i = 0; i < evgNumUnivInp; i++) {
+			m_input[ std::pair<epicsUInt32, std::string>(i,"Univ_Input") ] = 
+											new evgInput(i, pReg, Univ_Input);
 		}
 
 		for(int i = 0; i < evgNumFpOut; i++) {
-			m_FPio[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
-											new evgFPio(FP_Output, i, pReg);
+			m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
+											new evgOutput(i, pReg, FP_Output);
+		}	
+
+		
+		for(int i = 0; i < evgNumUnivOut; i++) {
+			m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")] = 
+											new evgOutput(i, pReg, Univ_Output);
 		}	
 
 		m_seqRamMgr = new evgSeqRamMgr(pReg, this);
@@ -54,13 +67,9 @@ m_pReg(pReg) {
 
 	irqStop0.mutex = epicsMutexMustCreate();
 	irqStop1.mutex = epicsMutexMustCreate();
-	irqStart0.mutex = epicsMutexMustCreate();
-	irqStart1.mutex = epicsMutexMustCreate();
 
 	init_cb(&irqStop0_cb, priorityLow, &evgMrm::process_cb, &irqStop0);
 	init_cb(&irqStop1_cb, priorityLow, &evgMrm::process_cb, &irqStop1);
-	init_cb(&irqStart0_cb, priorityLow, &evgMrm::process_cb, &irqStart0);
-	init_cb(&irqStart1_cb, priorityLow, &evgMrm::process_cb, &irqStart1);
 }
 
 evgMrm::~evgMrm() {
@@ -113,7 +122,7 @@ evgMrm::isr(void* arg) {
 	
 	#ifdef __rtems__
 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
-	#endif //_rtems_
+	#endif //__rtems__
 
     if(!active)
       return;
@@ -121,7 +130,7 @@ evgMrm::isr(void* arg) {
     if(active & EVG_IRQ_STOP_RAM0) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM0\n");
-		#endif //_rtems_
+		#endif //__rtems__	
 		callbackRequest(&evg->irqStop0_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM0);
     }
@@ -129,10 +138,16 @@ evgMrm::isr(void* arg) {
 	 if(active & EVG_IRQ_STOP_RAM1) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM1\n");
-		#endif //_rtems_
+		#endif //__rtems__
 		callbackRequest(&evg->irqStop1_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM1);
     }
+	
+	if(active & EVG_IRQ_EXT_INP) {
+		#ifdef __rtems__
+		printk("EVG_IRQ_EXT_INP\n");
+		#endif //_rtems_
+	}
 
     WRITE32(evg->m_pReg, IrqFlag, flags);
 
@@ -198,13 +213,22 @@ evgMrm::getDbus(epicsUInt32 dbusBit) {
 	return pDbus;
 }
 
-evgFPio*
-evgMrm::getFPio(epicsUInt32 ioNum, std::string type) {
-	evgFPio* pFPio = m_FPio[ std::pair<epicsUInt32, std::string>(ioNum, type) ];
-	if(!pFPio)
-		throw std::runtime_error("ERROR: FPio not initialized");
+evgInput*
+evgMrm::getInput(epicsUInt32 inpNum, std::string type) {
+	evgInput* pInp = m_input[ std::pair<epicsUInt32, std::string>(inpNum, type) ];
+	if(!pInp)
+		throw std::runtime_error("ERROR: Input not initialized");
 
-	return pFPio;
+	return pInp;
+}
+
+evgOutput*
+evgMrm::getOutput(epicsUInt32 outNum, std::string type) {
+	evgOutput* pOut = m_output[ std::pair<epicsUInt32, std::string>(outNum, type) ];
+	if(!pOut)
+		throw std::runtime_error("ERROR: Output not initialized");
+
+	return pOut;
 }
 
 evgSeqRamMgr*

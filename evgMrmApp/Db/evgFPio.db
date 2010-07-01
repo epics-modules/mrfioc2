@@ -1,6 +1,0 @@
-record(longout, "EVG$(cardNum):$(ioType)$(ioNum)Map") {
-	field( DTYP, "EVG FPio")
-	field( DESC, "EVG Front Panel Input Map")
-	field( OUT, "#C$(cardNum) S$(ioNum) @$(ioType)")
-	field( UDF, "0")
-}

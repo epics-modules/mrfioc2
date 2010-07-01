@@ -20,8 +20,12 @@ device( mbboDirect, VME_IO, devMbboDEvgMxc, "EVG Mxc")
 device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
 device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 
-#evgFPio.db
-device( longout, VME_IO, devLoEvgFPioMap, "EVG FPio")
+#evgInput.db
+device( mbboDirect, VME_IO, devMbboDEvgInpDbusMap, "EVG Input DBus")
+device( mbboDirect, VME_IO, devMbboDEvgInpTrigEvtMap, "EVG Input Trig Evt")
+
+#evgOutput.db
+device( mbbo, VME_IO, devMbboEvgOutMap, "EVG Output")
 
 #evgDbus.db
 device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
@@ -32,6 +36,7 @@ device( bo, VME_IO, devBoEvgUnloadSeq, "EVG UNLOAD SEQ")
 device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
 device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
 device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
+device( bo, VME_IO, devBoEvgHaltSeq, "EVG HALT SEQ")
 
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")

@@ -1,0 +1,31 @@
+record(mbboDirect, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap") {
+  	field( DTYP, "EVG Input DBus")
+  	field( OUT , "#C$(cardNum) S$(inpNum) @$(inpType)")
+	field( UDF, "0")
+  	field( NOBT, "8")
+	field( UDF, "0")
+	field( B0,"0")
+	field( B1,"0")
+	field( B2,"0")
+	field( B3,"0")
+	field( B4,"0")
+	field( B5,"0")
+	field( B6,"0")
+	field( B7,"0")
+}
+
+record(mbboDirect, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap") {
+  	field( DTYP, "EVG Input Trig Evt")
+  	field( OUT , "#C$(cardNum) S$(inpNum) @$(inpType)")
+	field( UDF, "0")
+  	field( NOBT, "8")
+	field( UDF, "0")
+	field( B0,"0")
+	field( B1,"0")
+	field( B2,"0")
+	field( B3,"0")
+	field( B4,"0")
+	field( B5,"0")
+	field( B6,"0")
+	field( B7,"0")
+}

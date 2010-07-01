@@ -5,7 +5,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
-LIBRARY_IOC_RTEMS += evgmrm
+LIBRARY_IOC += evgmrm
 
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
@@ -22,8 +22,11 @@ evgmrm_SRCS += devEvgTrigEvt.cpp
 evgmrm_SRCS += evgDbus.cpp
 evgmrm_SRCS += devEvgDbus.cpp
 
-evgmrm_SRCS += evgFPio.cpp
-evgmrm_SRCS += devEvgFPio.cpp
+evgmrm_SRCS += evgInput.cpp
+evgmrm_SRCS += devEvgInput.cpp
+
+evgmrm_SRCS += evgOutput.cpp
+evgmrm_SRCS += devEvgOutput.cpp
 
 evgmrm_SRCS += evgSequence.cpp
 evgmrm_SRCS += evgSeqRam.cpp
@@ -34,7 +37,7 @@ DBD += evgInit.dbd
 #=============================
 # Build the IOC application
 
-PROD_IOC_RTEMS = evgMrm
+PROD_IOC = evgMrm
 # evgMrm.dbd will be created and installed
 DBD += evgMrm.dbd
 

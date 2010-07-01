@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <longoutRecord.h>
+#include <mbboRecord.h>
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
@@ -9,7 +9,6 @@
 #include "dsetshared.h"
 
 #include <evgInit.h>
-
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -23,14 +22,14 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
-
+			errlogPrintf("ERROR: Failed to lookup EVG");
+		
 		std::string parm(lnk->value.vmeio.parm);
-		evgFPio* io = evg->getFPio(lnk->value.vmeio.signal, parm);
-		if(!io)
-			throw std::runtime_error("ERROR: Failed to lookup FPio");
-	
-		pRec->dpvt = io;
+		evgOutput* out = evg->getOutput(lnk->value.vmeio.signal, parm);
+		if(!out)
+			errlogPrintf("ERROR: Failed to lookup Output");
+
+		pRec->dpvt = out;
 		ret = 2;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("%s : %s\n", e.what(), pRec->name);
@@ -43,36 +42,33 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	return ret;
 }
 
-/** 	longout - Multiplexed Counter Prescalar	**/
-/*returns: (-1,0)=>(failure,success)*/
+
+/** 	mbbo - Output Map **/
+/*returns: (0,2)=>(success,success no convert)*/
 static long 
-init_lo(longoutRecord* plo) {
-	epicsUInt32 ret = init_record((dbCommon*)plo, &plo->out);
-	if (ret == 2)
-		ret = 0;
-	
-	return ret;
+init_mbbo(mbboRecord* pmbbo) {
+	return init_record((dbCommon*)pmbbo, &pmbbo->out);
 }
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_lo(longoutRecord* plo) {
-	evgFPio* io = (evgFPio*)plo->dpvt;
-	return io->setIOMap(plo->val);
+write_mbbo(mbboRecord* pmbbo) {
+	evgOutput* out = (evgOutput*)pmbbo->dpvt;
+	return out->setOutMap(pmbbo->rval);
 }
 
 
 /** 	device support entry table 		**/
 extern "C" {
 
-common_dset devLoEvgFPioMap = {
+common_dset devMbboEvgOutMap = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_lo,
+    (DEVSUPFUN)init_mbbo,
     NULL,
-    (DEVSUPFUN)write_lo,
+    (DEVSUPFUN)write_mbbo,
 };
-epicsExportAddress(dset, devLoEvgFPioMap);
+epicsExportAddress(dset, devMbboEvgOutMap);
 
 };

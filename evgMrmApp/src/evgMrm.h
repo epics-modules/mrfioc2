@@ -9,12 +9,14 @@
 #include <dbScan.h>
 #include <callback.h>
 #include <epicsMutex.h>
-  
+
+#include "evgSeqRamManager.h"  
 #include "evgMxc.h"
 #include "evgTrigEvt.h"
 #include "evgDbus.h"
-#include "evgFPio.h"
-#include "evgSeqRamManager.h"
+#include "evgInput.h"
+#include "evgOutput.h"
+
 
 const epicsUInt16 evgClkSrcInternal = 0;	// Event clock is generated internally
 const epicsUInt16 evgClkSrcRF 	    = 1;    // Event clock is derived from the RF input
@@ -57,11 +59,12 @@ public:
 	epicsUInt8 getSoftEvtCode();
 
 	/**	Access	function 	**/
-	evgMxc* getMuxCounter(epicsUInt32); 
-	evgTrigEvt* getTrigEvt(epicsUInt32);
-	evgDbus* getDbus(epicsUInt32 dbusBit);
-	evgFPio* getFPio(epicsUInt32, std::string);
-	evgSeqRamMgr* getSeqRamMgr();	
+	evgMxc* 		getMuxCounter	(epicsUInt32); 
+	evgTrigEvt* 	getTrigEvt		(epicsUInt32);
+	evgDbus* 		getDbus			(epicsUInt32);
+	evgInput*  		getInput		(epicsUInt32, std::string);
+	evgOutput* 		getOutput		(epicsUInt32, std::string);
+	evgSeqRamMgr* 	getSeqRamMgr	();	
 
 	struct irq {
 		epicsMutexId mutex;
@@ -70,12 +73,13 @@ public:
 	
 	struct irq irqStop0;
 	struct irq irqStop1;
-	struct irq irqStart0;
-	struct irq irqStart1;
+
+	CALLBACK 						irqStop0_cb;
+	CALLBACK						irqStop1_cb;
 
 private:
-	const epicsUInt32            	m_id;         // Logical number for this card
-	volatile epicsUInt8* const		m_pReg;      	// CPU Address of the card's register map
+	const epicsUInt32            	m_id;       
+	volatile epicsUInt8* const		m_pReg;
 
     epicsFloat64          			m_clkSpeed;	// In MHz
 	epicsUInt32						m_clkSrc;
@@ -89,15 +93,13 @@ private:
 	typedef std::vector<evgDbus*> 	Dbus_t;
   	Dbus_t m_dbus;
 
-	typedef std::map< std::pair<epicsUInt32, std::string >, evgFPio*> FPio_t;
-	FPio_t m_FPio;
+ 	typedef std::map< std::pair<epicsUInt32, std::string>, evgInput*> Input_t;
+ 	Input_t m_input;
+
+ 	typedef std::map< std::pair<epicsUInt32, std::string>, evgOutput*> Output_t;
+ 	Output_t m_output;
 
 	evgSeqRamMgr* 					m_seqRamMgr;
-
-	CALLBACK 						irqStop0_cb;
-	CALLBACK						irqStop1_cb;
-	CALLBACK						irqStart0_cb;
-	CALLBACK						irqStart1_cb;
 };
 
 #endif //EVGMRM_H
