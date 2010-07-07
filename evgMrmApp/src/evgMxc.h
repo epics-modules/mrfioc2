@@ -17,7 +17,7 @@ public:
 	epicsStatus setMxcPrescaler(epicsUInt32);
 	
 	epicsUInt8 getMxcTrigEvtMap();
-	epicsStatus setMxcTrigEvtMap(epicsUInt8);
+	epicsStatus setMxcTrigEvtMap(epicsUInt16);
 
 private:
 	const epicsUInt32 			m_id;

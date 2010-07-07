@@ -5,6 +5,7 @@
 #include <string>
 
 #include <epicsTypes.h>
+#include <epicsMutex.h>
 
 enum SeqRunMode {
 	single = 0,
@@ -39,6 +40,8 @@ public:
 	epicsStatus setSeqRam(evgSeqRam*);
 	evgSeqRam* getSeqRam();
 
+	epicsMutex* getLock();
+
 private:
 	const epicsUInt32 			m_id;
 	std::string 				m_desc;
@@ -46,7 +49,8 @@ private:
 	std::vector<epicsUInt32>	m_timeStamp;
 	epicsUInt32 				m_trigSrc;
 	SeqRunMode 					m_runMode;
-	evgSeqRam*  				m_seqRam;	
+	evgSeqRam*  				m_seqRam; 
+	epicsMutex* 				m_lock;
 };
 
 #endif //EVG_SEQUENCE_H

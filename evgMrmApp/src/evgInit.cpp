@@ -55,9 +55,10 @@ enableIRQ(volatile epicsUInt8* const pReg) {
 // 		EVG_IRQ_STOP_RAM0 	|
 // 		EVG_IRQ_START_RAM1 	|
 // 		EVG_IRQ_START_RAM0 	|
+// 		EVG_IRQ_EXT_INP		|
 // 		EVG_IRQ_DBUFF 		|
 // 		EVG_IRQ_FIFO		|
-// 		EVG_IRQ_RXVIO
+// 		EVG_IRQ_RXVIO       
 //  );
 
   return 0;
@@ -219,7 +220,7 @@ epicsExportRegistrar(evgMrmRegistrar);
 static const
 struct printreg
 {
-  char label[17];
+  char label[18];
   epicsUInt32 offset;
   int rsize;
 } printreg[] = {
@@ -244,7 +245,6 @@ REGINFO("MuxControl(0)", 	MuxControl(0), 		32),
 REGINFO("MuxPrescaler(0)", 	MuxPrescaler(0), 	32),
 REGINFO("FPOutMap(0)", 		FPOutMap(0), 		16),
 REGINFO("FPInMap(0)", 		FPInMap(0), 		32),
-REGINFO("FPInMap(1)", 		FPInMap(1), 		32),
 REGINFO("SeqRamTS(0,0)", 	SeqRamTS(0,0), 		32),
 REGINFO("SeqRamTS(0,1)", 	SeqRamTS(0,1), 		32),
 REGINFO("SeqRamTS(0,2)", 	SeqRamTS(0,2), 		32),

@@ -146,12 +146,12 @@
              (U16_UnivOutMap_base + (2*(n)))
 
 //=====================
-// Front Panel Input Mapping Registers
+// Front Panel Input Mapping Registers 
 //
 #define  U32_FPInMap_base       0x0500  // FP Input Port Mapping Register Array Base Offset
 
 #define  U32_FPInMap(n)       \
-             (U32_FPInMap_base + (4*(n)))
+              (U32_FPInMap_base + (4*(n)))
 
 //=====================
 // Front Panel Universal Input Mapping Registers
@@ -159,7 +159,8 @@
 #define  U32_UnivInMap_base     0x0540  // FP Univ Input Port Mapping Register Array Base Offset
 
 #define  U32_UnivInMap(n)     \
-             (U32_UnivInMap_base + (4*(n)))
+              (U32_UnivInMap_base + (4*(n)))
+
 
 //=====================
 // Transition Board (TB) Input Mapping Registers
@@ -204,10 +205,11 @@
 /**************************************************************************************************/
 
 #define EVG_IRQ_ENABLE          0x80000000     // Master Interrupt Enable Bit
-#define EVG_IRQ_STOP_RAM1       0x00002000     // Sequence RAM 1 Stop Interrupt Bit
-#define EVG_IRQ_STOP_RAM0       0x00001000     // Sequence RAM 0 Stop Interrupt Bit
-#define EVG_IRQ_START_RAM1      0x00000200     // Sequence RAM 1 Start Interrupt Bit
-#define EVG_IRQ_START_RAM0      0x00000100     // Sequence RAM 0 Start Interrupt Bit
+#define EVG_IRQ_STOP_RAM_BASE   0x00001000     // Sequence RAM Stop Interrupt Bit
+#define EVG_IRQ_STOP_RAM(N)     (EVG_IRQ_STOP_RAM_BASE<<(N))
+#define EVG_IRQ_START_RAM_BASE  0x00000100     // Sequence RAM Start Interrupt Bit
+#define EVG_IRQ_START_RAM(N)	(EVG_IRQ_START_RAM_BASE<<(N))
+#define EVG_IRQ_EXT_INP			0x00000040	   // External Input Interrupt Bit
 #define EVG_IRQ_DBUFF           0x00000020     // Data Buffer Interrupt Bit
 #define EVG_IRQ_FIFO            0x00000002     // Event FIFO Full Interrupt Bit
 #define EVG_IRQ_RXVIO           0x00000001     // Receiver Violation Bit
@@ -234,8 +236,6 @@
 #define EVG_SEQ_RAM_NORMAL      0x00000000       // Normal Mode: Repeat every trigger
 #define EVG_SEQ_RAM_SINGLE      0x00100000       // Single-Shot Mode: Disable on completion
 #define EVG_SEQ_RAM_RECYCLE  	0x00080000       // Continuous Mode: Repeat on completion
-
-
 
 
 /*

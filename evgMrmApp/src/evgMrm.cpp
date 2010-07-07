@@ -121,26 +121,27 @@ evgMrm::isr(void* arg) {
     epicsUInt32 active = flags & enable;
 	
 	#ifdef __rtems__
+	printk("\n ----------------------------------------------- \n");
 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
 	#endif //__rtems__
 
     if(!active)
       return;
 
-    if(active & EVG_IRQ_STOP_RAM0) {
+    if(active & EVG_IRQ_STOP_RAM(0)) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM0\n");
 		#endif //__rtems__	
 		callbackRequest(&evg->irqStop0_cb);
-		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM0);
+		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
     }
 
-	 if(active & EVG_IRQ_STOP_RAM1) {
+	 if(active & EVG_IRQ_STOP_RAM(1)) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM1\n");
 		#endif //__rtems__
 		callbackRequest(&evg->irqStop1_cb);
-		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM1);
+		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
     }
 	
 	if(active & EVG_IRQ_EXT_INP) {
@@ -164,7 +165,7 @@ evgMrm::isr(void* arg) {
 
 void
 evgMrm::process_cb(CALLBACK *pCallback) {
-	printf("In process_cb..\n");
+	printf("In Callback..\n");
 	void* pVoid;
 	struct irq *irqTemp;
 	dbCommon *pRec;
@@ -177,7 +178,8 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 	for(unsigned int i = 0; i < irqTemp->recList.size(); i++) {
 		pRec = irqTemp->recList[i];
 		prset = (struct rset*)pRec->rset;
-		printf("Processing Callback\n");
+		printf("Processing Record : %s \n", pRec->name);
+		printf("----------------------------------------------- \n\n");
 		dbScanLock(pRec);
 		(*(long (*)(dbCommon*))prset->process)(pRec);
 		dbScanUnlock(pRec);

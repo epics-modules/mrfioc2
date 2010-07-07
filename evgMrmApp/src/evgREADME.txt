@@ -1,3 +1,4 @@
+
 ---------------Epics device driver for MRF VME-EVG-230-------------------------
 
 Author: Jayesh Shah, NSLS2, BNL
@@ -171,6 +172,40 @@ Front Panel Input/Output:
 
 -------------------------------------------------------------------------------
 
+Input:
+	Class: evgInput
+	Files: evgInput.h/evgInput.cpp
+		
+	It is used to configure the 2 front panel input and 4 front panel universal
+ 	inputs. The driver uses two mbboDirect records for each input. One for mapping
+ 	the front panel input to the distributed bus and another for mapping the front
+ 	panel input to the trigger event.
+
+	Usage:
+		caput EVG$(cardNum):$(inpType)$(inpNum):DbusMap.Bx 1
+	where: x is (0 - 7) to map the front panel input to the distribured bus bit
+ 	0 through 7
+	
+		caput EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.Bx 1
+	where: x is (0 - 7) to map the front panel input to the Event Trigger 0 through 7
+
+-------------------------------------------------------------------------------
+
+Output:
+	Class: evgOutput
+	Files: evegOutput.h/evgOut.cpp
+	
+	It is used to configure the 4 front panel outputs and 4 four front panel
+ 	universal outputs.  The driver uses an mbbo record for each of the outputs.
+
+	Usage:
+		caput EVG$(cardNum):$(outType)$(outNum):Map map
+		Where: map = "Dbus0 - Dbus7" to map the disributed bus bit 0 to 7 to the output
+				   = "Logic High" to force logic 1 from ouput
+				   = "Logic Low" to force logic 0 from ouput
+
+-------------------------------------------------------------------------------
+
 Sequence Ram:
 		VME-EVG-230 has 2 sequenceRams or sequencers. The sequenceRam can hold 
 	upto 2048 event code, timeStamp pair. When the sequencer is triggered, an
@@ -210,9 +245,11 @@ Sequence Ram:
 	Load the soft sequence with ID 'seqNum' into the unloaded sequenceRam. 
 	If both the sequnceRam are loaded returns an error.		
 
+
 		-Unload the soft sequence(Binary)
 	Unload the soft sequence with ID 'seqNum' from the sequencer.
 	caput EVG$(cardNum):Seq$(seqNum):unload 1
+
 	
 		-Commit the soft sequence(Binary)		
 		caput EVG$(cardNum):Seq$(seqNum):commit 1
@@ -238,11 +275,19 @@ Sequence Ram:
 			
 		-Disable the soft sequence(Binary)
 		caput EVG$(cardNum):Seq$(seqNum):disable 1
-	Disable the soft sequence with id 'seqNum'. This basically disables the
+	Disable the soft sequence with id 'seqNum'. It disables the
 	sequenceRam into which that soft sequence is loaded. If the sequence is currently
-	running the record does not wait for the current sequence to complete is just
-	disables the sequenceRam. 
+	running the record waits for the current sequence to complete and then disables it. 
+
 	
+		-Halt the soft sequence(Binary)
+		caput EVG$(cardNum):Seq$(seqNum):halt 1
+	Disable the soft sequence with id 'seqNum' immediately. The difference between halt
+ 	and disable is that halt does wait for the current running sequence to complete,
+ 	it diable the sequence ram immediately. while disable allows the current
+	sequence to complete.
+
+
 	Macro: 	$(cardNum) = Logical card number EVG
 			$(seqNum) = ID of the soft sequence
 
@@ -261,18 +306,26 @@ Sequence Ram:
 	Files: evgSequence.h/evgSequence.cpp/devEvgSeq.cpp/evgSeq.db
 
 	This class is used as soft sequence. 
+	
 	Usage:
-		caput -a EVG$(cardNum):Seq$(seqNum):timeStamp 
+	caput -a EVG$(cardNum):Seq$(seqNum):timeStamp array 
 
-		caput -a EVG$(cardNum):Seq$(seqNum):eventCode
+	caput -a EVG$(cardNum):Seq$(seqNum):eventCode array
 
-		caput EVG$(cardNum):Seq$(seqNum):runMode Single/Automatic/Normal
-			runMode is used determine what will the sequencer do at the end 
-			of the sequence.
-			Single - Disables the sequencer at the end of the sequence.
-			Automatic - Restarts the sequence immediately after the end of the sequence.
-			Normal - Waits for a new trigger after the end of the sequence 
+	runMode is used determine what will the sequencer do at the end of the sequence.
+	caput EVG$(cardNum):Seq$(seqNum):runMode mode 
+		where 'mode' could be any of the following:
+		Single 	  - Disables the sequencer at the end of the sequence.
+		Automatic - Restarts the sequence immediately after the end of the sequence.
+		Normal    -	Waits for a new trigger after the end of the sequence 
 					 to restart the sequence. 
+	
+	trigSrc is used to select the source of the trigger, which should start the sequencer.
+	caput EVG$(cardNum):Seq$(seqNum):trigSrc src
+		where 'src' could be any of the following:
+		Mxc0 to Mxc7 - Trigger from MXC0 - MXC7
+		AC			 - Trigger from AC sync logic
+		RAM0/RAM1	 - Trigger from RAM0/RAM1 software trigger
 
 -------------------------------------------------------------------------------
 

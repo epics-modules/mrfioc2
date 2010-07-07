@@ -81,12 +81,6 @@ init_mbbo(mbboRecord* pmbbo) {
 	return ret;
 }
 
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-init_lo(longoutRecord* plo) {
-	return init_record((dbCommon*)plo, &plo->out);
-}
-
 
 /*************** Sequence Ram Support Records ******************/
 
@@ -109,7 +103,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	return pvt->seqRamMgr->unload(pvt->seq);
+	return pvt->seqRamMgr->unload(pvt->seq, (dbCommon*)pbo);
 }
 
 /** 	longout - commitSeq	**/
@@ -145,6 +139,16 @@ write_bo_disableSeq(boRecord* pbo) {
 	return pvt->seqRamMgr->disable(pvt->seq);
 }
 
+/**		longout - haltSeq	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_haltSeq(boRecord* pbo) {
+	if(!pbo->val)
+		return 0;
+
+	seqPvt* pvt = (seqPvt*)pbo->dpvt;
+	return pvt->seqRamMgr->halt(pvt->seq);
+}
 
 /*************** Sequence Records ******************/
 
@@ -172,12 +176,12 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
 	return pvt->seq->setRunMode((SeqRunMode)pmbbo->val);
 }
 
-/**		longout - trigSrc 	**/
+/**		mbbo - trigSrc 	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_lo_trigSrc(longoutRecord* plo) {
-	seqPvt* pvt = (seqPvt*)plo->dpvt;
-	return pvt->seq->setTrigSrc(plo->val);
+write_mbbo_trigSrc(mbboRecord* pmbbo) {
+	seqPvt* pvt = (seqPvt*)pmbbo->dpvt;
+	return pvt->seq->setTrigSrc(pmbbo->rval);
 }
 
 /*************** Sequence Ram Records ******************/
@@ -258,6 +262,16 @@ common_dset devBoEvgDisableSeq = {
 };
 epicsExportAddress(dset, devBoEvgDisableSeq);
 
+common_dset devBoEvgHaltSeq = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_haltSeq,
+};
+epicsExportAddress(dset, devBoEvgHaltSeq);
+
 
 common_dset devWfEvgTimeStamp = {
     5,
@@ -289,15 +303,15 @@ common_dset devMbboEvgRunMode = {
 };
 epicsExportAddress(dset, devMbboEvgRunMode);
 
-common_dset devLoEvgTrigSrc = {
+common_dset devMbboEvgTrigSrc = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_lo,
+    (DEVSUPFUN)init_mbbo,
     NULL,
-    (DEVSUPFUN)write_lo_trigSrc,
+    (DEVSUPFUN)write_mbbo_trigSrc,
 };
-epicsExportAddress(dset, devLoEvgTrigSrc);
+epicsExportAddress(dset, devMbboEvgTrigSrc);
 
 
 common_dset devWfEvgLoadedSeq = {

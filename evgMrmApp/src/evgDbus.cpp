@@ -17,14 +17,13 @@ epicsStatus
 evgDbus::setDbusMap(epicsUInt16 map) {
 	epicsUInt32 mask = map << (4 * m_id);
 
+	//Read-Modify-Write
 	epicsUInt32 dbusMap = READ32(m_pReg, DBusMap);
-	printf("Old DBus Map: %08x\n", dbusMap);
 
 	//Zeroing out the bits that belong to this Dbus
 	dbusMap = dbusMap & ~(0xf << (4 * m_id));
 
 	dbusMap = dbusMap | mask;
-	printf("New DBus Map: %08x\n", dbusMap);
 
 	WRITE32(m_pReg, DBusMap, dbusMap);
 

@@ -36,7 +36,7 @@ evgMxc::setMxcOutPolarity(bool polarity) {
 	return OK;
 }
 
-epicsUInt32 
+epicsUInt32
 evgMxc::getMxcPrescaler() {
 	return READ32(m_pReg, MuxPrescaler(m_id));
 }
@@ -57,7 +57,11 @@ evgMxc::getMxcTrigEvtMap() {
 }
 
 epicsStatus
-evgMxc::setMxcTrigEvtMap(epicsUInt8 map) {
+evgMxc::setMxcTrigEvtMap(epicsUInt16 map) {
+	if(map > 255) {
+		errlogPrintf("ERROR: EVG Mxc Trig Event Map value too large.\n");
+		return ERROR;
+	}
 	WRITE8(m_pReg, MuxTrigMap(m_id), map);
 	return OK;
 }

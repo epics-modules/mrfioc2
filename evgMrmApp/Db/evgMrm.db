@@ -1,4 +1,3 @@
-## 	Event Clock Source 	##
 record(bo, "EVG$(cardNum):Enable") {
 	field( DTYP, "EVG")
   	field( DESC, "EVG Master Enable")
@@ -6,8 +5,8 @@ record(bo, "EVG$(cardNum):Enable") {
 	field( UDF, "0")
 	field( PINI, "YES")
 	field( VAL, "1")
-  	field( ZNAM, "Enable")
-  	field( ONAM, "Disable")
+  	field( ZNAM, "Disable")
+  	field( ONAM, "Enable")
 }
 
 record(ao, "EVG$(cardNum):ClkSpeed") {

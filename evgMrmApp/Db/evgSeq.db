@@ -5,6 +5,8 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):load") {
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
 }
 
 record(bo, "EVG$(cardNum):Seq$(seqNum):unload") {
@@ -13,6 +15,8 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):unload") {
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
 }
 
 record(bo, "EVG$(cardNum):Seq$(seqNum):commit") {
@@ -21,6 +25,8 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):commit") {
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
 }
 
 record(bo, "EVG$(cardNum):Seq$(seqNum):enable") {
@@ -29,6 +35,8 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):enable") {
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
 }
 
 record(bo, "EVG$(cardNum):Seq$(seqNum):disable") {
@@ -37,8 +45,19 @@ record(bo, "EVG$(cardNum):Seq$(seqNum):disable") {
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
 }
 
+record(bo, "EVG$(cardNum):Seq$(seqNum):halt") {
+	field( DTYP, "EVG HALT SEQ")
+	field( DESC, "HALT EVG Sequence immediately")
+	field( OUT, "#C$(cardNum) S$(seqNum) @")
+	field( VAL , "0")
+	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
+}
 
 #Sequence Records
 record(waveform, "EVG$(cardNum):Seq$(seqNum):timeStamp") {
@@ -66,10 +85,32 @@ record(mbbo, "EVG$(cardNum):Seq$(seqNum):runMode") {
 	field( TWST, "Normal")
 }
 
-record(longout, "EVG$(cardNum):Seq$(seqNum):trigSrc") {
+record(mbbo, "EVG$(cardNum):Seq$(seqNum):trigSrc") {
   	field( DTYP, "EVG SEQ TRIG SRC")
   	field( OUT , "#C$(cardNum) S$(seqNum) @")
 	field( UDF, "0")
+  	field( ZRST, "Mxc0")
+  	field( ONST, "Mxc1")
+  	field( TWST, "Mxc2")
+	field( THST, "Mxc")
+	field( FRST, "Mxc4")
+	field( FVST, "Mxc5")
+	field( SXST, "Mxc6")
+	field( SVST, "Mxc7")
+	field( EIST, "AC")
+	field( NIST, "RAM0")
+	field( TEST, "RAM1")
+	field( ZRVL, 0)
+  	field( ONVL, 1)
+  	field( TWVL, 2)
+	field( THVL, 3)
+	field( FRVL, 4)
+	field( FVVL, 5)
+	field( SXVL, 6)
+	field( SVVL, 7)
+	field( EIVL, 16)
+	field( NIVL, 17)
+	field( TEVL, 18)
 }
 
 #Sequence Ram Records

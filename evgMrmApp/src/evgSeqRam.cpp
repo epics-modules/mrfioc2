@@ -53,7 +53,7 @@ evgSeqRam::setSoftTrig(bool enable) {
 
 epicsStatus
 evgSeqRam::setTrigSrc(epicsUInt32 trigSrc) {
-	WRITE8(m_pReg, SeqTrigSrc(m_id - 1), trigSrc);
+	WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
 	return OK;
 }
 
@@ -126,7 +126,6 @@ evgSeqRam::load(evgSequence* seq) {
 
 epicsStatus
 evgSeqRam::unload() {
-	reset();
 	m_seq = 0;
 	m_allocated = false;
 	return OK;
