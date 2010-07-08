@@ -23,7 +23,7 @@ mrf_DBD += vmecsr.dbd
 mrf_DBD += devIocStats.dbd
 
 # Add all the support libraries needed by this IOC
-mrf_LIBS += evgmrm evrMrm pci vme evr mrfCommon devIocStats
+mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon devIocStats
 
 # mrf_registerRecordDeviceDriver.cpp derives from mrf.dbd
 mrf_SRCS += mrf_registerRecordDeviceDriver.cpp
