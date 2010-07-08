@@ -20,6 +20,7 @@
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
 #include "drvemCML.h"
+#include "drvemRxBuf.h"
 
 #include "mrmDataBufTx.h"
 
@@ -105,6 +106,7 @@ public:
   const int id;
   volatile unsigned char * const base;
   mrmDataBufTx buftx;
+  mrmBufRx bufrx;
 private:
 
   // Set by clockTSSet() with IRQ disabled
@@ -147,6 +149,9 @@ private:
   // Take lock when accessing interest counter or TS members
   epicsMutexId events_lock; // really should be a rwlock
   eventCode events[256];
+
+  // Buffer received
+  CALLBACK data_rx_cb;
 
   // Called when the Event Log is stopped
   CALLBACK drain_log_cb;

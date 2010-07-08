@@ -54,7 +54,7 @@ bufRxManager::bufRxManager(unsigned int qdepth, unsigned int bsize)
     ellInit(&freebufs);
     ellInit(&usedbufs);
 
-    CBINIT(&received_cb, priorityHigh, &bufRxManager::received, this);
+    CBINIT(&received_cb, priorityMedium, &bufRxManager::received, this);
 
     for(unsigned int i=0; i<qdepth; i++) {
         buffer *t=(buffer*)callocMustSucceed(1, sizeof(buffer)-1+bsize, "bufRxManager buffer");

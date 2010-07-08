@@ -217,6 +217,7 @@ try {
 
       evrmap.store(id,*receiver);
       datatxmap.append(id,receiver->buftx);
+      datarxmap.append(id,receiver->bufrx);
   }
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -250,7 +251,7 @@ enableIRQ(int,short,EVRMRM& mrm)
 
   WRITE32(mrm.base, IRQEnable,
        IRQ_Enable
-      |IRQ_RXErr
+      |IRQ_RXErr    |IRQ_BufFull
       |IRQ_Heartbeat|IRQ_HWMapped
       |IRQ_Event    |IRQ_FIFOFull
   );
@@ -372,6 +373,7 @@ try {
 
   evrmap.store(id,*receiver);
   datatxmap.append(id,receiver->buftx);
+  datarxmap.append(id,receiver->bufrx);
 
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());

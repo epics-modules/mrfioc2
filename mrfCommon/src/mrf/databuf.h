@@ -100,4 +100,6 @@ public:
     virtual void dataRxDeleteReceive(epicsUInt16 id, dataBufComplete fptr, void* arg=0)=0;
 };
 
+extern CardMap<dataBufRx> datarxmap;
+
 #endif // DATABUF_H_INC
