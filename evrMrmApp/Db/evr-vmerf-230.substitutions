@@ -4,6 +4,12 @@ file "evrbase.db"
 {$(P), $(C)}
 }
 
+file "databuftx.db"
+{pattern
+{P, C, PROTO}
+{$(P), $(C), 1}
+}
+
 file "evrmap.db"
 {pattern
 {P, C, M, func, EVT}
