@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1352
-y 75
+x 1356
+y 104
 w 170
 h 196
 font "helvetica-medium-r-18.0"
@@ -44,13 +44,13 @@ buttonLabel "PMC EVR"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrtest.edl"
+  0 "evrmain.edl"
 }
 menuLabel {
   0 "PMC EVR"
 }
 symbols {
-  0 "P=evr1:"
+  0 "P=evr1"
 }
 endObjectProperties
 

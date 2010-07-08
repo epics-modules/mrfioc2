@@ -21,8 +21,7 @@ INC += evr/cml.h
 
 evr_SRCS += evr.cpp
 
-INC += cardmap.h
-evr_SRCS += cardmap.cpp
+INC += evrmap.h
 evr_SRCS += evrGTIF.cpp
 
 evr_SRCS += devEvr.cpp

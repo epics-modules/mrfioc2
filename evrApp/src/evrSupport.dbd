@@ -15,6 +15,8 @@
 # Func - Mapping function (string)
 #
 
+include "mrmShared.dbd"
+
 # Prescaler devices
 # '@C=$(C), I=$(IDX), P=PROPNAME'
 device(longin , INST_IO, devlonginPreScaler, "EVR Prescaler")

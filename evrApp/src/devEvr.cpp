@@ -10,13 +10,15 @@
 #include <longinRecord.h>
 #include <longoutRecord.h>
 
-#include "cardmap.h"
+#include "evrmap.h"
 #include "evr/evr.h"
 #include "dsetshared.h"
 #include "linkoptions.h"
 
 #include <stdexcept>
 #include <string>
+
+CardMap<EVR> evrmap;
 
 struct addr {
   epicsUInt32 card;
@@ -65,7 +67,7 @@ EVR* get_evr(const char* hwlink, std::string& propname)
   if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
     throw std::runtime_error("Couldn't parse link string");
 
-  EVR* card=getEVR<EVR>(inst_addr.card);
+  EVR* card=&evrmap.get(inst_addr.card);
   if(!card)
     throw std::runtime_error("Failed to lookup device");
 

@@ -101,6 +101,16 @@ record(bi, "$(P)pll") {
   field(ZSV , "MAJOR")
 }
 
+record(bo, "$(P)dbus:mode") {
+  field(DESC, "Data mode")
+  field(DTYP, "MRF Data Buf Tx")
+  field(OUT , "@C=$(C), Proto=0, P=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+}
+
 record(longin, "$(P)hwtype") {
   field(DTYP, "EVR")
   field(INP , "@C=$(C), P=Model")

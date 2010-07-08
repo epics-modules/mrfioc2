@@ -2,7 +2,7 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
-#include "cardmap.h"
+#include "evrmap.h"
 
 #include <stdexcept>
 #include <errlog.h>
@@ -14,7 +14,7 @@ extern "C"
 epicsStatus ErEventInterest(int card, epicsInt32 event, int add)
 {
 try {
-    EVR *evr=getEVR<EVR>(card);
+    EVR *evr=&evrmap.get(card);
     if (!evr) return -1;
 
     if (!evr->interestedInEvent(event,add==1))
@@ -32,7 +32,7 @@ extern "C"
 epicsStatus ErGetTimeStamp (epicsInt32 card, epicsInt32 event, epicsTimeStamp* ts)
 {
 try {
-    EVR *evr=getEVR<EVR>(card);
+    EVR *evr=&evrmap.get(card);
     if (!evr || !ts) return -1;
 
     if (!evr->getTimeStamp(ts, event))
@@ -50,7 +50,7 @@ extern "C"
 epicsStatus ErGetTicks (int card, epicsUInt32* ticks)
 {
 try {
-    EVR *evr=getEVR<EVR>(card);
+    EVR *evr=&evrmap.get(card);
     if (!evr || !ticks) return -1;
 
     if (!evr->getTicks(ticks))

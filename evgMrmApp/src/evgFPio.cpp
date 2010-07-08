@@ -18,7 +18,7 @@ m_pReg(pReg) {
 epicsStatus
 evgFPio::setIOMap(epicsUInt32 map) {
 
-	epicsStatus status;
+	epicsStatus status = OK;
 
 	switch(m_type) {
     	
@@ -30,7 +30,6 @@ evgFPio::setIOMap(epicsUInt32 map) {
 			}
 	
 			WRITE32(m_pReg, FPInMap(m_id), map);
-			status = OK;
 			break;
 
 		case(FP_Output):

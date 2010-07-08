@@ -50,10 +50,14 @@ do { \
 static
 const double fracref=24.0; // MHz
 
+CardMap<dataBufRx> datarxmap;
+
 EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
+  ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
+  ,bufrx(b, 10) // Sets depth of Rx queue
   ,stampClock(0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
@@ -82,9 +86,10 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     scanIoInit(&IRQrxError);
     scanIoInit(&IRQfifofull);
 
-    CBINIT(&drain_fifo_cb, priorityLow, &EVRMRM::drain_fifo, this);
-    CBINIT(&drain_log_cb , priorityLow, &EVRMRM::drain_log , this);
-    CBINIT(&poll_link_cb , priorityLow, &EVRMRM::poll_link , this);
+    CBINIT(&drain_fifo_cb, priorityMedium, &EVRMRM::drain_fifo, this);
+    CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
+    CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
+    CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
     /*
      * Create subunit instances
@@ -688,6 +693,10 @@ EVRMRM::isr(void *arg)
       return;
 
     if(active&IRQ_BufFull){
+        // Silence interrupt
+        BITSET(NAT,32,evr->base, DataBufCtrl, DataBufCtrl_stop);
+
+        callbackRequest(&evr->data_rx_cb);
         scanIoRequest(evr->IRQbufferReady);
     }
     if(active&IRQ_HWMapped){
