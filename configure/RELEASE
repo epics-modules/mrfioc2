@@ -162,7 +162,7 @@ AUTOSAVE=$(SHARE_TOP)/autosave/prod
 # record support code and database definition files that are not
 # part of EPICS base.
 # 
-#RECORDS = $(SHARE_TOP)/rec/prod
+RECORDS = $(SHARE_TOP)/rec/prod
 
 # ----------------------------------------------------------------------------
 # RPC: Sun RPC Support
