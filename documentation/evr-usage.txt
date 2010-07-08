@@ -117,9 +117,9 @@ a Prescaler, or a Pulse Generator.
 Current Mode Logic outputs can send a bit pattern at the bit rate of the event link (20x the Event Clock).
 This pattern may be specified in one of three possible ways.
 
-# As four 20 bit sub-patterns (rising, high, falling, and low).  The rising and falling patterns are transmitted when the output level changes, while the high and low patterns are repeated until the level changes.
-# As two times (high and low).  These specify a square wave with variable frequency and duty factor.
-# As an arbitrary bit pattern (<= 40940 bits) which begins when the output goes [TODO: high or low?].
+. As four 20 bit sub-patterns (rising, high, falling, and low).  The rising and falling patterns are transmitted when the output level changes, while the high and low patterns are repeated until the level changes.
+. As two times (high and low).  These specify a square wave with variable frequency and duty factor.
+. As an arbitrary bit pattern (<= 40940 bits) which begins when the output goes [TODO: high or low?].
 
 === Inputs ===
 
@@ -234,11 +234,11 @@ The following devices are supported.
 Outputs: Front panel: 4, Front Panel UNIV. 2
 Inputs: Front panel: 2
 
-Support the VME rear transition module.
+Supports the VME rear transition module.
 
 === VME EVR 230 (RF) ===
 
-This device has like the non-RF version, but front panel outputs 4, 5, and 6
+Similar to the non-RF version, but front panel outputs 4, 5, and 6
 are CML outputs.
 
 DB template: evr-vmerf-230.substitiutions
@@ -259,7 +259,134 @@ A compact PCI Card.
 Outputs: Front panel universal: 4
 Inputs: Front panel: 2
 
+Supports the side-by-side expansion module.
+
 DB template: evr-cpci-230.substitiutions
+
+== IOC Deployment ==
+
+This section outlines a general strategy for adding an EVR to an IOC.
+First general information is presented, followed by a section
+describing the extra steps needed to use mrfioc2 under Linux.
+
+=== VME64x Device Configuration ===
+
+The VME bus based EVRs are configured using the mrmEvrSetupVME() IOC shell function.
+
+-----------------------------------------
+mrmEvrSetupVME(1,5,0x20000000,3,0x26)
+-----------------------------------------
+
+In this example EVR #1 is defined to be the VME card in slot 5.
+It is given the A32 base address of 0x20000000 and configured to
+interrupt on level 3 with vector 0x26.
+
+Note::
+  VME64x allows for jumpless configuration of the card, but can not automatically assign
+  resources.  Selection of an unused address range and IRQ level/vector is therefore
+  left to the user.
+
+Note::
+  Before setup is done the VME64 identifer fields are verified so that
+  specifying an incorrect slot number is detected and setup will safely abort.
+
+=== PCI Device Configuration ===
+
+PCI bus cards are identified with the mrmEvrSetupPCI() IOC shell function.
+
+Since PCI devices are automatically configured only the geographic address (bus:device.function)
+needs to be provided.
+This information can usually be found at boot time (RTEMS) or in /proc/bus/pci/devices (Linux).
+
+The IOC shell function devPCIShow() is also provided to list PCI devices in the system.
+
+-----------------------------------------
+mrmEvrSetupPCI(0,1,2,0)
+-----------------------------------------
+
+This example defines EVR #0 to be bus 1 device 2 function 0.
+
+Note::
+  Before setup is done the PCI identifer fields are verified so that
+  specifying an incorrect location is detected and setup will safely abort.
+
+=== Example Databases ===
+
+The MRFIOC2 includes example database templates several devices (see the supported hardware section).
+While fully functional it is expected that most sites will modify
+them.  It is suggested that the original be left unchanged and a copy be made
+with the institute name and other information as a suffix.
+(evr-pmc-230.substitutions becomes evr-pmc-230-nsls2.substitutions).
+
+The authors would like to encouraged users to submit their customized databases back
+so that they may be included as examples in future releases of MRFIOC2.
+
+The templates consist of a substitutions file for each model (PMC, cPCI, VME-RF).
+This template instanciates the correct number of records for the number of inputs/outputs
+found on each device.
+It also includes entries for event mappings and database events which will be frequent
+targets for customization.
+
+Each substitutions file will be expanded during the build process with the MSI utility
+to create a database file with two undefined macros (P and C).
+'P' is the common prefix shared by all pvs and must be unique in the system.
+'C' is a card number also given as the first argument of one of the mrmEvrSetup*() IOC shell functions (unique in each IOC).
+
+Thus an IOC with two identical VME cards could use a configuration like:
+
+------------------------------------------------------
+mrmEvrSetupVME(1,5,0x20000000,3,0x26)
+mrmEvrSetupVME(2,6,0x21000000,3,0x28)
+
+dbLoadRecords("evr-vmerf-230.db", "P=test:evra:, C=1")
+dbLoadRecords("evr-vmerf-230.db", "P=test:evrb:, C=2")
+------------------------------------------------------
+
+
+=== PCI Setup in Linux ===
+
+In order to use PCI EVRs in the Linux operating system a small kernel driver must be built and loaded.
+The source for this driver is found in 'mrmShared/linux'.
+This directory contains a Makefile for use by the Linux kernel build system (not EPICS).
+
+To build the driver you must have access to a configured copy of the kernel source used to build the
+kernel into which the driver will be loaded.  If the build and host systems are the same then the
+default location will likely be '/lib/modules/`uname -r`/build'.  In case of a cross-built kernel
+the location will be elsewhere.
+
+To build the module for use on the host computer:
+
+----------------------------------------------------------------------------------------------
+$ make -C /location/of/mrmShared/linux KERNELDIR=/lib/modules/`uname -r`/build modules_install
+$ sudo depmod -a
+$ sudo modprobe mrf
+----------------------------------------------------------------------------------------------
+
+Building for a cross-target might look like:
+
+----------------------------------------------------------------------------------------------
+$ make -C /location/of/mrmShared/linux KERNELDIR=/location/of/kernel/src \
+  ARCH=arm CROSS_COMPILE=/usr/local/bin/arm- INSTALL_MOD_PATH=/location/of/target/root
+----------------------------------------------------------------------------------------------
+
+Once the module is installed you must create the special device file associated with each EVR.
+If your target system is running UDEV this may happen automatically, if not then you must do the
+following.
+
+-------------------------------------
+# grep mrf /proc/devices
+254 mrf
+# mknod -m 666 /dev/uio0 c 254 0
+-------------------------------------
+
+Each additional device adds one to the minor number.
+
+Once the device file exists with the correct permissions the IOC will be able to location it
+based on the bus:device.function given an to mrmEvrSetupPCI().
+
+Note::
+  UIO numbers are not considered during setup since these may change after a reboot.
+  To unsure repeatability only PCI immutable ID fields and the address triplet (bus:device.function) are used.
 
 == Device Support Design ==
 
@@ -567,8 +694,8 @@ The meaning of this value is determined by the specific implimentation used.
 
 For the MRM implimentation the following codes are valid.
 
-[width="25%",cols="1,5",options="header"]
-|=========================
+[width="30%",cols="1,5",options="header"]
+|==========================
 |#  |Output Source
 |63 |Force High
 |62 |Force Low
@@ -593,11 +720,11 @@ For the MRM implimentation the following codes are valid.
 | 2 |Pulse generator 2
 | 1 |Pulse generator 1
 | 0 |Pulse generator 0
-|=========================
+|==========================
 
 === Output (CML only) ===
 
-Additional properties for CML outputs.
+Additional properties for Current Mode Logic (CML) outputs.
 
 Records accessing properties in this section will have DTYP
 set to "EVR CML" with the exception of waveform records which have either "EVR CML Pattern Set" or "EVR CML Pattern Get".
@@ -628,17 +755,27 @@ Implimented for: mbbo
 
 Selects CML pattern mode.  Possible values are: 4x Pattern (0), Frequency (1), Waveform (2).
 
-4x Pattern mode uses the Pat Rise, Pat High, Pat Fall, and Pat Low properties to store four 20 bit (max 0xfff) sub-patterns.
+4x Pattern::
+  Uses the Pat Rise, Pat High, Pat Fall, and Pat Low properties to store four 20 bit (0 -> 0xfff) sub-patterns.
 
-Frequency uses the Freq Trig Lvl, Counts High, and Counts Low properties
+Frequency::
+  Uses the Freq Trig Lvl, Counts High, and Counts Low properties
 
-Waveform mode uses the bit pattern stored by the Pattern Set property.
+Waveform::
+  Uses the bit pattern stored by the Pattern Set property.
 
 ==== Pat Rise/High/Fall/Low ====
 
 Implimented for: longout, longin
 
-Stores a 20-bit pattern.
+Each property stores a seperate 20-bit pattern (0 -> 0xfff).
+These patterns are sent during the four parts of a square wave.
+
+Rising and Falling patterns start as soon as the edge is detected and will interrupt
+the pattern currently being sent.
+
+The High and Low patterns are sent after an edge pattern is sent and will repeat
+until the next edge.
 
 ==== Freq Trig Lvl ====
 
