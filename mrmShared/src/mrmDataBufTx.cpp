@@ -19,6 +19,8 @@
 #define DataTxCtrl_mode 0x010000
 #define DataTxCtrl_len_mask 0x0007fc
 
+CardMap<dataBufTx> datatxmap;
+
 dataBufTx::~dataBufTx() {}
 dataBufRx::~dataBufRx() {}
 

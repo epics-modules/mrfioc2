@@ -5,6 +5,8 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
+#include "cardmap.h"
+
 /**
  *@param arg[in] Arbitrary pointer passed by user
  *@param ok Indicate if 'buf' holds valid data
@@ -57,6 +59,8 @@ public:
     virtual void dataSend(epicsUInt8 id, epicsUInt32 len, const epicsUInt8 *buf)=0;
 
 };
+
+extern CardMap<dataBufTx> datatxmap;
 
 class dataBufRx {
 public:
