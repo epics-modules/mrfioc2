@@ -18,6 +18,8 @@ evrMrm_SRCS += drvemPrescaler.cpp
 evrMrm_SRCS += drvemPulser.cpp
 evrMrm_SRCS += drvemCML.cpp
 
+evrMrm_SRCS += bufrxmgr.cpp
+
 #=============================
 # Install the modular register map event receiver support dbd
 
