@@ -101,16 +101,22 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
 
     iowrite8(&dataBuf[0], id);
 
+    len++;
+
     for(epicsUInt32 i=1; i<len; i++)
         iowrite8(&dataBuf[i], ubuf[i-1]);
-
-    len++;
+    if(len%4)
+        for(epicsUInt32 i=0; i<=4-len%4; i++)
+            iowrite8(&dataBuf[i], 0);
+    wbarr();
 
     epicsUInt32 reg=len&DataTxCtrl_len_mask;
 
     reg |= DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode;
 
     nat_iowrite32(dataCtrl, reg);
+
+    while(!dataRTS()) epicsThreadSleep(quantum);
 
     dataGuard.unlock();
 }
