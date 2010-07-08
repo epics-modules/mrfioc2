@@ -7,6 +7,10 @@
 
 #include "evrRegMap.h"
 
+#include "counters.h"
+
+static Counter download_time   ("Rx download time"); // s per byte
+
 mrmBufRx::mrmBufRx(volatile void *b,unsigned int qdepth, unsigned int bsize)
     :bufRxManager(qdepth, bsize)
     ,base((volatile unsigned char *)b)
@@ -61,6 +65,8 @@ mrmBufRx::drainbuf(CALLBACK* cb)
             self.haderror(1);
         } else {
 
+            counter_start(download_time);
+
             unsigned int rsize=sts&DataBufCtrl_len_mask;
 
             if (rsize>bsize) {
@@ -86,6 +92,7 @@ mrmBufRx::drainbuf(CALLBACK* cb)
             errlogPrintf("Data %s\n",pbuf);
 */
             self.receive(buf, rsize);
+            counter_stop(download_time, rsize);
         }
     }
 
