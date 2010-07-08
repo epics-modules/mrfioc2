@@ -17,6 +17,7 @@ evrMrm_SRCS += drvemInput.cpp
 evrMrm_SRCS += drvemPrescaler.cpp
 evrMrm_SRCS += drvemPulser.cpp
 evrMrm_SRCS += drvemCML.cpp
+evrMrm_SRCS += drvemRxBuf.cpp
 
 evrMrm_SRCS += bufrxmgr.cpp
 
