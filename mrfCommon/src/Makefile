@@ -52,6 +52,8 @@ INC += debugPrint.h       # SLAC debug print utility
 INC += linkoptions.h
 
 INC += cardmap.h
+INC += mrf/databuf.h
+
 INC += property.h
 INC += dsetshared.h
 
