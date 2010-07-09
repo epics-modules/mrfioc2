@@ -44,7 +44,7 @@ sharedDevPCIFindCB(
   osdPCIDevice *curdev=NULL;
   const epicsPCIID *search;
 
-  if(!pdevLibPCIVirtualOS)
+  if(!pdevLibPCI)
     return 5;
 
   if(!searchfn)

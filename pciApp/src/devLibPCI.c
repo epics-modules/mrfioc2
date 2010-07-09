@@ -11,11 +11,11 @@
 static
 int devInit(void)
 {
-  if(!pdevLibPCIVirtualOS)
+  if(!pdevLibPCI)
     return 5;
 
-  if(!!pdevLibPCIVirtualOS->pDevInit)
-    return (*pdevLibPCIVirtualOS->pDevInit)();
+  if(!!pdevLibPCI->pDevInit)
+    return (*pdevLibPCI->pDevInit)();
 
   return 0;
 }
@@ -39,7 +39,7 @@ int devPCIFindCB(
   status=devInit();
   if(status) return status;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIFind)(idlist,searchfn,arg,opt);
+  return (*pdevLibPCI->pDevPCIFind)(idlist,searchfn,arg,opt);
 }
 
 
@@ -119,7 +119,7 @@ devPCIToLocalAddr(
   if(bar>=PCIBARCOUNT)
     return 2;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr,opt);
+  return (*pdevLibPCI->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr,opt);
 }
 
 
@@ -139,7 +139,7 @@ devPCIBarLen(
   if(bar>=PCIBARCOUNT)
     return 2;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIBarLen)(curdev,bar);
+  return (*pdevLibPCI->pDevPCIBarLen)(curdev,bar);
 }
 
 epicsShareFunc
@@ -154,7 +154,7 @@ int devPCIConnectInterrupt(
   status=devInit();
   if(status) return status;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIConnectInterrupt)
+  return (*pdevLibPCI->pDevPCIConnectInterrupt)
                 (curdev,pFunction,parameter);
 }
 
@@ -170,6 +170,6 @@ int devPCIDisconnectInterrupt(
   status=devInit();
   if(status) return status;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIDisconnectInterrupt)
+  return (*pdevLibPCI->pDevPCIDisconnectInterrupt)
                 (curdev,pFunction,parameter);
 }

@@ -74,7 +74,7 @@ int rtemsDevPCIDisconnectInterrupt(
 }
 
 
-devLibPCIVirtualOS prtemsPCIVirtualOS = {
+devLibPCI prtemsPCIVirtualOS = {
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -83,4 +83,4 @@ devLibPCIVirtualOS prtemsPCIVirtualOS = {
   rtemsDevPCIDisconnectInterrupt
 };
 
-devLibPCIVirtualOS *pdevLibPCIVirtualOS = &prtemsPCIVirtualOS;
+devLibPCI *pdevLibPCI = &prtemsPCIVirtualOS;

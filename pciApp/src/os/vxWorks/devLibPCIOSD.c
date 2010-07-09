@@ -77,7 +77,7 @@ int vxworksDevPCIDisconnectInterrupt(
 }
 
 
-devLibPCIVirtualOS pvxworksPCIVirtualOS = {
+devLibPCI pvxworksPCIVirtualOS = {
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -86,4 +86,4 @@ devLibPCIVirtualOS pvxworksPCIVirtualOS = {
   vxworksDevPCIDisconnectInterrupt
 };
 
-devLibPCIVirtualOS *pdevLibPCIVirtualOS = &pvxworksPCIVirtualOS;
+devLibPCI *pdevLibPCI = &pvxworksPCIVirtualOS;
