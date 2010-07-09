@@ -2,7 +2,7 @@
 #ifndef OSDPCISHARED_H_INC
 #define OSDPCISHARED_H_INC
 
-#include "osdPCI.h"
+#include "devLibPCIOSD.h"
 
 /* Subtract member byte offset, returning pointer to parent object
  *
