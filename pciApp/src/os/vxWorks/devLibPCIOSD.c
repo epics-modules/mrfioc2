@@ -71,7 +71,7 @@ int vxworksDevPCIDisconnectInterrupt(
 #endif
 
   if(status<0)
-    return S_dev_vecInstlFail;
+    return S_dev_intDisconnect;
 
   return 1;
 }

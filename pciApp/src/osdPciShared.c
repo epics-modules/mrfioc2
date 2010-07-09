@@ -44,11 +44,8 @@ sharedDevPCIFindCB(
   osdPCIDevice *curdev=NULL;
   const epicsPCIID *search;
 
-  if(!pdevLibPCI)
-    return 5;
-
   if(!searchfn)
-    return 2;
+    return S_dev_badArgument;
 
   /*
    * Ensure all entries for the requested device/vendor pairs
@@ -59,7 +56,7 @@ sharedDevPCIFindCB(
        search->vendor==DEVPCI_ANY_VENDOR)
     {
       errlogPrintf("devPCI: Wildcards are not supported in Device and Vendor fields\n");
-      return 3;
+      return S_dev_badRequest;
     }
     if( (err=fill_cache(search->device, search->vendor)) )
       return err;
@@ -139,7 +136,7 @@ sharedDevPCIToLocalAddr(
   struct osdPCIDevice *osd=pcidev2osd(dev);
 
   if(!osd->base[bar])
-    return 1;
+    return S_dev_addrMapFail;
 
   *ppLocalAddr=osd->base[bar];
   return 0;
@@ -156,7 +153,7 @@ sharedDevPCIBarLen(
   UINT32 start, max, mask;
 
   if(!osd->base[bar])
-    return 1;
+    return 0;
 
   if(osd->len[bar])
     return osd->len[bar];
@@ -215,7 +212,7 @@ int sharedDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
 
     osdPCIDevice *next=calloc(1,sizeof(osdPCIDevice));
     if(!next)
-      return 1;
+      return S_dev_noMemory;
 
     err=pci_find_device(vend,dev,N, &b, &d, &f);
     if(err){ /* No more */
@@ -282,26 +279,26 @@ static
 int fill_cache(epicsUInt16 dev,epicsUInt16 vend)
 {
   ELLNODE *cur;
-  const dev_vend_entry *curent;
+  const dev_vend_entry *current;
   dev_vend_entry *next;
 
   for(cur=ellFirst(&dev_vend_cache); cur; cur=ellNext(cur)){
-    curent=CONTAINER(cur,const dev_vend_entry,node);
+    current=CONTAINER(cur,const dev_vend_entry,node);
 
     /* If one device is found then all must be in cache */
-    if( curent->device==dev && curent->vendor==vend )
+    if( current->device==dev && current->vendor==vend )
       return 0;
   }
 
   next=malloc(sizeof(dev_vend_entry));
   if(!next)
-    return 11;
+    return S_dev_noMemory;
   next->device=dev;
   next->vendor=vend;
 
   if( sharedDevPCIFind(dev,vend,&devices) ){
     free(next);
-    return 12;
+    return S_dev_addressNotFound;
   }
 
   /* Prepend */

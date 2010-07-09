@@ -16,7 +16,7 @@ static
 void devInit(void* junk)
 {
   if(!pdevLibPCI) {
-    devPCIInit_result = 5;
+    devPCIInit_result = S_dev_internal;
     return;
   }
 
@@ -44,7 +44,7 @@ int devPCIFindCB(
 )
 {
   if(!idlist || !searchfn)
-    return 2;
+    return S_dev_badArgument;
 
   PCIINIT;
 
@@ -107,7 +107,7 @@ int devPCIFindBDF(
 
   if(!find.found){
     /* Not found */
-    return 1;
+    return S_dev_noDevice;
   }
 
   *found=find.found;
@@ -125,7 +125,7 @@ devPCIToLocalAddr(
   PCIINIT;
 
   if(bar>=PCIBARCOUNT)
-    return 2;
+    return S_dev_badArgument;
 
   return (*pdevLibPCI->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr,opt);
 }
@@ -142,7 +142,7 @@ devPCIBarLen(
   PCIINIT;
 
   if(bar>=PCIBARCOUNT)
-    return 2;
+    return S_dev_badArgument;
 
   return (*pdevLibPCI->pDevPCIBarLen)(curdev,bar);
 }
