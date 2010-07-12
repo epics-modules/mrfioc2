@@ -1,6 +1,7 @@
 
 #include <math.h>
 
+#include <dbDefs.h>
 #include <errlog.h>
 
 #include <registryFunction.h>
