@@ -20,10 +20,9 @@ mrf_DBD += evgInit.dbd
 mrf_DBD += drvemSupport.dbd
 
 mrf_DBD += vmecsr.dbd
-mrf_DBD += devIocStats.dbd
 
 # Add all the support libraries needed by this IOC
-mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon devIocStats
+mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon
 
 # mrf_registerRecordDeviceDriver.cpp derives from mrf.dbd
 mrf_SRCS += mrf_registerRecordDeviceDriver.cpp
@@ -33,6 +32,12 @@ mrf_SRCS_DEFAULT += mrfMain.cpp
 
 # Finally link to the EPICS Base libraries
 mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+ifneq ($(DEVIOCSTATS),)
+mrf_DBD += devIocStats.dbd
+mrf_LIBS += devIocStats
+endif
+
 
 #===========================
 

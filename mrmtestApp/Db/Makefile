@@ -12,8 +12,10 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #DB += xxx.db
 
+ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS),RTEMS)
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+endif
 endif
 
 #----------------------------------------------------
