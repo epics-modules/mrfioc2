@@ -32,8 +32,8 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
     switch(opt->optType) {
     case linkOptionInt32:
         if (opt->size<sizeof(epicsUInt32)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for Int32 (%d)\n",
-                              opt->size, sizeof(epicsUInt32));
+              fprintf(stderr, "Provide storage (%d bytes) is too small for Int32 (%lu)\n",
+                              opt->size, (unsigned long)sizeof(epicsUInt32));
               return -1;
         }
         ival=(epicsUInt32*)( (char*)user + opt->offset );
@@ -50,8 +50,8 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
         break;
     case linkOptionDouble:
         if (opt->size<sizeof(double)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for double (%d)\n",
-                              opt->size, sizeof(double));
+              fprintf(stderr, "Provide storage (%d bytes) is too small for double (%lu)\n",
+                              opt->size, (unsigned long)sizeof(double));
               return -1;
         }
         dval=(double*)( (char*)user + opt->offset );
@@ -68,8 +68,8 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
         break;
     case linkOptionEnum:
         if (opt->size<sizeof(int)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for enum (%d)\n",
-                              opt->size, sizeof(int));
+              fprintf(stderr, "Provide storage (%d bytes) is too small for enum (%lu)\n",
+                              opt->size, (unsigned long)sizeof(int));
               return -1;
         }
         eval=(int*)( (char*)user + opt->offset );
@@ -93,8 +93,8 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
               /* Catch if someone has given us a char* instead of a char[]
                * Also means that char buffers must be >4.
                */
-              fprintf(stderr, "Provide storage (%d bytes) is too small for string (>= %d)\n",
-                              opt->size, sizeof(char*));
+              fprintf(stderr, "Provide storage (%d bytes) is too small for string (>= %lu)\n",
+                              opt->size, (unsigned long)sizeof(char*));
               return -1;
         }
         sval=( (char*)user + opt->offset );

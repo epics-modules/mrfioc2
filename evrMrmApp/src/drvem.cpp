@@ -128,7 +128,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     default:
         printf("Unknown EVR variant %d\n",v);
     }
-    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
+    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
+                   (unsigned int)nOFP,(unsigned int)nOFPUV,
+                   (unsigned int)nORB,(unsigned int)nIFP);
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
