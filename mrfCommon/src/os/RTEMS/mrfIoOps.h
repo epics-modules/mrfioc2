@@ -24,28 +24,26 @@
 #  define wbarr()  iobarrier_w()
 #  define rwbarr() iobarrier_rw()
 
-/*#elif defined(__i386__) || defined(__i386)*/
-
-#else
-#  error I/O operations not defined for this RTEMS architecture
-
-#endif /* if defined PPC */
-
 /* Define native operations */
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
 #  define nat_ioread16  be_ioread16
 #  define nat_ioread32  be_ioread32
 #  define nat_iowrite16 be_iowrite16
 #  define nat_iowrite32 be_iowrite32
 
-#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-#  define nat_ioread16  le_ioread16
-#  define nat_ioread32  le_ioread32
-#  define nat_iowrite16 le_iowrite16
-#  define nat_iowrite32 le_iowrite32
+#elif defined(i386) ||defined(__i386__) || defined(__i386)
+
+/* X86 does not need special handling for read/write width.
+ *
+ * TODO: Memory barriers?
+ */
+
+#include "mrfIoOpsDef.h"
 
 #else
-#  error Unable to determine native byte order
-#endif
+#  warning I/O operations not defined for this RTEMS architecture
+
+#include "mrfIoOpsDef.h"
+
+#endif /* if defined PPC */
 
 #endif /* MRFIOOPS_H */
