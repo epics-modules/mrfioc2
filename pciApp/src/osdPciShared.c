@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include <ellLib.h>
+#include <errlog.h>
 
 #include "devLibPCIImpl.h"
 
@@ -57,7 +58,7 @@ sharedDevPCIFindCB(
     if(search->device==DEVPCI_ANY_DEVICE ||
        search->vendor==DEVPCI_ANY_VENDOR)
     {
-      epicsPrintf("devPCI: Wildcards are not supported in Device and Vendor fields\n");
+      errlogPrintf("devPCI: Wildcards are not supported in Device and Vendor fields\n");
       return 3;
     }
     if( (err=fill_cache(search->device, search->vendor)) )

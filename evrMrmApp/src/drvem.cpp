@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include <epicsMath.h>
+#include <errlog.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>

@@ -4,6 +4,7 @@
 #include <longoutRecord.h>
 #include <devSup.h>
 #include <dbAccess.h>
+#include <errlog.h>
 #include <epicsExport.h>
 
 #include "dsetshared.h"

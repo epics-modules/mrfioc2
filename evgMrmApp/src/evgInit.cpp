@@ -9,6 +9,7 @@
 #include <iocsh.h>
 #include <drvSup.h>
 #include <initHooks.h>
+#include <errlog.h>
 
 #include <mrfcsr.h>
 #include <mrfCommonIO.h>
