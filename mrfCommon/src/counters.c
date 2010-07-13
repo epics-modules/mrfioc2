@@ -58,8 +58,8 @@ void counter_stop(struct counter* c, double normalize)
         c->sum2 += run*run;
 	c->start.tv_sec=0;
 	c->start.tv_nsec=0;
-        if (isnan(c->low) || run < c->low)  c->low =run;
-        if (isnan(c->high)|| run > c->high) c->high=run;
+        if ( c->low==0 || run < c->low)  c->low =run;
+        if ( c->high==0|| run > c->high) c->high=run;
 
 	epicsInterruptUnlock(iflags);
 }
@@ -74,8 +74,8 @@ void counter_reset(struct counter* c)
 	c->runs=0;
         c->sum=0.0;
         c->sum2=0.0;
-        c->low=NaN;
-        c->high=NaN;
+        c->low=0.0;
+        c->high=0.0;
 	epicsInterruptUnlock(iflags);
 }
 

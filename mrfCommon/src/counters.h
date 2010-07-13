@@ -13,8 +13,6 @@
 #include <time.h>
 #include <stdio.h>
 
-#include "nan.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -27,7 +25,7 @@ struct counter
         double high, low;
 };
 
-#define COUNTER_INIT {{0,0}, 0, 0.0, 0.0, NaN, NaN}
+#define COUNTER_INIT {{0,0}, 0, 0.0, 0.0, 0.0, 0.0}
 
 void counter_start(struct counter*);
 void counter_stop(struct counter*, double);
