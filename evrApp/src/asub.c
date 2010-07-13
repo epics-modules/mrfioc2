@@ -55,7 +55,8 @@ long gen_timeline(aSubRecord *prec)
 	count=*(epicsUInt32*)prec->c;
 	result=prec->vala;
 
-	count=min(count, prec->nova);
+        if (count>prec->nova)
+            count=prec->nova;
 
 	result[0]=x0;
 	for (i=1; i<count; i++) {
