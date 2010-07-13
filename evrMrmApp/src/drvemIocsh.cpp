@@ -35,7 +35,9 @@ epicsExportAddress(int,evrmrmVerb);
 
 static const epicsPCIID mrmevrs[] = {
    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
-                              PCI_DEVICE_ID_MRF_EVR_230, PCI_VENDOR_ID_MRF)
+                              PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
+  ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
+                              PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
   ,DEVPCI_END
 };
 
