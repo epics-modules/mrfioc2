@@ -336,3 +336,11 @@ Interrupt handling:
 	The irq structure associated with each inturrupt source maintains the list
 	of records that needs to processed whenever the interrupt occurs from that
  	particular inturrupt source. 
+
+
+
+
+Soft Sequence
+	Soft sequence class and also soft sequence manager, which maintains the list of the soft sequence.
+
+SOft sequence should be common to all the EVG in the IOC

@@ -11,12 +11,6 @@ m_trigSrc(0),
 m_runMode(single),
 m_seqRam(0),
 m_lock(new epicsMutex()) {
-	//For Testing purpose
- 	epicsUInt8 eventCode[] = {1, 2, 3, 4, 127};
- 	epicsUInt32 timeStamp[] = {0, 250000000, 500000000, 750000000, 1000000000};
-
- 	setEventCode(eventCode, 5);
- 	setTimeStamp(timeStamp, 5);		
 }
 
 const epicsUInt32

@@ -61,8 +61,15 @@ pattern { cardNum, trigEvtNum }
 }
 
 file evgSeq.db {
-pattern { cardNum , seqNum, NELM}
-{ $(cardNum), 0, 5}
-{ $(cardNum), 1, 5}
-{ $(cardNum), 2, 5}
+pattern { seqNum, NELM}
+{ 0, 5}
+{ 1, 5}
+{ 2, 5}
+}
+
+file evgSeqRam.db {
+pattern { cardNum , seqNum}
+{ $(cardNum), 0}
+{ $(cardNum), 1}
+{ $(cardNum), 2}
 }

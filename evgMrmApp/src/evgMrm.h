@@ -11,6 +11,7 @@
 #include <epicsMutex.h>
 
 #include "evgSeqRamManager.h"  
+#include "evgSeqManager.h"
 #include "evgMxc.h"
 #include "evgTrigEvt.h"
 #include "evgDbus.h"
@@ -65,6 +66,7 @@ public:
 	evgInput*  		getInput		(epicsUInt32, std::string);
 	evgOutput* 		getOutput		(epicsUInt32, std::string);
 	evgSeqRamMgr* 	getSeqRamMgr	();	
+	static evgSeqMgr* 	    getSeqMgr		();
 
 	struct irq {
 		epicsMutexId mutex;
@@ -100,6 +102,7 @@ private:
  	Output_t m_output;
 
 	evgSeqRamMgr* 					m_seqRamMgr;
+	static evgSeqMgr* 				m_seqMgr;
 };
 
 #endif //EVGMRM_H

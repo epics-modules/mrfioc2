@@ -18,6 +18,7 @@ DB += evgDbus.db
 DB += evgInput.db
 DB += evgOutput.db
 DB += evgSeq.db
+DB += evgSeqRam.db
 DB += vme-evg230.db
 
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db

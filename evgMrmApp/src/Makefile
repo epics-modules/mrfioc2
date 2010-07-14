@@ -29,9 +29,13 @@ evgmrm_SRCS += evgOutput.cpp
 evgmrm_SRCS += devEvgOutput.cpp
 
 evgmrm_SRCS += evgSequence.cpp
+evgmrm_SRCS += evgSeqManager.cpp
+evgmrm_SRCS += devEvgSeq.cpp
+
 evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
-evgmrm_SRCS += devEvgSeq.cpp
+evgmrm_SRCS += devEvgSeqRam.cpp
+
 
 DBD += evgInit.dbd
 #=============================

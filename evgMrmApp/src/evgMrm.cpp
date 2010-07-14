@@ -23,6 +23,8 @@
 
 #include "evgRegMap.h"
 
+evgSeqMgr* evgMrm::m_seqMgr = new evgSeqMgr();
+
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
 m_pReg(pReg) {
@@ -54,15 +56,15 @@ m_pReg(pReg) {
 											new evgOutput(i, pReg, FP_Output);
 		}	
 
-		
 		for(int i = 0; i < evgNumUnivOut; i++) {
 			m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")] = 
 											new evgOutput(i, pReg, Univ_Output);
 		}	
 
 		m_seqRamMgr = new evgSeqRamMgr(pReg, this);
+
 	} catch(std::exception& e) {
-		errlogPrintf("ERROR: EVG %d faied to initialise proprtly\n%s\n", id, e.what());
+		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
 	} 	
 
 	irqStop0.mutex = epicsMutexMustCreate();
@@ -236,6 +238,11 @@ evgMrm::getOutput(epicsUInt32 outNum, std::string type) {
 evgSeqRamMgr*
 evgMrm::getSeqRamMgr() {
 	return m_seqRamMgr;
+}
+
+evgSeqMgr*
+evgMrm::getSeqMgr() {
+	return m_seqMgr;
 }
 
 /** 	Event Clock Source 	**/

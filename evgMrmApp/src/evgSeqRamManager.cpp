@@ -14,11 +14,6 @@
 evgSeqRamMgr::evgSeqRamMgr(volatile epicsUInt8* const pReg, evgMrm* owner):
 m_owner(owner),
 m_pReg(pReg) {
-	
-	//For testing
-	for(int i = 0; i < 3; i++) {
-		m_sequence.push_back(new evgSequence(i));
-	}
 
 	for(int i = 0; i < evgNumSeqRam; i++) {
 		m_seqRam.push_back(new evgSeqRam(i, pReg));
@@ -34,26 +29,23 @@ evgSeqRamMgr::getSeqRam(epicsUInt32 seqRamId) {
 		return 0;
 }
 
-evgSequence* 
-evgSeqRamMgr::getSequence(epicsUInt32 seqId) {
-	if(seqId < m_sequence.size() )
-		return m_sequence[seqId];
-	else 
-		return 0;
-}
-
 /*
  * Check if any of the sequenceRam is available(i.e. unloaded).
  * if avaiable load and commit the sequence else return an error.
  */
 epicsStatus
 evgSeqRamMgr::load(evgSequence* seq) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to load.\n");
+		return ERROR;	
+	}
+		
 	evgSeqRam* seqRam = 0;
 
 	for(unsigned int i = 0; i < m_seqRam.size(); i++) {
 		if(m_seqRam[i]->loaded()) {
 			if(seq == m_seqRam[i]->getSequence()) {
-				printf("Seq %d already loaded.\n",seq->getId());
+				errlogPrintf("Seq %d already loaded.\n",seq->getId());
 				return OK;
 			}
 		} else {
@@ -78,6 +70,11 @@ evgSeqRamMgr::load(evgSequence* seq) {
 /* Unload does not wait for the sequecne to get over..Should it? */
 epicsStatus
 evgSeqRamMgr::unload(evgSequence* seq, dbCommon* pRec) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to unload.\n");
+		return ERROR;	
+	}
+
 	evgSeqRam* seqRam = seq->getSeqRam();
 	if(!seqRam)
 		return OK;
@@ -135,6 +132,11 @@ evgSeqRamMgr::unload(evgSequence* seq, dbCommon* pRec) {
  */
 epicsStatus
 evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to commit.\n");
+		return ERROR;	
+	}
+
 	evgSeqRam* seqRam = seq->getSeqRam();
 	if(!seqRam)
 		return OK;
@@ -187,12 +189,18 @@ evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
 	seqRam->setRunMode(seq->getRunMode());
 	seq->getLock()->unlock();
 
+	enable(seq);
 	return OK;
 }
 
 
 epicsStatus
 evgSeqRamMgr::enable(evgSequence* seq) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to enable.\n");
+		return ERROR;	
+	}
+
 	evgSeqRam* seqRam = seq->getSeqRam();
 	if( (!seqRam) || seqRam->enabled() )
 		return OK;
@@ -205,6 +213,11 @@ evgSeqRamMgr::enable(evgSequence* seq) {
 
 epicsStatus
 evgSeqRamMgr::disable(evgSequence* seq) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to disable.\n");
+		return ERROR;	
+	}
+
 	evgSeqRam* seqRam = seq->getSeqRam();
 	if( (!seqRam) || (!seqRam->enabled()) )
 		return OK;
@@ -220,6 +233,11 @@ evgSeqRamMgr::disable(evgSequence* seq) {
 
 epicsStatus
 evgSeqRamMgr::halt(evgSequence* seq) {
+	if(!seq) {
+		errlogPrintf("ERROR: No sequence to halt.\n");
+		return ERROR;	
+	}
+
 	evgSeqRam* seqRam = seq->getSeqRam();
 	if( (!seqRam) || (!seqRam->enabled()) )
 		return OK;

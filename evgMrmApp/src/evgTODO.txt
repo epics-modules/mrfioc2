@@ -2,7 +2,6 @@ TODO:
 -Add the debug flag.
 -Extended device support
 -Software trigger for sequence Ram.
--Benchmarking.
 
 Priority of the event sent out.
 	Algo for how to send out timeStamp events(70, 71, 7D).
@@ -15,6 +14,7 @@ Majorly complete
 	-Multiplexed Counter
 	-Front Panel Input
 	-Front Panel Output
+	-Benchmarking
 
 Currently working on
 	-Sequencer
