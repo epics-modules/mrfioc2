@@ -111,6 +111,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     switch(v){
     case evrFormCPCI:
         if(DBG) printf("CPCI ");
+        nOFPUV=4;
+        nIFP=2;
+        nORB=6;
         break;
     case evrFormPMC:
         if(DBG) printf("PMC ");

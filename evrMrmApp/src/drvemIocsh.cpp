@@ -170,6 +170,7 @@ try {
   }
 
   printf("Device %u  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
+  printf("Using IRQ %u\n",cur->irq);
 
   volatile epicsUInt8 *plx, *evr;
 
