@@ -238,23 +238,26 @@
 #define EVG_SEQ_RAM_RECYCLE  	0x00080000       // Continuous Mode: Repeat on completion
 
 
-/*
- * Mux
- */
+/**************************************************************************************************/
+/* Multiplexed Counter																			  */
+/**************************************************************************************************/
 
 #define EVG_MUX_POLARITY		0x40000000 
 #define EVG_MUX_STATUS			0x80000000 
 
-/*
- * EVG Master Enable
- */
+/**************************************************************************************************/
+/* Control Register flags																		  */
+/**************************************************************************************************/
 
 #define EVG_MASTER_ENA			0x80000000
 #define EVG_DIS_EVT_REC			0x40000000
 #define EVG_REV_PWD_DOWN		0x20000000
 
-// #ifndef EVGREGMAP_H
-// #define EVGREGMAP_H
+/**************************************************************************************************/
+/* External Input Interrupt Enable																  */
+/**************************************************************************************************/
+
+#define EVG_EXT_INP_IRQ_ENA   	0x01000000
 
 const epicsUInt16	evgNumMxc	  = 8;
 const epicsUInt16 	evgNumEvtTrig = 8;
@@ -264,5 +267,3 @@ const epicsUInt16 	evgNumUnivOut = 4;
 const epicsUInt16 	evgNumFpInp   = 2;
 const epicsUInt16 	evgNumUnivInp = 4;
 const epicsUInt16	evgNumSeqRam  = 2;
-
-// #endif //EVGREGMAP_H

@@ -48,7 +48,7 @@ enableIRQ(volatile epicsUInt8* const pReg) {
   if(!pReg)
     return 0;
 
-	BITSET32(pReg, IrqEnable, EVG_IRQ_ENABLE);
+	BITSET32(pReg, IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
 //   WRITE32(pReg, IrqEnable,
 //      EVG_IRQ_ENABLE 		|
 // 		EVG_IRQ_STOP_RAM1 	|

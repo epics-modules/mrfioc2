@@ -23,6 +23,7 @@ device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 #evgInput.db
 device( mbboDirect, VME_IO, devMbboDEvgInpDbusMap, "EVG Input DBus")
 device( mbboDirect, VME_IO, devMbboDEvgInpTrigEvtMap, "EVG Input Trig Evt")
+device( bo, VME_IO, devBoDEvgInpEnaIrq, "EVG Input IRQ")
 
 #evgOutput.db
 device( mbbo, VME_IO, devMbboEvgOutMap, "EVG Output")

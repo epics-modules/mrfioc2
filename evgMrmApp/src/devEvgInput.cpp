@@ -51,7 +51,13 @@ init_mbboD(mbboDirectRecord* pmbboD) {
 	return init_record((dbCommon*)pmbboD, &pmbboD->out);
 }
 
+/*returns:(0,2)=>(success,success no convert*/
+static long 
+init_bo(boRecord* pbo) {
+	return init_record((dbCommon*)pbo, &pbo->out);
+}
 
+/**		mbboDirect - Input-Dbus Map	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
@@ -59,11 +65,20 @@ write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
 	return inp->setInpDbusMap((epicsUInt32)pmbboD->val);
 }
 
+/**		mbboDirect - Input-TrigEvt Map	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD_inpTrigEvt(mbboDirectRecord* pmbboD) {
 	evgInput* inp = (evgInput*)pmbboD->dpvt;
 	return inp->setInpTrigEvtMap((epicsUInt32)pmbboD->val);
+}
+
+/**		bo - Input IRQ Enable	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_enaIRQ(boRecord* pbo) {
+	evgInput* inp = (evgInput*)pbo->dpvt;
+	return inp->enaExtIrq(pbo->val);
 }
 
 /** 	device support entry table 		**/
@@ -88,5 +103,15 @@ common_dset devMbboDEvgInpTrigEvtMap = {
     (DEVSUPFUN)write_mbboD_inpTrigEvt,
 };
 epicsExportAddress(dset, devMbboDEvgInpTrigEvtMap);
+
+common_dset devBoDEvgInpEnaIrq = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_enaIRQ,
+};
+epicsExportAddress(dset, devBoDEvgInpEnaIrq);
 
 };

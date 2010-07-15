@@ -14,6 +14,7 @@ public:
 	~evgInput();
 	epicsStatus setInpDbusMap(epicsUInt32);
 	epicsStatus setInpTrigEvtMap(epicsUInt32);
+	epicsStatus enaExtIrq(bool);
 
 private:
 	const epicsUInt32 			m_id;
