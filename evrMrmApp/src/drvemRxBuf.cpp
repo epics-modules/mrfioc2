@@ -13,7 +13,10 @@ mrmBufRx::mrmBufRx(volatile void *b,unsigned int qdepth, unsigned int bsize)
 {
 }
 
-mrmBufRx::~mrmBufRx() {}
+mrmBufRx::~mrmBufRx()
+{
+    BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_stop);
+}
 
 bool
 mrmBufRx::dataRxEnabled() const

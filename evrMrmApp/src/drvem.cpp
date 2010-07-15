@@ -195,14 +195,15 @@ EVRMRM::~EVRMRM()
     for(outputs_t::iterator it=outputs.begin();
         it!=outputs.end(); ++it)
     {
-        delete &(*it);
+        delete it->second;
     }
     outputs.clear();
     for(prescalers_t::iterator it=prescalers.begin();
         it!=prescalers.end(); ++it)
     {
-        delete &(*it);
+        delete (*it);
     }
+    epicsMutexDestroy(events_lock);
     //TODO: cleanup the rest
 }
 

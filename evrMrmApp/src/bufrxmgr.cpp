@@ -64,13 +64,19 @@ bufRxManager::bufRxManager(unsigned int qdepth, unsigned int bsize)
 
 bufRxManager::~bufRxManager()
 {
-    ELLNODE *node;
+    ELLNODE *node, *next;
 
-    for(node=ellFirst(&freebufs); node; node=ellNext(node))
+    guard.lock();
+
+    for(node=ellFirst(&freebufs), next=node ? ellNext(node):NULL;
+        node;
+        node=next, next=next ? ellNext(next) : NULL)
     {
         buffer *b=CONTAINER(node, buffer, node);
         free(b);
     }
+
+    guard.unlock();
 }
 
 epicsUInt8*
