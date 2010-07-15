@@ -62,18 +62,6 @@ sharedDevPCIFindCB(
       return err;
   }
 
-  /*
-   * The search proceeds once through the list of devices.
-   *
-   * Each device is compared to the list of ids.
-   * If it matches then control goes to the end of the outer
-   *  loop to determine if this is the requested instance.
-   * If not then the next device is searched.
-   *
-   * After the loops, 'curdev' can be non-NULL only if
-   * control did not hit one of the break statements.
-   */
-
   cur=ellFirst(&devices);
   for(; cur; cur=ellNext(cur)){
     curdev=CONTAINER(cur,osdPCIDevice,node);
@@ -81,30 +69,30 @@ sharedDevPCIFindCB(
     for(search=idlist; search && !!search->device; search++){
 
       if(search->device!=curdev->dev.id.device)
-        break;
+        continue;
       else
       if(search->vendor!=curdev->dev.id.vendor)
-        break;
+        continue;
       else
       if( search->sub_device!=DEVPCI_ANY_SUBDEVICE &&
           search->sub_device!=curdev->dev.id.sub_device
         )
-        break;
+        continue;
       else
       if( search->sub_vendor!=DEVPCI_ANY_SUBVENDOR &&
           search->sub_vendor!=curdev->dev.id.sub_vendor
         )
-        break;
+        continue;
       else
       if( search->pci_class!=DEVPCI_ANY_CLASS &&
           search->pci_class!=curdev->dev.id.pci_class
         )
-        break;
+        continue;
       else
       if( search->revision!=DEVPCI_ANY_REVISION &&
           search->revision!=curdev->dev.id.revision
         )
-        break;
+        continue;
 
       /* Match found */
 
