@@ -4,16 +4,12 @@
 
 #include <map>
 #include <stdexcept>
+#include <epicsMutex.h>
+
+#include <mrfCommon.h>
 
 bool cardIdInUse(short);
 void cardIdAdd(short);
-
-class cardmap_error : public std::runtime_error
-{
-public:
-    cardmap_error(const char* m) : std::runtime_error(m) {}
-};
-
 
 /**@brief Mapping of card number to class interface
  *
@@ -35,29 +31,34 @@ class CardMap
 {
     typedef std::map<short,C*> mapping_t;
     mapping_t mapping;
+
+    epicsMutex mapLock;
 public:
     typedef C value_type;
 
     bool available(short id)
     {
+        SCOPED_LOCK(mapLock);
         return mapping.find(id) != mapping.end();
     }
 
     C& get(short id)
     {
+        SCOPED_LOCK(mapLock);
         typename mapping_t::const_iterator it=mapping.find(id);
         if (it==mapping.end())
-            throw cardmap_error("Card interface not found");
+            throw std::runtime_error("Card interface not found");
         return *(it->second);
     }
 
     template<class DERV>
     DERV& get(short id)
     {
+        SCOPED_LOCK(mapLock);
         C& base=get(id);
         DERV* derv=dynamic_cast<DERV*>(&base);
         if (!derv)
-            throw cardmap_error("Card interface can't be cast to requested type");
+            throw std::runtime_error("Card interface can't be cast to requested type");
         return *derv;
     }
 
@@ -65,14 +66,15 @@ public:
      */
     void store(short id, C& card, bool append=false)
     {
+        SCOPED_LOCK(mapLock);
         if (!append && cardIdInUse(id))
-            throw cardmap_error("Card ID already in use");
+            throw std::runtime_error("Card ID already in use");
 
         std::pair<typename mapping_t::iterator,bool> add
          = mapping.insert(typename mapping_t::value_type(id,&card));
 
         if (!add.second)
-            throw cardmap_error("Interface already in use for this ID");
+            throw std::runtime_error("Interface already in use for this ID");
 
         cardIdAdd(id);
     }
@@ -82,6 +84,7 @@ public:
     template<typename T, class DERV>
     void visit(T arg, bool (*fptr)(T,short,DERV&))
     {
+        SCOPED_LOCK(mapLock);
         for(typename mapping_t::iterator it=mapping.begin();
             it!=mapping.end(); ++it)
         {
