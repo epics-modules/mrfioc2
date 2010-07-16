@@ -4,7 +4,7 @@
 
 #include <rtems/pci.h>
 #include <rtems/endian.h>
-#include <rtems/irq.h>
+#include <bsp/irq.h>
 
 #include <dbDefs.h>
 
@@ -31,7 +31,7 @@ int rtemsDevPCIConnectInterrupt(
   isr.off= NULL;
   isr.isOn=NULL;
 
-#if BSP_SHARED_HANDLER_SUPPORT > 0
+#ifdef BSP_SHARED_HANDLER_SUPPORT
   isr.next_handler=NULL;
 
   if (!BSP_install_rtems_shared_irq_handler(&isr))
@@ -63,7 +63,7 @@ int rtemsDevPCIDisconnectInterrupt(
   isr.off= NULL;
   isr.isOn=NULL;
 
-#if BSP_SHARED_HANDLER_SUPPORT > 0
+#ifdef BSP_SHARED_HANDLER_SUPPORT
   isr.next_handler=NULL;
 #endif
 
