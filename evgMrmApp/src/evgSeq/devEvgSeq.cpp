@@ -91,7 +91,7 @@ static long
 write_wf_timeStamp(waveformRecord* pwf) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pwf->dpvt;
 
-	evgSequence* seq = seqMgr->getSequence(pwf->inp.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.card);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
@@ -104,7 +104,7 @@ static long
 write_wf_eventCode(waveformRecord* pwf) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pwf->dpvt;
 
-	evgSequence* seq = seqMgr->getSequence(pwf->inp.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.card);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
@@ -117,7 +117,7 @@ static long
 write_mbbo_runMode(mbboRecord* pmbbo) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pmbbo->dpvt;
 
-	evgSequence* seq = seqMgr->getSequence(pmbbo->out.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.card);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
@@ -130,7 +130,7 @@ static long
 write_mbbo_trigSrc(mbboRecord* pmbbo) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pmbbo->dpvt;
 
-	evgSequence* seq = seqMgr->getSequence(pmbbo->out.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.card);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 

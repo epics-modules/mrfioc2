@@ -89,7 +89,7 @@ write_bo_loadSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -104,7 +104,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -119,7 +119,7 @@ write_bo_commitSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -134,7 +134,7 @@ write_bo_enableSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -149,7 +149,7 @@ write_bo_disableSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 
@@ -164,7 +164,7 @@ write_bo_haltSeq(boRecord* pbo) {
 		return 0;
 
 	seqPvt* pvt = (seqPvt*)pbo->dpvt;
-	evgSequence* seq = pvt->seqMgr->getSequence(pbo->out.value.vmeio.signal);
+	evgSequence* seq = pvt->seqMgr->getSeq(pbo->out.value.vmeio.signal);
 	if(!seq)
 		return -1;
 

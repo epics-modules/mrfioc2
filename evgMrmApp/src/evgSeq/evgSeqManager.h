@@ -10,8 +10,7 @@
 class evgSeqMgr {
 public:
 	epicsStatus	createSeq(epicsUInt32);
-	evgSequence* getSequence(epicsUInt32);
-	//deleteSequence();
+	evgSequence* getSeq(epicsUInt32);
 
 private:
 	std::vector<evgSequence*> 		m_sequence;

@@ -7,6 +7,13 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC += evgmrm
 
+INC += evgSeq/evgSeqManager.h
+INC += evgSeq/evgSequence.h
+INC += evgSeq/evgSeqRamManager.h
+INC += evgSeq/evgSeqRam.h
+
+SRC_DIRS += ../evgSeq
+
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
 
@@ -35,7 +42,6 @@ evgmrm_SRCS += devEvgSeq.cpp
 evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
 evgmrm_SRCS += devEvgSeqRam.cpp
-
 
 DBD += evgInit.dbd
 #=============================

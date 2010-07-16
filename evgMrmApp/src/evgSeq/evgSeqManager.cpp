@@ -10,7 +10,7 @@ evgSeqMgr::createSeq(epicsUInt32 seqID) {
 }
 
 evgSequence* 
-evgSeqMgr::getSequence(epicsUInt32 seqId) {
+evgSeqMgr::getSeq(epicsUInt32 seqId) {
 	if(seqId < m_sequence.size() )
 		return m_sequence[seqId];
 	else 

@@ -10,8 +10,8 @@
 #include <callback.h>
 #include <epicsMutex.h>
 
-#include "evgSeqRamManager.h"  
-#include "evgSeqManager.h"
+#include "evgSeq/evgSeqRamManager.h"  
+#include "evgSeq/evgSeqManager.h"
 #include "evgMxc.h"
 #include "evgTrigEvt.h"
 #include "evgDbus.h"
