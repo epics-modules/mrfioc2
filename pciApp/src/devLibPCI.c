@@ -22,8 +22,8 @@ void devInit(void* junk)
 
   if(!!pdevLibPCI->pDevInit)
     devPCIInit_result = (*pdevLibPCI->pDevInit)();
-
-  devPCIInit_result = 0;
+  else
+    devPCIInit_result = 0;
 }
 
 #define PCIINIT \
