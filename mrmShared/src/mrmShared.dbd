@@ -1,0 +1,4 @@
+
+device(bo,      INST_IO, devbodataBufTx, "MRF Data Buf Tx")
+device(bi ,     INST_IO, devbidataBufTx, "MRF Data Buf Tx")
+device(waveform,INST_IO, devwaveformoutdataBufTx, "MRF Data Buf Tx")

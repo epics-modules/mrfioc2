@@ -14,7 +14,7 @@
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
-#include "cardmap.h"
+#include "evrmap.h"
 #include "evr/evr.h"
 #include "linkoptions.h"
 #include "dsetshared.h"
@@ -86,7 +86,7 @@ try {
   priv->last_code=0;
   priv->last_func=priv->next_func;
 
-  priv->card=getEVR<EVR>(priv->card_id);
+  priv->card=&evrmap.get(priv->card_id);
   if(!priv->card)
     throw std::runtime_error("Failed to lookup device");
 

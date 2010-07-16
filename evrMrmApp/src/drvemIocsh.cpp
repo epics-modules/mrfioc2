@@ -21,7 +21,7 @@
 #include "evrRegMap.h"
 #include "plx9030.h"
 
-#include <cardmap.h>
+#include <evrmap.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -35,7 +35,9 @@ epicsExportAddress(int,evrmrmVerb);
 
 static const epicsPCIID mrmevrs[] = {
    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
-                              PCI_DEVICE_ID_MRF_EVR_230, PCI_VENDOR_ID_MRF)
+                              PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
+  ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
+                              PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
   ,DEVPCI_END
 };
 
@@ -87,7 +89,12 @@ REGINFO("CML4Low",OutputCMLLow(0),32),
 REGINFO("CML4Rise",OutputCMLRise(0),32),
 REGINFO("CML4High",OutputCMLHigh(0),32),
 REGINFO("CML4Fall",OutputCMLFall(0),32),
-REGINFO("CML4Ena",OutputCMLEna(0),32)
+REGINFO("CML4Ena",OutputCMLEna(0),32),
+REGINFO("CML4High",OutputCMLCountHigh(0),16),
+REGINFO("CML4Low",OutputCMLCountLow(0),16),
+REGINFO("CML4Len",OutputCMLPatLength(0),32),
+REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
+REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
 #undef REGINFO
 };
 
@@ -121,37 +128,26 @@ printregisters(volatile epicsUInt8 *evr)
 }
 
 static
-int reportCard(void* val,short id,EVR* evr)
+bool reportCard(int level,short id,EVRMRM& evr)
 {
-  int level=*(int*)val;
-
   printf("--- EVR %d ---\n",id);
 
-  if(!evr){
-    printf("NULL!?!?!\n");
-    return 1;
-  }
+  printf("Model: %08x  Version: %08x\n",evr.model(),evr.version());
 
-  printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
-
-  printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
-
-  EVRMRM* mrm=dynamic_cast<EVRMRM*>(evr);
-  if(!mrm)
-    return 0;
+  printf("Clock: %.6f MHz\n",evr.clock()*1e-6);
 
   if(level>=2){
-    printregisters(mrm->base);
+    printregisters(evr.base);
   }
 
-  return 0;
+  return true;
 }
 
 static
 long report(int level)
 {
   printf("=== Begin MRF EVR support ===\n");
-  visitEVRBase((void*)&level, &reportCard);
+  evrmap.visit(level,&reportCard);
   printf("=== End MRF EVR support ===\n");
   return 0;
 }
@@ -162,7 +158,7 @@ void
 mrmEvrSetupPCI(int id,int b,int d,int f)
 {
 try {
-  if(!!getEVR<EVR>(id)){
+  if(cardIdInUse(id)){
     printf("ID %d already in use\n",id);
     return;
   }
@@ -174,6 +170,7 @@ try {
   }
 
   printf("Device %u  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
+  printf("Using IRQ %u\n",cur->irq);
 
   volatile epicsUInt8 *plx, *evr;
 
@@ -221,7 +218,9 @@ try {
   }else{
       // Interrupts will be enabled during iocInit()
 
-      storeEVR(id,receiver);
+      evrmap.store(id,*receiver);
+      datatxmap.append(id,receiver->buftx);
+      datarxmap.append(id,receiver->bufrx);
   }
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -249,21 +248,18 @@ printRamEvt(EVRMRM *evr,int evt,int ram)
 }
 
 static
-int
-enableIRQ(void*,short,EVR* evr)
+bool
+enableIRQ(int,short,EVRMRM& mrm)
 {
-  EVRMRM *mrm=dynamic_cast<EVRMRM*>(evr);
-  if(!mrm)
-    return 0;
 
-  WRITE32(mrm->base, IRQEnable,
+  WRITE32(mrm.base, IRQEnable,
        IRQ_Enable
-      |IRQ_RXErr
+      |IRQ_RXErr    |IRQ_BufFull
       |IRQ_Heartbeat|IRQ_HWMapped
       |IRQ_Event    |IRQ_FIFOFull
   );
 
-  return 0;
+  return true;
 }
 
 static
@@ -272,7 +268,7 @@ void inithooks(initHookState state)
   switch(state)
   {
   case initHookAfterInterruptAccept:
-    visitEVRBase(NULL, &enableIRQ);
+    evrmap.visit(0, &enableIRQ);
     break;
   default:
     break;
@@ -297,7 +293,7 @@ void
 mrmEvrSetupVME(int id,int slot,int base,int level, int vector)
 {
 try {
-  if(!!getEVR<EVR>(id)){
+  if(cardIdInUse(id)){
     printf("ID %d already in use\n",id);
     return;
   }
@@ -319,16 +315,17 @@ try {
 
   /* Use function 0 for 16-bit addressing (length 0x00800 bytes)
    * and function 1 for 24-bit addressing (length 0x10000 bytes)
+   * and function 2 for 32-bit addressing (length 0x20000 bytes)
    *
-   * Both expose the same registers, but not all registers are
-   * visible through function 0.
+   * All expose the same registers, but not all registers are
+   * visible through functions 0 or 1.
    */
 
-  CSRSetBase(csr, 1, base, VME_AM_STD_SUP_DATA);
+  CSRSetBase(csr, 2, base, VME_AM_EXT_SUP_DATA);
 
   volatile unsigned char* evr;
 
-  if(devBusToLocalAddr(atVMEA24, base, (volatile void**)&evr))
+  if(devBusToLocalAddr(atVMEA32, base, (volatile void**)&evr))
   {
     printf("Failed to map address %08x\n",base);
     return;
@@ -377,7 +374,9 @@ try {
     // Interrupts will be enabled during iocInit()
   }
 
-  storeEVR(id,receiver);
+  evrmap.store(id,*receiver);
+  datatxmap.append(id,receiver->buftx);
+  datarxmap.append(id,receiver->bufrx);
 
 } catch(std::exception& e) {
   printf("Error: %s\n",e.what());
@@ -386,7 +385,7 @@ try {
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "ID number",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg1 = { "Bus number",iocshArgInt};
-static const iocshArg mrmEvrSetupVMEArg2 = { "A24 base address",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg2 = { "A32 base address",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg3 = { "IRQ Level 1-7 (0 - disable)",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg4 = { "IRQ vector 0-255",iocshArgInt};
 static const iocshArg * const mrmEvrSetupVMEArgs[5] =
@@ -402,7 +401,7 @@ extern "C"
 void
 mrmEvrDumpMap(int id,int evt,int ram)
 {
-  EVRMRM *card=getEVR<EVRMRM>(id);
+  EVRMRM *card=&evrmap.get<EVRMRM>(id);
   if(!card){
     printf("Invalid card\n");
     return;

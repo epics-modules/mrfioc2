@@ -63,12 +63,12 @@
 #include <epicsStdlib.h>        // EPICS Standard C library support routines
 #include <epicsTypes.h>         // EPICS Architecture-independent type definitions
 #include <epicsInterrupt.h>     // EPICS Interrupt context support routines
-
+#include <devLib.h>             // EPICS Device-independant hardware addressing support library
+#include <devcsr.h>             // EPICS Routines for accessing VME-64X CR/CSR space
 #include <devLib.h>             // EPICS Device-independant hardware addressing support library
 #include <osdVME.h>             // EPICS VME address mode definitions
 #include "vmedefs.h"
 #include "devcsr.h"
-
 #include "mrfcsr.h"
 #include <mrfCommon.h>          // VME-64X CR/CSR routines and definitions (with MRF extensions)
 #include <mrfVmeBusInterface.h> // Class definition file

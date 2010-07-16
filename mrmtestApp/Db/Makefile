@@ -12,7 +12,12 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #DB += xxx.db
 
+ifneq ($(DEVIOCSTATS),)
+ifeq ($(OS_CLASS),RTEMS)
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+endif
+endif
+
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>

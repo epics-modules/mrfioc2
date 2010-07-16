@@ -44,12 +44,16 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfIoOps.h
+INC += mrfIoOpsDef.h
 INC += mrfCommonIO.h      # Common I/O access macros
 INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += mrfIoLink.h        # I/O link field parser
 INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += debugPrint.h       # SLAC debug print utility
 INC += linkoptions.h
+
+INC += cardmap.h
+INC += mrf/databuf.h
 
 INC += property.h
 INC += dsetshared.h
@@ -74,6 +78,7 @@ mrfCommon_SRCS += mrfBusInterface.cpp
 mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += dsetshared.cpp
+mrfCommon_SRCS += cardmap.cpp
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 

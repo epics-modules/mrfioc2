@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include <ellLib.h>
+#include <errlog.h>
 
 #include "devLibPCIImpl.h"
 
@@ -43,11 +44,8 @@ sharedDevPCIFindCB(
   osdPCIDevice *curdev=NULL;
   const epicsPCIID *search;
 
-  if(!pdevLibPCIVirtualOS)
-    return 5;
-
   if(!searchfn)
-    return 2;
+    return S_dev_badArgument;
 
   /*
    * Ensure all entries for the requested device/vendor pairs
@@ -57,24 +55,12 @@ sharedDevPCIFindCB(
     if(search->device==DEVPCI_ANY_DEVICE ||
        search->vendor==DEVPCI_ANY_VENDOR)
     {
-      epicsPrintf("devPCI: Wildcards are not supported in Device and Vendor fields\n");
-      return 3;
+      errlogPrintf("devPCI: Wildcards are not supported in Device and Vendor fields\n");
+      return S_dev_badRequest;
     }
     if( (err=fill_cache(search->device, search->vendor)) )
       return err;
   }
-
-  /*
-   * The search proceeds once through the list of devices.
-   *
-   * Each device is compared to the list of ids.
-   * If it matches then control goes to the end of the outer
-   *  loop to determine if this is the requested instance.
-   * If not then the next device is searched.
-   *
-   * After the loops, 'curdev' can be non-NULL only if
-   * control did not hit one of the break statements.
-   */
 
   cur=ellFirst(&devices);
   for(; cur; cur=ellNext(cur)){
@@ -83,30 +69,30 @@ sharedDevPCIFindCB(
     for(search=idlist; search && !!search->device; search++){
 
       if(search->device!=curdev->dev.id.device)
-        break;
+        continue;
       else
       if(search->vendor!=curdev->dev.id.vendor)
-        break;
+        continue;
       else
       if( search->sub_device!=DEVPCI_ANY_SUBDEVICE &&
           search->sub_device!=curdev->dev.id.sub_device
         )
-        break;
+        continue;
       else
       if( search->sub_vendor!=DEVPCI_ANY_SUBVENDOR &&
           search->sub_vendor!=curdev->dev.id.sub_vendor
         )
-        break;
+        continue;
       else
       if( search->pci_class!=DEVPCI_ANY_CLASS &&
           search->pci_class!=curdev->dev.id.pci_class
         )
-        break;
+        continue;
       else
       if( search->revision!=DEVPCI_ANY_REVISION &&
           search->revision!=curdev->dev.id.revision
         )
-        break;
+        continue;
 
       /* Match found */
 
@@ -138,7 +124,7 @@ sharedDevPCIToLocalAddr(
   struct osdPCIDevice *osd=pcidev2osd(dev);
 
   if(!osd->base[bar])
-    return 1;
+    return S_dev_addrMapFail;
 
   *ppLocalAddr=osd->base[bar];
   return 0;
@@ -155,7 +141,7 @@ sharedDevPCIBarLen(
   UINT32 start, max, mask;
 
   if(!osd->base[bar])
-    return 1;
+    return 0;
 
   if(osd->len[bar])
     return osd->len[bar];
@@ -214,7 +200,7 @@ int sharedDevPCIFind(epicsUInt16 dev,epicsUInt16 vend,ELLLIST* store)
 
     osdPCIDevice *next=calloc(1,sizeof(osdPCIDevice));
     if(!next)
-      return 1;
+      return S_dev_noMemory;
 
     err=pci_find_device(vend,dev,N, &b, &d, &f);
     if(err){ /* No more */
@@ -281,26 +267,26 @@ static
 int fill_cache(epicsUInt16 dev,epicsUInt16 vend)
 {
   ELLNODE *cur;
-  const dev_vend_entry *curent;
+  const dev_vend_entry *current;
   dev_vend_entry *next;
 
   for(cur=ellFirst(&dev_vend_cache); cur; cur=ellNext(cur)){
-    curent=CONTAINER(cur,const dev_vend_entry,node);
+    current=CONTAINER(cur,const dev_vend_entry,node);
 
     /* If one device is found then all must be in cache */
-    if( curent->device==dev && curent->vendor==vend )
+    if( current->device==dev && current->vendor==vend )
       return 0;
   }
 
   next=malloc(sizeof(dev_vend_entry));
   if(!next)
-    return 11;
+    return S_dev_noMemory;
   next->device=dev;
   next->vendor=vend;
 
   if( sharedDevPCIFind(dev,vend,&devices) ){
     free(next);
-    return 12;
+    return S_dev_addressNotFound;
   }
 
   /* Prepend */

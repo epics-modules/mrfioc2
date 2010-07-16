@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include <epicsMath.h>
+#include <errlog.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -50,10 +51,14 @@ do { \
 static
 const double fracref=24.0; // MHz
 
+CardMap<dataBufRx> datarxmap;
+
 EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
   ,id(i)
   ,base(b)
+  ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
+  ,bufrx(b, 10) // Sets depth of Rx queue
   ,stampClock(0.0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
@@ -63,7 +68,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,pulsers()
   ,shortcmls()
 {
-    epicsUInt32 v = READ32(base, FWVersion),evr;
+    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
@@ -71,15 +76,21 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
+    ver=v&FWVersion_ver_mask;
+    ver>>=FWVersion_ver_shift;
+    if(ver<3)
+        throw std::runtime_error("Firmware version not supported");
+
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQbufferReady);
     scanIoInit(&IRQheadbeat);
     scanIoInit(&IRQrxError);
     scanIoInit(&IRQfifofull);
 
-    CBINIT(&drain_fifo_cb, priorityLow, &EVRMRM::drain_fifo, this);
-    CBINIT(&drain_log_cb , priorityLow, &EVRMRM::drain_log , this);
-    CBINIT(&poll_link_cb , priorityLow, &EVRMRM::poll_link , this);
+    CBINIT(&drain_fifo_cb, priorityMedium, &EVRMRM::drain_fifo, this);
+    CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
+    CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
+    CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
     /*
      * Create subunit instances
@@ -93,13 +104,16 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
     // # of CML outputs
-    size_t nCMLShort=0;
+    size_t nCML=0;
     // # of FP inputs
     size_t nIFP=0;
 
     switch(v){
     case evrFormCPCI:
         if(DBG) printf("CPCI ");
+        nOFPUV=4;
+        nIFP=2;
+        nORB=6;
         break;
     case evrFormPMC:
         if(DBG) printf("PMC ");
@@ -109,7 +123,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     case evrFormVME64:
         if(DBG) printf("VME64 ");
         nOFP=7;
-        nCMLShort=3; // OFP 4-6 are CML
+        nCML=3; // OFP 4-6 are CML
         nOFPUV=4;
         nORB=16;
         nIFP=2;
@@ -117,7 +131,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     default:
         printf("Unknown EVR variant %d\n",v);
     }
-    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",nOFP,nOFPUV,nORB,nIFP);
+    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
+                   (unsigned int)nOFP,(unsigned int)nOFPUV,
+                   (unsigned int)nORB,(unsigned int)nIFP);
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
@@ -149,9 +165,13 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         pulsers[i]=new MRMPulser(i,*this);
     }
 
-    shortcmls.resize(nCMLShort);
-    for(size_t i=0; i<nCMLShort; i++){
-        shortcmls[i]=new MRMCMLShort(i,base);
+    if(nCML && ver>=4){
+        shortcmls.resize(nCML);
+        for(size_t i=0; i<nCML; i++){
+            shortcmls[i]=new MRMCML(i,*this);
+        }
+    }else if(nCML){
+        printf("CML outputs not supported with this firmware\n");
     }
 
     events_lock=epicsMutexMustCreate();
@@ -165,6 +185,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
         scanIoInit(&events[i].occured);
     }
+
+    eventClock=FracSynthAnalyze(READ32(base, FracDiv),
+                                fracref,0)*1e6;
 }
 
 EVRMRM::~EVRMRM()
@@ -172,14 +195,15 @@ EVRMRM::~EVRMRM()
     for(outputs_t::iterator it=outputs.begin();
         it!=outputs.end(); ++it)
     {
-        delete &(*it);
+        delete it->second;
     }
     outputs.clear();
     for(prescalers_t::iterator it=prescalers.begin();
         it!=prescalers.end(); ++it)
     {
-        delete &(*it);
+        delete (*it);
     }
+    epicsMutexDestroy(events_lock);
     //TODO: cleanup the rest
 }
 
@@ -285,16 +309,16 @@ EVRMRM::prescaler(epicsUInt32 i) const
     return prescalers[i];
 }
 
-MRMCMLShort*
-EVRMRM::cmlshort(epicsUInt32 i)
+MRMCML*
+EVRMRM::cml(epicsUInt32 i)
 {
     if(i>=shortcmls.size())
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
 
-const MRMCMLShort*
-EVRMRM::cmlshort(epicsUInt32 i) const
+const MRMCML*
+EVRMRM::cml(epicsUInt32 i) const
 {
     if(i>=shortcmls.size())
         throw std::out_of_range("CML Short id is out of range");
@@ -373,13 +397,6 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     epicsInterruptUnlock(iflags);
 }
 
-double
-EVRMRM::clock() const
-{
-    return FracSynthAnalyze(READ32(base, FracDiv),
-                            fracref,0)*1e6;
-}
-
 void
 EVRMRM::clockSet(double freq)
 {
@@ -395,6 +412,8 @@ EVRMRM::clockSet(double freq)
     if(newfrac==0)
         throw std::out_of_range("New frequency can't be used");
 
+    int iflags=epicsInterruptLock();
+
     epicsUInt32 oldfrac=READ32(base, FracDiv);
 
     if(newfrac!=oldfrac){
@@ -403,6 +422,9 @@ EVRMRM::clockSet(double freq)
         // Don't change the control word unless needed.
 
         WRITE32(base, FracDiv, newfrac);
+
+        eventClock=FracSynthAnalyze(READ32(base, FracDiv),
+                                    fracref,0)*1e6;
     }
 
     // USecDiv is accessed as a 32 bit register, but
@@ -413,6 +435,8 @@ EVRMRM::clockSet(double freq)
     if(newudiv!=oldudiv){
         WRITE32(base, USecDiv, newudiv);
     }
+
+    epicsInterruptUnlock(iflags);
 }
 
 epicsUInt32
@@ -676,6 +700,10 @@ EVRMRM::isr(void *arg)
       return;
 
     if(active&IRQ_BufFull){
+        // Silence interrupt
+        BITSET(NAT,32,evr->base, DataBufCtrl, DataBufCtrl_stop);
+
+        callbackRequest(&evr->data_rx_cb);
         scanIoRequest(evr->IRQbufferReady);
     }
     if(active&IRQ_HWMapped){

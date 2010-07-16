@@ -4,8 +4,6 @@ record(bo, "$(P)enable") {
   field(DTYP, "EVR")
   field(OUT , "@C=$(C), P=Enable")
   field(DESC, "Master enable for EVR device")
-  field(PINI, "YES")
-  field(VAL , "1")
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
@@ -19,6 +17,18 @@ record(bi, "$(P)link:sts") {
   field(ZNAM, "Fail")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
+  field(FLNK, "$(P)link:sts:init")
+}
+
+# Detect the first time the event link
+# is online.  Then set master enable.
+record(calcout, "$(P)link:sts:init") {
+  field(DESC, "Detect initial link up")
+  field(INPA, "$(P)link:sts")
+  field(CALC, "A")
+  field(OUT , "$(P)enable PP")
+  field(OOPT, "Transition To Non-zero")
+  field(ODLY, "1.0")
 }
 
 record(longin, "$(P)link:cnt") {
@@ -67,6 +77,17 @@ record(calc, "$(P)clock:error") {
   field(PREC, "3")
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock")
+  field(FLNK, "$(P)clock:period")
+}
+
+# Intended for use in calculations
+record(calc, "$(P)clock:period") {
+  field(DESC, "Event period")
+  field(CALC, "B/A")
+  field(EGU , "s")
+  field(PREC, "3")
+  field(INPA, "$(P)clock:set")
+  field(INPB, "$(P)clock:set.ESLO")
 }
 
 record(bi, "$(P)pll") {
@@ -78,6 +99,16 @@ record(bi, "$(P)pll") {
   field(ZNAM, "Error")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
+}
+
+record(bo, "$(P)dbus:mode") {
+  field(DESC, "Data mode")
+  field(DTYP, "MRF Data Buf Tx")
+  field(OUT , "@C=$(C), Proto=0, P=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
 }
 
 record(longin, "$(P)hwtype") {

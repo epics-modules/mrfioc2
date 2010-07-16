@@ -2,4 +2,4 @@
 
 #include <devLibPCIImpl.h>
 
-devLibPCIVirtualOS *pdevLibPCIVirtualOS = NULL;
+devLibPCI *pdevLibPCI = NULL;

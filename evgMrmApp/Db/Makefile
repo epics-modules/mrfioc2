@@ -21,7 +21,12 @@ DB += evgSeq.db
 DB += evgSeqRam.db
 DB += vme-evg230.db
 
+
+ifneq ($(DEVIOCSTATS),)
+ifeq ($(OS_CLASS), RTEMS)
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+endif
+endif
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

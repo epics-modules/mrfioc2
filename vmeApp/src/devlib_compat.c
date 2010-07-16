@@ -1,6 +1,21 @@
 
+#include <stdlib.h>
+
+#include <devLib.h>
+
 #define epicsExportSharedSymbols
 #include <shareLib.h>
+
+#ifdef __rtems__
+#  if !defined(__PPC__) && !defined(__mcf528x__)
+#    define NEED_IFACE
+#    define NEED_PIMPL
+#  endif
+#else
+#  define NEED_IFACE
+#endif
+
+#ifdef NEED_IFACE
 
 /*
  * Most devlib function go through an indirection table with a null
@@ -34,3 +49,11 @@ epicsShareFunc int  devInterruptInUseVME (unsigned vectorNumber)
 {
    return -1;
 }
+
+#endif /* NEED_IFACE */
+
+#ifdef NEED_PIMPL
+
+devLibVirtualOS *pdevLibVirtualOS = NULL;
+
+#endif /* NEED_PIMPL */

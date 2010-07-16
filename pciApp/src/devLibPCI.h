@@ -47,17 +47,17 @@ typedef struct {
 { dev, vend, DEVPCI_ANY_SUBDEVICE, DEVPCI_ANY_SUBVENDOR, \
 DEVPCI_ANY_CLASS, DEVPCI_ANY_REVISION }
 
-#define DEVPCI_DEVICE_VENDOR_CLASS(dev,vend,class) \
+#define DEVPCI_DEVICE_VENDOR_CLASS(dev,vend,pclass) \
 { dev, vend, DEVPCI_ANY_SUBDEVICE, DEVPCI_ANY_SUBVENDOR, \
-class, DEVPCI_ANY_REVISION }
+pclass, DEVPCI_ANY_REVISION }
 
 #define DEVPCI_SUBDEVICE_SUBVENDOR(dev,vend,sdev,svend) \
 { dev, vend, sdev, svend, \
 DEVPCI_ANY_CLASS, DEVPCI_ANY_REVISION }
 
-#define DEVPCI_SUBDEVICE_SUBVENDOR_CLASS(dev,vend,sdev,svend,revision,class) \
+#define DEVPCI_SUBDEVICE_SUBVENDOR_CLASS(dev,vend,sdev,svend,revision,pclass) \
 { dev, vend, sdev, svend, \
-class, revision }
+pclass, revision }
 
 struct PCIBar {
   unsigned int ioport:1; /* 0 memory, 1 I/O */

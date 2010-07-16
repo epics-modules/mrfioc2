@@ -204,6 +204,7 @@ devInfoStruct* parseLink (
         SeqNum   = ioLink->getInteger ("Seq" );
         Function = ioLink->getString  ("Fn"  );
         delete ioLink;
+        ioLink = NULL;
 
         //=====================
         // Declare the sequence number.

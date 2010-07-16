@@ -8,8 +8,8 @@ MRF EVR Usage Guide
 ===================
 :Author:    Michael Davidsaver
 :Email:     mdavidsaver@bnl.gov
-:Date:      February 2010
-:Revision:  1
+:Date:      May 2010
+:Revision:  2
 :Key words: epics, ioc, device support, mrf, timing
 
 == Overview ==
@@ -30,6 +30,10 @@ An EVR will act in one of two roles: either Leaf or Master.
 All, or all but one, EVR will be in the Leaf role.
 The special Master EVR acts as the termination point for events
 and data on the upstream path.
+
+The Master EVR is necessary because, while the generator (EVG) is capable of
+receiving an event stream, it does not impliment most of the features of the
+receiver (EVR).
 
 [[mrf_overview]]
 .Two system configurations for the MRF Timing System
@@ -68,13 +72,16 @@ image::images/mrf-evr-blocks.png[]
 
 === Pulse Generators ===
 
-Each pulse generator has a an associated delay, width, and polarity
-(active low/high).
+Each pulse generator has a an associated delay, width, polarity
+(active low/high), and (sometimes) a prescaler (clock divider).
 When triggered by the Mapping Ram it will wait for a set time in its inactive state (delay).
 Then it will transition to its active state, wait another set time (width)
 before transitioning back to its inactive state.
 
 In addition, the Mapping Ram can force a Pulse Generator into either state (Set/Reset).
+
+Note: Some Pulse Generators do not have a prescaler.  In this case the prescaler
+      property will always read 0 instead of >=1.
 
 === Event Mapping Ram ===
 
@@ -88,20 +95,28 @@ The actions which can be taken can be grouped into two catagories:
 Special actions, and Pulse Generator actions.
 Special actions include those related to timestamp distribution, and
 the system heartbeat tick.
-Each Pulse Generate has three mapable actions: Set, Reset, and Trigger.
+Each Pulse Generater has three mapable actions: Set (force active), Reset (force inactive), and Trigger (start delay program).  Most applications will use Trigger
+mappings.
 
 === Prescalers (Clock Divider) ===
 
 Prescaler sub-units take the local system clock frequency and output a
 lower frequency clock which is phased locked to the local clock,
 which is in sync with the global master clock.
-The lower frequency will be an integer multiple of the system clock.
+The lower frequency will be an integer divisor of the system clock.
 
-=== Outputs ===
+=== Outputs (TTL) ===
 
 This sub-unit represents a local physical output on the EVR.
 Each output may be connected to one source: a Distributed Bus bit,
 a Prescaler, or a Pulse Generator.
+
+
+=== Outputs (CML) ===
+
+Current Mode Logic outputs function differently then the normal TTL outputs.
+
+TODO: say more
 
 === Inputs ===
 
@@ -173,14 +188,42 @@ Some generic database files are found in 'evrApp/Db/'.
 
 ==== evrMrmApp ====
 
-The is the device support for the Modular Register Map (MRM) firmware
+The is the driver for the Modular Register Map (MRM) firmware
 version for the EVR.
 It provides a concrete implimentation of the abstract classes defined
 in 'evrApp'.
-It also provided IOC shell function in 'evrMrmApp/src/drvemIocsh.cpp'.
+It also provided IOC shell functions to instanciate a device in
+'evrMrmApp/src/drvemIocsh.cpp'.
 'evrMrmApp/Db/evr-*.substitutions' will create a complete example
 database.
 An example IOC using the database is in 'iocBoot/iocevrmrm/'.
+
+== Supported Hardware ==
+
+The following devices are supported.
+
+=== VME EVR 230 (non-RF) ===
+
+Outputs: Front panel: 4, Front Panel UNIV. 2
+Inputs: Front panel: 2
+
+Support the VME rear transition module.
+
+=== VME EVR 230 (RF) ===
+
+This device has like the non-RF version, but front panel outputs 4, 5, and 6
+are CML outputs.
+
+DB template: evr-vmerf-230.substitiutions
+
+=== PMC EVR 230 ===
+
+A PCI Mezzanine Card with one front panel input and two front panel outputs.
+
+Outputs: Front panel: 2
+Inputs: Front panel: 1
+
+DB template: evr-pmc-230.substitiutions
 
 == Device Support Design ==
 
@@ -189,7 +232,7 @@ which are generally tied to a specific logical sub-unit.
 Each sub-unit may be thought of as having a number of properties.
 For example a Delay Generator has properties 'Delay' and 'Width'.
 These properties can be set in several ways.
-A delay can specified as in terms of an integer number of tick of its reference
+A delay can specified as an integer number of ticks of its reference
 clock (hardware view), or in seconds as a floating point number (user view).
 
 In this example the properties 'Delay' and 'Width' should be settable in
@@ -203,13 +246,13 @@ To this end the Pulser impliments the following device supports.
 
 -------------------------------------------------------
 # Pulser devices
-# '#Lcard Apulser Cmappingram S0 @'
-device(longin,     AB_IO, devLIEVRPulser, "EVR Pulser")
-device(longout,    AB_IO, devLOEVRPulser, "EVR Pulser")
-device(ai,         AB_IO, devAIEVRPulser, "EVR Pulser")
-device(ao,         AB_IO, devAOEVRPulser, "EVR Pulser")
-device(bi,         AB_IO, devBIEVRPulser, "EVR Pulser")
-device(bo,         AB_IO, devBOEVRPulser, "EVR Pulser")
+# '@C=cardid, I=pulserid, P=property'
+device(longin,     INST_IO, devLIPulser, "EVR Pulser")
+device(longout,    INST_IO, devLOPulser, "EVR Pulser")
+device(ai,         INST_IO, devAIPulser, "EVR Pulser")
+device(ao,         INST_IO, devAOPulser, "EVR Pulser")
+device(bi,         INST_IO, devBIPulser, "EVR Pulser")
+device(bo,         INST_IO, devBOPulser, "EVR Pulser")
 -------------------------------------------------------
 
 Since the Pulser sub-unit has the property 'Delay'
@@ -219,7 +262,7 @@ the following database can be constructed.
 --------------------------------------------
 record(ao, "$(P)$(N)delay:set") {
   field(DTYP, "EVR Pulser")
-  field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(OUT , "@C=$(C), I=$(PID), P=Delay")
   field(PINI, "YES")
   field(DESC, "Pulse Generator $(PID)")
   field(VAL , 0)
@@ -232,13 +275,13 @@ record(ao, "$(P)$(N)delay:set") {
 
 record(longout, "$(P)$(N)delay:set:raw") {
   field(DTYP, "EVR Pulser")
-  field(OUT , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(OUT , "@C=$(C), I=$(PID), P=Delay")
   field(FLNK, "$(P)$(N)delay")
 }
 
 record(ai, "$(P)$(N)delay") {
   field(DTYP, "EVR Pulser")
-  field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(INP , "@C=$(C), I=$(PID), P=Delay")
   field(UDF , 0)
   field(EGU , "uSec")
   field(LINR, "LINEAR")
@@ -249,7 +292,7 @@ record(ai, "$(P)$(N)delay") {
 
 record(longin, "$(P)$(N)delay:raw") {
   field(DTYP, "EVR Pulser")
-  field(INP , "#L$(C) A$(PID) C0 S0 @Delay")
+  field(INP , "@C=$(C), I=$(PID), P=Delay")
 }
 --------------------------------------------
 
@@ -272,6 +315,8 @@ Properties in this section apply to the EVR as a whole.
 Records accessing properties in this section will have DTYP
 set to "EVR".
 
+See: evrApp/Db/evrbase.db
+
 ==== Enable ====
 
 Implimented for: bo, bi
@@ -286,6 +331,9 @@ Implimented for: bi
 This indicates whether the phase locked loop which synchronizes
 an EVR's local oscilator with the phase of the EVG's oscilator.
 
+Except for immediately after a change to the fractional synthesizer
+this should always read as true (locked).
+
 ==== Link Status ====
 
 Implimented for: bi
@@ -293,6 +341,10 @@ Implimented for: bi
 Indicates that the event link is active.
 This means that the receiver sees light, that the phase is locked,
 and that valid data is being received from the EVG.
+
+A reading of false may be caused by a number of conditions including:
+EVG down, fiber unplugged or broken, and/or incorrent fractional synthesizer
+setting.
 
 ==== Model ====
 
@@ -314,9 +366,9 @@ Frequency of an EVR's local oscilator.
 This must be close enough to the EVG master oscilator
 to allow the phase locked loop to lock.
 
-By default the analog units are Hertz (Hz).
+The native analog units are Hertz (Hz).
 This can be changed with the LINR and ESLO fields.
-Use ESLO of 1e-6 to allow user setting/reading in MHz.
+Use ESLO of 1e6 to allow user setting/reading in MHz.
 
 ==== Timestamp Source ====
 
@@ -351,7 +403,7 @@ values from ticks to seconds.
 
 By default the analog units are Hertz (Hz).
 This can be changed with the LINR and ESLO fields.
-Use ESLO of 1e-6 to allow user setting/reading in MHz.
+Use ESLO of 1e6 to allow user setting/reading in MHz.
 
 ==== Timestamp Prescaler ====
 
@@ -359,6 +411,13 @@ Implimented for: longin
 
 When using the "Event clock" timestamp source this will return the actual
 divisor used.  In other modes it reads 0.
+
+==== Timestamp ====
+
+Implimented for: stringin
+
+When processed creates a human readable string with either the current
+event link time, or the event link time when code # was last received.
 
 ==== Event Clock TS Div ====
 
@@ -381,6 +440,8 @@ Properties in this section apply to the Pulse Generator (Pulser) sub-unit.
 
 Records accessing properties in this section will have DTYP
 set to "EVR Pulser".
+
+See: evrApp/Db/evrpulser.db
 
 ==== Enable ====
 
@@ -438,6 +499,8 @@ Properties in this section apply to the Prescaler sub-unit.
 Records accessing properties in this section will have DTYP
 set to "EVR Prescaler".
 
+See: evrApp/Db/evrscale.db
+
 ==== Divide ====
 
 Implimented for: longout, ao, longin
@@ -450,12 +513,14 @@ Use ESLO of 1e-6 to allow user setting/reading in MHz.
 
 
 
-=== Output ===
+=== Output (TTL and CML) ===
 
 Properties in this section apply to the Output sub-unit.
 
 Records accessing properties in this section will have DTYP
 set to "EVR Output".
+
+See: evrMrmApp/Db/mrmevrout.db
 
 ==== Map ====
 
@@ -493,6 +558,9 @@ For the MRM implimentation the following codes are valid.
 | 0 |Pulse generator 0
 |=========================
 
+=== Output (CML only) ===
+
+TODO ...
 
 === Input ===
 
@@ -500,6 +568,8 @@ Properties in this section apply to the Input sub-unit.
 
 Records accessing properties in this section will have DTYP
 set to "EVR Input".
+
+See: evrApp/Db/evrin.db
 
 ==== Active Level ====
 
@@ -562,6 +632,8 @@ an event code is received.
 
 Implimented for: longout
 
+See: evrApp/Db/evrpulsermap.db
+
 Causes a received event to trigger
 a Pulse Generator (Pulser) sub-unit, or force it into
 an active (set) or inactive (reset) state.
@@ -577,10 +649,10 @@ However, each pairing must be unique.
 -------------------------------------------
 record(longout, "$(P)$(N)$(M)") {
   field( DTYP, "EVR Pulser Mapping" )
-  field( OUT , "#L$(C) A$(PID) C0 S$(F) @")
+  field( OUT , "@C=$(C), I=$(PID), Func=S$(F)")
   field( PINI, "YES")
   field( DESC, "Mapping for Pulser $(PID)")
-  field( VAL , $(EVT))
+  field( VAL , "$(EVT)")
   field( LOPR, "0")
   field( HOPR, "255")
 }
@@ -588,5 +660,87 @@ record(longout, "$(P)$(N)$(M)") {
 
 In this example the event '$(EVT)' in the 'VAL' field will cause
 function '$(F)' on Pulse Generator '$(PID)'.
-Current function codes are 1 (Trigger), 2 (Reset), 3 (Set), and 4 (None).
+Current functions are 'Trig', 'Reset', and 'Set'.
 
+==== Special Function Mapping ====
+
+Implimented for: longout
+
+See: evrApp/Db/evrmap.db
+
+Allows a number of special actions to be mapped to certains events.
+These actions include:
+
+Blink::
+  An LED on the EVRs front panel will blink when the code is received.
+
+Forward::
+  The received code will be immediately retransmits on the upstream
+  event link.
+
+Stop Log::
+  Freeze the circular event log buffer.  An CPU interrupt will be
+  raised which will cause the buffer to be downloaded.
+  This might be a useful action to map to a fault event.
+
+Log::
+  Include this event code in the circular event log.
+
+Heartbeat::
+  This event resets the heartbeat timeout timer.
+
+Reset PS::
+  Resets the phase of all prescalers.
+
+TS reset::
+  Transfers the seconds timestamp from the shift register and zeros
+  the sub-seconds part.
+
+TS tick::
+  When the timestamp source is 'Mapped code' then any event with
+  this mapping will cause the sub-seconds part of the timestamp
+  to increment.
+
+Shift 1::
+  Shifts the current value of the seconds timestamp shift register
+  up by one bit and sets the low bit to 1.
+
+Shift 0::
+  Shifts the current value of the seconds timestamp shift register
+  up by one bit and sets the low bit to 0.
+
+FIFO::
+  Bypass the automatic allocation mechanism and always include
+  this code in the event FIFO.
+
+=== Database Events ===
+
+Implimented for: event
+
+See: evrApp/Db/evrevent.db
+
+A device support for the 'event' recordtype is provided which
+uses the Event FIFO to record the arrival of certain interesting
+events.  When set to SCAN 'I/O Intr' the event record device support
+will process the record causing the requested DB event.
+
+----------------------------------------
+record(event, "$(P)$(N)") {
+  field(DTYP, "EVR")
+  field(SCAN, "I/O Intr")
+  field(INP , "@Card=$(C),Code=$(CODE)")
+  field(VAL , "$(EVNT)")
+}
+
+record(calc, "$(P)$(N):count") {
+  field(SCAN, "Event")
+  field(CALC, "A+1")
+  field(INPA, "$(P)$(N):count NPP")
+  field(EVNT, "$(EVNT)")
+}
+----------------------------------------
+
+In this example the hardware event code '$(CODE)' will cause the
+database event '$(EVNT)'.  Note that while both '$(CODE)' and
+'$(EVNT)' are numbers, they need not be the same.  Hardware
+code 21 can cause DB event 40.

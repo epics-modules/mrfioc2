@@ -35,10 +35,10 @@ int rtemsDevPCIConnectInterrupt(
   isr.next_handler=NULL;
 
   if (!BSP_install_rtems_shared_irq_handler(&isr))
-    return 1;
+    return S_dev_vecInstlFail;
 #else
   if (!BSP_install_rtems_irq_handler(&isr))
-    return 1;
+    return S_dev_vecInstlFail;
 #endif
 
   return 0;
@@ -68,13 +68,13 @@ int rtemsDevPCIDisconnectInterrupt(
 #endif
 
   if(!BSP_remove_rtems_irq_handler(&isr))
-    return 1;
+    return S_dev_intDisconnect;
 
   return 0;
 }
 
 
-devLibPCIVirtualOS prtemsPCIVirtualOS = {
+devLibPCI prtemsPCIVirtualOS = {
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -83,4 +83,4 @@ devLibPCIVirtualOS prtemsPCIVirtualOS = {
   rtemsDevPCIDisconnectInterrupt
 };
 
-devLibPCIVirtualOS *pdevLibPCIVirtualOS = &prtemsPCIVirtualOS;
+devLibPCI *pdevLibPCI = &prtemsPCIVirtualOS;

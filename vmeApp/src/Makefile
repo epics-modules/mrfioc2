@@ -57,6 +57,7 @@ LIBRARY_IOC += vme
 vme_SRCS += devcsr.c
 vme_SRCS += iocreg.c
 vme_SRCS_Linux += devlib_compat.c
+vme_SRCS_RTEMS += devlib_compat.c
 vme_SRCS += mrfVmeBusInterface.cpp
 vme_LIBS += Com
 

@@ -231,6 +231,7 @@ devInfoStruct* parseLink (
         Card     = ioLink->getInteger ("C"   );
         SeqNum   = ioLink->getInteger ("Seq" );
         delete ioLink;
+        ioLink = NULL;
 
         //=====================
         // Declare the sequence number and the event name
@@ -652,11 +653,6 @@ static
 epicsStatus aoWrite (aoRecord* pRec) {
 
     //=====================
-    // Local variables
-    //
-    epicsFloat64  ActualTicks;          // Actual timestamp (in ticks) after update completes
-     
-    //=====================
     // Extract the BasicSequence and BasicSequenceEvent objects from the DPVT structure
     //
     devInfoStruct*       pDevInfo  = static_cast<devInfoStruct*>(pRec->dpvt);
@@ -668,16 +664,6 @@ epicsStatus aoWrite (aoRecord* pRec) {
     //
     if (pRec->pact) {
         pRec->pact = false;
-        ActualTicks = pEvent->GetActualTime();
-
-        //=====================
-        // If a sequence update changed the actual timestamp,
-        // reset the RBV field.
-        //
-        if (ActualTicks != pDevInfo->LastActualTime) {
-            pDevInfo->LastActualTime = ActualTicks;
-            pRec->rbv = (epicsInt32)ActualTicks;        
-        }//end if the actual timestamp changed during the update
 
         //=====================
         // If we've already written the new value,
@@ -707,12 +693,9 @@ epicsStatus aoWrite (aoRecord* pRec) {
 
     //=====================
     // Convert the VAL field to "Event Clock Ticks" and write it to the BasicSequenceEvent object.
-    // Store the actual timestamp (in ticks) in the RBV field.
     //
     pDevInfo->ValueSet = true;
     SequenceStatus status = pEvent->SetEventTime (pRec->val / pRec->eslo);
-    ActualTicks = pEvent->GetActualTime();
-    pRec->rbv = (epicsInt32)ActualTicks;
 
     //=====================
     // Switch on the returned Sequence status

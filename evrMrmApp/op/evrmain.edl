@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 786
-y 231
+x 698
+y 338
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -2264,5 +2264,31 @@ useHexPrefix
 useAlarmBorder
 newPos
 objType "controls"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 190
+y 260
+w 60
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "CML"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcml.edl"
+}
+symbols {
+  0 "O=$(O)"
+}
 endObjectProperties
 

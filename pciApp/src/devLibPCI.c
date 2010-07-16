@@ -2,23 +2,35 @@
 #include <stdlib.h>
 
 #include <ellLib.h>
+#include <epicsThread.h>
 
 #include "devLibPCIImpl.h"
 
 #define epicsExportSharedSymbols
 #include "devLibPCI.h"
 
+static epicsThreadOnceId devPCIInit_once = EPICS_THREAD_ONCE_INIT;
+static int devPCIInit_result = 42;
+
 static
-int devInit(void)
+void devInit(void* junk)
 {
-  if(!pdevLibPCIVirtualOS)
-    return 5;
+  if(!pdevLibPCI) {
+    devPCIInit_result = S_dev_internal;
+    return;
+  }
 
-  if(!!pdevLibPCIVirtualOS->pDevInit)
-    return (*pdevLibPCIVirtualOS->pDevInit)();
+  if(!!pdevLibPCI->pDevInit)
+    devPCIInit_result = (*pdevLibPCI->pDevInit)();
 
-  return 0;
+  devPCIInit_result = 0;
 }
+
+#define PCIINIT \
+do { \
+     epicsThreadOnce(&devPCIInit_once, &devInit, NULL); \
+     if (devPCIInit_result) return devPCIInit_result; \
+} while(0)
 
 
 /**************** API functions *****************/
@@ -31,15 +43,12 @@ int devPCIFindCB(
      unsigned int opt /* always 0 */
 )
 {
-  int status;
-
   if(!idlist || !searchfn)
-    return 2;
+    return S_dev_badArgument;
 
-  status=devInit();
-  if(status) return status;
+  PCIINIT;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIFind)(idlist,searchfn,arg,opt);
+  return (*pdevLibPCI->pDevPCIFind)(idlist,searchfn,arg,opt);
 }
 
 
@@ -88,6 +97,8 @@ int devPCIFindBDF(
   find.f=f;
   find.found=NULL;
 
+  /* PCIINIT is called by devPCIFindCB()  */
+
   err=devPCIFindCB(idlist,&bdfsearch,&find, opt);
   if(err!=0){
     /* Search failed? */
@@ -96,7 +107,7 @@ int devPCIFindBDF(
 
   if(!find.found){
     /* Not found */
-    return 1;
+    return S_dev_noDevice;
   }
 
   *found=find.found;
@@ -111,15 +122,12 @@ devPCIToLocalAddr(
   unsigned int opt
 )
 {
-  int status;
-
-  status=devInit();
-  if(status) return status;
+  PCIINIT;
 
   if(bar>=PCIBARCOUNT)
-    return 2;
+    return S_dev_badArgument;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr,opt);
+  return (*pdevLibPCI->pDevPCIToLocalAddr)(curdev,bar,ppLocalAddr,opt);
 }
 
 
@@ -131,15 +139,12 @@ devPCIBarLen(
           unsigned int  bar
 )
 {
-  int status;
-
-  status=devInit();
-  if(status) return status;
+  PCIINIT;
 
   if(bar>=PCIBARCOUNT)
-    return 2;
+    return S_dev_badArgument;
 
-  return (*pdevLibPCIVirtualOS->pDevPCIBarLen)(curdev,bar);
+  return (*pdevLibPCI->pDevPCIBarLen)(curdev,bar);
 }
 
 epicsShareFunc
@@ -149,12 +154,9 @@ int devPCIConnectInterrupt(
   void  *parameter
 )
 {
-  int status;
+  PCIINIT;
 
-  status=devInit();
-  if(status) return status;
-
-  return (*pdevLibPCIVirtualOS->pDevPCIConnectInterrupt)
+  return (*pdevLibPCI->pDevPCIConnectInterrupt)
                 (curdev,pFunction,parameter);
 }
 
@@ -165,11 +167,8 @@ int devPCIDisconnectInterrupt(
   void  *parameter
 )
 {
-  int status;
+  PCIINIT;
 
-  status=devInit();
-  if(status) return status;
-
-  return (*pdevLibPCIVirtualOS->pDevPCIDisconnectInterrupt)
+  return (*pdevLibPCI->pDevPCIDisconnectInterrupt)
                 (curdev,pFunction,parameter);
 }

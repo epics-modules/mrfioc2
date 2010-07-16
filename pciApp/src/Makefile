@@ -20,7 +20,7 @@ pci_SRCS += devLibPCI.c
 pci_SRCS_RTEMS += osdPciShared.c
 pci_SRCS_vxWorks += osdPciShared.c
 
-pci_SRCS += osdPCI.c
+pci_SRCS += devLibPCIOSD.c
 
 pci_LIBS += Com
 

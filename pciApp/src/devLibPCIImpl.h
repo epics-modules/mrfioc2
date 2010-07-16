@@ -35,9 +35,9 @@ typedef struct {
                                     void (*pFunction)(void *),
                                     void  *parameter);
 
-} devLibPCIVirtualOS;
+} devLibPCI;
 
-epicsShareExtern devLibPCIVirtualOS *pdevLibPCIVirtualOS;
+epicsShareExtern devLibPCI *pdevLibPCI;
 
 #ifdef __cplusplus
 } /* extern "C" */

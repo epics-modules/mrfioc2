@@ -54,10 +54,9 @@ DBD += evgMrm.dbd
 # evgMrm.dbd will be made up from these files:
 evgMrm_DBD += base.dbd
 evgMrm_DBD += evgInit.dbd
-evgMrm_DBD += devIocStats.dbd
 
 # Add all the support libraries needed by this IOC
-evgMrm_LIBS += evgmrm vme mrfCommon devIocStats
+evgMrm_LIBS += evgmrm vme mrfCommon
 
 # evgMrm_registerRecordDeviceDriver.cpp derives from evgMrm.dbd
 evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp
@@ -68,6 +67,11 @@ evgMrm_SRCS_DEFAULT += evgMrmMain.cpp
 #evgMrm_INCLUDES += -I/usr/powerpc-rtems4.9/mvme3100/lib/include
 # Finally link to the EPICS Base libraries
 evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+ifneq ($(DEVIOCSTATS),)
+evgMrm_DBD += devIocStats.dbd
+evgMrm_LIBS += devIocStats
+endif
 
 #===========================
 

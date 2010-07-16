@@ -19,7 +19,10 @@
 #include "drvemOutput.h"
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
-#include "drvemCMLShort.h"
+#include "drvemCML.h"
+#include "drvemRxBuf.h"
+
+#include "mrmDataBufTx.h"
 
 struct eventCode {
   epicsUInt8 code; // constant
@@ -65,13 +68,13 @@ public:
   virtual MRMPreScaler* prescaler(epicsUInt32);
   virtual const MRMPreScaler* prescaler(epicsUInt32) const;
 
-  virtual MRMCMLShort* cmlshort(epicsUInt32 idx);
-  virtual const MRMCMLShort* cmlshort(epicsUInt32) const;
+  virtual MRMCML* cml(epicsUInt32 idx);
+  virtual const MRMCML* cml(epicsUInt32) const;
 
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
-  virtual double clock() const;
+  virtual double clock() const{return eventClock;};
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
@@ -102,9 +105,13 @@ public:
 
   const int id;
   volatile unsigned char * const base;
+  mrmDataBufTx buftx;
+  mrmBufRx bufrx;
 private:
+
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
+  double eventClock; //!< Stored in Hz
 
   // Set by ISR
   volatile epicsUInt32 count_recv_error;
@@ -132,7 +139,7 @@ private:
   typedef std::vector<MRMPulser*> pulsers_t;
   pulsers_t pulsers;
 
-  typedef std::vector<MRMCMLShort*> shortcmls_t;
+  typedef std::vector<MRMCML*> shortcmls_t;
   shortcmls_t shortcmls;
 
   // Called when FIFO not-full IRQ is received
@@ -142,6 +149,9 @@ private:
   // Take lock when accessing interest counter or TS members
   epicsMutexId events_lock; // really should be a rwlock
   eventCode events[256];
+
+  // Buffer received
+  CALLBACK data_rx_cb;
 
   // Called when the Event Log is stopped
   CALLBACK drain_log_cb;

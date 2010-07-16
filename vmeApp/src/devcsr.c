@@ -212,7 +212,8 @@ void vmecsrprint(int N,int v)
             printf("%02x",CSRRead8(addr + CR_FN_ADEM(i) + j));
           printf("\n");
           ader=CSRRead32(addr + CSR_FN_ADER(i));
-          printf("  Data ADER : Base %08x Mod %02x\n",ader&0xFfffFf00,(ader&0xff)>>2);
+          printf("  Data ADER : Base %08x Mod %02x\n",
+                 (unsigned int)ader&0xFfffFf00,(int)(ader&0xff)>>2);
         }
       }
     }

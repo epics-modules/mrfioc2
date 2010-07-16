@@ -15,6 +15,8 @@
 # Func - Mapping function (string)
 #
 
+include "mrmShared.dbd"
+
 # Prescaler devices
 # '@C=$(C), I=$(IDX), P=PROPNAME'
 device(longin , INST_IO, devlonginPreScaler, "EVR Prescaler")
@@ -26,11 +28,16 @@ device(longin,     INST_IO, devlonginOutput, "EVR Output")
 device(longout,    INST_IO, devlongoutOutput, "EVR Output")
 
 # CML Output devices
-# '#Ccard Sindex @'
-device(bo,      VME_IO, devBOEVRCMLShort, "EVR CML Short")
-device(bi ,     VME_IO, devBIEVRCMLShort, "EVR CML Short")
-device(longout, VME_IO, devLOEVRCMLShort, "EVR CML Short")
-device(longin , VME_IO, devLIEVRCMLShort, "EVR CML Short")
+# '@C=$(C), I=$(I), P=PROPNAME'
+device(ao,      INST_IO, devaoCML, "EVR CML")
+device(ai ,     INST_IO, devaiCML, "EVR CML")
+device(bo,      INST_IO, devboCML, "EVR CML")
+device(bi ,     INST_IO, devbiCML, "EVR CML")
+device(longout, INST_IO, devlongoutCML, "EVR CML")
+device(longin , INST_IO, devlonginCML, "EVR CML")
+device(mbbo,    INST_IO, devmbboCML, "EVR CML")
+device(waveform,INST_IO, devwaveformoutCML, "EVR CML Pattern Set")
+device(waveform,INST_IO, devwaveforminCML, "EVR CML Pattern Get")
 
 # Input devices
 # '@C=$(C) I=$(I), P=PROPNAME'
@@ -72,3 +79,5 @@ device(event,    INST_IO, devEventEVR, "EVR")
 
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
+
+registrar(asub_evr)

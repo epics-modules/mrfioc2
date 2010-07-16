@@ -11,7 +11,7 @@ class Pulser;
 class Output;
 class PreScaler;
 class Input;
-class CMLShort;
+class CML;
 
 enum OutputType {
   OutputInt=0, //! Internal
@@ -70,8 +70,8 @@ public:
   virtual const PreScaler* prescaler(epicsUInt32) const=0;
 
   //! CML Output id number is device specific
-  virtual CMLShort* cmlshort(epicsUInt32 idx)=0;
-  virtual const CMLShort* cmlshort(epicsUInt32) const=0;
+  virtual CML* cml(epicsUInt32 idx)=0;
+  virtual const CML* cml(epicsUInt32) const=0;
 
   /** Hook to handle general event mapping table manipulation.
    *  Allows 'special' events only (ie heartbeat, log, led, etc)
