@@ -14,6 +14,13 @@
 #define epicsExportSharedSymbols
 #include "linkoptions.h"
 
+#ifndef HUGE_VALF
+#  define HUGE_VALF HUGE_VAL
+#endif
+#ifndef HUGE_VALL
+#  define HUGE_VALL (-(HUGE_VAL))
+#endif
+
 /*
  * Parse the value 'val' according to the type named in 'opt->optType'
  * and store the result at 'user + opt->offset'.
@@ -40,9 +47,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
 
         *ival = strtoul(val, &end, 0);
         /* test for the myriad error conditions which strtol may use */
-        if ( (errno==ERANGE && (*ival==LONG_MAX || *ival==LONG_MIN)) ||
-             (errno!=0 && *ival==0) ||
-             (end==val) )
+        if ( *ival==ULONG_MAX || end==val )
         {
             fprintf(stderr,"value %s can't be converted for integer key %s\n",val,opt->name);
             return -1;
@@ -58,9 +63,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
 
         *dval = strtod(val, &end);
         /* Indicates errors in the same manner as strtol */
-        if ( (errno==ERANGE && *dval==HUGE_VAL) ||
-             (errno!=0 && *dval==0) ||
-             (end==val) )
+        if ( *dval==HUGE_VALF || *dval==HUGE_VALL || end==val )
         {
             fprintf(stderr,"value %s can't be converted for double key %s\n",val,opt->name);
             return -1;
