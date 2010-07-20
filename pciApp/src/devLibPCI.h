@@ -130,6 +130,12 @@ int devPCIDisconnectInterrupt(
   void  *parameter
 );
 
+void
+devPCIShow(int lvl, int vendor, int device, int exact);
+
+void
+devPCIShowDevice(int lvl, epicsPCIDevice *dev);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

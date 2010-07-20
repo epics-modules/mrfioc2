@@ -3,6 +3,7 @@
 
 #include <ellLib.h>
 #include <epicsThread.h>
+#include <iocsh.h>
 
 #include "devLibPCIImpl.h"
 
@@ -172,3 +173,74 @@ int devPCIDisconnectInterrupt(
   return (*pdevLibPCI->pDevPCIDisconnectInterrupt)
                 (curdev,pFunction,parameter);
 }
+
+static
+int
+searchandprint(void* plvl,epicsPCIDevice* dev)
+{
+    int *lvl=plvl;
+    devPCIShowDevice(*lvl,dev);
+    return 0;
+}
+
+void
+devPCIShow(int lvl, int vendor, int device, int exact)
+{
+    epicsPCIID ids[] = {
+        DEVPCI_DEVICE_VENDOR(device,vendor),
+        DEVPCI_END
+    };
+
+    if (vendor==0 && !exact) ids[0].vendor=DEVPCI_ANY_VENDOR;
+    if (device==0 && !exact) ids[0].device=DEVPCI_ANY_DEVICE;
+
+    devPCIFindCB(ids,&searchandprint, &lvl, 0);
+}
+
+void
+devPCIShowDevice(int lvl, epicsPCIDevice *dev)
+{
+    int i;
+    printf("PCI %u:%u.%u IRQ %u\n"
+           "  vendor:device %04x:%04x\n",
+           dev->bus, dev->device, dev->function, dev->irq,
+           dev->id.vendor, dev->id.device);
+    if(lvl>=1)
+        printf("  subved:subdev %04x:%04x\n"
+               "  class %06x rev %02x\n",
+               dev->id.sub_vendor, dev->id.sub_device,
+               dev->id.pci_class, dev->id.revision
+               );
+    if(lvl<2)
+        return;
+    for(i=0; i<PCIBARCOUNT; i++)
+    {
+        printf("BAR %u %s-bit %s%s\n",i,
+               dev->bar[i].addr64?"64":"32",
+               dev->bar[i].ioport?"IO Port":"MMIO",
+               dev->bar[i].below1M?" Below 1M":"");
+    }
+}
+
+static const iocshArg devPCIShowArg0 = { "verbosity level",iocshArgInt};
+static const iocshArg devPCIShowArg1 = { "PCI Vendor ID (0=any)",iocshArgInt};
+static const iocshArg devPCIShowArg2 = { "PCI Device ID (0=any)",iocshArgInt};
+static const iocshArg devPCIShowArg3 = { "exact (1=treat 0 as 0)",iocshArgInt};
+static const iocshArg * const devPCIShowArgs[4] =
+{&devPCIShowArg0,&devPCIShowArg1,&devPCIShowArg2,&devPCIShowArg3};
+static const iocshFuncDef devPCIShowFuncDef =
+    {"devPCIShow",4,devPCIShowArgs};
+static void devPCIShowCallFunc(const iocshArgBuf *args)
+{
+    devPCIShow(args[0].ival,args[1].ival,args[2].ival,args[3].ival);
+}
+
+#include <epicsExport.h>
+
+static
+void devLibPCIReg()
+{
+  iocshRegister(&devPCIShowFuncDef,devPCIShowCallFunc);
+}
+
+epicsExportRegistrar(devLibPCIReg);

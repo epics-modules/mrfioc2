@@ -12,6 +12,8 @@ LIBRARY_IOC = pci
 
 USR_INCLUDES += -I../os/$(OS_CLASS)
 
+DBD += devlibpci.dbd
+
 INC += devLibPCI.h
 INC += devLibPCIImpl.h
 

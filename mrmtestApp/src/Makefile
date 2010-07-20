@@ -20,6 +20,7 @@ mrf_DBD += evgInit.dbd
 mrf_DBD += drvemSupport.dbd
 
 mrf_DBD += vmecsr.dbd
+mrf_DBD += devlibpci.dbd
 
 # Add all the support libraries needed by this IOC
 mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon
