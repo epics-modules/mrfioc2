@@ -128,6 +128,10 @@ epicsStatus
 evgSeqRam::unload() {
 	m_seq = 0;
 	m_allocated = false;
+
+	//clear interrupt flags
+	BITSET32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_id));	
+	BITSET32(m_pReg, IrqFlag, EVG_IRQ_START_RAM(m_id));
 	return OK;
 }
 

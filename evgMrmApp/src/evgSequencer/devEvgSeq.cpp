@@ -12,9 +12,6 @@
 #include "dsetshared.h"
 
 #include "evgInit.h"
-#include "evgMrm.h"
-#include "evgSeqManager.h"
-//#include "evgSeqRam.h"
 #include "evgRegMap.h"
 
 static long 
@@ -27,7 +24,11 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	}
 	
 	try {
-		evgSeqMgr* seqMgr = evgMrm::getSeqMgr();
+		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
+	
+		evgSeqMgr* seqMgr = evg->getSeqMgr();
 		if(!seqMgr)
 			throw std::runtime_error("ERROR: Failed to lookup EVG Seq Manager");
 
@@ -82,20 +83,32 @@ write_bo_createSeq(boRecord* pbo) {
 		return 0;
 
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pbo->dpvt;
-	return seqMgr->createSeq(pbo->out.value.vmeio.card);
+	return seqMgr->createSeq(pbo->out.value.vmeio.signal);
 }
 
 /**		waveform - timeStamp	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_wf_timeStamp(waveformRecord* pwf) {
+write_wf_timeStampTick(waveformRecord* pwf) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pwf->dpvt;
 
-	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.signal);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
-	return seq->setTimeStamp((epicsUInt32*)pwf->bptr, pwf->nelm);
+	return seq->setTimeStampTick((epicsUInt32*)pwf->bptr, pwf->nord);
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_wf_timeStampSec(waveformRecord* pwf) {
+	evgSeqMgr* seqMgr = (evgSeqMgr*)pwf->dpvt;
+
+	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.signal);
+	if(!seq)
+		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
+
+	return seq->setTimeStampSec((epicsFloat64*)pwf->bptr, pwf->nord);
 }
 
 /**		waveform - eventCode	**/
@@ -104,11 +117,11 @@ static long
 write_wf_eventCode(waveformRecord* pwf) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pwf->dpvt;
 
-	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pwf->inp.value.vmeio.signal);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
-	return seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nelm);
+	return seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nord);
 }
 
 /**		mbbo - runMode		**/
@@ -117,7 +130,7 @@ static long
 write_mbbo_runMode(mbboRecord* pmbbo) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pmbbo->dpvt;
 
-	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.signal);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
@@ -130,7 +143,7 @@ static long
 write_mbbo_trigSrc(mbboRecord* pmbbo) {
 	evgSeqMgr* seqMgr = (evgSeqMgr*)pmbbo->dpvt;
 
-	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.card);
+	evgSequence* seq = seqMgr->getSeq(pmbbo->out.value.vmeio.signal);
 	if(!seq)
 		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
 
@@ -151,15 +164,25 @@ common_dset devBoEvgCreateSeq = {
 };
 epicsExportAddress(dset, devBoEvgCreateSeq);
 
-common_dset devWfEvgTimeStamp = {
+common_dset devWfEvgTimeStampTick = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_wf,
     NULL,
-    (DEVSUPFUN)write_wf_timeStamp,
+    (DEVSUPFUN)write_wf_timeStampTick,
 };
-epicsExportAddress(dset, devWfEvgTimeStamp);
+epicsExportAddress(dset, devWfEvgTimeStampTick);
+
+common_dset devWfEvgTimeStampSec = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_wf,
+    NULL,
+    (DEVSUPFUN)write_wf_timeStampSec,
+};
+epicsExportAddress(dset, devWfEvgTimeStampSec);
 
 common_dset devWfEvgEventCode = {
     5,

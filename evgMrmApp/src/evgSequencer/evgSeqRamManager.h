@@ -12,7 +12,7 @@ class evgMrm;
 
 class evgSeqRamMgr {
 public:
-	evgSeqRamMgr(volatile epicsUInt8* const, evgMrm*);
+	evgSeqRamMgr(evgMrm*);
 	
 	evgSeqRam* getSeqRam(epicsUInt32);
 	

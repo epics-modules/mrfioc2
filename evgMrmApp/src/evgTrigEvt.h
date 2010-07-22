@@ -1,5 +1,5 @@
-#ifndef EVGTRIGEVT_H
-#define EVGTRIGEVT_H
+#ifndef EVG_TRIGEVT_H
+#define EVG_TRIGEVT_H
 
 #include  <epicsTypes.h>   
 
@@ -19,4 +19,4 @@ private:
 	volatile epicsUInt8* const  m_pReg;
 };
 
-#endif //EVGTRIGEVT_H
+#endif //EVG_TRIGEVT_H

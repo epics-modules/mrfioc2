@@ -1,12 +1,17 @@
 #include "evgSequence.h"
 
+#include <math.h>
+
 #include <errlog.h>
 
 #include <mrfCommon.h>
 
+#include "evgMrm.h"
 
-evgSequence::evgSequence(const epicsUInt32 id):
+
+evgSequence::evgSequence(const epicsUInt32 id, evgMrm* const owner):
 m_id(id),
+m_owner(owner),
 m_trigSrc(0),
 m_runMode(single),
 m_seqRam(0),
@@ -32,12 +37,13 @@ evgSequence::getDescription() {
 epicsStatus
 evgSequence::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 	if(size < 0 || size > 2048) {
-		errlogPrintf("ERROR: Number of events is too large.");
+		errlogPrintf("ERROR: EventCode array too large.");
 		return ERROR;
 	}
 	
 	m_lock->lock();
 	m_eventCode.assign(eventCode, eventCode + size);
+	m_eventCode.push_back(0x7f);
 	m_lock->unlock();
 
 	return OK;
@@ -48,16 +54,37 @@ evgSequence::getEventCode() {
 	return m_eventCode;
 }
 
+epicsStatus
+evgSequence::setTimeStampSec(epicsFloat64* timeStamp, epicsUInt32 size) {
+	epicsUInt32 timeStampInt[size];
+
+	//Convert secs to clock ticks
+	for(unsigned int i = 0; i < size; i++) {
+		timeStampInt[i] = timeStamp[i] * (m_owner->getEvtClk()->getClkSpeed()) * pow(10,6);
+	}
+
+	setTimeStampTick(timeStampInt, size);
+	return OK;
+}
 
 epicsStatus
-evgSequence::setTimeStamp(epicsUInt32* timeStamp, epicsUInt32 size) {
+evgSequence::setTimeStampTick(epicsUInt32* timeStamp, epicsUInt32 size) {
 	if(size < 0 || size > 2048) {
-		errlogPrintf("ERROR: Number of event is too large.");
+		errlogPrintf("ERROR: TimeStamp array too large.");
 		return ERROR;
 	}
 	
+	//Check if the timeStamps are sorted and Unique
+// 	for(unsigned int i = 0; i < size; i++) {
+// 		if(timeStamp[i] >= timeStamp[i+1]) {
+// 			errlogPrintf("ERROR: Timestamp values are not sorted and unique\n");
+// 			return ERROR;
+// 		}
+// 	}
+
 	m_lock->lock();
 	m_timeStamp.assign(timeStamp, timeStamp + size);
+	m_timeStamp.push_back(m_timeStamp.back() + 1);
 	m_lock->unlock();
 	
 	return OK;

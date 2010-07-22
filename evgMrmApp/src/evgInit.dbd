@@ -4,21 +4,25 @@ driver(drvEvgMrm)
 #evgMrm.db
 device( bo, VME_IO, devBoEvgEnable, "EVG")
 
+#evgEvtClk.db
+device( ao, VME_IO, devAoEvgRFref, "EVG Clk RFref")
 device( ao, VME_IO, devAoEvgClock, "EVG Clk")
 device( longout, VME_IO, devLoEvgClock, "EVG Clk")
 
+#evgSoftEvt.db
 device( bo, VME_IO, devBoEvgSoftEvt, "EVG Soft Evt")
 device( longout, VME_IO, devLoEvgSoftEvt, "EVG Soft Evt")
+
+#evgTrigEvt.db
+device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
+device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 
 #evgMxc.db
 device( bo, VME_IO, devBoEvgMxc, "EVG Mxc")
 device( bi, VME_IO, devBiEvgMxc, "EVG Mxc")
 device( longout, VME_IO, devLoEvgMxc, "EVG Mxc")
+device( ao, VME_IO, devAoEvgMxc, "EVG Mxc")
 device( mbboDirect, VME_IO, devMbboDEvgMxc, "EVG Mxc")
-
-#evgTrigEvt.db
-device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
-device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 
 #evgInput.db
 device( mbboDirect, VME_IO, devMbboDEvgInpDbusMap, "EVG Input DBus")
@@ -34,7 +38,8 @@ device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
 #evgSeq.db
 device( bo, VME_IO, devBoEvgCreateSeq, "EVG SEQ CREATE")
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
-device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")
+device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP")
+device( waveform, VME_IO, devWfEvgTimeStampSec, "EVG SEQ TIME STAMP FLT")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")
 

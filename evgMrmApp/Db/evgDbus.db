@@ -1,9 +1,9 @@
-record(mbbo, "EVG$(cardNum):Dbus$(dbusBit)Map") {
+record(mbbo, "EVG$(cardNum):Dbus$(dbusBit):Map") {
   	field( DTYP, "EVG Dbus")
   	field( OUT , "#C$(cardNum) S$(dbusBit) @")
 	field( UDF, "0")
   	field( ZRST, "Off")
   	field( ONST, "External")
-  	field( TWST, "MXC")
+  	field( TWST, "Mxc")
 	field( THST, "UpstreamEVG")
 }

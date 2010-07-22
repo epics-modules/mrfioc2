@@ -15,12 +15,13 @@ Majorly complete
 	-Front Panel Input
 	-Front Panel Output
 	-Benchmarking
+	-Interrupts.
 
 Currently working on
 	-Sequencer
+	-Soft Sequence
 
 Not yet started.
-	-Handle Interrupts.
 	-AC trigger
 	-Data Buffer
 	-TimeStamping

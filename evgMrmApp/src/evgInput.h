@@ -1,5 +1,5 @@
-#ifndef EVGINPUT_H
-#define EVGINPUT_H
+#ifndef EVG_INPUT_H
+#define EVG_INPUT_H
 
 #include <epicsTypes.h>
 
@@ -21,4 +21,4 @@ private:
 	volatile epicsUInt8* const	m_pReg;
 	const InputType 			m_type;
 };
-#endif //EVGFINPUT_H
+#endif //EVG_INPUT_H

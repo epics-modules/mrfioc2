@@ -11,12 +11,14 @@
 #include "evgRegMap.h"
 #include "evgMrm.h"
 
-evgSeqRamMgr::evgSeqRamMgr(volatile epicsUInt8* const pReg, evgMrm* owner):
+evgSeqRamMgr::evgSeqRamMgr(evgMrm* owner):
 m_owner(owner),
-m_pReg(pReg) {
+m_pReg(owner->getRegAddr()) {
 
+	//m_pReg = m_owner->getRegAddr();
+	
 	for(int i = 0; i < evgNumSeqRam; i++) {
-		m_seqRam.push_back(new evgSeqRam(i, pReg));
+		m_seqRam.push_back(new evgSeqRam(i, m_pReg));
 	}
 
 }
@@ -94,12 +96,10 @@ evgSeqRamMgr::unload(evgSequence* seq, dbCommon* pRec) {
 		//Adding the record to the 'list of records to be processed' on SEQ_RAM_STOP 
 		//interrupt.
 		if(seqRam->getId() == 0) {
- 			printf("	Adding Record List 0\n");
 			epicsMutexLock(m_owner->irqStop0.mutex);
 			m_owner->irqStop0.recList.push_back(pRec);
 			epicsMutexUnlock(m_owner->irqStop0.mutex);
     	} else if(seqRam->getId() == 1) {
- 			printf("	Adding Record List 1\n");
 			epicsMutexLock(m_owner->irqStop1.mutex);
  			m_owner->irqStop1.recList.push_back(pRec);
  			epicsMutexUnlock(m_owner->irqStop1.mutex);
@@ -108,7 +108,9 @@ evgSeqRamMgr::unload(evgSequence* seq, dbCommon* pRec) {
 		//Enabling the SEQ_RAM_STOP interrupt
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(seqRam->getId()));		
 
-		printf("	Waiting for SeqRam %d to be disabled. Pausing unload.\n", seqRam->getId());		
+		printf("Waiting for SeqRam %d to be disabled. Pausing unload.\n",
+				seqRam->getId());		
+		
 		return OK;		
 	}
 	
@@ -116,7 +118,7 @@ evgSeqRamMgr::unload(evgSequence* seq, dbCommon* pRec) {
 	if(pRec->pact == 1) {
 		//Enable the commitSeq record.
 		pRec->pact = 0; 	
-		printf("	SeqRam disabled. Continuing unload.\n");
+		printf("SeqRam disabled. Continuing unload.\n");
 	}
 
 	seq->setSeqRam(0);
@@ -157,12 +159,10 @@ evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
 		//Adding the record to the 'list of records to be processed' on SEQ_RAM_STOP 
 		//interrupt.
 		if(seqRam->getId() == 0) {
- 			printf("	Adding Record List 0\n");
 			epicsMutexLock(m_owner->irqStop0.mutex);
 			m_owner->irqStop0.recList.push_back(pRec);
 			epicsMutexUnlock(m_owner->irqStop0.mutex);
     	} else if(seqRam->getId() == 1) {
- 			printf("	Adding Record List 1\n");
 			epicsMutexLock(m_owner->irqStop1.mutex);
  			m_owner->irqStop1.recList.push_back(pRec);
  			epicsMutexUnlock(m_owner->irqStop1.mutex);
@@ -171,7 +171,9 @@ evgSeqRamMgr::commit(evgSequence* seq, dbCommon* pRec) {
 		//Enabling the SEQ_RAM_STOP interrupt
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(seqRam->getId()));		
 
-		printf("	Waiting for SeqRam %d to be disabled. Pausing Commit.\n", seqRam->getId());		
+		printf("Waiting for SeqRam %d to be disabled. Pausing Commit.\n",
+		 												seqRam->getId());		
+
 		return OK;		
 	}
 
@@ -222,7 +224,7 @@ evgSeqRamMgr::disable(evgSequence* seq) {
 	if( (!seqRam) || (!seqRam->enabled()) )
 		return OK;
 	else { 
-		//If the seq is not in single modem make it run in single mode.
+		//If the seq is not in single runMode make it run in single mode.
 		if(! (READ32(m_pReg, SeqControl(seqRam->getId())) & EVG_SEQ_RAM_SINGLE))
 			BITSET32(m_pReg, SeqControl(seqRam->getId()), EVG_SEQ_RAM_SINGLE);
 	}

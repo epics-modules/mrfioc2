@@ -1,4 +1,4 @@
-record(bo, "EVG$(cardNum):Mxc$(mxcNum)Polarity") {
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):Polarity") {
 	field( DTYP, "EVG Mxc")
   	field( DESC, "EVG Mux Counter Output Polarity")
   	field( OUT , "#C$(cardNum) S$(mxcNum) @")
@@ -9,7 +9,7 @@ record(bo, "EVG$(cardNum):Mxc$(mxcNum)Polarity") {
   	field( ONAM, "Inverted")
 }
 
-record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
+record(bi, "EVG$(cardNum):Mxc$(mxcNum):Status") {
 	field( DTYP, "EVG Mxc")
   	field( DESC, "EVG Mux Counter Output Status")
   	field( SCAN, "1 second")
@@ -18,7 +18,7 @@ record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
   	field( ONAM, "1")
 }
 
-record(longout , "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
+record(longout , "EVG$(cardNum):Mxc$(mxcNum):Prescaler") {
 	field( DTYP, "EVG Mxc")
 	field( DESC, "EVG Mux Counter Prescaler")
 	field( OUT , "#C$(cardNum) S$(mxcNum) @")
@@ -27,7 +27,20 @@ record(longout , "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
 	field( UDF , "0")
 }
 
-record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap") {
+record(ao, "EVG$(cardNum):Mxc$(mxcNum):Freq") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Prescaler")
+	field( OUT , "#C$(cardNum) S$(mxcNum) @")
+	field( UDF , "0")
+	field( EGU, "Hz")
+	field( HOPR, "62500000")
+	field( LOPR, "0.029")
+	field( DRVH, "62500000")
+	field( DRVL, "0.029")
+	field( PREC, "3")
+}
+
+record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap") {
 	field( DTYP, "EVG Mxc")
 	field( DESC, "EVG Mux Counter Trig Evt Map")
 	field( OUT, "#C$(cardNum) S$(mxcNum) @")

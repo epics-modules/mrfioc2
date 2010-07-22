@@ -15,7 +15,6 @@
 
 #include <mrfCommonIO.h> 
 #include <mrfCommon.h> 
-#include "mrfFracSynth.h"
 
 #ifdef __rtems__
 #include <rtems/bspIo.h>
@@ -23,18 +22,20 @@
 
 #include "evgRegMap.h"
 
-evgSeqMgr* evgMrm::m_seqMgr = new evgSeqMgr();
-
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
 m_pReg(pReg) {
 	try {
-		for(int i = 0; i < evgNumMxc; i++) {
-			m_muxCounter.push_back(new evgMxc(i, pReg));
-		}
+		m_evtClk = new evgEvtClk(pReg);
+
+		m_softEvt = new evgSoftEvt(pReg);
 
 		for(int i = 0; i < evgNumEvtTrig; i++) {
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
+		}
+
+		for(int i = 0; i < evgNumMxc; i++) {
+			m_muxCounter.push_back(new evgMxc(i, this));
 		}
 
 		for(int i = 0; i < evgNumDbusBit; i++) {
@@ -61,7 +62,9 @@ m_pReg(pReg) {
 											new evgOutput(i, pReg, Univ_Output);
 		}	
 
-		m_seqRamMgr = new evgSeqRamMgr(pReg, this);
+		m_seqRamMgr = new evgSeqRamMgr(this);
+	
+		m_seqMgr = new evgSeqMgr(this);
 
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
@@ -190,6 +193,25 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 	epicsMutexUnlock(irqTemp->mutex);
 }
 
+evgEvtClk*
+evgMrm::getEvtClk() {
+	return m_evtClk;
+}
+
+evgSoftEvt*
+evgMrm::getSoftEvt() {
+	return m_softEvt;
+}
+
+evgTrigEvt*
+evgMrm::getTrigEvt(epicsUInt32 evtTrigNum) {
+	evgTrigEvt* trigEvt = m_trigEvt[evtTrigNum];
+	if(!trigEvt)
+		throw std::runtime_error("ERROR: Event Trigger not initialized");
+
+	return trigEvt;
+}
+
 evgMxc* 
 evgMrm::getMuxCounter(epicsUInt32 muxNum) {
 	evgMxc* mxc =  m_muxCounter[muxNum];
@@ -199,40 +221,31 @@ evgMrm::getMuxCounter(epicsUInt32 muxNum) {
 	return mxc;
 }
 
-evgTrigEvt*
-evgMrm::getTrigEvt(epicsUInt32 evtTrigNum) {
-	evgTrigEvt* pTrigEvt = m_trigEvt[evtTrigNum];
-	if(!pTrigEvt)
-		throw std::runtime_error("ERROR: Event Trigger not initialized");
-
-	return pTrigEvt;
-}
-
 evgDbus*
 evgMrm::getDbus(epicsUInt32 dbusBit) {
-	evgDbus* pDbus = m_dbus[dbusBit];
-	if(!pDbus)
+	evgDbus* dbus = m_dbus[dbusBit];
+	if(!dbus)
 		throw std::runtime_error("ERROR: Event Dbus not initialized");
 
-	return pDbus;
+	return dbus;
 }
 
 evgInput*
 evgMrm::getInput(epicsUInt32 inpNum, std::string type) {
-	evgInput* pInp = m_input[ std::pair<epicsUInt32, std::string>(inpNum, type) ];
-	if(!pInp)
+	evgInput* inp = m_input[ std::pair<epicsUInt32, std::string>(inpNum, type) ];
+	if(!inp)
 		throw std::runtime_error("ERROR: Input not initialized");
 
-	return pInp;
+	return inp;
 }
 
 evgOutput*
 evgMrm::getOutput(epicsUInt32 outNum, std::string type) {
-	evgOutput* pOut = m_output[ std::pair<epicsUInt32, std::string>(outNum, type) ];
-	if(!pOut)
+	evgOutput* out = m_output[ std::pair<epicsUInt32, std::string>(outNum, type) ];
+	if(!out)
 		throw std::runtime_error("ERROR: Output not initialized");
 
-	return pOut;
+	return out;
 }
 
 evgSeqRamMgr*
@@ -245,128 +258,4 @@ evgMrm::getSeqMgr() {
 	return m_seqMgr;
 }
 
-/** 	Event Clock Source 	**/
-
-//TODO: Set uSecDiv for RF source.
-epicsStatus
-evgMrm::setClockSource (epicsUInt8 clkSrc) {
-	if(clkSrc == m_clkSrc)
-		return OK;
-
-	if (clkSrc == evgClkSrcInternal) {
-		// Use internal fractional synthesizer to generate the clock
-		BITCLR8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
-		m_clkSrc = clkSrc;
-		setClockSpeed(m_clkSpeed);
-
-	} else if(clkSrc >= 1  && clkSrc <= 32) {     
-		// Use external RF source to generate the clock
-		m_clkSrc = clkSrc;
-		clkSrc = clkSrc - 1;
-    	BITSET8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
-		WRITE8 (m_pReg, RfDiv, clkSrc);
-	
-	} else {
-		errlogPrintf("ERROR: Invalid Clock Source.\n");
-		return ERROR;	
-	}
-
-	return OK;
-} //SetOutLinkClockSource()
-
-epicsUInt8
-evgMrm::getClockSource() {
-	epicsUInt8 clkReg = READ8(m_pReg, ClockSource);
-	return clkReg & EVG_CLK_SRC_EXTRF;
-}
-
-
-/**		Event Clock Speed	**/
-
-epicsStatus
-evgMrm::setClockSpeed (epicsFloat64 clkSpeed) {	
-	epicsStatus   status = OK;
-	if(m_clkSrc == evgClkSrcInternal) {
-		// Use internal fractional synthesizer to generate the clock
-		epicsUInt32    controlWord, oldControlWord;
-    	epicsFloat64   error;
-
-    	controlWord = FracSynthControlWord (clkSpeed, MRF_FRAC_SYNTH_REF, 0, &error);
-    	if ((!controlWord) || (error > 100.0)) {
-        	errlogPrintf ("Cannot set event clock speed to %f MHz.\n", clkSpeed);
-        	return ERROR;
-    	}
-	
-		oldControlWord=READ32(m_pReg, FracSynthWord);
-
-		/* Changing the control word disturbes the phase of 
-		 * the synthesiser which will cause a glitch.
-    	 * Don't change the control word unless needed.
-    	 */
-		if(controlWord != oldControlWord){
-        	WRITE32(m_pReg, FracSynthWord, controlWord);
-    	
-			epicsUInt16 uSecDivider = (epicsUInt16)m_clkSpeed;
-			printf("Rounded Interge value: %d\n", uSecDivider);
-			WRITE16(m_pReg, uSecDiv, uSecDivider);
-		}
-
-		status = OK;
-	}
-
-	m_clkSpeed = clkSpeed;
-	return status;
-
-}//setClockSpeed
-
-epicsFloat64
-evgMrm::getClockSpeed() {
-	return m_clkSpeed;
-}
-
-
-/**		Software Event		**/
-
-epicsStatus 
-evgMrm::softEvtEnable(bool ena){	
-	if(ena)
-		BITSET8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-	else
-		BITCLR8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-	
-	return OK;
-}
-
-
-bool 
-evgMrm::softEvtEnabled() {
-	epicsUInt8 swEvtCtrl = READ8(m_pReg, SwEventControl);
-	return swEvtCtrl & SW_EVT_ENABLE;
-}
-
-
-bool 
-evgMrm::softEvtPend() {
-	epicsUInt8 swEvtCtrl = READ8(m_pReg, SwEventControl);
-	return swEvtCtrl & SW_EVT_PEND;
-}
-
-	
-epicsStatus 
-evgMrm::setSoftEvtCode(epicsUInt32 evtCode) {
-	if(evtCode < 0 || evtCode > 255) {
-		errlogPrintf("ERROR: Event Code out of range.\n");
-		return ERROR;		
-	}
-
-	//TODO: if(pend == 0), write in an atomic step to SwEvtCode register. 
-	WRITE8(m_pReg, SwEventCode, evtCode);
-	return OK; 
-}
-
-
-epicsUInt8 
-evgMrm::getSoftEvtCode() {
-	return READ8(m_pReg, SwEventCode);
-}
 

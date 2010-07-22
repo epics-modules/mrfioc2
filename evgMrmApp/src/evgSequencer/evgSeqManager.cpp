@@ -2,10 +2,13 @@
 
 #include <mrfCommon.h>
 
+evgSeqMgr::evgSeqMgr(evgMrm* const owner):
+m_owner(owner) {
+}
+
 epicsStatus
 evgSeqMgr::createSeq(epicsUInt32 seqID) {
-	m_sequence.push_back(new evgSequence(seqID));
-	printf("Created Seq %d\n", seqID);
+	m_sequence.push_back(new evgSequence(seqID, m_owner));
 	return OK;
 }
 

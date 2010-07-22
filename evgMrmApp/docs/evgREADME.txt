@@ -11,13 +11,13 @@ Acknowlegement:
 
 
 First read evgTODO.txt for the list of the things expected to work in the
-checkout code.
+checked out code.
 
 TODO: Introduction to Timing System
 TODO: Introduction to EVG
 TODO: Introduction to EVR 
 
-Brief note about all the hardware/software components of VME-EVG-230
+Brief note about all the classes of VME-EVG-230 driver
 -------------------------------------------------------------------------------
 
 EVG:
@@ -27,12 +27,10 @@ EVG:
 	Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
 	object maintains a reference to all the evg sub-componets i.e. Event clock,
 	Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
-	Sequence Ram, Front Panel I/O etc.
+	Sequence Ram, Input, Output etc.
 	
-	Usage:
-		-Enable/Disable the EVG (Binary)
-		caput EVG$(cardNum):Enable Enable
-		caput EVG$(cardNum):Enable Disable
+	Records:
+		caput EVG$(cardNum):Enable <Enable/Disable>
 
 	Macro: 	$(cardNum) = Logical card number EVG
 
@@ -343,4 +341,4 @@ Interrupt handling:
 Soft Sequence
 	Soft sequence class and also soft sequence manager, which maintains the list of the soft sequence.
 
-SOft sequence should be common to all the EVG in the IOC
+Soft sequence should be common to all the EVG in the IOC

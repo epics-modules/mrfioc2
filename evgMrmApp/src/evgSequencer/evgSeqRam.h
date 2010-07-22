@@ -8,8 +8,6 @@
 
 #include "evgSequence.h"
 
-//class evgSequence;
-
 class evgSeqRam {
 
 public:

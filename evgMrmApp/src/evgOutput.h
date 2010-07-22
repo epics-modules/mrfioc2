@@ -1,5 +1,5 @@
-#ifndef EVGOUTPUT_H
-#define EVGOUTPUT_H
+#ifndef EVG_OUTPUT_H
+#define EVG_OUTPUT_H
 
 #include <epicsTypes.h>
 
@@ -22,4 +22,4 @@ private:
 	
 };
 
-#endif //EVGOUTPUT_H
+#endif //EVG_OUTPUT_H

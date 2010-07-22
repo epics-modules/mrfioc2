@@ -2,6 +2,26 @@ file evgMrm.db {
 { cardNum = $(cardNum) }
 }
 
+file evgEvtClk.db {
+{ cardNum = $(cardNum) }
+}
+
+file evgSoftEvt.db {
+{ cardNum = $(cardNum) }
+}
+
+file evgTrigEvt.db {
+pattern { cardNum, trigEvtNum }
+{ $(cardNum), 0 }
+{ $(cardNum), 1 }
+{ $(cardNum), 2 }
+{ $(cardNum), 3 }
+{ $(cardNum), 4 }
+{ $(cardNum), 5 }
+{ $(cardNum), 6 }
+{ $(cardNum), 7 }
+}
+
 file evgInput.db {
 pattern { cardNum, inpNum, inpType }
 { $(cardNum), 0, "FP_Input" }
@@ -48,27 +68,15 @@ pattern { cardNum, mxcNum }
 { $(cardNum), 7 }
 }
 
-file evgTrigEvt.db {
-pattern { cardNum, trigEvtNum }
-{ $(cardNum), 0 }
-{ $(cardNum), 1 }
-{ $(cardNum), 2 }
-{ $(cardNum), 3 }
-{ $(cardNum), 4 }
-{ $(cardNum), 5 }
-{ $(cardNum), 6 }
-{ $(cardNum), 7 }
-}
-
 file evgSeq.db {
-pattern { seqNum, NELM}
-{ 0, 5}
-{ 1, 5}
-{ 2, 5}
+pattern { cardNum, seqNum, NELM}
+{ $(cardNum), 0, 2048}
+{ $(cardNum), 1, 2048}
+{ $(cardNum), 2, 2048}
 }
 
 file evgSeqRam.db {
-pattern { cardNum , seqNum}
+pattern { cardNum, seqNum}
 { $(cardNum), 0}
 { $(cardNum), 1}
 { $(cardNum), 2}

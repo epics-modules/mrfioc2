@@ -1,7 +1,7 @@
-record(bo, "EVG:Seq$(seqNum):create") {
+record(bo, "EVG$(cardNum):Seq$(seqNum):create") {
 	field( DTYP, "EVG SEQ CREATE")
 	field( DESC, "Create EVG Sequence")
-	field( OUT, "#C$(seqNum) S @")
+	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "1")
 	field( PINI, "YES")
 	field( UDF, "0")
@@ -9,34 +9,42 @@ record(bo, "EVG:Seq$(seqNum):create") {
   	field( ONAM, "1")
 }
 
-record(waveform, "EVG:Seq$(seqNum):timeStamp") {
+record(waveform, "EVG$(cardNum):Seq$(seqNum):timeStamp:tick") {
 	field( DTYP, "EVG SEQ TIME STAMP")
 	field( DESC, "Set the event code in EVG sequence Ram")
-	field( INP, "#C$(seqNum) S @")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( NELM, "$(NELM)")
 	field( FTVL, "LONG")
 }
 
-record(waveform, "EVG:Seq$(seqNum):eventCode") {
+record(waveform, "EVG$(cardNum):Seq$(seqNum):timeStamp:sec") {
+	field( DTYP, "EVG SEQ TIME STAMP FLT")
+	field( DESC, "Set the event code in EVG sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( NELM, "$(NELM)")
+	field( FTVL, "DOUBLE")
+}
+
+record(waveform, "EVG$(cardNum):Seq$(seqNum):eventCode") {
 	field( DTYP, "EVG SEQ EVENT CODE")
 	field( DESC, "Set the time stamp in EVG sequence Ram")
-	field( INP, "#C$(seqNum) S @")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( NELM, "$(NELM)")
 	field( FTVL, "UCHAR")
 }
 
-record(mbbo, "EVG:Seq$(seqNum):runMode") {
+record(mbbo, "EVG$(cardNum):Seq$(seqNum):runMode") {
   	field( DTYP, "EVG SEQ RUN MODE")
-  	field( OUT , "#C$(seqNum) S @")
+  	field( OUT , "#C$(cardNum) S$(seqNum) @")
 	field( UDF, "0")
   	field( ZRST, "Single")
   	field( ONST, "Automatic")
 	field( TWST, "Normal")
 }
 
-record(mbbo, "EVG:Seq$(seqNum):trigSrc") {
+record(mbbo, "EVG$(cardNum):Seq$(seqNum):trigSrc") {
   	field( DTYP, "EVG SEQ TRIG SRC")
-  	field( OUT , "#C$(seqNum) S @")
+  	field( OUT , "#C$(cardNum) S$(seqNum) @")
 	field( UDF, "0")
   	field( ZRST, "Mxc0")
   	field( ONST, "Mxc1")

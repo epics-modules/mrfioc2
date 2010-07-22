@@ -1,0 +1,36 @@
+record(ao, "EVG$(cardNum):RFref") {
+	field( DTYP, "EVG Clk RFref")
+	field( DESC, "EVG Clk RF Frequency")
+	field( OUT, "#C$(cardNum) S @")
+	field( UDF, "0")
+	field( EGU, "MHz")
+	field( HOPR, "1600")
+	field( LOPR, "50")
+	field( DRVH, "1600")
+	field( DRVL, "50")
+	field( PREC, "3")
+}
+
+record(ao, "EVG$(cardNum):ClkSpeed") {
+	field( DTYP, "EVG Clk")
+	field( DESC, "EVG Clk Speed")
+	field( OUT, "#C$(cardNum) S @")
+	#field( PINI, "YES")
+	#field( VAL, "124.907")
+	field( UDF, "0")
+	field( EGU, "MHz")
+	field( HOPR, "125")
+	field( LOPR, "50")
+	field( DRVH, "125")
+	field( DRVL, "50")
+	field( PREC, "3")
+}
+
+record(longout, "EVG$(cardNum):ClkSrc") {
+	field( DTYP, "EVG Clk")
+	field( DESC, "EVG Clk Source Output")
+	field( OUT, "#C$(cardNum) S @")
+	#field( PINI, "YES")
+	#field( VAL , "0")
+	field( UDF, "0")
+}

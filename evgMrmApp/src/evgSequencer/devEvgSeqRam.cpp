@@ -13,9 +13,6 @@
 #include "dsetshared.h"
 
 #include "evgInit.h"
-#include "evgMrm.h"
-#include "evgSeqManager.h"
-//#include "evgSeqRam.h"
 #include "evgRegMap.h"
 
 typedef struct {
@@ -41,7 +38,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 		if(!seqRamMgr)
 			throw std::runtime_error("ERROR: Failed to lookup EVG SeqRam Manager");
 
-		evgSeqMgr* seqMgr = evgMrm::getSeqMgr();
+		evgSeqMgr* seqMgr = evg->getSeqMgr();
 		if(!seqMgr)
 			throw std::runtime_error("ERROR: Failed to lookup EVG Seq Manager");
 
