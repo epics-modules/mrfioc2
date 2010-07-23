@@ -25,3 +25,5 @@ Not yet started.
 	-AC trigger
 	-Data Buffer
 	-TimeStamping
+
+Mutex around softSeq... the size of vector can increase...

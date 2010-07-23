@@ -6,7 +6,7 @@
 
 #include <mrfCommonIO.h> 
 #include <errlog.h>   
-#include <mrfCommon.h>  //ERROR / OK 
+#include <mrfCommon.h>
 
 #include "evgMrm.h"
 #include "evgRegMap.h"
@@ -15,6 +15,9 @@ evgMxc::evgMxc(const epicsUInt32 id, evgMrm* const owner):
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()) {	
+}
+
+evgMxc::~evgMxc() {
 }
 
 bool 

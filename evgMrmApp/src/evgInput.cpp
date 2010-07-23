@@ -32,6 +32,9 @@ m_type(type) {
 	}
 }
 
+evgInput::~evgInput() {
+}
+
 epicsStatus
 evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
 	epicsStatus ret = OK;

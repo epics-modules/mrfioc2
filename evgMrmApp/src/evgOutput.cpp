@@ -32,6 +32,9 @@ m_type(type) {
 	}
 }
 
+evgOutput::~evgOutput() {
+}
+
 epicsStatus
 evgOutput::setOutMap(epicsUInt16 map) {
 	epicsStatus ret = OK;

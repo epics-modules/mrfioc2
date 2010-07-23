@@ -30,46 +30,32 @@ m_softEvt(evgSoftEvt(pReg)),
 m_seqRamMgr(evgSeqRamMgr(this)),
 m_seqMgr(evgSeqMgr(this)) {
 	try {
-		//m_evtClk = new evgEvtClk(pReg);
-
-		//m_softEvt = new evgSoftEvt(pReg);
-
-		for(int i = 0; i < evgNumEvtTrig; i++) {
+		for(int i = 0; i < evgNumEvtTrig; i++)
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
-		}
 
-		for(int i = 0; i < evgNumMxc; i++) {
+		for(int i = 0; i < evgNumMxc; i++) 
 			m_muxCounter.push_back(new evgMxc(i, this));
-		}
 
-		for(int i = 0; i < evgNumDbusBit; i++) {
+		for(int i = 0; i < evgNumDbusBit; i++)
 			m_dbus.push_back(new evgDbus(i, pReg));
-		}
 
 		for(int i = 0; i < evgNumFpInp; i++) {
 			m_input[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
 											new evgInput(i, pReg, FP_Input);
 		}
-
 		for(int i = 0; i < evgNumUnivInp; i++) {
 			m_input[ std::pair<epicsUInt32, std::string>(i,"Univ_Input") ] = 
 											new evgInput(i, pReg, Univ_Input);
 		}
-
 		for(int i = 0; i < evgNumFpOut; i++) {
 			m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
 											new evgOutput(i, pReg, FP_Output);
-		}	
+		}
 
 		for(int i = 0; i < evgNumUnivOut; i++) {
 			m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")] = 
 											new evgOutput(i, pReg, Univ_Output);
 		}	
-
-		//m_seqRamMgr = new evgSeqRamMgr(this);
-	
-		//m_seqMgr = new evgSeqMgr(this);
-
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
 	} 	
@@ -82,6 +68,26 @@ m_seqMgr(evgSeqMgr(this)) {
 }
 
 evgMrm::~evgMrm() {
+	for(int i = 0; i < evgNumEvtTrig; i++)
+		delete m_trigEvt[i];
+
+	for(int i = 0; i < evgNumMxc; i++)
+		delete m_muxCounter[i];
+
+	for(int i = 0; i < evgNumDbusBit; i++)
+		delete m_dbus[i];
+
+	for(int i = 0; i < evgNumFpInp; i++)
+		delete m_input[std::pair<epicsUInt32, std::string>(i,"FP_Input")]; 
+
+	for(int i = 0; i < evgNumUnivInp; i++)
+		delete m_input[std::pair<epicsUInt32, std::string>(i,"Univ_Input")];
+
+	for(int i = 0; i < evgNumFpOut; i++)
+		delete m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")]; 
+
+	for(int i = 0; i < evgNumUnivOut; i++)
+		delete m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")];
 }
 
 const epicsUInt32 
