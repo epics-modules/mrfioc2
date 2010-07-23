@@ -36,7 +36,6 @@ device( mbbo, VME_IO, devMbboEvgOutMap, "EVG Output")
 device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
 
 #evgSeq.db
-device( bo, VME_IO, devBoEvgCreateSeq, "EVG SEQ CREATE")
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP")
 device( waveform, VME_IO, devWfEvgTimeStampSec, "EVG SEQ TIME STAMP FLT")

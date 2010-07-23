@@ -20,6 +20,13 @@
 #include "evgSequencer/evgSeqRamManager.h"  
 #include "evgSequencer/evgSeqManager.h"
 
+/*********
+ * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
+ * object maintains a list to all the evg sub-componets i.e. Event clock,
+ * Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
+ * Input, Output etc.
+ */
+
 class evgMrm {
 
 public:
@@ -63,8 +70,8 @@ private:
 	const epicsUInt32            	m_id;       
 	volatile epicsUInt8* const		m_pReg;
 
-	evgEvtClk* 						m_evtClk;
-	evgSoftEvt*						m_softEvt;
+	evgEvtClk 						m_evtClk;
+	evgSoftEvt						m_softEvt;
 
 	typedef std::vector<evgTrigEvt*> TrigEvt_t;
   	TrigEvt_t 						m_trigEvt;
@@ -81,8 +88,8 @@ private:
  	typedef std::map< std::pair<epicsUInt32, std::string>, evgOutput*> Output_t;
  	Output_t 						m_output;
 
-	evgSeqRamMgr* 					m_seqRamMgr;
-	evgSeqMgr* 						m_seqMgr;
+	evgSeqRamMgr 					m_seqRamMgr;
+	evgSeqMgr						m_seqMgr;
 };
 
 #endif //EVG_MRM_H

@@ -60,7 +60,8 @@ evgSequence::setTimeStampSec(epicsFloat64* timeStamp, epicsUInt32 size) {
 
 	//Convert secs to clock ticks
 	for(unsigned int i = 0; i < size; i++) {
-		timeStampInt[i] = timeStamp[i] * (m_owner->getEvtClk()->getClkSpeed()) * pow(10,6);
+		timeStampInt[i] = timeStamp[i] * (m_owner->getEvtClk()->getClkSpeed()) 
+									   * pow(10,6);
 	}
 
 	setTimeStampTick(timeStampInt, size);

@@ -1,14 +1,3 @@
-record(bo, "EVG$(cardNum):Seq$(seqNum):create") {
-	field( DTYP, "EVG SEQ CREATE")
-	field( DESC, "Create EVG Sequence")
-	field( OUT, "#C$(cardNum) S$(seqNum) @")
-	field( VAL , "1")
-	field( PINI, "YES")
-	field( UDF, "0")
-	field( ZNAM, "0")
-  	field( ONAM, "1")
-}
-
 record(waveform, "EVG$(cardNum):Seq$(seqNum):timeStamp:tick") {
 	field( DTYP, "EVG SEQ TIME STAMP")
 	field( DESC, "Set the event code in EVG sequence Ram")
@@ -49,7 +38,7 @@ record(mbbo, "EVG$(cardNum):Seq$(seqNum):trigSrc") {
   	field( ZRST, "Mxc0")
   	field( ONST, "Mxc1")
   	field( TWST, "Mxc2")
-	field( THST, "Mxc")
+	field( THST, "Mxc3")
 	field( FRST, "Mxc4")
 	field( FVST, "Mxc5")
 	field( SXST, "Mxc6")

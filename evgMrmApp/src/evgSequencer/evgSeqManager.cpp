@@ -6,16 +6,14 @@ evgSeqMgr::evgSeqMgr(evgMrm* const owner):
 m_owner(owner) {
 }
 
-epicsStatus
-evgSeqMgr::createSeq(epicsUInt32 seqID) {
-	m_sequence.push_back(new evgSequence(seqID, m_owner));
-	return OK;
-}
-
 evgSequence* 
 evgSeqMgr::getSeq(epicsUInt32 seqId) {
-	if(seqId < m_sequence.size() )
-		return m_sequence[seqId];
-	else 
-		return OK;
+	evgSequence* seq = m_softSeq[seqId];
+
+	if(!seq) {
+		seq = new evgSequence(seqId, m_owner);
+		m_softSeq[seqId] = seq;
+	}
+
+	return seq;
 }

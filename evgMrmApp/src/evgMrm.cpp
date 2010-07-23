@@ -24,11 +24,15 @@
 
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
-m_pReg(pReg) {
+m_pReg(pReg),
+m_evtClk(evgEvtClk(pReg)),
+m_softEvt(evgSoftEvt(pReg)),
+m_seqRamMgr(evgSeqRamMgr(this)),
+m_seqMgr(evgSeqMgr(this)) {
 	try {
-		m_evtClk = new evgEvtClk(pReg);
+		//m_evtClk = new evgEvtClk(pReg);
 
-		m_softEvt = new evgSoftEvt(pReg);
+		//m_softEvt = new evgSoftEvt(pReg);
 
 		for(int i = 0; i < evgNumEvtTrig; i++) {
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
@@ -62,9 +66,9 @@ m_pReg(pReg) {
 											new evgOutput(i, pReg, Univ_Output);
 		}	
 
-		m_seqRamMgr = new evgSeqRamMgr(this);
+		//m_seqRamMgr = new evgSeqRamMgr(this);
 	
-		m_seqMgr = new evgSeqMgr(this);
+		//m_seqMgr = new evgSeqMgr(this);
 
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
@@ -195,12 +199,12 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 
 evgEvtClk*
 evgMrm::getEvtClk() {
-	return m_evtClk;
+	return &m_evtClk;
 }
 
 evgSoftEvt*
 evgMrm::getSoftEvt() {
-	return m_softEvt;
+	return &m_softEvt;
 }
 
 evgTrigEvt*
@@ -250,12 +254,12 @@ evgMrm::getOutput(epicsUInt32 outNum, std::string type) {
 
 evgSeqRamMgr*
 evgMrm::getSeqRamMgr() {
-	return m_seqRamMgr;
+	return &m_seqRamMgr;
 }
 
 evgSeqMgr*
 evgMrm::getSeqMgr() {
-	return m_seqMgr;
+	return &m_seqMgr;
 }
 
 

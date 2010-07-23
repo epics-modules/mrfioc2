@@ -7,7 +7,6 @@ class evgSoftEvt {
 
 public:
 	evgSoftEvt(volatile epicsUInt8* const);
-	~evgSoftEvt();
 
 	epicsStatus enable(bool);
  	bool enabled();

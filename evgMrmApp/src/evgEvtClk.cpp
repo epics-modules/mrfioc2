@@ -35,7 +35,7 @@ evgEvtClk::getRFref() {
 
 /**		Event Clock Speed	**/
 epicsStatus
-evgEvtClk::setClkSpeed (epicsFloat64 clkSpeed) {	
+evgEvtClk::setClkSpeed (epicsFloat64 clkSpeed) {
 	epicsStatus   status = OK;
 	if(m_clkSrc == evgClkSrcInternal) {
 		// Use internal fractional synthesizer to generate the clock
@@ -66,7 +66,6 @@ evgEvtClk::setClkSpeed (epicsFloat64 clkSpeed) {
 
 	m_clkSpeed = clkSpeed;
 	return status;
-
 }
 
 epicsFloat64
