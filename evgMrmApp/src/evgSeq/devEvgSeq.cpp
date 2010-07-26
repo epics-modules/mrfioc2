@@ -8,6 +8,7 @@
 #include <devSup.h>
 #include <dbAccess.h>
 #include <epicsExport.h>
+#include <errlog.h>
 
 #include "dsetshared.h"
 
