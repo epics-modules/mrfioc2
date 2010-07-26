@@ -6,7 +6,7 @@
 #include <epicsTypes.h>
 #include <dbCommon.h>
 
-#include "evgSequence.h"
+#include "evgSoftSeq.h"
 
 class evgSeqRam {
 
@@ -30,17 +30,17 @@ public:
 	bool enabled() const;
 	bool running() const;
 
-	epicsStatus load(evgSequence* seq);
+	epicsStatus load(evgSoftSeq* seq);
 	epicsStatus unload();
 	bool loaded() const;
 
-	evgSequence* getSequence();
+	evgSoftSeq* getSoftSeq();
 
 private:
 	const epicsUInt32			m_id;
 	volatile epicsUInt8* const	m_pReg;
 	bool 						m_allocated;
-	evgSequence*	 			m_seq;
+	evgSoftSeq*	 				m_seq;
 };
 
 #endif //EVGSEQRAM_H

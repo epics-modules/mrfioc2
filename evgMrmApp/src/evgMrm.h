@@ -18,7 +18,7 @@
 #include "evgInput.h"
 #include "evgOutput.h"
 #include "evgSequencer/evgSeqRamManager.h"  
-#include "evgSequencer/evgSeqManager.h"
+#include "evgSequencer/evgSoftSeqManager.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -53,7 +53,7 @@ public:
 	evgInput*  		getInput		(epicsUInt32, std::string);
 	evgOutput* 		getOutput		(epicsUInt32, std::string);
 	evgSeqRamMgr* 	getSeqRamMgr	();	
-	evgSeqMgr* 	    getSeqMgr		();
+	evgSoftSeqMgr* 	getSoftSeqMgr	();
 
 	struct irq {
 		epicsMutexId mutex;
@@ -89,7 +89,7 @@ private:
  	Output_t 						m_output;
 
 	evgSeqRamMgr 					m_seqRamMgr;
-	evgSeqMgr						m_seqMgr;
+	evgSoftSeqMgr					m_softSeqMgr;
 };
 
 #endif //EVG_MRM_H

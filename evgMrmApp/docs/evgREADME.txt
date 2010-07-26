@@ -195,125 +195,111 @@ Output:
 	Files: evegOutput.h/evgOut.cpp
 	
 -------------------------------------------------------------------------------
-Sequence Ram:
+Sequencer:
 -------------------------------------------------------------------------------
 		VME-EVG-230 has 2 sequenceRams or sequencers. The sequenceRam can hold 
 	upto 2048 <event code, timeStamp> pair. When the sequencer is triggered, an
 	internal counter starts counting. When the counter value matches the timeStamp
 	of the next event, the attched event code is transmitted.
-		All the information that is needed to run the sequenceRam can be stored in a
-	soft sequence. The user can maintain any number of soft sequences but at
-	atime, maximum of only 2 of these soft sequences can be loaded into the
-	sequenceRam Hardware. The idea being the user can create and manipulate any number of
- 	these soft sequeunces irrespective of the fact whether the soft sequence is
- 	actually loaded in hardware or not.
+	All the information that needs to be loaded into the sequenceRam to make it
+ 	functional, can be stored into an object called soft sequence. The IOC will have
+ 	number of these soft sequences but maximum of only 2 can be loaded into the
+ 	sequenceRam Hardware. The idea being the user can create or modify these soft
+ 	sequences even if 
+	1.The sequence is not loaded in the sequenceRam. 
+	2. The sequence is loaded into sequeneRams and is running.
+ 
 		A soft sequence can be loaded in the hardware by using the 'load' record.
- 	The user can modify any soft sequence, anytime but if that sequence happens to
-	be loaded, the changes are not propogated to the hardware. 'commit'
- 	record can be used to commit the updated soft sequence to the hardware.
- 	'commit' makes sure that the sequenceRam is not modified when it is active.
+ 	The user can modify any loaded soft sequence, anytime but if that sequence happens to
+	be loaded, the changes are not propogated to the hardware until user commits the
+ 	soft sequence. 'commit' record can be used to commit the updated soft sequence
+ 	to the hardware. 'commit' makes sure that the sequenceRam is not modified when
+ 	it is active.
 
-	User uses 'evgSeqRamMgr' class to intaract with the 'evgSeqRam' class, which
-	actually manipulates the sequenceRam registers on EVG. It maintains a list of
- 	all Soft sequences and SequenceRam objects. 
+	Following records interact with the registers of the sequenceRam.
+	Usage:
+		caput EVG$(cardNum):Seq$(seqNum):load <1>
+	Load the soft sequence with ID 'seqNum' into the sequenceRam hardware. For load
+ 	to be successful atleast one of the sequenceRam shouldn't be loaded. When
+ 	successful, sequenceRam enters its 'LOADED'state. If all the sequenceRam are loaded
+ 	it returns an error. 
+		
+		caput EVG$(cardNum):Seq$(seqNum):unload <1>
+	Unload the soft sequence with ID 'seqNum' from the sequenceRam that it is running on.
+ 	When successful the sequenceRam enters its 'UNLOADED' state.
+
+		caput EVG$(cardNum):Seq$(seqNum):commit <1>
+	Commit the changes to the soft sequence with ID 'seqNum' to the sequenceRam. 
+	When ever you want to make changes to the sequenceRam, you need make the changes
+ 	to the soft sequence that is loaded in the sequenceRam. Then 'commit' can be used
+ 	to progate those changes from the soft sequence to the hardware sequenceRam. Any
+ 	changes to the soft sequence is not written to the sequenceRam untill you 'commit'
+ 	that soft sequence.
+	Modifing the sequenceRam while it is running gives undefined behavior hence 'commit'
+ 	makes sure that the changes are not written to the hardware while it is running.
+ 	It waits for the current sequence to finish before writing to the sequenceRam.
+
+		caput EVG$(cardNum):Seq$(seqNum):enable <1>
+	Enable the sequenceRam in which this soft sequence is loaded.	
+	If sequenceRam is already loaded the record does nothing. 
+	
+		caput EVG$(cardNum):Seq$(seqNum):disable <1>		
+	Disable the sequenceRam in which this soft sequence is loaded. If the sequence
+ 	is currently running the record waits for the current sequence to complete before
+ 	disabling it. 
+
+		caput EVG$(cardNum):Seq$(seqNum):halt <1>
+	Halt or Disable immediately the sequenceRam into which this soft sequence is
+ 	loaded. The difference between halt and disable is that halt does wait for the
+ 	current running sequence to complete, it diable the sequence ram immediately.
+ 	while disable allows the running sequence to complete.
+
+	Following record are used to create and modify soft sequences. They do not directly
+ 	interact with the registers of the sequenceRam.
 
 	Usage:
-		-Load the soft sequence(Binary)
-		caput EVG$(cardNum):Seq$(seqNum):load 1
-	Load the soft sequence with ID 'seqNum' into the unloaded sequenceRam. 
-	If both the sequnceRam are loaded returns an error.		
+		caput -a EVG$(cardNum):Seq$(seqNum):eventCode <array>
+	It is used to set the eventCodes of the soft sequence. These eventCodes are
+ 	transmitted whenever the timeStamp associated with eventCode matches the counter
+ 	value on sequencer. The counter on the sequencer is triggered by source selected
+	by 'trigSrc'.
 
+		caput -a EVG$(cardNum):Seq$(seqNum):timeStamp:tick <array>
+	It is used to set the timeStamps for the events on the soft sequence in the
+ 	'Event Clock' ticks.	
+ 
+		caput -a EVG$(cardNum):Seq$(seqNum):timeStamp:sec <array> 
+	It is used to set the timeStamps for the events in the soft sequence in the seconds.
 
-		-Unload the soft sequence(Binary)
-	Unload the soft sequence with ID 'seqNum' from the sequencer.
-	caput EVG$(cardNum):Seq$(seqNum):unload 1
+		caput EVG$(cardNum):Seq$(seqNum):runMode <mode> 
+	runMode is used determine what will the sequencer do at the end of the sequence.
+	where 'mode' could be any of the following:
+	Single 	  - Disables the sequencer at the end of the sequence.
+	Automatic - Restarts the sequence immediately after the end of the sequence.
+	Normal    -	Waits for a new trigger after the end of the sequence 
+				to restart the sequence. 
 
-	
-		-Commit the soft sequence(Binary)		
-		caput EVG$(cardNum):Seq$(seqNum):commit 1
-	Commit the soft sequence with ID 'seqNum' to the sequence. 
-	Commit record is used to update an sequence which is currently loaded in 
-	one of the sequenceRam. When the user commits an updated sequence and if
-	the old sequence is not running (i.e. the sequenceRam in which the old 
-	sequence is loaded is disabled) then the new updated sequence is writen to
-	the sequenceRam. 
-	Modifing the sequenceRam when it is running gives undefined behavior hence
-	if the old sequence is running(i.e. the sequenceRam in which the old sequence
-	is loaded is running) then the commit returns but before returning it sets up
-	a callback to process the commmit record again after the current old seqeuence
-	reaches the end of sequence.  
-	
-
-		-Enable the soft sequence(Binary)
-		caput EVG$(cardNum):Seq$(seqNum):enable 1
-	Enable the soft sequence with id 'seqNum'. This basically enables
-	the sequenceRam into which that soft sequence is loaded. If sequenceRam is
- 	already loaded the record does nothing. 
-	
-			
-		-Disable the soft sequence(Binary)
-		caput EVG$(cardNum):Seq$(seqNum):disable 1
-	Disable the soft sequence with id 'seqNum'. It disables the
-	sequenceRam into which that soft sequence is loaded. If the sequence is currently
-	running the record waits for the current sequence to complete and then disables it. 
-
-	
-		-Halt the soft sequence(Binary)
-		caput EVG$(cardNum):Seq$(seqNum):halt 1
-	Disable the soft sequence with id 'seqNum' immediately. The difference between halt
- 	and disable is that halt does wait for the current running sequence to complete,
- 	it diable the sequence ram immediately. while disable allows the current
-	sequence to complete.
-
+		caput EVG$(cardNum):Seq$(seqNum):trigSrc <src>	
+	trigSrc is used to select the source of the trigger, which should start the sequencer.
+	where 'src' could be any of the following:
+	Mxc0 to Mxc7 - Trigger from MXC0 - MXC7
+	AC			 - Trigger from AC sync logic
+	RAM0/RAM1	 - Trigger from RAM0/RAM1 software trigger
 
 	Macro: 	$(cardNum) = Logical card number EVG
-			$(seqNum) = ID of the soft sequence
+			$(seqNum) = ID of the soft sequence under consideration
 
 	Class: evgSeqRamMgr
-	Files: evgSeqRamManager.h/evgSeqRamManager.cpp/devEvgSeq.cpp/evgSeq.db
-				------------------------------
+	Files: evgSeqRamManager.h/evgSeqRamManager.cpp
 
 	Class: evgSeqRam
-	Files: evgSeqRam.h/evgSeqRam.cpp/devEvgSeq.cpp/evgSeq.db
+	Files: evgSeqRam.h/evgSeqRam.cpp
 
-	The EVG user doesn't deal with this class directly to manipulate the sequencer
-	registers but instead uses 'evgSeqRamMgr' which in turn uses 'evgSeqRam' interface
- 	to configure the  sequenceRam.
+	Class: evgSoftSeqMgr
+	Files: evgSoftSeqManager.h/evgSoftSeqManager.cpp
 
-				------------------------------
-
-	Class: evgSequence
-	Files: evgSequence.h/evgSequence.cpp/devEvgSeq.cpp/evgSeq.db
-
-	This class is used as soft sequence. 
-	
-	Usage:
-	caput -a EVG$(cardNum):Seq$(seqNum):timeStamp array 
-
-	caput -a EVG$(cardNum):Seq$(seqNum):eventCode array
-
-	runMode is used determine what will the sequencer do at the end of the sequence.
-	caput EVG$(cardNum):Seq$(seqNum):runMode mode 
-		where 'mode' could be any of the following:
-		Single 	  - Disables the sequencer at the end of the sequence.
-		Automatic - Restarts the sequence immediately after the end of the sequence.
-		Normal    -	Waits for a new trigger after the end of the sequence 
-					 to restart the sequence. 
-	
-	trigSrc is used to select the source of the trigger, which should start the sequencer.
-	caput EVG$(cardNum):Seq$(seqNum):trigSrc src
-		where 'src' could be any of the following:
-		Mxc0 to Mxc7 - Trigger from MXC0 - MXC7
-		AC			 - Trigger from AC sync logic
-		RAM0/RAM1	 - Trigger from RAM0/RAM1 software trigger
-
--------------------------------------------------------------------------------
-Soft Sequence:
--------------------------------------------------------------------------------
-	Soft sequence class and also soft sequence manager, which maintains the list
- 	of the soft sequence.
-
-	Soft sequence should be common to all the EVG in the IOC
+	Class: evgSoftSeq
+	Files: evgSoftSeq.h/evgSoftSeq.cpp/devEvgSoftSeq.cpp/evgSoftSeq.db
 
 -------------------------------------------------------------------------------
 Interrupt handling:

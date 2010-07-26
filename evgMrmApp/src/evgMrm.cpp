@@ -28,7 +28,7 @@ m_pReg(pReg),
 m_evtClk(evgEvtClk(pReg)),
 m_softEvt(evgSoftEvt(pReg)),
 m_seqRamMgr(evgSeqRamMgr(this)),
-m_seqMgr(evgSeqMgr(this)) {
+m_softSeqMgr(evgSoftSeqMgr(this)) {
 	try {
 		for(int i = 0; i < evgNumEvtTrig; i++)
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
@@ -263,9 +263,9 @@ evgMrm::getSeqRamMgr() {
 	return &m_seqRamMgr;
 }
 
-evgSeqMgr*
-evgMrm::getSeqMgr() {
-	return &m_seqMgr;
+evgSoftSeqMgr*
+evgMrm::getSoftSeqMgr() {
+	return &m_softSeqMgr;
 }
 
 

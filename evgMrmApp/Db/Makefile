@@ -19,8 +19,7 @@ DB += evgMxc.db
 DB += evgDbus.db
 DB += evgInput.db
 DB += evgOutput.db
-DB += evgSeq.db
-DB += evgSeqRam.db
+DB += evgSoftSeq.db
 DB += vme-evg230.db
 
 ifneq ($(DEVIOCSTATS),)

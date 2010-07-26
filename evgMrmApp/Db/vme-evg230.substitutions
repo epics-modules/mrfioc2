@@ -68,16 +68,9 @@ pattern { cardNum, mxcNum }
 { $(cardNum), 7 }
 }
 
-file evgSeq.db {
+file evgSoftSeq.db {
 pattern { cardNum, seqNum, NELM}
 { $(cardNum), 0, 2048}
 { $(cardNum), 1, 2048}
 { $(cardNum), 2, 2048}
-}
-
-file evgSeqRam.db {
-pattern { cardNum, seqNum}
-{ $(cardNum), 0}
-{ $(cardNum), 1}
-{ $(cardNum), 2}
 }

@@ -35,18 +35,18 @@ device( mbbo, VME_IO, devMbboEvgOutMap, "EVG Output")
 #evgDbus.db
 device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
 
-#evgSeq.db
+#evgSoftSeq.db
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP")
 device( waveform, VME_IO, devWfEvgTimeStampSec, "EVG SEQ TIME STAMP FLT")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")
 
-#evgSeqRam.db
 device( bo, VME_IO, devBoEvgLoadSeq, "EVG LOAD SEQ")
 device( bo, VME_IO, devBoEvgUnloadSeq, "EVG UNLOAD SEQ")
 device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
 device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
 device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
 device( bo, VME_IO, devBoEvgHaltSeq, "EVG HALT SEQ")
+
 device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")

@@ -7,8 +7,8 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC += evgmrm
 
-INC += evgSequencer/evgSeqManager.h
-INC += evgSequencer/evgSequence.h
+INC += evgSequencer/evgSoftSeqManager.h
+INC += evgSequencer/evgSoftSeq.h
 INC += evgSequencer/evgSeqRamManager.h
 INC += evgSequencer/evgSeqRam.h
 
@@ -41,13 +41,12 @@ evgmrm_SRCS += devEvgInput.cpp
 evgmrm_SRCS += evgOutput.cpp
 evgmrm_SRCS += devEvgOutput.cpp
 
-evgmrm_SRCS += evgSequence.cpp
-evgmrm_SRCS += evgSeqManager.cpp
-evgmrm_SRCS += devEvgSeq.cpp
+evgmrm_SRCS += evgSoftSeq.cpp
+evgmrm_SRCS += evgSoftSeqManager.cpp
+evgmrm_SRCS += devEvgSoftSeq.cpp
 
 evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
-evgmrm_SRCS += devEvgSeqRam.cpp
 
 DBD += evgInit.dbd
 #=============================

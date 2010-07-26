@@ -5,23 +5,16 @@
 
 #include <epicsTypes.h>
 
-#include "evgSequence.h"
 #include "evgSeqRam.h"
 
 class evgMrm;
 
 class evgSeqRamMgr {
 public:
-	evgSeqRamMgr(evgMrm*);
-	
-	evgSeqRam* getSeqRam(epicsUInt32);
-	
-	epicsStatus load	(evgSequence *);
-	epicsStatus unload	(evgSequence *, dbCommon *);
-	epicsStatus commit	(evgSequence *, dbCommon *);
-	epicsStatus enable	(evgSequence *);
-	epicsStatus disable	(evgSequence *);
-	epicsStatus halt	(evgSequence *);
+	evgSeqRamMgr(evgMrm*);	
+
+	evgSeqRam* getSeqRam(epicsUInt32);	
+	epicsUInt32 numOfRams();
 
 private:
 	evgMrm*							m_owner;

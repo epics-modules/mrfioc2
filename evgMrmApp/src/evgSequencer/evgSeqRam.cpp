@@ -118,7 +118,7 @@ evgSeqRam::running() const {
 }
 
 epicsStatus
-evgSeqRam::load(evgSequence* seq) {
+evgSeqRam::load(evgSoftSeq* seq) {
 	m_seq = seq;
 	m_allocated = true;
 	return OK;
@@ -151,7 +151,7 @@ evgSeqRam::loaded() const {
 	return ret;
 }
 
-evgSequence* 
-evgSeqRam::getSequence() {
+evgSoftSeq* 
+evgSeqRam::getSoftSeq() {
 	return m_seq;
 }
