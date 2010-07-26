@@ -212,7 +212,7 @@ try {
 
   EVRMRM *receiver=new EVRMRM(id,evr);
 
-  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
+  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver,0)){
       printf("Failed to install ISR\n");
       delete receiver;
   }else{
