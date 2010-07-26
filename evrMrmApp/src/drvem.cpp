@@ -733,7 +733,7 @@ EVRMRM::isr(void *arg)
         callbackRequest(&evr->poll_link_cb);
     }
 
-    WRITE32(evr->base, IRQEnable, enable);
+    WRITE32(evr->base, IRQEnable, enable|IRQ_Enable);
     WRITE32(evr->base, IRQFlag, flags);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
