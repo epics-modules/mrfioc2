@@ -120,7 +120,8 @@ epicsShareFunc
 int devPCIConnectInterrupt(
         epicsPCIDevice *id,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt /* always 0 */
 );
 
 epicsShareFunc

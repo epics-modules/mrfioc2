@@ -152,13 +152,14 @@ epicsShareFunc
 int devPCIConnectInterrupt(
   epicsPCIDevice *curdev,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt
 )
 {
   PCIINIT;
 
   return (*pdevLibPCI->pDevPCIConnectInterrupt)
-                (curdev,pFunction,parameter);
+                (curdev,pFunction,parameter,opt);
 }
 
 epicsShareFunc

@@ -33,7 +33,8 @@ static
 int vxworksDevPCIConnectInterrupt(
   epicsPCIDevice *dev,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt
 )
 {
   int status;

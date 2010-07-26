@@ -16,7 +16,8 @@ static
 int rtemsDevPCIConnectInterrupt(
   epicsPCIDevice *dev,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt
 )
 {
   struct osdPCIDevice *id=pcidev2osd(dev);

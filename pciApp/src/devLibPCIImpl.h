@@ -29,7 +29,8 @@ typedef struct {
 
   int (*pDevPCIConnectInterrupt)(epicsPCIDevice *id,
                                  void (*pFunction)(void *),
-                                 void  *parameter);
+                                 void  *parameter,
+                                 unsigned int opt);
 
   int (*pDevPCIDisconnectInterrupt)(epicsPCIDevice *id,
                                     void (*pFunction)(void *),
