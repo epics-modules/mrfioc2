@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 typedef struct {
+  const char *name;
 
   int (*pDevInit)(void);
 
@@ -36,9 +37,12 @@ typedef struct {
                                     void (*pFunction)(void *),
                                     void  *parameter);
 
+  ELLNODE node;
 } devLibPCI;
 
-epicsShareExtern devLibPCI *pdevLibPCI;
+epicsShareFunc
+int
+devLibPCIRegisterDriver(devLibPCI*);
 
 #ifdef __cplusplus
 } /* extern "C" */

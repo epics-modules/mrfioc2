@@ -1,8 +1,10 @@
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <ellLib.h>
 #include <epicsThread.h>
+#include <epicsMutex.h>
 #include <iocsh.h>
 
 #include "devLibPCIImpl.h"
@@ -10,13 +12,116 @@
 #define epicsExportSharedSymbols
 #include "devLibPCI.h"
 
+#ifndef CONTAINER
+# ifdef __GNUC__
+#   define CONTAINER(ptr, structure, member) ({                     \
+        const __typeof(((structure*)0)->member) *_ptr = (ptr);      \
+        (structure*)((char*)_ptr - offsetof(structure, member));    \
+    })
+# else
+#   define CONTAINER(ptr, structure, member) \
+        ((structure*)((char*)(ptr) - offsetof(structure, member)))
+# endif
+#endif
+
+static ELLLIST pciDrivers = {{NULL,NULL},0};
+
+static devLibPCI *pdevLibPCI=NULL;
+
+static epicsMutexId pciDriversLock = NULL;
+static epicsThreadOnceId devPCIReg_once = EPICS_THREAD_ONCE_INIT;
+
 static epicsThreadOnceId devPCIInit_once = EPICS_THREAD_ONCE_INIT;
 static int devPCIInit_result = 42;
+
+/******************* Initialization *********************/
+
+static
+void regInit(void* junk)
+{
+    pciDriversLock = epicsMutexMustCreate();
+}
+
+epicsShareFunc
+int
+devLibPCIRegisterDriver(devLibPCI* drv)
+{
+    int ret=0;
+    ELLNODE *cur;
+    devLibPCI *other;
+
+    epicsThreadOnce(&devPCIReg_once, &regInit, NULL);
+
+    epicsMutexMustLock(pciDriversLock);
+
+    for(cur=ellFirst(&pciDrivers); cur; cur=ellNext(cur)) {
+        other=CONTAINER(cur, devLibPCI, node);
+        if (strcmp(drv->name, other->name)==0) {
+            fprintf(stderr,"Failed to register PCI bus driver: name already taken\n");
+            ret=1;
+            break;
+        }
+    }
+    if (!ret)
+        ellAdd(&pciDrivers, &drv->node);
+
+    epicsMutexUnlock(pciDriversLock);
+
+    return ret;
+}
+
+epicsShareFunc
+int
+devLibPCIUse(const char* use)
+{
+    ELLNODE *cur;
+    devLibPCI *drv;
+
+    if (!use)
+        use="native";
+
+    epicsThreadOnce(&devPCIReg_once, &regInit, NULL);
+
+    epicsMutexMustLock(pciDriversLock);
+
+    if (pdevLibPCI) {
+        epicsMutexUnlock(pciDriversLock);
+        fprintf(stderr,"PCI bus driver already selected. Can't change selection\n");
+        return 1;
+    }
+
+    for(cur=ellFirst(&pciDrivers); cur; cur=ellNext(cur)) {
+        drv=CONTAINER(cur, devLibPCI, node);
+        if (strcmp(drv->name, use)==0) {
+            pdevLibPCI = drv;
+            epicsMutexUnlock(pciDriversLock);
+            return 0;
+        }
+    }
+    epicsMutexUnlock(pciDriversLock);
+    fprintf(stderr,"PCI bus driver '%s' not found\n",use);
+    return 1;
+}
+
+epicsShareFunc
+const char* devLibPCIDriverName()
+{
+    const char* ret=NULL;
+
+    epicsThreadOnce(&devPCIReg_once, &regInit, NULL);
+
+    epicsMutexMustLock(pciDriversLock);
+    if (pdevLibPCI)
+        ret = pdevLibPCI->name;
+    epicsMutexUnlock(pciDriversLock);
+
+    return ret;
+}
 
 static
 void devInit(void* junk)
 {
-  if(!pdevLibPCI) {
+  if(devLibPCIUse(NULL)) {
     devPCIInit_result = S_dev_internal;
     return;
   }
@@ -236,12 +341,23 @@ static void devPCIShowCallFunc(const iocshArgBuf *args)
     devPCIShow(args[0].ival,args[1].ival,args[2].ival,args[3].ival);
 }
 
+static const iocshArg devLibPCIUseArg0 = { "verbosity level",iocshArgString};
+static const iocshArg * const devLibPCIUseArgs[1] =
+{&devLibPCIUseArg0};
+static const iocshFuncDef devLibPCIUseFuncDef =
+    {"devLibPCIUse",1,devLibPCIUseArgs};
+static void devLibPCIUseCallFunc(const iocshArgBuf *args)
+{
+    devLibPCIUse(args[0].sval);
+}
+
 #include <epicsExport.h>
 
 static
-void devLibPCIReg()
+void devLibPCIIOCSH()
 {
   iocshRegister(&devPCIShowFuncDef,devPCIShowCallFunc);
+  iocshRegister(&devLibPCIUseFuncDef,devLibPCIUseCallFunc);
 }
 
-epicsExportRegistrar(devLibPCIReg);
+epicsExportRegistrar(devLibPCIIOCSH);

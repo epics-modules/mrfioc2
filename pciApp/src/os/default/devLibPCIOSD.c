@@ -1,5 +1,7 @@
-#include <stdlib.h>
+#include <epicsExport.h>
 
-#include <devLibPCIImpl.h>
-
-devLibPCI *pdevLibPCI = NULL;
+/* Only exists so that this registrar will be present for all targets */
+void devLibPCIRegisterBaseDefault(void)
+{
+}
+epicsExportRegistrar(devLibPCIRegisterBaseDefault);

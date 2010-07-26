@@ -75,7 +75,8 @@ int rtemsDevPCIDisconnectInterrupt(
 }
 
 
-devLibPCI prtemsPCIVirtualOS = {
+devLibPCI prtemsPCI = {
+  "native",
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -84,4 +85,10 @@ devLibPCI prtemsPCIVirtualOS = {
   rtemsDevPCIDisconnectInterrupt
 };
 
-devLibPCI *pdevLibPCI = &prtemsPCIVirtualOS;
+#include <epicsExport.h>
+
+void devLibPCIRegisterBaseDefault(void)
+{
+    devLibPCIRegisterDriver(&prtemsPCI);
+}
+epicsExportRegistrar(devLibPCIRegisterBaseDefault);

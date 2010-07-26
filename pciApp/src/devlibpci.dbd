@@ -1,1 +1,2 @@
-registrar(devLibPCIReg)
+registrar(devLibPCIIOCSH)
+registrar(devLibPCIRegisterBaseDefault)

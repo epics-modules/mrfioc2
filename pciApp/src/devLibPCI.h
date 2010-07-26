@@ -131,11 +131,23 @@ int devPCIDisconnectInterrupt(
   void  *parameter
 );
 
+epicsShareFunc
 void
 devPCIShow(int lvl, int vendor, int device, int exact);
 
+epicsShareFunc
 void
 devPCIShowDevice(int lvl, epicsPCIDevice *dev);
+
+/* Select driver implementation by name, or NULL to use default.
+ * If no selection is made then the default will be used if available.
+ */
+epicsShareFunc
+int
+devLibPCIUse(const char*);
+
+epicsShareFunc
+const char* devLibPCIDriverName();
 
 #ifdef __cplusplus
 } /* extern "C" */
