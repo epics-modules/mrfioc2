@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 698
-y 338
+x 906
+y 250
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -1030,12 +1030,12 @@ symbolTag {
   1 "Gen 1"
   2 "Gen 2"
   3 "Gen 3"
-  4 "Gen 5"
-  5 "Gen 6"
-  6 "Gen 7"
-  7 "Gen 8"
-  8 "Gen 9"
-  9 "Gen 10"
+  4 "Gen 4"
+  5 "Gen 5"
+  6 "Gen 6"
+  7 "Gen 7"
+  8 "Gen 8"
+  9 "Gen 9"
 }
 symbol0 {
   0 "N"
@@ -1054,12 +1054,12 @@ value0 {
   1 "pul1"
   2 "pul2"
   3 "pul3"
-  4 "pul5"
-  5 "pul6"
-  6 "pul7"
-  7 "pul8"
-  8 "pul9"
-  9 "pul10"
+  4 "pul4"
+  5 "pul5"
+  6 "pul6"
+  7 "pul7"
+  8 "pul8"
+  9 "pul9"
 }
 endObjectProperties
 
@@ -2201,9 +2201,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 30
+x 20
 y 140
-w 70
+w 100
 h 20
 font "helvetica-medium-r-12.0"
 fgColor index 14
