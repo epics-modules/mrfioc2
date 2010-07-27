@@ -17,6 +17,7 @@ record(bo, "$(P)$(CML)power") {
   field(VAL, "0")
   field(ZNAM, "Off")
   field(ONAM, "On")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(CML)reset") {
@@ -27,6 +28,7 @@ record(bo, "$(P)$(CML)reset") {
   field(VAL, "0")
   field(ZNAM, "Normal")
   field(ONAM, "Reset")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(CML)mode") {
@@ -54,6 +56,7 @@ record(mbbo, "$(P)$(CML)mode") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(calcout, "$(P)$(CML)res") {
@@ -82,6 +85,7 @@ record(longout, "$(P)$(CML)rise") {
   field(LOPR, "0")
   field(DRVH, "0xfffff")
   field(DRVL, "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)$(CML)high") {
@@ -95,6 +99,7 @@ record(longout, "$(P)$(CML)high") {
   field(LOPR, "0")
   field(DRVH, "0xfffff")
   field(DRVL, "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)$(CML)fall") {
@@ -108,6 +113,7 @@ record(longout, "$(P)$(CML)fall") {
   field(LOPR, "0")
   field(DRVH, "0xfffff")
   field(DRVL, "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)$(CML)low") {
@@ -121,6 +127,7 @@ record(longout, "$(P)$(CML)low") {
   field(LOPR, "0")
   field(DRVH, "0xfffff")
   field(DRVL, "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(CML)freq:level") {
@@ -131,6 +138,7 @@ record(bo, "$(P)$(CML)freq:level") {
   field(VAL, "0")
   field(ZNAM, "Active high")
   field(ONAM, "Active low")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(ao, "$(P)$(CML)freq:high") {
@@ -145,6 +153,7 @@ record(ao, "$(P)$(CML)freq:high") {
   field(ESLO, "1e9")
   field(PREC, "3")
   field(FLNK, "$(P)$(CML)freq:high:rbv")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)$(CML)freq:high:rbv") {
@@ -168,6 +177,7 @@ record(ao, "$(P)$(CML)freq:low") {
   field(ESLO, "1e9")
   field(PREC, "3")
   field(FLNK, "$(P)$(CML)freq:low:rbv")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)$(CML)freq:low:rbv") {
@@ -189,6 +199,7 @@ record(waveform, "$(P)$(CML)pat") {
   field(HOPR, "1")
   field(LOPR, "0")
   field(FLNK, "$(P)$(CML)pat:rbv")
+  info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)$(CML)pat:rbv") {
@@ -230,6 +241,7 @@ record(bo, "$(P)$(CML)pat:dly:ena") {
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(ao, "$(P)$(CML)pat:dly") {
@@ -238,6 +250,7 @@ record(ao, "$(P)$(CML)pat:dly") {
   field(EGU , "ns")
   field(UDF , "0")
   field(VAL , "16")
+  info(autosaveFields_pass0, "VAL EGU")
 }
 
 record(ao, "$(P)$(CML)pat:dly:wth") {
@@ -246,6 +259,7 @@ record(ao, "$(P)$(CML)pat:dly:wth") {
   field(EGU , "ns")
   field(UDF , "0")
   field(VAL , "50")
+  info(autosaveFields_pass0, "VAL EGU")
 }
 
 record(aSub, "$(P)$(CML)pat:dly:calc") {

@@ -8,6 +8,7 @@ record(bo, "$(P)$(N)enable") {
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(N)polarity") {
@@ -18,6 +19,7 @@ record(bo, "$(P)$(N)polarity") {
   field(MASK, "1")
   field(ZNAM, "Active High")
   field(ONAM, "Active Low")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(ao, "$(P)$(N)delay") {
@@ -31,6 +33,7 @@ record(ao, "$(P)$(N)delay") {
   field(ESLO, 1e6)
   field(PREC, 6)
   field(FLNK, "$(P)$(N)delay:raw")
+  info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
 
 record(longin, "$(P)$(N)delay:raw") {
@@ -55,6 +58,7 @@ record(ao, "$(P)$(N)width") {
   field(PREC, 6)
   field(FLNK, "$(P)$(N)width")
   field(FLNK, "$(P)$(N)width:raw")
+  info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
 
 record(longin, "$(P)$(N)width:raw") {
@@ -80,6 +84,7 @@ record(longout, "$(P)$(N)prescaler:set") {
   field(FLNK, "$(P)$(N)prescaler")
   field(DISP, "$(NOPS=0)")
   field(DISA, "$(NOPS=0)")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)$(N)prescaler") {

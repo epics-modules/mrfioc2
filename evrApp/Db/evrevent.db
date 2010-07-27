@@ -6,6 +6,7 @@ record(event, "$(P)$(N)") {
   field(SCAN, "I/O Intr")
   field(INP , "@Card=$(C),Code=$(CODE)")
   field(VAL , "$(EVNT)")
+  info(autosaveFields_pass0, "INP VAL")
 }
 
 record(calc, "$(P)$(N):count") {

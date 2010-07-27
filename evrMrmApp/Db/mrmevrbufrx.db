@@ -7,6 +7,7 @@ record(bo, "$(P)dbus:recv:mode") {
   field(VAL , "1")
   field(ZNAM, "DBus only")
   field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(waveform, "$(P)dbus:recv:s8") {
@@ -15,6 +16,7 @@ record(waveform, "$(P)dbus:recv:s8") {
   field(INP , "@C=$(C), Proto=$(PROTO), P=Data Rx")
   field(FTVL, "CHAR")
   field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
 }
 
 record(waveform, "$(P)dbus:recv:u32") {
@@ -23,5 +25,6 @@ record(waveform, "$(P)dbus:recv:u32") {
   field(INP , "@C=$(C), Proto=$(PROTO), P=Data Rx")
   field(FTVL, "ULONG")
   field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
 }
 
