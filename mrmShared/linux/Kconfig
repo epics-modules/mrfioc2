@@ -1,0 +1,9 @@
+
+config UIO_MRF
+	tristate "MRF Timing cards"
+	depends on PCI
+	help
+	  Driver for Micro Research event timing system
+	  receiver cards.
+
+	  If you don't know what to do here, say N.
