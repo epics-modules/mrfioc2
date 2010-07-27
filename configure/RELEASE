@@ -18,16 +18,17 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-#If using the sequencer, point SNCSEQ at its top directory:
-#SNCSEQ=$(EPICS_BASE)/../modules/soft/seq
-
-# EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE=/usr/epics/base
+## Optional Modules ##
+# Comment out if not present
 
 # IOC statistics (cpu and mem usage, ...)
 #DEVIOCSTATS=$(EPICS_BASE)
 
-#Capfast users may need the following definitions
-#CAPFAST_TEMPLATES=
-#SCH2EDIF_PATH=
+# automatic save with restore on boot
+#AUTOSAVE=$(EPICS_BASE)
+
+## Required Modules ##
+
+# EPICS_BASE usually appears last so other apps can override stuff:
+EPICS_BASE=/usr/epics/base
 

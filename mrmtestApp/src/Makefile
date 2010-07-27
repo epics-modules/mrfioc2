@@ -39,6 +39,11 @@ mrf_DBD += devIocStats.dbd
 mrf_LIBS += devIocStats
 endif
 
+ifneq ($(AUTOSAVE),)
+mrf_DBD += asSupport.dbd
+mrf_LIBS += autosave
+endif
+
 
 #===========================
 
