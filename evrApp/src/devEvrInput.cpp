@@ -118,7 +118,7 @@ PROPERTY_DSET_BO(Input, get_input, props_bool);
 PROPERTY_DSET_ADDFN(mbbo, epicsUInt16, out, Input, get_input, props_epicsUInt16);
 PROPERTY_DSET_TABLE(mbbo, epicsUInt16, Input,
                     add_Input_mbbo,
-                    init_record_empty,
+                    init_record_return2,
                     write_mbbo) 
 
 }
