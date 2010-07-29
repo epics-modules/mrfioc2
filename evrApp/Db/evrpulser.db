@@ -77,16 +77,9 @@ record(longout, "$(P)$(N)prescaler:set") {
   field(DRVH, "$(PMAX)")
   field(DRVL, "1")
   field(VAL , "1")
-  field(FLNK, "$(P)$(N)prescaler:set:update")
+  field(FLNK, "$(P)$(N)prescaler")
   field(DISP, "$(NOPS=0)")
   field(DISA, "$(NOPS=0)")
-}
-
-record(fanout, "$(P)$(N)prescaler:set:update") {
-  field(LNK1, "$(P)$(N)delay")
-  field(LNK2, "$(P)$(N)width")
-  field(LNK3, "$(P)$(N)prescaler")
-  field(LNK4, "$(P)$(N)res")
 }
 
 record(longin, "$(P)$(N)prescaler") {
@@ -96,13 +89,14 @@ record(longin, "$(P)$(N)prescaler") {
   field(LOPR, "1")
   field(HIGH, "$(PMAX=0xffff)")
   field( HSV, "MAJOR")
+  field(FLNK, "$(P)$(N)res")
 }
 
 record(calc, "$(P)$(N)res") {
   field(DESC, "Resolution")
   field(INPA, "$(P)$(N)prescaler MS")
-  field(INPB, "$(P)clock CP")
-  field(CALC, "1000*(A?A:1)/B")
+  field(INPB, "$(P)clock:period CP")
+  field(CALC, "1e9*(A?A:1)*B")
   field(EGU, "ns")
   field(FLNK, "$(P)$(N)res:fo")
 }
