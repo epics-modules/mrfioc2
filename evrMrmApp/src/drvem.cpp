@@ -481,7 +481,7 @@ EVRMRM::setSourceTS(TSSource src)
     double clk=clockTS(), eclk;
     epicsUInt16 div=0;
 
-    if(clk<=0 || !finite(clk))
+    if(clk<=0 || !isfinite(clk))
         throw std::out_of_range("TS Clock rate invalid");
 
     int iflags;
@@ -538,7 +538,7 @@ EVRMRM::clockTS() const
 void
 EVRMRM::clockTSSet(double clk)
 {
-    if(clk<=0 || !finite(clk))
+    if(clk<=0 || !isfinite(clk))
         throw std::out_of_range("TS Clock rate invalid");
 
     TSSource src=SourceTS();
@@ -639,7 +639,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     // Convert ticks to nanoseconds
     double period=1e9/clockTS(); // in nanoseconds
 
-    if(period<=0 || !finite(period))
+    if(period<=0 || !isfinite(period))
         return false;
 
     ts->nsec*=(epicsUInt32)period;
@@ -733,7 +733,7 @@ EVRMRM::isr(void *arg)
         callbackRequest(&evr->poll_link_cb);
     }
 
-    WRITE32(evr->base, IRQEnable, enable);
+    WRITE32(evr->base, IRQEnable, enable|IRQ_Enable);
     WRITE32(evr->base, IRQFlag, flags);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);

@@ -118,6 +118,25 @@
 
 #ifdef __cplusplus
 
+template<class Mutex>
+class scopedLock
+{
+    Mutex& m;
+    bool locked;
+public:
+    scopedLock(Mutex& mutex, bool lock=true) : m(mutex), locked(lock)
+    {
+        if (lock) m.lock();
+    }
+    ~scopedLock()
+    {
+        unlock();
+    }
+    inline void lock(){if (!locked) m.lock();locked=true;}
+    inline void unlock(){if (locked) m.unlock();locked=false;}
+};
+#define SCOPED_LOCK(m) scopedLock<epicsMutex> m##_lock(m)
+
 /***************************************************************************************************
  * mrfDisableRecord () -- Disable a Record From Ever Being Processed
  **************************************************************************************************/

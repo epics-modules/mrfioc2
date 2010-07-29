@@ -33,7 +33,8 @@ static
 int vxworksDevPCIConnectInterrupt(
   epicsPCIDevice *dev,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt
 )
 {
   int status;
@@ -77,7 +78,8 @@ int vxworksDevPCIDisconnectInterrupt(
 }
 
 
-devLibPCI pvxworksPCIVirtualOS = {
+devLibPCI pvxworksPCI = {
+  "native",
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -85,5 +87,10 @@ devLibPCI pvxworksPCIVirtualOS = {
   vxworksDevPCIConnectInterrupt,
   vxworksDevPCIDisconnectInterrupt
 };
+#include <epicsExport.h>
 
-devLibPCI *pdevLibPCI = &pvxworksPCIVirtualOS;
+void devLibPCIRegisterBaseDefault(void)
+{
+    devLibPCIRegisterDriver(&pvxworksPCI);
+}
+epicsExportRegistrar(devLibPCIRegisterBaseDefault);

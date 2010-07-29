@@ -16,7 +16,8 @@ static
 int rtemsDevPCIConnectInterrupt(
   epicsPCIDevice *dev,
   void (*pFunction)(void *),
-  void  *parameter
+  void  *parameter,
+  unsigned int opt
 )
 {
   struct osdPCIDevice *id=pcidev2osd(dev);
@@ -74,7 +75,8 @@ int rtemsDevPCIDisconnectInterrupt(
 }
 
 
-devLibPCI prtemsPCIVirtualOS = {
+devLibPCI prtemsPCI = {
+  "native",
   NULL, NULL,
   sharedDevPCIFindCB,
   sharedDevPCIToLocalAddr,
@@ -83,4 +85,10 @@ devLibPCI prtemsPCIVirtualOS = {
   rtemsDevPCIDisconnectInterrupt
 };
 
-devLibPCI *pdevLibPCI = &prtemsPCIVirtualOS;
+#include <epicsExport.h>
+
+void devLibPCIRegisterBaseDefault(void)
+{
+    devLibPCIRegisterDriver(&prtemsPCI);
+}
+epicsExportRegistrar(devLibPCIRegisterBaseDefault);

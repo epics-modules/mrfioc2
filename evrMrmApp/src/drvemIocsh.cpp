@@ -212,7 +212,7 @@ try {
 
   EVRMRM *receiver=new EVRMRM(id,evr);
 
-  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver)){
+  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver,0)){
       printf("Failed to install ISR\n");
       delete receiver;
   }else{
@@ -401,11 +401,9 @@ extern "C"
 void
 mrmEvrDumpMap(int id,int evt,int ram)
 {
+try {
   EVRMRM *card=&evrmap.get<EVRMRM>(id);
-  if(!card){
-    printf("Invalid card\n");
-    return;
-  }
+  /* CardMap::get() throws if 'id' is invalid */
   printf("Print ram #%d\n",ram);
   if(evt>=0){
     // Print a single event
@@ -415,6 +413,9 @@ mrmEvrDumpMap(int id,int evt,int ram)
   for(evt=0;evt<=255;evt++){
     printRamEvt(card,evt,ram);
   }
+} catch(std::exception& e) {
+  printf("Error: %s\n",e.what());
+}
 }
 
 static const iocshArg mrmEvrDumpMapArg0 = { "ID number",iocshArgInt};

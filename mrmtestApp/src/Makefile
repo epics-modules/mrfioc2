@@ -20,6 +20,7 @@ mrf_DBD += evgInit.dbd
 mrf_DBD += drvemSupport.dbd
 
 mrf_DBD += vmecsr.dbd
+mrf_DBD += devlibpci.dbd
 
 # Add all the support libraries needed by this IOC
 mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon
@@ -36,6 +37,11 @@ mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
 ifneq ($(DEVIOCSTATS),)
 mrf_DBD += devIocStats.dbd
 mrf_LIBS += devIocStats
+endif
+
+ifneq ($(AUTOSAVE),)
+mrf_DBD += asSupport.dbd
+mrf_LIBS += autosave
 endif
 
 

@@ -8,6 +8,11 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the modular register map event receiver library
 
+PROD_HOST += evrdump
+
+evrdump_SRCS += evrdump.c
+evrdump_LIBS += Com pci Com
+
 LIBRARY_IOC += evrMrm
 
 evrMrm_SRCS += drvemIocsh.c
