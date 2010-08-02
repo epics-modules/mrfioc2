@@ -2,9 +2,7 @@ TODO:
 -Add the debug flag.
 -Extended device support
 -Software trigger for sequence Ram.
-
-Priority of the event sent out.
-	Algo for how to send out timeStamp events(70, 71, 7D).
+-Priority of the event sent out.
 
 Majorly complete
 	-Clock Control
@@ -27,3 +25,5 @@ Not yet started.
 	-TimeStamping
 
 Mutex around softSeq... the size of vector can increase...
+seq update on event clock update....
+Update db macros..

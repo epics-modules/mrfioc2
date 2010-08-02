@@ -47,7 +47,6 @@ evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
 
 			map = map & 0x0000ffff;
 			map = map | (dbusMap << 16);
-			printf("Input-Dbus map: %d\n", map);
 
 			WRITE32(m_pReg, FPInMap(m_id), map);
 
