@@ -44,6 +44,16 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 }
 
 /**		Initialization	**/
+/*returns: (0,2)=>(success,success no convert) 0==2	*/
+static long 
+init_bo(boRecord* pbo) {
+	epicsStatus ret = init_record((dbCommon*)pbo, &pbo->out);
+	if (ret == 0)
+		ret = 2;
+	
+	return ret;
+}
+
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_ao(aoRecord* pao) {
@@ -56,10 +66,23 @@ init_ao(aoRecord* pao) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
+init_ai(aiRecord* pai) {
+	return init_record((dbCommon*)pai, &pai->inp);
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
 init_lo(longoutRecord* plo) {
 	return init_record((dbCommon*)plo, &plo->out);
 }
 
+/**		bo - Event Clock Source	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_evtClkSrc(boRecord* pbo) {
+	evgEvtClk* evtClk = (evgEvtClk*)pbo->dpvt;
+	return evtClk->setEvtClkSrc(pbo->val);
+}
 
 /**		ao - RF Input Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
@@ -69,25 +92,44 @@ write_ao_RFref(aoRecord* pao) {
 	return evtClk->setRFref(pao->val);
 }
 
-/**		ao - Clock Speed	**/
+/**		lo - RF Divider	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_ao_clkSpeed(aoRecord* pao) {
-	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
-	return evtClk->setClkSpeed(pao->val);
-}
-
-
-/**		lo - Clock Source	**/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_lo_clkSrc(longoutRecord* plo) {
+write_lo_RFdiv(longoutRecord* plo) {
 	evgEvtClk* evtClk = (evgEvtClk*)plo->dpvt;
-	return evtClk->setClkSource(plo->val);
+	return evtClk->setRFdiv(plo->val);
 }
+
+/**		ao - Frac Synth Frequency	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_ao_fracSynFreq(aoRecord* pao) {
+	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
+	return evtClk->setFracSynFreq(pao->val);
+}
+
+/**		ai - Evt Clock Speed	**/
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+write_ai_evtClkSpeed(aiRecord* pai) {
+	evgEvtClk* evtClk = (evgEvtClk*)pai->dpvt;
+	pai->val = evtClk->getEvtClkSpeed();
+	return 2;
+}
+
 
 /** 	device support entry table 	**/
 extern "C" {
+common_dset devBoEvgEvtClkSrc = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_evtClkSrc,
+};
+epicsExportAddress(dset, devBoEvgEvtClkSrc);
+
 common_dset devAoEvgRFref = {
     6,
     NULL,
@@ -99,25 +141,36 @@ common_dset devAoEvgRFref = {
 };
 epicsExportAddress(dset, devAoEvgRFref);
 
-common_dset devAoEvgClock = {
-    6,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_ao,
-    NULL,
-    (DEVSUPFUN)write_ao_clkSpeed,
-	NULL
-};
-epicsExportAddress(dset, devAoEvgClock);
-
-common_dset devLoEvgClock = {
+common_dset devLoEvgRFdiv = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_lo,
     NULL,
-    (DEVSUPFUN)write_lo_clkSrc,
+    (DEVSUPFUN)write_lo_RFdiv,
 };
-epicsExportAddress(dset, devLoEvgClock);
+epicsExportAddress(dset, devLoEvgRFdiv);
+
+common_dset devAoEvgFracSynFreq = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_ao,
+    NULL,
+    (DEVSUPFUN)write_ao_fracSynFreq,
+	NULL
+};
+epicsExportAddress(dset, devAoEvgFracSynFreq);
+
+common_dset devAiEvgEvtClkSpeed = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_ai,
+    NULL,
+    (DEVSUPFUN)write_ai_evtClkSpeed,
+	NULL
+};
+epicsExportAddress(dset, devAiEvgEvtClkSpeed);
 
 };

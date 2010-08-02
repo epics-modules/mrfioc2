@@ -104,7 +104,8 @@ mrmEvgSetupVME (
 		}
 
     	/*csrCpuAddr is VME-CSR space CPU address for the board*/
-    	volatile unsigned char* csrCpuAddr = devCSRTestSlot(vmeEvgIDs,slot,&info);
+    	volatile unsigned char* csrCpuAddr = 			 
+									devCSRTestSlot(vmeEvgIDs,slot,&info);
 
     	if(!csrCpuAddr){
       		errlogPrintf("No EVG in slot %d\n",slot);

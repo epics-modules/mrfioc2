@@ -3,8 +3,8 @@
 
 #include <epicsTypes.h>
 
-const epicsUInt16 evgClkSrcInternal = 0;	// Event clock is generated internally
-const epicsUInt16 evgClkSrcRF 	    = 1;    // Event clock is derived from the RF input
+const epicsUInt16 ClkSrcInternal = 0;	// Event clock is generated internally
+const epicsUInt16 ClkSrcRF 	     = 1;    // Event clock is derived from the RF input
 
 class evgEvtClk {
 public:
@@ -14,19 +14,21 @@ public:
 	epicsStatus setRFref (epicsFloat64 RFref);
 	epicsFloat64 getRFref();
 
-	/**	Event Clock Speed	**/
-	epicsStatus setClkSpeed(epicsFloat64);
-	epicsFloat64 getClkSpeed();
+	epicsStatus setRFdiv(epicsUInt32);
+	epicsUInt32 getRFdiv();
+
+	/**	Fractional Synthesizer Frequency	**/
+	epicsStatus setFracSynFreq(epicsFloat64);
+	epicsFloat64 getEvtClkSpeed();
 
 	/**	Event Clock Source	**/
-	epicsStatus setClkSource(epicsUInt8);
-	epicsUInt8 getClkSource();	
+	epicsStatus setEvtClkSrc(bool);
+	bool getEvtClkSrc();	
 
 private:
 	volatile epicsUInt8* const		m_pReg;
-	epicsFloat64					m_RFref;
-    epicsFloat64          			m_clkSpeed;	// In MHz
-	epicsUInt32						m_clkSrc;
+	epicsFloat64					m_RFref;		//In MHz
+    epicsFloat64          			m_fracSynFreq;	// In MHz
 };
 
 #endif //EVG_EVTCLK_H

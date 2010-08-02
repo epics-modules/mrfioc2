@@ -48,15 +48,6 @@ evgMxc::getMxcPrescaler() {
 }
 
 epicsStatus 
-evgMxc::setMxcFreq(epicsFloat64 freq) {
-	epicsUInt32 clkSpeed = m_owner->getEvtClk()->getClkSpeed() * pow(10, 6);
-	epicsUInt32 preScaler = clkSpeed / freq;
-	
-	setMxcPrescaler(preScaler);
-	return OK;
-}
-
-epicsStatus 
 evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
 	if(preScaler == 0 || preScaler == 1) {
 		printf("ERROR: Invalid preScaler value in Multiplexed Counter : %d\n", preScaler);
@@ -65,6 +56,22 @@ evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
 
 	WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 	return OK;
+}
+
+epicsStatus 
+evgMxc::setMxcFreq(epicsFloat64 freq) {
+	epicsUInt32 clkSpeed = m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
+	epicsUInt32 preScaler = clkSpeed / freq;
+	
+	setMxcPrescaler(preScaler);
+	return OK;
+}
+
+epicsFloat64 
+evgMxc::getMxcFreq() {
+	epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
+	epicsFloat64 preScaler = (epicsFloat64)getMxcPrescaler();
+	return clkSpeed/preScaler;	
 }
 
 epicsUInt8

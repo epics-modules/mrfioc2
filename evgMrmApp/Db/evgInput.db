@@ -34,6 +34,118 @@ record(bo, "EVG$(cardNum):$(inpType)$(inpNum):EnaIrq") {
 	field( OUT, "#C$(cardNum) S$(inpNum) @$(inpType)")
 	field( VAL , "0")
 	field( UDF, "0")
-	field( ZNAM, "Disable")
-  	field( ONAM, "Enable")
+	field( ZNAM, "Disabled")
+  	field( ONAM, "Enabled")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB0") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B0 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB1") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B1 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB2") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B2 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB3") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B3 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB4") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B4 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB5") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B5 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB6") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B6 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB7") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):DbusMap.B7 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB0") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B0 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB1") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B1 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB2") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B2 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB3") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B3 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB4") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B4 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB5") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B5 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB6") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B6 PP")
+}
+
+record(bo, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB7") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMap.B7 PP")
 }

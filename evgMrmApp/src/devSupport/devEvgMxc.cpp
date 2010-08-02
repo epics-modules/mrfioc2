@@ -67,8 +67,8 @@ init_bi(biRecord* pbi) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-init_lo(longoutRecord* plo) {
-	return init_record((dbCommon*)plo, &plo->out);
+init_li(longinRecord* pli) {
+	return init_record((dbCommon*)pli, &pli->inp);
 }
 
 /*returns: (0,2)=>(success,success no convert)*/
@@ -79,6 +79,12 @@ init_ao(aoRecord* pao) {
 		ret = 2;
 
 	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_ai(aiRecord* pai) {
+	return init_record((dbCommon*)pai, &pai->inp);
 }
 
 /*returns: (0,2)=>(success,success no convert)*/
@@ -110,20 +116,31 @@ read_bi(biRecord* pbi) {
 }
 
 
-/** 	longout - Multiplexed Counter Prescalar	**/
+/** 	longin - Multiplexed Counter Prescalar	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_lo(longoutRecord* plo) {
-	evgMxc* mxc = (evgMxc*)plo->dpvt;
-	return mxc->setMxcPrescaler(plo->val);
+write_li(longinRecord* pli) {
+	evgMxc* mxc = (evgMxc*)pli->dpvt;
+	pli->val = mxc->getMxcPrescaler();
+	return 0;
 }
 
-/** 	ao - Multiplexed Counter Prescalar	**/
+/** 	ao - Multiplexed Counter Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao(aoRecord* pao) {
 	evgMxc* mxc = (evgMxc*)pao->dpvt;
 	return mxc->setMxcFreq(pao->val);
+}
+
+
+/** 	ai - Multiplexed Counter Frequency	**/
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+write_ai(aiRecord* pai) {
+	evgMxc* mxc = (evgMxc*)pai->dpvt;
+	pai->val = mxc->getMxcFreq();
+	return 2;
 }
 
 /** 	mbboDirect - Multiplexed Counter Event Trigger Map **/
@@ -162,9 +179,9 @@ common_dset devLoEvgMxc = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_lo,
+    (DEVSUPFUN)init_li,
     NULL,
-    (DEVSUPFUN)write_lo,
+    (DEVSUPFUN)write_li,
 };
 epicsExportAddress(dset, devLoEvgMxc);
 
@@ -178,6 +195,17 @@ common_dset devAoEvgMxc = {
 	NULL
 };
 epicsExportAddress(dset, devAoEvgMxc);
+
+common_dset devAiEvgMxc = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_ai,
+    NULL,
+    (DEVSUPFUN)write_ai,
+	NULL
+};
+epicsExportAddress(dset, devAiEvgMxc);
 
 common_dset devMbboDEvgMxc = {
     5,

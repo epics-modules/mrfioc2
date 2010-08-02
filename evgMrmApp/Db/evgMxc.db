@@ -18,26 +18,44 @@ record(bi, "EVG$(cardNum):Mxc$(mxcNum):Status") {
   	field( ONAM, "1")
 }
 
-record(longout , "EVG$(cardNum):Mxc$(mxcNum):Prescaler") {
-	field( DTYP, "EVG Mxc")
-	field( DESC, "EVG Mux Counter Prescaler")
-	field( OUT , "#C$(cardNum) S$(mxcNum) @")
-	field( PINI, "YES")
-	field( VAL , "12500")
-	field( UDF , "0")
-}
-
 record(ao, "EVG$(cardNum):Mxc$(mxcNum):Freq") {
 	field( DTYP, "EVG Mxc")
-	field( DESC, "EVG Mux Counter Prescaler")
-	field( OUT , "#C$(cardNum) S$(mxcNum) @")
-	field( UDF , "0")
+	field( DESC, "EVG Mux Counter Frequency")
+	field( OUT, "#C$(cardNum) S$(mxcNum) @")
+	field( PINI, "YES")
+	field( VAL, "1")
+	field( UDF, "0")
 	field( EGU, "Hz")
 	field( HOPR, "62500000")
 	field( LOPR, "0.029")
 	field( DRVH, "62500000")
 	field( DRVL, "0.029")
 	field( PREC, "3")
+	field( FLNK, "EVG$(cardNum):Mxc$(mxcNum):Freq:RB")
+}
+
+record(ai, "EVG$(cardNum):Mxc$(mxcNum):Freq:RB") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Frequency")
+	field( INP, "#C$(cardNum) S$(mxcNum) @")
+	field( UDF, "0")
+	field( EGU, "Hz")
+	field( HOPR, "62500000")
+	field( LOPR, "0.029")
+	field( PREC, "3")
+	field( FLNK, "EVG$(cardNum):Mxc$(mxcNum):Prescaler:RB")
+}
+
+record(longin , "EVG$(cardNum):Mxc$(mxcNum):Prescaler:RB") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Prescaler")
+	field( INP, "#C$(cardNum) S$(mxcNum) @")
+	#field( PINI, "YES")
+}
+
+record(ai, "EVG$(cardNum):Mxc$(mxcNum):Freq:Update") {
+	field(INP, "EVG$(cardNum):ClkSpeed CP")
+	field(FLNK, "EVG$(cardNum):Mxc$(mxcNum):Freq")
 }
 
 record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap") {
@@ -55,4 +73,60 @@ record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap") {
 	field( B5,"0")
 	field( B6,"0")
 	field( B7,"0")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB0") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B0 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB1") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B1 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB2") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B2 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB3") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B3 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB4") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B4 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB5") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B5 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB6") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B6 PP")
+}
+
+record(bo, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB7") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMap.B7 PP")
 }

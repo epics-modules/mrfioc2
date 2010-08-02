@@ -17,6 +17,7 @@ public:
 
 	epicsUInt32 getMxcPrescaler();
 	epicsStatus setMxcPrescaler(epicsUInt32);
+	epicsFloat64 getMxcFreq();
 	epicsStatus setMxcFreq(epicsFloat64);
 
 	epicsUInt8 getMxcTrigEvtMap();

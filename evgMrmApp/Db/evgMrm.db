@@ -5,6 +5,6 @@ record(bo, "EVG$(cardNum):Enable") {
 	field( UDF, "0")
 	field( PINI, "YES")
 	field( VAL, "1")
-  	field( ZNAM, "Disable")
-  	field( ONAM, "Enable")
+  	field( ZNAM, "Disabled")
+  	field( ONAM, "Enabled")
 }
