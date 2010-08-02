@@ -1,4 +1,4 @@
-record(bo, "EVG$(cardNum):Enable") {
+record(bo, "$(P):Enable") {
 	field( DTYP, "EVG")
   	field( DESC, "EVG Master Enable")
   	field( OUT , "#C$(cardNum) S @")

@@ -1,4 +1,4 @@
-record(mbbo, "EVG$(cardNum):Dbus$(dbusBit):Map") {
+record(mbbo, "$(P):$(N):Map") {
   	field( DTYP, "EVG Dbus")
   	field( OUT , "#C$(cardNum) S$(dbusBit) @")
 	field( UDF, "0")

@@ -1,4 +1,4 @@
-record(bo, "EVG$(cardNum):TrigEvt$(trigEvtNum):Ena") {
+record(bo, "$(P):$(N):Ena") {
 	field( DTYP, "EVG Trig Evt")
   	field( DESC, "EVG Trigger Event Enable")
   	field( OUT , "#C$(cardNum) S$(trigEvtNum) @")
@@ -7,7 +7,7 @@ record(bo, "EVG$(cardNum):TrigEvt$(trigEvtNum):Ena") {
   	field( ONAM, "Enabled")
 }
 
-record(longout, "EVG$(cardNum):TrigEvt$(trigEvtNum):Code") {
+record(longout, "$(P):$(N):Code") {
 	field( DTYP, "EVG Trig Evt")
 	field( DESC, "EVG Trigger Event Code")
 	field( OUT, "#C$(cardNum) S$(trigEvtNum) @")
