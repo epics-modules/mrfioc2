@@ -51,5 +51,6 @@ device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
 device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
 device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
 device( bo, VME_IO, devBoEvgHaltSeq, "EVG HALT SEQ")
+device( bo, VME_IO, devBoEvgSoftTrig, "EVG SOFT TRIG")
 
 device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")

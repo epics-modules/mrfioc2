@@ -250,6 +250,24 @@ write_bo_haltSeq(boRecord* pbo) {
 	return seq->halt();
 }
 
+/**		bo - Software Trigger	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_softTrig(boRecord* pbo) {
+	if(!pbo->val)
+		return 0;
+
+	evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+	if(!seq)
+		throw std::runtime_error("ERROR: Failed to lookup EVG Sequence");
+
+	evgSeqRam* seqRam = seq->getSeqRam();
+	if(!seqRam)
+		throw std::runtime_error("ERROR: Failed to lookup EVG Seq RAM");
+
+	return seqRam->setSoftTrig();
+}
+
 /**		waveform - seqLoaded	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
@@ -384,6 +402,16 @@ common_dset devBoEvgHaltSeq = {
     (DEVSUPFUN)write_bo_haltSeq,
 };
 epicsExportAddress(dset, devBoEvgHaltSeq);
+
+common_dset devBoEvgSoftTrig = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_softTrig,
+};
+epicsExportAddress(dset, devBoEvgSoftTrig);
 
 common_dset devWfEvgLoadedSeq = {
     5,

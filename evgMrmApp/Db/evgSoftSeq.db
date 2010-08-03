@@ -44,8 +44,8 @@ record(mbbo, "$(P):$(N):trigSrc") {
 	field( SXST, "Mxc6")
 	field( SVST, "Mxc7")
 	field( EIST, "AC")
-	field( NIST, "RAM0")
-	field( TEST, "RAM1")
+	field( NIST, "SWT RAM0")
+	field( TEST, "SWT RAM1")
 	field( ZRVL, 0)
   	field( ONVL, 1)
   	field( TWVL, 2)
@@ -112,6 +112,16 @@ record(bo, "$(P):$(N):disable") {
 record(bo, "$(P):$(N):halt") {
 	field( DTYP, "EVG HALT SEQ")
 	field( DESC, "HALT EVG Sequence immediately")
+	field( OUT, "#C$(cardNum) S$(seqNum) @")
+	field( VAL , "0")
+	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
+}
+
+record(bo, "$(P):$(N):softTrig") {
+	field( DTYP, "EVG SOFT TRIG")
+	field( DESC, "Trigger to SeqRAM Software trigger")
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")

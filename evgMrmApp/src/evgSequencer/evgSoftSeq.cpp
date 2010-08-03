@@ -222,8 +222,8 @@ evgSoftSeq::unload(dbCommon* pRec) {
 		printf("SeqRam disabled. Continuing unload.\n");
 	}
 
-	setSeqRam(0);
 	m_seqRam->unload();
+	setSeqRam(0);
 
 	return OK;
 }

@@ -42,12 +42,8 @@ evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
 
 
 epicsStatus
-evgSeqRam::setSoftTrig(bool enable) {
-	if(enable)
-		BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
-	else
-		BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
-
+evgSeqRam::setSoftTrig() {
+	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
 	return OK;
 }
 
