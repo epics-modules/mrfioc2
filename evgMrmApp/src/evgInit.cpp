@@ -104,7 +104,8 @@ mrmEvgSetupVME (
 		}
 
     	/*csrCpuAddr is VME-CSR space CPU address for the board*/
-    	volatile unsigned char* csrCpuAddr = devCSRTestSlot(vmeEvgIDs,slot,&info);
+    	volatile unsigned char* csrCpuAddr = 			 
+									devCSRTestSlot(vmeEvgIDs,slot,&info);
 
     	if(!csrCpuAddr){
       		errlogPrintf("No EVG in slot %d\n",slot);
@@ -246,6 +247,13 @@ REGINFO("MuxControl(0)", 	MuxControl(0), 		32),
 REGINFO("MuxPrescaler(0)", 	MuxPrescaler(0), 	32),
 REGINFO("FPOutMap(0)", 		FPOutMap(0), 		16),
 REGINFO("FPInMap(0)", 		FPInMap(0), 		32),
+REGINFO("FPInMap(1)", 		FPInMap(1), 		32),
+REGINFO("UnivInMap(0)", 	UnivInMap(0), 		32),
+REGINFO("UnivInMap(1)", 	UnivInMap(1), 		32),
+REGINFO("TBInMap(12)", 		TBInMap(12), 		32),
+REGINFO("TBInMap(13)", 		TBInMap(13), 		32),
+REGINFO("TBInMap(14)", 		TBInMap(14), 		32),
+REGINFO("TBInMap(15)", 		TBInMap(15), 		32),
 REGINFO("SeqRamTS(0,0)", 	SeqRamTS(0,0), 		32),
 REGINFO("SeqRamTS(0,1)", 	SeqRamTS(0,1), 		32),
 REGINFO("SeqRamTS(0,2)", 	SeqRamTS(0,2), 		32),

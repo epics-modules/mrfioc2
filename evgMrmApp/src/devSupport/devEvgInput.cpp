@@ -45,7 +45,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 }
 
 
-/** 	mbboDirect - Initialization **/
+/**	 Initialization **/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_mbboD(mbboDirectRecord* pmbboD) {

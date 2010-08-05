@@ -26,10 +26,18 @@ m_type(type) {
 				throw std::runtime_error("EVG Universal input ID out of range");
 			break;
 
+		case(TB_Input):
+			if(m_id >= evgNumTbInp)
+				throw std::runtime_error("EVG Universal input ID out of range");
+			break;
+
 		default:
 				throw std::runtime_error("EVG Wrong I/O type");
 			break;
 	}
+}
+
+evgInput::~evgInput() {
 }
 
 epicsStatus
@@ -44,7 +52,6 @@ evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
 
 			map = map & 0x0000ffff;
 			map = map | (dbusMap << 16);
-			printf("Input-Dbus map: %d\n", map);
 
 			WRITE32(m_pReg, FPInMap(m_id), map);
 
@@ -59,6 +66,18 @@ evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
 			map = map | (dbusMap << 16);
 
 			WRITE32(m_pReg, UnivInMap(m_id), map);
+			
+			ret = OK;
+			break;
+
+		case(TB_Input):
+			//Read-Modify-Write
+			map = READ32(m_pReg, TBInMap(m_id));
+
+			map = map & 0x0000ffff;
+			map = map | (dbusMap << 16);
+
+			WRITE32(m_pReg, TBInMap(m_id), map);
 			
 			ret = OK;
 			break;
@@ -96,6 +115,18 @@ evgInput::setInpTrigEvtMap(epicsUInt32 trigEvtMap) {
 
 			ret = OK;
 			break;
+
+		case(TB_Input):
+			//Read-Modify-Write
+			map = READ32(m_pReg, TBInMap(m_id));
+
+			map = map & 0xffff0000;
+			map = map | trigEvtMap;
+
+			WRITE32(m_pReg, TBInMap(m_id), map);
+
+			ret = OK;
+			break;
 	}
 	
 	return ret;
@@ -111,11 +142,7 @@ evgInput::enaExtIrq(bool ena) {
 				BITCLR32(m_pReg, FPInMap(m_id), EVG_EXT_INP_IRQ_ENA);
 			break;
 
-		case(Univ_Input):
-			if(ena)
-				BITSET32(m_pReg, FPInMap(m_id), EVG_EXT_INP_IRQ_ENA);
-			else
-				BITCLR32(m_pReg, FPInMap(m_id), EVG_EXT_INP_IRQ_ENA);
+		default:
 			break;
 	}
 

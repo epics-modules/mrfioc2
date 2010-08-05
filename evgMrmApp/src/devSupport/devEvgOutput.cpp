@@ -23,13 +23,14 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 		if(!evg)
-			errlogPrintf("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
+		
+		std::string parm(lnk->value.vmeio.parm);
+		evgOutput* out = evg->getOutput(lnk->value.vmeio.signal, parm);
+		if(!out)
+			throw std::runtime_error("ERROR: Failed to lookup Output");
 
-		evgDbus* dbus = evg->getDbus(lnk->value.vmeio.signal);
-		if(!dbus)
-			errlogPrintf("ERROR: Failed to lookup Dbus");
-
-		pRec->dpvt = dbus;
+		pRec->dpvt = out;
 		ret = 2;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("%s : %s\n", e.what(), pRec->name);
@@ -43,7 +44,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 }
 
 
-/** 	mbbo - Dbus Map **/
+/** 	mbbo - Output Map **/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_mbbo(mbboRecord* pmbbo) {
@@ -53,15 +54,15 @@ init_mbbo(mbboRecord* pmbbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbbo(mbboRecord* pmbbo) {
-	evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
-	return dbus->setDbusMap(pmbbo->val);
+	evgOutput* out = (evgOutput*)pmbbo->dpvt;
+	return out->setOutMap(pmbbo->rval);
 }
 
 
 /** 	device support entry table 		**/
 extern "C" {
 
-common_dset devMbboEvgDbusMap = {
+common_dset devMbboEvgOutMap = {
     5,
     NULL,
     NULL,
@@ -69,6 +70,6 @@ common_dset devMbboEvgDbusMap = {
     NULL,
     (DEVSUPFUN)write_mbbo,
 };
-epicsExportAddress(dset, devMbboEvgDbusMap);
+epicsExportAddress(dset, devMbboEvgOutMap);
 
 };

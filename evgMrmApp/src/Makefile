@@ -7,12 +7,12 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC += evgmrm
 
-INC += evgSeq/evgSeqManager.h
-INC += evgSeq/evgSequence.h
-INC += evgSeq/evgSeqRamManager.h
-INC += evgSeq/evgSeqRam.h
+INC += evgSequencer/evgSoftSeqManager.h
+INC += evgSequencer/evgSoftSeq.h
+INC += evgSequencer/evgSeqRamManager.h
+INC += evgSequencer/evgSeqRam.h
 
-SRC_DIRS += ../evgSeq
+SRC_DIRS += ../evgSequencer ../devSupport 
 
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
@@ -20,11 +20,17 @@ evgmrm_SRCS += evgInit.cpp
 evgmrm_SRCS += evgMrm.cpp
 evgmrm_SRCS += devEvgMrm.cpp
 
-evgmrm_SRCS += evgMxc.cpp
-evgmrm_SRCS += devEvgMxc.cpp
+evgmrm_SRCS += evgEvtClk.cpp
+evgmrm_SRCS += devEvgEvtClk.cpp
+
+evgmrm_SRCS += evgSoftEvt.cpp
+evgmrm_SRCS += devEvgSoftEvt.cpp
 
 evgmrm_SRCS += evgTrigEvt.cpp
 evgmrm_SRCS += devEvgTrigEvt.cpp
+
+evgmrm_SRCS += evgMxc.cpp
+evgmrm_SRCS += devEvgMxc.cpp
 
 evgmrm_SRCS += evgDbus.cpp
 evgmrm_SRCS += devEvgDbus.cpp
@@ -35,13 +41,12 @@ evgmrm_SRCS += devEvgInput.cpp
 evgmrm_SRCS += evgOutput.cpp
 evgmrm_SRCS += devEvgOutput.cpp
 
-evgmrm_SRCS += evgSequence.cpp
-evgmrm_SRCS += evgSeqManager.cpp
-evgmrm_SRCS += devEvgSeq.cpp
+evgmrm_SRCS += evgSoftSeq.cpp
+evgmrm_SRCS += evgSoftSeqManager.cpp
+evgmrm_SRCS += devEvgSoftSeq.cpp
 
 evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
-evgmrm_SRCS += devEvgSeqRam.cpp
 
 DBD += evgInit.dbd
 #=============================
@@ -71,6 +76,11 @@ evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 ifneq ($(DEVIOCSTATS),)
 evgMrm_DBD += devIocStats.dbd
 evgMrm_LIBS += devIocStats
+endif
+
+ifneq ($(AUTOSAVE),)
+evgMrm_DBD += asSupport.dbd
+evgMrm_LIBS += autosave
 endif
 
 #===========================

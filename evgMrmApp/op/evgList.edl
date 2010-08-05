@@ -1,0 +1,77 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 897
+y 286
+w 168
+h 157
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 7
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 3
+ctlBgColor2 index 5
+topShadowColor index 1
+botShadowColor index 11
+showGrid
+snapToGrid
+endScreenProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 40
+y 80
+w 88
+h 30
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "EVG 2"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evgMain"
+}
+symbols {
+  0 "cardNum=2"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 40
+y 40
+w 90
+h 30
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "EVG 1"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evgMain"
+}
+symbols {
+  0 "cardNum=1"
+}
+endObjectProperties
+

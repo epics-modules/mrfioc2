@@ -1,5 +1,5 @@
-#ifndef EVGDBUS_H
-#define EVGDBUS_H
+#ifndef EVG_DBUS_H
+#define EVG_DBUS_H
 
 #include <epicsTypes.h>
 
@@ -16,4 +16,4 @@ private:
 	
 };
 
-#endif //EVGDBUS_H
+#endif //EVG_DBUS_H

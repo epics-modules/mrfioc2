@@ -14,6 +14,9 @@ m_id(id),
 m_pReg(pReg) {
 }
 
+evgTrigEvt::~evgTrigEvt() {
+}
+
 bool 
 evgTrigEvt::enabled() {
 	epicsUInt32 trigEvtCtrl = READ32(m_pReg, TrigEventCtrl(m_id));

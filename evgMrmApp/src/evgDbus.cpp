@@ -13,6 +13,9 @@ m_id(id),
 m_pReg(pReg) {
 }
 
+evgDbus::~evgDbus() {
+}
+
 epicsStatus
 evgDbus::setDbusMap(epicsUInt16 map) {
 	epicsUInt32 mask = map << (4 * m_id);

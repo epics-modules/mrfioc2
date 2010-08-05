@@ -42,12 +42,8 @@ evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
 
 
 epicsStatus
-evgSeqRam::setSoftTrig(bool enable) {
-	if(enable)
-		BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
-	else
-		BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
-
+evgSeqRam::setSoftTrig() {
+	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
 	return OK;
 }
 
@@ -118,7 +114,7 @@ evgSeqRam::running() const {
 }
 
 epicsStatus
-evgSeqRam::load(evgSequence* seq) {
+evgSeqRam::load(evgSoftSeq* seq) {
 	m_seq = seq;
 	m_allocated = true;
 	return OK;
@@ -128,6 +124,10 @@ epicsStatus
 evgSeqRam::unload() {
 	m_seq = 0;
 	m_allocated = false;
+
+	//clear interrupt flags
+	BITSET32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_id));	
+	BITSET32(m_pReg, IrqFlag, EVG_IRQ_START_RAM(m_id));
 	return OK;
 }
 
@@ -147,7 +147,7 @@ evgSeqRam::loaded() const {
 	return ret;
 }
 
-evgSequence* 
-evgSeqRam::getSequence() {
+evgSoftSeq* 
+evgSeqRam::getSoftSeq() {
 	return m_seq;
 }

@@ -1,5 +1,5 @@
-#ifndef EVGMRM_H
-#define EVGMRM_H
+#ifndef EVG_MRM_H
+#define EVG_MRM_H
 
 #include <vector>
 #include <map>
@@ -10,69 +10,56 @@
 #include <callback.h>
 #include <epicsMutex.h>
 
-#include "evgSeq/evgSeqRamManager.h"  
-#include "evgSeq/evgSeqManager.h"
-#include "evgMxc.h"
+#include "evgEvtClk.h"
+#include "evgSoftEvt.h"
 #include "evgTrigEvt.h"
+#include "evgMxc.h"
 #include "evgDbus.h"
 #include "evgInput.h"
 #include "evgOutput.h"
+#include "evgSequencer/evgSeqRamManager.h"  
+#include "evgSequencer/evgSoftSeqManager.h"
 
-
-const epicsUInt16 evgClkSrcInternal = 0;	// Event clock is generated internally
-const epicsUInt16 evgClkSrcRF 	    = 1;    // Event clock is derived from the RF input
+/*********
+ * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
+ * object maintains a list to all the evg sub-componets i.e. Event clock,
+ * Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
+ * Input, Output etc.
+ */
 
 class evgMrm {
 
 public:
-
-	/** EVG	**/	
 	evgMrm(const epicsUInt32 CardNum, volatile epicsUInt8* const pReg);
 	~evgMrm();
 
+	/** EVG	**/
 	const epicsUInt32 getId();	
-	
 	volatile epicsUInt8* const getRegAddr(); 
-
 	epicsUInt32 getFwVersion();
-
 	epicsStatus enable(bool ena);
 
+	/**	Interrupt and Callback	**/
 	static void isr(void*);
 	static void process_cb(CALLBACK*);
 	void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
-
-	/**	Event Clock Speed	**/
-	epicsStatus setClockSpeed(epicsFloat64);
-	epicsFloat64 getClockSpeed();
-
-	/**	Event Clock Source	**/
-	epicsStatus setClockSource(epicsUInt8);
-	epicsUInt8 getClockSource();	
-
-	/**	Software Event	**/
-	epicsStatus softEvtEnable(bool);
- 	bool softEvtEnabled();
-
-	bool softEvtPend();
 	
-	epicsStatus setSoftEvtCode(epicsUInt32);
-	epicsUInt8 getSoftEvtCode();
-
 	/**	Access	function 	**/
-	evgMxc* 		getMuxCounter	(epicsUInt32); 
+	evgEvtClk* 		getEvtClk		();
+	evgSoftEvt*		getSoftEvt		();
 	evgTrigEvt* 	getTrigEvt		(epicsUInt32);
+	evgMxc* 		getMuxCounter	(epicsUInt32);
 	evgDbus* 		getDbus			(epicsUInt32);
 	evgInput*  		getInput		(epicsUInt32, std::string);
 	evgOutput* 		getOutput		(epicsUInt32, std::string);
 	evgSeqRamMgr* 	getSeqRamMgr	();	
-	static evgSeqMgr* 	    getSeqMgr		();
+	evgSoftSeqMgr* 	getSoftSeqMgr	();
 
 	struct irq {
 		epicsMutexId mutex;
 		std::vector<dbCommon*> recList;
 	};
-	
+		
 	struct irq irqStop0;
 	struct irq irqStop1;
 
@@ -83,26 +70,26 @@ private:
 	const epicsUInt32            	m_id;       
 	volatile epicsUInt8* const		m_pReg;
 
-    epicsFloat64          			m_clkSpeed;	// In MHz
-	epicsUInt32						m_clkSrc;
-	
-	typedef std::vector<evgMxc*> 	MuxCounter_t;
-  	MuxCounter_t m_muxCounter;
+	evgEvtClk 						m_evtClk;
+	evgSoftEvt						m_softEvt;
 
 	typedef std::vector<evgTrigEvt*> TrigEvt_t;
-  	TrigEvt_t m_trigEvt;
+  	TrigEvt_t 						m_trigEvt;
+
+	typedef std::vector<evgMxc*> 	MuxCounter_t;
+  	MuxCounter_t 					m_muxCounter;
 
 	typedef std::vector<evgDbus*> 	Dbus_t;
-  	Dbus_t m_dbus;
+  	Dbus_t	 						m_dbus;
 
  	typedef std::map< std::pair<epicsUInt32, std::string>, evgInput*> Input_t;
- 	Input_t m_input;
+ 	Input_t 						m_input;
 
  	typedef std::map< std::pair<epicsUInt32, std::string>, evgOutput*> Output_t;
- 	Output_t m_output;
+ 	Output_t 						m_output;
 
-	evgSeqRamMgr* 					m_seqRamMgr;
-	static evgSeqMgr* 				m_seqMgr;
+	evgSeqRamMgr 					m_seqRamMgr;
+	evgSoftSeqMgr					m_softSeqMgr;
 };
 
-#endif //EVGMRM_H
+#endif //EVG_MRM_H

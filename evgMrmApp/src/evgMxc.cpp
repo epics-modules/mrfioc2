@@ -2,16 +2,22 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <math.h>
 
 #include <mrfCommonIO.h> 
 #include <errlog.h>   
-#include <mrfCommon.h>  //ERROR / OK 
+#include <mrfCommon.h>
 
+#include "evgMrm.h"
 #include "evgRegMap.h"
 
-evgMxc::evgMxc(const epicsUInt32 id, volatile epicsUInt8* const pReg):
+evgMxc::evgMxc(const epicsUInt32 id, evgMrm* const owner):
 m_id(id),
-m_pReg(pReg) {	
+m_owner(owner),
+m_pReg(owner->getRegAddr()) {	
+}
+
+evgMxc::~evgMxc() {
 }
 
 bool 
@@ -40,15 +46,32 @@ epicsUInt32
 evgMxc::getMxcPrescaler() {
 	return READ32(m_pReg, MuxPrescaler(m_id));
 }
-	
+
 epicsStatus 
 evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
 	if(preScaler == 0 || preScaler == 1) {
 		printf("ERROR: Invalid preScaler value in Multiplexed Counter : %d\n", preScaler);
 		return ERROR;
 	}
+
 	WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 	return OK;
+}
+
+epicsStatus 
+evgMxc::setMxcFreq(epicsFloat64 freq) {
+	epicsUInt32 clkSpeed = m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
+	epicsUInt32 preScaler = clkSpeed / freq;
+	
+	setMxcPrescaler(preScaler);
+	return OK;
+}
+
+epicsFloat64 
+evgMxc::getMxcFreq() {
+	epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
+	epicsFloat64 preScaler = (epicsFloat64)getMxcPrescaler();
+	return clkSpeed/preScaler;	
 }
 
 epicsUInt8

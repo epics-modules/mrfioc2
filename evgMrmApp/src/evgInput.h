@@ -1,11 +1,12 @@
-#ifndef EVGINPUT_H
-#define EVGINPUT_H
+#ifndef EVG_INPUT_H
+#define EVG_INPUT_H
 
 #include <epicsTypes.h>
 
 enum InputType {
 	FP_Input = 0,
-	Univ_Input
+	Univ_Input,
+	TB_Input
 };
 
 class evgInput {
@@ -21,4 +22,4 @@ private:
 	volatile epicsUInt8* const	m_pReg;
 	const InputType 			m_type;
 };
-#endif //EVGFINPUT_H
+#endif //EVG_INPUT_H
