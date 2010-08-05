@@ -7,6 +7,7 @@ record(bo, "$(P):EvtClkSrc") {
 	field( UDF, "0")
   	field( ZNAM, "FracSyn")
   	field( ONAM, "RF")
+	info(autosaveFields_pass0, "VAL")
 	field( FLNK, "$(P):EvtClkSpeed")
 }
 
@@ -14,6 +15,7 @@ record(ao, "$(P):RFref") {
 	field( DTYP, "EVG Clk RFref")
 	field( DESC, "EVG Clk RF Frequency")
 	field( OUT, "#C$(cardNum) S @")
+	field( PINI, "YES")
 	field( UDF, "0")
 	field( EGU, "MHz")
 	field( HOPR, "1600")
@@ -21,6 +23,7 @@ record(ao, "$(P):RFref") {
 	field( DRVH, "1600")
 	field( DRVL, "50")
 	field( PREC, "3")
+	info(autosaveFields_pass0, "VAL")
 	field( FLNK, "$(P):EvtClkSpeed")
 }
 
@@ -31,6 +34,7 @@ record(longout, "$(P):RFdiv") {
 	field( PINI, "YES")
 	field( VAL, "1")
 	field( UDF, "0")
+	info(autosaveFields_pass0, "VAL")
 	field( FLNK, "$(P):EvtClkSpeed")
 }
 
@@ -46,6 +50,7 @@ record(ao, "$(P):FracSynFreq") {
 	field( DRVH, "125")
 	field( DRVL, "50")
 	field( PREC, "3")
+	info(autosaveFields_pass0, "VAL")
 	field( FLNK, "$(P):EvtClkSpeed")
 }
 

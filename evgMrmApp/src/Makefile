@@ -78,6 +78,11 @@ evgMrm_DBD += devIocStats.dbd
 evgMrm_LIBS += devIocStats
 endif
 
+ifneq ($(AUTOSAVE),)
+evgMrm_DBD += asSupport.dbd
+evgMrm_LIBS += autosave
+endif
+
 #===========================
 
 include $(TOP)/configure/RULES

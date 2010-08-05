@@ -7,4 +7,5 @@ record(bo, "$(P):Enable") {
 	field( VAL, "1")
   	field( ZNAM, "Disabled")
   	field( ONAM, "Enabled")
+	info(autosaveFields_pass0, "VAL")
 }

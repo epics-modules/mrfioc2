@@ -5,6 +5,8 @@ record(bo, "$(P):$(N):Ena") {
 	field( UDF, "0")
   	field( ZNAM, "Disabled")
   	field( ONAM, "Enabled")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P):$(N):Code") {
@@ -12,4 +14,6 @@ record(longout, "$(P):$(N):Code") {
 	field( DESC, "EVG Trigger Event Code")
 	field( OUT, "#C$(cardNum) S$(trigEvtNum) @")
 	field( UDF, "0")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
 }

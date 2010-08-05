@@ -24,4 +24,6 @@ record(mbbo, "$(P):$(N):Map") {
 	field( EIVL, 39)
 	field( NIVL, 62)
 	field( TEVL, 63)
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
 }
