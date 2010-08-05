@@ -5,7 +5,8 @@
 
 enum InputType {
 	FP_Input = 0,
-	Univ_Input
+	Univ_Input,
+	TB_Input
 };
 
 class evgInput {

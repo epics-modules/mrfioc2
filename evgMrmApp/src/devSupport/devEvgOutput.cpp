@@ -23,12 +23,12 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
 		if(!evg)
-			errlogPrintf("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("ERROR: Failed to lookup EVG");
 		
 		std::string parm(lnk->value.vmeio.parm);
 		evgOutput* out = evg->getOutput(lnk->value.vmeio.signal, parm);
 		if(!out)
-			errlogPrintf("ERROR: Failed to lookup Output");
+			throw std::runtime_error("ERROR: Failed to lookup Output");
 
 		pRec->dpvt = out;
 		ret = 2;

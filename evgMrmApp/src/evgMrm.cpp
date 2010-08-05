@@ -43,10 +43,17 @@ m_softSeqMgr(evgSoftSeqMgr(this)) {
 			m_input[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
 											new evgInput(i, pReg, FP_Input);
 		}
+
 		for(int i = 0; i < evgNumUnivInp; i++) {
 			m_input[ std::pair<epicsUInt32, std::string>(i,"Univ_Input") ] = 
 											new evgInput(i, pReg, Univ_Input);
 		}
+
+		for(int i = 0; i < evgNumTbInp; i++) {
+			m_input[ std::pair<epicsUInt32, std::string>(i,"TB_Input") ] = 
+											new evgInput(i, pReg, TB_Input);
+		}
+
 		for(int i = 0; i < evgNumFpOut; i++) {
 			m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
 											new evgOutput(i, pReg, FP_Output);
@@ -56,6 +63,7 @@ m_softSeqMgr(evgSoftSeqMgr(this)) {
 			m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")] = 
 											new evgOutput(i, pReg, Univ_Output);
 		}	
+
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
 	} 	

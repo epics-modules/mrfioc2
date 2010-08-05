@@ -27,12 +27,28 @@ pattern { P, cardNum, N, trigEvtNum }
 
 file evgInput.db {
 pattern { P, cardNum, N, inpNum, inpType }
-{ $(P), $(cardNum), "FP_Input0", 0, "FP_Input" }
-{ $(P), $(cardNum), "FP_Input1", 1, "FP_Input" }
+{ $(P), $(cardNum), "FP_Input0",   0, "FP_Input" }
+{ $(P), $(cardNum), "FP_Input1",   1, "FP_Input" }
 { $(P), $(cardNum), "Univ_Input0", 0, "Univ_Input" }
 { $(P), $(cardNum), "Univ_Input1", 1, "Univ_Input" }
 { $(P), $(cardNum), "Univ_Input2", 2, "Univ_Input" }
 { $(P), $(cardNum), "Univ_Input3", 3, "Univ_Input" }
+{ $(P), $(cardNum), "TB_Input0",   0, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input1",   1, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input2",   2, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input3",   3, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input4",   4, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input5",   5, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input6",   6, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input7",   7, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input8",   8, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input9",   9, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input10", 10, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input11", 11, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input12", 12, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input13", 13, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input14", 14, "TB_Input" }
+{ $(P), $(cardNum), "TB_Input15", 15, "TB_Input" }
 }
 
 file evgOutput.db {
