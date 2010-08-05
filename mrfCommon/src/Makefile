@@ -46,7 +46,6 @@ INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfIoOps.h
 INC += mrfIoOpsDef.h
 INC += mrfCommonIO.h      # Common I/O access macros
-INC += mrfBusInterface.h  # Hardware bus interface class definition
 INC += mrfIoLink.h        # I/O link field parser
 INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += debugPrint.h       # SLAC debug print utility
@@ -74,7 +73,6 @@ DBD += mrfCommon.dbd
 #
 LIBRARY_IOC += mrfCommon
 mrfCommon_SRCS += mrfFracSynth.c
-mrfCommon_SRCS += mrfBusInterface.cpp
 mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += dsetshared.cpp
