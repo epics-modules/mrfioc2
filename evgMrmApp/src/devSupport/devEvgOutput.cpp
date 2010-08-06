@@ -43,17 +43,20 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	return ret;
 }
 
-
-/** 	mbbo - Output Map **/
+/**		Initialization 	**/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_mbbo(mbboRecord* pmbbo) {
 	return init_record((dbCommon*)pmbbo, &pmbbo->out);
 }
 
+/** 	mbbo - Output Map **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbbo(mbboRecord* pmbbo) {
+	if(!pmbbo->dpvt)
+		return -1;
+
 	evgOutput* out = (evgOutput*)pmbbo->dpvt;
 	return out->setOutMap(pmbbo->rval);
 }

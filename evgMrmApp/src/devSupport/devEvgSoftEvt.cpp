@@ -64,6 +64,9 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enable(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
 	evgSoftEvt* softEvt = (evgSoftEvt*)pbo->dpvt;
 	return softEvt->enable(pbo->val);
 }
@@ -72,6 +75,9 @@ write_bo_enable(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_setEvtCode(longoutRecord* plo) {
+	if(!plo->dpvt)
+		return -1;
+
 	evgSoftEvt* softEvt = (evgSoftEvt*)plo->dpvt;
 	return softEvt->setEvtCode(plo->val);
 }

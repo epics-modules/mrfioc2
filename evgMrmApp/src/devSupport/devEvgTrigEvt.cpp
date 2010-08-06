@@ -32,7 +32,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 			throw std::runtime_error("ERROR: Failed to lookup Trig Evt");
 
 		pRec->dpvt = trigEvt;
-		ret = 2;
+		ret = 0;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("%s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
@@ -44,17 +44,34 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	return ret;
 }
 
-
-/**		bo - Event Trigger Enable	**/
-/*returns: (0,2)=>(success,success no convert) 0==2	*/
+/**		Initialization	**/
+/*returns: (0,2)=>(success,success no convert) */
 static long 
 init_bo(boRecord* pbo) {
-	return init_record((dbCommon*)pbo, &pbo->out);
+	long ret = init_record((dbCommon*)pbo, &pbo->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
 }
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
+init_lo(longoutRecord* plo) {
+	long ret = init_record((dbCommon*)plo, &plo->out);
+	if (ret == 2)
+		ret = 0;
+	
+	return ret;
+}
+
+/**		bo - Event Trigger Enable	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
 write_bo(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
 	evgTrigEvt* trigEvt = (evgTrigEvt*)pbo->dpvt;
 	return trigEvt->enable(pbo->val);
 }
@@ -63,17 +80,10 @@ write_bo(boRecord* pbo) {
 /** 	longout - Event Trigger Code	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-init_lo(longoutRecord* plo) {
-	epicsUInt32 ret = init_record((dbCommon*)plo, &plo->out);
-	if (ret == 2)
-		ret = 0;
-	
-	return ret;
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long 
 write_lo(longoutRecord* plo) {
+	if(!plo->dpvt)
+		return -1;
+
 	evgTrigEvt* trigEvt = (evgTrigEvt*)plo->dpvt;
 	return trigEvt->setEvtCode(plo->val);
 }

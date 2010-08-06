@@ -44,10 +44,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 }
 
 /**		Initialization	**/
-/*returns: (0,2)=>(success,success no convert) 0==2	*/
+/*returns: (0,2)=>(success,success no convert) */
 static long 
 init_bo(boRecord* pbo) {
-	epicsStatus ret = init_record((dbCommon*)pbo, &pbo->out);
+	long ret = init_record((dbCommon*)pbo, &pbo->out);
 	if (ret == 0)
 		ret = 2;
 	
@@ -57,7 +57,7 @@ init_bo(boRecord* pbo) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_ao(aoRecord* pao) {
-	epicsStatus ret = init_record((dbCommon*)pao, &pao->out);
+	long ret = init_record((dbCommon*)pao, &pao->out);
 	if(ret == 0)
 		ret = 2;
 
@@ -80,6 +80,9 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_evtClkSrc(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
 	evgEvtClk* evtClk = (evgEvtClk*)pbo->dpvt;
 	return evtClk->setEvtClkSrc(pbo->val);
 }
@@ -88,6 +91,9 @@ write_bo_evtClkSrc(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao_RFref(aoRecord* pao) {
+	if(!pao->dpvt)
+		return -1;
+
 	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
 	return evtClk->setRFref(pao->val);
 }
@@ -96,6 +102,9 @@ write_ao_RFref(aoRecord* pao) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_RFdiv(longoutRecord* plo) {
+	if(!plo->dpvt)
+		return -1;
+
 	evgEvtClk* evtClk = (evgEvtClk*)plo->dpvt;
 	return evtClk->setRFdiv(plo->val);
 }
@@ -104,6 +113,9 @@ write_lo_RFdiv(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao_fracSynFreq(aoRecord* pao) {
+	if(!pao->dpvt)
+		return -1;
+
 	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
 	return evtClk->setFracSynFreq(pao->val);
 }
@@ -112,6 +124,9 @@ write_ao_fracSynFreq(aoRecord* pao) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 write_ai_evtClkSpeed(aiRecord* pai) {
+	if(!pai->dpvt)
+		return -1;
+
 	evgEvtClk* evtClk = (evgEvtClk*)pai->dpvt;
 	pai->val = evtClk->getEvtClkSpeed();
 	return 2;

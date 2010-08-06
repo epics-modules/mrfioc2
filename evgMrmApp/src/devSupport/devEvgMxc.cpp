@@ -51,7 +51,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 /*returns: (0,2)=>(success,success no convert) 0==2	*/
 static long 
 init_bo(boRecord* pbo) {
-	epicsStatus ret = init_record((dbCommon*)pbo, &pbo->out);
+	long ret = init_record((dbCommon*)pbo, &pbo->out);
 	if (ret == 0)
 		ret = 2;
 	
@@ -62,7 +62,6 @@ init_bo(boRecord* pbo) {
 static long 
 init_bi(biRecord* pbi) {
 	return init_record((dbCommon*)pbi, &pbi->inp);
-	
 }
 
 /*returns: (-1,0)=>(failure,success)*/
@@ -74,7 +73,7 @@ init_li(longinRecord* pli) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_ao(aoRecord* pao) {
-	epicsStatus ret = init_record((dbCommon*)pao, &pao->out);
+	long ret = init_record((dbCommon*)pao, &pao->out);
 	if(ret == 0)
 		ret = 2;
 
@@ -90,7 +89,7 @@ init_ai(aiRecord* pai) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_mbboD(mbboDirectRecord* pmbboD) {
-	epicsStatus ret = init_record((dbCommon*)pmbboD, &pmbboD->out);
+	long ret = init_record((dbCommon*)pmbboD, &pmbboD->out);
 	if(ret == 0)
 		ret = 2;
 
@@ -101,6 +100,9 @@ init_mbboD(mbboDirectRecord* pmbboD) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pbo->dpvt;
 	return mxc->setMxcOutPolarity(pbo->val);
 }
@@ -110,6 +112,9 @@ write_bo(boRecord* pbo) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 read_bi(biRecord* pbi) {
+	if(!pbi->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pbi->dpvt;
 	pbi->rval = mxc->getMxcOutStatus();
 	return 0;
@@ -120,6 +125,9 @@ read_bi(biRecord* pbi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_li(longinRecord* pli) {
+	if(!pli->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pli->dpvt;
 	pli->val = mxc->getMxcPrescaler();
 	return 0;
@@ -129,6 +137,9 @@ write_li(longinRecord* pli) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao(aoRecord* pao) {
+	if(!pao->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pao->dpvt;
 	return mxc->setMxcFreq(pao->val);
 }
@@ -138,6 +149,9 @@ write_ao(aoRecord* pao) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 write_ai(aiRecord* pai) {
+	if(!pai->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pai->dpvt;
 	pai->val = mxc->getMxcFreq();
 	return 2;
@@ -147,6 +161,9 @@ write_ai(aiRecord* pai) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD(mbboDirectRecord* pmbboD) {
+	if(!pmbboD->dpvt)
+		return -1;
+
 	evgMxc* mxc = (evgMxc*)pmbboD->dpvt;
 	return mxc->setMxcTrigEvtMap(pmbboD->val);
 }
