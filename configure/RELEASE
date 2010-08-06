@@ -27,6 +27,8 @@ DEVIOCSTATS=$(EPICS_BASE)
 # automatic save with restore on boot
 AUTOSAVE=$(EPICS_BASE)
 
+MOTOR=$(EPICS_BASE)
+
 ## Required Modules ##
 
 # PCI and VME64x support library
