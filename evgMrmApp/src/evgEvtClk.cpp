@@ -70,7 +70,7 @@ evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
 		WRITE16(m_pReg, uSecDiv, uSecDivider);
 	}
 
-	m_fracSynFreq = freq;
+	m_fracSynFreq = FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
 	return OK;
 }
 
