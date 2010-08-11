@@ -1,7 +1,7 @@
 file "evrbase.db"
 {pattern
-{P, C}
-{$(P), $(C)}
+{P, C, EVNT1HZ}
+{$(P), $(C), 1}
 }
 
 file "databuftx.db"
@@ -27,6 +27,7 @@ file "evrevent.db"
 {pattern
 {P, C, N, CODE, EVNT}
 {$(P), $(C), "dbevt", 15, 15}
+{$(P), $(C), "1hz", 0x7d, 1}
 }
 
 file "evrscale.db"

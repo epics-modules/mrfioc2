@@ -210,5 +210,6 @@ record(longin, "$(P)ts:div") {
 record(stringin, "$(P)ts") {
   field(DTYP, "EVR Timestamp")
   field(INP , "@C=$(C)")
-  field(SCAN, "1 second")
+  field(SCAN, "Event")
+  field(EVNT, "$(EVNT1HZ)")
 }
