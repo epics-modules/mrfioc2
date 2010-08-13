@@ -4,7 +4,7 @@ record(mbbo, "$(P):$(N):Map") {
 	field( PINI, YES)
 	field( UDF, "0")
   	field( ZRST, "Off")
-  	field( ONST, "External")
+  	field( ONST, "Ext Inp")
   	field( TWST, "Mxc")
 	field( THST, "UpstreamEVG")
 	info(autosaveFields_pass0, "VAL")

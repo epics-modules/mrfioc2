@@ -1,7 +1,10 @@
 #include <iostream>
 #include <stdexcept>
+#include <time.h>
 
 #include <boRecord.h>
+#include <stringinRecord.h>
+#include <mbboRecord.h>
 #include <devSup.h>
 #include <dbAccess.h>
 #include <errlog.h>
@@ -41,8 +44,24 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 /** 	Initialization 	**/
 /*returns: (0,2)=>(success,success no convert) 0==2	*/
 static long 
-init_bo_Enable(boRecord* pbo) {
+init_bo(boRecord* pbo) {
 	long ret = init_record((dbCommon*)pbo, &pbo->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_si(stringinRecord* psi) {
+	return init_record((dbCommon*)psi, &psi->inp);
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+init_mbbo(mbboRecord* pmbbo) {
+	epicsStatus ret = init_record((dbCommon*)pmbbo, &pmbbo->out);
 	if(ret == 0)
 		ret = 2;
 
@@ -60,6 +79,43 @@ write_bo_Enable(boRecord* pbo) {
 	return evg->enable(pbo->val);
 }
 
+/**  stringin - TimeStamp	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_si_ts(stringinRecord* psi) {
+	if(!psi->dpvt)
+		return -1;
+
+	evgMrm* evg = (evgMrm*)psi->dpvt;
+	timeval tv = evg->getTS();
+	struct tm* ptm = localtime (&tv.tv_sec); 
+	strftime(psi->val, sizeof(psi->val), 
+                        "%a, %d %b %Y %H:%M:%S", ptm);
+
+	return 0;
+}
+
+/**		bo - Update TimeStamp	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_syncTS(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
+	evgMrm* evg = (evgMrm*)pbo->dpvt;
+	return evg->syncTS();
+}
+
+/** 	mbbo - TimeStamp Source **/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_mbbo(mbboRecord* pmbbo) {
+	if(!pmbbo->dpvt)
+		return -1;
+
+	evgMrm* evg = (evgMrm*)pmbbo->dpvt;
+	return evg->setupTS((TimeStampSrc)pmbbo->val);
+}
 
 /** 	device support entry table 	**/
 extern "C" {
@@ -68,11 +124,41 @@ common_dset devBoEvgEnable = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_bo_Enable,
+    (DEVSUPFUN)init_bo,
     NULL,
     (DEVSUPFUN)write_bo_Enable,
 };
 epicsExportAddress(dset, devBoEvgEnable);
+
+common_dset devSiTimeStamp = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_si,
+	NULL,
+    (DEVSUPFUN)write_si_ts,
+};
+epicsExportAddress(dset, devSiTimeStamp);
+
+common_dset devBoEvgSyncTS = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_syncTS,
+};
+epicsExportAddress(dset, devBoEvgSyncTS);
+
+common_dset devMbboEvgTSsrc = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_mbbo,
+    NULL,
+    (DEVSUPFUN)write_mbbo,
+};
+epicsExportAddress(dset, devMbboEvgTSsrc);
 
 };
 

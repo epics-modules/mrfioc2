@@ -3,6 +3,9 @@ driver(drvEvgMrm)
 
 #evgMrm.db
 device( bo, VME_IO, devBoEvgEnable, "EVG")
+device( stringin, VME_IO, devSiTimeStamp, "EVG TIMESTAMP")
+device( bo, VME_IO, devBoEvgSyncTS, "EVG TIMESTAMP")
+device( mbbo, VME_IO, devMbboEvgTSsrc, "EVG TIMESTAMP")
 
 #evgEvtClk.db
 device( bo, VME_IO, devBoEvgEvtClkSrc, "EVG Clk")

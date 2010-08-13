@@ -47,9 +47,3 @@ evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {
 	WRITE8(m_pReg, SwEventCode, evtCode);
 	return OK; 
 }
-
-
-epicsUInt8 
-evgSoftEvt::getEvtCode() {
-	return READ8(m_pReg, SwEventCode);
-}
