@@ -24,6 +24,7 @@ struct addr {
   EVR* evr;
   epicsUInt32 card;
   epicsUInt32 code;
+  epicsUInt32 last_bad;
 };
 
 static const
@@ -45,6 +46,7 @@ try {
   assert(prec->inp.type==INST_IO);
   addr *priv=new addr;
   priv->code=0;
+  priv->last_bad=0;
 
   if (linkOptionsStore(eventdef, priv, prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
@@ -81,6 +83,9 @@ try {
     return S_dev_deviceTMO;
   }
 
+  if (ts.secPastEpoch==priv->last_bad)
+      return 0;
+
   size_t r=epicsTimeToStrftime(prec->val,
                                sizeof(prec->val),
                                "%a, %d %b %Y %H:%M:%S %z",
@@ -88,6 +93,7 @@ try {
   if(r==0||r==sizeof(prec->val)){
     recGblRecordError(S_dev_badArgument, (void*)prec, 
       "Format string resulted in error");
+    priv->last_bad=ts.secPastEpoch;
     return S_dev_badArgument;
   }
 
