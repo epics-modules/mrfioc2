@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 906
-y 250
+x 717
+y 206
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -358,7 +358,7 @@ release 0
 x 340
 y 90
 w 54
-h 15
+h 16
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -569,7 +569,7 @@ y 180
 w 150
 h 15
 controlPv "$(P):ts"
-font "helvetica-medium-r-12.0"
+font "helvetica-medium-r-10.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -1304,7 +1304,7 @@ release 0
 x 20
 y 80
 w 42
-h 15
+h 16
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -2202,7 +2202,7 @@ major 4
 minor 1
 release 0
 x 20
-y 140
+y 150
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -2289,6 +2289,84 @@ displayFileName {
 }
 symbols {
   0 "O=$(O)"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 110
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):dbus:mode"
+font "helvetica-medium-r-8.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 130
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):dbus:recv:mode"
+font "helvetica-medium-r-8.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 110
+w 30
+h 20
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Down"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 130
+w 30
+h 20
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Up"
 }
 endObjectProperties
 
