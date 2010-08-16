@@ -27,8 +27,8 @@
 |*
 |* All I/O operations use underlying operating system routines to ensure that hardware pipelines
 |* are flushed so that the operations are executed in the order in which they were specified.
-|* The file "mrfIoOps.h", located in the OS-dependent directories (e.g., ./os/vxWorks/mrfIoOps.h,
-|* or ./os/RTEMS/mrfIoOps.h) maps synchronous I/O operations onto their OS-dependent routines or
+|* The file "epicsMMIO.h", located in the OS-dependent directories (e.g., ./os/vxWorks/mrfIoOps.h,
+|* or ./os/RTEMS/epicsMMIO.h) maps synchronous I/O operations onto their OS-dependent routines or
 |* macros.
 |*
 |* The I/O macros in this file are designed to be easily understood and to minimize errors.
@@ -98,7 +98,7 @@
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <mrfIoOps.h>           /* OS-dependent synchronous I/O routines                          */
+#include <epicsMMIO.h>           /* OS-dependent synchronous I/O routines                          */
 #include <mrfBitOps.h>          /* Generic bit operations                                         */
 
 

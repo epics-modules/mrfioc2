@@ -10,7 +10,7 @@
 
 #include "devLib.h"
 #include <epicsTypes.h>
-#include "mrfIoOps.h"
+#include "epicsMMIO.h"
 #include "vmedefs.h"
 
 #ifdef __cplusplus

@@ -5,8 +5,6 @@ DIRS := $(DIRS) $(filter-out $(DIRS), configure)
 DIRS := $(DIRS) $(filter-out $(DIRS), mrfCommon)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evrApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), pciApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), vmeApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), mrmShared)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgBasicSequenceApp)
@@ -24,17 +22,14 @@ $(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir)
 
 iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
-pciApp_DEPEND_DIRS += mrfCommon
-vmeApp_DEPEND_DIRS += mrfCommon
-
 evrApp_DEPEND_DIRS += mrfCommon
 evgApp_DEPEND_DIRS += mrfCommon
 
 mrmShared_DEPEND_DIRS += mrfCommon
 
-evrMrmApp_DEPEND_DIRS += pciApp vmeApp evrApp mrmShared
+evrMrmApp_DEPEND_DIRS += evrApp mrmShared
 
-evgMrmApp_DEPEND_DIRS += vmeApp evgApp
+evgMrmApp_DEPEND_DIRS += evgApp
 
 mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp
 

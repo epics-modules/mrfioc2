@@ -1,7 +1,7 @@
 
 #include "drvemOutput.h"
 
-#include <mrfIoOps.h>
+#include <epicsMMIO.h>
 #include "evrRegMap.h"
 
 #include <stdexcept>

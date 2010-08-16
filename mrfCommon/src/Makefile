@@ -43,13 +43,12 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 #
 INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
-INC += mrfIoOps.h
-INC += mrfIoOpsDef.h
 INC += mrfCommonIO.h      # Common I/O access macros
 INC += mrfIoLink.h        # I/O link field parser
 INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += debugPrint.h       # SLAC debug print utility
 INC += linkoptions.h
+INC += mrfcsr.h
 
 INC += cardmap.h
 INC += mrf/databuf.h

@@ -19,11 +19,11 @@ mrf_DBD += evgInit.dbd
 
 mrf_DBD += drvemSupport.dbd
 
-mrf_DBD += vmecsr.dbd
-mrf_DBD += devlibpci.dbd
+mrf_DBD += epicsvme.dbd
+mrf_DBD += epicspci.dbd
 
 # Add all the support libraries needed by this IOC
-mrf_LIBS += evgmrm evrMrm mrmShared pci vme evr mrfCommon
+mrf_LIBS += evgmrm evrMrm mrmShared epicspci epicsvme evr mrfCommon
 
 # mrf_registerRecordDeviceDriver.cpp derives from mrf.dbd
 mrf_SRCS += mrf_registerRecordDeviceDriver.cpp

@@ -29,6 +29,9 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
 ## Required Modules ##
 
+# PCI and VME64x support library
+#DEVLIB2=/home/mdavidsaver/src/devLib2
+
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE=/usr/epics/base
 
