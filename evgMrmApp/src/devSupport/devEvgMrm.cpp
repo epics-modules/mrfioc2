@@ -68,6 +68,12 @@ init_mbbo(mbboRecord* pmbbo) {
 	return ret;
 }
 
+/*returns: (-1,0)=>(failure,success)*/
+static long
+init_li(longinRecord* pli) {
+	return init_record((dbCommon*)pli, &pli->inp);
+}
+
 /**		bo - Enable EVG	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
@@ -117,6 +123,18 @@ write_mbbo(mbboRecord* pmbbo) {
 	return evg->setupTS((TimeStampSrc)pmbbo->val);
 }
 
+/**	longin - Status	**/
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_li(longinRecord* pli) {
+	if(!pli->dpvt)
+		return -1;
+
+	evgMrm* evg = (evgMrm*)pli->dpvt;
+	pli->val = evg->getStatus();
+	return 0;
+}
+
 /** 	device support entry table 	**/
 extern "C" {
 
@@ -159,6 +177,16 @@ common_dset devMbboEvgTSsrc = {
     (DEVSUPFUN)write_mbbo,
 };
 epicsExportAddress(dset, devMbboEvgTSsrc);
+
+common_dset devLiEvgStatus = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_li,
+	NULL,
+    (DEVSUPFUN)write_li,
+};
+epicsExportAddress(dset, devLiEvgStatus);
 
 };
 

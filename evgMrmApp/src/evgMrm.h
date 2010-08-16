@@ -45,6 +45,7 @@ public:
 	volatile epicsUInt8* const getRegAddr(); 
 	epicsUInt32 getFwVersion();
 	epicsStatus enable(bool ena);
+	epicsUInt32 getStatus();
 
 	/**	Interrupt and Callback	**/
 	static void isr(void*);

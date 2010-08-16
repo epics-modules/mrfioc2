@@ -117,6 +117,11 @@ evgMrm::getFwVersion() {
 	return READ32(m_pReg, FPGAVersion);
 }
 
+epicsUInt32
+evgMrm::getStatus() {
+	return READ32( m_pReg, Status);
+}
+
 inline void 
 evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr) { 
   	callbackSetPriority(priority, ptr); 
@@ -154,13 +159,6 @@ evgMrm::isr(void* arg) {
 
     if(!active)
       return;
-
-	if(active & EVG_IRQ_EXT_INP) {
-		#ifdef __rtems__
-		printk("EVG_IRQ_EXT_INP\n");
-		#endif //_rtems_
-		callbackRequest(&evg->irqExtInp_cb);
-	}
 	
     if(active & EVG_IRQ_STOP_RAM(0)) {
 		#ifdef __rtems__
@@ -177,6 +175,13 @@ evgMrm::isr(void* arg) {
 		callbackRequest(&evg->irqStop1_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
     }
+
+	if(active & EVG_IRQ_EXT_INP) {
+// 		#ifdef __rtems__
+// 		printk("EVG_IRQ_EXT_INP\n");
+// 		#endif //_rtems_
+		callbackRequest(&evg->irqExtInp_cb);
+	}
 
     WRITE32(evg->m_pReg, IrqFlag, flags);
 
