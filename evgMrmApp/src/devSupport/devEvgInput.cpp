@@ -21,10 +21,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	}
 
 	try {
-		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
 			throw std::runtime_error("ERROR: Failed to lookup EVG");
-
+		
 		std::string parm(lnk->value.vmeio.parm);
 		evgInput* inp = evg->getInput(lnk->value.vmeio.signal, parm);
 		if(!inp)

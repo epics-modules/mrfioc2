@@ -95,6 +95,9 @@ evgMrm::~evgMrm() {
 	for(int i = 0; i < evgNumUnivInp; i++)
 		delete m_input[std::pair<epicsUInt32, std::string>(i,"Univ_Input")];
 
+	for(int i = 0; i < evgNumTbInp; i++)
+		delete m_input[std::pair<epicsUInt32, std::string>(i,"TB_Input")];
+
 	for(int i = 0; i < evgNumFpOut; i++)
 		delete m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")]; 
 

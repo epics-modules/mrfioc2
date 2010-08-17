@@ -61,7 +61,7 @@ evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
 epicsStatus 
 evgMxc::setMxcFreq(epicsFloat64 freq) {
 	epicsUInt32 clkSpeed = m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
-	epicsUInt32 preScaler = clkSpeed / freq;
+	epicsUInt32 preScaler = (epicsFloat64)clkSpeed / freq;
 	
 	setMxcPrescaler(preScaler);
 	return OK;
