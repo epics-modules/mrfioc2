@@ -1,10 +1,15 @@
+#ifndef EVG_INIT_H
+#define EVG_INIT_H
+
 #include <iostream>
-#include <map>
 
 #include <devcsr.h>
 
 #include "evgMrm.h"
 
 #define MRF_UCSR_DEFAULT 0x7fb03
+#include "cardmap.h"
 
-evgMrm* FindEvg(epicsUInt32 id);
+extern CardMap<evgMrm> evgmap;
+
+#endif //EVG_INIT_H

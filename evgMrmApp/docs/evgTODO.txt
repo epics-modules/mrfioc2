@@ -14,6 +14,7 @@ Majorly complete
 	-Front Panel Output
 	-Benchmarking
 	-Interrupts.
+	-TimeStamping
 
 Currently working on
 	-Sequencer
@@ -22,7 +23,3 @@ Currently working on
 Not yet started.
 	-AC trigger
 	-Data Buffer
-	-TimeStamping
-
-Mutex around softSeq... the size of vector can increase...
-seq update on event clock update....

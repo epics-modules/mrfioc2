@@ -16,8 +16,7 @@
 
 #include "evgRegMap.h"
 
-typedef std::map<epicsUInt32, evgMrm*> EvgList_t;
-EvgList_t EvgList;
+CardMap<evgMrm> evgmap;
 
 static const 
 struct VMECSRDevice vmeEvgIDs[] = {
@@ -25,31 +24,9 @@ struct VMECSRDevice vmeEvgIDs[] = {
    	,VMECSR_END
 };
 
-static void
-AddEvg(epicsUInt32 id, evgMrm* evg) {
-	if(!evg)
-    	throw std::runtime_error("AddEvg: Cannot store NULL.\
-      						 (initialization probably failed)");
-
-  	EvgList[id] = evg;
-}
-
-evgMrm*
-FindEvg(epicsUInt32 id) {
-	EvgList_t::const_iterator it = EvgList.find(id);
-
-  	if(it == EvgList.end())
-    	return 0;
-
-	return it->second;
-}
-
-static int
-enableIRQ(volatile epicsUInt8* const pReg) {
-  if(!pReg)
-    return 0;
-
-	BITSET32(pReg, IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
+static bool
+enableIRQ(int, short, evgMrm& evg) {
+	BITSET32(evg.getRegAddr(), IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
 //   WRITE32(pReg, IrqEnable,
 //      EVG_IRQ_ENABLE 		|
 // 		EVG_IRQ_STOP_RAM1 	|
@@ -62,22 +39,15 @@ enableIRQ(volatile epicsUInt8* const pReg) {
 // 		EVG_IRQ_RXVIO       
 //  );
 
-  return 0;
+  return true;
 }
 
 static void 
 inithooks(initHookState state) {
-	evgMrm* evg;
-	EvgList_t::const_iterator it;
-
   	switch(state)
   	{
   	case initHookAfterInterruptAccept:
-		for(it = EvgList.begin(); it != EvgList.end(); it++ ) {  
-			evg = it->second;
-			if(evg) 
-				enableIRQ(evg->getRegAddr());
-		}
+		evgmap.visit(0, &enableIRQ);
     	break;
 
   	default:
@@ -98,7 +68,7 @@ mrmEvgSetupVME (
 	struct VMECSRDevice info;
 
   	try {
-		if(FindEvg(cardNum)) {
+		if(cardIdInUse(cardNum)) {
 			errlogPrintf("EVG Identifier %d already used", cardNum);
 			return -1;
 		}
@@ -159,23 +129,22 @@ mrmEvgSetupVME (
 			WRITE32(regCpuAddr, IrqFlag, READ32(regCpuAddr, IrqFlag));
 
 			/*Enable interrupt from VME to CPU*/
-    		if(devEnableInterruptLevelVME(irqLevel&0x7))
-    		{
+    		if(devEnableInterruptLevelVME(irqLevel&0x7)) {
       			errlogPrintf("ERROR:Failed to enable VME interrupt level %d\n",irqLevel&0x7);
       			delete evg;
 				return -1;
     		}
 	
 			/*Connect Interrupt handler to vector*/
-    		if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg))
-    		{
+    		if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
       			errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n",irqVector&0xff);
       			delete evg;
 				return -1;
     		}	
  		}
 		
-		AddEvg(cardNum, evg);
+		evgmap.store(cardNum, *evg);		
+
     	return 0;
   	} catch(std::exception& e) {
     	errlogPrintf("Error: %s\n",e.what());
@@ -306,26 +275,23 @@ printregisters(volatile epicsUInt8 *evg)
     }
 }
 
+static bool 
+reportCard(int level, short id, evgMrm& evg) {
+	printf("\n===  	  MRF EVG %d 	===\n", evg.getId());
+	
+	if(level >= 1)
+		printf("	FPGA verion: %08x\n", evg.getFwVersion());
+	
+	if(level >= 2) 
+  		printregisters(evg.getRegAddr());
+  	
+	printf("\n");
+  	return true;
+}
 
 static long 
 report(int level) {
-	evgMrm* evg;
-	EvgList_t::const_iterator it;
-
-	for(it = EvgList.begin(); it != EvgList.end(); it++ ) {  
-		evg = it->second;
-	
-		printf("\n===  	  MRF EVG %d 	===\n", evg->getId());
-
-		if(level >= 1) {
-			printf("	FPGA verion: %08x\n", evg->getFwVersion());
-		}
-	
-		if(level >= 2) {
-  			printregisters(evg->getRegAddr());
-  		}
-		printf("\n");
-	}
+	evgmap.visit(level, &reportCard);
 	return 0;
 }
 

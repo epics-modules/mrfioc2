@@ -3,6 +3,7 @@ record(bo, "$(P):SoftEvt:Ena") {
   	field( DESC, "EVG Software Event Enable")
   	field( OUT , "#C$(cardNum) S @")
 	field( UDF, "0")
+	field( VAL, "1")
   	field( ZNAM, "Disabled")
   	field( ONAM, "Enabled")
 	field( PINI, "YES")
