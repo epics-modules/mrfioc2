@@ -19,7 +19,7 @@
 CardMap<evgMrm> evgmap;
 
 static const 
-struct VMECSRDevice vmeEvgIDs[] = {
+struct VMECSRID vmeEvgIDs[] = {
 	{MRF_VME_IEEE_OUI, MRF_VME_EVG_BID|MRF_SERIES_230, VMECSRANY}
    	,VMECSR_END
 };
@@ -65,7 +65,7 @@ mrmEvgSetupVME (
     epicsInt32    irqLevel)          // Desired interrupt level
 {
 	volatile epicsUInt8* regCpuAddr = 0;
-	struct VMECSRDevice info;
+	struct VMECSRID info;
 
   	try {
 		if(cardIdInUse(cardNum)) {

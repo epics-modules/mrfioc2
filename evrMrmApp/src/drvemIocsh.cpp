@@ -41,7 +41,7 @@ static const epicsPCIID mrmevrs[] = {
   ,DEVPCI_END
 };
 
-static const struct VMECSRDevice vmeevrs[] = {
+static const struct VMECSRID vmeevrs[] = {
    // VME EVR RF 230
    {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
    ,VMECSR_END
@@ -298,7 +298,7 @@ try {
     return;
   }
 
-  struct VMECSRDevice info;
+  struct VMECSRID info;
 
   volatile unsigned char* csr=devCSRTestSlot(vmeevrs,slot,&info);
   if(!csr){
