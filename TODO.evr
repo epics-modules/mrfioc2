@@ -2,15 +2,11 @@ Things left to be done
 
 = Link status/violation and heartbeat IRQs =
 
-HW changes?
+HW changes need to be tested.
 
 = Timestamp =
 
-Testing
-
-= CML Outputs =
-
-Longer registers.  Need updated register map
+Testing and integration w/ EVG.
 
 == Configure TS source ==
 
@@ -20,14 +16,24 @@ How to deal with rate changes if event clock changes?
 
 = Data Buffer =
 
-Configure
+Configure (Rx queue size)
 
 API to send/receive
 
-dset to send/receive
+dset to send/receive (besides waveform) (ENDIANNESS?)
+
+Timestamp on Rx
 
 = Event Log =
 
-Use waveform
+Use waveforms
 
 Detect when stopped?
+
+= Support EVRTG =
+
+add fine delay registers
+
+Add 40 bit GTX patterns
+
+= SFP info =

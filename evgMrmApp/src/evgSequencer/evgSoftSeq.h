@@ -6,6 +6,11 @@
 
 #include <epicsTypes.h>
 #include <epicsMutex.h>
+#include <dbAccess.h>
+
+class evgMrm;
+class evgSeqRam;
+class evgSeqRamMgr;
 
 enum SeqRunMode {
 	single = 0,
@@ -13,12 +18,10 @@ enum SeqRunMode {
 	normal
 };
 
-class evgSeqRam;
-
-class evgSequence {
+class evgSoftSeq {
 public:
-	evgSequence(const epicsUInt32);
-	~evgSequence();
+	evgSoftSeq(const epicsUInt32, evgMrm* const);
+	~evgSoftSeq();
 
 	const epicsUInt32 getId() const;	
 
@@ -28,7 +31,8 @@ public:
 	epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
 	std::vector<epicsUInt8> getEventCode();
 	
-	epicsStatus setTimeStamp(epicsUInt32*, epicsUInt32);
+	epicsStatus setTimeStampTick(epicsUInt32*, epicsUInt32);
+	epicsStatus setTimeStampSec(epicsFloat64*, epicsUInt32);
 	std::vector<epicsUInt32> getTimeStamp();
 
 	epicsStatus setTrigSrc(epicsUInt32);
@@ -40,16 +44,26 @@ public:
 	epicsStatus setSeqRam(evgSeqRam*);
 	evgSeqRam* getSeqRam();
 
+	epicsStatus load	();
+	epicsStatus unload	(dbCommon *);
+	epicsStatus commit	(dbCommon *);
+	epicsStatus enable	();
+	epicsStatus disable	();
+	epicsStatus halt	();
+
 	epicsMutex* getLock();
 
 private:
 	const epicsUInt32 			m_id;
+	evgMrm* 					m_owner;
+	volatile epicsUInt8* const  m_pReg;
 	std::string 				m_desc;
 	std::vector<epicsUInt8> 	m_eventCode;
 	std::vector<epicsUInt32>	m_timeStamp;
 	epicsUInt32 				m_trigSrc;
 	SeqRunMode 					m_runMode;
-	evgSeqRam*  				m_seqRam; 
+	evgSeqRam*  				m_seqRam;
+	evgSeqRamMgr*				m_seqRamMgr; 
 	epicsMutex* 				m_lock;
 };
 

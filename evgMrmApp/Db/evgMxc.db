@@ -1,4 +1,4 @@
-record(bo, "EVG$(cardNum):Mxc$(mxcNum)Polarity") {
+record(bo, "$(P):$(N):Polarity") {
 	field( DTYP, "EVG Mxc")
   	field( DESC, "EVG Mux Counter Output Polarity")
   	field( OUT , "#C$(cardNum) S$(mxcNum) @")
@@ -7,9 +7,10 @@ record(bo, "EVG$(cardNum):Mxc$(mxcNum)Polarity") {
 	field( UDF, "0")
   	field( ZNAM, "Orginal")
   	field( ONAM, "Inverted")
+	info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
+record(bi, "$(P):$(N):Status") {
 	field( DTYP, "EVG Mxc")
   	field( DESC, "EVG Mux Counter Output Status")
   	field( SCAN, "1 second")
@@ -18,20 +19,50 @@ record(bi, "EVG$(cardNum):Mxc$(mxcNum)Status") {
   	field( ONAM, "1")
 }
 
-record(longout , "EVG$(cardNum):Mxc$(mxcNum)Presacler") {
+record(ao, "$(P):$(N):Freq") {
 	field( DTYP, "EVG Mxc")
-	field( DESC, "EVG Mux Counter Prescaler")
-	field( OUT , "#C$(cardNum) S$(mxcNum) @")
+	field( DESC, "EVG Mux Counter Frequency")
+	field( OUT, "#C$(cardNum) S$(mxcNum) @")
 	field( PINI, "YES")
-	field( VAL , "12500")
-	field( UDF , "0")
+	field( VAL, "1")
+	field( UDF, "0")
+	field( EGU, "Hz")
+	field( HOPR, "62500000")
+	field( LOPR, "0.029")
+	field( DRVH, "62500000")
+	field( DRVL, "0.029")
+	field( PREC, "3")
+	field( FLNK, "$(P):$(N):Freq:RB")
+	info(autosaveFields_pass0, "VAL")
 }
 
-record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap") {
+record(ai, "$(P):$(N):Freq:RB") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Frequency")
+	field( INP, "#C$(cardNum) S$(mxcNum) @")
+	field( UDF, "0")
+	field( EGU, "Hz")
+	field( HOPR, "62500000")
+	field( LOPR, "0.029")
+	field( PREC, "3")
+	field( FLNK, "$(P):$(N):Prescaler:RB")
+}
+
+record(longin , "$(P):$(N):Prescaler:RB") {
+	field( DTYP, "EVG Mxc")
+	field( DESC, "EVG Mux Counter Prescaler")
+	field( INP, "#C$(cardNum) S$(mxcNum) @")
+}
+
+record(ai, "$(P):$(N):Freq:Update") {
+	field(INP, "$(P):EvtClkSpeed CP")
+	field(FLNK, "$(P):$(N):Freq")
+}
+
+record(mbboDirect, "$(P):$(N):TrigEvtMap") {
 	field( DTYP, "EVG Mxc")
 	field( DESC, "EVG Mux Counter Trig Evt Map")
 	field( OUT, "#C$(cardNum) S$(mxcNum) @")
-	field( PINI, "YES")
 	field( NOBT, "8")
 	field( UDF, "0")
 	field( B0,"0")
@@ -42,4 +73,76 @@ record(mbboDirect, "EVG$(cardNum):Mxc$(mxcNum)TrigEvtMap") {
 	field( B5,"0")
 	field( B6,"0")
 	field( B7,"0")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB0") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B0 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB1") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B1 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB2") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B2 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB3") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B3 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB4") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B4 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB5") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B5 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB6") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B6 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):TrigEvtMapB7") {
+	field( UDF, "0")
+  	field( ZNAM, "Off")
+  	field( ONAM, "On")
+	field( OUT, "$(P):$(N):TrigEvtMap.B7 PP")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
 }

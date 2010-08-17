@@ -8,6 +8,7 @@ record(longout, "$(P)$(O)src:set") {
   field( FLNK, "$(P)$(O)src")
   field( PINI, "YES")
   field( VAL , "63")
+  info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
 # Settings
@@ -44,6 +45,7 @@ record(mbbo, "$(P)$(O)src:pulse:set") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(O)src:dbus:set") {
@@ -75,6 +77,7 @@ record(mbbo, "$(P)$(O)src:dbus:set") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(O)src:scale:set") {
@@ -104,6 +107,7 @@ record(mbbo, "$(P)$(O)src:scale:set") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 # Mapping readback

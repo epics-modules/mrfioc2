@@ -9,6 +9,7 @@ record(longout, "$(P)$(O)") {
   field( DRVH, "$(MAX=0xffff)")
   field( DRVL, "1")
   field( FLNK, "$(P)$(O):rate")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(calc, "$(P)$(O):rate") {

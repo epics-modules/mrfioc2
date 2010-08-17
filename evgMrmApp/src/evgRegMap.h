@@ -266,4 +266,5 @@ const epicsUInt16 	evgNumFpOut   = 4;
 const epicsUInt16 	evgNumUnivOut = 4;
 const epicsUInt16 	evgNumFpInp   = 2;
 const epicsUInt16 	evgNumUnivInp = 4;
+const epicsUInt16	evgNumTbInp	  = 16;
 const epicsUInt16	evgNumSeqRam  = 2;

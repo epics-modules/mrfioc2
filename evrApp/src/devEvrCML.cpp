@@ -233,7 +233,7 @@ PROPERTY_DSET_BO(CML, get_cml, props_bool);
 PROPERTY_DSET_ADDFN(mbbo, epicsUInt16, out, CML, get_cml, props_epicsUInt16);
 PROPERTY_DSET_TABLE(mbbo, epicsUInt16, CML,
                     add_CML_mbbo,
-                    init_record_empty,
+                    init_record_return2,
                     write_mbbo) 
 
 dsxt dxtwaveformCML={add_record_waveform,del_record_empty};

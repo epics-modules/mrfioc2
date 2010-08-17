@@ -7,6 +7,7 @@ record(bo, "$(P)$(I)level") {
   field( VAL , "1")
   field( ZNAM, "Active Low")
   field( ONAM, "Active High")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(I)edge") {
@@ -16,6 +17,7 @@ record(bo, "$(P)$(I)edge") {
   field( VAL , "1")
   field( ZNAM, "Active Falling")
   field( ONAM, "Active Rising")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(I)ext:trig") {
@@ -43,6 +45,7 @@ record(mbbo, "$(P)$(I)ext:trig") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)$(I)ext:code") {
@@ -53,6 +56,7 @@ record(longout, "$(P)$(I)ext:code") {
   field( HOPR, "255")
   field( DRVL, "0")
   field( DRVH, "255")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(I)back:trig") {
@@ -80,6 +84,7 @@ record(mbbo, "$(P)$(I)back:trig") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)$(I)back:code") {
@@ -90,6 +95,7 @@ record(longout, "$(P)$(I)back:code") {
   field( HOPR, "255")
   field( DRVL, "0")
   field( DRVH, "255")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)$(I)dbus") {
@@ -123,4 +129,5 @@ record(mbbo, "$(P)$(I)dbus") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
 }

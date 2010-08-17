@@ -5,6 +5,8 @@ record(waveform, "$(P)dbus:send:s8") {
   field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "CHAR")
   field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
+  info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)dbus:send:u32") {
@@ -13,4 +15,6 @@ record(waveform, "$(P)dbus:send:u32") {
   field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "ULONG")
   field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
+  info(autosaveFields_pass1, "VAL")
 }

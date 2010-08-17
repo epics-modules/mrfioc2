@@ -25,4 +25,16 @@ dbLoadRecords("db/evr-vmerf-230.db","P=evr3:,C=2")
 
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
+set_savefile_path("${mnt}/as","/save")
+set_requestfile_path("${mnt}/as","/req")
+
+set_pass0_restoreFile("mrf_settings.sav")
+set_pass1_restoreFile("mrf_waveforms.sav")
+
 iocInit()
+
+makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
+makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
+
+create_monitor_set("mrf_settings.req", 5 , "")
+create_monitor_set("mrf_waveforms.req", 30 , "")

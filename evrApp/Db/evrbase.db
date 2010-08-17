@@ -7,6 +7,7 @@ record(bo, "$(P)enable") {
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)link:sts") {
@@ -55,12 +56,12 @@ record(ao, "$(P)clock:set") {
   field(DRVL, "50")
   field(PREC, "3")
   field(FLNK, "$(P)clock")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 
 record(ai, "$(P)clock") {
   field(DTYP, "EVR")
   field(INP , "@C=$(C), P=Clock")
-  field(SCAN, "1 second")
   field(DESC, "Event Link speed")
   field(PINI, "YES")
   field(UDF , "0")
@@ -69,6 +70,7 @@ record(ai, "$(P)clock") {
   field(ESLO, "1e-6")
   field(PREC, "3")
   field(FLNK, "$(P)clock:error")
+  info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 
 record(calc, "$(P)clock:error") {
@@ -78,6 +80,7 @@ record(calc, "$(P)clock:error") {
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock")
   field(FLNK, "$(P)clock:period")
+  info(autosaveFields_pass0, "EGU CALC PREC")
 }
 
 # Intended for use in calculations
@@ -109,6 +112,7 @@ record(bo, "$(P)dbus:mode") {
   field(VAL , "1")
   field(ZNAM, "DBus only")
   field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)hwtype") {
@@ -134,6 +138,7 @@ record(fanout, "$(P)ts:init") {
 record(mbbo, "$(P)ts:source") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(P)ts:source:raw")
+  field( PINI, "YES")
   field( ZRST, "Event clock")
   field( ONST, "Mapped code(s)")
   field( TWST, "DBus 4")
@@ -156,6 +161,7 @@ record(mbbo, "$(P)ts:source") {
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
   field(FLNK, "$(P)ts:source:raw")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P)ts:source:raw") {
@@ -178,6 +184,7 @@ record(ao, "$(P)ts:clock:set") {
   field(DRVL, "1")
   field(PREC, "3")
   field(FLNK, "$(P)ts:clock")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 
 record(ai, "$(P)ts:clock") {

@@ -9,4 +9,5 @@ record(longout, "$(P)map:$(M)") {
   field( HOPR, "255")
   field( DRVL, "0")
   field( DRVH, "255")
+  info(autosaveFields_pass0, "OUT VAL")
 }

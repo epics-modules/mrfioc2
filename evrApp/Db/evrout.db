@@ -4,6 +4,7 @@ record(longout, "$(P)$(O)src:set") {
   field( DESC, "Output $(IDX)")
   field( OUT , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
   field( FLNK, "$(P)$(O)src")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)$(O)src") {

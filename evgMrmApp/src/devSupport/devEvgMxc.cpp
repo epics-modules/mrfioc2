@@ -35,7 +35,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 			throw std::runtime_error("ERROR: Failed to lookup MXC");
 
 		pRec->dpvt = mxc;
-		ret = 2;
+		ret = 0;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("%s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
@@ -47,14 +47,57 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	return ret;
 }
 
-
-/**		bo - Multiplexed Counter Polarity	**/
+/**		Initializaton	**/
 /*returns: (0,2)=>(success,success no convert) 0==2	*/
 static long 
 init_bo(boRecord* pbo) {
-	return init_record((dbCommon*)pbo, &pbo->out);
+	epicsStatus ret = init_record((dbCommon*)pbo, &pbo->out);
+	if (ret == 0)
+		ret = 2;
+	
+	return ret;
 }
 
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_bi(biRecord* pbi) {
+	return init_record((dbCommon*)pbi, &pbi->inp);
+	
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_li(longinRecord* pli) {
+	return init_record((dbCommon*)pli, &pli->inp);
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+init_ao(aoRecord* pao) {
+	epicsStatus ret = init_record((dbCommon*)pao, &pao->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+init_ai(aiRecord* pai) {
+	return init_record((dbCommon*)pai, &pai->inp);
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+init_mbboD(mbboDirectRecord* pmbboD) {
+	epicsStatus ret = init_record((dbCommon*)pmbboD, &pmbboD->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
+}
+
+/**		bo - Multiplexed Counter Polarity	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo(boRecord* pbo) {
@@ -64,16 +107,6 @@ write_bo(boRecord* pbo) {
 
 
 /**		bi -  Multiplexed Counter Status	**/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-init_bi(biRecord* pbi) {
-	epicsStatus ret =  init_record((dbCommon*)pbi, &pbi->inp);
-	if(ret == 2)
-		return 0;
-
-	return ret;
-}
-
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 read_bi(biRecord* pbi) {
@@ -83,32 +116,34 @@ read_bi(biRecord* pbi) {
 }
 
 
-/** 	longout - Multiplexed Counter Prescalar	**/
+/** 	longin - Multiplexed Counter Prescalar	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-init_lo(longoutRecord* plo) {
-	epicsUInt32 ret = init_record((dbCommon*)plo, &plo->out);
-	if (ret == 2)
-		ret = 0;
-	
-	return ret;
+write_li(longinRecord* pli) {
+	evgMxc* mxc = (evgMxc*)pli->dpvt;
+	pli->val = mxc->getMxcPrescaler();
+	return 0;
 }
 
+/** 	ao - Multiplexed Counter Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_lo(longoutRecord* plo) {
-	evgMxc* mxc = (evgMxc*)plo->dpvt;
-	return mxc->setMxcPrescaler(plo->val);
+write_ao(aoRecord* pao) {
+	evgMxc* mxc = (evgMxc*)pao->dpvt;
+	return mxc->setMxcFreq(pao->val);
 }
 
 
-/** 	mbboDirect - Multiplexed Counter Event Trigger Map **/
+/** 	ai - Multiplexed Counter Frequency	**/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
-init_mbboD(mbboDirectRecord* pmbboD) {
-	return init_record((dbCommon*)pmbboD, &pmbboD->out);
+write_ai(aiRecord* pai) {
+	evgMxc* mxc = (evgMxc*)pai->dpvt;
+	pai->val = mxc->getMxcFreq();
+	return 2;
 }
 
+/** 	mbboDirect - Multiplexed Counter Event Trigger Map **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD(mbboDirectRecord* pmbboD) {
@@ -144,11 +179,33 @@ common_dset devLoEvgMxc = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_lo,
+    (DEVSUPFUN)init_li,
     NULL,
-    (DEVSUPFUN)write_lo,
+    (DEVSUPFUN)write_li,
 };
 epicsExportAddress(dset, devLoEvgMxc);
+
+common_dset devAoEvgMxc = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_ao,
+    NULL,
+    (DEVSUPFUN)write_ao,
+	NULL
+};
+epicsExportAddress(dset, devAoEvgMxc);
+
+common_dset devAiEvgMxc = {
+    6,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_ai,
+    NULL,
+    (DEVSUPFUN)write_ai,
+	NULL
+};
+epicsExportAddress(dset, devAiEvgMxc);
 
 common_dset devMbboDEvgMxc = {
     5,

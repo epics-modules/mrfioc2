@@ -1,0 +1,19 @@
+record(bo, "$(P):SoftEvt:Ena") {
+	field( DTYP, "EVG Soft Evt")
+  	field( DESC, "EVG Software Event Enable")
+  	field( OUT , "#C$(cardNum) S @")
+	field( UDF, "0")
+  	field( ZNAM, "Disabled")
+  	field( ONAM, "Enabled")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(P):SoftEvt:Code") {
+	field( DTYP, "EVG Soft Evt")
+	field( DESC, "EVG Software Event Code")
+	field( OUT, "#C$(cardNum) S @")
+	field( UDF, "0")
+	field( PINI, "YES")
+	info(autosaveFields_pass0, "VAL")
+}
