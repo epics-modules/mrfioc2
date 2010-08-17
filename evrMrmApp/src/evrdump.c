@@ -21,7 +21,7 @@ typedef struct {
     int bar, len, offset;
 } args;
 
-int printevr(void* raw,epicsPCIDevice* dev)
+int printevr(void* raw,const epicsPCIDevice* dev)
 {
     epicsUInt32 i;
     args *a=raw;

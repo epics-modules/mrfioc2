@@ -163,7 +163,7 @@ try {
     return;
   }
 
-  epicsPCIDevice *cur=0;
+  const epicsPCIDevice *cur=0;
   if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
     printf("PCI Device not found\n");
     return;
