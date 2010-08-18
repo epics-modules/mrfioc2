@@ -6,6 +6,7 @@
 
 #include <epicsTypes.h>
 #include <epicsTime.h>
+#include <callback.h>
 
 class Pulser;
 class Output;
@@ -14,10 +15,10 @@ class Input;
 class CML;
 
 enum OutputType {
-  OutputInt=0, //! Internal
-  OutputFP=1,  //! Front Panel
-  OutputFPUniv=2, //! FP Universal
-  OutputRB=3 //! Rear Breakout
+  OutputInt=0, //!< Internal
+  OutputFP=1,  //!< Front Panel
+  OutputFPUniv=2, //!< FP Universal
+  OutputRB=3 //!< Rear Breakout
 };
 
 enum TSSource {
@@ -148,6 +149,9 @@ public:
   virtual bool getTicks(epicsUInt32 *tks)=0;
 
   virtual IOSCANPVT eventOccurred(epicsUInt32 event)=0;
+
+  virtual void eventNotityAdd(epicsUInt32 event, CALLBACK*)=0;
+  virtual void eventNotityDel(epicsUInt32 event, CALLBACK*)=0;
   /*@}*/
 
   /**\defgroup linksts Event Link Status
