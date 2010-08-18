@@ -135,7 +135,8 @@ public:
     inline void lock(){if (!locked) m.lock();locked=true;}
     inline void unlock(){if (locked) m.unlock();locked=false;}
 };
-#define SCOPED_LOCK(m) scopedLock<epicsMutex> m##_lock(m)
+#define SCOPED_LOCK2(m, name) scopedLock<epicsMutex> name(m)
+#define SCOPED_LOCK(m) SCOPED_LOCK2(m, m##_guard)
 
 /***************************************************************************************************
  * mrfDisableRecord () -- Disable a Record From Ever Being Processed
