@@ -24,10 +24,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	}
 	
 	try {
-		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);		
 		if(!evg)
 			throw std::runtime_error("ERROR: Failed to lookup EVG");
-	
+
 		evgSoftSeqMgr* seqMgr = evg->getSoftSeqMgr();
 		if(!seqMgr)
 			throw std::runtime_error("ERROR: Failed to lookup EVG Seq Manager");
@@ -87,10 +87,10 @@ init_wf_loadedSeq(waveformRecord* pwf) {
 	}
 	
 	try {
-		evgMrm* evg = FindEvg(pwf->inp.value.vmeio.card);		
+		evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);		
 		if(!evg)
 			throw std::runtime_error("ERROR: Failed to lookup EVG");
-	
+
 		evgSeqRamMgr* seqRamMgr = evg->getSeqRamMgr();
 		if(!seqRamMgr)
 			throw std::runtime_error("ERROR: Failed to lookup EVG Seq Ram Manager");

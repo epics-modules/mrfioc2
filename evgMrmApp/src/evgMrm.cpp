@@ -10,6 +10,7 @@
 #include <recSup.h>
 #include <recGbl.h>
 #include <epicsInterrupt.h>
+#include <epicsTime.h>
 
 #include <longoutRecord.h>
 
@@ -28,7 +29,8 @@ m_pReg(pReg),
 m_evtClk(evgEvtClk(pReg)),
 m_softEvt(evgSoftEvt(pReg)),
 m_seqRamMgr(evgSeqRamMgr(this)),
-m_softSeqMgr(evgSoftSeqMgr(this)) {
+m_softSeqMgr(evgSoftSeqMgr(this)),
+m_tsSrc(Off) {
 	try {
 		for(int i = 0; i < evgNumEvtTrig; i++)
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
@@ -73,6 +75,8 @@ m_softSeqMgr(evgSoftSeqMgr(this)) {
 
 	init_cb(&irqStop0_cb, priorityLow, &evgMrm::process_cb, &irqStop0);
 	init_cb(&irqStop1_cb, priorityLow, &evgMrm::process_cb, &irqStop1);
+	init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
+
 }
 
 evgMrm::~evgMrm() {
@@ -90,6 +94,9 @@ evgMrm::~evgMrm() {
 
 	for(int i = 0; i < evgNumUnivInp; i++)
 		delete m_input[std::pair<epicsUInt32, std::string>(i,"Univ_Input")];
+
+	for(int i = 0; i < evgNumTbInp; i++)
+		delete m_input[std::pair<epicsUInt32, std::string>(i,"TB_Input")];
 
 	for(int i = 0; i < evgNumFpOut; i++)
 		delete m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")]; 
@@ -111,6 +118,11 @@ evgMrm::getRegAddr() {
 epicsUInt32 
 evgMrm::getFwVersion() {
 	return READ32(m_pReg, FPGAVersion);
+}
+
+epicsUInt32
+evgMrm::getStatus() {
+	return READ32( m_pReg, Status);
 }
 
 inline void 
@@ -143,14 +155,14 @@ evgMrm::isr(void* arg) {
     epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
     epicsUInt32 active = flags & enable;
 	
-	#ifdef __rtems__
-	printk("\n ----------------------------------------------- \n");
-	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
-	#endif //__rtems__
+//	#ifdef __rtems__
+// 	printk("\n ----------------------------------------------- \n");
+// 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
+//	#endif //__rtems__
 
     if(!active)
       return;
-
+	
     if(active & EVG_IRQ_STOP_RAM(0)) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM0\n");
@@ -166,11 +178,12 @@ evgMrm::isr(void* arg) {
 		callbackRequest(&evg->irqStop1_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
     }
-	
+
 	if(active & EVG_IRQ_EXT_INP) {
-		#ifdef __rtems__
-		printk("EVG_IRQ_EXT_INP\n");
-		#endif //_rtems_
+// 		#ifdef __rtems__
+// 		printk("EVG_IRQ_EXT_INP\n");
+// 		#endif //_rtems_
+		callbackRequest(&evg->irqExtInp_cb);
 	}
 
     WRITE32(evg->m_pReg, IrqFlag, flags);
@@ -179,16 +192,15 @@ evgMrm::isr(void* arg) {
     enable = READ32(evg->getRegAddr(), IrqEnable);
     active = flags & enable;
 
-	#ifdef __rtems__
-	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
-	#endif //_rtems_
+// 	#ifdef __rtems__
+// 	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
+// 	#endif //_rtems_
 	
 	return;
 }
 
 void
 evgMrm::process_cb(CALLBACK *pCallback) {
-	printf("In Callback..\n");
 	void* pVoid;
 	struct irq *irqTemp;
 	dbCommon *pRec;
@@ -209,6 +221,97 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 	}
 	irqTemp->recList.clear();
 	epicsMutexUnlock(irqTemp->mutex);
+}
+
+void
+evgMrm::sendTS(CALLBACK *pCallback) {
+	void* pVoid;
+	callbackGetUser(pVoid, pCallback);
+	evgMrm* evg = (evgMrm*)pVoid;
+
+	evg->incrementTS();
+	post_event(1);
+	epicsUInt32 sec = evg->getTSsec() + 1;
+
+	/*Sending MSB first*/
+	for(int i = 0; i < 32; sec <<= 1, i++) {
+		if( sec & 0x80000000 ) {
+			evg->getSoftEvt()->setEvtCode(113);
+		} else {
+			evg->getSoftEvt()->setEvtCode(112);
+		}
+	}
+
+	//Check for the timeStamp sync
+	struct timeval cur_tv;
+	gettimeofday(&cur_tv, 0);
+	epicsUInt32 m_errorTS = cur_tv.tv_sec - evg->getTSsec();
+	if(m_errorTS != 0){
+		printf("Timestamping Error of %08x Secs\n", m_errorTS);
+		evg->syncTS();
+	}
+}
+
+epicsStatus
+evgMrm::incrementTS() {
+	m_tv.tv_sec++;
+	return OK;
+}
+
+epicsUInt32
+evgMrm::getTSsec() {
+	return m_tv.tv_sec;
+}
+
+epicsStatus
+evgMrm::syncTS() {
+	printf("Sync Timestamp\n");
+	gettimeofday(&m_tv, 0);
+	return OK;
+}
+
+timeval
+evgMrm::getTS() {
+	return m_tv;
+}
+
+epicsStatus
+evgMrm::setupTS(TimeStampSrc tsSrc) {
+	evgInput* inp = 0;
+	switch(m_tsSrc) {
+		case Off:
+			break;
+		case FP_INP0:
+			inp = getInput(0, "FP_Input");
+			inp->enaExtIrq(0);
+			break;
+ 		case FP_INP1:
+			inp = getInput(1, "FP_Input");
+			inp->enaExtIrq(0);
+			break;
+		default:
+			return ERROR;	
+ 	}
+
+	//Enable the external input interrupt
+	switch(tsSrc) {
+		case Off:
+			break;
+		case FP_INP0:
+			inp = getInput(0, "FP_Input");
+			inp->enaExtIrq(1);
+			break;
+ 		case FP_INP1:
+			inp = getInput(1, "FP_Input");
+			inp->enaExtIrq(1);
+			break;
+		default:
+			return ERROR;	
+ 	}
+	
+	syncTS();
+	m_tsSrc = tsSrc;
+	return OK;
 }
 
 evgEvtClk*

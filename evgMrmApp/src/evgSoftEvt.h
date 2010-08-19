@@ -14,7 +14,6 @@ public:
 	bool pend();
 	
 	epicsStatus setEvtCode(epicsUInt32);
-	epicsUInt8 getEvtCode();
 
 private:
 	volatile epicsUInt8* const	m_pReg;

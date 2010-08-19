@@ -9,3 +9,38 @@ record(bo, "$(P):Enable") {
   	field( ONAM, "Enabled")
 	info(autosaveFields_pass0, "VAL")
 }
+
+record( stringin, "$(P):TS") {
+	field( DTYP, "EVG TIMESTAMP")
+  	field( DESC, "EVG TimeStamp")
+  	field( INP , "#C$(cardNum) S @")
+	field( SCAN, "Event")
+	field( EVNT, "1")
+}
+
+record( bo,"$(P):SyncTS" ) {
+	field( DTYP, "EVG TIMESTAMP")
+  	field( DESC, "EVG Sync TimeStamp")
+  	field( OUT, "#C$(cardNum) S @")
+	field( UDF, "0")
+	field( VAL, "1")
+}
+
+record( mbbo, "$(P):TSsrc") {
+	field( DTYP, "EVG TIMESTAMP")
+  	field( DESC, "EVG TimeStamp Src")
+  	field( OUT , "#C$(cardNum) S @")
+	field( PINI, YES)
+	field( UDF, "0")
+  	field( ZRST, "Off")
+  	field( ONST, "INP0")
+  	field( TWST, "INP1")
+	info( autosaveFields_pass0, "VAL")
+}
+
+record( longin, "$(P):Status" ) {
+	field( DTYP, "EVG")
+  	field( DESC, "EVG Status")
+  	field( INP, "#C$(cardNum) S @")
+	field( SCAN, ".1 second")
+}

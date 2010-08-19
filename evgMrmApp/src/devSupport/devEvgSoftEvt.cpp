@@ -22,10 +22,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	}
 	
 	try {
-		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
 			throw std::runtime_error("ERROR: Failed to lookup EVG");
-
+		
 		evgSoftEvt* softEvt = evg->getSoftEvt();
 		if(!softEvt)
 			throw std::runtime_error("ERROR: Failed to lookup EVG Soft Evt");
@@ -64,6 +64,9 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enable(boRecord* pbo) {
+	if(!pbo->dpvt)
+		return -1;
+
 	evgSoftEvt* softEvt = (evgSoftEvt*)pbo->dpvt;
 	return softEvt->enable(pbo->val);
 }
@@ -72,6 +75,9 @@ write_bo_enable(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_setEvtCode(longoutRecord* plo) {
+	if(!plo->dpvt)
+		return -1;
+
 	evgSoftEvt* softEvt = (evgSoftEvt*)plo->dpvt;
 	return softEvt->setEvtCode(plo->val);
 }

@@ -21,7 +21,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	}
 
 	try {
-		evgMrm* evg = FindEvg(lnk->value.vmeio.card);		
+		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);		
 		if(!evg)
 			throw std::runtime_error("ERROR: Failed to lookup EVG");
 
@@ -30,7 +30,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 			throw std::runtime_error("ERROR: Failed to lookup Dbus");
 
 		pRec->dpvt = dbus;
-		ret = 2;
+		ret = 0;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("%s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
@@ -47,12 +47,19 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 init_mbbo(mbboRecord* pmbbo) {
-	return init_record((dbCommon*)pmbbo, &pmbbo->out);
+	long ret =  init_record((dbCommon*)pmbbo, &pmbbo->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
 }
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbbo(mbboRecord* pmbbo) {
+	if(!pmbbo->dpvt)
+		return -1;
+
 	evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
 	return dbus->setDbusMap(pmbbo->val);
 }

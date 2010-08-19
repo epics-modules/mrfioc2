@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 54
-y 441
-w 696
-h 721
+x 73
+y 275
+w 708
+h 713
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -22,6 +22,36 @@ botShadowColor index 11
 showGrid
 snapToGrid
 endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 250
+w 300
+h 40
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 310
+w 300
+h 60
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -92,14 +122,14 @@ minor 1
 release 0
 x 300
 y 10
-w 148
+w 35
 h 22
 font "helvetica-bold-r-18.0"
 fgColor index 27
 bgColor index 3
 useDisplayBg
 value {
-  "EVG $(cardNum)"
+  "$(P)"
 }
 autoSize
 endObjectProperties
@@ -137,68 +167,36 @@ symbolTag {
   13 "Univ Input 3"
 }
 symbol0 {
-  0 "inpType"
-  1 "inpType"
-  2 "inpType"
-  3 "inpType"
-  4 "inpType"
-  5 "inpType"
-  6 "inpType"
-  7 "inpType"
-  8 "inpType"
-  9 "inpType"
-  10 "inpType"
-  11 "inpType"
-  12 "inpType"
-  13 "inpType"
+  0 "I"
+  1 "I"
+  2 "I"
+  3 "I"
+  4 "I"
+  5 "I"
+  6 "I"
+  7 "I"
+  8 "I"
+  9 "I"
+  10 "I"
+  11 "I"
+  12 "I"
+  13 "I"
 }
 value0 {
-  0 "FP_Input"
-  1 "FP_Input"
-  2 "TB_Input"
-  3 "TB_Input"
-  4 "TB_Input"
-  5 "TB_Input"
-  6 "TB_Input"
-  7 "TB_Input"
-  8 "TB_Input"
-  9 "TB_Input"
-  10 "Univ_Input"
-  11 "Univ_Input"
-  12 "Univ_Input"
-  13 "Univ_Input"
-}
-symbol1 {
-  0 "inpNum"
-  1 "inpNum"
-  2 "inpNum"
-  3 "inpNum"
-  4 "inpNum"
-  5 "inpNum"
-  6 "inpNum"
-  7 "inpNum"
-  8 "inpNum"
-  9 "inpNum"
-  10 "inpNum"
-  11 "inpNum"
-  12 "inpNum"
-  13 "inpNum"
-}
-value1 {
-  0 "0"
-  1 "1"
-  2 "0"
-  3 "1"
-  4 "2"
-  5 "3"
-  6 "12"
-  7 "13"
-  8 "14"
-  9 "15"
-  10 "0"
-  11 "1"
-  12 "2"
-  13 "3"
+  0 "FP_Input0"
+  1 "FP_Input1"
+  2 "TB_Input0"
+  3 "TB_Input1"
+  4 "TB_Input2"
+  5 "TB_Input3"
+  6 "TB_Input12"
+  7 "TB_Input13"
+  8 "TB_Input14"
+  9 "TB_Input15"
+  10 "Univ_Input0"
+  11 "Univ_Input1"
+  12 "Univ_Input2"
+  13 "Univ_Input3"
 }
 endObjectProperties
 
@@ -229,24 +227,24 @@ symbolTag {
   7 "Trig 7"
 }
 symbol0 {
-  0 "trigEvtNum"
-  1 "trigEvtNum"
-  2 "trigEvtNum"
-  3 "trigEvtNum"
-  4 "trigEvtNum"
-  5 "trigEvtNum"
-  6 "trigEvtNum"
-  7 "trigEvtNum"
+  0 "T"
+  1 "T"
+  2 "T"
+  3 "T"
+  4 "T"
+  5 "T"
+  6 "T"
+  7 "T"
 }
 value0 {
-  0 "0"
-  1 "1"
-  2 "2"
-  3 "3"
-  4 "4"
-  5 "5"
-  6 "6"
-  7 "7"
+  0 "TrigEvt0"
+  1 "TrigEvt1"
+  2 "TrigEvt2"
+  3 "TrigEvt3"
+  4 "TrigEvt4"
+  5 "TrigEvt5"
+  6 "TrigEvt6"
+  7 "TrigEvt7"
 }
 endObjectProperties
 
@@ -277,24 +275,24 @@ symbolTag {
   7 "Dbus 7"
 }
 symbol0 {
-  0 "dbusBit"
-  1 "dbusBit"
-  2 "dbusBit"
-  3 "dbusBit"
-  4 "dbusBit"
-  5 "dbusBit"
-  6 "dbusBit"
-  7 "dbusBit"
+  0 "D"
+  1 "D"
+  2 "D"
+  3 "D"
+  4 "D"
+  5 "D"
+  6 "D"
+  7 "D"
 }
 value0 {
-  0 "0"
-  1 "1"
-  2 "2"
-  3 "3"
-  4 "4"
-  5 "5"
-  6 "6"
-  7 "7"
+  0 "Dbus0"
+  1 "Dbus1"
+  2 "Dbus2"
+  3 "dbus3"
+  4 "Dbus4"
+  5 "Dbus5"
+  6 "Dbus6"
+  7 "Dbus7"
 }
 endObjectProperties
 
@@ -325,24 +323,24 @@ symbolTag {
   7 "Mxc 7"
 }
 symbol0 {
-  0 "mxcNum"
-  1 "mxcNum"
-  2 "mxcNum"
-  3 "mxcNum"
-  4 "mxcNum"
-  5 "mxcNum"
-  6 "mxcNum"
-  7 "mxcNum"
+  0 "M"
+  1 "M"
+  2 "M"
+  3 "M"
+  4 "M"
+  5 "M"
+  6 "M"
+  7 "M"
 }
 value0 {
-  0 "0"
-  1 "1"
-  2 "2"
-  3 "3"
-  4 "4"
-  5 "5"
-  6 "6"
-  7 "7"
+  0 "Mxc0"
+  1 "Mxc1"
+  2 "Mxc2"
+  3 "Mxc3"
+  4 "Mxc4"
+  5 "Mxc5"
+  6 "Mxc6"
+  7 "Mxc7"
 }
 endObjectProperties
 
@@ -446,7 +444,7 @@ x 440
 y 70
 w 100
 h 20
-controlPv "EVG$(cardNum):RFref"
+controlPv "$(P):RFref"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -470,7 +468,7 @@ x 440
 y 130
 w 100
 h 20
-controlPv "EVG$(cardNum):FracSynFreq"
+controlPv "$(P):FracSynFreq"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -492,7 +490,7 @@ x 440
 y 100
 w 100
 h 20
-controlPv "EVG$(cardNum):RFdiv"
+controlPv "$(P):RFdiv"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -515,7 +513,7 @@ x 550
 y 70
 w 30
 h 20
-controlPv "EVG$(cardNum):RFref.EGU"
+controlPv "$(P):RFref.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -537,7 +535,7 @@ x 550
 y 130
 w 30
 h 20
-controlPv "EVG$(cardNum):FracSynFreq.EGU"
+controlPv "$(P):FracSynFreq.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -637,7 +635,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Enable"
+controlPv "$(P):Enable"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -651,7 +649,7 @@ minor 0
 release 0
 x 30
 y 210
-w 300
+w 170
 h 60
 lineColor index 3
 fill
@@ -664,27 +662,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 60
+x 50
 y 230
-w 40
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Enable"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 185
-y 233
 w 55
 h 15
 font "helvetica-medium-r-12.0"
@@ -702,11 +681,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 240
+x 110
 y 230
 w 70
 h 20
-controlPv "EVG$(cardNum):SoftEvt:Code"
+controlPv "$(P):SoftEvt:Code"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -734,28 +713,6 @@ bgColor index 3
 value {
   "Software Event"
 }
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 100
-y 230
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "EVG$(cardNum):SoftEvt:Ena"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
 endObjectProperties
 
 # (Static Text)
@@ -823,8 +780,8 @@ release 0
 x 240
 y 350
 w 70
-h 20
-controlPv "EVG$(cardNum):TrigEvt$(trigEvtNum):Code"
+h 19
+controlPv "$(P):$(T):Code"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -854,7 +811,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):TrigEvt$(trigEvtNum):Ena"
+controlPv "$(P):$(T):Ena"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -953,7 +910,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB0"
+controlPv "$(P):$(M):TrigEvtMapB0"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1108,7 +1065,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB1"
+controlPv "$(P):$(M):TrigEvtMapB1"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1130,7 +1087,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB7"
+controlPv "$(P):$(M):TrigEvtMapB7"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1152,7 +1109,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB2"
+controlPv "$(P):$(M):TrigEvtMapB2"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1174,7 +1131,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB3"
+controlPv "$(P):$(M):TrigEvtMapB3"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1196,7 +1153,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB4"
+controlPv "$(P):$(M):TrigEvtMapB4"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1218,7 +1175,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB5"
+controlPv "$(P):$(M):TrigEvtMapB5"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1240,7 +1197,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):TrigEvtMapB6"
+controlPv "$(P):$(M):TrigEvtMapB6"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1274,7 +1231,7 @@ x 100
 y 510
 w 100
 h 20
-controlPv "EVG$(cardNum):Mxc$(mxcNum):Freq"
+controlPv "$(P):$(M):Freq"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -1296,7 +1253,7 @@ x 200
 y 510
 w 30
 h 20
-controlPv "EVG$(cardNum):Mxc$(mxcNum):Freq.EGU"
+controlPv "$(P):$(M):Freq.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -1318,7 +1275,7 @@ x 100
 y 470
 w 100
 h 19
-controlPv "EVG$(cardNum):Mxc$(mxcNum):Prescaler:RB"
+controlPv "$(P):$(M):Prescaler:RB"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -1341,7 +1298,7 @@ x 240
 y 510
 w 70
 h 20
-controlPv "EVG$(cardNum):Mxc$(mxcNum):Freq:RB"
+controlPv "$(P):$(M):Freq:RB"
 precision 3
 fgColor index 14
 fgAlarm
@@ -1384,7 +1341,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):EvtClkSrc"
+controlPv "$(P):EvtClkSrc"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1403,7 +1360,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Mxc$(mxcNum):Polarity"
+controlPv "$(P):$(M):Polarity"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1417,7 +1374,7 @@ x 440
 y 190
 w 100
 h 20
-controlPv "EVG$(cardNum):EvtClkSpeed"
+controlPv "$(P):EvtClkSpeed"
 fgColor index 14
 bgColor index 7
 fill
@@ -1440,7 +1397,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):Dbus$(dbusBit):Map"
+controlPv "$(P):$(D):Map"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1481,112 +1438,6 @@ value {
 }
 endObjectProperties
 
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 360
-y 270
-w 300
-h 70
-
-beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 360
-y 270
-w 300
-h 70
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 360
-y 280
-w 300
-h 60
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 360
-y 270
-w 50
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Output"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 400
-y 300
-w 24
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Map"
-}
-autoSize
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 430
-y 300
-w 70
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "EVG$(cardNum):$(outType)$(outNum):Map"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
 # (Menu Mux)
 object menuMuxClass
 beginObjectProperties
@@ -1594,7 +1445,7 @@ major 4
 minor 1
 release 0
 x 550
-y 300
+y 330
 w 90
 h 20
 fgColor index 14
@@ -1610,28 +1461,16 @@ symbolTag {
   3 "Output 3"
 }
 symbol0 {
-  0 "outType"
-  1 "outType"
-  2 "outType"
-  3 "outType"
+  0 "O"
+  1 "O"
+  2 "O"
+  3 "O"
 }
 value0 {
-  0 "FP_Output"
-  1 "FP_Output"
-  2 "FP_Output"
-  3 "FP_Output"
-}
-symbol1 {
-  0 "outNum"
-  1 "outNum"
-  2 "outNum"
-  3 "outNum"
-}
-value1 {
-  0 "0"
-  1 "1"
-  2 "2"
-  3 "3"
+  0 "FP_Output0"
+  1 "FP_Output1"
+  2 "FP_Output2"
+  3 "FP_Output3"
 }
 endObjectProperties
 
@@ -1651,7 +1490,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB0"
+controlPv "$(P):$(I):DbusMapB0"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1673,7 +1512,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB1"
+controlPv "$(P):$(I):DbusMapB1"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1695,7 +1534,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB2"
+controlPv "$(P):$(I):DbusMapB2"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1717,7 +1556,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB3"
+controlPv "$(P):$(I):DbusMapB3"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1739,7 +1578,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB4"
+controlPv "$(P):$(I):DbusMapB4"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1761,7 +1600,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB6"
+controlPv "$(P):$(I):DbusMapB6"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1783,7 +1622,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB5"
+controlPv "$(P):$(I):DbusMapB5"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1806,7 +1645,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):DbusMapB7"
+controlPv "$(P):$(I):DbusMapB7"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1828,7 +1667,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB0"
+controlPv "$(P):$(I):TrigEvtMapB0"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1850,7 +1689,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB1"
+controlPv "$(P):$(I):TrigEvtMapB1"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1872,7 +1711,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB2"
+controlPv "$(P):$(I):TrigEvtMapB2"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1894,7 +1733,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB3"
+controlPv "$(P):$(I):TrigEvtMapB3"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1916,7 +1755,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB4"
+controlPv "$(P):$(I):TrigEvtMapB4"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1938,7 +1777,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB6"
+controlPv "$(P):$(I):TrigEvtMapB6"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1960,7 +1799,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB5"
+controlPv "$(P):$(I):TrigEvtMapB5"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -1982,7 +1821,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):TrigEvtMapB7"
+controlPv "$(P):$(I):TrigEvtMapB7"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -2306,25 +2145,6 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 379
-y 413
-w 46
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Ext IRQ"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
 x 360
 y 380
 w 40
@@ -2337,25 +2157,97 @@ value {
 }
 endObjectProperties
 
-# (Button)
-object activeButtonClass
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 480
+y 260
+w 160
+h 20
+controlPv "$(P):TS"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 360
+y 300
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Output"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 400
+y 330
+w 24
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Map"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
 beginObjectProperties
 major 4
 minor 0
 release 0
 x 430
-y 410
+y 330
 w 70
 h 20
 fgColor index 14
-onColor index 3
-offColor index 3
+bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "EVG$(cardNum):$(inpType)$(inpNum):EnaIrq"
-3d
+controlPv "$(P):$(O):Map"
 font "helvetica-medium-r-12.0"
-objType "controls"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 390
+y 260
+w 60
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):TSsrc"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

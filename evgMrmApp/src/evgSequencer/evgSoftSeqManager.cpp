@@ -8,12 +8,15 @@ m_owner(owner) {
 
 evgSoftSeq* 
 evgSoftSeqMgr::getSoftSeq(epicsUInt32 seqId) {
+	
+	//Lock
 	evgSoftSeq* seq = m_softSeq[seqId];
 
 	if(!seq) {
 		seq = new evgSoftSeq(seqId, m_owner);
 		m_softSeq[seqId] = seq;
 	}
+	//Unlock
 
 	return seq;
 }

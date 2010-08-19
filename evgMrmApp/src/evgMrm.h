@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <sys/time.h>
 
 #include <epicsTypes.h>
 #include <dbScan.h>
@@ -19,6 +20,7 @@
 #include "evgOutput.h"
 #include "evgSequencer/evgSeqRamManager.h"  
 #include "evgSequencer/evgSoftSeqManager.h"
+//#include "mrmDataBufTx.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -26,6 +28,12 @@
  * Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
  * Input, Output etc.
  */
+
+enum TimeStampSrc {
+	Off = 0,
+	FP_INP0,
+	FP_INP1
+};
 
 class evgMrm {
 
@@ -38,11 +46,20 @@ public:
 	volatile epicsUInt8* const getRegAddr(); 
 	epicsUInt32 getFwVersion();
 	epicsStatus enable(bool ena);
+	epicsUInt32 getStatus();
 
 	/**	Interrupt and Callback	**/
 	static void isr(void*);
 	static void process_cb(CALLBACK*);
 	void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
+
+	/** TimeStamp	**/
+	static void sendTS(CALLBACK*);
+	timeval getTS();
+	epicsStatus syncTS();
+	epicsStatus setupTS(TimeStampSrc);
+	epicsStatus incrementTS();
+	epicsUInt32 getTSsec();
 	
 	/**	Access	function 	**/
 	evgEvtClk* 		getEvtClk		();
@@ -65,6 +82,9 @@ public:
 
 	CALLBACK 						irqStop0_cb;
 	CALLBACK						irqStop1_cb;
+	CALLBACK						irqExtInp_cb;
+
+
 
 private:
 	const epicsUInt32            	m_id;       
@@ -90,6 +110,11 @@ private:
 
 	evgSeqRamMgr 					m_seqRamMgr;
 	evgSoftSeqMgr					m_softSeqMgr;
+
+	//? static
+	//epicsTimeStamp 					m_ts;
+	struct timeval					m_tv;
+	TimeStampSrc					m_tsSrc; 
 };
 
 #endif //EVG_MRM_H
