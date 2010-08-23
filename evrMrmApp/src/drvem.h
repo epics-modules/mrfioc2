@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <list>
 #include <map>
 #include <utility>
 
@@ -36,6 +37,9 @@ struct eventCode {
   epicsUInt32 last_evt;
 
   IOSCANPVT occured;
+
+  typedef std::list<CALLBACK*> notifiees_t;
+  notifiees_t notifiees;
 };
 
 /**@brief Modular Register Map Event Receivers
@@ -95,6 +99,8 @@ public:
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
   virtual bool getTicks(epicsUInt32 *tks);
   virtual IOSCANPVT eventOccurred(epicsUInt32 event);
+  virtual void eventNotityAdd(epicsUInt32, CALLBACK*);
+  virtual void eventNotityDel(epicsUInt32, CALLBACK*);
 
   virtual epicsUInt16 dbus() const;
 
@@ -147,7 +153,7 @@ private:
   static void drain_fifo(CALLBACK*);
 
   // Take lock when accessing interest counter or TS members
-  epicsMutexId events_lock; // really should be a rwlock
+  epicsMutex events_lock; // really should be a rwlock
   eventCode events[256];
 
   // Buffer received

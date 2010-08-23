@@ -3,10 +3,12 @@
 
 #include <cstdio>
 #include <stdexcept>
+#include <algorithm>
 
 #include <epicsMath.h>
 #include <errlog.h>
 
+#include <mrfCommon.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
@@ -67,6 +69,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,prescalers()
   ,pulsers()
   ,shortcmls()
+  ,events_lock()
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
@@ -174,7 +177,6 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         printf("CML outputs not supported with this firmware\n");
     }
 
-    events_lock=epicsMutexMustCreate();
     for(size_t i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=0;
 
@@ -203,7 +205,6 @@ EVRMRM::~EVRMRM()
     {
         delete (*it);
     }
-    epicsMutexDestroy(events_lock);
     //TODO: cleanup the rest
 }
 
@@ -561,7 +562,7 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
 
     eventCode *entry=&events[event];
 
-    epicsMutexLock(events_lock);
+    SCOPED_LOCK(events_lock);
 
     if (   (set  && entry->interested==0) // first interested
         || (!set && entry->interested==1) // or last un-interested
@@ -573,8 +574,6 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
         entry->interested++;
     else
         entry->interested--;
-
-    epicsMutexUnlock(events_lock);
 
     return true;
 }
@@ -589,22 +588,18 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 
         eventCode *entry=&events[event];
 
-        epicsMutexLock(events_lock);
+        SCOPED_LOCK(events_lock);
 
         // The timestamp service registers permenant interest
         if (!entry->interested ||
             ( entry->last_sec==0 &&
               entry->last_evt==0) )
         {
-
-            epicsMutexUnlock(events_lock);
             return false;
         }
 
         ts->secPastEpoch=entry->last_sec;
         ts->nsec=entry->last_evt;
-
-        epicsMutexUnlock(events_lock);
 
 
     } else {
@@ -661,6 +656,51 @@ EVRMRM::eventOccurred(epicsUInt32 event)
         return events[event].occured;
     else
         return NULL;
+}
+
+void
+EVRMRM::eventNotityAdd(epicsUInt32 event, CALLBACK* cb)
+{
+    if (event==0 || event>255)
+        throw std::out_of_range("Invalid event number");
+
+    SCOPED_LOCK2(events_lock, guard);
+
+    if (std::find(events[event].notifiees.begin(),
+                  events[event].notifiees.end(),
+                  cb)
+                    != events[event].notifiees.end())
+    {
+        throw std::runtime_error("callback already registered for this event");
+    }
+
+    events[event].notifiees.push_back(cb);
+
+    guard.unlock();
+
+    interestedInEvent(event, true);
+}
+
+void
+EVRMRM::eventNotityDel(epicsUInt32 event, CALLBACK* cb)
+{
+    if (event==0 || event>255)
+        throw std::out_of_range("Invalid event number");
+
+    SCOPED_LOCK2(events_lock, guard);
+
+    eventCode::notifiees_t::iterator it;
+
+    it=std::find(events[event].notifiees.begin(),
+                 events[event].notifiees.end(),
+                 cb);
+    if (it==events[event].notifiees.end())
+        return;
+
+    events[event].notifiees.erase(it);
+    guard.unlock();
+
+    interestedInEvent(event, false);
 }
 
 epicsUInt16
@@ -746,7 +786,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
 
-    epicsMutexLock(evr->events_lock);
+    SCOPED_LOCK2(evr->events_lock, guard);
 
     epicsUInt32 status;
 
@@ -772,12 +812,14 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         evr->events[evt].last_evt=READ32(evr->base, EvtFIFOEvt);
 
         scanIoRequest(evr->events[evt].occured);
+
+        for(eventCode::notifiees_t::const_iterator it=evr->events[evt].notifiees.begin();
+            it!=evr->events[evt].notifiees.begin();
+            ++it)
+        {
+            callbackRequest(*it);
+        }
     }
-
-    epicsMutexUnlock(evr->events_lock);
-
-    // It is possible that we could silently lose events at this point
-    // since the FIFO could re-fill and overflow before we clear it
 
     int iflags=epicsInterruptLock();
 
