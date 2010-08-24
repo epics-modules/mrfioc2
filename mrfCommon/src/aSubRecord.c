@@ -84,7 +84,7 @@ rset aSubRSET = {
 };
 epicsExportAddress(rset, aSubRSET);
 
-static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
+static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
     const char **fldnames, void **pval, void **povl);
 static long fetch_values(aSubRecord *prec);
 static void monitor(aSubRecord *);
@@ -216,7 +216,7 @@ static long init_record(aSubRecord *prec, int pass)
 }
 
 
-static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
+static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
     const char **fldnames, void **pval, void **povl)
 {
     int i;
@@ -420,8 +420,8 @@ static long cvt_dbaddr(DBADDR *paddr)
         paddr->field_type  = (&prec->ftva)[offset];
     }
     else {
-        errlogPrintf("aSubRecord::cvt_dbaddr called for %s.%s\n",
-            prec->name, paddr->pfldDes->name);
+        errlogPrintf("aSubRecord::cvt_dbaddr called for %s\n",
+            prec->name);
         return 0;
     }
     paddr->dbr_field_type = paddr->field_type;
@@ -444,8 +444,8 @@ static long get_array_info(DBADDR *paddr, long *no_elements, long *offset)
         *no_elements = (&prec->neva)[fieldIndex - aSubRecordVALA];
     }
     else {
-        errlogPrintf("aSubRecord::get_array_info called for %s.%s\n",
-            prec->name, paddr->pfldDes->name);
+        errlogPrintf("aSubRecord::get_array_info called for %s\n",
+            prec->name);
     }
     *offset = 0;
 
@@ -467,8 +467,8 @@ static long put_array_info(DBADDR *paddr, long nNew)
         (&prec->neva)[fieldIndex - aSubRecordVALA] = nNew;
     }
     else {
-        errlogPrintf("aSubRecord::put_array_info called for %s.%s\n",
-            prec->name, paddr->pfldDes->name);
+        errlogPrintf("aSubRecord::put_array_info called for %s\n",
+            prec->name);
     }
     return 0;
 }
