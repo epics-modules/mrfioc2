@@ -57,10 +57,14 @@ INC += property.h
 INC += dsetshared.h
 
 
+ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
+ifeq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
 TESTPROD_HOST += linkoptionsTest
 linkoptionsTest_SRCS += linkoptionsTest.c
 linkoptionsTest_LIBS += mrfCommon
 TESTS += linkoptionsTest
+endif
+endif
 
 #---------------------
 # Install DBD files
