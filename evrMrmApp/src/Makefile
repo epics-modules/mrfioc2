@@ -11,7 +11,7 @@ include $(TOP)/configure/CONFIG
 PROD_HOST += evrdump
 
 evrdump_SRCS += evrdump.c
-evrdump_LIBS += Com pci iocsh Com
+evrdump_LIBS += Com pci Com
 
 LIBRARY_IOC += evrMrm
 
