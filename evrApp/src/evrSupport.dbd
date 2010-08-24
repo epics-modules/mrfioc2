@@ -81,3 +81,4 @@ device(event,    INST_IO, devEventEVR, "EVR")
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
 
 registrar(asub_evr)
+registrar(EVRTime_Registrar)

@@ -3,63 +3,66 @@
 #include <epicsTime.h>
 
 #include "evrmap.h"
+#include "evr/evr.h"
 
 #include <stdexcept>
 #include <errlog.h>
+#include <epicsTime.h>
+#include <generalTimeSup.h>
 
 #define epicsExportSharedSymbols
 #include "evrGTIF.h"
 
+struct priv {
+    int ok;
+    epicsTimeStamp *ts;
+    int event;
+    priv(epicsTimeStamp *t, int e) : ok(epicsTimeERROR), ts(t), event(e) {}
+};
+
+static
+bool visitTime(priv* p,short,EVR& evr)
+{
+    bool tsok=evr.getTimeStamp(p->ts, p->event);
+    if (tsok) {
+        p->ok=epicsTimeOK;
+        return true;
+    } else
+        return false;
+}
+
 extern "C"
-epicsStatus ErEventInterest(int card, epicsInt32 event, int add)
+epicsShareFunc
+int EVREventTime(epicsTimeStamp *pDest, int event)
 {
 try {
-    EVR *evr=&evrmap.get(card);
-    if (!evr) return -1;
-
-    if (!evr->interestedInEvent(event,add==1))
-        return -1;
-
-    return 0;
-} catch(std::exception& e) {
-    errlogPrintf("Error: ErEventInterest(card=%d,evt=%d,op=%d) => %s\n",
-      card, event, add, e.what());
-    return -2;
-}
-}
-
-extern "C"
-epicsStatus ErGetTimeStamp (epicsInt32 card, epicsInt32 event, epicsTimeStamp* ts)
-{
-try {
-    EVR *evr=&evrmap.get(card);
-    if (!evr || !ts) return -1;
-
-    if (!evr->getTimeStamp(ts, event))
-        return -1;
-
-    return 0;
-} catch(std::exception& e) {
-    errlogPrintf("Error: ErGetTimeStamp(card=%d,evt=%d,ts=*) => %s\n",
-      card, event, e.what());
-    return -2;
+    priv p(pDest, event);
+    evrmap.visit(&p, &visitTime);
+    return p.ok;
+} catch (std::exception& e) {
+    epicsPrintf("EVREventTime failed: %s\n", e.what());
+    return epicsTimeERROR;
 }
 }
 
 extern "C"
-epicsStatus ErGetTicks (int card, epicsUInt32* ticks)
+epicsShareFunc
+int EVRCurrentTime(epicsTimeStamp *pDest)
 {
-try {
-    EVR *evr=&evrmap.get(card);
-    if (!evr || !ticks) return -1;
-
-    if (!evr->getTicks(ticks))
-        return -1;
-
-    return 0;
-} catch(std::exception& e) {
-    errlogPrintf("Error: ErGetTicks(card=%d,ticks=*) => %s\n",
-      card, e.what());
-    return -2;
+    return EVREventTime(pDest, epicsTimeEventCurrentTime);
 }
+
+extern "C"
+epicsShareFunc
+void EVRTime_Registrar()
+{
+    int ret=0;
+    ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
+    ret|=generalTimeEventTpRegister  ("EVR", ER_PROVIDER_PRIORITY, &EVREventTime);
+    if (ret)
+        epicsPrintf("Failed to register EVR time provider\n");
 }
+
+#include <epicsExport.h>
+
+epicsExportRegistrar(EVRTime_Registrar);
