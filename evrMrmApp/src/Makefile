@@ -13,6 +13,13 @@ PROD_HOST += evrdump
 evrdump_SRCS += evrdump.c
 evrdump_LIBS += Com epicspci Com
 
+ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
+ifneq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
+# libiocsh is merged with libCom starting with 3.14.10
+evrdump_LIBS += iocsh
+endif
+endif
+
 LIBRARY_IOC += evrMrm
 
 evrMrm_SRCS += drvemIocsh.c
