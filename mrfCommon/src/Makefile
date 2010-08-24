@@ -59,10 +59,18 @@ INC += dsetshared.h
 
 ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
 ifeq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
+
+# Test framework added in 3.14.10
 TESTPROD_HOST += linkoptionsTest
 linkoptionsTest_SRCS += linkoptionsTest.c
 linkoptionsTest_LIBS += mrfCommon
 TESTS += linkoptionsTest
+
+else
+
+# Added to Base in 3.14.10
+DBDINC += aSubRecord
+mrfCommon_SRCS += aSubRecord.c
 endif
 endif
 
