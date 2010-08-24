@@ -28,6 +28,9 @@ DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
 endif
 endif
 
+# Omitted before 3.14.10
+USR_DBFLAGS += -I $(INSTALL_LOCATION)/db
+
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>
