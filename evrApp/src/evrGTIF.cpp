@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <errlog.h>
 #include <epicsTime.h>
-#include <generalTimeSup.h>
+#include <epicsVersion.h>
 
 #define epicsExportSharedSymbols
 #include "evrGTIF.h"
@@ -52,8 +52,11 @@ int EVRCurrentTime(epicsTimeStamp *pDest)
     return EVREventTime(pDest, epicsTimeEventCurrentTime);
 }
 
+#if EPICS_VERSION==3 && EPICS_REVISION==14 && EPICS_MODIFICATION>=9
+
+#include <generalTimeSup.h>
+
 extern "C"
-epicsShareFunc
 void EVRTime_Registrar()
 {
     int ret=0;
@@ -62,6 +65,12 @@ void EVRTime_Registrar()
     if (ret)
         epicsPrintf("Failed to register EVR time provider\n");
 }
+
+#else
+extern "C"
+void EVRTime_Registrar() {}
+
+#endif
 
 #include <epicsExport.h>
 
