@@ -81,6 +81,20 @@ public:
 
     void append(short id, C& iface){store(id,iface,true);}
 
+    /* visiting the base class does not require a dynamic_cast */
+    template<typename T>
+    void visit(T arg, bool (*fptr)(T,short,C&))
+    {
+        SCOPED_LOCK(mapLock);
+        for(typename mapping_t::iterator it=mapping.begin();
+            it!=mapping.end(); ++it)
+        {
+            if (!fptr(arg, it->first, *it->second))
+                return;
+        }
+    }
+
+    /* visiting a sub-class requires a dynamic_cast */
     template<typename T, class DERV>
     void visit(T arg, bool (*fptr)(T,short,DERV&))
     {
