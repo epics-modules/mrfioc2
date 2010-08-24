@@ -50,6 +50,7 @@
 /*  Include Header Files from the Common Utilities                                                */
 /**************************************************************************************************/
 
+#include <epicsVersion.h>
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
 #include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
 #include  <dbCommon.h>          /* EPICS Common record field definitions                          */
@@ -271,5 +272,12 @@ struct MbbDSET {
 
 #define menuNO    menuYesNoNO
 #define menuYES   menuYesNoYES
+
+/* Compatibility hacks */
+
+/* Older versions (< 3.14.9) of recGblRecordError took a non-const string */
+#if EPICS_VERSION==3 && EPICS_REVISION==14 && EPICS_MODIFICATION<9
+#  define recGblRecordError(ERR, REC, STR) recGblRecordError(ERR, REC, (char*)(STR))
+#endif
 
 #endif
