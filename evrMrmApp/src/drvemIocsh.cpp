@@ -2,6 +2,7 @@
 #include "drvemIocsh.h"
 
 #include <cstdio>
+#include <cstring>
 
 #include <stdexcept>
 #include <map>
@@ -325,7 +326,7 @@ try {
 
   volatile unsigned char* evr;
 
-  if(devBusToLocalAddr(atVMEA32, base, (volatile void**)&evr))
+  if(devRegisterAddress("MRF EVR", atVMEA32, base, 0x20000, (volatile void**)&evr))
   {
     printf("Failed to map address %08x\n",base);
     return;
