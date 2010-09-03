@@ -173,7 +173,7 @@ Overview
 
 \begin_layout Standard
 The purpose of this document is to act as a guide and reference when using
- the 'mrfioc2' EPICS device support for the Micro Research Finland (MRF)
+ the 'mrfioc2' EPICS support module for the Micro Research Finland (MRF)
  timing Event Receiver (EVR).
  Usage of the Event Generator (EVG) is described elsewhere.
 \end_layout
@@ -190,27 +190,21 @@ reference "img:sys:confs"
 ).
  The first is a unidirectional broadcast from a single source (EVG) to multiple
  destinations (EVRs).
- The Repeater devices are simply retransmits the its single input to all
- outputs.
- In the second configuration a return patch from many EVRs back up to a
+ The Repeater devices simply retransmit its single input to all outputs.
+ In the second configuration a return patch from many EVRs back up to single
  central (master) EVR is added.
 \end_layout
 
 \begin_layout Standard
 An EVR will act in one of two roles: either Leaf or Master.
- All, or all but one, EVR will be in the Leaf role.
- The special Master EVR acts as the termination point for events and data
- on the upstream path.
-\end_layout
-
-\begin_layout Standard
-The Master EVR is necessary because, while the generator (EVG) is capable
- of receiving an event stream, it does not impliment most of the features
- of the receiver (EVR).
+ The Master EVR is necessary because, while the generator (EVG) is capable
+ of receiving an event stream, it does not impliment the features of the
+ receiver (EVR).
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement bh
 wide false
 sideways false
 status collapsed
@@ -258,7 +252,7 @@ name "img:sys:confs"
 What is transmitted over the event link is a combination of 8-bit event
  codes and data.
  Data can take the form of a single 8-bit byte which is simply copied from
- sender to receiver (Distributed Bus or DBus), and optionally a variable
+ sender to receiver (the Distributed Bus or DBus), and optionally a variable
  length byte array (Data Buffer).
 \end_layout
 
@@ -271,11 +265,11 @@ reference "img:wire:frames"
 
 \end_inset
 
-) depending on whether or not the data buffer transmission feature is used.
+) depending on whether or not the Data Buffer feature is used.
  In configuration A every 16-bit frame is split between an 8-bit event and
  the 8-bit Distributed Bus.
  In configuration B every frame carries an 8-bit event with the Distributed
- Bus and Data Buffer sent in alternating frames.
+ Bus or a Data Buffer byte sent in alternating frames.
 \end_layout
 
 \begin_layout Standard
@@ -330,7 +324,7 @@ name "img:wire:frames"
 \end_layout
 
 \begin_layout Standard
-Internally an EVR can be thought of a number of logical sub-units (Fig.
+Internally an EVR can be thought of as a number of logical sub-units (Fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -405,8 +399,30 @@ In addition, the Mapping Ram can force a Pulse Generator into either state
 \end_layout
 
 \begin_layout Standard
-Note: Some Pulse Generators do not have a prescaler.
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ Some Pulse Generators do not have a prescaler.
  In this case the prescaler property will always read 0 instead of >=1.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -415,7 +431,7 @@ Event Mapping Ram
 
 \begin_layout Standard
 The Event Mapping Ram is a table used to define the actions to be taken
- by an EVR when it receives a certain event code number.
+ by an EVR when it receives a particular event code number.
  The mapping it defines is a many-to-many relations.
  One event can cause several actions, and one action can be caused by several
  events.
@@ -425,7 +441,27 @@ The Event Mapping Ram is a table used to define the actions to be taken
 The actions which can be taken can be grouped into two catagories: Special
  actions, and Pulse Generator actions.
  Special actions include those related to timestamp distribution, and the
- system heartbeat tick.
+ system heartbeat tick (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:spec:mappings"
+
+\end_inset
+
+ for a complete list).
  Each Pulse Generater has three mapable actions: Set (force active), Reset
  (force inactive), and Trigger (start delay program).
  Most applications will use Trigger mappings.
@@ -436,9 +472,9 @@ Prescalers (Clock Divider)
 \end_layout
 
 \begin_layout Standard
-Prescaler sub-units take the local system clock frequency and output a lower
- frequency clock which is phased locked to the local clock, which is in
- sync with the global master clock.
+Prescaler sub-units take the EVR's local oscillator and output a lower frequency
+ clock which is phased locked to the local clock, which is in sync with
+ the global master clock.
  The lower frequency will be an integer divisor of the system clock.
 \end_layout
 
@@ -449,7 +485,27 @@ Outputs (TTL)
 \begin_layout Standard
 This sub-unit represents a local physical output on the EVR.
  Each output may be connected to one source: a Distributed Bus bit, a Prescaler,
- or a Pulse Generator.
+ or a Pulse Generator (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:out:mappings"
+
+\end_inset
+
+ for a complete list).
 \end_layout
 
 \begin_layout Subsection
@@ -463,16 +519,17 @@ Current Mode Logic outputs can send a bit pattern at the bit rate of the
 \end_layout
 
 \begin_layout Standard
-.
- As four 20 bit sub-patterns (rising, high, falling, and low).
- The rising and falling patterns are transmitted when the output level changes,
- while the high and low patterns are repeated until the level changes.
- .
+As four 20 bit sub-patterns (rising, high, falling, and low).
  As two times (high and low).
  These specify a square wave with variable frequency and duty factor.
- .
  As an arbitrary bit pattern (<= 40940 bits) which begins when the output
  goes [TODO: high or low?].
+\end_layout
+
+\begin_layout Standard
+In the sub-pattern mode.
+ The rising and falling patterns are transmitted when the output level changes,
+ while the high and low patterns are repeated inbetween level changes.
 \end_layout
 
 \begin_layout Subsection
@@ -480,7 +537,7 @@ Inputs
 \end_layout
 
 \begin_layout Standard
-An input can cause several actions when triggered by a local signal.
+An EVR's local TTL input can cause several actions when triggered.
  It may be directly connected to one of the upstream Distributed Bus bits,
  it may cause an event to be sent on the upstream links, or applied to the
  local Mapping Ram.
@@ -492,7 +549,7 @@ Global Timestamp Reception
 
 \begin_layout Standard
 Each EVR receives synchronous time broadcasts from an EVG.
- The driver may query the current time at any point.
+ Software may query the current time at any point.
  The arrival time of certain event codes can be saved as well.
  This can be accomplished with the 'event' record device support.
 \end_layout
@@ -822,6 +879,13 @@ drvemIocsh.cpp'.
 
 \begin_layout Section
 Supported Hardware
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:supported"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1216,8 +1280,8 @@ status open
 \series bold
 Note:
 \series default
- VME64x allows for jumpless configuration of the card, but can not automatically
- assign resources.
+ VME64x allows for jumpless configuration of the card, but not automatically
+ assignment of resources.
  Selection of an unused address range and IRQ level/vector is necessarily
  left to the user.
 \end_layout
@@ -1326,9 +1390,29 @@ Example Databases
 \end_layout
 
 \begin_layout Standard
-The MRFIOC2 includes example database templates several devices (see the
- supported hardware section).
- While fully functional it is expected that most sites will modify them.
+The MRFIOC2 module includes example database templates for all supported
+ devices (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:supported"
+
+\end_inset
+
+).
+ While fully functional it is expected that most sites will make modifications.
  It is suggested that the original be left unchanged and a copy be made
  with the institute name and other information as a suffix.
  (evr-pmc-230.substitutions becomes evr-pmc-230-nsls2.substitutions).
@@ -1342,8 +1426,8 @@ The authors would like to encouraged users to submit their customized databases
 \begin_layout Standard
 The templates consist of a substitutions file for each model (PMC, cPCI,
  VME-RF).
- This template instanciates the correct number of records for the number
- of inputs/outputs found on each device.
+ This template instanciates the correct number of records for the inputs/outputs
+ found on each device.
  It also includes entries for event mappings and database events which will
  be frequent targets for customization.
 \end_layout
@@ -1352,7 +1436,7 @@ The templates consist of a substitutions file for each model (PMC, cPCI,
 Each substitutions file will be expanded during the build process with the
  MSI utility to create a database file with two undefined macros (P and
  C).
- 'P' is the common prefix shared by all pvs and must be unique in the system.
+ 'P' is the common prefix shared by all PVs and must be unique in the system.
  'C' is a card number also given as the first argument of one of the mrmEvrSetup
 *() IOC shell functions (unique in each IOC).
 \end_layout
@@ -1399,21 +1483,21 @@ PCI Setup in Linux
 \begin_layout Standard
 In order to use PCI EVRs in the Linux operating system a small kernel driver
  must be built and loaded.
- The source for this driver is found in 'mrmShared/linux'.
+ The source for this driver is found in 'mrmShared/linux/'.
  This directory contains a Makefile for use by the Linux kernel build system
  (not EPICS).
 \end_layout
 
 \begin_layout Standard
 To build the driver you must have access to a configured copy of the kernel
- source used to build the kernel into which the driver will be loaded.
- If the build and host systems are the same then the default location will
- likely be '/lib/modules/`uname -r`/build'.
+ source used to build the target system's kernel.
+ If the build and target systems use the same kernel, then the location
+ will likely be '/lib/modules/`uname -r`/build'.
  In case of a cross-built kernel the location will be elsewhere.
 \end_layout
 
 \begin_layout Standard
-To build the module for use on the host computer:
+To build the module for use on the host system:
 \end_layout
 
 \begin_layout Standard
@@ -1482,7 +1566,14 @@ ARCH=arm CROSS_COMPILE=/usr/local/bin/arm-
 
 \begin_layout Plain Layout
 
-INSTALL_MOD_PATH=/location/of/target/root
+INSTALL_MOD_PATH=/location/of/target/root 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+modules_install
 \end_layout
 
 \end_inset
@@ -1491,8 +1582,8 @@ INSTALL_MOD_PATH=/location/of/target/root
 \end_layout
 
 \begin_layout Standard
-Once the module is installed you must create the special device file associated
- with each EVR.
+Once the module is installed on the running target the special device file
+ associated with each EVR must be created.
  If your target system is running UDEV this may happen automatically, if
  not then you must do the following.
 \end_layout
@@ -1553,7 +1644,7 @@ Note:
 \series default
  UIO numbers are not considered during setup since these may change after
  a reboot.
- To unsure repeatability only PCI immutable ID fields and the address triplet
+ To ensure repeatability only PCI immutable ID fields and the address triplet
  (bus:device.function) are used.
 \end_layout
 
@@ -1567,10 +1658,10 @@ Device Support Design
 \end_layout
 
 \begin_layout Standard
-The EPICS device support package for EVRs consists of a number of supports
- which are generally tied to a specific logical sub-unit.
+The EPICS support module for EVRs consists of a number of supports which
+ are generally tied to a specific logical sub-unit.
  Each sub-unit may be thought of as having a number of properties.
- For example a Delay Generator has properties 'Delay' and 'Width'.
+ For example each Delay Generator has properties 'Delay' and 'Width'.
  These properties can be set in several ways.
  A delay can specified as an integer number of ticks of its reference clock
  (hardware view), or in seconds as a floating point number (user view).
@@ -1678,37 +1769,27 @@ record(ao, "$(P)$(N)delay:set") {
 
 \begin_layout Plain Layout
 
-	field(VAL , 0) field(EGU , "uSec")
+	field(VAL , 0)
 \end_layout
 
 \begin_layout Plain Layout
 
-	field(LINR, "LINEAR") field(ESLO, 1e6)
+	field(EGU , "us")
 \end_layout
 
 \begin_layout Plain Layout
 
-	field(PREC, 6) field(FLNK, "$(P)$(N)delay")
+	field(LINR, "LINEAR")
 \end_layout
 
 \begin_layout Plain Layout
 
-}
+	field(ESLO, 1e6)
 \end_layout
 
 \begin_layout Plain Layout
 
-record(longout, "$(P)$(N)delay:set:raw") {
-\end_layout
-
-\begin_layout Plain Layout
-
-	field(DTYP, "EVR Pulser")
-\end_layout
-
-\begin_layout Plain Layout
-
-	field(OUT , "@C=$(C), I=$(PID), P=Delay")
+	field(PREC, 6)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1738,17 +1819,32 @@ record(ai, "$(P)$(N)delay") {
 
 \begin_layout Plain Layout
 
-	field(UDF , 0) field(EGU , "uSec")
+	field(UDF , 0)
 \end_layout
 
 \begin_layout Plain Layout
 
-	field(LINR, "LINEAR") field(ESLO, 1e6)
+	field(EGU , "us")
 \end_layout
 
 \begin_layout Plain Layout
 
-	field(PREC, 6) field(FLNK, "$(P)$(N)delay:raw")
+	field(LINR, "LINEAR")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(ESLO, 1e6)
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(PREC, 6)
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(FLNK, "$(P)$(N)delay:raw")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1782,11 +1878,12 @@ record(longin, "$(P)$(N)delay:raw") {
 \end_layout
 
 \begin_layout Standard
-This provides "raw" and "cooked" setting and readback for the delay property.
+This provides setting in engineering units and readbacks in both EGU and
+ raw for the delay property.
 \end_layout
 
 \begin_layout Standard
-It is generally inadvisible to have both "raw" and "cooked" settings in
+It is generally inadvisible to have both raw and engineering settings in
  a production database unless steps are taken to synchronize them.
 \end_layout
 
@@ -1828,6 +1925,14 @@ Master enable for the EVR.
  If not set then very little will happen.
 \end_layout
 
+\begin_layout Standard
+If disabled, an EVR will automatically enable when the event link becomes
+ active.
+ This allows for bumpless cold starts.
+ For this reason the enable property should be included in any autosave
+ request files.
+\end_layout
+
 \begin_layout Subsubsection
 PLL Lock Status
 \end_layout
@@ -1842,8 +1947,14 @@ This indicates whether the phase locked loop which synchronizes an EVR's
 \end_layout
 
 \begin_layout Standard
-Except for immediately after a change to the fractional synthesizer this
- should always read as true (locked).
+Except for immediately (
+\begin_inset Formula $\ll1sec$
+\end_inset
+
+) after a change to the fractional synthesizer this property should always
+ read as true (locked).
+ Reading false for longer then one second is likely an indication that the
+ fractional synthesize is misconfigure, or that a hardware fault has occured.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1855,7 +1966,7 @@ Implimented for: bi
 \end_layout
 
 \begin_layout Standard
-Indicates that the event link is active.
+Indicates when the event link is active.
  This means that the receiver sees light, that the phase is locked, and
  that valid data is being received from the EVG.
 \end_layout
@@ -1863,7 +1974,7 @@ Indicates that the event link is active.
 \begin_layout Standard
 A reading of false may be caused by a number of conditions including: EVG
  down, fiber unplugged or broken, and/or incorrent fractional synthesizer
- setting.
+ frequency.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1901,7 +2012,7 @@ Implimented for: ao, ai
 \begin_layout Standard
 Frequency of an EVR's local oscilator.
  This must be close enough to the EVG master oscilator to allow the phase
- locked loop to lock.
+ locked loop in the EVR to lock.
 \end_layout
 
 \begin_layout Standard
@@ -1923,17 +2034,29 @@ Determines what causes the timestamp event counter to tick.
  There are three possible values.
 \end_layout
 
-\begin_layout Standard
-"Event clock" (0) uses an integer divisor of the EVR's local oscilator.
+\begin_layout Description
+Event
+\begin_inset space ~
+\end_inset
+
+clock Use an integer divisor of the EVR's local oscilator.
 \end_layout
 
-\begin_layout Standard
-"Mapped code(s)" (1) increments the counter whenever certain events arrive.
+\begin_layout Description
+Mapped
+\begin_inset space ~
+\end_inset
+
+code(s) Increments the counter whenever certain events arrive.
  These codes can be defined using special mapping records.
 \end_layout
 
-\begin_layout Standard
-"DBus 4" uses increments on the 0->1 transition of DBus bit #4.
+\begin_layout Description
+DBus
+\begin_inset space ~
+\end_inset
+
+4 Increments on the 0->1 transition of DBus bit #4.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1957,13 +2080,13 @@ This setting is used in conjunction with the 'Timestamp Source'.
 When the timestamp source is set to "Event clock" this property is used
  to compute an integer divider from the EVR's local oscilator frequency
  to the given frequency.
- Since this may not be exact it is possible to read back the actual divider
+ Since this may not be exact it is recommended to read back the actual divider
  setting via the "Timestamp Prescaler" property.
 \end_layout
 
 \begin_layout Standard
-In all modes this value is used to convert the timestamp event counter values
- from ticks to seconds.
+In all modes this value is stored in memory and used to convert the timestamp
+ event counter values from ticks to seconds.
 \end_layout
 
 \begin_layout Standard
@@ -2021,7 +2144,7 @@ Implimented for: longin
 \end_layout
 
 \begin_layout Standard
-Counts the number of event link errors which occur.
+The number of event link errors which have occurred.
 \end_layout
 
 \begin_layout Subsection
@@ -2050,9 +2173,9 @@ Implimented for: bo, bi
 \end_layout
 
 \begin_layout Standard
-When not set the output of the Pulse Generator will remain in its inactive
+When not set, the output of the Pulse Generator will remain in its inactive
  state (normally low).
- It must be set before mapped actions will have any effect.
+ The generator must be enabled before mapped actions will have any effect.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2078,8 +2201,8 @@ Implimented for: longout, longin
 \end_layout
 
 \begin_layout Standard
-Increses the resolution of both delay and width by an integer multiple.
- Determines the tick rate of the down counters used for delay and width
+Decreases the resolution of both delay and width by an integer multiple.
+ Determines the tick rate of the internal counters used for delay and width
  with respect to the EVR's local oscillator.
 \end_layout
 
@@ -2176,6 +2299,13 @@ See: evrMrmApp/Db/mrmevrout.db
 
 \begin_layout Subsubsection
 Map
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:out:mappings"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2776,7 +2906,7 @@ Implimented for: bo, bi
 \end_layout
 
 \begin_layout Standard
-Current on.
+Current driver on.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2865,8 +2995,13 @@ Implimented for: longout, longin, ao, ai
 \end_layout
 
 \begin_layout Standard
-Stores a value (>20) which is the number of counts (long) or time (analog)
- of the high or low part of a square wave.
+Stores a value which is the number of counts (long) or time (analog) of
+ the high or low part of a square wave.
+\end_layout
+
+\begin_layout Standard
+The number of ticks must be >20 and the time must be greater then one period
+ of the event clock.
 \end_layout
 
 \begin_layout Subsection
@@ -3032,7 +3167,7 @@ record(longout, "$(P)$(N)$(M)") {
 
 \begin_layout Plain Layout
 
-	field( OUT , "@C=$(C), I=$(PID), Func=S$(F)")
+	field( OUT , "@C=$(C), I=$(PID), Func=$(F)")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3047,7 +3182,12 @@ record(longout, "$(P)$(N)$(M)") {
 
 \begin_layout Plain Layout
 
-	field( VAL , "$(EVT)") field( LOPR, "0")
+	field( VAL , "$(EVT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( LOPR, "0")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3066,13 +3206,20 @@ record(longout, "$(P)$(N)$(M)") {
 \end_layout
 
 \begin_layout Standard
-In this example the event '$(EVT)' in the 'VAL' field will cause function
- '$(F)' on Pulse Generator '$(PID)'.
+In this example the event '$(EVT)' specified in the 'VAL' field will cause
+ function '$(F)' on Pulse Generator #'$(PID)'.
  Current functions are 'Trig', 'Reset', and 'Set'.
 \end_layout
 
 \begin_layout Subsubsection
 Special Function Mapping
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:spec:mappings"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3164,6 +3311,62 @@ FIFO Bypass the automatic allocation mechanism and always include this code
  in the event FIFO.
 \end_layout
 
+\begin_layout Standard
+In the following example the front panel LED on the EVR will blink whenever
+ event 14 is received.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(longout, "$(P)map:blink") {
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DTYP, "EVR Mapping" )
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( OUT , "@C=$(C), Func=Blink")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( PINI, "YES")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( VAL , "14")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( LOPR, "0")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( HOPR, "255")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Database Events
 \end_layout
@@ -3196,7 +3399,12 @@ record(event, "$(P)$(N)") {
 
 \begin_layout Plain Layout
 
-	field(DTYP, "EVR") field(SCAN, "I/O Intr")
+	field(DTYP, "EVR")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(SCAN, "I/O Intr")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3221,17 +3429,22 @@ record(calc, "$(P)$(N):count") {
 
 \begin_layout Plain Layout
 
-	field(SCAN, "Event") field(CALC, "A+1")
-\end_layout
-
-\begin_layout Plain Layout
-
-	field(INPA, "$(P)$(N):count NPP")
+	field(SCAN, "Event")
 \end_layout
 
 \begin_layout Plain Layout
 
 	field(EVNT, "$(EVNT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(CALC, "A+1")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(INPA, "$(P)$(N):count NPP")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3247,10 +3460,35 @@ record(calc, "$(P)$(N):count") {
 \begin_layout Standard
 In this example the hardware event code '$(CODE)' will cause the database
  event '$(EVNT)'.
- Note that while both '$(CODE)' and '$(EVNT)' are numbers, they need not
- be the same.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ that while both '$(CODE)' and '$(EVNT)' are numbers, they need not be the
+ same.
  Hardware code 21 can cause DB event 40.
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
