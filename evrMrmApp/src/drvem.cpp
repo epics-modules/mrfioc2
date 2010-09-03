@@ -24,6 +24,16 @@
 
 #define DBG evrmrmVerb
 
+/* finite() vs. isfinite()
+ *
+ * Linux (Glibc) and RTEMS provides both
+ * Linux (uClibc) provides only isfinite()
+ * vxWorks provides only finite()
+ */
+#ifdef vxWorks
+#  define isfinite finite
+#endif
+
 /*  Backwards Compatability with R3.14.9 */
 #ifndef POSIX_TIME_AT_EPICS_EPOCH
 #define POSIX_TIME_AT_EPICS_EPOCH 631152000u
