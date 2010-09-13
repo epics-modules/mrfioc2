@@ -24,6 +24,7 @@ iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
 evrApp_DEPEND_DIRS += mrfCommon
 evgApp_DEPEND_DIRS += mrfCommon
+evgBasicSequenceApp_DEPEND_DIRS += mrfCommon evgApp
 
 mrmShared_DEPEND_DIRS += mrfCommon
 
