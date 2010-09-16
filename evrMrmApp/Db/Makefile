@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 
 DB += mrmevrout.db
 DB += mrmevrbufrx.db
+DB += sequencedemo.db
 
 DB += evr-pmc-230.db
 DB += evr-vmerf-230.db

@@ -1,0 +1,11 @@
+
+record(seq, "$(P)demo:reset") {
+  field(LNK1, "$(P)evta:count")
+  field(LNK2, "$(P)evtb:count")
+  field(LNK3, "$(P)evtc:count")
+  field(LNK4, "$(P)evtd:count")
+  field(LNK5, "$(P)evte:count")
+  field(LNK6, "$(P)evtf:count")
+  field(LNK7, "$(P)evtg:count")
+  field(LNK8, "$(P)evth:count")
+}
