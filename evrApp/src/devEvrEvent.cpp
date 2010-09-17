@@ -148,7 +148,7 @@ static long read_event(eventRecord *precord)
   long ret=0;
 try {
 
-  if(prec->tse==2){
+  if(prec->tse==epicsTimeEventDeviceTime){
     p->evr->getTimeStamp(&prec->time,p->event);
   }
 
