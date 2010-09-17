@@ -6,6 +6,7 @@ record(event, "$(P)$(N)") {
   field(SCAN, "I/O Intr")
   field(INP , "@Card=$(C),Code=$(CODE)")
   field(VAL , "$(EVNT)")
+  field(TSE , "-2") # from device support
   info(autosaveFields_pass0, "INP VAL")
 }
 
@@ -14,4 +15,5 @@ record(calc, "$(P)$(N):count") {
   field(CALC, "A+1")
   field(INPA, "$(P)$(N):count NPP")
   field(EVNT, "$(EVNT)")
+  field( TSE, "$(CODE)")
 }
