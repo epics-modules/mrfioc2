@@ -31,4 +31,5 @@ evgDbus::setDbusMap(epicsUInt16 map) {
 	WRITE32(m_pReg, DBusMap, dbusMap);
 
 	return OK;
-} 
+}
+ 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <map>
 
 #include <mbboRecord.h>
 #include <devSup.h>
@@ -10,6 +11,19 @@
 #include "dsetshared.h"
 
 #include <evgInit.h>
+
+static std::map<std::string, epicsUInt32> strToEnum;
+
+static long 
+init(int after) {
+	if(!after) {
+		strToEnum["None_Output"] = 0;
+		strToEnum["FP_Output"] = 1;
+		strToEnum["Univ_Output"] = 2;
+	}
+	
+	return 0;
+}
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -23,20 +37,18 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 		
 		std::string parm(lnk->value.vmeio.parm);
-		evgOutput* out = evg->getOutput(lnk->value.vmeio.signal, parm);
-		if(!out)
-			throw std::runtime_error("ERROR: Failed to lookup Output");
-
+		evgOutput* out = evg->getOutput(lnk->value.vmeio.signal, 
+										(OutputType)strToEnum[parm]);
 		pRec->dpvt = out;	
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -57,11 +69,23 @@ init_mbbo(mbboRecord* pmbbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbbo(mbboRecord* pmbbo) {
-	if(!pmbbo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgOutput* out = (evgOutput*)pmbbo->dpvt;
-	return out->setOutMap(pmbbo->rval);
+	try {
+		evgOutput* out = (evgOutput*)pmbbo->dpvt;
+		if(!out)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = out->setOutMap(pmbbo->rval);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
@@ -69,12 +93,12 @@ write_mbbo(mbboRecord* pmbbo) {
 extern "C" {
 
 common_dset devMbboEvgOutMap = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbbo,
-    NULL,
-    (DEVSUPFUN)write_mbbo,
+	5,
+	NULL,
+	(DEVSUPFUN)init,
+	(DEVSUPFUN)init_mbbo,
+	NULL,
+	(DEVSUPFUN)write_mbbo,
 };
 epicsExportAddress(dset, devMbboEvgOutMap);
 

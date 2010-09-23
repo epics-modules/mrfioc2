@@ -1,6 +1,7 @@
 #include "evgSoftEvt.h"
 
 #include <errlog.h> 
+#include <stdexcept>
 
 #include <mrfCommonIO.h> 
 #include <mrfCommon.h> 
@@ -8,7 +9,8 @@
 #include "evgRegMap.h"
 
 evgSoftEvt::evgSoftEvt(volatile epicsUInt8* const pReg):
-m_pReg(pReg) {
+m_pReg(pReg),
+m_lock() {
 }
 
 epicsStatus 
@@ -24,26 +26,23 @@ evgSoftEvt::enable(bool ena){
 
 bool 
 evgSoftEvt::enabled() {
-	epicsUInt8 swEvtCtrl = READ8(m_pReg, SwEventControl);
-	return swEvtCtrl & SW_EVT_ENABLE;
+	return READ8(m_pReg, SwEventControl) & SW_EVT_ENABLE;
 }
 
 
 bool 
 evgSoftEvt::pend() {
-	epicsUInt8 swEvtCtrl = READ8(m_pReg, SwEventControl);
-	return swEvtCtrl & SW_EVT_PEND;
+	return READ8(m_pReg, SwEventControl) & SW_EVT_PEND;
 }
 
 	
 epicsStatus 
 evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {
-	if(evtCode < 0 || evtCode > 255) {
-		errlogPrintf("ERROR: Event Code out of range.\n");
-		return ERROR;		
-	}
+	if(evtCode > 255)
+		throw std::runtime_error("Event Code out of range.");
 
-	//TODO: if(pend == 0), write in an atomic step to SwEvtCode register. 
+	SCOPED_LOCK(m_lock);
+	while(pend() == 1);
 	WRITE8(m_pReg, SwEventCode, evtCode);
 	return OK; 
 }

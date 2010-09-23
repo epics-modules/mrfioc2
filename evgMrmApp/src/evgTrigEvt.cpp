@@ -1,6 +1,7 @@
 #include "evgTrigEvt.h"
 
 #include <iostream>
+#include <stdexcept>
 
 #include <errlog.h>
 
@@ -39,7 +40,10 @@ evgTrigEvt::getEvtCode() {
 }
 
 epicsStatus
-evgTrigEvt::setEvtCode(epicsUInt8 evtCode) {
+evgTrigEvt::setEvtCode(epicsUInt32 evtCode) {
+	if(evtCode > 255)
+		throw std::runtime_error("Event Code out of range.");
+
 	WRITE8(m_pReg, TrigEventCode(m_id), evtCode);
 	return OK;
 }

@@ -25,19 +25,16 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 			
 		evgTrigEvt*  trigEvt = evg->getTrigEvt(lnk->value.vmeio.signal);
-		if(!trigEvt)
-			throw std::runtime_error("ERROR: Failed to lookup Trig Evt");
-
 		pRec->dpvt = trigEvt;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -69,11 +66,23 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo(boRecord* pbo) {
-	if(!pbo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgTrigEvt* trigEvt = (evgTrigEvt*)pbo->dpvt;
-	return trigEvt->enable(pbo->val);
+	try {
+		evgTrigEvt* trigEvt = (evgTrigEvt*)pbo->dpvt;
+		if(!trigEvt)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = trigEvt->enable(pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
@@ -81,11 +90,23 @@ write_bo(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo(longoutRecord* plo) {
-	if(!plo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgTrigEvt* trigEvt = (evgTrigEvt*)plo->dpvt;
-	return trigEvt->setEvtCode(plo->val);
+	try {
+		evgTrigEvt* trigEvt = (evgTrigEvt*)plo->dpvt;
+		if(!trigEvt)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = trigEvt->setEvtCode(plo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 

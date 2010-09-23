@@ -28,7 +28,7 @@ public:
 private:
 	volatile epicsUInt8* const		m_pReg;
 	epicsFloat64					m_RFref;		//In MHz
-    epicsFloat64          			m_fracSynFreq;	// In MHz
+	epicsFloat64          			m_fracSynFreq;	// In MHz
 };
 
 #endif //EVG_EVTCLK_H

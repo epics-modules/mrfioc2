@@ -11,7 +11,7 @@ public:
 	bool enabled();
 	epicsStatus enable(bool);
 
-	epicsStatus setEvtCode(epicsUInt8);
+	epicsStatus setEvtCode(epicsUInt32);
 	epicsUInt8 getEvtCode();
 
 private:

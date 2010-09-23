@@ -9,7 +9,8 @@
 
 #include "evgRegMap.h"
 
-evgOutput::evgOutput(const epicsUInt32 id, volatile epicsUInt8* const pReg, const OutputType type):
+evgOutput::evgOutput(const epicsUInt32 id, volatile epicsUInt8* const pReg,
+			 		const OutputType type):
 m_id(id),
 m_pReg(pReg),
 m_type(type) {
@@ -27,8 +28,7 @@ m_type(type) {
 			break;
 
 		default:
-				throw std::runtime_error("EVG Wrong I/O type");
-			break;
+				throw std::runtime_error("Wrong EVG Output type");
 	}
 }
 
@@ -49,6 +49,9 @@ evgOutput::setOutMap(epicsUInt16 map) {
 			WRITE16(m_pReg, UnivOutMap(m_id), map);
 			ret = OK;
 			break;
+
+		default:
+				throw std::runtime_error("Wrong EVG Ouput type");
 	}
 	
 	return ret;

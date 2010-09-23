@@ -23,19 +23,16 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);		
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 
 		evgDbus* dbus = evg->getDbus(lnk->value.vmeio.signal);
-		if(!dbus)
-			throw std::runtime_error("ERROR: Failed to lookup Dbus");
-
 		pRec->dpvt = dbus;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -57,11 +54,23 @@ init_mbbo(mbboRecord* pmbbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbbo(mbboRecord* pmbbo) {
-	if(!pmbbo->dpvt)
-		return -1;
+	long ret = 0;
+	
+	try {
+		evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
+		if(!dbus)
+			throw std::runtime_error("Device pvt field not initialized");
 
-	evgDbus* dbus = (evgDbus*)pmbbo->dpvt;
-	return dbus->setDbusMap(pmbbo->val);
+		ret = dbus->setDbusMap(pmbbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 

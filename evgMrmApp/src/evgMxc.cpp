@@ -49,10 +49,8 @@ evgMxc::getMxcPrescaler() {
 
 epicsStatus 
 evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
-	if(preScaler == 0 || preScaler == 1) {
-		printf("ERROR: Invalid preScaler value in Multiplexed Counter : %d\n", preScaler);
-		return ERROR;
-	}
+	if(preScaler == 0 || preScaler == 1)
+		throw std::runtime_error("Invalid preScaler value in Multiplexed Counter");
 
 	WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 	return OK;
@@ -69,7 +67,8 @@ evgMxc::setMxcFreq(epicsFloat64 freq) {
 
 epicsFloat64 
 evgMxc::getMxcFreq() {
-	epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getEvtClkSpeed() * pow(10, 6);
+	epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getEvtClkSpeed()
+ 																	* pow(10, 6);
 	epicsFloat64 preScaler = (epicsFloat64)getMxcPrescaler();
 	return clkSpeed/preScaler;	
 }
@@ -81,10 +80,9 @@ evgMxc::getMxcTrigEvtMap() {
 
 epicsStatus
 evgMxc::setMxcTrigEvtMap(epicsUInt16 map) {
-	if(map > 255) {
-		errlogPrintf("ERROR: EVG Mxc Trig Event Map value too large.\n");
-		return ERROR;
-	}
+	if(map > 255)
+		throw std::runtime_error("EVG Mxc Trig Event Map value too large.");
+
 	WRITE8(m_pReg, MuxTrigMap(m_id), map);
 	return OK;
 }

@@ -2,6 +2,7 @@
 #define EVG_SOFTEVT_H
 
 #include <epicsTypes.h>
+#include <epicsMutex.h>
 
 class evgSoftEvt {
 
@@ -17,6 +18,7 @@ public:
 
 private:
 	volatile epicsUInt8* const	m_pReg;
+	epicsMutex 					m_lock;
 
 };
 

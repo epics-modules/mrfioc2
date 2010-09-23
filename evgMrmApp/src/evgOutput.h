@@ -4,7 +4,8 @@
 #include <epicsTypes.h>
 
 enum OutputType {
-	FP_Output = 0,
+	None_Output = 0,
+	FP_Output,
 	Univ_Output
 };
 

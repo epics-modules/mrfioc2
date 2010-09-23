@@ -24,19 +24,19 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 		
 		evgSoftEvt* softEvt = evg->getSoftEvt();
 		if(!softEvt)
-			throw std::runtime_error("ERROR: Failed to lookup EVG Soft Evt");
+			throw std::runtime_error("Failed to lookup EVG Soft Evt");
 	
 		pRec->dpvt = softEvt;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -64,22 +64,46 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enable(boRecord* pbo) {
-	if(!pbo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgSoftEvt* softEvt = (evgSoftEvt*)pbo->dpvt;
-	return softEvt->enable(pbo->val);
+	try {
+		evgSoftEvt* softEvt = (evgSoftEvt*)pbo->dpvt;
+		if(!softEvt)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = softEvt->enable(pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	longout - Software Event Code	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_setEvtCode(longoutRecord* plo) {
-	if(!plo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgSoftEvt* softEvt = (evgSoftEvt*)plo->dpvt;
-	return softEvt->setEvtCode(plo->val);
+	try {
+		evgSoftEvt* softEvt = (evgSoftEvt*)plo->dpvt;
+		if(!softEvt)
+			throw std::runtime_error("Device pvt field not initialized");
+		
+		ret = softEvt->setEvtCode(plo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	device support entry table 	**/

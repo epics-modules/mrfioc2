@@ -28,19 +28,16 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);	
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 	
 		evgMxc* mxc = evg->getMuxCounter(lnk->value.vmeio.signal);
-		if(!mxc)
-			throw std::runtime_error("ERROR: Failed to lookup MXC");
-
 		pRec->dpvt = mxc;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -100,11 +97,23 @@ init_mbboD(mbboDirectRecord* pmbboD) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo(boRecord* pbo) {
-	if(!pbo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pbo->dpvt;
-	return mxc->setMxcOutPolarity(pbo->val);
+	try {
+		evgMxc* mxc = (evgMxc*)pbo->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = mxc->setMxcOutPolarity(pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
@@ -112,12 +121,24 @@ write_bo(boRecord* pbo) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 read_bi(biRecord* pbi) {
-	if(!pbi->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pbi->dpvt;
-	pbi->rval = mxc->getMxcOutStatus();
-	return 0;
+	try {
+		evgMxc* mxc = (evgMxc*)pbi->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pbi->rval = mxc->getMxcOutStatus();
+		ret = 0;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
@@ -125,47 +146,95 @@ read_bi(biRecord* pbi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_li(longinRecord* pli) {
-	if(!pli->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pli->dpvt;
-	pli->val = mxc->getMxcPrescaler();
-	return 0;
+	try {
+		evgMxc* mxc = (evgMxc*)pli->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pli->val = mxc->getMxcPrescaler();
+		ret = 0;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	ao - Multiplexed Counter Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao(aoRecord* pao) {
-	if(!pao->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pao->dpvt;
-	return mxc->setMxcFreq(pao->val);
+	try {
+		evgMxc* mxc = (evgMxc*)pao->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = mxc->setMxcFreq(pao->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
 /** 	ai - Multiplexed Counter Frequency	**/
 /*returns: (0,2)=>(success,success no convert)*/
-static long 
+static long
 write_ai(aiRecord* pai) {
-	if(!pai->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pai->dpvt;
-	pai->val = mxc->getMxcFreq();
-	return 2;
+	try {
+		evgMxc* mxc = (evgMxc*)pai->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pai->val = mxc->getMxcFreq();
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	mbboDirect - Multiplexed Counter Event Trigger Map **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD(mbboDirectRecord* pmbboD) {
-	if(!pmbboD->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgMxc* mxc = (evgMxc*)pmbboD->dpvt;
-	return mxc->setMxcTrigEvtMap(pmbboD->val);
+	try {
+		evgMxc* mxc = (evgMxc*)pmbboD->dpvt;
+		if(!mxc)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = mxc->setMxcTrigEvtMap(pmbboD->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 

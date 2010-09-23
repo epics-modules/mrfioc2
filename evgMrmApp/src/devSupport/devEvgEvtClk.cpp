@@ -24,19 +24,19 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);		
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 
 		evgEvtClk* evtClk = evg->getEvtClk();
 		if(!evtClk)
-			throw std::runtime_error("ERROR: Failed to lookup EVG Event Clock");
+			throw std::runtime_error("Failed to lookup EVG Event Clock");
 
 		pRec->dpvt = evtClk;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -80,56 +80,116 @@ init_lo(longoutRecord* plo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_evtClkSrc(boRecord* pbo) {
-	if(!pbo->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgEvtClk* evtClk = (evgEvtClk*)pbo->dpvt;
-	return evtClk->setEvtClkSrc(pbo->val);
+	try {
+		evgEvtClk* evtClk = (evgEvtClk*)pbo->dpvt;
+		if(!evtClk)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = evtClk->setEvtClkSrc(pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		ao - RF Input Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao_RFref(aoRecord* pao) {
-	if(!pao->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
-	return evtClk->setRFref(pao->val);
+	try {
+		evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
+		if(!evtClk)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = evtClk->setRFref(pao->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		lo - RF Divider	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_lo_RFdiv(longoutRecord* plo) {
-	if(!plo->dpvt)
-		return -1;
+	long ret = 0;
+	
+	try {
+		evgEvtClk* evtClk = (evgEvtClk*)plo->dpvt;
+		if(!evtClk)
+			throw std::runtime_error("Device pvt field not initialized");
 
-	evgEvtClk* evtClk = (evgEvtClk*)plo->dpvt;
-	return evtClk->setRFdiv(plo->val);
+		ret = evtClk->setRFdiv(plo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		ao - Frac Synth Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_ao_fracSynFreq(aoRecord* pao) {
-	if(!pao->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
-	return evtClk->setFracSynFreq(pao->val);
+	try {
+		evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
+		if(!evtClk)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = evtClk->setFracSynFreq(pao->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		ai - Evt Clock Speed	**/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 write_ai_evtClkSpeed(aiRecord* pai) {
-	if(!pai->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgEvtClk* evtClk = (evgEvtClk*)pai->dpvt;
-	pai->val = evtClk->getEvtClkSpeed();
-	return 2;
+	try {
+		evgEvtClk* evtClk = (evgEvtClk*)pai->dpvt;
+		if(!evtClk)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pai->val = evtClk->getEvtClkSpeed();
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 
