@@ -1,6 +1,7 @@
 #include "evgSeqRam.h"
 
 #include <iostream>
+#include <stdexcept>
 
 #include <errlog.h>
 
@@ -13,7 +14,7 @@ evgSeqRam::evgSeqRam(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
 m_pReg(pReg),
 m_allocated(0),
-m_seq(0) {
+m_softSeq(0) {
 }
 
 const epicsUInt32 
@@ -30,7 +31,6 @@ evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
 	return OK;
 }
 
-
 epicsStatus
 evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
 	for(unsigned int i = 0; i < timeStamp.size(); i++) {
@@ -40,7 +40,6 @@ evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
 	return OK;
 }
 
-
 epicsStatus
 evgSeqRam::setSoftTrig() {
 	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
@@ -48,41 +47,55 @@ evgSeqRam::setSoftTrig() {
 }
 
 epicsStatus
-evgSeqRam::setTrigSrc(epicsUInt32 trigSrc) {
+evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
 	WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
 	return OK;
 }
 
+SeqTrigSrc
+evgSeqRam::getTrigSrc() {
+	return (SeqTrigSrc)READ8(m_pReg, SeqTrigSrc(m_id));
+}
 
 epicsStatus
 evgSeqRam::setRunMode(SeqRunMode mode) {
 	switch (mode) {
-		case(single):
+		case(Single):
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			break;
-		case(automatic):
+		case(Auto):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;
-		case(normal):
+		case(Normal):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;		
 		default:
-			break;	
+			throw std::runtime_error("Unknown SeqRam RunMode");
 	}
 	
 	return OK;
 }
 
-/*Sequence Ram has to be loaded to enable it*/
+SeqRunMode
+evgSeqRam::getRunMode() {
+	if(READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_SINGLE)
+		return Single;
+
+	if(READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RECYCLE)
+		return Auto;
+	else
+		return Normal;
+}
+
 epicsStatus 
 evgSeqRam::enable() {
-	if(loaded()) {
+	if(IsAlloc()) {
 		BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_ARM);
 		return OK;
 	} else 
-		return ERROR;
+		throw std::runtime_error("Trying to enable Unallocated seqRam");
 }
 
 
@@ -103,26 +116,24 @@ evgSeqRam::reset() {
 
 bool 
 evgSeqRam::enabled() const {
-	epicsUInt32 seqCtrl =  READ32(m_pReg, SeqControl(m_id)); 
-	return seqCtrl & EVG_SEQ_RAM_ENABLED;
+	return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED; 
 }
 
 bool 
 evgSeqRam::running() const {
-	epicsUInt32 seqCtrl =  READ32(m_pReg, SeqControl(m_id)); 
-	return seqCtrl & EVG_SEQ_RAM_RUNNING;
+	return  READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
 }
 
 epicsStatus
-evgSeqRam::load(evgSoftSeq* seq) {
-	m_seq = seq;
+evgSeqRam::alloc(evgSoftSeq* softSeq) {
+	m_softSeq = softSeq;
 	m_allocated = true;
 	return OK;
 }
 
 epicsStatus
-evgSeqRam::unload() {
-	m_seq = 0;
+evgSeqRam::dealloc() {
+	m_softSeq = 0;
 	m_allocated = false;
 
 	//clear interrupt flags
@@ -132,22 +143,11 @@ evgSeqRam::unload() {
 }
 
 bool
-evgSeqRam::loaded() const {
-	bool ret;
-	
-	if(m_allocated) {
-		if(m_seq)
-			ret = true;
-		else
-			ret = false;
-	} else {
-		ret = false;
-	}
-
-	return ret;
+evgSeqRam::IsAlloc() const {
+	return m_allocated && m_softSeq;
 }
 
 evgSoftSeq* 
 evgSeqRam::getSoftSeq() {
-	return m_seq;
+	return m_softSeq;
 }

@@ -1,17 +1,22 @@
 record(waveform, "$(P):$(N):timeStamp:tick") {
-	field( DTYP, "EVG SEQ TIME STAMP")
+	field( DTYP, "EVG SEQ TIME STAMP TICK")
 	field( DESC, "Set the event code in EVG sequence Ram")
 	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( NELM, "$(NELM)")
 	field( FTVL, "LONG")
 }
 
-record(waveform, "$(P):$(N):timeStamp:sec") {
-	field( DTYP, "EVG SEQ TIME STAMP FLT")
+record(waveform, "$(P):$(N):timeStamp") {
+	field( DTYP, "EVG SEQ TIME STAMP")
 	field( DESC, "Set the event code in EVG sequence Ram")
-	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( INP, "#C$(cardNum) S$(seqNum) @1")
 	field( NELM, "$(NELM)")
 	field( FTVL, "DOUBLE")
+}
+
+record(ai, "$(P):$(N):timeStamp:Update") {
+	field(INP, "$(P):EvtClkSpeed CP")
+	field(FLNK, "$(P):$(N):timeStamp")
 }
 
 record(waveform, "$(P):$(N):eventCode") {
@@ -31,10 +36,18 @@ record(mbbo, "$(P):$(N):runMode") {
 	field( TWST, "Normal")
 }
 
+record(mbbi, "$(P):$(N):runModeRB") {
+	field( DTYP, "EVG SEQ RUN MODE")
+  	field( INP , "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")
+  	field( ZRST, "Single")
+  	field( ONST, "Automatic")
+	field( TWST, "Normal")
+}
+
 record(mbbo, "$(P):$(N):trigSrc") {
   	field( DTYP, "EVG SEQ TRIG SRC")
   	field( OUT , "#C$(cardNum) S$(seqNum) @")
-	field( UDF, "0")
   	field( ZRST, "Mxc0")
   	field( ONST, "Mxc1")
   	field( TWST, "Mxc2")
@@ -59,9 +72,49 @@ record(mbbo, "$(P):$(N):trigSrc") {
 	field( TEVL, 18)
 }
 
+record(mbbi, "$(P):$(N):trigSrcRB") {
+  	field( DTYP, "EVG SEQ TRIG SRC")
+  	field( INP , "#C$(cardNum) S$(seqNum) @")
+	field( UDF, "0")
+	field( SCAN, "I/O Intr")
+  	field( ZRST, "Mxc0")
+  	field( ONST, "Mxc1")
+  	field( TWST, "Mxc2")
+	field( THST, "Mxc3")
+	field( FRST, "Mxc4")
+	field( FVST, "Mxc5")
+	field( SXST, "Mxc6")
+	field( SVST, "Mxc7")
+	field( EIST, "AC")
+	field( NIST, "SWT RAM0")
+	field( TEST, "SWT RAM1")
+	field( ZRVL, 0)
+  	field( ONVL, 1)
+  	field( TWVL, 2)
+	field( THVL, 3)
+	field( FRVL, 4)
+	field( FVVL, 5)
+	field( SXVL, 6)
+	field( SVVL, 7)
+	field( EIVL, 16)
+	field( NIVL, 17)
+	field( TEVL, 18)
+}
+
+record(bo, "$(P):$(N):commit") {
+	field( DTYP, "EVG COMMIT SEQ")
+	field( DESC, "Commit EVG Sequence")
+	field( OUT, "#C$(cardNum) S$(seqNum) @")
+	field( VAL , "0")
+	field( UDF, "0")
+	field( ZNAM, "0")
+  	field( ONAM, "1")
+	field( FLNK, "$(P):loadedSeq")
+}
+
 record(bo, "$(P):$(N):load") {
 	field( DTYP, "EVG LOAD SEQ")
-	field( DESC, "Load EVG Sequence")
+	field( DESC, "ALLOC EVG Sequence")
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
@@ -71,7 +124,7 @@ record(bo, "$(P):$(N):load") {
 
 record(bo, "$(P):$(N):unload") {
 	field( DTYP, "EVG UNLOAD SEQ")
-	field( DESC, "Unload EVG Sequence")
+	field( DESC, "Dealloc EVG Sequence")
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
@@ -79,9 +132,9 @@ record(bo, "$(P):$(N):unload") {
   	field( ONAM, "1")
 }
 
-record(bo, "$(P):$(N):commit") {
-	field( DTYP, "EVG COMMIT SEQ")
-	field( DESC, "Commit EVG Sequence")
+record(bo, "$(P):$(N):sync") {
+	field( DTYP, "EVG SYNC SEQ")
+	field( DESC, "Sync EVG Sequence")
 	field( OUT, "#C$(cardNum) S$(seqNum) @")
 	field( VAL , "0")
 	field( UDF, "0")
@@ -129,10 +182,11 @@ record(bo, "$(P):$(N):softTrig") {
   	field( ONAM, "1")
 }
 
-record(waveform, "EVG$(cardNum):loadedSeq") {
+record(waveform, "$(P):loadedSeq") {
 	field( DTYP, "EVG LOADED SEQ")
 	field( DESC, "Sequences Loaded in Rams")
 	field( INP, "#C$(cardNum) S @")
 	field( NELM, "2")
 	field( FTVL, "LONG")
+	field( PINI, "YES")
 }

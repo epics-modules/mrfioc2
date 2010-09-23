@@ -12,10 +12,9 @@
 #include "evgMrm.h"
 
 evgSeqRamMgr::evgSeqRamMgr(evgMrm* owner):
-m_owner(owner),
-m_pReg(owner->getRegAddr()) {
+m_owner(owner) {
 	for(int i = 0; i < evgNumSeqRam; i++) {
-		m_seqRam.push_back(new evgSeqRam(i, m_pReg));
+		m_seqRam.push_back(new evgSeqRam(i, owner->getRegAddr()));
 	}
 }
 

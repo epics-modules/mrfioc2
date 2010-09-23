@@ -5,7 +5,8 @@ driver(drvEvgMrm)
 device( bo, VME_IO, devBoEvgEnable, "EVG")
 device( stringin, VME_IO, devSiTimeStamp, "EVG TIMESTAMP")
 device( bo, VME_IO, devBoEvgSyncTS, "EVG TIMESTAMP")
-device( mbbo, VME_IO, devMbboEvgTSsrc, "EVG TIMESTAMP")
+device( mbbo, VME_IO, devMbboEvgTsInpType, "EVG TS INP TYPE")
+device( mbbo, VME_IO, devMbboEvgTsInpNum, "EVG TS INP NUM")
 device( longin, VME_IO, devLiEvgStatus, "EVG")
 
 #evgEvtClk.db
@@ -44,13 +45,16 @@ device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
 
 #evgSoftSeq.db
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
-device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP")
-device( waveform, VME_IO, devWfEvgTimeStampSec, "EVG SEQ TIME STAMP FLT")
+device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP TICK")
+device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
+device( mbbi, VME_IO, devMbbiEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")
+device( mbbi, VME_IO, devMbbiEvgTrigSrc, "EVG SEQ TRIG SRC")
 
 device( bo, VME_IO, devBoEvgLoadSeq, "EVG LOAD SEQ")
 device( bo, VME_IO, devBoEvgUnloadSeq, "EVG UNLOAD SEQ")
+device( bo, VME_IO, devBoEvgSyncSeq, "EVG SYNC SEQ")
 device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
 device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
 device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")

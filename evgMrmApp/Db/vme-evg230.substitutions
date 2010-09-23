@@ -89,7 +89,7 @@ pattern { P, cardNum, N, mxcNum }
 
 file evgSoftSeq.db {
 pattern { P, cardNum, N, seqNum, NELM}
-{ $(P), $(cardNum), "Seq0", 0, 2048}
-{ $(P), $(cardNum), "Seq1", 1, 2048}
-{ $(P), $(cardNum), "Seq2", 2, 2048}
+{ $(P), $(cardNum), "Seq0", 0, 2047}
+{ $(P), $(cardNum), "Seq1", 1, 2047}
+{ $(P), $(cardNum), "Seq2", 2, 2047}
 }
