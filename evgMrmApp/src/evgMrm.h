@@ -29,12 +29,6 @@
  * Input, Output etc.
  */
 
-enum TimeStampSrc {
-	Off = 0,
-	FP_INP0,
-	FP_INP1
-};
-
 class evgMrm {
 
 public:
@@ -43,7 +37,7 @@ public:
 
 	/** EVG	**/
 	const epicsUInt32 getId();	
-	volatile epicsUInt8* const getRegAddr(); 
+	volatile epicsUInt8* getRegAddr(); 
 	epicsUInt32 getFwVersion();
 	epicsStatus enable(bool ena);
 	epicsUInt32 getStatus();
@@ -51,40 +45,47 @@ public:
 	/**	Interrupt and Callback	**/
 	static void isr(void*);
 	static void process_cb(CALLBACK*);
-	void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
+	static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
 
 	/** TimeStamp	**/
 	static void sendTS(CALLBACK*);
-	timeval getTS();
+	epicsTimeStamp getTS();
 	epicsStatus syncTS();
-	epicsStatus setupTS(TimeStampSrc);
+	epicsStatus setTsInpType(InputType);
+	epicsStatus setTsInpNum(epicsUInt32);
+	epicsStatus setupTS(bool);
 	epicsStatus incrementTS();
 	epicsUInt32 getTSsec();
 	
-	/**	Access	function 	**/
+	/**	Access	functions 	**/
 	evgEvtClk* 		getEvtClk		();
 	evgSoftEvt*		getSoftEvt		();
 	evgTrigEvt* 	getTrigEvt		(epicsUInt32);
 	evgMxc* 		getMuxCounter	(epicsUInt32);
 	evgDbus* 		getDbus			(epicsUInt32);
-	evgInput*  		getInput		(epicsUInt32, std::string);
-	evgOutput* 		getOutput		(epicsUInt32, std::string);
+	evgInput*  		getInput		(epicsUInt32, InputType);
+	evgOutput* 		getOutput		(epicsUInt32, OutputType);
 	evgSeqRamMgr* 	getSeqRamMgr	();	
 	evgSoftSeqMgr* 	getSoftSeqMgr	();
 
-	struct irq {
-		epicsMutexId mutex;
+	struct irqPvt {
+		epicsMutex mutex;
 		std::vector<dbCommon*> recList;
 	};
 		
-	struct irq irqStop0;
-	struct irq irqStop1;
+	struct irqPvt irqStop0;
+	struct irqPvt irqStop1;
+
+	struct ppsSrc{
+		InputType type;
+		epicsUInt32	num;	
+	};
 
 	CALLBACK 						irqStop0_cb;
 	CALLBACK						irqStop1_cb;
 	CALLBACK						irqExtInp_cb;
 
-
+	IOSCANPVT 						ioscanpvt;
 
 private:
 	const epicsUInt32            	m_id;       
@@ -102,19 +103,17 @@ private:
 	typedef std::vector<evgDbus*> 	Dbus_t;
   	Dbus_t	 						m_dbus;
 
- 	typedef std::map< std::pair<epicsUInt32, std::string>, evgInput*> Input_t;
+ 	typedef std::map< std::pair<epicsUInt32, InputType>, evgInput*> Input_t;
  	Input_t 						m_input;
 
- 	typedef std::map< std::pair<epicsUInt32, std::string>, evgOutput*> Output_t;
+ 	typedef std::map< std::pair<epicsUInt32, OutputType>, evgOutput*> Output_t;
  	Output_t 						m_output;
 
 	evgSeqRamMgr 					m_seqRamMgr;
 	evgSoftSeqMgr					m_softSeqMgr;
 
-	//? static
-	//epicsTimeStamp 					m_ts;
-	struct timeval					m_tv;
-	TimeStampSrc					m_tsSrc; 
+	epicsTimeStamp					m_tv;
+	struct ppsSrc					m_ppsSrc; 
 };
 
 #endif //EVG_MRM_H

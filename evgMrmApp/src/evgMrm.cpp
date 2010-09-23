@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <math.h>
 
 #include <errlog.h> 
 
@@ -11,6 +12,7 @@
 #include <recGbl.h>
 #include <epicsInterrupt.h>
 #include <epicsTime.h>
+#include <generalTimeSup.h>
 
 #include <longoutRecord.h>
 
@@ -26,12 +28,15 @@
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_id(id),
 m_pReg(pReg),
-m_evtClk(evgEvtClk(pReg)),
-m_softEvt(evgSoftEvt(pReg)),
-m_seqRamMgr(evgSeqRamMgr(this)),
-m_softSeqMgr(evgSoftSeqMgr(this)),
-m_tsSrc(Off) {
-	try {
+m_evtClk(pReg),
+m_softEvt(pReg),
+m_seqRamMgr(this),
+m_softSeqMgr(this) {
+
+	try{
+		m_ppsSrc.type = None_Input;
+		m_ppsSrc.num = 0;
+
 		for(int i = 0; i < evgNumEvtTrig; i++)
 			m_trigEvt.push_back(new evgTrigEvt(i, pReg));
 
@@ -42,41 +47,38 @@ m_tsSrc(Off) {
 			m_dbus.push_back(new evgDbus(i, pReg));
 
 		for(int i = 0; i < evgNumFpInp; i++) {
-			m_input[ std::pair<epicsUInt32, std::string>(i,"FP_Input") ] = 
-											new evgInput(i, pReg, FP_Input);
+			m_input[ std::pair<epicsUInt32, InputType>(i, FP_Input) ] = 
+					new evgInput(i, FP_Input, pReg + U32_FPInMap(i));
 		}
 
 		for(int i = 0; i < evgNumUnivInp; i++) {
-			m_input[ std::pair<epicsUInt32, std::string>(i,"Univ_Input") ] = 
-											new evgInput(i, pReg, Univ_Input);
+			m_input[ std::pair<epicsUInt32, InputType>(i, Univ_Input) ] = 
+					new evgInput(i, Univ_Input, pReg + U32_UnivInMap(i));
 		}
 
 		for(int i = 0; i < evgNumTbInp; i++) {
-			m_input[ std::pair<epicsUInt32, std::string>(i,"TB_Input") ] = 
-											new evgInput(i, pReg, TB_Input);
+			m_input[ std::pair<epicsUInt32, InputType>(i, TB_Input) ] = 
+ 					new evgInput(i, TB_Input, pReg + U32_TBInMap(i));
 		}
 
 		for(int i = 0; i < evgNumFpOut; i++) {
-			m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")] = 
-											new evgOutput(i, pReg, FP_Output);
+			m_output[std::pair<epicsUInt32, OutputType>(i, FP_Output)] = 
+										new evgOutput(i, pReg, FP_Output);
 		}
 
 		for(int i = 0; i < evgNumUnivOut; i++) {
-			m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")] = 
-											new evgOutput(i, pReg, Univ_Output);
+			m_output[std::pair<epicsUInt32, OutputType>(i, Univ_Output)] = 
+										new evgOutput(i, pReg, Univ_Output);
 		}	
 
+		init_cb(&irqStop0_cb, priorityLow, &evgMrm::process_cb, &irqStop0);
+		init_cb(&irqStop1_cb, priorityLow, &evgMrm::process_cb, &irqStop1);
+		init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
+	
+		scanIoInit(&ioscanpvt);
 	} catch(std::exception& e) {
-		errlogPrintf("ERROR: EVG %d failed to initialise proprtly\n%s\n", id, e.what());
-	} 	
-
-	irqStop0.mutex = epicsMutexMustCreate();
-	irqStop1.mutex = epicsMutexMustCreate();
-
-	init_cb(&irqStop0_cb, priorityLow, &evgMrm::process_cb, &irqStop0);
-	init_cb(&irqStop1_cb, priorityLow, &evgMrm::process_cb, &irqStop1);
-	init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
-
+		errlogPrintf("%s\n", e.what());
+	}
 }
 
 evgMrm::~evgMrm() {
@@ -90,19 +92,27 @@ evgMrm::~evgMrm() {
 		delete m_dbus[i];
 
 	for(int i = 0; i < evgNumFpInp; i++)
-		delete m_input[std::pair<epicsUInt32, std::string>(i,"FP_Input")]; 
+		delete m_input[std::pair<epicsUInt32, InputType>(i, FP_Input)]; 
 
 	for(int i = 0; i < evgNumUnivInp; i++)
-		delete m_input[std::pair<epicsUInt32, std::string>(i,"Univ_Input")];
+		delete m_input[std::pair<epicsUInt32, InputType>(i, Univ_Input)];
 
 	for(int i = 0; i < evgNumTbInp; i++)
-		delete m_input[std::pair<epicsUInt32, std::string>(i,"TB_Input")];
+		delete m_input[std::pair<epicsUInt32, InputType>(i, TB_Input)];
 
 	for(int i = 0; i < evgNumFpOut; i++)
-		delete m_output[std::pair<epicsUInt32, std::string>(i,"FP_Output")]; 
+		delete m_output[std::pair<epicsUInt32, OutputType>(i, FP_Output)]; 
 
 	for(int i = 0; i < evgNumUnivOut; i++)
-		delete m_output[std::pair<epicsUInt32, std::string>(i,"Univ_Output")];
+		delete m_output[std::pair<epicsUInt32, OutputType>(i, Univ_Output)];
+}
+
+void 
+evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr) { 
+  	callbackSetPriority(priority, ptr); 
+  	callbackSetCallback(fn, ptr);   
+  	callbackSetUser(valptr, ptr);   
+  	(ptr)->timer=NULL;              
 }
 
 const epicsUInt32 
@@ -110,7 +120,7 @@ evgMrm::getId() {
 	return m_id;
 }
 
-volatile epicsUInt8* const 
+volatile epicsUInt8*
 evgMrm::getRegAddr() {
 	return m_pReg;
 }
@@ -125,15 +135,6 @@ evgMrm::getStatus() {
 	return READ32( m_pReg, Status);
 }
 
-inline void 
-evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr) { 
-  	callbackSetPriority(priority, ptr); 
-  	callbackSetCallback(fn, ptr);   
-  	callbackSetUser(valptr, ptr);   
-  	(ptr)->timer=NULL;              
-}
-
-/**		Enable EVG	**/
 epicsStatus
 evgMrm::enable(bool ena) {
 	if(ena)
@@ -151,48 +152,46 @@ void
 evgMrm::isr(void* arg) {
 	evgMrm *evg = (evgMrm*)(arg);
 
-    epicsUInt32 flags = READ32(evg->getRegAddr(), IrqFlag);
-    epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
-    epicsUInt32 active = flags & enable;
+	epicsUInt32 flags = READ32(evg->getRegAddr(), IrqFlag);
+	epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
+	epicsUInt32 active = flags & enable;
 	
-//	#ifdef __rtems__
+// 	#ifdef __rtems__
 // 	printk("\n ----------------------------------------------- \n");
 // 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
-//	#endif //__rtems__
+// 	#endif //__rtems__
 
-    if(!active)
-      return;
+	if(!active)
+		return;
 	
-    if(active & EVG_IRQ_STOP_RAM(0)) {
+	if(active & EVG_IRQ_STOP_RAM(0)) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM0\n");
-		#endif //__rtems__	
+		#endif	
 		callbackRequest(&evg->irqStop0_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
-    }
+	}
 
-	 if(active & EVG_IRQ_STOP_RAM(1)) {
+	if(active & EVG_IRQ_STOP_RAM(1)) {
 		#ifdef __rtems__
 		printk("EVG_IRQ_STOP_RAM1\n");
-		#endif //__rtems__
+		#endif
 		callbackRequest(&evg->irqStop1_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
-    }
+	}
 
 	if(active & EVG_IRQ_EXT_INP) {
-// 		#ifdef __rtems__
-// 		printk("EVG_IRQ_EXT_INP\n");
-// 		#endif //_rtems_
 		callbackRequest(&evg->irqExtInp_cb);
 	}
 
-    WRITE32(evg->m_pReg, IrqFlag, flags);
+	WRITE32(evg->m_pReg, IrqFlag, flags);
 
-	flags = READ32(evg->getRegAddr(), IrqFlag);
-    enable = READ32(evg->getRegAddr(), IrqEnable);
-    active = flags & enable;
+//	flags = READ32(evg->getRegAddr(), IrqFlag);
+//	enable = READ32(evg->getRegAddr(), IrqEnable);
+//	active = flags & enable;
 
 // 	#ifdef __rtems__
+
 // 	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
 // 	#endif //_rtems_
 	
@@ -202,16 +201,16 @@ evgMrm::isr(void* arg) {
 void
 evgMrm::process_cb(CALLBACK *pCallback) {
 	void* pVoid;
-	struct irq *irqTemp;
+	struct irqPvt *pIrqPvt;
 	dbCommon *pRec;
 	struct rset *prset;
 	
 	callbackGetUser(pVoid, pCallback);
-	irqTemp = (struct irq *)pVoid;
+	pIrqPvt = (struct irqPvt *)pVoid;
 
-	epicsMutexLock(irqTemp->mutex);
-	for(unsigned int i = 0; i < irqTemp->recList.size(); i++) {
-		pRec = irqTemp->recList[i];
+	SCOPED_LOCK2(pIrqPvt->mutex, guard);
+	for(unsigned int i = 0; i < pIrqPvt->recList.size(); i++) {
+		pRec = pIrqPvt->recList[i];
 		prset = (struct rset*)pRec->rset;
 		printf("Processing Record : %s \n", pRec->name);
 		printf("----------------------------------------------- \n\n");
@@ -219,100 +218,116 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 		(*(long (*)(dbCommon*))prset->process)(pRec);
 		dbScanUnlock(pRec);
 	}
-	irqTemp->recList.clear();
-	epicsMutexUnlock(irqTemp->mutex);
+	pIrqPvt->recList.clear();
 }
 
+/** TimeStamps	**/
 void
 evgMrm::sendTS(CALLBACK *pCallback) {
 	void* pVoid;
 	callbackGetUser(pVoid, pCallback);
 	evgMrm* evg = (evgMrm*)pVoid;
-
+   
+    /*We receive this interupt at the start of every second*/
 	evg->incrementTS();
-	post_event(1);
-	epicsUInt32 sec = evg->getTSsec() + 1;
+	scanIoRequest(evg->ioscanpvt);
+
+	struct epicsTimeStamp ts;
+	epicsTime ntpTime, storedTime;
+
+	generalTimeGetExceptPriority(&ts, 0, 50);
+	ntpTime = ts;
+	storedTime = (epicsTime)evg->getTS();
+
+	double errorTime = ntpTime - storedTime;
+	char timeBuf[80];
+
+	if(fabs(errorTime) > evgAllowedTsErr) {
+		ntpTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
+		errlogPrintf("NTP time : %s\n", timeBuf);
+		ntpTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
+		errlogPrintf("Expected time : %s\n", timeBuf);
+		errlogPrintf("-------Timestamping Error of %f Secs-------\n", errorTime);
+    }
+
+	/*Sending the timeStamp that should be loaded into the Seconds register of
+ 	EVR on receipt of next Event Code 0x7D (i.e. current_sec + 1) */
+	epicsUInt32 sec = evg->getTSsec() + 1 + POSIX_TIME_AT_EPICS_EPOCH;
 
 	/*Sending MSB first*/
 	for(int i = 0; i < 32; sec <<= 1, i++) {
 		if( sec & 0x80000000 ) {
-			evg->getSoftEvt()->setEvtCode(113);
+			evg->getSoftEvt()->setEvtCode(0x71);
 		} else {
-			evg->getSoftEvt()->setEvtCode(112);
+			evg->getSoftEvt()->setEvtCode(0x70);
 		}
-	}
-
-	//Check for the timeStamp sync
-	struct timeval cur_tv;
-	gettimeofday(&cur_tv, 0);
-	epicsUInt32 m_errorTS = cur_tv.tv_sec - evg->getTSsec();
-	if(m_errorTS != 0){
-		printf("Timestamping Error of %08x Secs\n", m_errorTS);
-		evg->syncTS();
 	}
 }
 
 epicsStatus
 evgMrm::incrementTS() {
-	m_tv.tv_sec++;
+	m_tv.secPastEpoch++;
 	return OK;
 }
 
 epicsUInt32
 evgMrm::getTSsec() {
-	return m_tv.tv_sec;
+	return m_tv.secPastEpoch;
 }
 
 epicsStatus
 evgMrm::syncTS() {
-	printf("Sync Timestamp\n");
-	gettimeofday(&m_tv, 0);
+	generalTimeGetExceptPriority(&m_tv, 0, 50);
+	m_tv.nsec = 0;
 	return OK;
 }
 
-timeval
+epicsTimeStamp
 evgMrm::getTS() {
 	return m_tv;
 }
 
 epicsStatus
-evgMrm::setupTS(TimeStampSrc tsSrc) {
-	evgInput* inp = 0;
-	switch(m_tsSrc) {
-		case Off:
-			break;
-		case FP_INP0:
-			inp = getInput(0, "FP_Input");
-			inp->enaExtIrq(0);
-			break;
- 		case FP_INP1:
-			inp = getInput(1, "FP_Input");
-			inp->enaExtIrq(0);
-			break;
-		default:
-			return ERROR;	
- 	}
+evgMrm::setTsInpType(InputType type) {
+	if(m_ppsSrc.type == type)
+		return OK;
 
-	//Enable the external input interrupt
-	switch(tsSrc) {
-		case Off:
-			break;
-		case FP_INP0:
-			inp = getInput(0, "FP_Input");
-			inp->enaExtIrq(1);
-			break;
- 		case FP_INP1:
-			inp = getInput(1, "FP_Input");
-			inp->enaExtIrq(1);
-			break;
-		default:
-			return ERROR;	
- 	}
-	
-	syncTS();
-	m_tsSrc = tsSrc;
+	setupTS(0);
+	m_ppsSrc.type = type;
+	setupTS(1);
+
 	return OK;
 }
+
+epicsStatus
+evgMrm::setTsInpNum(epicsUInt32 num) {
+	if(m_ppsSrc.num == num)
+		return OK;
+
+	setupTS(0);
+	m_ppsSrc.num = num;
+	setupTS(1);
+	
+	return OK;
+}
+
+epicsStatus
+evgMrm::setupTS(bool ena) {
+	if(m_ppsSrc.type == None_Input)
+		return OK;
+
+	evgInput* inp = getInput(m_ppsSrc.num, m_ppsSrc.type);
+
+	if(ena) {
+		inp->enaExtIrq(1);
+		syncTS();
+	} else
+		inp->enaExtIrq(0);
+
+	return OK;
+}
+
+/**	Access	functions 	**/
 
 evgEvtClk*
 evgMrm::getEvtClk() {
@@ -328,7 +343,7 @@ evgTrigEvt*
 evgMrm::getTrigEvt(epicsUInt32 evtTrigNum) {
 	evgTrigEvt* trigEvt = m_trigEvt[evtTrigNum];
 	if(!trigEvt)
-		throw std::runtime_error("ERROR: Event Trigger not initialized");
+		throw std::runtime_error("Event Trigger not initialized");
 
 	return trigEvt;
 }
@@ -337,7 +352,7 @@ evgMxc*
 evgMrm::getMuxCounter(epicsUInt32 muxNum) {
 	evgMxc* mxc =  m_muxCounter[muxNum];
 	if(!mxc)
-		throw std::runtime_error("ERROR: Multiplexed Counter not initialized");
+		throw std::runtime_error("Multiplexed Counter not initialized");
 
 	return mxc;
 }
@@ -346,25 +361,25 @@ evgDbus*
 evgMrm::getDbus(epicsUInt32 dbusBit) {
 	evgDbus* dbus = m_dbus[dbusBit];
 	if(!dbus)
-		throw std::runtime_error("ERROR: Event Dbus not initialized");
+		throw std::runtime_error("Event Dbus not initialized");
 
 	return dbus;
 }
 
 evgInput*
-evgMrm::getInput(epicsUInt32 inpNum, std::string type) {
-	evgInput* inp = m_input[ std::pair<epicsUInt32, std::string>(inpNum, type) ];
+evgMrm::getInput(epicsUInt32 inpNum, InputType type) {
+	evgInput* inp = m_input[ std::pair<epicsUInt32, InputType>(inpNum, type) ];
 	if(!inp)
-		throw std::runtime_error("ERROR: Input not initialized");
+		throw std::runtime_error("Input not initialized");
 
 	return inp;
 }
 
 evgOutput*
-evgMrm::getOutput(epicsUInt32 outNum, std::string type) {
-	evgOutput* out = m_output[ std::pair<epicsUInt32, std::string>(outNum, type) ];
+evgMrm::getOutput(epicsUInt32 outNum, OutputType type) {
+	evgOutput* out = m_output[ std::pair<epicsUInt32, OutputType>(outNum, type) ];
 	if(!out)
-		throw std::runtime_error("ERROR: Output not initialized");
+		throw std::runtime_error("Output not initialized");
 
 	return out;
 }

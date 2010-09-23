@@ -14,8 +14,7 @@ record( stringin, "$(P):TS") {
 	field( DTYP, "EVG TIMESTAMP")
   	field( DESC, "EVG TimeStamp")
   	field( INP , "#C$(cardNum) S @")
-	field( SCAN, "Event")
-	field( EVNT, "1")
+	field( SCAN, "I/O Intr")
 }
 
 record( bo,"$(P):SyncTS" ) {
@@ -26,15 +25,41 @@ record( bo,"$(P):SyncTS" ) {
 	field( VAL, "1")
 }
 
-record( mbbo, "$(P):TSsrc") {
-	field( DTYP, "EVG TIMESTAMP")
-  	field( DESC, "EVG TimeStamp Src")
+record( mbbo, "$(P):TsInpType") {
+	field( DTYP, "EVG TS INP TYPE")
+  	field( DESC, "EVG TimeStamp Inp Type")
   	field( OUT , "#C$(cardNum) S @")
 	field( PINI, YES)
 	field( UDF, "0")
-  	field( ZRST, "Off")
-  	field( ONST, "INP0")
-  	field( TWST, "INP1")
+	field( ZRST, "None")
+  	field( ONST, "FP_Input")
+  	field( TWST, "Univ_Input")
+  	field( THST, "TB_Input")
+	info( autosaveFields_pass0, "VAL")
+}
+
+record( mbbo, "$(P):TsInpNum") {
+	field( DTYP, "EVG TS INP NUM")
+  	field( DESC, "EVG TimeStamp Inp Num")
+  	field( OUT , "#C$(cardNum) S @")
+	field( PINI, YES)
+	field( UDF, "0")
+  	field( ZRST, "0")
+  	field( ONST, "1")
+	field( TWST, "2")
+	field( THST, "3")
+	field( FRST, "4")
+	field( FVST, "5")
+	field( SXST, "6")
+	field( SVST, "7")
+	field( EIST, "8")
+	field( NIST, "9")
+	field( TEST, "10")
+	field( ELST, "11")
+	field( TWST, "12")
+	field( TTST, "13")
+	field( FTST, "14")
+	field( FFST, "15")
 	info( autosaveFields_pass0, "VAL")
 }
 
