@@ -620,15 +620,13 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         epicsUInt32 ctrl=READ32(base, Control);
 
         // Latch on
-        ctrl|= Control_tsltch;
-        WRITE32(base, Control, ctrl);
+        WRITE32(base, Control, ctrl | Control_tsltch);
 
         ts->secPastEpoch=READ32(base, TSSecLatch);
         ts->nsec=READ32(base, TSEvtLatch);
 
         // Latch off
-        ctrl&= ~Control_tsltch;
-        WRITE32(base, Control, ctrl);
+        WRITE32(base, Control, ctrl | Control_tsrst);
 
         epicsInterruptUnlock(iflags);
 
