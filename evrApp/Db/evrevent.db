@@ -1,13 +1,17 @@
 
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
+#
+# Note: that VAL is not included in the autosave field
+# list because it is posted (and would cause an save)
+# every time an event occurs.
 record(event, "$(P)$(N)") {
   field(DTYP, "EVR")
   field(SCAN, "I/O Intr")
   field(INP , "@Card=$(C),Code=$(CODE)")
   field(VAL , "$(EVNT)")
   field(TSE , "-2") # from device support
-  info(autosaveFields_pass0, "INP VAL")
+  info(autosaveFields_pass0, "INP")
 }
 
 record(calc, "$(P)$(N):count") {
