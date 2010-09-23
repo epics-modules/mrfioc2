@@ -1,6 +1,7 @@
 #include "evgInput.h"
 
 #include <iostream>
+#include <string>
 #include <stdexcept>
 
 #include <errlog.h>
@@ -10,30 +11,28 @@
  
 #include "evgRegMap.h"
 
-evgInput::evgInput(const epicsUInt32 id, volatile epicsUInt8* const pReg, const InputType type):
-m_id(id),
-m_pReg(pReg),
-m_type(type) {
+evgInput::evgInput(const epicsUInt32 id, const InputType type,
+volatile epicsUInt8* const pInMap):
+m_pInMap(pInMap) {
 
-	switch(m_type) {
+	switch(type) {
 		case(FP_Input):
-			if(m_id >= evgNumFpInp)
+			if(id >= evgNumFpInp)
 				throw std::runtime_error("Front panel input ID out of range");	
-			break;	
+			break;
 
 		case(Univ_Input):
-			if(m_id >= evgNumUnivInp)
+			if(id >= evgNumUnivInp)
 				throw std::runtime_error("EVG Universal input ID out of range");
 			break;
 
 		case(TB_Input):
-			if(m_id >= evgNumTbInp)
-				throw std::runtime_error("EVG Universal input ID out of range");
+			if(id >= evgNumTbInp)
+				throw std::runtime_error("EVG TB input ID out of range");
 			break;
 
 		default:
-				throw std::runtime_error("EVG Wrong I/O type");
-			break;
+ 			throw std::runtime_error("Wrong EVG Input type");
 	}
 }
 
@@ -41,110 +40,63 @@ evgInput::~evgInput() {
 }
 
 epicsStatus
+evgInput::enaExtIrq(bool ena) {
+	if(ena)
+		nat_iowrite32(m_pInMap, nat_ioread32(m_pInMap) |
+ 								(epicsUInt32)EVG_EXT_INP_IRQ_ENA);
+	else
+		nat_iowrite32(m_pInMap, nat_ioread32(m_pInMap) &
+							 	(epicsUInt32)~(EVG_EXT_INP_IRQ_ENA));
+
+	return OK;
+}
+
+epicsStatus
 evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
-	epicsStatus ret = OK;
-	epicsUInt32 map = 0;
+	if(dbusMap > 255)
+		throw std::runtime_error("Dbus Map out of range.");
+
+	//Read-Modify-Write
+	epicsUInt32 map = nat_ioread32(m_pInMap);
+
+	map = map & 0xff00ffff;
+	map = map | (dbusMap << 16);
+
+	nat_iowrite32(m_pInMap, map);
+
+	return OK;
+}
+
+epicsStatus
+evgInput::setInpSeqTrigMap(epicsUInt32 seqTrigMap) {
+	if(seqTrigMap > 3)
+		throw std::runtime_error("Dbus Map out of range.");
+
+	//Read-Modify-Write
+	epicsUInt32 map = nat_ioread32(m_pInMap);
+
+	map = map & 0xffff00ff;
+	map = map | (seqTrigMap << 8);
+
+	nat_iowrite32(m_pInMap, map);
 	
-	switch(m_type) {
-		case(FP_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, FPInMap(m_id));
-
-			map = map & 0x0000ffff;
-			map = map | (dbusMap << 16);
-
-			WRITE32(m_pReg, FPInMap(m_id), map);
-
-			ret = OK;
-			break;
-
-		case(Univ_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, UnivInMap(m_id));
-
-			map = map & 0x0000ffff;
-			map = map | (dbusMap << 16);
-
-			WRITE32(m_pReg, UnivInMap(m_id), map);
-			
-			ret = OK;
-			break;
-
-		case(TB_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, TBInMap(m_id));
-
-			map = map & 0x0000ffff;
-			map = map | (dbusMap << 16);
-
-			WRITE32(m_pReg, TBInMap(m_id), map);
-			
-			ret = OK;
-			break;
-	}
-	
-	return ret;
+	return OK;
 }
 
 epicsStatus
 evgInput::setInpTrigEvtMap(epicsUInt32 trigEvtMap) {
-	epicsStatus ret = OK;
-	epicsUInt32 map = 0;
+	if(trigEvtMap > 255)
+		throw std::runtime_error("Dbus Map out of range.");
 
-	switch(m_type) {
-		case(FP_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, FPInMap(m_id));
+	//Read-Modify-Write
+	epicsUInt32 map = nat_ioread32(m_pInMap);
 
-			map = map & 0xffff0000;
-			map = map | trigEvtMap;
+	map = map & 0xffffff00;
+	map = map | trigEvtMap;
 
-			WRITE32(m_pReg, FPInMap(m_id), map);
-
-			ret = OK;
-			break;
-
-		case(Univ_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, UnivInMap(m_id));
-
-			map = map & 0xffff0000;
-			map = map | trigEvtMap;
-
-			WRITE32(m_pReg, UnivInMap(m_id), map);
-
-			ret = OK;
-			break;
-
-		case(TB_Input):
-			//Read-Modify-Write
-			map = READ32(m_pReg, TBInMap(m_id));
-
-			map = map & 0xffff0000;
-			map = map | trigEvtMap;
-
-			WRITE32(m_pReg, TBInMap(m_id), map);
-
-			ret = OK;
-			break;
-	}
+	nat_iowrite32(m_pInMap, map);
 	
-	return ret;
-}
-
-epicsStatus
-evgInput::enaExtIrq(bool ena) {
-	switch(m_type) {
-		case(FP_Input):
-			if(ena)
-				BITSET32(m_pReg, FPInMap(m_id), EVG_EXT_INP_IRQ_ENA);
-			else
-				BITCLR32(m_pReg, FPInMap(m_id), EVG_EXT_INP_IRQ_ENA);
-			break;
-
-		default:
-			break;
-	}
-
 	return OK;
 }
+
+

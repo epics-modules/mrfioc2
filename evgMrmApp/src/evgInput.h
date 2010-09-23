@@ -4,22 +4,23 @@
 #include <epicsTypes.h>
 
 enum InputType {
-	FP_Input = 0,
+	None_Input = 0,
+	FP_Input,
 	Univ_Input,
 	TB_Input
 };
 
 class evgInput {
 public:
-	evgInput(const epicsUInt32, volatile epicsUInt8* const, const InputType);
+	evgInput(const epicsUInt32, const InputType, volatile epicsUInt8* const);
 	~evgInput();
-	epicsStatus setInpDbusMap(epicsUInt32);
-	epicsStatus setInpTrigEvtMap(epicsUInt32);
+
 	epicsStatus enaExtIrq(bool);
+	epicsStatus setInpDbusMap(epicsUInt32);
+	epicsStatus setInpSeqTrigMap(epicsUInt32 seqTrigMap);
+	epicsStatus setInpTrigEvtMap(epicsUInt32);
 
 private:
-	const epicsUInt32 			m_id;
-	volatile epicsUInt8* const	m_pReg;
-	const InputType 			m_type;
+	volatile epicsUInt8* const 	m_pInMap;
 };
 #endif //EVG_INPUT_H

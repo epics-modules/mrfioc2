@@ -11,6 +11,19 @@
 
 #include <evgInit.h>
 
+static std::map<std::string, epicsUInt32> strToEnum;
+
+static long 
+init(int after) {
+	if(!after) {
+		strToEnum["None"] = 0;
+		strToEnum["FP_Input"] = 1;
+		strToEnum["Univ_Input"] = 2;
+		strToEnum["TB_Input"] = 3;
+	}
+	
+	return 0;
+}
 
 static long 
 init_record(dbCommon *pRec, DBLINK* lnk) {
@@ -24,20 +37,18 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 	try {
 		evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
 		if(!evg)
-			throw std::runtime_error("ERROR: Failed to lookup EVG");
+			throw std::runtime_error("Failed to lookup EVG");
 		
 		std::string parm(lnk->value.vmeio.parm);
-		evgInput* inp = evg->getInput(lnk->value.vmeio.signal, parm);
-		if(!inp)
-			throw std::runtime_error("ERROR: Failed to lookup EVG Input");
-	
+		evgInput* inp = evg->getInput(lnk->value.vmeio.signal, 
+									(InputType)strToEnum[parm]);
 		pRec->dpvt = inp;
 		ret = 0;
 	} catch(std::runtime_error& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
-		errlogPrintf("%s : %s\n", e.what(), pRec->name);
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
 		ret = S_db_noMemory;
 	}
 
@@ -70,65 +81,101 @@ init_bo(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
-	if(!pmbboD->dpvt)
-		return -1;
+	long ret = 0;
 
-	evgInput* inp = (evgInput*)pmbboD->dpvt;
-	return inp->setInpDbusMap((epicsUInt32)pmbboD->val);
+	try {
+		evgInput* inp = (evgInput*)pmbboD->dpvt;
+		if(!inp)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = inp->setInpDbusMap((epicsUInt32)pmbboD->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		mbboDirect - Input-TrigEvt Map	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_mbboD_inpTrigEvt(mbboDirectRecord* pmbboD) {
-	if(!pmbboD->dpvt)
-		return -1;
+	long ret = 0;
+	
+	try {
+		evgInput* inp = (evgInput*)pmbboD->dpvt;
+		if(!inp)
+			throw std::runtime_error("Device pvt field not initialized");
 
-	evgInput* inp = (evgInput*)pmbboD->dpvt;
-	return inp->setInpTrigEvtMap((epicsUInt32)pmbboD->val);
+		ret = inp->setInpTrigEvtMap((epicsUInt32)pmbboD->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /**		bo - Input IRQ Enable	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enaIRQ(boRecord* pbo) {
-	if(!pbo->dpvt)
-		return -1;
+	long ret = 0;
+	
+	try {
+		evgInput* inp = (evgInput*)pbo->dpvt;
+		if(!inp)
+			throw std::runtime_error("Device pvt field not initialized");
 
-	evgInput* inp = (evgInput*)pbo->dpvt;
-	return inp->enaExtIrq(pbo->val);
+		ret = inp->enaExtIrq(pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
 }
 
 /** 	device support entry table 		**/
 extern "C" {
 
 common_dset devMbboDEvgInpDbusMap = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbboD,
-    NULL,
-    (DEVSUPFUN)write_mbboD_inpDbus,
+	5,
+	NULL,
+	(DEVSUPFUN)init,
+	(DEVSUPFUN)init_mbboD,
+	NULL,
+	(DEVSUPFUN)write_mbboD_inpDbus,
 };
 epicsExportAddress(dset, devMbboDEvgInpDbusMap);
 
 common_dset devMbboDEvgInpTrigEvtMap = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbboD,
-    NULL,
-    (DEVSUPFUN)write_mbboD_inpTrigEvt,
+	5,
+	NULL,
+	(DEVSUPFUN)init,
+	(DEVSUPFUN)init_mbboD,
+	NULL,
+	(DEVSUPFUN)write_mbboD_inpTrigEvt,
 };
 epicsExportAddress(dset, devMbboDEvgInpTrigEvtMap);
 
 common_dset devBoDEvgInpEnaIrq = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_enaIRQ,
+	5,
+	NULL,
+	(DEVSUPFUN)init,
+	(DEVSUPFUN)init_bo,
+	NULL,
+	(DEVSUPFUN)write_bo_enaIRQ,
 };
 epicsExportAddress(dset, devBoDEvgInpEnaIrq);
 
