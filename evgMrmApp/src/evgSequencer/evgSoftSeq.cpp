@@ -14,6 +14,7 @@
 #include "evgMrm.h"
 
 evgSoftSeq::evgSoftSeq(const epicsUInt32 id, evgMrm* const owner):
+m_lock(),
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
@@ -22,8 +23,7 @@ m_runMode(Single),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_ecSize(0),
-m_tsSize(0),
-m_lock() {
+m_tsSize(0) {
 	scanIoInit(&ioscanpvt);
 }
 
@@ -48,7 +48,6 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 	if(size > 2047)
 		throw std::runtime_error("Too many EventCodes.");
 	
-	SCOPED_LOCK(m_lock);
 	m_eventCode.clear();
 	m_eventCode.assign(eventCode, eventCode + size);
 	m_ecSize = m_eventCode.size();
@@ -74,7 +73,6 @@ evgSoftSeq::setTimeStampTick(epicsUInt32* timeStamp, epicsUInt32 size) {
 	if(size > 2047)
 		throw std::runtime_error("Too many TimeStamps.");
 
-	SCOPED_LOCK(m_lock);
 	m_timeStamp.clear();
 	m_timeStamp.assign(timeStamp, timeStamp + size);
 	m_tsSize = m_timeStamp.size();
@@ -84,78 +82,64 @@ evgSoftSeq::setTimeStampTick(epicsUInt32* timeStamp, epicsUInt32 size) {
 
 epicsStatus 
 evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
-	SCOPED_LOCK(m_lock);
 	m_trigSrc = trigSrc;
-
 	return OK;
 }
 
 epicsStatus 
 evgSoftSeq::setRunMode(SeqRunMode runMode) {
-	SCOPED_LOCK(m_lock);
 	m_runMode = runMode;
-
 	return OK;
 }
 
 void
 evgSoftSeq::ctEventCode() {
-	SCOPED_LOCK(m_lock);
 	m_eventCodeCt = m_eventCode;
 }
 
 void
 evgSoftSeq::ctTimeStamp() {
-	SCOPED_LOCK(m_lock);
 	m_timeStampCt = m_timeStamp;
 }
 
 void
 evgSoftSeq::ctTrigSrc() {
-	SCOPED_LOCK(m_lock);
 	m_trigSrcCt = m_trigSrc;
 }
 
 void
 evgSoftSeq::ctRunMode() {
-	SCOPED_LOCK(m_lock);
 	m_runModeCt = m_runMode;
 }
 
 std::vector<epicsUInt8>
 evgSoftSeq::getEventCodeCt() {
-	SCOPED_LOCK(m_lock);
 	return m_eventCodeCt;
 }
 
 std::vector<epicsUInt32>
 evgSoftSeq::getTimeStampCt() {
-	SCOPED_LOCK(m_lock);
 	return m_timeStampCt;
 }
 
 SeqTrigSrc 
 evgSoftSeq::getTrigSrcCt() {
-	SCOPED_LOCK(m_lock);
 	return m_trigSrc;
 }
 
 SeqRunMode 
 evgSoftSeq::getRunModeCt() {
-	SCOPED_LOCK(m_lock);
 	return m_runMode;
 }
 
 epicsStatus 
 evgSoftSeq::setSeqRam(evgSeqRam* seqRam) {
-	SCOPED_LOCK(m_lock);
 	m_seqRam = seqRam;
 	return OK;
 }
 
 evgSeqRam* 
 evgSoftSeq::getSeqRam() {
-	SCOPED_LOCK(m_lock);
 	return m_seqRam;
 }
 
@@ -317,8 +301,6 @@ evgSoftSeq::commit(dbCommon* pRec) {
 
 epicsStatus
 evgSoftSeq::inspectSoftSeq() {
-	SCOPED_LOCK(m_lock);
-
 	/*Check if the timeStamps are sorted and Unique */
 	if(m_timeStamp.size() > 1) {
 		for(unsigned int i = 1; i < m_timeStamp.size(); i++) {

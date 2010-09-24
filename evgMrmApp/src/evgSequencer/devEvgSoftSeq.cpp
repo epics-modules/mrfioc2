@@ -215,38 +215,6 @@ init_bo(boRecord* pbo) {
 	return ret;
 }
 
-/*		waveform - LoadedSeq	*/
-/*returns: (-1,0)=>(failure,success)*/
-static long
-init_wf_loadedSeq(waveformRecord* pwf) {
-	long ret = 0;
-
-	if(pwf->inp.type != VME_IO) {
-		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pwf->name);
-		return S_db_badField;
-	}
-	
-	try {
-		evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);		
-		if(!evg)
-			throw std::runtime_error("Failed to lookup EVG");
-
-		evgSeqRamMgr* seqRamMgr = evg->getSeqRamMgr();
-		if(!seqRamMgr)
-			throw std::runtime_error("Failed to lookup EVG Seq Ram Manager");
-
-		pwf->dpvt = seqRamMgr;
-		ret = 0;
-	} catch(std::runtime_error& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
-		ret = S_dev_noDevice;
-	} catch(std::exception& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
-		ret = S_db_noMemory;
-	}
-
-	return ret;
-}
 
 /**		Read/Write Function		**/
 /*************** Soft Sequence Records ******************/
@@ -261,6 +229,7 @@ write_wf_timeStampTick(waveformRecord* pwf) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setTimeStampTick((epicsUInt32*)pwf->bptr, pwf->nord);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
@@ -283,6 +252,7 @@ write_wf_eventCode(waveformRecord* pwf) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nord);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
@@ -305,6 +275,7 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setRunMode((SeqRunMode)pmbbo->val);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
@@ -327,8 +298,8 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		pmbbi->val = seq->getRunModeCt();
-
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
 		ret = S_dev_noDevice;
@@ -350,6 +321,7 @@ write_mbbo_trigSrc(mbboRecord* pmbbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setTrigSrc((SeqTrigSrc)pmbbo->rval);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
@@ -372,8 +344,8 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		pmbbi->rval = seq->getTrigSrcCt();
-
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
 		ret = S_dev_noDevice;
@@ -396,8 +368,6 @@ get_ioint_info(int cmd, mbbiRecord *pmbbi, IOSCANPVT *ppvt) {
 	return 0;
 }
 
-/*************** Sequence Ram Records ******************/
-
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_loadSeq(boRecord* pbo) {
@@ -411,6 +381,7 @@ write_bo_loadSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->load();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -436,6 +407,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->unload((dbCommon*)pbo);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -461,6 +433,7 @@ write_bo_syncSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->sync((dbCommon*)pbo);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -486,6 +459,7 @@ write_bo_commitSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->commit((dbCommon*)pbo);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -511,6 +485,7 @@ write_bo_enableSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->enable();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -536,6 +511,7 @@ write_bo_disableSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->disable();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -561,6 +537,7 @@ write_bo_haltSeq(boRecord* pbo) {
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->halt(pbo->val);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
@@ -590,12 +567,46 @@ write_bo_softTrig(boRecord* pbo) {
 		if(!seqRam)
 			throw std::runtime_error("Failed to lookup EVG Seq RAM");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seqRam->setSoftTrig();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+
+/*returns: (-1,0)=>(failure,success)*/
+static long
+init_wf_loadedSeq(waveformRecord* pwf) {
+	long ret = 0;
+
+	if(pwf->inp.type != VME_IO) {
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pwf->name);
+		return S_db_badField;
+	}
+	
+	try {
+		evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("Failed to lookup EVG");
+
+		evgSeqRamMgr* seqRamMgr = evg->getSeqRamMgr();
+		if(!seqRamMgr)
+			throw std::runtime_error("Failed to lookup EVG Seq Ram Manager");
+
+		pwf->dpvt = seqRamMgr;
+		ret = 0;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
 		ret = S_db_noMemory;
 	}
 

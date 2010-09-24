@@ -73,7 +73,8 @@ public:
 	epicsStatus halt	(bool);
 	epicsStatus inspectSoftSeq();
 
-	IOSCANPVT ioscanpvt;
+	IOSCANPVT 					ioscanpvt;
+	epicsMutex 					m_lock;
 
 private:
 	const epicsUInt32 			m_id;
@@ -96,7 +97,7 @@ private:
 	evgSeqRamMgr*				m_seqRamMgr; 
 	epicsUInt32					m_ecSize;
 	epicsUInt32					m_tsSize;
-	epicsMutex	 				m_lock;
+	
 };
 
 #endif //EVG_SEQUENCE_H
