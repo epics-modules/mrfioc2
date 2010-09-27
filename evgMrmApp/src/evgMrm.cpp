@@ -228,29 +228,28 @@ evgMrm::sendTS(CALLBACK *pCallback) {
 	callbackGetUser(pVoid, pCallback);
 	evgMrm* evg = (evgMrm*)pVoid;
    
-    /*We receive this interupt at the start of every second*/
 	evg->incrementTS();
 	scanIoRequest(evg->ioscanpvt);
 
 	struct epicsTimeStamp ts;
 	epicsTime ntpTime, storedTime;
 
-	generalTimeGetExceptPriority(&ts, 0, 50);
-	ntpTime = ts;
-	storedTime = (epicsTime)evg->getTS();
+	if(!generalTimeGetExceptPriority(&ts, 0, 50)) {
+		ntpTime = ts;
+		storedTime = (epicsTime)evg->getTS();
 
-	double errorTime = ntpTime - storedTime;
-	char timeBuf[80];
+		double errorTime = ntpTime - storedTime;
+		char timeBuf[80];
 
-	if(fabs(errorTime) > evgAllowedTsErr) {
-		ntpTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
-		errlogPrintf("NTP time : %s\n", timeBuf);
-		ntpTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
-		errlogPrintf("Expected time : %s\n", timeBuf);
-		errlogPrintf("-------Timestamping Error of %f Secs-------\n", errorTime);
-    }
+		if(fabs(errorTime) > evgAllowedTsErr) {
+			ntpTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
+			errlogPrintf("NTP time : %s\n", timeBuf);
+			storedTime.strftime(timeBuf, sizeof(timeBuf), "%a, %d %b %Y %H:%M:%S"); 
+			errlogPrintf("Expected time : %s\n", timeBuf);
+			errlogPrintf("----Timestamping Error of %f Secs----\n", errorTime);
+    	}
+ 	}
 
-	/*Sending the timeStamp that should be loaded into the Seconds register of
  	EVR on receipt of next Event Code 0x7D (i.e. current_sec + 1) */
 	epicsUInt32 sec = evg->getTSsec() + 1 + POSIX_TIME_AT_EPICS_EPOCH;
 
@@ -277,7 +276,7 @@ evgMrm::getTSsec() {
 
 epicsStatus
 evgMrm::syncTS() {
-	generalTimeGetExceptPriority(&m_tv, 0, 50);
+	while(generalTimeGetExceptPriority(&m_tv, 0, 50));
 	m_tv.nsec = 0;
 	return OK;
 }
