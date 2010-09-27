@@ -9,11 +9,7 @@ class evgSoftEvt {
 public:
 	evgSoftEvt(volatile epicsUInt8* const);
 
-	epicsStatus enable(bool);
- 	bool enabled();
-
 	bool pend();
-	
 	epicsStatus setEvtCode(epicsUInt32);
 
 private:

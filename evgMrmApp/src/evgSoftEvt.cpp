@@ -11,30 +11,13 @@
 evgSoftEvt::evgSoftEvt(volatile epicsUInt8* const pReg):
 m_pReg(pReg),
 m_lock() {
+	BITSET8(m_pReg, SwEventControl, SW_EVT_ENABLE);
 }
-
-epicsStatus 
-evgSoftEvt::enable(bool ena){	
-	if(ena)
-		BITSET8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-	else
-		BITCLR8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-	
-	return OK;
-}
-
-
-bool 
-evgSoftEvt::enabled() {
-	return READ8(m_pReg, SwEventControl) & SW_EVT_ENABLE;
-}
-
 
 bool 
 evgSoftEvt::pend() {
 	return READ8(m_pReg, SwEventControl) & SW_EVT_PEND;
 }
-
 	
 epicsStatus 
 evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {

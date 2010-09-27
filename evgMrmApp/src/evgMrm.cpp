@@ -250,10 +250,7 @@ evgMrm::sendTS(CALLBACK *pCallback) {
     	}
  	}
 
- 	EVR on receipt of next Event Code 0x7D (i.e. current_sec + 1) */
 	epicsUInt32 sec = evg->getTSsec() + 1 + POSIX_TIME_AT_EPICS_EPOCH;
-
-	/*Sending MSB first*/
 	for(int i = 0; i < 32; sec <<= 1, i++) {
 		if( sec & 0x80000000 ) {
 			evg->getSoftEvt()->setEvtCode(0x71);

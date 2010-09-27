@@ -44,43 +44,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 }
 
 /** 	Initialization	**/
-/*returns: (0,2)=>(success,success no convert)	*/
-static long 
-init_bo(boRecord* pbo) {
-	long ret = init_record((dbCommon*)pbo, &pbo->out);
-	if (ret == 0)
-		ret = 2;
-	
-	return ret;
-}
-
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 init_lo(longoutRecord* plo) {
 	return init_record((dbCommon*)plo, &plo->out);
-}
-
-/**		bo - Software Event Enable	**/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_bo_enable(boRecord* pbo) {
-	long ret = 0;
-
-	try {
-		evgSoftEvt* softEvt = (evgSoftEvt*)pbo->dpvt;
-		if(!softEvt)
-			throw std::runtime_error("Device pvt field not initialized");
-
-		ret = softEvt->enable(pbo->val);
-	} catch(std::runtime_error& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-		ret = S_dev_noDevice;
-	} catch(std::exception& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-		ret = S_db_noMemory;
-	}
-
-	return ret;
 }
 
 /** 	longout - Software Event Code	**/
@@ -108,18 +75,6 @@ write_lo_setEvtCode(longoutRecord* plo) {
 
 /** 	device support entry table 	**/
 extern "C" {
-/*		bo -  Software Event Enable	*/
-common_dset devBoEvgSoftEvt = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_enable,
-};
-epicsExportAddress(dset, devBoEvgSoftEvt);
-
-
 /* 	longout - Software Event Code	*/
 common_dset devLoEvgSoftEvt = {
     5,

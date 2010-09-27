@@ -17,7 +17,6 @@ device( ao, VME_IO, devAoEvgFracSynFreq, "EVG Clk")
 device( ai, VME_IO, devAiEvgEvtClkSpeed, "EVG Clk")
 
 #evgSoftEvt.db
-device( bo, VME_IO, devBoEvgSoftEvt, "EVG Soft Evt")
 device( longout, VME_IO, devLoEvgSoftEvt, "EVG Soft Evt")
 
 #evgTrigEvt.db
@@ -52,6 +51,8 @@ device( mbbi, VME_IO, devMbbiEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")
 device( mbbi, VME_IO, devMbbiEvgTrigSrc, "EVG SEQ TRIG SRC")
 
+device( bo, VME_IO, devBoEvgSoftTrig, "EVG SOFT TRIG")
+
 device( bo, VME_IO, devBoEvgLoadSeq, "EVG LOAD SEQ")
 device( bo, VME_IO, devBoEvgUnloadSeq, "EVG UNLOAD SEQ")
 device( bo, VME_IO, devBoEvgSyncSeq, "EVG SYNC SEQ")
@@ -59,7 +60,6 @@ device( bo, VME_IO, devBoEvgCommitSeq, "EVG COMMIT SEQ")
 device( bo, VME_IO, devBoEvgEnableSeq, "EVG ENABLE SEQ")
 device( bo, VME_IO, devBoEvgDisableSeq, "EVG DISABLE SEQ")
 device( bo, VME_IO, devBoEvgHaltSeq, "EVG HALT SEQ")
-device( bo, VME_IO, devBoEvgSoftTrig, "EVG SOFT TRIG")
 device( bi, VME_IO, devBiEvgLoadStatus, "EVG LOAD STATUS")
 device( bi, VME_IO, devBiEvgEnaStatus, "EVG ENA STATUS")
 
