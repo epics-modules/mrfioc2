@@ -7,16 +7,33 @@
 #include <epicsTypes.h>
 #include <epicsMutex.h>
 #include <dbAccess.h>
+#include <dbScan.h>
 
 class evgMrm;
 class evgSeqRam;
 class evgSeqRamMgr;
 
 enum SeqRunMode {
-	single = 0,
-	automatic,
-	normal
+	Single = 0,
+	Auto,
+	Normal
 };
+
+enum SeqTrigSrc {
+	Mxc0 = 0,
+	Mxc1 = 1,
+	Mxc2 = 2,
+	Mxc3 = 3,
+	Mxc4 = 4,
+	Mxc5 = 5,
+	Mxc6 = 6,
+	Mxc7 = 7,
+	AC	 = 16,
+	SW_Ram0 = 17,
+	SW_Ram1 = 18
+};
+
+#define IrqStop(id) irqStop##id
 
 class evgSoftSeq {
 public:
@@ -29,42 +46,59 @@ public:
 	const char* getDescription();
 
 	epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
-	std::vector<epicsUInt8> getEventCode();
-	
 	epicsStatus setTimeStampTick(epicsUInt32*, epicsUInt32);
 	epicsStatus setTimeStampSec(epicsFloat64*, epicsUInt32);
-	std::vector<epicsUInt32> getTimeStamp();
-
-	epicsStatus setTrigSrc(epicsUInt32);
-	epicsUInt32 getTrigSrc();
-
+	epicsStatus setTrigSrc(SeqTrigSrc);
 	epicsStatus setRunMode(SeqRunMode);
-	SeqRunMode getRunMode();
+
+	void ctEventCode();
+	void ctTimeStamp();
+	void ctTrigSrc();
+	void ctRunMode();
+
+	std::vector<epicsUInt8> getEventCodeCt();
+	std::vector<epicsUInt32> getTimeStampCt();
+	SeqTrigSrc getTrigSrcCt();
+	SeqRunMode getRunModeCt();
 
 	epicsStatus setSeqRam(evgSeqRam*);
 	evgSeqRam* getSeqRam();
 
 	epicsStatus load	();
 	epicsStatus unload	(dbCommon *);
+	epicsStatus sync	(dbCommon *);
 	epicsStatus commit	(dbCommon *);
 	epicsStatus enable	();
 	epicsStatus disable	();
-	epicsStatus halt	();
+	epicsStatus halt	(bool);
+	epicsStatus inspectSoftSeq();
 
-	epicsMutex* getLock();
+	IOSCANPVT 					ioscanpvt;
+	epicsMutex 					m_lock;
 
 private:
 	const epicsUInt32 			m_id;
 	evgMrm* 					m_owner;
 	volatile epicsUInt8* const  m_pReg;
 	std::string 				m_desc;
+	
 	std::vector<epicsUInt8> 	m_eventCode;
 	std::vector<epicsUInt32>	m_timeStamp;
-	epicsUInt32 				m_trigSrc;
+	SeqTrigSrc 					m_trigSrc;
 	SeqRunMode 					m_runMode;
+	
+	std::vector<epicsUInt8> 	m_eventCodeCt;
+	std::vector<epicsUInt32>	m_timeStampCt;
+	SeqTrigSrc					m_trigSrcCt;
+	SeqRunMode 					m_runModeCt;
+	epicsUInt32					m_enaCt;
+	
 	evgSeqRam*  				m_seqRam;
 	evgSeqRamMgr*				m_seqRamMgr; 
-	epicsMutex* 				m_lock;
+	epicsUInt32					m_ecSize;
+	epicsUInt32					m_tsSize;
+	
 };
 
 #endif //EVG_SEQUENCE_H
+

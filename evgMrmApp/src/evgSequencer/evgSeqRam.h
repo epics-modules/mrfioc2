@@ -20,8 +20,10 @@ public:
 	epicsStatus setTimeStamp(std::vector<epicsUInt32>);
 
 	epicsStatus setSoftTrig();
-	epicsStatus setTrigSrc(epicsUInt32);
+	epicsStatus setTrigSrc(SeqTrigSrc);
+	SeqTrigSrc getTrigSrc();
 	epicsStatus setRunMode(SeqRunMode);
+	SeqRunMode getRunMode();
 
 	epicsStatus enable();
 	epicsStatus disable();
@@ -30,9 +32,9 @@ public:
 	bool enabled() const;
 	bool running() const;
 
-	epicsStatus load(evgSoftSeq* seq);
-	epicsStatus unload();
-	bool loaded() const;
+	epicsStatus alloc(evgSoftSeq* seq);
+	epicsStatus dealloc();
+	bool IsAlloc() const;
 
 	evgSoftSeq* getSoftSeq();
 
@@ -40,7 +42,7 @@ private:
 	const epicsUInt32			m_id;
 	volatile epicsUInt8* const	m_pReg;
 	bool 						m_allocated;
-	evgSoftSeq*	 				m_seq;
+	evgSoftSeq*	 				m_softSeq;
 };
 
 #endif //EVGSEQRAM_H

@@ -67,87 +67,93 @@ mrmEvgSetupVME (
 	volatile epicsUInt8* regCpuAddr = 0;
 	struct VMECSRID info;
 
-  	try {
+	try {
 		if(cardIdInUse(cardNum)) {
 			errlogPrintf("EVG Identifier %d already used", cardNum);
 			return -1;
 		}
 
-    	/*csrCpuAddr is VME-CSR space CPU address for the board*/
-    	volatile unsigned char* csrCpuAddr = 			 
+		/*csrCpuAddr is VME-CSR space CPU address for the board*/
+		volatile unsigned char* csrCpuAddr = 			 
 									devCSRTestSlot(vmeEvgIDs,slot,&info);
 
-    	if(!csrCpuAddr){
-      		errlogPrintf("No EVG in slot %d\n",slot);
-      		return -1;
-    	}
+		if(!csrCpuAddr) {
+			errlogPrintf("No EVG in slot %d\n",slot);
+			return -1;
+		}
 
-    	printf("##### Setting up MRF EVG in VME Slot %d #####\n",slot);
-    	printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
+		printf("##### Setting up MRF EVG in VME Slot %d #####\n",slot);
+		printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
 				info.vendor, info.board, info.revision);
-
-    	/*Setting the base address for Register Map on VME Board (EVG)*/
-    	CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
-    	
+		
+		if(CSRRead32(csrCpuAddr + CSR_FN_ADER(1))) 
+			errlogPrintf("Warning: EVG did not reboot properly\n");
+		else {
+			/*Setting the base address of Register Map on VME Board (EVG)*/
+			CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
+		}
+			
 		std::string Description("EVG");
 		std::ostringstream oss;
 		oss<<cardNum;
 		Description += oss.str();
 
 		/*Register VME address and get corresponding CPU address */
-    	int status = devRegisterAddress (
-        		Description.c_str(),          	// Event Generator Card name
-          		atVMEA24,                      	// A24 Address space
-            	vmeAddress,                    	// Physical address of register space
-            	EVG_REGMAP_SIZE,              	// Size of card's register space
-            	(volatile void **)&regCpuAddr	// Local address of card's register map
+		int status = devRegisterAddress (
+			Description.c_str(),          	// Event Generator Card name
+			atVMEA24,                      	// A24 Address space
+			vmeAddress,                    	// Physical address of register space
+			EVG_REGMAP_SIZE,              	// Size of card's register space
+			(volatile void **)&regCpuAddr	// Local address of card's register map
 		);	
 
-    	if(status) {
-      		errlogPrintf("Failed to map VME address %08x\n", vmeAddress);
-      		return -1;
-    	}
+		if(status) {
+			errlogPrintf("Failed to map VME address %08x\n", vmeAddress);
+			return -1;
+		}
 
-    	printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
+		printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
 
 		evgMrm* evg = new evgMrm(cardNum, regCpuAddr);
-		
+
 		if(irqLevel > 0 && irqVector >= 0) {
 			/*Configure the Interrupt level and vector on the EVG board*/
-    		CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL,  irqLevel&0x7);
-    		CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR, irqVector&0xff);
+			CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL,  irqLevel&0x7);
+			CSRWrite8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR, irqVector&0xff);
 
-    		printf("IRQ Level: %d\nIRQ Vector: %d\n",
-      			CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL),
-      			CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR)
- 			);
+			printf("IRQ Level: %d\nIRQ Vector: %d\n",
+				CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL),
+				CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR)
+			);
 
 			printf("csrCpuAddr : %p\nregCpuAddr : %p\n",csrCpuAddr, regCpuAddr);
 
 			/*Disable the interrupts and enable them at the end of iocInit via initHooks*/
-			WRITE32(regCpuAddr, IrqEnable, 0);
 			WRITE32(regCpuAddr, IrqFlag, READ32(regCpuAddr, IrqFlag));
+			WRITE32(regCpuAddr, IrqEnable, 0);
 
 			/*Enable interrupt from VME to CPU*/
-    		if(devEnableInterruptLevelVME(irqLevel&0x7)) {
-      			errlogPrintf("ERROR:Failed to enable VME interrupt level %d\n",irqLevel&0x7);
-      			delete evg;
+			if(devEnableInterruptLevelVME(irqLevel&0x7)) {
+				errlogPrintf("ERROR:Failed to enable VME interrupt level%d\n"
+																	,irqLevel&0x7);
+				delete evg;
 				return -1;
-    		}
+			}
 	
 			/*Connect Interrupt handler to vector*/
-    		if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
-      			errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n",irqVector&0xff);
-      			delete evg;
+			if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+				errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n"
+																	,irqVector&0xff);
+				delete evg;
 				return -1;
-    		}	
- 		}
+			}	
+		}
 		
 		evgmap.store(cardNum, *evg);		
 
-    	return 0;
-  	} catch(std::exception& e) {
-    	errlogPrintf("Error: %s\n",e.what());
+		return 0;
+	} catch(std::exception& e) {
+		errlogPrintf("Error: %s\n",e.what());
  	}
 	return -1;
 

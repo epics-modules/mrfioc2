@@ -18,7 +18,6 @@ public:
 
 private:
 	evgMrm*							m_owner;
-	volatile epicsUInt8* const 		m_pReg;
 	std::vector<evgSeqRam*> 		m_seqRam;
 };
 

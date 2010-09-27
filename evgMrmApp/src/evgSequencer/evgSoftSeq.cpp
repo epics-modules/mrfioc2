@@ -1,6 +1,9 @@
 #include "evgSoftSeq.h"
 
 #include <math.h>
+#include <stdexcept>
+#include <string>
+#include <iostream>
 
 #include <errlog.h>
 
@@ -11,14 +14,17 @@
 #include "evgMrm.h"
 
 evgSoftSeq::evgSoftSeq(const epicsUInt32 id, evgMrm* const owner):
+m_lock(),
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
-m_trigSrc(0),
-m_runMode(single),
+m_trigSrc(Mxc0),
+m_runMode(Single),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
-m_lock(new epicsMutex()) {
+m_ecSize(0),
+m_tsSize(0) {
+	scanIoInit(&ioscanpvt);
 }
 
 const epicsUInt32
@@ -38,23 +44,15 @@ evgSoftSeq::getDescription() {
 }
 
 epicsStatus
-evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
-	if(size < 0 || size > 2048) {
-		errlogPrintf("ERROR: EventCode array too large.");
-		return ERROR;
-	}
+evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
+	if(size > 2047)
+		throw std::runtime_error("Too many EventCodes.");
 	
-	m_lock->lock();
+	m_eventCode.clear();
 	m_eventCode.assign(eventCode, eventCode + size);
-	m_eventCode.push_back(0x7f);
-	m_lock->unlock();
+	m_ecSize = m_eventCode.size();
 
 	return OK;
-}
-
-std::vector<epicsUInt8>
-evgSoftSeq::getEventCode() {
-	return m_eventCode;
 }
 
 epicsStatus
@@ -63,72 +61,76 @@ evgSoftSeq::setTimeStampSec(epicsFloat64* timeStamp, epicsUInt32 size) {
 
 	//Convert secs to clock ticks
 	for(unsigned int i = 0; i < size; i++) {
-		timeStampInt[i] = timeStamp[i] * (m_owner->getEvtClk()->getEvtClkSpeed()) 
-									   * pow(10,6);
+		timeStampInt[i] = floor(timeStamp[i] * 
+						m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5);
 	}
 
-	setTimeStampTick(timeStampInt, size);
-	return OK;
+	return setTimeStampTick(timeStampInt, size);
 }
 
 epicsStatus
 evgSoftSeq::setTimeStampTick(epicsUInt32* timeStamp, epicsUInt32 size) {
-	if(size < 0 || size > 2048) {
-		errlogPrintf("ERROR: TimeStamp array too large.");
-		return ERROR;
-	}
-	
-	//Check if the timeStamps are sorted and Unique
-// 	for(unsigned int i = 0; i < size; i++) {
-// 		if(timeStamp[i] >= timeStamp[i+1]) {
-// 			errlogPrintf("ERROR: Timestamp values are not sorted and unique\n");
-// 			return ERROR;
-// 		}
-// 	}
+	if(size > 2047)
+		throw std::runtime_error("Too many TimeStamps.");
 
-	m_lock->lock();
+	m_timeStamp.clear();
 	m_timeStamp.assign(timeStamp, timeStamp + size);
-	m_timeStamp.push_back(m_timeStamp.back() + 1);
-	m_lock->unlock();
-	
+	m_tsSize = m_timeStamp.size();
+
 	return OK;
 }
-
-std::vector<epicsUInt32>
-evgSoftSeq::getTimeStamp() {
-	return m_timeStamp;
-}
-
 
 epicsStatus 
-evgSoftSeq::setTrigSrc(epicsUInt32 trigSrc) {
-	m_lock->lock();
+evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
 	m_trigSrc = trigSrc;
-	m_lock->unlock();
-
 	return OK;
 }
-
-epicsUInt32 
-evgSoftSeq::getTrigSrc() {
-	return m_trigSrc;
-}
-
 
 epicsStatus 
 evgSoftSeq::setRunMode(SeqRunMode runMode) {
-	m_lock->lock();
 	m_runMode = runMode;
-	m_lock->unlock();
-
 	return OK;
 }
-	
-SeqRunMode 
-evgSoftSeq::getRunMode() {
-	return m_runMode;
+
+void
+evgSoftSeq::ctEventCode() {
+	m_eventCodeCt = m_eventCode;
 }
 
+void
+evgSoftSeq::ctTimeStamp() {
+	m_timeStampCt = m_timeStamp;
+}
+
+void
+evgSoftSeq::ctTrigSrc() {
+	m_trigSrcCt = m_trigSrc;
+}
+
+void
+evgSoftSeq::ctRunMode() {
+	m_runModeCt = m_runMode;
+}
+
+std::vector<epicsUInt8>
+evgSoftSeq::getEventCodeCt() {
+	return m_eventCodeCt;
+}
+
+std::vector<epicsUInt32>
+evgSoftSeq::getTimeStampCt() {
+	return m_timeStampCt;
+}
+
+SeqTrigSrc 
+evgSoftSeq::getTrigSrcCt() {
+	return m_trigSrc;
+}
+
+SeqRunMode 
+evgSoftSeq::getRunModeCt() {
+	return m_runMode;
+}
 
 epicsStatus 
 evgSoftSeq::setSeqRam(evgSeqRam* seqRam) {
@@ -141,10 +143,6 @@ evgSoftSeq::getSeqRam() {
 	return m_seqRam;
 }
 
-/*
- * Check if any of the sequenceRam is available(i.e. unloaded).
- * if avaiable load and commit the sequence else return an error.
- */
 epicsStatus
 evgSoftSeq::load() {
 	evgSeqRam* seqRam = 0;
@@ -152,10 +150,13 @@ evgSoftSeq::load() {
 
 	for(unsigned int i = 0; i < m_seqRamMgr->numOfRams(); i++) {
 		seqRamIter = m_seqRamMgr->getSeqRam(i);
-		if( seqRamIter->loaded() ) {
+		if( seqRamIter->IsAlloc() ) {
 			if(this == seqRamIter->getSoftSeq()) {
-				errlogPrintf("Seq %d already loaded.\n",getId());
-				return OK;
+				char err[80];
+				sprintf(err, "SeqRam %d is already allocated to SoftSeq %d"
+								, seqRamIter->getId(), getId());
+				std::string strErr(err);
+				throw std::runtime_error(strErr);
 			}
 		} else {
 			if( !seqRam )
@@ -164,175 +165,240 @@ evgSoftSeq::load() {
 	}
 
 	if(seqRam != 0) {
-		printf("Loading Seq %d in SeqRam %d\n",getId(), seqRam->getId());
+		printf("Allocating SeqRam %d to SoftSeq %d\n", seqRam->getId(), getId());
 		setSeqRam(seqRam);
-		seqRam->load(this);
-		commit(0);
+		seqRam->alloc(this);
+		sync(0);
 		
-		return OK; 	
+		return OK;	
 	} else {
-		errlogPrintf("ERROR: Cannot load sequence.\n");
-		return ERROR;	
+		char err[80];
+		sprintf(err, "Cannot allocate SeqRam to SoftSeq %d", getId());
+		std::string strErr(err);
+		throw std::runtime_error(strErr);
 	}
 }
 	
-/* Unload does not wait for the sequecne to get over..Should it? */
 epicsStatus
 evgSoftSeq::unload(dbCommon* pRec) {
-	if(!m_seqRam)
+	if(!m_seqRam) 
 		return OK;
-	printf("Unloading Seq %d from SeqRam %d\n", getId(), m_seqRam->getId());
 
-	if( m_seqRam->enabled() ) {
-		//Disable the unloadSeq record.
-		pRec->pact = 1;		
-		
-		//Clear the SeqRam stop flag.
-		WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
+	printf("Unloading SeqRam %d associated with SoftSeq %d\n", 
+													m_seqRam->getId(), getId());
 
-		//Make the SeqRam single shot if in normal or automatic runMode.
-		if(! (READ32(m_pReg, SeqControl(m_seqRam->getId())) & EVG_SEQ_RAM_SINGLE))
-			BITSET32(m_pReg, SeqControl(m_seqRam->getId()), EVG_SEQ_RAM_SINGLE);
+	struct evgMrm::irqPvt* irqpvt = 0;
+	if(m_seqRam->getId() == 0)
+		irqpvt = &m_owner->irqStop0;
+	else if(m_seqRam->getId() == 1)
+		irqpvt = &m_owner->irqStop1;
 
-		//Adding the record to the 'list of records to be processed' on SEQ_RAM_STOP 
-		//interrupt.
-		if(m_seqRam->getId() == 0) {
-			epicsMutexLock(m_owner->irqStop0.mutex);
-			m_owner->irqStop0.recList.push_back(pRec);
-			epicsMutexUnlock(m_owner->irqStop0.mutex);
-    	} else if(m_seqRam->getId() == 1) {
-			epicsMutexLock(m_owner->irqStop1.mutex);
- 			m_owner->irqStop1.recList.push_back(pRec);
- 			epicsMutexUnlock(m_owner->irqStop1.mutex);
-		}
+	m_seqRam->setRunMode(Single);
+	m_seqRam->setTrigSrc(SW_Ram0);
+	scanIoRequest(ioscanpvt);
 
-		//Enabling the SEQ_RAM_STOP interrupt
+	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));	
+
+	if(!m_seqRam->running())
+		m_seqRam->disable();
+	else {				
+		pRec->pact = 1;	
+
+		SCOPED_LOCK2(irqpvt->mutex, guard);
+		irqpvt->recList.push_back(pRec);
+			
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
 
-		printf("Waiting for SeqRam %d to be disabled. Pausing unload.\n",
-				m_seqRam->getId());		
-		
-		return OK;		
-	}
+		printf("Paused the unloading of SeqRam %d. Waiting for it to be disabled.\n"
+					, m_seqRam->getId());
+				
+		return OK;
+	}		
 	
-	//This part of the function is executed only when the sequenceRam is disabled.
 	if(pRec->pact == 1) {
-		//Enable the commitSeq record.
 		pRec->pact = 0; 	
-		printf("SeqRam disabled. Continuing unload.\n");
+		printf("Continuing unload of SeqRam %d.\n", m_seqRam->getId());
 	}
 
-	m_seqRam->unload();
+	m_seqRam->dealloc();
 	setSeqRam(0);
 
 	return OK;
 }
 	
-/*
- * If the sequenceRam is not enabled then copy the sequence to the 
- * sequenceRam but if the sequenceRam is enabled then add the record 
- * to the 'list of records to be processed' on seqRam stop interupt.
- */
 epicsStatus
-evgSoftSeq::commit(dbCommon* pRec) {
-	if(!m_seqRam)
-		return OK;
+evgSoftSeq::sync(dbCommon* pRec) {
+	if(!m_seqRam) {
+		char err[80];
+		sprintf(err, "SeqRam is not allocated for SoftSeq %d", getId());
+		std::string strErr(err);
+		throw std::runtime_error(strErr);
+	}
 
-	printf("Commiting Seq %d to SeqRam %d\n", getId(), m_seqRam->getId());
-	if( m_seqRam->enabled() ) {
-		//Disable the commmitSeq record.
+	printf("Syncing SoftSeq %d to SeqRam %d\n", getId(), m_seqRam->getId());
+
+	struct evgMrm::irqPvt* irqpvt = 0;
+	if(m_seqRam->getId() == 0)
+		irqpvt = &m_owner->irqStop0;
+	else if(m_seqRam->getId() == 1)
+		irqpvt = &m_owner->irqStop1;
+
+	m_seqRam->setRunMode(Single);
+	m_seqRam->setTrigSrc(SW_Ram0);
+	scanIoRequest(ioscanpvt);
+		
+	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
+
+	if(!m_seqRam->running())
+		m_seqRam->disable();
+	else {	
+		if(pRec == 0)
+			std::runtime_error("Trying to sync an running sequence.");
+
 		pRec->pact = 1;		
-		
-		//Clear the SeqRam stop flag.
-		WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
 
-		//Make the SeqRam single shot if in normal or automatic runMode.
-		if(! (READ32(m_pReg, SeqControl(m_seqRam->getId())) & EVG_SEQ_RAM_SINGLE))
-			BITSET32(m_pReg, SeqControl(m_seqRam->getId()), EVG_SEQ_RAM_SINGLE);
+		SCOPED_LOCK2(irqpvt->mutex, guard);
+		irqpvt->recList.push_back(pRec);
 
-		//Adding the record to the 'list of records to be processed' on SEQ_RAM_STOP 
-		//interrupt.
-		if(m_seqRam->getId() == 0) {
-			epicsMutexLock(m_owner->irqStop0.mutex);
-			m_owner->irqStop0.recList.push_back(pRec);
-			epicsMutexUnlock(m_owner->irqStop0.mutex);
-    	} else if(m_seqRam->getId() == 1) {
-			epicsMutexLock(m_owner->irqStop1.mutex);
- 			m_owner->irqStop1.recList.push_back(pRec);
- 			epicsMutexUnlock(m_owner->irqStop1.mutex);
-		}
-		
-		//Enabling the SEQ_RAM_STOP interrupt
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
 
-		printf("Waiting for SeqRam %d to be disabled. Pausing Commit.\n",
-		 												m_seqRam->getId());		
+		printf("Paused sync of SoftSeq %d. Waiting for SeqRam %d to be "
+				"disabled\n", getId(), m_seqRam->getId());		
 
-		return OK;		
-	}
+		return OK;
+	}		
 
-	//This part of the function is executed only when the sequenceRam is disabled.	
 	if(pRec->pact == 1) {
-		//Enable the commitSeq record.
 		pRec->pact = 0; 	
-		printf("SeqRam disabled. Continuing commit.\n");
+		printf("Continue syncing SoftSeq %d\n", getId());
 	}
 
-	m_lock->lock();
-	m_seqRam->setEventCode(getEventCode());
-	m_seqRam->setTimeStamp(getTimeStamp());
-	m_seqRam->setTrigSrc(getTrigSrc());
-	m_seqRam->setRunMode(getRunMode());
-	m_lock->unlock();
+	m_seqRam->setEventCode(getEventCodeCt());
+	m_seqRam->setTimeStamp(getTimeStampCt());
+	m_seqRam->setTrigSrc(getTrigSrcCt());
+	m_seqRam->setRunMode(getRunModeCt());
+	if(m_enaCt) m_seqRam->enable();
 
-	enable();
+	scanIoRequest(ioscanpvt);
+
 	return OK;
 }
 
+epicsStatus
+evgSoftSeq::commit(dbCommon* pRec) {
+	inspectSoftSeq();	
+
+	ctEventCode();
+	ctTimeStamp();
+	ctTrigSrc();
+	ctRunMode();
+	
+	if(m_seqRam != 0)
+		sync(pRec);
+
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::inspectSoftSeq() {
+	/*Check if the timeStamps are sorted and Unique */
+	if(m_timeStamp.size() > 1) {
+		for(unsigned int i = 1; i < m_timeStamp.size(); i++) {
+			if( m_timeStamp[i-1] >= m_timeStamp[i] ) {
+				if( (m_timeStamp[i] == 0) && (m_eventCode[i] == 255))
+					continue;
+				 else
+					throw std::runtime_error("Timestamp values are not Sorted/Unique");
+			}
+		}
+	}
+
+	/*Check on the sizes of timeStamp and eventCode vectors.
+ 	  Appending 'End of Sequence' EventCode and TimeStamp. */
+	if(m_tsSize == m_ecSize) {
+
+		if(m_tsSize == 0) {
+			m_timeStamp.push_back(1);
+			m_eventCode.push_back(0x7f);
+		 } else {
+			if(m_tsSize == m_timeStamp.size())
+				m_timeStamp.push_back(m_timeStamp.back() + 1);
+			else 
+				m_timeStamp[m_tsSize] = m_timeStamp[m_tsSize - 1] + 1;
+
+			if(m_ecSize == m_eventCode.size())
+				m_eventCode.push_back(0x7f);
+			else
+				m_eventCode[m_ecSize] = 0x7f;
+		}
+
+	} else if(m_tsSize < m_ecSize) {
+
+		if(m_tsSize == 0) {
+			m_timeStamp.push_back(1);
+			m_eventCode[m_tsSize] = 0x7f;
+		} else {
+			if(m_tsSize == m_timeStamp.size())
+				m_timeStamp.push_back(m_timeStamp.back() + 1);
+			else 
+				m_timeStamp[m_tsSize] = m_timeStamp.back() + 1;
+
+		    m_eventCode[m_tsSize] = 0x7f;
+		}
+	} else if(m_tsSize > m_ecSize) {
+
+		if(m_ecSize == m_eventCode.size())
+			m_eventCode.push_back(0x7f);
+		else
+			m_eventCode[m_ecSize] = 0x7f;
+
+	}
+
+	return OK;
+}
 
 epicsStatus
 evgSoftSeq::enable() {
-	if( (!m_seqRam) || m_seqRam->enabled() )
-		return OK;
-	else
+	if(m_seqRam) {
+		m_seqRam->setTrigSrc(getTrigSrcCt());
+		m_seqRam->setRunMode(getRunModeCt());
 		m_seqRam->enable();
+	}
 
-	printf("Enabling seq %d in seqRam %d\n",getId(), m_seqRam->getId());
+	m_enaCt = true;
 	return OK;
 }
 
 epicsStatus
 evgSoftSeq::disable() {
-	if( (!m_seqRam) || (!m_seqRam->enabled()) )
-		return OK;
-	else { 
-		//If the seq is not in single runMode make it run in single mode.
-		if(! (READ32(m_pReg, SeqControl(m_seqRam->getId())) & EVG_SEQ_RAM_SINGLE))
-			BITSET32(m_pReg, SeqControl(m_seqRam->getId()), EVG_SEQ_RAM_SINGLE);
+	if(m_seqRam){
+		m_seqRam->setRunMode(Single);
+		scanIoRequest(ioscanpvt);
 	}
 
-	printf("Disabling seq %d in seqRam %d\n",getId(), m_seqRam->getId());
+	m_enaCt = false;
+	printf("Disabling SoftSeq %d in seqRam %d\n",getId(), m_seqRam->getId());
 	return OK;
 }
 
 epicsStatus
-evgSoftSeq::halt() {
+evgSoftSeq::halt(bool callBack) {
 	if( (!m_seqRam) || (!m_seqRam->enabled()) )
 		return OK;
 	else {
 		m_seqRam->disable();
-
-		//satisfy any call back request, on irqStop0 or irqStop1 recList.
-		if(m_seqRam->getId() == 0)
-			callbackRequest(&m_owner->irqStop0_cb);
-		else 
-			callbackRequest(&m_owner->irqStop1_cb);
+		
+		if(callBack) {
+			/*Satisfy any callback request pending on irqStop0 or irqStop1 recList.
+			As no 'End of sequence' Intrrupt will be generated. */
+			if(m_seqRam->getId() == 0)
+				callbackRequest(&m_owner->irqStop0_cb);
+			else 
+				callbackRequest(&m_owner->irqStop1_cb);
+		}
 	}
 
 	return OK;
 }
 
-epicsMutex*
-evgSoftSeq::getLock() {
-	return m_lock;
-}
+

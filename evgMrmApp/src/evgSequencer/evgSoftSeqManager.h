@@ -15,5 +15,6 @@ public:
 private:
 	evgMrm*	const						m_owner;
 	std::map<epicsUInt32, evgSoftSeq*> 	m_softSeq;
+	epicsMutex							m_lock;
 };
 #endif //EVG_SEQ_MGR_H
