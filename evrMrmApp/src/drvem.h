@@ -92,7 +92,7 @@ public:
   virtual epicsUInt32 tsDiv() const{return shadowCounterPS;}
 
   virtual void setSourceTS(TSSource);
-  virtual TSSource SourceTS() const;
+  virtual TSSource SourceTS() const{return shadowSourceTS;}
   virtual double clockTS() const;
   virtual void clockTSSet(double);
   virtual bool interestedInEvent(epicsUInt32 event,bool set);
@@ -117,6 +117,7 @@ private:
 
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
+  TSSource shadowSourceTS;
   epicsUInt32 shadowCounterPS;
   double eventClock; //!< Stored in Hz
 
