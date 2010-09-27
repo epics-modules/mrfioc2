@@ -89,7 +89,7 @@ public:
 
   virtual epicsUInt32 uSecDiv() const;
 
-  virtual epicsUInt32 tsDiv() const;
+  virtual epicsUInt32 tsDiv() const{return shadowCounterPS;}
 
   virtual void setSourceTS(TSSource);
   virtual TSSource SourceTS() const;
@@ -117,6 +117,7 @@ private:
 
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
+  epicsUInt32 shadowCounterPS;
   double eventClock; //!< Stored in Hz
 
   // Set by ISR

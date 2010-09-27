@@ -72,6 +72,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
   ,bufrx(b, 10) // Sets depth of Rx queue
   ,stampClock(0.0)
+  ,shadowCounterPS(0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -203,6 +204,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;
+
+    shadowCounterPS=READ32(base, CounterPS);
 }
 
 EVRMRM::~EVRMRM()
@@ -488,12 +491,6 @@ EVRMRM::recvErrorCount() const
     return count_recv_error;
 }
 
-epicsUInt32
-EVRMRM::tsDiv() const
-{
-    return READ32(base, CounterPS);
-}
-
 void
 EVRMRM::setSourceTS(TSSource src)
 {
@@ -523,6 +520,7 @@ EVRMRM::setSourceTS(TSSource src)
         throw std::out_of_range("TS source invalid");
     }
     WRITE32(base, CounterPS, div);
+    shadowCounterPS=div;
 }
 
 TSSource
@@ -566,6 +564,7 @@ EVRMRM::clockTSSet(double clk)
         double eclk=clock();
         epicsUInt16 div=(epicsUInt16)(eclk/clk);
         WRITE32(base, CounterPS, div);
+        shadowCounterPS=div;
     }
 
     int iflags=epicsInterruptLock();
