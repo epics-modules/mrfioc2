@@ -23,7 +23,8 @@ m_runMode(Single),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_ecSize(0),
-m_tsSize(0) {
+m_tsSize(0),
+m_isEnabled(0) {
 	scanIoInit(&ioscanpvt);
 }
 
@@ -143,6 +144,19 @@ evgSoftSeq::getSeqRam() {
 	return m_seqRam;
 }
 
+bool
+evgSoftSeq::isLoaded() {
+	if(m_seqRam)
+		return true;
+	else
+		return false;
+}
+
+bool
+evgSoftSeq::isEnabled() {
+	return m_isEnabled;
+}
+
 epicsStatus
 evgSoftSeq::load() {
 	evgSeqRam* seqRam = 0;
@@ -168,6 +182,8 @@ evgSoftSeq::load() {
 		printf("Allocating SeqRam %d to SoftSeq %d\n", seqRam->getId(), getId());
 		setSeqRam(seqRam);
 		seqRam->alloc(this);
+		scanIoRequest(ioscanpvt);
+		inspectSoftSeq();
 		sync(0);
 		
 		return OK;	
@@ -222,6 +238,7 @@ evgSoftSeq::unload(dbCommon* pRec) {
 
 	m_seqRam->dealloc();
 	setSeqRam(0);
+	scanIoRequest(ioscanpvt);
 
 	return OK;
 }
@@ -277,7 +294,7 @@ evgSoftSeq::sync(dbCommon* pRec) {
 	m_seqRam->setTimeStamp(getTimeStampCt());
 	m_seqRam->setTrigSrc(getTrigSrcCt());
 	m_seqRam->setRunMode(getRunModeCt());
-	if(m_enaCt) m_seqRam->enable();
+	if(m_isEnabled) m_seqRam->enable();
 
 	scanIoRequest(ioscanpvt);
 
@@ -365,7 +382,8 @@ evgSoftSeq::enable() {
 		m_seqRam->enable();
 	}
 
-	m_enaCt = true;
+	m_isEnabled = true;
+	scanIoRequest(ioscanpvt);
 	return OK;
 }
 
@@ -376,7 +394,8 @@ evgSoftSeq::disable() {
 		scanIoRequest(ioscanpvt);
 	}
 
-	m_enaCt = false;
+	m_isEnabled = false;
+	scanIoRequest(ioscanpvt);
 	printf("Disabling SoftSeq %d in seqRam %d\n",getId(), m_seqRam->getId());
 	return OK;
 }

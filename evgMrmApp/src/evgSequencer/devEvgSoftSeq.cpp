@@ -215,6 +215,10 @@ init_bo(boRecord* pbo) {
 	return ret;
 }
 
+static long 
+init_bi(biRecord* pbi) {
+	return init_record((dbCommon*)pbi, &pbi->inp);
+}
 
 /**		Read/Write Function		**/
 /*************** Soft Sequence Records ******************/
@@ -358,8 +362,8 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 }
 
 static long 
-get_ioint_info(int cmd, mbbiRecord *pmbbi, IOSCANPVT *ppvt) {
-	evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
+get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
 	if(!seq)
 		errlogPrintf("Failed to lookup EVG Sequence");
 	
@@ -580,7 +584,53 @@ write_bo_softTrig(boRecord* pbo) {
 	return ret;
 }
 
+/*(0,2)=> success and convert, don't convert)*/
+static long 
+read_bi_loadStatus(biRecord* pbi) {
+	long ret = 2;
+	printf("read_bi_loadStatus\n");
+	try {
+		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
 
+		SCOPED_LOCK2(seq->m_lock, guard);
+		pbi->val = seq->isLoaded();
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*(0,2)=> success and convert, don't convert)*/
+static long 
+read_bi_enaStatus(biRecord* pbi) {
+	long ret = 2;
+	printf("read_bi_enaStatus\n");
+	try {
+		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
+
+		SCOPED_LOCK2(seq->m_lock, guard);
+		pbi->val = seq->isEnabled();
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/** 	Loaded Soft Sequences	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long
 init_wf_loadedSeq(waveformRecord* pwf) {
@@ -628,7 +678,6 @@ write_wf_loadedSeq(waveformRecord* pwf) {
 				pBuf[i] = seq->getId();
 			else 
 				pBuf[i] = -1;
-			
 		}
 	
 		ret = 0;
@@ -786,6 +835,26 @@ common_dset devBoEvgSoftTrig = {
     (DEVSUPFUN)write_bo_softTrig,
 };
 epicsExportAddress(dset, devBoEvgSoftTrig);
+
+common_dset devBiEvgLoadStatus = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bi,
+	(DEVSUPFUN)get_ioint_info,
+    (DEVSUPFUN)read_bi_loadStatus,
+};
+epicsExportAddress(dset, devBiEvgLoadStatus);
+
+common_dset devBiEvgEnaStatus = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bi,
+	(DEVSUPFUN)get_ioint_info,
+    (DEVSUPFUN)read_bi_enaStatus,
+};
+epicsExportAddress(dset, devBiEvgEnaStatus);
 
 common_dset devWfEvgLoadedSeq = {
     5,

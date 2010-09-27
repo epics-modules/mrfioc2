@@ -182,6 +182,28 @@ record(bo, "$(P):$(N):softTrig") {
   	field( ONAM, "1")
 }
 
+record(bi, "$(P):$(N):loadStatus") {
+	field( DTYP, "EVG LOAD STATUS")
+	field( DESC, "Soft Seq Load status")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")
+	field( VAL , "0")
+	field( UDF, "0")
+	field( ZNAM, "Unloaded")
+  	field( ONAM, "Loaded")
+}
+
+record(bi, "$(P):$(N):enaStatus") {
+	field( DTYP, "EVG ENA STATUS")
+	field( DESC, "Soft Seq Ena status")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")	
+	field( VAL , "0")
+	field( UDF, "0")
+	field( ZNAM, "Disabled")
+  	field( ONAM, "Enabled")
+}
+
 record(waveform, "$(P):loadedSeq") {
 	field( DTYP, "EVG LOADED SEQ")
 	field( DESC, "Sequences Loaded in Rams")

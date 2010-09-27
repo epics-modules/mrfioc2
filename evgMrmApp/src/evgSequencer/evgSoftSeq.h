@@ -64,6 +64,9 @@ public:
 	epicsStatus setSeqRam(evgSeqRam*);
 	evgSeqRam* getSeqRam();
 
+	bool isLoaded();
+	bool isEnabled();
+
 	epicsStatus load	();
 	epicsStatus unload	(dbCommon *);
 	epicsStatus sync	(dbCommon *);
@@ -91,13 +94,13 @@ private:
 	std::vector<epicsUInt32>	m_timeStampCt;
 	SeqTrigSrc					m_trigSrcCt;
 	SeqRunMode 					m_runModeCt;
-	epicsUInt32					m_enaCt;
 	
 	evgSeqRam*  				m_seqRam;
 	evgSeqRamMgr*				m_seqRamMgr; 
 	epicsUInt32					m_ecSize;
 	epicsUInt32					m_tsSize;
 	
+	bool						m_isEnabled;
 };
 
 #endif //EVG_SEQUENCE_H
