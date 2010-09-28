@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 8
-y 306
-w 442
-h 405
+x 520
+y 552
+w 585
+h 409
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -31,7 +31,7 @@ minor 0
 release 0
 x 6
 y 193
-w 427
+w 572
 h 204
 lineColor index 3
 fill
@@ -46,7 +46,7 @@ minor 0
 release 0
 x 140
 y 61
-w 144
+w 286
 h 116
 lineColor index 3
 fill
@@ -277,7 +277,7 @@ major 4
 minor 5
 release 0
 x 182
-y 97
+y 117
 w 89
 h 21
 controlPv "$(P):$(O):high"
@@ -300,8 +300,8 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 182
-y 124
+x 321
+y 70
 w 89
 h 21
 controlPv "$(P):$(O):fall"
@@ -324,8 +324,8 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 182
-y 151
+x 321
+y 117
 w 89
 h 21
 controlPv "$(P):$(O):low"
@@ -368,7 +368,7 @@ major 4
 minor 1
 release 0
 x 147
-y 97
+y 117
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -386,8 +386,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 147
-y 124
+x 286
+y 70
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -405,8 +405,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 147
-y 151
+x 286
+y 117
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -424,7 +424,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 289
+x 434
 y 61
 w 144
 h 116
@@ -439,7 +439,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 289
+x 434
 y 51
 w 107
 h 20
@@ -458,7 +458,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 341
+x 486
 y 105
 w 59
 h 21
@@ -483,7 +483,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 341
+x 486
 y 135
 w 59
 h 21
@@ -508,7 +508,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 341
+x 486
 y 77
 w 87
 h 20
@@ -530,7 +530,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 294
+x 439
 y 77
 w 41
 h 20
@@ -549,7 +549,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 294
+x 439
 y 106
 w 46
 h 20
@@ -568,7 +568,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 294
+x 439
 y 136
 w 41
 h 20
@@ -590,7 +590,7 @@ release 0
 # Geometry
 x 14
 y 244
-w 407
+w 552
 h 147
 # Appearance
 border
@@ -646,7 +646,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 402
+x 547
 y 105
 w 20
 h 21
@@ -668,7 +668,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 402
+x 547
 y 135
 w 20
 h 21
@@ -904,5 +904,221 @@ controlPv "$(P):$(O):pat:dly:ena"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 189
+y 95
+w 87
+h 12
+controlPv "$(P):$(O):rise"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 15
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 157
+y 95
+w 31
+h 12
+controlPv "$(P):$(O):rise"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+shift 15
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 142
+y 95
+w 12
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "T0"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 333
+y 95
+w 87
+h 12
+controlPv "$(P):$(O):fall"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 15
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 301
+y 95
+w 31
+h 12
+controlPv "$(P):$(O):fall"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+shift 15
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 95
+w 12
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "T0"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 190
+y 148
+w 87
+h 12
+controlPv "$(P):$(O):high"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 15
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 158
+y 148
+w 31
+h 12
+controlPv "$(P):$(O):high"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+shift 15
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 143
+y 148
+w 12
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "T0"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 333
+y 147
+w 87
+h 12
+controlPv "$(P):$(O):low"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 15
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 301
+y 147
+w 31
+h 12
+controlPv "$(P):$(O):low"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+shift 15
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 147
+w 12
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "T0"
+}
 endObjectProperties
 
