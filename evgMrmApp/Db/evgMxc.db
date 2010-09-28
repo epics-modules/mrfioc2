@@ -13,7 +13,6 @@ record(bo, "$(P):$(N):Polarity") {
 record(bi, "$(P):$(N):Status") {
 	field( DTYP, "EVG Mxc")
   	field( DESC, "EVG Mux Counter Output Status")
-  	field( SCAN, "1 second")
 	field( INP , "#C$(cardNum) S$(mxcNum) @")
 	field( ZNAM, "0")
   	field( ONAM, "1")

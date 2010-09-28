@@ -67,5 +67,4 @@ record( longin, "$(P):Status" ) {
 	field( DTYP, "EVG")
   	field( DESC, "EVG Status")
   	field( INP, "#C$(cardNum) S @")
-	field( SCAN, ".1 second")
 }
