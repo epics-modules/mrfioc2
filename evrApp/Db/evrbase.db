@@ -18,6 +18,17 @@ record(bi, "$(P)link:sts") {
   field(ZNAM, "Fail")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
+  field(FLNK, "$(P)link:sts:cnt")
+}
+
+record(longin, "$(P)link:cnt") {
+  field(DTYP, "EVR")
+  field(DESC, "Receive Error Count")
+  field(INP , "@C=$(C), P=Receive Error Count")
+  field(PINI, "YES")
+  field(SCAN, "1 second")
+  field(DESC, "Rx error count")
+  field(TSEL, "$(P)link:sts.TIME")
   field(FLNK, "$(P)link:sts:init")
 }
 
@@ -30,15 +41,7 @@ record(calcout, "$(P)link:sts:init") {
   field(OUT , "$(P)enable PP")
   field(OOPT, "Transition To Non-zero")
   field(ODLY, "1.0")
-}
-
-record(longin, "$(P)link:cnt") {
-  field(DTYP, "EVR")
-  field(DESC, "Receive Error Count")
-  field(INP , "@C=$(C), P=Receive Error Count")
-  field(PINI, "YES")
-  field(SCAN, "1 second")
-  field(DESC, "Rx error count")
+  field(TSEL, "$(P)link:sts.TIME")
 }
 
 record(ao, "$(P)clock:set") {
@@ -79,6 +82,7 @@ record(calc, "$(P)clock:error") {
   field(PREC, "3")
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock")
+  field(TSEL, "$(P)clock.TIME")
   field(FLNK, "$(P)clock:period")
   info(autosaveFields_pass0, "EGU CALC PREC")
 }
@@ -91,6 +95,7 @@ record(calc, "$(P)clock:period") {
   field(PREC, "3")
   field(INPA, "$(P)clock:set")
   field(INPB, "$(P)clock:set.ESLO")
+  field(TSEL, "$(P)clock.TIME")
 }
 
 record(bi, "$(P)pll") {
