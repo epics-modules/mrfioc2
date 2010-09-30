@@ -828,8 +828,12 @@ EVRMRM::drain_fifo(CALLBACK* cb)
             break;
 
         if (evt>NELEMENTS(evr->events)) {
-            printf("Weird event 0x%08x\n", evt);
-            break;
+            epicsUInt32 evt2=READ32(evr->base, EvtFIFOCode);
+            if (evt2>NELEMENTS(evr->events)) {
+                printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
+                break;
+            } else
+                evt=evt2;
         }
         evt &= 0xff;
 
