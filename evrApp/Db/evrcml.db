@@ -7,6 +7,7 @@ record(bo, "$(P)$(CML)enable") {
   field(VAL, "0")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(CML)power") {
