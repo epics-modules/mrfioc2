@@ -80,5 +80,7 @@ device(longout,    INST_IO, devEventEVR, "EVR Event")
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
 
+device(waveform, CONSTANT, devWfMailbox, "Mailbox")
+
 registrar(asub_evr)
 registrar(EVRTime_Registrar)
