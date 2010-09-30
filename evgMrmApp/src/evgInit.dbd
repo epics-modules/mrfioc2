@@ -7,6 +7,8 @@ device( stringin, VME_IO, devSiTimeStamp, "EVG TIMESTAMP")
 device( bo, VME_IO, devBoEvgSyncTS, "EVG TIMESTAMP")
 device( mbbo, VME_IO, devMbboEvgTsInpType, "EVG TS INP TYPE")
 device( mbbo, VME_IO, devMbboEvgTsInpNum, "EVG TS INP NUM")
+device( mbbi, VME_IO, devMbbiEvgTsInpType, "EVG TS INP TYPE")
+device( mbbi, VME_IO, devMbbiEvgTsInpNum, "EVG TS INP NUM")
 device( longin, VME_IO, devLiEvgStatus, "EVG")
 
 #evgEvtClk.db

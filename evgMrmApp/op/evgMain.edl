@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 107
-y 87
+x 128
+y 45
 w 681
 h 807
 font "helvetica-medium-r-12.0"
@@ -1112,12 +1112,14 @@ h 20
 controlPv "$(P):RFdiv"
 font "helvetica-medium-r-12.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 editable
 motifWidget
 limitsFromDb
 nullColor index 14
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
@@ -1307,11 +1309,13 @@ h 20
 controlPv "$(P):SoftEvt:Code"
 font "helvetica-medium-r-12.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 editable
 motifWidget
 limitsFromDb
 nullColor index 14
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
@@ -1403,6 +1407,7 @@ h 19
 controlPv "$(P):$(T):Code"
 font "helvetica-medium-r-12.0"
 fgColor index 14
+fgAlarm
 bgColor index 0
 editable
 autoHeight
@@ -1410,6 +1415,7 @@ motifWidget
 limitsFromDb
 nullColor index 14
 useHexPrefix
+useAlarmBorder
 newPos
 objType "controls"
 endObjectProperties
@@ -2216,120 +2222,6 @@ value0 {
 }
 endObjectProperties
 
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 30
-y 690
-w 450
-h 40
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 30
-y 690
-w 450
-h 40
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 220
-y 700
-w 160
-h 20
-controlPv "$(P):TS"
-fgColor index 14
-fgAlarm
-bgColor index 3
-fill
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 700
-w 60
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):SyncTS"
-onLabel "Sync"
-offLabel "Sync"
-labelType "literal"
-buttonType "push"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 50
-y 700
-w 80
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):TsInpType"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 130
-y 700
-w 60
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):TsInpNum"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
@@ -2406,5 +2298,104 @@ displayFileName {
 symbols {
   0 "SS=Seq2"
 }
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 690
+w 450
+h 40
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 220
+y 700
+w 160
+h 20
+controlPv "$(P):TS"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 700
+w 60
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):SyncTS"
+onLabel "Sync"
+offLabel "Sync"
+labelType "literal"
+buttonType "push"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 50
+y 700
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):TsInpType"
+indicatorPv "$(P):TsInpTypeRB"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 700
+w 60
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):TsInpNum"
+indicatorPv "$(P):TsInpNumRB"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

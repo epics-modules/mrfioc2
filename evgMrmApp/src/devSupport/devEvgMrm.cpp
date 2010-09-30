@@ -5,6 +5,8 @@
 #include <boRecord.h>
 #include <stringinRecord.h>
 #include <mbboRecord.h>
+#include <mbbiRecord.h>
+
 #include <devSup.h>
 #include <dbAccess.h>
 #include <errlog.h>
@@ -62,6 +64,16 @@ init_si(stringinRecord* psi) {
 static long 
 init_mbbo(mbboRecord* pmbbo) {
 	epicsStatus ret = init_record((dbCommon*)pmbbo, &pmbbo->out);
+	if(ret == 0)
+		ret = 2;
+
+	return ret;
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+init_mbbi(mbbiRecord* pmbbi) {
+	epicsStatus ret = init_record((dbCommon*)pmbbi, &pmbbi->inp);
 	if(ret == 0)
 		ret = 2;
 
@@ -137,7 +149,6 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
 	return 0;
 }
 
-/**		bo - Update TimeStamp	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_syncTS(boRecord* pbo) {
@@ -160,11 +171,10 @@ write_bo_syncTS(boRecord* pbo) {
 	return ret;
 }
 
-/** 	mbbo - TimeStamp Input Type **/
-/*returns: (-1,0)=>(failure,success)*/
+/*returns: (0,2)=>(success,success no convert)*/
 static long 
 write_mbbo_tsInpType(mbboRecord* pmbbo) {
-	long ret = 0;
+	long ret = 2;
 
 	try {
 		evgMrm* evg = (evgMrm*)pmbbo->dpvt;
@@ -183,11 +193,10 @@ write_mbbo_tsInpType(mbboRecord* pmbbo) {
 	return ret;
 }
 
-/** 	mbbo - TimeStamp Input Number **/
-/*returns: (-1,0)=>(failure,success)*/
+/*returns: (0,2)=>(success,success no convert)*/
 static long 
 write_mbbo_tsInpNum(mbboRecord* pmbbo) {
-	long ret = 0;
+	long ret = 2;
 
 	try {
 		evgMrm* evg = (evgMrm*)pmbbo->dpvt;
@@ -200,6 +209,50 @@ write_mbbo_tsInpNum(mbboRecord* pmbbo) {
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+read_mbbi_tsInpType(mbbiRecord* pmbbi) {
+	long ret = 2;
+
+	try {
+		evgMrm* evg = (evgMrm*)pmbbi->dpvt;
+		if(!evg)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pmbbi->val = evg->getTsInpType();
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*returns: (0,2)=>(success,success no convert)*/
+static long 
+read_mbbi_tsInpNum(mbbiRecord* pmbbi) {
+	long ret = 2;
+
+	try {
+		evgMrm* evg = (evgMrm*)pmbbi->dpvt;
+		if(!evg)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		pmbbi->val = evg->getTsInpNum();
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
 		ret = S_db_noMemory;
 	}
 
@@ -282,6 +335,26 @@ common_dset devMbboEvgTsInpNum = {
     (DEVSUPFUN)write_mbbo_tsInpNum,
 };
 epicsExportAddress(dset, devMbboEvgTsInpNum);
+
+common_dset devMbbiEvgTsInpType = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_mbbi,
+    NULL,
+    (DEVSUPFUN)read_mbbi_tsInpType,
+};
+epicsExportAddress(dset, devMbbiEvgTsInpType);
+
+common_dset devMbbiEvgTsInpNum = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_mbbi,
+    NULL,
+    (DEVSUPFUN)read_mbbi_tsInpNum,
+};
+epicsExportAddress(dset, devMbbiEvgTsInpNum);
 
 common_dset devLiEvgStatus = {
     5,

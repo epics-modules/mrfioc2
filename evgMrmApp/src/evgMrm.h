@@ -53,6 +53,8 @@ public:
 	epicsStatus syncTS();
 	epicsStatus setTsInpType(InputType);
 	epicsStatus setTsInpNum(epicsUInt32);
+	InputType getTsInpType();
+	epicsUInt32 getTsInpNum();
 	epicsStatus setupTS(bool);
 	epicsStatus incrementTS();
 	epicsUInt32 getTSsec();

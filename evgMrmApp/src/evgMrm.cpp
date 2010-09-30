@@ -288,6 +288,10 @@ evgMrm::setTsInpType(InputType type) {
 	if(m_ppsSrc.type == type)
 		return OK;
 
+	/*Check if such an input exists*/
+	if(type != None_Input)
+		getInput(m_ppsSrc.num, type);
+
 	setupTS(0);
 	m_ppsSrc.type = type;
 	setupTS(1);
@@ -300,11 +304,25 @@ evgMrm::setTsInpNum(epicsUInt32 num) {
 	if(m_ppsSrc.num == num)
 		return OK;
 
+	/*Check if such an input exists*/
+	if(m_ppsSrc.type != None_Input)
+		getInput(num, m_ppsSrc.type);
+
 	setupTS(0);
 	m_ppsSrc.num = num;
 	setupTS(1);
 	
 	return OK;
+}
+
+InputType
+evgMrm::getTsInpType() {
+	return m_ppsSrc.type;
+}
+
+epicsUInt32
+evgMrm::getTsInpNum() {
+	return m_ppsSrc.num;
 }
 
 epicsStatus
@@ -313,12 +331,12 @@ evgMrm::setupTS(bool ena) {
 		return OK;
 
 	evgInput* inp = getInput(m_ppsSrc.num, m_ppsSrc.type);
-
 	if(ena) {
 		inp->enaExtIrq(1);
 		syncTS();
-	} else
+	} else {
 		inp->enaExtIrq(0);
+	}
 
 	return OK;
 }
