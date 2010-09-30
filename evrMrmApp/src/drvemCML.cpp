@@ -261,6 +261,10 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   if(blen>lenPatternMax())
     throw std::out_of_range("Pattern is too long");
 
+  bool reenable=enabled();
+  if (reenable && mode()==cmlModePattern)
+    enable(false);
+
   epicsUInt32 val=0;
   for(epicsUInt32 i=0; i<blen; i++) {
     val|=(!!buf[i])<<(OutputCMLPatNBit-1-i%OutputCMLPatNBit);
@@ -272,4 +276,7 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   }
 
   WRITE32(base, OutputCMLPatLength(N), blen/OutputCMLPatNBit);
+
+  if (reenable && mode()==cmlModePattern)
+    enable(true);
 }
