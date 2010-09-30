@@ -12,10 +12,10 @@ public:
   MRMCML(unsigned char, EVRMRM&);
   virtual ~MRMCML();
 
-  virtual cmlMode mode() const;
+  virtual cmlMode mode() const{return shadowMode;}
   virtual void setMode(cmlMode);
 
-  virtual bool enabled() const;
+  virtual bool enabled() const{return shadowEnable;}
   virtual void enable(bool);
 
   virtual bool inReset() const;
@@ -58,6 +58,9 @@ private:
   volatile unsigned char *base;
   unsigned char N;
   EVRMRM& owner;
+
+  bool shadowEnable;
+  cmlMode shadowMode;
 };
 
 #endif // EVRMRMCMLSHORT_HPP_INC
