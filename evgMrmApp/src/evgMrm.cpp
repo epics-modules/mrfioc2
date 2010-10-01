@@ -71,8 +71,8 @@ m_softSeqMgr(this) {
 										new evgOutput(i, pReg, Univ_Output);
 		}	
 
-		init_cb(&irqStop0_cb, priorityLow, &evgMrm::process_cb, &irqStop0);
-		init_cb(&irqStop1_cb, priorityLow, &evgMrm::process_cb, &irqStop1);
+		init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_cb, &irqStop0);
+		init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_cb, &irqStop1);
 		init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
 	
 		scanIoInit(&ioscanpvt);
@@ -156,26 +156,15 @@ evgMrm::isr(void* arg) {
 	epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
 	epicsUInt32 active = flags & enable;
 	
-// 	#ifdef __rtems__
-// 	printk("\n ----------------------------------------------- \n");
-// 	printk("1.\nflags  : %08x\nactive : %08x\n", flags, active);
-// 	#endif //__rtems__
-
 	if(!active)
 		return;
 	
 	if(active & EVG_IRQ_STOP_RAM(0)) {
-		#ifdef __rtems__
-		printk("EVG_IRQ_STOP_RAM0\n");
-		#endif	
 		callbackRequest(&evg->irqStop0_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
 	}
 
 	if(active & EVG_IRQ_STOP_RAM(1)) {
-		#ifdef __rtems__
-		printk("EVG_IRQ_STOP_RAM1\n");
-		#endif
 		callbackRequest(&evg->irqStop1_cb);
 		BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
 	}
@@ -185,16 +174,6 @@ evgMrm::isr(void* arg) {
 	}
 
 	WRITE32(evg->m_pReg, IrqFlag, flags);
-
-//	flags = READ32(evg->getRegAddr(), IrqFlag);
-//	enable = READ32(evg->getRegAddr(), IrqEnable);
-//	active = flags & enable;
-
-// 	#ifdef __rtems__
-
-// 	printk("2.\nflags  : %08x\nactive : %08x\n", flags, active);
-// 	#endif //_rtems_
-	
 	return;
 }
 
@@ -212,8 +191,7 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 	for(unsigned int i = 0; i < pIrqPvt->recList.size(); i++) {
 		pRec = pIrqPvt->recList[i];
 		prset = (struct rset*)pRec->rset;
-		printf("Processing Record : %s \n", pRec->name);
-		printf("----------------------------------------------- \n\n");
+
 		dbScanLock(pRec);
 		(*(long (*)(dbCommon*))prset->process)(pRec);
 		dbScanUnlock(pRec);

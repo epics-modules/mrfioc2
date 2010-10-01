@@ -22,14 +22,12 @@ evgMxc::~evgMxc() {
 
 bool 
 evgMxc::getMxcOutStatus() {
-	epicsUInt32 muxCtrl = READ32(m_pReg, MuxControl(m_id));
-	return muxCtrl & EVG_MUX_STATUS;
+	return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS;
 }
 
 bool 
 evgMxc::getMxcOutPolarity() {
-	epicsUInt32 muxCtrl = READ32(m_pReg, MuxControl(m_id));
-	return muxCtrl & EVG_MUX_POLARITY;
+	return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
 }
 
 epicsStatus 

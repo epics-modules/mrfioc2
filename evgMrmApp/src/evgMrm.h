@@ -44,8 +44,8 @@ public:
 
 	/**	Interrupt and Callback	**/
 	static void isr(void*);
-	static void process_cb(CALLBACK*);
 	static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
+	static void process_cb(CALLBACK*);
 
 	/** TimeStamp	**/
 	static void sendTS(CALLBACK*);
