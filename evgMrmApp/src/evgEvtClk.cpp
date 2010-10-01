@@ -36,13 +36,13 @@ evgEvtClk::getRFref() {
 
 epicsStatus 
 evgEvtClk::setRFdiv(epicsUInt32 rfDiv) {
-	if(rfDiv < 1  && rfDiv > 32) {
+	if(rfDiv < 1  || rfDiv > 32) {
 		char err[80];
 		sprintf(err, "Invalid RF Divider %d.", rfDiv);
 		std::string strErr(err);
 		throw std::runtime_error(strErr);
 	}
-		
+	
 	WRITE8(m_pReg, RfDiv, rfDiv-1);
 	return OK;
 }
