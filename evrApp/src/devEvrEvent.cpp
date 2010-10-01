@@ -8,7 +8,7 @@
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
 
-#include <eventRecord.h>
+#include <longoutRecord.h>
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
@@ -40,11 +40,11 @@ linkOptionDef eventdef[] =
 static
 long add_record(struct dbCommon *precord)
 {
-  eventRecord* prec=(eventRecord*)(precord);
+  longoutRecord* prec=(longoutRecord*)(precord);
   long ret=0;
   priv *p=NULL;
 try {
-  assert(prec->inp.type==INST_IO);
+  assert(prec->out.type==INST_IO);
 
   if (prec->dpvt) {
     p=static_cast<priv*>(prec->dpvt);
@@ -54,7 +54,7 @@ try {
   p->card=0;
   p->event=0;
 
-  if (linkOptionsStore(eventdef, p, prec->inp.value.instio.string, 0))
+  if (linkOptionsStore(eventdef, p, prec->out.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
 
   p->evr=&evrmap.get(p->card);
@@ -81,7 +81,7 @@ try {
 static
 long del_record(struct dbCommon *precord)
 {
-  eventRecord* prec=(eventRecord*)(precord);
+  longoutRecord* prec=(longoutRecord*)(precord);
   priv *p=static_cast<priv*>(prec->dpvt);
   long ret=0;
 try {
@@ -108,7 +108,7 @@ long init(int i)
 }
 
 static
-long init_record(eventRecord *prec)
+long init_record(longoutRecord *prec)
 {
   return 0;
 }
@@ -117,7 +117,7 @@ static
 long
 get_ioint_info(int dir,dbCommon* precord,IOSCANPVT* io)
 {
-  eventRecord* prec=(eventRecord*)(precord);
+  longoutRecord* prec=(longoutRecord*)(precord);
   priv *p=static_cast<priv*>(prec->dpvt);
   long ret=0;
 try {
@@ -141,14 +141,17 @@ try {
   return ret;
 }
 
-static long read_event(eventRecord *precord)
+static long read_event(longoutRecord *precord)
 {
-  eventRecord* prec=(eventRecord*)(precord);
+  longoutRecord* prec=(longoutRecord*)(precord);
   priv *p=static_cast<priv*>(prec->dpvt);
   long ret=0;
 try {
 
-  if(prec->tse==2){
+  if (prec->val>=0 && prec->val<=255)
+    post_event(prec->val);
+
+  if(prec->tse==epicsTimeEventDeviceTime){
     p->evr->getTimeStamp(&prec->time,p->event);
   }
 

@@ -28,6 +28,14 @@ file "evrevent.db"
 {P, C, N, CODE, EVNT}
 {$(P), $(C), "dbevt", 15, 15}
 {$(P), $(C), "1hz", 0x7d, 1}
+{$(P), $(C), "evta", 10, 10}
+{$(P), $(C), "evtb", 11, 11}
+{$(P), $(C), "evtc", 12, 12}
+{$(P), $(C), "evtd", 13, 13}
+{$(P), $(C), "evte", 14, 14}
+{$(P), $(C), "evtf", 15, 15}
+{$(P), $(C), "evtg", 16, 16}
+{$(P), $(C), "evth", 17, 17}
 }
 
 file "evrscale.db"

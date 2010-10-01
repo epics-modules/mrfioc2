@@ -75,7 +75,7 @@ device(ao     , INST_IO, devaoEVR, "EVR")
 device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
 
 # '@C=$(C), Code=hweventnum'
-device(event,    INST_IO, devEventEVR, "EVR")
+device(longout,    INST_IO, devEventEVR, "EVR Event")
 
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")

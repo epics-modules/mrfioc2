@@ -1,0 +1,796 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=blue"
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Soft and Hard Sequences
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename evg-seq.dia
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Sequence Management Process
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:seq:process"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The existence of the software and hardware sequences is an abstraction made
+ to separate the process of assembling a sequence from the process of placing
+ it into hardware.
+ This puts a complete ready to run copy of all sequences in the IOC at all
+ times.
+ The IOC is then free to choose which sequence to place into hardware.
+ Since this is a local operation it can be done quickly and efficiently.
+\end_layout
+
+\begin_layout Standard
+The number of hardware sequences is limited by an EVG's hardware resources.
+ However, the separation allows an IOC to have more soft sequences than
+ hard sequences.
+ An automatic allocation scheme ensures that at any given time, each hard
+ sequence is connected to only one soft sequence.
+\end_layout
+
+\begin_layout Subsection
+Terms
+\end_layout
+
+\begin_layout Description
+Sequencer A hardware device consisting of two lists (event codes and timestamps)
+ and associated settings (trigger src/mode).
+\end_layout
+
+\begin_layout Description
+Hardware
+\begin_inset space ~
+\end_inset
+
+Sequence Each hard sequence manages one of the EVG's sequencers.
+ Users do not interact with the hardware sequence directly.
+\end_layout
+
+\begin_layout Description
+Software
+\begin_inset space ~
+\end_inset
+
+Sequence Contains a complete copy of a sequence including associated settings
+ needed to run it.
+ Handles user interactions to allow this copy to be updated atomically.
+\end_layout
+
+\begin_layout Subsection
+Parts of a Sequence
+\end_layout
+
+\begin_layout Description
+Event
+\begin_inset space ~
+\end_inset
+
+Code
+\begin_inset space ~
+\end_inset
+
+List The list of event codes which will be sent when the sequence is run.
+\end_layout
+
+\begin_layout Description
+Time
+\begin_inset space ~
+\end_inset
+
+List The times at which each event code will be sent.
+ Times are relative to the sequence start time.
+ Each code to be sent must have a timestamp.
+\end_layout
+
+\begin_layout Description
+Trigger
+\begin_inset space ~
+\end_inset
+
+Source The source of the action which will cause the sequence to run.
+\end_layout
+
+\begin_layout Description
+Trigger
+\begin_inset space ~
+\end_inset
+
+Mode Modifies trigger behavior.
+ Choices are Single: When triggered run once, must be manually rearmed.
+ Normal: Run when triggered and automatically rearm.
+ Automatic: Run when first triggered, automatically repeat sequence indefinitely.
+\end_layout
+
+\begin_layout Subsection
+Actors and Actions
+\end_layout
+
+\begin_layout Standard
+All operations on a sequence are made through the software sequence.
+ This serves two purposes.
+ First it simplifies locking, and more importantly it allows the software
+ sequence to keep a copy of all of a sequence's state.
+ An important goal of the soft/hard sequence abstraction is to require the
+ user constructing the sequence to interact only with the software sequence.
+\end_layout
+
+\begin_layout Standard
+A software sequence defines a number of actions on the state of the software
+ sequence which can be used be initiated by local or remote users.
+ An overview of these interactions is given in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:seq:process"
+
+\end_inset
+
+.
+ The effects of these actions are detailed in the flow diagram in figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:action:flow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename evg-actions.dia
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Flow diagrams of user actions
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:action:flow"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The state of the soft sequence consists of two values: 
+\shape italic
+loaded/unloaded
+\shape default
+ and 
+\shape italic
+enabled/disabled
+\shape default
+.
+\end_layout
+
+\begin_layout Description
+Load Request that an unassigned hardware sequence be assigned to this software
+ sequence.
+ Assumes that the software sequence is in the 
+\shape italic
+unloaded
+\shape default
+ state.
+ This operation will fail if all hard sequences are already assigned.
+ If it succeeds the soft sequence becomes 
+\shape italic
+loaded
+\shape default
+.
+\end_layout
+
+\begin_layout Description
+Unload Release the hardware sequence assigned to this software sequence.
+ This operation can not fail.
+ The soft sequence becomes 
+\shape italic
+unloaded
+\shape default
+.
+\end_layout
+
+\begin_layout Description
+Enable Arm a 
+\shape italic
+loaded
+\shape default
+ sequence to be triggered.
+ This operation can not fail.The soft sequence becomes 
+\shape italic
+armed
+\shape default
+.
+\end_layout
+
+\begin_layout Description
+Disable Take an 
+\shape italic
+armed
+\shape default
+ sequence back to a 
+\shape italic
+disarmed
+\shape default
+ state.
+ This operation can not fail.
+\end_layout
+
+\begin_layout Description
+Commit Cause changes to the 
+\shape italic
+scratch sequence
+\shape default
+ (Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:seq:process"
+
+\end_inset
+
+) to be copied to the 
+\shape italic
+complete sequence
+\shape default
+.
+ If the software sequence is loaded then this also initiates a 
+\shape italic
+sync
+\shape default
+ action.
+\end_layout
+
+\begin_layout Description
+Halt Cause a running sequence to stop immediately, before completion, and
+ disables it.
+ This action leaves the soft sequence in a 
+\shape italic
+disarmed
+\shape default
+ state.
+\end_layout
+
+\begin_layout Subsection
+Sequencer Operation
+\end_layout
+
+\begin_layout Standard
+The software sequencer is managed according to the state diagram in figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:seq:states"
+
+\end_inset
+
+.
+ Defined transitions are listed below.
+ Transitions from the 
+\shape italic
+running
+\shape default
+ state are not listed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ The implementation is not allowed to distinguish between the 
+\shape italic
+armed
+\shape default
+ and 
+\shape italic
+running
+\shape default
+ states.
+ A trigger can come at any time and notification may arrive after the sequence
+ has finished.
+ The running state is a user convenience for long running sequences.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tbh
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename evg-states.dia
+	width 70col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Sequencer States
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:seq:states"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Init
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Unloaded When the EVG is initialized all hardware sequences are unallocated.
+\end_layout
+
+\begin_layout Description
+Unloaded
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Loaded When a client requests that the sequence be loaded and the request
+ is successful the software sequence will enter the 
+\shape italic
+loaded
+\shape default
+ super-state.
+\end_layout
+
+\begin_layout Description
+Unloaded
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+No
+\begin_inset space ~
+\end_inset
+
+HSeq If the request can not be satisfied then the soft sequence will enter
+ the 
+\shape italic
+no hardware sequence
+\shape default
+ state.
+\end_layout
+
+\begin_layout Description
+No
+\begin_inset space ~
+\end_inset
+
+HSeq
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Unloaded The 
+\shape italic
+no hardware sequence
+\shape default
+ error is cleared when the client issues an unload request.
+\end_layout
+
+\begin_layout Description
+Loaded
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Disarmed Upon entering the loaded super-state a soft sequence is 
+\shape italic
+disarmed
+\shape default
+.
+\end_layout
+
+\begin_layout Description
+Disarmed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Unloaded The hardware sequence is released and becomes available for allocation
+ to another soft sequence.
+\end_layout
+
+\begin_layout Description
+Disarmed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Armed The sequencer is enabled.
+ If the trigger source is software trigger then the sequence will run immediatel
+y.
+\end_layout
+
+\begin_layout Description
+Armed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Running Indicates that the sequencer is running.
+ This may be missed for short sequences.
+ 
+\shape italic
+Armed
+\shape default
+ and 
+\shape italic
+running
+\shape default
+ are treated similarly.
+\end_layout
+
+\begin_layout Description
+Armed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Disarmed Indicates normal completion of a sequence in single trigger mode.
+\end_layout
+
+\begin_layout Description
+Armed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Stop A user request to stop the sequencer after the current sequence completes.
+\end_layout
+
+\begin_layout Description
+Armed
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Halt User requests the sequencer to immediately interrupt the running sequence
+ and stop.
+\end_layout
+
+\begin_layout Description
+Stop
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Halt Instead of waiting for normal completion immediately stop.
+ This transition must be implemented must be identical to the 
+\shape italic
+armed
+\shape default
+
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+
+\shape italic
+halt
+\shape default
+ transition.
+\end_layout
+
+\begin_layout Description
+Stopped
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Disarmed Return sequencer to ready state.
+\end_layout
+
+\begin_layout Description
+Halt
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+Disarmed Same as 
+\shape italic
+stopped
+\shape default
+
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+
+\shape italic
+disarmed
+\shape default
+ transition.
+\end_layout
+
+\begin_layout Subsubsection
+Stopping the Sequencer
+\end_layout
+
+\begin_layout Standard
+It is unacceptable to stop a sequencer in the middle of a sequence.
+ One of the steps seen in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:action:flow"
+
+\end_inset
+
+ is 
+\begin_inset Quotes eld
+\end_inset
+
+Wait for end of sequence
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This step involves ensuring that the sequencer has stopped without forcing
+ it to stop.
+ The process goes as follows.
+\end_layout
+
+\begin_layout Enumerate
+Save the current # of interrupts counter.
+\end_layout
+
+\begin_layout Enumerate
+Place the sequencer is single shot mode and set the trigger source to software.
+ It is not possible to actually disable the trigger, but we can ensure the
+ software trigger does not occur.
+\end_layout
+
+\begin_layout Enumerate
+Read the 'running' status bit.
+ If running then take no further action.
+ Remaining actions will be run by the EOS interrupt handler.
+\end_layout
+
+\begin_layout Enumerate
+Read the current # of interrupts counter and compare to the saved value.
+ If not equal then the interrupt handler has already run so no further action
+ is needed.
+\end_layout
+
+\begin_layout Enumerate
+If they are equal then the sequence was never started.
+ Dispatch further actions now.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+flag=epicsInterruptLock();
+\end_layout
+
+\begin_layout Plain Layout
+
+save=irqcounter;
+\end_layout
+
+\begin_layout Plain Layout
+
+epicsInterruptUnlock(flag);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ctrl=read(SeqCtrl);
+\end_layout
+
+\begin_layout Plain Layout
+
+ctrl&=(~ModeMask)|(~TrigMask);
+\end_layout
+
+\begin_layout Plain Layout
+
+write(SeqCtrl, ctrl|ModeSingle|TrigSoft);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if( ! (read(SeqCtrl)&SeqRunning) ) return;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+flag=epicsInterruptLock();
+\end_layout
+
+\begin_layout Plain Layout
+
+cur=irqcounter;
+\end_layout
+
+\begin_layout Plain Layout
+
+epicsInterruptUnlock(flag);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if (cur!=save) return;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+callbackRequest(&sequence);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
