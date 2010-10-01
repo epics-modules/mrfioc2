@@ -1,7 +1,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <string.h>
 
+#include <stringinRecord.h>
 #include <waveformRecord.h>
 #include <mbboRecord.h>
 #include <mbbiRecord.h>
@@ -184,6 +186,12 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 
 /** 	Initialization	**/
 /*returns: (-1,0)=>(failure,success)*/
+static long 
+init_si(stringinRecord* psi) {
+	return init_record((dbCommon*)psi, &psi->inp);
+}
+
+/*returns: (-1,0)=>(failure,success)*/
 static long
 init_wf(waveformRecord* pwf) {
 	return init_record((dbCommon*)pwf, &pwf->inp);
@@ -221,7 +229,39 @@ init_bi(biRecord* pbi) {
 }
 
 /**		Read/Write Function		**/
-/*************** Soft Sequence Records ******************/
+static long 
+get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
+	if(!seq)
+		errlogPrintf("Failed to lookup EVG Sequence");
+	
+	*ppvt = seq->ioScanPvtErr;
+
+	return 0;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+read_si_err(stringinRecord* psi) {
+	long ret = 0;
+
+	try {
+		evgSoftSeq* seq = (evgSoftSeq*)psi->dpvt;
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
+
+		strcpy(psi->val, seq->getErr().c_str());
+		ret = 0;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), psi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), psi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
@@ -376,18 +416,21 @@ get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 static long 
 write_bo_loadSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->load();
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -402,18 +445,21 @@ write_bo_loadSeq(boRecord* pbo) {
 static long 
 write_bo_unloadSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->unload((dbCommon*)pbo);
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -454,18 +500,21 @@ write_bo_syncSeq(boRecord* pbo) {
 static long 
 write_bo_commitSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->commit((dbCommon*)pbo);
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -480,18 +529,21 @@ write_bo_commitSeq(boRecord* pbo) {
 static long 
 write_bo_enableSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->enable();
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -506,18 +558,21 @@ write_bo_enableSeq(boRecord* pbo) {
 static long 
 write_bo_disableSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->disable();
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -532,18 +587,21 @@ write_bo_disableSeq(boRecord* pbo) {
 static long 
 write_bo_haltSeq(boRecord* pbo) {
 	long ret = 0;
+	evgSoftSeq* seq = 0;
 
 	try {
 		if(!pbo->val)
 			return 0;
 
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
+		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->halt(pbo->val);
+		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -588,7 +646,7 @@ write_bo_softTrig(boRecord* pbo) {
 static long 
 read_bi_loadStatus(biRecord* pbi) {
 	long ret = 2;
-	printf("read_bi_loadStatus\n");
+
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
 		if(!seq)
@@ -611,7 +669,7 @@ read_bi_loadStatus(biRecord* pbi) {
 static long 
 read_bi_enaStatus(biRecord* pbi) {
 	long ret = 2;
-	printf("read_bi_enaStatus\n");
+
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
 		if(!seq)
@@ -619,6 +677,29 @@ read_bi_enaStatus(biRecord* pbi) {
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pbi->val = seq->isEnabled();
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*(0,2)=> success and convert, don't convert)*/
+static long 
+read_bi_commitStatus(biRecord* pbi) {
+	long ret = 2;
+
+	try {
+		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
+
+		SCOPED_LOCK2(seq->m_lock, guard);
+		pbi->val = seq->isCommited();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
 		ret = S_dev_noDevice;
@@ -695,6 +776,16 @@ write_wf_loadedSeq(waveformRecord* pwf) {
 
 /** 	device support entry table 		**/
 extern "C" {
+
+common_dset devSiErr = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_si,
+	(DEVSUPFUN)get_ioint_info_err,
+    (DEVSUPFUN)read_si_err,
+};
+epicsExportAddress(dset, devSiErr);
 
 common_dset devWfEvgTimeStampTick = {
     5,
@@ -855,6 +946,16 @@ common_dset devBiEvgEnaStatus = {
     (DEVSUPFUN)read_bi_enaStatus,
 };
 epicsExportAddress(dset, devBiEvgEnaStatus);
+
+common_dset devBiEvgCommitStatus = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bi,
+	(DEVSUPFUN)get_ioint_info,
+    (DEVSUPFUN)read_bi_commitStatus,
+};
+epicsExportAddress(dset, devBiEvgCommitStatus);
 
 common_dset devWfEvgLoadedSeq = {
     5,

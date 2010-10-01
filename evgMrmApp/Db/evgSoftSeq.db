@@ -1,3 +1,10 @@
+record( stringin, "$(P):$(N):err") {
+	field( DTYP, "EVG SEQ ERR")
+  	field( DESC, "EVG SEQ ERR")
+  	field( INP , "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")
+}
+
 record(waveform, "$(P):$(N):timeStamp:tick") {
 	field( DTYP, "EVG SEQ TIME STAMP TICK")
 	field( DESC, "Set the event code in EVG sequence Ram")
@@ -9,7 +16,7 @@ record(waveform, "$(P):$(N):timeStamp:tick") {
 record(waveform, "$(P):$(N):timeStamp") {
 	field( DTYP, "EVG SEQ TIME STAMP")
 	field( DESC, "Set the event code in EVG sequence Ram")
-	field( INP, "#C$(cardNum) S$(seqNum) @1")
+	field( INP, "#C$(cardNum) S$(seqNum) @1000000")
 	field( NELM, "$(NELM)")
 	field( FTVL, "DOUBLE")
 }
@@ -187,8 +194,7 @@ record(bi, "$(P):$(N):loadStatus") {
 	field( DESC, "Soft Seq Load status")
 	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( SCAN, "I/O Intr")
-	field( VAL , "0")
-	field( UDF, "0")
+	field( PINI, "YES")
 	field( ZNAM, "Unloaded")
   	field( ONAM, "Loaded")
 }
@@ -198,10 +204,19 @@ record(bi, "$(P):$(N):enaStatus") {
 	field( DESC, "Soft Seq Ena status")
 	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( SCAN, "I/O Intr")	
-	field( VAL , "0")
-	field( UDF, "0")
+	field( PINI, "YES")
 	field( ZNAM, "Disabled")
   	field( ONAM, "Enabled")
+}
+
+record(bi, "$(P):$(N):commitStatus") {
+	field( DTYP, "EVG COMMIT STATUS")
+	field( DESC, "Soft Seq Commit status")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")	
+	field( PINI, "YES")
+	field( ZNAM, "Uncommitted")
+  	field( ONAM, "Committed")
 }
 
 record(waveform, "$(P):loadedSeq") {

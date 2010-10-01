@@ -45,6 +45,9 @@ public:
 	epicsStatus setDescription(const char*);
 	const char* getDescription();
 
+	epicsStatus setErr(std::string);
+	std::string getErr();
+
 	epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
 	epicsStatus setTimeStampTick(epicsUInt32*, epicsUInt32);
 	epicsStatus setTimeStampSec(epicsFloat64*, epicsUInt32);
@@ -66,6 +69,7 @@ public:
 
 	bool isLoaded();
 	bool isEnabled();
+	bool isCommited(); 
 
 	epicsStatus load	();
 	epicsStatus unload	(dbCommon *);
@@ -77,6 +81,7 @@ public:
 	epicsStatus inspectSoftSeq();
 
 	IOSCANPVT 					ioscanpvt;
+	IOSCANPVT 					ioScanPvtErr;
 	epicsMutex 					m_lock;
 
 private:
@@ -84,7 +89,8 @@ private:
 	evgMrm* 					m_owner;
 	volatile epicsUInt8* const  m_pReg;
 	std::string 				m_desc;
-	
+	std::string 				m_err;
+
 	std::vector<epicsUInt8> 	m_eventCode;
 	std::vector<epicsUInt32>	m_timeStamp;
 	SeqTrigSrc 					m_trigSrc;
@@ -101,6 +107,7 @@ private:
 	epicsUInt32					m_tsSize;
 	
 	bool						m_isEnabled;
+	bool						m_isCommited;
 };
 
 #endif //EVG_SEQUENCE_H

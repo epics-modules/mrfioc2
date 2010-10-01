@@ -24,8 +24,10 @@ m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_ecSize(0),
 m_tsSize(0),
-m_isEnabled(0) {
+m_isEnabled(0),
+m_isCommited(0) {
 	scanIoInit(&ioscanpvt);
+	scanIoInit(&ioScanPvtErr);
 }
 
 const epicsUInt32
@@ -44,6 +46,18 @@ evgSoftSeq::getDescription() {
 	return m_desc.c_str();
 }
 
+epicsStatus 
+evgSoftSeq::setErr(std::string err) {
+	m_err = err;
+	scanIoRequest(ioScanPvtErr);
+	return OK;
+}
+
+std::string
+evgSoftSeq::getErr() {
+	return m_err;	
+}
+
 epicsStatus
 evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
 	if(size > 2047)
@@ -53,6 +67,8 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 	m_eventCode.assign(eventCode, eventCode + size);
 	m_ecSize = m_eventCode.size();
 
+	m_isCommited = false;
+	scanIoRequest(ioscanpvt);
 	return OK;
 }
 
@@ -78,18 +94,28 @@ evgSoftSeq::setTimeStampTick(epicsUInt32* timeStamp, epicsUInt32 size) {
 	m_timeStamp.assign(timeStamp, timeStamp + size);
 	m_tsSize = m_timeStamp.size();
 
+	m_isCommited = false;
+	scanIoRequest(ioscanpvt);
 	return OK;
 }
 
 epicsStatus 
 evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
-	m_trigSrc = trigSrc;
+	if(trigSrc != m_trigSrc) {
+		m_trigSrc = trigSrc;
+		m_isCommited = false;
+		scanIoRequest(ioscanpvt);
+	}
 	return OK;
 }
 
 epicsStatus 
 evgSoftSeq::setRunMode(SeqRunMode runMode) {
-	m_runMode = runMode;
+	if(runMode != m_runMode) {
+		m_runMode = runMode;
+		m_isCommited = false;
+		scanIoRequest(ioscanpvt);
+	}
 	return OK;
 }
 
@@ -157,6 +183,11 @@ evgSoftSeq::isEnabled() {
 	return m_isEnabled;
 }
 
+bool
+evgSoftSeq::isCommited() {
+	return m_isCommited;
+}
+
 epicsStatus
 evgSoftSeq::load() {
 	evgSeqRam* seqRam = 0;
@@ -167,8 +198,7 @@ evgSoftSeq::load() {
 		if( seqRamIter->IsAlloc() ) {
 			if(this == seqRamIter->getSoftSeq()) {
 				char err[80];
-				sprintf(err, "SeqRam %d is already allocated to SoftSeq %d"
-								, seqRamIter->getId(), getId());
+				sprintf(err, "SoftSeq %d is already loaded", getId());
 				std::string strErr(err);
 				throw std::runtime_error(strErr);
 			}
@@ -179,17 +209,15 @@ evgSoftSeq::load() {
 	}
 
 	if(seqRam != 0) {
-		printf("Allocating SeqRam %d to SoftSeq %d\n", seqRam->getId(), getId());
 		setSeqRam(seqRam);
 		seqRam->alloc(this);
 		scanIoRequest(ioscanpvt);
-		inspectSoftSeq();
 		sync(0);
 		
 		return OK;	
 	} else {
 		char err[80];
-		sprintf(err, "Cannot allocate SeqRam to SoftSeq %d", getId());
+		sprintf(err, "No SeqRam to load SoftSeq %d", getId());
 		std::string strErr(err);
 		throw std::runtime_error(strErr);
 	}
@@ -199,9 +227,6 @@ epicsStatus
 evgSoftSeq::unload(dbCommon* pRec) {
 	if(!m_seqRam) 
 		return OK;
-
-	printf("Unloading SeqRam %d associated with SoftSeq %d\n", 
-													m_seqRam->getId(), getId());
 
 	struct evgMrm::irqPvt* irqpvt = 0;
 	if(m_seqRam->getId() == 0)
@@ -225,15 +250,11 @@ evgSoftSeq::unload(dbCommon* pRec) {
 			
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
 
-		printf("Paused the unloading of SeqRam %d. Waiting for it to be disabled.\n"
-					, m_seqRam->getId());
-				
 		return OK;
 	}		
 	
 	if(pRec->pact == 1) {
 		pRec->pact = 0; 	
-		printf("Continuing unload of SeqRam %d.\n", m_seqRam->getId());
 	}
 
 	m_seqRam->dealloc();
@@ -252,8 +273,6 @@ evgSoftSeq::sync(dbCommon* pRec) {
 		throw std::runtime_error(strErr);
 	}
 
-	printf("Syncing SoftSeq %d to SeqRam %d\n", getId(), m_seqRam->getId());
-
 	struct evgMrm::irqPvt* irqpvt = 0;
 	if(m_seqRam->getId() == 0)
 		irqpvt = &m_owner->irqStop0;
@@ -262,7 +281,6 @@ evgSoftSeq::sync(dbCommon* pRec) {
 
 	m_seqRam->setRunMode(Single);
 	m_seqRam->setTrigSrc(SW_Ram0);
-	scanIoRequest(ioscanpvt);
 		
 	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
 
@@ -279,15 +297,12 @@ evgSoftSeq::sync(dbCommon* pRec) {
 
 		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
 
-		printf("Paused sync of SoftSeq %d. Waiting for SeqRam %d to be "
-				"disabled\n", getId(), m_seqRam->getId());		
-
+		scanIoRequest(ioscanpvt);
 		return OK;
 	}		
 
 	if(pRec->pact == 1) {
 		pRec->pact = 0; 	
-		printf("Continue syncing SoftSeq %d\n", getId());
 	}
 
 	m_seqRam->setEventCode(getEventCodeCt());
@@ -313,6 +328,8 @@ evgSoftSeq::commit(dbCommon* pRec) {
 	if(m_seqRam != 0)
 		sync(pRec);
 
+	m_isCommited = true;
+	scanIoRequest(ioscanpvt);
 	return OK;
 }
 
@@ -326,7 +343,7 @@ evgSoftSeq::inspectSoftSeq() {
 					continue;
 				 else
 					throw std::runtime_error("Timestamp values are not Sorted/Unique");
-			}
+			} 
 		}
 	}
 
@@ -335,33 +352,38 @@ evgSoftSeq::inspectSoftSeq() {
 	if(m_tsSize == m_ecSize) {
 
 		if(m_tsSize == 0) {
-			m_timeStamp.push_back(1);
-			m_eventCode.push_back(0x7f);
+			if(m_tsSize == m_timeStamp.size())
+				m_timeStamp.push_back(1);
+			else 
+				m_timeStamp[m_tsSize] = 1;
 		 } else {
 			if(m_tsSize == m_timeStamp.size())
 				m_timeStamp.push_back(m_timeStamp.back() + 1);
 			else 
 				m_timeStamp[m_tsSize] = m_timeStamp[m_tsSize - 1] + 1;
-
-			if(m_ecSize == m_eventCode.size())
-				m_eventCode.push_back(0x7f);
-			else
-				m_eventCode[m_ecSize] = 0x7f;
 		}
+
+		if(m_ecSize == m_eventCode.size())
+			m_eventCode.push_back(0x7f);
+		else
+			m_eventCode[m_ecSize] = 0x7f;
 
 	} else if(m_tsSize < m_ecSize) {
 
 		if(m_tsSize == 0) {
-			m_timeStamp.push_back(1);
-			m_eventCode[m_tsSize] = 0x7f;
+			if(m_tsSize == m_timeStamp.size())
+				m_timeStamp.push_back(1);
+			else 
+				m_timeStamp[m_tsSize] = 1;
 		} else {
 			if(m_tsSize == m_timeStamp.size())
 				m_timeStamp.push_back(m_timeStamp.back() + 1);
 			else 
 				m_timeStamp[m_tsSize] = m_timeStamp.back() + 1;
-
-		    m_eventCode[m_tsSize] = 0x7f;
 		}
+
+		m_eventCode[m_tsSize] = 0x7f;
+
 	} else if(m_tsSize > m_ecSize) {
 
 		if(m_ecSize == m_eventCode.size())
@@ -369,6 +391,7 @@ evgSoftSeq::inspectSoftSeq() {
 		else
 			m_eventCode[m_ecSize] = 0x7f;
 
+		m_timeStamp[m_ecSize] = m_timeStamp[m_ecSize - 1] + 1;
 	}
 
 	return OK;
@@ -396,7 +419,6 @@ evgSoftSeq::disable() {
 
 	m_isEnabled = false;
 	scanIoRequest(ioscanpvt);
-	printf("Disabling SoftSeq %d in seqRam %d\n",getId(), m_seqRam->getId());
 	return OK;
 }
 

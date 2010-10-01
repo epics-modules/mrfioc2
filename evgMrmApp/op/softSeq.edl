@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 626
-y 246
-w 287
-h 239
+x 524
+y 341
+w 317
+h 259
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -30,7 +30,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 160
+x 170
 y 80
 w 100
 h 20
@@ -109,8 +109,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 190
-y 120
+x 200
+y 150
 w 70
 h 20
 fgColor index 14
@@ -133,7 +133,7 @@ major 4
 minor 0
 release 0
 x 30
-y 180
+y 120
 w 70
 h 20
 fgColor index 14
@@ -155,13 +155,13 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 190
-y 180
+x 200
+y 120
 w 70
 h 20
 fgColor index 14
 onColor index 3
-offColor index 3
+offColor index 21
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P):$(SS):halt"
@@ -178,8 +178,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 190
-y 150
+x 200
+y 180
 w 70
 h 20
 fgColor index 14
@@ -202,7 +202,7 @@ major 4
 minor 0
 release 0
 x 30
-y 150
+y 180
 w 70
 h 20
 fgColor index 14
@@ -225,7 +225,7 @@ major 4
 minor 0
 release 0
 x 30
-y 120
+y 150
 w 70
 h 20
 fgColor index 14
@@ -248,8 +248,8 @@ major 10
 minor 0
 release 0
 x 110
-y 120
-w 70
+y 150
+w 80
 h 20
 controlPv "$(P):$(SS):loadStatus"
 fgColor index 14
@@ -267,10 +267,47 @@ major 10
 minor 0
 release 0
 x 110
-y 150
-w 70
+y 180
+w 80
 h 20
 controlPv "$(P):$(SS):enaStatus"
+fgColor index 14
+fgAlarm
+bgColor index 5
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 30
+y 210
+w 240
+h 20
+controlPv "$(P):$(SS):err"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 110
+y 120
+w 80
+h 20
+controlPv "$(P):$(SS):commitStatus"
 fgColor index 14
 fgAlarm
 bgColor index 5
