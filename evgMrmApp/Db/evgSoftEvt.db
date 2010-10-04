@@ -4,5 +4,9 @@ record(longout, "$(P):SoftEvt:Code") {
 	field( OUT, "#C$(cardNum) S @")
 	field( UDF, "0")
 	field( PINI, "YES")
+	field(HIHI, "256")
+	field(LOLO, "-1")
+	field(HHSV, "MAJOR")
+	field(LLSV, "MAJOR")
 	info(autosaveFields_pass0, "VAL")
 }

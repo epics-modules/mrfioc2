@@ -430,6 +430,7 @@ write_bo_loadSeq(boRecord* pbo) {
 		ret = seq->load();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
@@ -459,6 +460,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 		ret = seq->unload((dbCommon*)pbo);
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
@@ -514,6 +516,7 @@ write_bo_commitSeq(boRecord* pbo) {
 		ret = seq->commit((dbCommon*)pbo);
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
@@ -543,6 +546,7 @@ write_bo_enableSeq(boRecord* pbo) {
 		ret = seq->enable();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
@@ -572,6 +576,7 @@ write_bo_disableSeq(boRecord* pbo) {
 		ret = seq->disable();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;

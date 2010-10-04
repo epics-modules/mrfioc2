@@ -70,7 +70,7 @@ evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
 epicsStatus
 evgInput::setInpSeqTrigMap(epicsUInt32 seqTrigMap) {
 	if(seqTrigMap > 3)
-		throw std::runtime_error("Dbus Map out of range.");
+		throw std::runtime_error("Seq Trig Map out of range.");
 
 	//Read-Modify-Write
 	epicsUInt32 map = nat_ioread32(m_pInMap);
@@ -86,7 +86,7 @@ evgInput::setInpSeqTrigMap(epicsUInt32 seqTrigMap) {
 epicsStatus
 evgInput::setInpTrigEvtMap(epicsUInt32 trigEvtMap) {
 	if(trigEvtMap > 255)
-		throw std::runtime_error("Dbus Map out of range.");
+		throw std::runtime_error("Trig Evt Map out of range.");
 
 	//Read-Modify-Write
 	epicsUInt32 map = nat_ioread32(m_pInMap);

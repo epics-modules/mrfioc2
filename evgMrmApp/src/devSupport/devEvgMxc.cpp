@@ -179,6 +179,7 @@ write_ao(aoRecord* pao) {
 
 		ret = mxc->setMxcFreq(pao->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pao, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -188,7 +189,6 @@ write_ao(aoRecord* pao) {
 
 	return ret;
 }
-
 
 /** 	ai - Multiplexed Counter Frequency	**/
 /*returns: (0,2)=>(success,success no convert)*/
@@ -204,6 +204,7 @@ write_ai(aiRecord* pai) {
 		pai->val = mxc->getMxcFreq();
 		ret = 2;
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pai, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -227,6 +228,7 @@ write_mbboD(mbboDirectRecord* pmbboD) {
 
 		ret = mxc->setMxcTrigEvtMap(pmbboD->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pmbboD, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -261,7 +263,7 @@ common_dset devBiEvgMxc = {
 };
 epicsExportAddress(dset, devBiEvgMxc);
 
-common_dset devLoEvgMxc = {
+common_dset devLiEvgMxc = {
     5,
     NULL,
     NULL,
@@ -269,7 +271,7 @@ common_dset devLoEvgMxc = {
     NULL,
     (DEVSUPFUN)write_li,
 };
-epicsExportAddress(dset, devLoEvgMxc);
+epicsExportAddress(dset, devLiEvgMxc);
 
 common_dset devAoEvgMxc = {
     6,

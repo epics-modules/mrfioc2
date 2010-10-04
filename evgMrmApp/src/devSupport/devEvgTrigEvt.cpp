@@ -99,6 +99,7 @@ write_lo(longoutRecord* plo) {
 
 		ret = trigEvt->setEvtCode(plo->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(plo, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

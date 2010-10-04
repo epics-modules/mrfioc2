@@ -90,6 +90,7 @@ write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
 
 		ret = inp->setInpDbusMap((epicsUInt32)pmbboD->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pmbboD, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -113,6 +114,7 @@ write_mbboD_inpTrigEvt(mbboDirectRecord* pmbboD) {
 
 		ret = inp->setInpTrigEvtMap((epicsUInt32)pmbboD->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pmbboD, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -136,6 +138,7 @@ write_bo_enaIRQ(boRecord* pbo) {
 
 		ret = inp->enaExtIrq(pbo->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

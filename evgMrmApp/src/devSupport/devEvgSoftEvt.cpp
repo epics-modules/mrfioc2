@@ -63,6 +63,7 @@ write_lo_setEvtCode(longoutRecord* plo) {
 		
 		ret = softEvt->setEvtCode(plo->val);
 	} catch(std::runtime_error& e) {
+		recGblSetSevr(plo, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

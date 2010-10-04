@@ -88,7 +88,6 @@ evgEvtClk::getEvtClkSpeed() {
 		return getRFref()/getRFdiv();
 }
 
-/**	Event Clock Source	**/
 epicsStatus
 evgEvtClk::setEvtClkSrc (bool clkSrc) {
 	if(clkSrc)

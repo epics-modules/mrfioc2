@@ -2,10 +2,8 @@ record(bo, "$(P):$(N):Ena") {
 	field( DTYP, "EVG Trig Evt")
   	field( DESC, "EVG Trigger Event Enable")
   	field( OUT , "#C$(cardNum) S$(trigEvtNum) @")
-	field( UDF, "0")
   	field( ZNAM, "Disabled")
   	field( ONAM, "Enabled")
-	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -13,7 +11,9 @@ record(longout, "$(P):$(N):Code") {
 	field( DTYP, "EVG Trig Evt")
 	field( DESC, "EVG Trigger Event Code")
 	field( OUT, "#C$(cardNum) S$(trigEvtNum) @")
-	field( UDF, "0")
-	field( PINI, "YES")
+	field(HIHI, "256")
+	field(LOLO, "-1")
+	field(HHSV, "MAJOR")
+	field(LLSV, "MAJOR")
 	info(autosaveFields_pass0, "VAL")
 }
