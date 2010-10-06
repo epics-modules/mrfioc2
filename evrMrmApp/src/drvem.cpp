@@ -83,6 +83,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
+    if(v==0xFfffFfff)
+        throw std::runtime_error("Not card present at address");
+
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
@@ -370,6 +373,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
+        errlogPrintf("EVR %d code %02x func %3d out of range\n",
+            id, code, func);
         throw std::out_of_range("Special function code is out of range");
     }
 
@@ -406,6 +411,9 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     }
 
     epicsInterruptUnlock(iflags);
+
+    errlogPrintf("EVR #%d code %02x func %3d %s\n",
+        id, code, func, v?"Set":"Clear");
 }
 
 void
@@ -744,8 +752,10 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 active=flags&enable;
 
-    if(!active)
-      return;
+    if(!active){
+        epicsInterruptContextMessage("ISR does nothing\n");
+        return;
+    }
 
     if(active&IRQ_BufFull){
         // Silence interrupt

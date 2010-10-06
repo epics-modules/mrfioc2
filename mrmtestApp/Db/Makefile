@@ -18,6 +18,10 @@ DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
 endif
 endif
 
+ifneq ($(AUTOSAVE),)
+DB_INSTALLS += $(EPICS_BASE)/db/save_restoreStatus.db
+endif
+
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>

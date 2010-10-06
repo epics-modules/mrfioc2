@@ -95,7 +95,8 @@ REGINFO("CML4High",OutputCMLCountHigh(0),16),
 REGINFO("CML4Low",OutputCMLCountLow(0),16),
 REGINFO("CML4Len",OutputCMLPatLength(0),32),
 REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
-REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
+REGINFO("CML4Pat1",OutputCMLPat(0,1),32),
+REGINFO("TXBuf0",DataTx(0),8)
 #undef REGINFO
 };
 
@@ -429,6 +430,49 @@ static const iocshFuncDef mrmEvrDumpMapFuncDef =
 static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
 {
     mrmEvrDumpMap(args[0].ival,args[1].ival,args[2].ival);
+}
+
+extern "C"
+void mrmEvrSendBuf(int id, int size, int val)
+{
+  size&=DataTxCtrl_len_mask;
+  if(size<=0) {
+    printf("Size too small %d\n",size);
+    return;
+  }
+
+  EVRMRM *card=&evrmap.get<EVRMRM>(id);
+  if(!card){
+    printf("Invalid card\n");
+    return;
+  }
+
+  EVRMRM* mrm=dynamic_cast<EVRMRM*>(card);
+  if(!mrm){
+    printf("Card not MRM EVR\n");
+    return;
+  }
+
+  // Setup
+  BITSET(NAT,32,mrm->base, DataTxCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
+
+  // Zero size
+  BITCLR(NAT,32,mrm->base, DataTxCtrl, DataTxCtrl_len_mask);
+
+  for(int i=0; i<size; i++)
+    WRITE8(mrm->base, DataTx(i), val+i);
+
+  // Set size and start
+  BITSET(NAT,32,mrm->base, DataTxCtrl, size|DataTxCtrl_trig);
+
+  // Wait for completion
+  epicsUInt32 ctrl;
+  while( (ctrl=READ32(mrm->base, DataTxCtrl))&DataTxCtrl_run)
+    sleep(1);
+
+  printf("Finished %sok\n",
+    ctrl&DataTxCtrl_done ? "":"not "
+  );
 }
 
 static
