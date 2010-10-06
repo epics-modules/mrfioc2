@@ -72,6 +72,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
   ,bufrx(b, 10) // Sets depth of Rx queue
   ,stampClock(0.0)
+  ,shadowSourceTS(TSSourceInternal)
+  ,shadowCounterPS(0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -203,6 +205,20 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;
+
+    shadowCounterPS=READ32(base, CounterPS);
+
+    if(tsDiv()!=0) {
+        shadowSourceTS=TSSourceInternal;
+    } else {
+        bool usedbus4=READ32(base, Control) & Control_tsdbus;
+
+        if(usedbus4)
+            shadowSourceTS=TSSourceDBus4;
+        else
+            shadowSourceTS=TSSourceEvent;
+    }
+
 }
 
 EVRMRM::~EVRMRM()
@@ -488,57 +504,45 @@ EVRMRM::recvErrorCount() const
     return count_recv_error;
 }
 
-epicsUInt32
-EVRMRM::tsDiv() const
-{
-    return READ32(base, CounterPS);
-}
-
 void
 EVRMRM::setSourceTS(TSSource src)
 {
-    double clk=clockTS(), eclk;
+    double clk=clockTS(), eclk=clock();
     epicsUInt16 div=0;
 
     if(clk<=0 || !isfinite(clk))
         throw std::out_of_range("TS Clock rate invalid");
 
-    int iflags;
     switch(src){
     case TSSourceInternal:
-        eclk=clock();
-        div=(epicsUInt16)(eclk/clk);
-        break;
     case TSSourceEvent:
-        iflags=epicsInterruptLock();
-        BITCLR(NAT,32, base, Control, Control_tsdbus);
-        epicsInterruptUnlock(iflags);
-        break;
     case TSSourceDBus4:
-        iflags=epicsInterruptLock();
-        BITSET(NAT,32, base, Control, Control_tsdbus);
-        epicsInterruptUnlock(iflags);
         break;
     default:
         throw std::out_of_range("TS source invalid");
     }
+
+    int iflags=epicsInterruptLock();
+
+    switch(src){
+    case TSSourceInternal:
+        // div!=0 selects src internal
+        div=(epicsUInt16)(eclk/clk);
+        break;
+    case TSSourceEvent:
+        BITCLR(NAT,32, base, Control, Control_tsdbus);
+        // div=0
+        break;
+    case TSSourceDBus4:
+        BITSET(NAT,32, base, Control, Control_tsdbus);
+        // div=0
+        break;
+    }
     WRITE32(base, CounterPS, div);
-}
+    shadowCounterPS=div;
+    shadowSourceTS=src;
 
-TSSource
-EVRMRM::SourceTS() const
-{
-    epicsUInt32 tdiv=tsDiv();
-
-    if(tdiv!=0)
-        return TSSourceInternal;
-
-    bool usedbus4=READ32(base, Control) & Control_tsdbus;
-
-    if(usedbus4)
-        return TSSourceDBus4;
-    else
-        return TSSourceEvent;
+    epicsInterruptUnlock(iflags);
 }
 
 double
@@ -566,6 +570,7 @@ EVRMRM::clockTSSet(double clk)
         double eclk=clock();
         epicsUInt16 div=(epicsUInt16)(eclk/clk);
         WRITE32(base, CounterPS, div);
+        shadowCounterPS=div;
     }
 
     int iflags=epicsInterruptLock();
@@ -628,13 +633,15 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         epicsUInt32 ctrl=READ32(base, Control);
 
         // Latch on
-        WRITE32(base, Control, ctrl | Control_tsltch);
+        ctrl|= Control_tsltch;
+        WRITE32(base, Control, ctrl);
 
         ts->secPastEpoch=READ32(base, TSSecLatch);
         ts->nsec=READ32(base, TSEvtLatch);
 
         // Latch off
-        WRITE32(base, Control, ctrl | Control_tsrst);
+        ctrl&= ~Control_tsltch;
+        WRITE32(base, Control, ctrl);
 
         epicsInterruptUnlock(iflags);
 
@@ -821,8 +828,12 @@ EVRMRM::drain_fifo(CALLBACK* cb)
             break;
 
         if (evt>NELEMENTS(evr->events)) {
-            printf("Weird event 0x%08x\n", evt);
-            break;
+            epicsUInt32 evt2=READ32(evr->base, EvtFIFOCode);
+            if (evt2>NELEMENTS(evr->events)) {
+                printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
+                break;
+            } else
+                evt=evt2;
         }
         evt &= 0xff;
 

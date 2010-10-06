@@ -7,6 +7,7 @@ record(bo, "$(P)$(CML)enable") {
   field(VAL, "0")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P)$(CML)power") {
@@ -63,11 +64,13 @@ record(calcout, "$(P)$(CML)res") {
   field(INPA, "$(P)clock:period CP")
   field(CALC, "1e9*A/20")
   field(EGU , "ns")
+  field(TSEL, "$(P)clock:period.TIME CA")
   field(FLNK, "$(P)$(CML)res:fo")
 }
 
 record(fanout, "$(P)$(CML)res:fo") {
   field(DESC, "Clock change resync")
+  field(TSEL, "$(P)$(CML)res.TIME")
   field(LNK1, "$(P)$(CML)freq:high")
   field(LNK2, "$(P)$(CML)freq:low")
   field(LNK3, "$(P)$(CML)pat:x:calc")
@@ -226,6 +229,7 @@ record(aSub, "$(P)$(CML)pat:x:calc") {
   field(OUTA, "$(P)$(CML)pat:x PP")
   field(FTVA, "DOUBLE")
   field(NOVA, "$(MAX=40940)") # 20*2047
+  field(TSEL, "$(P)$(CML)pat:rbv.TIME")
 }
 
 record(waveform, "$(P)$(CML)pat:x") {

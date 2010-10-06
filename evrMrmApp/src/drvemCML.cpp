@@ -12,25 +12,26 @@ MRMCML::MRMCML(unsigned char i,EVRMRM& o)
   :base(o.base)
   ,N(i)
   ,owner(o)
+  ,shadowEnable(false)
+  ,shadowMode(cmlModeInvalid)
 {
+
+    epicsUInt32 val=READ32(base, OutputCMLEna(N));
+
+    shadowEnable=val & OutputCMLEna_ena;
+
+    switch(val & OutputCMLEna_mode_mask) {
+    case OutputCMLEna_mode_orig: shadowMode=cmlModeOrig; break;
+    case OutputCMLEna_mode_freq: shadowMode=cmlModeFreq; break;
+    case OutputCMLEna_mode_patt: shadowMode=cmlModePattern; break;
+    default:
+        shadowMode=cmlModeInvalid;
+    }
+
 }
 
 MRMCML::~MRMCML()
 {
-}
-
-cmlMode
-MRMCML::mode() const
-{
-  epicsUInt32 val=READ32(base, OutputCMLEna(N)) & OutputCMLEna_mode_mask;
-  if (val==OutputCMLEna_mode_orig)
-    return cmlModeOrig;
-  else if (val==OutputCMLEna_mode_freq)
-    return cmlModeFreq;
-  else if (val==OutputCMLEna_mode_patt)
-    return cmlModePattern;
-  else
-    return cmlModeInvalid;
 }
 
 void
@@ -45,12 +46,7 @@ MRMCML::setMode(cmlMode m)
     throw std::out_of_range("Invalid CML Mode");
   }
   WRITE32(base, OutputCMLEna(N), val);
-}
-
-bool
-MRMCML::enabled() const
-{
-    return READ32(base, OutputCMLEna(N)) & OutputCMLEna_ena;
+  shadowMode=m;
 }
 
 void
@@ -60,6 +56,7 @@ MRMCML::enable(bool s)
         BITSET(NAT,32,base, OutputCMLEna(N), OutputCMLEna_ena);
     else
         BITCLR(NAT,32,base, OutputCMLEna(N), OutputCMLEna_ena);
+    shadowEnable=s;
 }
 
 bool
@@ -264,6 +261,10 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   if(blen>lenPatternMax())
     throw std::out_of_range("Pattern is too long");
 
+  bool reenable=enabled();
+  if (reenable && mode()==cmlModePattern)
+    enable(false);
+
   epicsUInt32 val=0;
   for(epicsUInt32 i=0; i<blen; i++) {
     val|=(!!buf[i])<<(OutputCMLPatNBit-1-i%OutputCMLPatNBit);
@@ -275,4 +276,7 @@ MRMCML::setPattern(const unsigned char *buf, epicsUInt32 blen)
   }
 
   WRITE32(base, OutputCMLPatLength(N), blen/OutputCMLPatNBit);
+
+  if (reenable && mode()==cmlModePattern)
+    enable(true);
 }

@@ -67,6 +67,16 @@ file "evrcml.db"
 {$(P), $(C), 2, "fpout6:"}
 }
 
+file "evrcmlextra.db"
+{pattern
+{P, CML, PAT, EVNT}
+{$(P), "fpout4:", "pat:0", 13}
+{$(P), "fpout4:", "pat:1", 14}
+{$(P), "fpout4:", "pat:2", 15}
+{$(P), "fpout4:", "pat:3", 16}
+{$(P), "fpout4:", "pat:4", 17}
+}
+
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"
 {pattern

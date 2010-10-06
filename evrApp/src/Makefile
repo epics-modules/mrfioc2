@@ -40,6 +40,7 @@ evr_SRCS += devEvrPulserMapping.cpp
 evr_SRCS += devEvrCML.cpp
 
 evr_SRCS += asub.c
+evr_SRCS += devWfMailbox.c
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
 

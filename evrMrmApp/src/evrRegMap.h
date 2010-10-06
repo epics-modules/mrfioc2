@@ -49,7 +49,7 @@
 #  define Control_logena  0x00000040
 #  define Control_logdis  0x00000020
 /*  Stop Event Enable */
-#  define Control_logsea  0x00000020
+#  define Control_logsea  0x00000010
 #  define Control_fiforst 0x00000008
 
 #define U32_IRQFlag     0x008
