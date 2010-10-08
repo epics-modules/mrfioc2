@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <string.h>
+#include <math.h>
 
 #include <stringinRecord.h>
 #include <waveformRecord.h>
@@ -56,7 +57,7 @@ add_record (dbCommon *pRec) {
 		std::istringstream i(parm);
    		if (!(i >> pvt->scaler)) {
 			delete pvt;
-    	 	throw std::runtime_error("Failed to read scaler");
+    	 	throw std::runtime_error("Failed to read time scaler");
 		}
 
 		pwf->dpvt = pvt;
@@ -147,6 +148,107 @@ epicsExportAddress(dset, devWfEvgTimeStamp);
 
 };
 
+struct tsRbDpvt {
+	evgMrm* evg;
+	evgSoftSeq* seq;
+};
+
+/*returns: (-1,0)=>(failure,success)*/
+static long
+init_wf_timeStamp(waveformRecord* pwf) {
+	long ret = 0;
+	
+	if(pwf->inp.type != VME_IO) {
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pwf->name);
+		return S_db_badField;
+	}
+	
+	try {
+		evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);		
+		if(!evg)
+			throw std::runtime_error("Failed to lookup EVG");
+
+		evgSoftSeqMgr* seqMgr = evg->getSoftSeqMgr();
+		if(!seqMgr)
+			throw std::runtime_error("Failed to lookup EVG Seq Manager");
+
+		evgSoftSeq* seq = seqMgr->getSoftSeq(pwf->inp.value.vmeio.signal);
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
+
+		tsRbDpvt* dpvt = new tsRbDpvt;
+		dpvt->evg = evg;
+		dpvt->seq = seq;
+
+		pwf->dpvt = dpvt;
+		ret = 0;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+static long 
+get_ioint_info_tsRB(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+	tsRbDpvt* dpvt = (tsRbDpvt*)pRec->dpvt;
+	if(!dpvt)
+		errlogPrintf("Initialization failed");			
+
+	evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
+	if(!seq)
+		errlogPrintf("Failed to lookup EVG Sequence");
+	
+	*ppvt = seq->ioscanpvt;
+
+	return 0;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long
+read_wf_timeStamp(waveformRecord* pwf) {
+	long ret = 0;
+
+	try {
+		tsRbDpvt* dpvt = (tsRbDpvt*)pwf->dpvt;
+		if(!dpvt)
+			throw std::runtime_error("Initialization failed");			
+
+		evgMrm* evg = (evgMrm*)dpvt->evg;
+		evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
+		
+		SCOPED_LOCK2(seq->m_lock, guard);
+		std::vector<epicsUInt32> timeStamp = seq->getTimeStampCt();
+		epicsFloat64 evtClk = evg->getEvtClk()->getEvtClkSpeed() * pow(10,6);
+		epicsFloat64 timeScaler = 0.0f;
+
+		std::string parm(pwf->inp.value.vmeio.parm);
+		std::istringstream i(parm);
+   		if (!(i >> timeScaler)) {
+    	 	throw std::runtime_error("Failed to read scaler");
+		}
+
+		epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
+		for(unsigned int i = 0; i < timeStamp.size(); i++) {
+			bptr[i] = timeStamp[i] * timeScaler / evtClk;
+		}
+		pwf->nord = timeStamp.size();
+		ret = 0;
+
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_db_noMemory;
+	}
+	
+	return ret;
+}
 
 /**	Regular Device Support	**/
 static long 
@@ -230,6 +332,17 @@ init_bi(biRecord* pbi) {
 
 /**		Read/Write Function		**/
 static long 
+get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
+	if(!seq)
+		errlogPrintf("Failed to lookup EVG Sequence");
+	
+	*ppvt = seq->ioscanpvt;
+
+	return 0;
+}
+
+static long 
 get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
 	if(!seq)
@@ -306,6 +419,35 @@ write_wf_eventCode(waveformRecord* pwf) {
 		ret = S_db_noMemory;
 	}
 
+	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+read_wf_eventCode(waveformRecord* pwf) {
+	long ret = 0;
+
+	try {
+		evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
+		if(!seq)
+			throw std::runtime_error("Failed to lookup EVG Sequence");
+
+		SCOPED_LOCK2(seq->m_lock, guard);
+		std::vector<epicsUInt8> eventCode = seq->getEventCodeCt();
+		epicsUInt8* bptr = (epicsUInt8*)pwf->bptr;
+		for(unsigned int i = 0; i < eventCode.size(); i++) {
+			bptr[i] = eventCode[i];
+		}
+		pwf->nord = eventCode.size();
+
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+		ret = S_db_noMemory;
+	}
+	
 	return ret;
 }
 
@@ -401,17 +543,6 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 	return ret;
 }
 
-static long 
-get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
-	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
-	if(!seq)
-		errlogPrintf("Failed to lookup EVG Sequence");
-	
-	*ppvt = seq->ioscanpvt;
-
-	return 0;
-}
-
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_loadSeq(boRecord* pbo) {
@@ -462,32 +593,6 @@ write_bo_unloadSeq(boRecord* pbo) {
 	} catch(std::runtime_error& e) {
 		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		seq->setErr(e.what());
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-		ret = S_dev_noDevice;
-	} catch(std::exception& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-		ret = S_db_noMemory;
-	}
-
-	return ret;
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_bo_syncSeq(boRecord* pbo) {
-	long ret = 0;
-
-	try {
-		if(!pbo->val)
-			return 0;
-
-		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
-		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
-
-		SCOPED_LOCK2(seq->m_lock, guard);
-		ret = seq->sync((dbCommon*)pbo);
-	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -782,15 +887,15 @@ write_wf_loadedSeq(waveformRecord* pwf) {
 /** 	device support entry table 		**/
 extern "C" {
 
-common_dset devSiErr = {
+common_dset devWfEvgTimeStampRB = {
     5,
     NULL,
-    NULL,
-    (DEVSUPFUN)init_si,
-	(DEVSUPFUN)get_ioint_info_err,
-    (DEVSUPFUN)read_si_err,
+	NULL,
+    (DEVSUPFUN)init_wf_timeStamp,
+	(DEVSUPFUN)get_ioint_info_tsRB,
+    (DEVSUPFUN)read_wf_timeStamp,
 };
-epicsExportAddress(dset, devSiErr);
+epicsExportAddress(dset, devWfEvgTimeStampRB);
 
 common_dset devWfEvgTimeStampTick = {
     5,
@@ -811,6 +916,16 @@ common_dset devWfEvgEventCode = {
     (DEVSUPFUN)write_wf_eventCode,
 };
 epicsExportAddress(dset, devWfEvgEventCode);
+
+common_dset devWfEvgEventCodeRB = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_wf,
+	(DEVSUPFUN)get_ioint_info,
+    (DEVSUPFUN)read_wf_eventCode,
+};
+epicsExportAddress(dset, devWfEvgEventCodeRB);
 
 common_dset devMbboEvgRunMode = {
     5,
@@ -871,16 +986,6 @@ common_dset devBoEvgUnloadSeq = {
     (DEVSUPFUN)write_bo_unloadSeq,
 };
 epicsExportAddress(dset, devBoEvgUnloadSeq);
-
-common_dset devBoEvgSyncSeq = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_syncSeq,
-};
-epicsExportAddress(dset, devBoEvgSyncSeq);
 
 common_dset devBoEvgCommitSeq = {
     5,
@@ -961,6 +1066,16 @@ common_dset devBiEvgCommitStatus = {
     (DEVSUPFUN)read_bi_commitStatus,
 };
 epicsExportAddress(dset, devBiEvgCommitStatus);
+
+common_dset devSiErr = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_si,
+	(DEVSUPFUN)get_ioint_info_err,
+    (DEVSUPFUN)read_si_err,
+};
+epicsExportAddress(dset, devSiErr);
 
 common_dset devWfEvgLoadedSeq = {
     5,
