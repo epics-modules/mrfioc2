@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 524
-y 341
+x 126
+y 273
 w 317
 h 259
 font "helvetica-medium-r-12.0"
@@ -247,44 +247,6 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 110
-y 150
-w 80
-h 20
-controlPv "$(P):$(SS):loadStatus"
-fgColor index 14
-fgAlarm
-bgColor index 5
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 110
-y 180
-w 80
-h 20
-controlPv "$(P):$(SS):enaStatus"
-fgColor index 14
-fgAlarm
-bgColor index 5
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
 x 30
 y 210
 w 240
@@ -297,22 +259,72 @@ fill
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Text Update)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 110
 y 120
 w 80
 h 20
 controlPv "$(P):$(SS):commitStatus"
-fgColor index 14
-fgAlarm
-bgColor index 5
-fill
 font "helvetica-medium-r-12.0"
 fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 110
+y 180
+w 80
+h 20
+controlPv "$(P):$(SS):enaStatus"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 110
+y 150
+w 80
+h 20
+controlPv "$(P):$(SS):loadStatus"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 

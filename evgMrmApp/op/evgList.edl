@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 901
-y 306
+x 198
+y 45
 w 168
-h 157
+h 232
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -72,6 +72,34 @@ displayFileName {
 }
 symbols {
   0 "P=EVG1"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 40
+y 140
+w 90
+h 30
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_stats.edl"
+}
+menuLabel {
+  0 "IOC Status"
+}
+symbols {
+  0 "ioc=mrftest2"
 }
 endObjectProperties
 
