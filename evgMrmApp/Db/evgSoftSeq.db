@@ -1,8 +1,18 @@
-record( stringin, "$(P):$(N):err") {
-	field( DTYP, "EVG SEQ ERR")
-  	field( DESC, "EVG SEQ ERR")
-  	field( INP , "#C$(cardNum) S$(seqNum) @")
+record(waveform, "$(P):$(N):eventCode") {
+	field( DTYP, "EVG SEQ EVENT CODE")
+	field( DESC, "Set the EventCode in EVG sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
+	field( NELM, "$(NELM)")
+	field( FTVL, "UCHAR")
+}
+
+record(waveform, "$(P):$(N):eventCodeRB") {
+	field( DTYP, "EVG SEQ EVENT CODE RB")
+	field( DESC, "Get the Event Code from EVG sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @")
 	field( SCAN, "I/O Intr")
+	field( NELM, "$(NELM)")
+	field( FTVL, "UCHAR")
 }
 
 record(waveform, "$(P):$(N):timeStamp:tick") {
@@ -21,17 +31,13 @@ record(waveform, "$(P):$(N):timeStamp") {
 	field( FTVL, "DOUBLE")
 }
 
-record(ai, "$(P):$(N):timeStamp:Update") {
-	field(INP, "$(P):EvtClkSpeed CP")
-	field(FLNK, "$(P):$(N):timeStamp")
-}
-
-record(waveform, "$(P):$(N):eventCode") {
-	field( DTYP, "EVG SEQ EVENT CODE")
-	field( DESC, "Set the time stamp in EVG sequence Ram")
-	field( INP, "#C$(cardNum) S$(seqNum) @")
+record(waveform, "$(P):$(N):timeStampRB") {
+	field( DTYP, "EVG SEQ TIME STAMP RB")
+	field( DESC, "Get the event code from EVG sequence Ram")
+	field( INP, "#C$(cardNum) S$(seqNum) @1000000")
+	field( SCAN, "I/O Intr")
 	field( NELM, "$(NELM)")
-	field( FTVL, "UCHAR")
+	field( FTVL, "DOUBLE")
 }
 
 record(mbbo, "$(P):$(N):runMode") {
@@ -139,16 +145,6 @@ record(bo, "$(P):$(N):unload") {
   	field( ONAM, "1")
 }
 
-record(bo, "$(P):$(N):sync") {
-	field( DTYP, "EVG SYNC SEQ")
-	field( DESC, "Sync EVG Sequence")
-	field( OUT, "#C$(cardNum) S$(seqNum) @")
-	field( VAL , "0")
-	field( UDF, "0")
-	field( ZNAM, "0")
-  	field( ONAM, "1")
-}
-
 record(bo, "$(P):$(N):enable") {
 	field( DTYP, "EVG ENABLE SEQ")
 	field( DESC, "Enable EVG Sequence")
@@ -226,4 +222,11 @@ record(waveform, "$(P):loadedSeq") {
 	field( NELM, "2")
 	field( FTVL, "LONG")
 	field( PINI, "YES")
+}
+
+record( stringin, "$(P):$(N):err") {
+	field( DTYP, "EVG SEQ ERR")
+  	field( DESC, "EVG SEQ ERR")
+  	field( INP , "#C$(cardNum) S$(seqNum) @")
+	field( SCAN, "I/O Intr")
 }
