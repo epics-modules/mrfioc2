@@ -77,10 +77,21 @@ evgMxc::getMxcTrigEvtMap() {
 }
 
 epicsStatus
-evgMxc::setMxcTrigEvtMap(epicsUInt16 map) {
-	if(map > 255)
-		throw std::runtime_error("EVG Mxc Trig Event Map value too large.");
+evgMxc::setMxcTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
+	if(trigEvt > 7)
+		throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+
+	epicsUInt8	mask = 1 << trigEvt;
+	//Read-Modify-Write
+	epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
+
+	if(ena)
+		map = map | mask;
+	else
+		map = map & ~mask;
 
 	WRITE8(m_pReg, MuxTrigMap(m_id), map);
+
 	return OK;
 }
+

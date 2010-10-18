@@ -1,7 +1,5 @@
 #include "evgInput.h"
 
-#include <iostream>
-#include <string>
 #include <stdexcept>
 
 #include <errlog.h>
@@ -10,10 +8,16 @@
 #include <mrfCommon.h>
  
 #include "evgRegMap.h"
+std::map<std::string, epicsUInt32> InpStrToEnum;
 
 evgInput::evgInput(const epicsUInt32 id, const InputType type,
 volatile epicsUInt8* const pInMap):
 m_pInMap(pInMap) {
+	
+	InpStrToEnum["None"] = None_Input;
+	InpStrToEnum["FP_Input"] = FP_Input;
+	InpStrToEnum["Univ_Input"] = Univ_Input;
+	InpStrToEnum["TB_Input"] = TB_Input;
 
 	switch(type) {
 		case(FP_Input):
@@ -84,19 +88,23 @@ evgInput::setInpSeqTrigMap(epicsUInt32 seqTrigMap) {
 }
 
 epicsStatus
-evgInput::setInpTrigEvtMap(epicsUInt32 trigEvtMap) {
-	if(trigEvtMap > 255)
-		throw std::runtime_error("Trig Evt Map out of range.");
+evgInput::setInpTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
+	if(trigEvt > 7)
+		throw std::runtime_error("Trig Event ID out of range.");
 
+	epicsUInt32	mask = 1 << trigEvt;
 	//Read-Modify-Write
 	epicsUInt32 map = nat_ioread32(m_pInMap);
 
-	map = map & 0xffffff00;
-	map = map | trigEvtMap;
+	if(ena)
+		map = map | mask;
+	else
+		map = map & ~mask;
 
 	nat_iowrite32(m_pInMap, map);
 	
 	return OK;
 }
+
 
 

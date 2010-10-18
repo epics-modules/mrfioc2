@@ -13,21 +13,6 @@ record(mbboDirect, "$(P):$(N):DbusMap") {
 	field( B7,"0")
 }
 
-record(mbboDirect, "$(P):$(N):TrigEvtMap") {
-  	field( DTYP, "EVG Input Trig Evt")
-  	field( OUT , "#C$(cardNum) S$(inpNum) @$(inpType)")
-  	field( NOBT, "8")
-	field( UDF, "0")
-	field( B0,"0")
-	field( B1,"0")
-	field( B2,"0")
-	field( B3,"0")
-	field( B4,"0")
-	field( B5,"0")
-	field( B6,"0")
-	field( B7,"0")
-}
-
 record(bo, "$(P):$(N):EnaIrq") {
 	field( DTYP, "EVG Input IRQ")
 	field( DESC, "Enable/Disable EVG External Input IRQ")
@@ -42,8 +27,8 @@ record(bo, "$(P):$(N):EnaIrq") {
 
 record(bo, "$(P):$(N):DbusMapB0") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B0 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -51,8 +36,8 @@ record(bo, "$(P):$(N):DbusMapB0") {
 
 record(bo, "$(P):$(N):DbusMapB1") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B1 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -60,8 +45,8 @@ record(bo, "$(P):$(N):DbusMapB1") {
 
 record(bo, "$(P):$(N):DbusMapB2") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B2 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -69,8 +54,8 @@ record(bo, "$(P):$(N):DbusMapB2") {
 
 record(bo, "$(P):$(N):DbusMapB3") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B3 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -78,8 +63,8 @@ record(bo, "$(P):$(N):DbusMapB3") {
 
 record(bo, "$(P):$(N):DbusMapB4") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B4 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -87,8 +72,8 @@ record(bo, "$(P):$(N):DbusMapB4") {
 
 record(bo, "$(P):$(N):DbusMapB5") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B5 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -96,8 +81,8 @@ record(bo, "$(P):$(N):DbusMapB5") {
 
 record(bo, "$(P):$(N):DbusMapB6") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B6 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
@@ -105,81 +90,10 @@ record(bo, "$(P):$(N):DbusMapB6") {
 
 record(bo, "$(P):$(N):DbusMapB7") {
 	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	field( OUT, "$(P):$(N):DbusMap.B7 PP")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):TrigEvtMapB0") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B0 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB1") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B1 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB2") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B2 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB3") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B3 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB4") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B4 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB5") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B5 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB6") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B6 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB7") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B7 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}

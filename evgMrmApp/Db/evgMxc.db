@@ -49,7 +49,7 @@ record(ai, "$(P):$(N):Freq:RB") {
 
 record(longin , "$(P):$(N):Prescaler:RB") {
 	field( DTYP, "EVG Mxc")
-	field( DESC, "EVG Mux Counter Prescaler")
+	field( DESC, "EVG Mux Counter Prescaler RB")
 	field( INP, "#C$(cardNum) S$(mxcNum) @")
 }
 
@@ -58,90 +58,3 @@ record(ai, "$(P):$(N):Freq:Update") {
 	field(FLNK, "$(P):$(N):Freq")
 }
 
-record(mbboDirect, "$(P):$(N):TrigEvtMap") {
-	field( DTYP, "EVG Mxc")
-	field( DESC, "EVG Mux Counter Trig Evt Map")
-	field( OUT, "#C$(cardNum) S$(mxcNum) @")
-	field( NOBT, "8")
-	field( UDF, "0")
-	field( B0,"0")
-	field( B1,"0")
-	field( B2,"0")
-	field( B3,"0")
-	field( B4,"0")
-	field( B5,"0")
-	field( B6,"0")
-	field( B7,"0")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB0") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B0 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB1") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B1 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB2") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B2 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB3") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B3 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB4") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B4 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB5") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B5 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB6") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B6 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P):$(N):TrigEvtMapB7") {
-	field( UDF, "0")
-  	field( ZNAM, "Off")
-  	field( ONAM, "On")
-	field( OUT, "$(P):$(N):TrigEvtMap.B7 PP")
-	field( PINI, "YES")
-	info(autosaveFields_pass0, "VAL")
-}

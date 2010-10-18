@@ -21,7 +21,7 @@ public:
 	epicsStatus setMxcFreq(epicsFloat64);
 
 	epicsUInt8 getMxcTrigEvtMap();
-	epicsStatus setMxcTrigEvtMap(epicsUInt16);
+	epicsStatus setMxcTrigEvtMap(epicsUInt16, bool);
 
 private:
 	const epicsUInt32 			m_id;

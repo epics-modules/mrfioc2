@@ -83,20 +83,10 @@ init_ai(aiRecord* pai) {
 	return init_record((dbCommon*)pai, &pai->inp);
 }
 
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-init_mbboD(mbboDirectRecord* pmbboD) {
-	long ret = init_record((dbCommon*)pmbboD, &pmbboD->out);
-	if(ret == 0)
-		ret = 2;
 
-	return ret;
-}
-
-/**		bo - Multiplexed Counter Polarity	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_bo(boRecord* pbo) {
+write_bo_polarity(boRecord* pbo) {
 	long ret = 0;
 
 	try {
@@ -117,10 +107,9 @@ write_bo(boRecord* pbo) {
 }
 
 
-/**		bi -  Multiplexed Counter Status	**/
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
-read_bi(biRecord* pbi) {
+read_bi_status(biRecord* pbi) {
 	long ret = 0;
 
 	try {
@@ -142,10 +131,9 @@ read_bi(biRecord* pbi) {
 }
 
 
-/** 	longin - Multiplexed Counter Prescalar	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_li(longinRecord* pli) {
+read_li_prescaler(longinRecord* pli) {
 	long ret = 0;
 
 	try {
@@ -166,10 +154,9 @@ write_li(longinRecord* pli) {
 	return ret;
 }
 
-/** 	ao - Multiplexed Counter Frequency	**/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_ao(aoRecord* pao) {
+write_ao_freq(aoRecord* pao) {
 	long ret = 0;
 
 	try {
@@ -190,10 +177,9 @@ write_ao(aoRecord* pao) {
 	return ret;
 }
 
-/** 	ai - Multiplexed Counter Frequency	**/
 /*returns: (0,2)=>(success,success no convert)*/
 static long
-write_ai(aiRecord* pai) {
+read_ai_freq(aiRecord* pai) {
 	long ret = 0;
 
 	try {
@@ -215,94 +201,60 @@ write_ai(aiRecord* pai) {
 	return ret;
 }
 
-/** 	mbboDirect - Multiplexed Counter Event Trigger Map **/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_mbboD(mbboDirectRecord* pmbboD) {
-	long ret = 0;
-
-	try {
-		evgMxc* mxc = (evgMxc*)pmbboD->dpvt;
-		if(!mxc)
-			throw std::runtime_error("Device pvt field not initialized");
-
-		ret = mxc->setMxcTrigEvtMap(pmbboD->val);
-	} catch(std::runtime_error& e) {
-		recGblSetSevr(pmbboD, READ_ALARM, MAJOR_ALARM);
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
-		ret = S_dev_noDevice;
-	} catch(std::exception& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
-		ret = S_db_noMemory;
-	}
-
-	return ret;
-}
-
 
 /** 	device support entry table 		**/
 extern "C" {
 
-common_dset devBoEvgMxc = {
+common_dset devBoEvgMxcPolarity = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_bo,
     NULL,
-    (DEVSUPFUN)write_bo,
+    (DEVSUPFUN)write_bo_polarity,
 };
-epicsExportAddress(dset, devBoEvgMxc);
+epicsExportAddress(dset, devBoEvgMxcPolarity);
 
-common_dset devBiEvgMxc = {
+common_dset devBiEvgMxcStatus = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_bi,
     NULL,
-    (DEVSUPFUN)read_bi,
+    (DEVSUPFUN)read_bi_status,
 };
-epicsExportAddress(dset, devBiEvgMxc);
+epicsExportAddress(dset, devBiEvgMxcStatus);
 
-common_dset devLiEvgMxc = {
+common_dset devLiEvgMxcPrescaler = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_li,
     NULL,
-    (DEVSUPFUN)write_li,
+    (DEVSUPFUN)read_li_prescaler,
 };
-epicsExportAddress(dset, devLiEvgMxc);
+epicsExportAddress(dset, devLiEvgMxcPrescaler);
 
-common_dset devAoEvgMxc = {
+common_dset devAoEvgMxcFreq = {
     6,
     NULL,
     NULL,
     (DEVSUPFUN)init_ao,
     NULL,
-    (DEVSUPFUN)write_ao,
+    (DEVSUPFUN)write_ao_freq,
 	NULL
 };
-epicsExportAddress(dset, devAoEvgMxc);
+epicsExportAddress(dset, devAoEvgMxcFreq);
 
-common_dset devAiEvgMxc = {
+common_dset devAiEvgMxcFreq = {
     6,
     NULL,
     NULL,
     (DEVSUPFUN)init_ai,
     NULL,
-    (DEVSUPFUN)write_ai,
+    (DEVSUPFUN)read_ai_freq,
 	NULL
 };
-epicsExportAddress(dset, devAiEvgMxc);
-
-common_dset devMbboDEvgMxc = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbboD,
-    NULL,
-    (DEVSUPFUN)write_mbboD,
-};
-epicsExportAddress(dset, devMbboDEvgMxc);
+epicsExportAddress(dset, devAiEvgMxcFreq);
 
 };
