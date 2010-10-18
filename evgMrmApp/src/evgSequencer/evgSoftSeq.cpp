@@ -212,7 +212,7 @@ evgSoftSeq::load() {
 		setSeqRam(seqRam);
 		seqRam->alloc(this);
 		scanIoRequest(ioscanpvt);
-		sync(0);
+		sync(0); //commit?
 		
 		return OK;	
 	} else {
@@ -305,6 +305,10 @@ evgSoftSeq::sync(dbCommon* pRec) {
 		pRec->pact = 0; 	
 	}
 
+	if( ! getEventCodeCt().size() ) {
+		commit(0);
+	}
+
 	m_seqRam->setEventCode(getEventCodeCt());
 	m_seqRam->setTimeStamp(getTimeStampCt());
 	m_seqRam->setTrigSrc(getTrigSrcCt());
@@ -324,7 +328,6 @@ evgSoftSeq::commit(dbCommon* pRec) {
 	ctTimeStamp();
 	ctTrigSrc();
 	ctRunMode();
-	
 	if(m_seqRam != 0)
 		sync(pRec);
 
@@ -428,7 +431,9 @@ evgSoftSeq::halt(bool callBack) {
 		return OK;
 	else {
 		m_seqRam->disable();
-		
+		m_isEnabled = false;
+		scanIoRequest(ioscanpvt);
+
 		if(callBack) {
 			/*Satisfy any callback request pending on irqStop0 or irqStop1 recList.
 			As no 'End of sequence' Intrrupt will be generated. */
