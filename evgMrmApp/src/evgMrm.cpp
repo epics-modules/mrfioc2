@@ -212,7 +212,7 @@ evgMrm::sendTS(CALLBACK *pCallback) {
 	struct epicsTimeStamp ts;
 	epicsTime ntpTime, storedTime;
 
-	if(!generalTimeGetExceptPriority(&ts, 0, 50)) {
+	if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
 		ntpTime = ts;
 		storedTime = (epicsTime)evg->getTS();
 
