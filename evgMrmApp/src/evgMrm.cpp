@@ -71,8 +71,8 @@ m_softSeqMgr(this) {
 										new evgOutput(i, pReg, Univ_Output);
 		}	
 
-		init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_cb, &irqStop0);
-		init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_cb, &irqStop1);
+		init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_cb, m_seqRamMgr.getSeqRam(0));
+		init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_cb, m_seqRamMgr.getSeqRam(1));
 		init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
 	
 		scanIoInit(&ioscanpvt);
@@ -180,23 +180,15 @@ evgMrm::isr(void* arg) {
 void
 evgMrm::process_cb(CALLBACK *pCallback) {
 	void* pVoid;
-	struct irqPvt *pIrqPvt;
-	dbCommon *pRec;
-	struct rset *prset;
+	evgSeqRam* seqRam;
 	
 	callbackGetUser(pVoid, pCallback);
-	pIrqPvt = (struct irqPvt *)pVoid;
-
-	SCOPED_LOCK2(pIrqPvt->mutex, guard);
-	for(unsigned int i = 0; i < pIrqPvt->recList.size(); i++) {
-		pRec = pIrqPvt->recList[i];
-		prset = (struct rset*)pRec->rset;
-
-		dbScanLock(pRec);
-		(*(long (*)(dbCommon*))prset->process)(pRec);
-		dbScanUnlock(pRec);
-	}
-	pIrqPvt->recList.clear();
+	seqRam = (evgSeqRam*)pVoid;
+	evgSoftSeq* softSeq = seqRam->getSoftSeq();
+	if(!softSeq)
+		return;
+ 
+	softSeq->sync();
 }
 
 /** TimeStamps	**/

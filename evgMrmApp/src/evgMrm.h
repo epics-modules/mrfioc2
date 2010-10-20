@@ -70,14 +70,6 @@ public:
 	evgSeqRamMgr* 	getSeqRamMgr	();	
 	evgSoftSeqMgr* 	getSoftSeqMgr	();
 
-	struct irqPvt {
-		epicsMutex mutex;
-		std::vector<dbCommon*> recList;
-	};
-		
-	struct irqPvt irqStop0;
-	struct irqPvt irqStop1;
-
 	struct ppsSrc{
 		InputType type;
 		epicsUInt32	num;	

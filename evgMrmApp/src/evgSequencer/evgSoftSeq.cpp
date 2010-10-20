@@ -193,9 +193,10 @@ evgSoftSeq::load() {
 	evgSeqRam* seqRam = 0;
 	evgSeqRam* seqRamIter = 0;
 
+	/*Initialize the seqRam if hardware is available(un-allocated)*/
 	for(unsigned int i = 0; i < m_seqRamMgr->numOfRams(); i++) {
 		seqRamIter = m_seqRamMgr->getSeqRam(i);
-		if( seqRamIter->IsAlloc() ) {
+		if( seqRamIter->isAllocated() ) {
 			if(this == seqRamIter->getSoftSeq()) {
 				char err[80];
 				sprintf(err, "SoftSeq %d is already loaded", getId());
@@ -208,11 +209,12 @@ evgSoftSeq::load() {
 		}
 	}
 
+	/*If a seqRam is avialable*/
 	if(seqRam != 0) {
 		setSeqRam(seqRam);
 		seqRam->alloc(this);
 		scanIoRequest(ioscanpvt);
-		sync(0); //commit?
+		commit(); 
 		
 		return OK;	
 	} else {
@@ -224,48 +226,81 @@ evgSoftSeq::load() {
 }
 	
 epicsStatus
-evgSoftSeq::unload(dbCommon* pRec) {
-	if(!m_seqRam) 
-		return OK;
-
-	struct evgMrm::irqPvt* irqpvt = 0;
-	if(m_seqRam->getId() == 0)
-		irqpvt = &m_owner->irqStop0;
-	else if(m_seqRam->getId() == 1)
-		irqpvt = &m_owner->irqStop1;
-
-	m_seqRam->setRunMode(Single);
-	m_seqRam->setTrigSrc(SW_Ram0);
-	scanIoRequest(ioscanpvt);
-
-	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));	
-
-	if(!m_seqRam->running())
-		m_seqRam->disable();
-	else {				
-		pRec->pact = 1;	
-
-		SCOPED_LOCK2(irqpvt->mutex, guard);
-		irqpvt->recList.push_back(pRec);
-			
-		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
-
-		return OK;
-	}		
-	
-	if(pRec->pact == 1) {
-		pRec->pact = 0; 	
+evgSoftSeq::unload() {
+	if(m_seqRam) {
+		m_seqRam->setRunMode(Single);
+		m_seqRam->dealloc();
+		setSeqRam(0);
+		scanIoRequest(ioscanpvt);
 	}
-
-	m_seqRam->dealloc();
-	setSeqRam(0);
-	scanIoRequest(ioscanpvt);
 
 	return OK;
 }
-	
+
+
 epicsStatus
-evgSoftSeq::sync(dbCommon* pRec) {
+evgSoftSeq::commit() {
+	inspectSoftSeq();	
+
+	ctEventCode();
+	ctTimeStamp();
+	ctTrigSrc();
+	ctRunMode();
+	if(m_seqRam != 0)
+		sync();
+
+	m_isCommited = true;
+	scanIoRequest(ioscanpvt);
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::enable() {
+	if(m_seqRam) {
+		m_seqRam->setTrigSrc(getTrigSrcCt());
+		m_seqRam->setRunMode(getRunModeCt());
+		m_seqRam->enable();
+	}
+
+	m_isEnabled = true;
+	scanIoRequest(ioscanpvt);
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::disable() {
+	if(m_seqRam)
+		m_seqRam->setRunMode(Single);
+
+	m_isEnabled = false;
+	scanIoRequest(ioscanpvt);
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::halt(bool callBack) {
+	if( (!m_seqRam) || (!m_seqRam->isEnabled()) )
+		return OK;
+	else {
+		m_seqRam->disable();
+		m_isEnabled = false;
+		scanIoRequest(ioscanpvt);
+
+		if(callBack) {
+			/*Satisfy any callback request pending on irqStop0 or irqStop1 recList.
+			As no 'End of sequence' Intrrupt will be generated. */
+			if(m_seqRam->getId() == 0)
+				callbackRequest(&m_owner->irqStop0_cb);
+			else 
+				callbackRequest(&m_owner->irqStop1_cb);
+		}
+	}
+
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::sync() {
 	if(!m_seqRam) {
 		char err[80];
 		sprintf(err, "SeqRam is not allocated for SoftSeq %d", getId());
@@ -273,41 +308,8 @@ evgSoftSeq::sync(dbCommon* pRec) {
 		throw std::runtime_error(strErr);
 	}
 
-	struct evgMrm::irqPvt* irqpvt = 0;
-	if(m_seqRam->getId() == 0)
-		irqpvt = &m_owner->irqStop0;
-	else if(m_seqRam->getId() == 1)
-		irqpvt = &m_owner->irqStop1;
-
-	m_seqRam->setRunMode(Single);
-	m_seqRam->setTrigSrc(SW_Ram0);
-		
-	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
-
-	if(!m_seqRam->running())
-		m_seqRam->disable();
-	else {	
-		if(pRec == 0)
-			std::runtime_error("Trying to sync an running sequence.");
-
-		pRec->pact = 1;		
-
-		SCOPED_LOCK2(irqpvt->mutex, guard);
-		irqpvt->recList.push_back(pRec);
-
-		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
-
-		scanIoRequest(ioscanpvt);
+	if(isRunning())
 		return OK;
-	}		
-
-	if(pRec->pact == 1) {
-		pRec->pact = 0; 	
-	}
-
-	if( ! getEventCodeCt().size() ) {
-		commit(0);
-	}
 
 	m_seqRam->setEventCode(getEventCodeCt());
 	m_seqRam->setTimeStamp(getTimeStampCt());
@@ -321,19 +323,19 @@ evgSoftSeq::sync(dbCommon* pRec) {
 }
 
 epicsStatus
-evgSoftSeq::commit(dbCommon* pRec) {
-	inspectSoftSeq();	
+evgSoftSeq::isRunning() {
+	m_seqRam->setRunMode(Single);
+	m_seqRam->setTrigSrc(SW_Ram0);
+		
+	WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
 
-	ctEventCode();
-	ctTimeStamp();
-	ctTrigSrc();
-	ctRunMode();
-	if(m_seqRam != 0)
-		sync(pRec);
-
-	m_isCommited = true;
-	scanIoRequest(ioscanpvt);
-	return OK;
+	if(!m_seqRam->isRunning()) {
+		m_seqRam->disable();
+		return 0;
+	} else {	
+		BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));		
+		return 1;
+	}		
 }
 
 epicsStatus
@@ -399,52 +401,3 @@ evgSoftSeq::inspectSoftSeq() {
 
 	return OK;
 }
-
-epicsStatus
-evgSoftSeq::enable() {
-	if(m_seqRam) {
-		m_seqRam->setTrigSrc(getTrigSrcCt());
-		m_seqRam->setRunMode(getRunModeCt());
-		m_seqRam->enable();
-	}
-
-	m_isEnabled = true;
-	scanIoRequest(ioscanpvt);
-	return OK;
-}
-
-epicsStatus
-evgSoftSeq::disable() {
-	if(m_seqRam){
-		m_seqRam->setRunMode(Single);
-		scanIoRequest(ioscanpvt);
-	}
-
-	m_isEnabled = false;
-	scanIoRequest(ioscanpvt);
-	return OK;
-}
-
-epicsStatus
-evgSoftSeq::halt(bool callBack) {
-	if( (!m_seqRam) || (!m_seqRam->enabled()) )
-		return OK;
-	else {
-		m_seqRam->disable();
-		m_isEnabled = false;
-		scanIoRequest(ioscanpvt);
-
-		if(callBack) {
-			/*Satisfy any callback request pending on irqStop0 or irqStop1 recList.
-			As no 'End of sequence' Intrrupt will be generated. */
-			if(m_seqRam->getId() == 0)
-				callbackRequest(&m_owner->irqStop0_cb);
-			else 
-				callbackRequest(&m_owner->irqStop1_cb);
-		}
-	}
-
-	return OK;
-}
-
-

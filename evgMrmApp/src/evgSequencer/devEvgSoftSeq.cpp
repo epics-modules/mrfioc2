@@ -588,7 +588,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
-		ret = seq->unload((dbCommon*)pbo);
+		ret = seq->unload();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
 		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -618,7 +618,7 @@ write_bo_commitSeq(boRecord* pbo) {
 			throw std::runtime_error("Failed to lookup EVG Sequence");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
-		ret = seq->commit((dbCommon*)pbo);
+		ret = seq->commit();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
 		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);

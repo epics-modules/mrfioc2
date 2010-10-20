@@ -91,7 +91,7 @@ evgSeqRam::getRunMode() {
 
 epicsStatus 
 evgSeqRam::enable() {
-	if(IsAlloc()) {
+	if(isAllocated()) {
 		BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_ARM);
 		return OK;
 	} else 
@@ -109,19 +109,7 @@ evgSeqRam::disable() {
 epicsStatus 
 evgSeqRam::reset() {
 	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RESET);	
-	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_DISABLE);
 	return OK;
-}
-
-
-bool 
-evgSeqRam::enabled() const {
-	return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED; 
-}
-
-bool 
-evgSeqRam::running() const {
-	return  READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
 }
 
 epicsStatus
@@ -142,8 +130,18 @@ evgSeqRam::dealloc() {
 	return OK;
 }
 
+bool 
+evgSeqRam::isEnabled() const {
+	return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED; 
+}
+
+bool 
+evgSeqRam::isRunning() const {
+	return  READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
+}
+
 bool
-evgSeqRam::IsAlloc() const {
+evgSeqRam::isAllocated() const {
 	return m_allocated && m_softSeq;
 }
 

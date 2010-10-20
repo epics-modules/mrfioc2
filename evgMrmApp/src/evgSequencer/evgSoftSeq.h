@@ -72,12 +72,13 @@ public:
 	bool isCommited(); 
 
 	epicsStatus load	();
-	epicsStatus unload	(dbCommon *);
-	epicsStatus sync	(dbCommon *);
-	epicsStatus commit	(dbCommon *);
+	epicsStatus unload	();
+	epicsStatus commit	();
 	epicsStatus enable	();
 	epicsStatus disable	();
 	epicsStatus halt	(bool);
+	epicsStatus sync	();
+	epicsStatus isRunning();
 	epicsStatus inspectSoftSeq();
 
 	IOSCANPVT 					ioscanpvt;

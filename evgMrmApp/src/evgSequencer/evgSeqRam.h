@@ -29,12 +29,12 @@ public:
 	epicsStatus disable();
 	epicsStatus reset();
 
-	bool enabled() const;
-	bool running() const;
-
 	epicsStatus alloc(evgSoftSeq* seq);
 	epicsStatus dealloc();
-	bool IsAlloc() const;
+
+	bool isEnabled() const;
+	bool isRunning() const;
+	bool isAllocated() const;
 
 	evgSoftSeq* getSoftSeq();
 
