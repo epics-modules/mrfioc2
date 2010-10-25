@@ -47,6 +47,21 @@ record(mbbo, "$(P):$(N):runMode") {
   	field( ZRST, "Normal")
   	field( ONST, "Automatic")
 	field( TWST, "Single")
+	field( THSV, "INVALID")
+	field( FRSV, "INVALID")
+	field( FVSV, "INVALID")
+	field( SXSV, "INVALID")
+	field( SVSV, "INVALID")
+	field( EISV, "INVALID")
+	field( NISV, "INVALID")
+	field( TESV, "INVALID")
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
+	field( IVOA, "Don't drive outputs")
 }
 
 record(mbbi, "$(P):$(N):runModeRB") {
@@ -56,6 +71,20 @@ record(mbbi, "$(P):$(N):runModeRB") {
   	field( ZRST, "Normal")
   	field( ONST, "Automatic")
 	field( TWST, "Single")
+	field( THSV, "INVALID")
+	field( FRSV, "INVALID")
+	field( FVSV, "INVALID")
+	field( SXSV, "INVALID")
+	field( SVSV, "INVALID")
+	field( EISV, "INVALID")
+	field( NISV, "INVALID")
+	field( TESV, "INVALID")
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
 }
 
 record(mbbo, "$(P):$(N):trigSrc") {
@@ -83,6 +112,13 @@ record(mbbo, "$(P):$(N):trigSrc") {
 	field( EIVL, 16)
 	field( NIVL, 17)
 	field( TEVL, 18)
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
+	field( IVOA, "Don't drive outputs")
 }
 
 record(mbbi, "$(P):$(N):trigSrcRB") {
@@ -112,6 +148,12 @@ record(mbbi, "$(P):$(N):trigSrcRB") {
 	field( EIVL, 16)
 	field( NIVL, 17)
 	field( TEVL, 18)
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
 }
 
 record(bo, "$(P):$(N):commit") {

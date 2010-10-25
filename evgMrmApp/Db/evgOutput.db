@@ -24,6 +24,13 @@ record(mbbo, "$(P):$(N):Map") {
 	field( EIVL, 39)
 	field( NIVL, 62)
 	field( TEVL, 63)
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
+	field( IVOA, "Don't drive outputs")
 	field( PINI, "YES")
 	info(autosaveFields_pass0, "VAL")
 }
