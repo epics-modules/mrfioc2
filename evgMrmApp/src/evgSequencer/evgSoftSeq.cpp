@@ -19,7 +19,9 @@ m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
 m_trigSrc(Mxc0),
-m_runMode(Single),
+m_runMode(Normal),
+m_trigSrcCt(Mxc0),
+m_runModeCt(Normal),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_ecSize(0),
@@ -151,12 +153,12 @@ evgSoftSeq::getTimeStampCt() {
 
 SeqTrigSrc 
 evgSoftSeq::getTrigSrcCt() {
-	return m_trigSrc;
+	return m_trigSrcCt;
 }
 
 SeqRunMode 
 evgSoftSeq::getRunModeCt() {
-	return m_runMode;
+	return m_runModeCt;
 }
 
 epicsStatus 
@@ -214,7 +216,7 @@ evgSoftSeq::load() {
 		setSeqRam(seqRam);
 		seqRam->alloc(this);
 		scanIoRequest(ioscanpvt);
-		commit(); 
+		sync(); 
 		
 		return OK;	
 	} else {
@@ -310,6 +312,13 @@ evgSoftSeq::sync() {
 
 	if(isRunning())
 		return OK;
+
+	if(getEventCodeCt().size() == 0) {
+		m_eventCodeCt.push_back(0x7f);
+		m_timeStampCt.push_back(1);
+		m_trigSrcCt = Mxc0;
+		m_runModeCt = Normal;
+	}
 
 	m_seqRam->setEventCode(getEventCodeCt());
 	m_seqRam->setTimeStamp(getTimeStampCt());

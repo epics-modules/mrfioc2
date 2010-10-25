@@ -60,17 +60,17 @@ evgSeqRam::getTrigSrc() {
 epicsStatus
 evgSeqRam::setRunMode(SeqRunMode mode) {
 	switch (mode) {
-		case(Single):
-			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
+		case(Normal):
+			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
+			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
 			break;
 		case(Auto):
 			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
 			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
-			break;
-		case(Normal):
-			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
-			BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RECYCLE);
-			break;		
+			break;	
+		case(Single):
+			BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
+			break;	
 		default:
 			throw std::runtime_error("Unknown SeqRam RunMode");
 	}

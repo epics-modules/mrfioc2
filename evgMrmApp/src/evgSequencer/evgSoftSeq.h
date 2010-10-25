@@ -14,9 +14,9 @@ class evgSeqRam;
 class evgSeqRamMgr;
 
 enum SeqRunMode {
-	Single = 0,
+	Normal = 0,
 	Auto,
-	Normal
+	Single
 };
 
 enum SeqTrigSrc {

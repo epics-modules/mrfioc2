@@ -44,18 +44,18 @@ record(mbbo, "$(P):$(N):runMode") {
   	field( DTYP, "EVG SEQ RUN MODE")
   	field( OUT , "#C$(cardNum) S$(seqNum) @")
 	field( UDF, "0")
-  	field( ZRST, "Single")
+  	field( ZRST, "Normal")
   	field( ONST, "Automatic")
-	field( TWST, "Normal")
+	field( TWST, "Single")
 }
 
 record(mbbi, "$(P):$(N):runModeRB") {
 	field( DTYP, "EVG SEQ RUN MODE")
   	field( INP , "#C$(cardNum) S$(seqNum) @")
 	field( SCAN, "I/O Intr")
-  	field( ZRST, "Single")
+  	field( ZRST, "Normal")
   	field( ONST, "Automatic")
-	field( TWST, "Normal")
+	field( TWST, "Single")
 }
 
 record(mbbo, "$(P):$(N):trigSrc") {
@@ -133,6 +133,7 @@ record(bo, "$(P):$(N):load") {
 	field( UDF, "0")
 	field( ZNAM, "0")
   	field( ONAM, "1")
+	field( FLNK, "$(P):loadedSeq")
 }
 
 record(bo, "$(P):$(N):unload") {
@@ -143,6 +144,7 @@ record(bo, "$(P):$(N):unload") {
 	field( UDF, "0")
 	field( ZNAM, "0")
   	field( ONAM, "1")
+	field( FLNK, "$(P):loadedSeq")
 }
 
 record(bo, "$(P):$(N):enable") {
@@ -217,7 +219,7 @@ record(bi, "$(P):$(N):commitStatus") {
 
 record(waveform, "$(P):loadedSeq") {
 	field( DTYP, "EVG LOADED SEQ")
-	field( DESC, "Sequences Loaded in Rams")
+	field( DESC, "Soft Seqs Loaded in Rams")
 	field( INP, "#C$(cardNum) S @")
 	field( NELM, "2")
 	field( FTVL, "LONG")
