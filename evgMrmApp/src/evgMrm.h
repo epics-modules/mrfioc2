@@ -10,6 +10,8 @@
 #include <dbScan.h>
 #include <callback.h>
 #include <epicsMutex.h>
+#include <epicsTimer.h>
+#include <errlog.h>
 
 #include "evgEvtClk.h"
 #include "evgSoftEvt.h"
@@ -28,9 +30,10 @@
  * Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
  * Input, Output etc.
  */
+class wdTimer;
+enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm {
-
 public:
 	evgMrm(const epicsUInt32 CardNum, volatile epicsUInt8* const pReg);
 	~evgMrm();
@@ -51,12 +54,13 @@ public:
 	static void sendTS(CALLBACK*);
 	epicsTimeStamp getTS();
 	epicsStatus syncTS();
+	epicsStatus syncTsRequest();
 	epicsStatus setTsInpType(InputType);
 	epicsStatus setTsInpNum(epicsUInt32);
 	InputType getTsInpType();
 	epicsUInt32 getTsInpNum();
-	epicsStatus setupTS(bool);
-	epicsStatus incrementTS();
+	epicsStatus setupTsIrq(bool);
+	epicsStatus incrementTSsec();
 	epicsUInt32 getTSsec();
 	
 	/**	Access	functions 	**/
@@ -79,7 +83,11 @@ public:
 	CALLBACK						irqStop1_cb;
 	CALLBACK						irqExtInp_cb;
 
-	IOSCANPVT 						ioscanpvt;
+	IOSCANPVT 						ioScanTS;
+	epicsUInt32						m_pilotCountTS;
+	bool							m_syncTS;
+	//epicsUInt32						m_alarmTS;
+ 	ALARM_TS		 				m_alarmTS;
 
 private:
 	const epicsUInt32            	m_id;       
@@ -106,8 +114,53 @@ private:
 	evgSeqRamMgr 					m_seqRamMgr;
 	evgSoftSeqMgr					m_softSeqMgr;
 
-	epicsTimeStamp					m_tv;
+	epicsTimeStamp					m_ts;
 	struct ppsSrc					m_ppsSrc; 
+
+	epicsTimerQueueActive &			m_queue; 
+	wdTimer* 						m_wdTimer;
+};
+
+class wdTimer : public epicsTimerNotify {
+public:
+	wdTimer(const char* name,epicsTimerQueueActive &queue, evgMrm* const evg): 
+	m_name(name),
+	m_timer(queue.createTimer()),
+	m_owner(evg),
+	m_timeout(true) {
+	}
+
+	virtual ~wdTimer() { 
+		m_timer.destroy();
+	}
+
+	void start(double delay) {
+		m_timer.start(*this,delay);
+	}
+
+	virtual expireStatus expire(const epicsTime & currentTime) {
+		printf("Timestamp watchdog timer expired\n");
+		currentTime.show(1);
+		m_timeout = true;
+		m_owner->m_alarmTS = TS_ALARM_MAJOR;
+		scanIoRequest(m_owner->ioScanTS);
+		return expireStatus(noRestart);
+	}
+
+	void clearTimeoutFlag() {
+		m_timeout = false;
+		return;
+	}
+
+	bool getTimeoutFlag() {
+		return m_timeout;
+	}
+
+private:
+	const char* m_name;
+	epicsTimer& m_timer;
+	evgMrm* const m_owner;
+	bool m_timeout;
 };
 
 #endif //EVG_MRM_H

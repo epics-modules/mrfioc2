@@ -268,4 +268,4 @@ const epicsUInt16 	evgNumFpInp   = 2;
 const epicsUInt16 	evgNumUnivInp = 4;
 const epicsUInt16	evgNumTbInp	  = 16;
 const epicsUInt16	evgNumSeqRam  = 2;
-const epicsFloat32	evgAllowedTsErr = 0.5f;
+const epicsFloat32	evgAllowedTsGitter = 0.5f;

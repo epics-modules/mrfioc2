@@ -124,6 +124,19 @@ read_si_ts(stringinRecord* psi) {
 		ts.strftime(psi->val, sizeof(psi->val), 
                          "%a, %d %b %Y %H:%M:%S");
 
+		switch(evg->m_alarmTS) {
+			case TS_ALARM_NONE:
+				break;
+			case TS_ALARM_MINOR:
+				recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
+				break;
+			case TS_ALARM_MAJOR:
+				recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
+				break;
+			default:
+				errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");
+		}
+
 		ret = 0;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), psi->name);
@@ -144,7 +157,7 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
 		return -1;
 	}
 
-	*ppvt = evg->ioscanpvt;
+	*ppvt = evg->ioScanTS;
 
 	return 0;
 }
@@ -159,7 +172,7 @@ write_bo_syncTS(boRecord* pbo) {
 		if(!evg)
 			throw std::runtime_error("Device pvt field not initialized");
 
-		ret = evg->syncTS();
+		ret = evg->syncTsRequest();
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
