@@ -856,21 +856,22 @@ init_wf_loadedSeq(waveformRecord* pwf) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_wf_loadedSeq(waveformRecord* pwf) {
+read_wf_loadedSeq(waveformRecord* pwf) {
 	long ret = 0;
 
 	try {
 		evgSeqRamMgr* seqRamMgr = (evgSeqRamMgr*)pwf->dpvt;
 		epicsInt32* pBuf = (epicsInt32*)pwf->bptr;
-		
+		evgSoftSeq* seq;
+
 		for(int i = 0; i < evgNumSeqRam; i++) {
-			evgSoftSeq* seq = seqRamMgr->getSeqRam(i)->getSoftSeq();
+			seq = seqRamMgr->getSeqRam(i)->getSoftSeq();
 			if(seq)
 				pBuf[i] = seq->getId();
-			else 
+			else
 				pBuf[i] = -1;
 		}
-	
+		pwf->nord = evgNumSeqRam;
 		ret = 0;
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
@@ -1083,7 +1084,7 @@ common_dset devWfEvgLoadedSeq = {
     NULL,
     (DEVSUPFUN)init_wf_loadedSeq,
     NULL,
-    (DEVSUPFUN)write_wf_loadedSeq,
+    (DEVSUPFUN)read_wf_loadedSeq,
 };
 epicsExportAddress(dset, devWfEvgLoadedSeq);
 
