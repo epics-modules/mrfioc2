@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 198
-y 45
-w 168
-h 232
+x 206
+y 85
+w 130
+h 146
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -29,8 +29,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 40
-y 80
+x 20
+y 50
 w 88
 h 30
 fgColor index 14
@@ -55,8 +55,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 40
-y 40
+x 20
+y 10
 w 90
 h 30
 fgColor index 14
@@ -71,7 +71,7 @@ displayFileName {
   0 "evgMain"
 }
 symbols {
-  0 "P=EVG1"
+  0 "P=evg1"
 }
 endObjectProperties
 
@@ -81,8 +81,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 40
-y 140
+x 20
+y 100
 w 90
 h 30
 fgColor index 14
@@ -90,6 +90,7 @@ bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
+buttonLabel "IOC STATS"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -99,7 +100,7 @@ menuLabel {
   0 "IOC Status"
 }
 symbols {
-  0 "ioc=mrftest2"
+  0 "ioc=mrfTest2"
 }
 endObjectProperties
 

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 189
-y 244
+x 856
+y 55
 w 691
 h 766
 font "helvetica-medium-r-12.0"
@@ -1664,7 +1664,7 @@ displayFileName {
   0 "softSeq"
 }
 symbols {
-  0 "SS=Seq2"
+  0 "SS=Seq3"
 }
 endObjectProperties
 
@@ -1690,7 +1690,7 @@ displayFileName {
   0 "softSeq"
 }
 symbols {
-  0 "SS=Seq2"
+  0 "SS=Seq4"
 }
 endObjectProperties
 

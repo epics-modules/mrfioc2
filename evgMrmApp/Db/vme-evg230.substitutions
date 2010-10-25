@@ -92,4 +92,6 @@ pattern { P, cardNum, N, seqNum, NELM}
 { $(P), $(cardNum), "Seq0", 0, 2047}
 { $(P), $(cardNum), "Seq1", 1, 2047}
 { $(P), $(cardNum), "Seq2", 2, 2047}
+{ $(P), $(cardNum), "Seq3", 3, 2047}
+{ $(P), $(cardNum), "Seq4", 4, 2047}
 }

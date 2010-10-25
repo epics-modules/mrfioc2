@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 126
-y 273
-w 317
-h 259
+x 153
+y 260
+w 290
+h 294
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -31,7 +31,7 @@ major 4
 minor 0
 release 0
 x 170
-y 80
+y 120
 w 100
 h 20
 fgColor index 14
@@ -50,7 +50,7 @@ major 4
 minor 0
 release 0
 x 30
-y 80
+y 120
 w 100
 h 20
 fgColor index 14
@@ -110,7 +110,7 @@ major 4
 minor 0
 release 0
 x 200
-y 150
+y 190
 w 70
 h 20
 fgColor index 14
@@ -133,7 +133,7 @@ major 4
 minor 0
 release 0
 x 30
-y 120
+y 160
 w 70
 h 20
 fgColor index 14
@@ -156,7 +156,7 @@ major 4
 minor 0
 release 0
 x 200
-y 120
+y 160
 w 70
 h 20
 fgColor index 14
@@ -179,7 +179,7 @@ major 4
 minor 0
 release 0
 x 200
-y 180
+y 220
 w 70
 h 20
 fgColor index 14
@@ -202,7 +202,7 @@ major 4
 minor 0
 release 0
 x 30
-y 180
+y 220
 w 70
 h 20
 fgColor index 14
@@ -225,7 +225,7 @@ major 4
 minor 0
 release 0
 x 30
-y 150
+y 190
 w 70
 h 20
 fgColor index 14
@@ -248,7 +248,7 @@ major 10
 minor 0
 release 0
 x 30
-y 210
+y 250
 w 240
 h 20
 controlPv "$(P):$(SS):err"
@@ -266,7 +266,7 @@ major 4
 minor 5
 release 0
 x 110
-y 120
+y 160
 w 80
 h 20
 controlPv "$(P):$(SS):commitStatus"
@@ -289,7 +289,7 @@ major 4
 minor 5
 release 0
 x 110
-y 180
+y 220
 w 80
 h 20
 controlPv "$(P):$(SS):enaStatus"
@@ -312,10 +312,96 @@ major 4
 minor 5
 release 0
 x 110
-y 150
+y 190
 w 80
 h 20
 controlPv "$(P):$(SS):loadStatus"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 30
+y 80
+w 57
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Run Mode"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 170
+y 80
+w 82
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Trigger Source"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 30
+y 100
+w 90
+h 20
+controlPv "$(P):$(SS):runModeRB"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 170
+y 100
+w 90
+h 20
+controlPv "$(P):$(SS):trigSrcRB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
