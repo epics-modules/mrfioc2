@@ -78,7 +78,8 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
-  virtual double clock() const{return eventClock;};
+  virtual double clock() const
+        {SCOPED_LOCK(shadowLock);return eventClock;};
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
@@ -89,10 +90,12 @@ public:
 
   virtual epicsUInt32 uSecDiv() const;
 
-  virtual epicsUInt32 tsDiv() const{return shadowCounterPS;}
+  virtual epicsUInt32 tsDiv() const
+        {SCOPED_LOCK(shadowLock);return shadowCounterPS;}
 
   virtual void setSourceTS(TSSource);
-  virtual TSSource SourceTS() const{return shadowSourceTS;}
+  virtual TSSource SourceTS() const
+        {SCOPED_LOCK(shadowLock);return shadowSourceTS;}
   virtual double clockTS() const;
   virtual void clockTSSet(double);
   virtual bool interestedInEvent(epicsUInt32 event,bool set);
@@ -114,12 +117,6 @@ public:
   mrmDataBufTx buftx;
   mrmBufRx bufrx;
 private:
-
-  // Set by clockTSSet() with IRQ disabled
-  double stampClock;
-  TSSource shadowSourceTS;
-  epicsUInt32 shadowCounterPS;
-  double eventClock; //!< Stored in Hz
 
   // Set by ISR
   volatile epicsUInt32 count_recv_error;
@@ -168,6 +165,16 @@ private:
   // Periodic callback to detect when link state goes from down to up
   CALLBACK poll_link_cb;
   static void poll_link(CALLBACK*);
+
+  /** Guards access to all data members not accessed by ISR
+   */
+  mutable epicsMutex shadowLock;
+
+  // Set by clockTSSet() with IRQ disabled
+  double stampClock;
+  TSSource shadowSourceTS;
+  epicsUInt32 shadowCounterPS;
+  double eventClock; //!< Stored in Hz
 
 
   // bit map of which event #'s are mapped

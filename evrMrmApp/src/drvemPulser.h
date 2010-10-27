@@ -2,6 +2,8 @@
 #ifndef EVRMRMPULSER_H_INC
 #define EVRMRMPULSER_H_INC
 
+#include <epicsMutex.h>
+
 #include <evr/pulser.h>
 
 class EVRMRM;
@@ -41,6 +43,8 @@ private:
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings
     unsigned char mapped[256/8];
+
+    epicsMutex mapLock;
 
     void _map(epicsUInt8 evt)   {        mapped[evt/8] |=    1<<(evt%8);  }
     void _unmap(epicsUInt8 evt) {        mapped[evt/8] &= ~( 1<<(evt%8) );}

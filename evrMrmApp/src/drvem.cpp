@@ -35,13 +35,6 @@ do { \
 /*Note: All locking involving the ISR done by disabling interrupts
  *      since the OSI library doesn't provide more efficient
  *      constructs like a ISR safe spinlock.
- *
- *      Since OSI does not provide r/w locks either, writing to
- *      infrequently modified member variables and register
- *      bit fields is also done with interrupts disabled.
- *
- *      This will not be a problem as long as the system
- *      has only one cpu...
  */
 
 // Fractional synthesizer reference clock frequency
@@ -56,9 +49,6 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,base(b)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
   ,bufrx(b, 10) // Sets depth of Rx queue
-  ,stampClock(0.0)
-  ,shadowSourceTS(TSSourceInternal)
-  ,shadowCounterPS(0)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
@@ -67,6 +57,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,pulsers()
   ,shortcmls()
   ,events_lock()
+  ,stampClock(0.0)
+  ,shadowSourceTS(TSSourceInternal)
+  ,shadowCounterPS(0)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
@@ -187,6 +180,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
         scanIoInit(&events[i].occured);
     }
+
+    SCOPED_LOCK(shadowLock);
 
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;
@@ -394,13 +389,12 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
-    int iflags=epicsInterruptLock();
+    SCOPED_LOCK(shadowLock);
 
     epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
 
     if (v && _ismap(code,func-96)) {
         // already set
-        epicsInterruptUnlock(iflags);
         throw std::runtime_error("Ignore duplicate mapping");
 
     } else if(v) {
@@ -411,10 +405,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
         WRITE32(base, MappingRam(0, code, Internal), val&~mask);
     }
 
-    epicsInterruptUnlock(iflags);
-
-    errlogPrintf("EVR #%d code %02x func %3d %s\n",
-        id, code, func, v?"Set":"Clear");
+//    errlogPrintf("EVR #%d code %02x func %3d %s\n",
+//        id, code, func, v?"Set":"Clear");
 }
 
 void
@@ -432,7 +424,7 @@ EVRMRM::clockSet(double freq)
     if(newfrac==0)
         throw std::out_of_range("New frequency can't be used");
 
-    int iflags=epicsInterruptLock();
+    SCOPED_LOCK(shadowLock);
 
     epicsUInt32 oldfrac=READ32(base, FracDiv);
 
@@ -455,8 +447,6 @@ EVRMRM::clockSet(double freq)
     if(newudiv!=oldudiv){
         WRITE32(base, USecDiv, newudiv);
     }
-
-    epicsInterruptUnlock(iflags);
 }
 
 epicsUInt32
@@ -507,7 +497,7 @@ EVRMRM::setSourceTS(TSSource src)
         throw std::out_of_range("TS source invalid");
     }
 
-    int iflags=epicsInterruptLock();
+    SCOPED_LOCK(shadowLock);
 
     switch(src){
     case TSSourceInternal:
@@ -526,13 +516,13 @@ EVRMRM::setSourceTS(TSSource src)
     WRITE32(base, CounterPS, div);
     shadowCounterPS=div;
     shadowSourceTS=src;
-
-    epicsInterruptUnlock(iflags);
 }
 
 double
 EVRMRM::clockTS() const
 {
+    //Note: acquires shadowLock 3 times.
+
     TSSource src=SourceTS();
 
     if(src!=TSSourceInternal)
@@ -550,17 +540,18 @@ EVRMRM::clockTSSet(double clk)
         throw std::out_of_range("TS Clock rate invalid");
 
     TSSource src=SourceTS();
+    double eclk=clock();
+
+    SCOPED_LOCK(shadowLock);
 
     if(src==TSSourceInternal){
-        double eclk=clock();
         epicsUInt16 div=(epicsUInt16)(eclk/clk);
         WRITE32(base, CounterPS, div);
+
         shadowCounterPS=div;
     }
 
-    int iflags=epicsInterruptLock();
     stampClock=clk;
-    epicsInterruptUnlock(iflags);
 }
 
 bool
@@ -613,6 +604,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     } else {
         // Get current absolute time
 
+        // must disable interrupts when manipulating
+        // bits in the control register
         int iflags=epicsInterruptLock();
 
         epicsUInt32 ctrl=READ32(base, Control);
