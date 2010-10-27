@@ -28,6 +28,7 @@
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_pilotCountTS(4),
 m_syncTS(false),
+//m_buftx(pReg+U32_DataBuffControl, pReg+U8_DataBuffer_base),
 m_id(id),
 m_pReg(pReg),
 m_evtClk(pReg),
@@ -35,7 +36,6 @@ m_softEvt(pReg),
 m_seqRamMgr(this),
 m_softSeqMgr(this),
 m_queue(epicsTimerQueueActive::allocate(true)) {
-	m_wdTimer = new wdTimer("Watch Dog Timer",m_queue, this);
 
 	try{
 		for(int i = 0; i < evgNumEvtTrig; i++)
@@ -70,7 +70,9 @@ m_queue(epicsTimerQueueActive::allocate(true)) {
 		for(int i = 0; i < evgNumUnivOut; i++) {
 			m_output[std::pair<epicsUInt32, OutputType>(i, Univ_Output)] = 
 										new evgOutput(i, pReg, Univ_Output);
-		}	
+		}
+	
+		m_wdTimer = new wdTimer("Watch Dog Timer",m_queue, this);
 
 		m_ppsSrc.type = None_Input;
 		m_ppsSrc.num = 0;
@@ -83,7 +85,7 @@ m_queue(epicsTimerQueueActive::allocate(true)) {
 	
 		scanIoInit(&ioScanTS);
 	} catch(std::exception& e) {
-		errlogPrintf("%s\n", e.what());
+		errlogPrintf("Error: %s\n", e.what());
 	}
 }
 

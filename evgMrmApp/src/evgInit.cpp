@@ -61,8 +61,8 @@ mrmEvgSetupVME (
 	epicsInt32    cardNum,           // Logical card number
     epicsInt32    slot,              // VME slot
     epicsUInt32   vmeAddress,        // Desired VME address in A24 space
-    epicsInt32    irqVector,         // Desired interrupt vector number
-    epicsInt32    irqLevel)          // Desired interrupt level
+    epicsInt32    irqLevel,          // Desired interrupt level
+    epicsInt32    irqVector)         // Desired interrupt vector number
 {
 	volatile epicsUInt8* regCpuAddr = 0;
 	struct VMECSRID info;

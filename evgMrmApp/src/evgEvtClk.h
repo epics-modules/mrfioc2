@@ -10,15 +10,14 @@ class evgEvtClk {
 public:
 	evgEvtClk(volatile epicsUInt8* const);
 	
-	/** RF Input Frequency	**/
 	epicsStatus setRFref (epicsFloat64 RFref);
 	epicsFloat64 getRFref();
 
 	epicsStatus setRFdiv(epicsUInt32);
 	epicsUInt32 getRFdiv();
 
-	/**	Fractional Synthesizer Frequency	**/
 	epicsStatus setFracSynFreq(epicsFloat64);
+
 	epicsFloat64 getEvtClkSpeed();
 
 	/**	Event Clock Source	**/
