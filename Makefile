@@ -30,7 +30,7 @@ mrmShared_DEPEND_DIRS += mrfCommon
 
 evrMrmApp_DEPEND_DIRS += evrApp mrmShared
 
-evgMrmApp_DEPEND_DIRS += evgApp
+evgMrmApp_DEPEND_DIRS += evgApp mrmShared
 
 mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp
 

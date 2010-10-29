@@ -28,7 +28,7 @@
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_pilotCountTS(4),
 m_syncTS(false),
-//m_buftx(pReg+U32_DataBuffControl, pReg+U8_DataBuffer_base),
+m_buftx(pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
 m_pReg(pReg),
 m_evtClk(pReg),

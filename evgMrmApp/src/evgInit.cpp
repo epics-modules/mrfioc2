@@ -148,8 +148,8 @@ mrmEvgSetupVME (
 				return -1;
 			}	
 		}
-		
 		evgmap.store(cardNum, *evg);		
+		datatxmap.append(cardNum, evg->m_buftx);
 
 		return 0;
 	} catch(std::exception& e) {
@@ -208,6 +208,7 @@ REGINFO("IrqFlag", 			IrqFlag, 			32),
 REGINFO("IrqEnable", 		IrqEnable,			32),
 REGINFO("SwEventControl", 	SwEventControl, 	8),
 REGINFO("SwEventCode", 		SwEventCode, 		8),
+REGINFO("DataBufferControl",DataBufferControl,  32),
 REGINFO("DBusMap",			DBusMap, 			32),
 REGINFO("FPGAVersion", 		FPGAVersion, 		32),
 REGINFO("uSecDiv", 			uSecDiv, 			16),
@@ -229,6 +230,12 @@ REGINFO("TBInMap(12)", 		TBInMap(12), 		32),
 REGINFO("TBInMap(13)", 		TBInMap(13), 		32),
 REGINFO("TBInMap(14)", 		TBInMap(14), 		32),
 REGINFO("TBInMap(15)", 		TBInMap(15), 		32),
+REGINFO("DataBuffer(0)",    DataBuffer(0),      8),
+REGINFO("DataBuffer(1)",    DataBuffer(1),      8),
+REGINFO("DataBuffer(2)",    DataBuffer(2),      8),
+REGINFO("DataBuffer(3)",    DataBuffer(3),      8),
+REGINFO("DataBuffer(4)",    DataBuffer(4),      8),
+REGINFO("DataBuffer(5)",    DataBuffer(5),      8),
 REGINFO("SeqRamTS(0,0)", 	SeqRamTS(0,0), 		32),
 REGINFO("SeqRamTS(0,1)", 	SeqRamTS(0,1), 		32),
 REGINFO("SeqRamTS(0,2)", 	SeqRamTS(0,2), 		32),

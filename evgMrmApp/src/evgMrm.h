@@ -22,7 +22,7 @@
 #include "evgOutput.h"
 #include "evgSequencer/evgSeqRamManager.h"  
 #include "evgSequencer/evgSoftSeqManager.h"
-//#include "mrmDataBufTx.h"
+#include "mrmDataBufTx.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -79,46 +79,47 @@ public:
 		epicsUInt32	num;	
 	};
 
-	CALLBACK 						irqStop0_cb;
-	CALLBACK						irqStop1_cb;
-	CALLBACK						irqExtInp_cb;
+	CALLBACK                        irqStop0_cb;
+	CALLBACK                        irqStop1_cb;
+	CALLBACK                        irqExtInp_cb;
 
-	IOSCANPVT 						ioScanTS;
-	epicsUInt32						m_pilotCountTS;
-	bool							m_syncTS;
-	//epicsUInt32						m_alarmTS;
- 	ALARM_TS		 				m_alarmTS;
+	IOSCANPVT                       ioScanTS;
+	epicsUInt32                     m_pilotCountTS;
+	bool                            m_syncTS;
+ 	ALARM_TS                        m_alarmTS;
+
+	mrmDataBufTx                    m_buftx;
 
 private:
-	const epicsUInt32            	m_id;       
-	volatile epicsUInt8* const		m_pReg;
+	const epicsUInt32               m_id;       
+	volatile epicsUInt8* const      m_pReg;
 
-	evgEvtClk 						m_evtClk;
-	evgSoftEvt						m_softEvt;
+	evgEvtClk                       m_evtClk;
+	evgSoftEvt                      m_softEvt;
 
 	typedef std::vector<evgTrigEvt*> TrigEvt_t;
-  	TrigEvt_t 						m_trigEvt;
+  	TrigEvt_t                       m_trigEvt;
 
-	typedef std::vector<evgMxc*> 	MuxCounter_t;
-  	MuxCounter_t 					m_muxCounter;
+	typedef std::vector<evgMxc*>    MuxCounter_t;
+  	MuxCounter_t                    m_muxCounter;
 
-	typedef std::vector<evgDbus*> 	Dbus_t;
-  	Dbus_t	 						m_dbus;
+	typedef std::vector<evgDbus*>   Dbus_t;
+  	Dbus_t                          m_dbus;
 
  	typedef std::map< std::pair<epicsUInt32, InputType>, evgInput*> Input_t;
- 	Input_t 						m_input;
+ 	Input_t                         m_input;
 
  	typedef std::map< std::pair<epicsUInt32, OutputType>, evgOutput*> Output_t;
- 	Output_t 						m_output;
+ 	Output_t                        m_output;
 
-	evgSeqRamMgr 					m_seqRamMgr;
-	evgSoftSeqMgr					m_softSeqMgr;
+	evgSeqRamMgr                    m_seqRamMgr;
+	evgSoftSeqMgr                   m_softSeqMgr;
 
-	epicsTimeStamp					m_ts;
-	struct ppsSrc					m_ppsSrc; 
+	epicsTimeStamp                  m_ts;
+	struct ppsSrc                   m_ppsSrc; 
 
-	epicsTimerQueueActive &			m_queue; 
-	wdTimer* 						m_wdTimer;
+	epicsTimerQueueActive &	        m_queue; 
+	wdTimer*                        m_wdTimer;
 };
 
 class wdTimer : public epicsTimerNotify {

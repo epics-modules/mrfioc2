@@ -1,6 +1,6 @@
 registrar(evgMrmRegistrar)
 driver(drvEvgMrm)
-
+include "mrmShared.dbd"
 
 #evgMrm.db
 device( bo, VME_IO, devBoEvgEnable, "EVG")

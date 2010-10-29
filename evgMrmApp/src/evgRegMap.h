@@ -48,8 +48,7 @@
 //=====================
 // Data Buffer and Distributed Data Bus Control
 //
-#define  U8_DataBuffControl     0x0021  // Data Buffer Control Register
-#define  U16_DataBuffSize       0x0022  // Data Buffer Transfer Size In Bytes
+#define  U32_DataBufferControl     0x0020  // Data Buffer Control Register
                                         //   (must be multiple of four)
 #define  U32_DBusMap            0x0024  // Distributed Data Bus Mapping Register
 
@@ -173,10 +172,9 @@
 //=====================
 // Data Buffer Area
 //
-#define  U32_DataBuffer_base    0x0800  // Data Buffer Array Base Offset
-
-#define  U32_DataBuffer(n)    \
-             (U32_DataBuffer_base + (4*(n)))
+#define  U8_DataBuffer_base    0x0800  // Data Buffer Array Base Offset
+#define  U8_DataBuffer(n)    \
+             (U8_DataBuffer_base + n)
 
 //=====================
 // Sequence RAMs

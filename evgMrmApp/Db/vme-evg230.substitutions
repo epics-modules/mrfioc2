@@ -89,9 +89,19 @@ pattern { P, cardNum, N, mxcNum }
 
 file evgSoftSeq.db {
 pattern { P, cardNum, N, seqNum, NELM}
-{ $(P), $(cardNum), "Seq0", 0, 2047}
-{ $(P), $(cardNum), "Seq1", 1, 2047}
-{ $(P), $(cardNum), "Seq2", 2, 2047}
-{ $(P), $(cardNum), "Seq3", 3, 2047}
-{ $(P), $(cardNum), "Seq4", 4, 2047}
+{ $(P), $(cardNum), "Seq0", 0, 2047 }
+{ $(P), $(cardNum), "Seq1", 1, 2047 }
+{ $(P), $(cardNum), "Seq2", 2, 2047 }
+{ $(P), $(cardNum), "Seq3", 3, 2047 }
+{ $(P), $(cardNum), "Seq4", 4, 2047 }
+}
+
+file databuftx.db
+{pattern {P, C, PROTO}
+{ $(P), $(cardNum), 1 }
+}
+
+file databuftxCtrl.db
+{pattern {P, C}
+{ $(P), $(cardNum) }
 }
