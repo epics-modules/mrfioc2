@@ -1,0 +1,10 @@
+record(bo, "$(P)dbus:mode") {
+  field(DESC, "Data mode")
+  field(DTYP, "MRF Data Buf Tx")
+  field(OUT , "@C=$(C), Proto=0, P=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
+}
