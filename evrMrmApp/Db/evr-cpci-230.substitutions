@@ -10,6 +10,12 @@ file "databuftx.db"
 {$(P), $(C), 1}
 }
 
+file "databuftxCtrl.db"
+{pattern
+{P, C}
+{$(P), $(C)}
+}
+
 file "mrmevrbufrx.db"
 {pattern
 {P, C, PROTO}

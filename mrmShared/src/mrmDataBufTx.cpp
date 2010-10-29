@@ -103,15 +103,19 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
-    iowrite8(&dataBuf[0], id);
-
+    epicsUInt32 index = 0;
+    iowrite8(&dataBuf[index], id);
     len++;
 
-    for(epicsUInt32 i=1; i<len; i++)
-        iowrite8(&dataBuf[i], ubuf[i-1]);
-    if(len%4)
-        for(epicsUInt32 i=0; i<=4-len%4; i++)
-            iowrite8(&dataBuf[i], 0);
+    for(index=1; index<len; index++)
+        iowrite8(&dataBuf[index], ubuf[index-1]);
+	
+    if(len%4) {
+        for(epicsUInt32 i = 4-len%4; i > 0; i--, index++) {
+            len++;
+            iowrite8(&dataBuf[index], 0);
+        }
+    }
     wbarr();
 
     epicsUInt32 reg=len&DataTxCtrl_len_mask;
