@@ -90,6 +90,7 @@ write_bo_ena(boRecord* pbo) {
 static long 
 write_lo_evtCode(longoutRecord* plo) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgTrigEvt* trigEvt = (evgTrigEvt*)plo->dpvt;
@@ -98,7 +99,7 @@ write_lo_evtCode(longoutRecord* plo) {
 
 		ret = trigEvt->setEvtCode(plo->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(plo, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(plo, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

@@ -100,6 +100,7 @@ try {
 static long write_lo(longoutRecord* plo)
 {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
+  epicsUInt32 dummy;
 try {
 
   if (!priv)
@@ -138,7 +139,7 @@ try {
   plo->val=0;
   priv->last_code=0;
   priv->last_func=priv->next_func;
-  recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+  dummy = recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
   recGblRecordError(S_db_noMemory, (void*)plo, e.what());
   return S_db_noMemory;
 }

@@ -67,6 +67,7 @@ init_bo(boRecord* pbo) {
 static long 
 write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgInput* inp = (evgInput*)pmbboD->dpvt;
@@ -75,7 +76,7 @@ write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
 
 		ret = inp->setInpDbusMap((epicsUInt32)pmbboD->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pmbboD, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pmbboD, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -90,6 +91,7 @@ write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
 static long 
 write_bo_enaIRQ(boRecord* pbo) {
 	long ret = 0;
+        unsigned long dummy;
 	
 	try {
 		evgInput* inp = (evgInput*)pbo->dpvt;
@@ -98,7 +100,7 @@ write_bo_enaIRQ(boRecord* pbo) {
 
 		ret = inp->enaExtIrq(pbo->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

@@ -409,6 +409,8 @@ epicsStatus aiInitRecord (aiRecord *pRec)
 static
 epicsStatus aiRead (aiRecord* pRec) {
 
+    epicsUInt32   dummy;        // Dummy status return
+
     //=====================
     // Extract the BasicSequenceEvent object from the DPVT structure
     //
@@ -426,7 +428,7 @@ epicsStatus aiRead (aiRecord* pRec) {
     // If the timestamp was set to an illegal value, put the record into an alarm state.
     //
     if (!pEvent->TimeStampLegal())
-        recGblSetSevr ((dbCommon *)pRec, READ_ALARM, INVALID_ALARM);
+        dummy = recGblSetSevr ((dbCommon *)pRec, READ_ALARM, INVALID_ALARM);
 
     //=====================
     // Don't use the ai record's conversion
@@ -652,6 +654,8 @@ epicsStatus aoInitRecord (aoRecord *pRec)
 static
 epicsStatus aoWrite (aoRecord* pRec) {
 
+    epicsUInt32   dummy;        // Dummy status return
+
     //=====================
     // Extract the BasicSequence and BasicSequenceEvent objects from the DPVT structure
     //
@@ -671,7 +675,7 @@ epicsStatus aoWrite (aoRecord* pRec) {
         //
         if (pDevInfo->ValueSet) {
             if (!pEvent->TimeStampLegal())
-                recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+                dummy = recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
 
             pRec->udf = false;
             return OK;
@@ -707,7 +711,7 @@ epicsStatus aoWrite (aoRecord* pRec) {
         // an invalid value.
         //
         case SeqStat_Error:
-            recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+            dummy = recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
             break;
 
         //=====================
@@ -1139,6 +1143,7 @@ epicsStatus loWrite (longoutRecord* pRec) {
     //=====================
     // Local variables
     //
+    epicsUInt32          dummy;         // Dummy status return
     devInfoStruct*       pDevInfo;      // Device private information structure
     BasicSequenceEvent*  pEvent;        // BasicSequenceEvent object
     epicsStatus          status;        // Local status variable
@@ -1158,7 +1163,7 @@ epicsStatus loWrite (longoutRecord* pRec) {
     // If the write failed, put the record in WRITE_ALARM state
     //
     if (OK != status) {
-        recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+        dummy = recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
     }//end if write failed
 
     //=====================

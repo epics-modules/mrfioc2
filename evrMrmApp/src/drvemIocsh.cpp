@@ -15,6 +15,7 @@
 #include <devLibPCI.h>
 #include <devcsr.h>
 #include <epicsInterrupt.h>
+#include <epicsThread.h>
 #include "mrmpci.h"
 #include "mrfcsr.h"
 
@@ -176,8 +177,8 @@ try {
 
   volatile epicsUInt8 *plx, *evr;
 
-  if( devPCIToLocalAddr(cur,0,(volatile void**)&plx,0) ||
-      devPCIToLocalAddr(cur,2,(volatile void**)&evr,0))
+  if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,0) ||
+      devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,0))
   {
       printf("Failed to map BARs 0 and 2\n");
       return;
@@ -327,7 +328,7 @@ try {
 
   volatile unsigned char* evr;
 
-  if(devRegisterAddress("MRF EVR", atVMEA32, base, 0x20000, (volatile void**)&evr))
+  if(devRegisterAddress("MRF EVR", atVMEA32, base, 0x20000, (volatile void**)(void *)&evr))
   {
     printf("Failed to map address %08x\n",base);
     return;
@@ -468,7 +469,7 @@ void mrmEvrSendBuf(int id, int size, int val)
   // Wait for completion
   epicsUInt32 ctrl;
   while( (ctrl=READ32(mrm->base, DataTxCtrl))&DataTxCtrl_run)
-    sleep(1);
+    epicsThreadSleep(epicsThreadSleepQuantum());
 
   printf("Finished %sok\n",
     ctrl&DataTxCtrl_done ? "":"not "

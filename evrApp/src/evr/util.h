@@ -23,6 +23,7 @@ class IOStatus
 {
 public:
   virtual IOSCANPVT statusChange(bool up=true){return 0;};
+  virtual ~IOStatus () {};
 };
 
 /*! Assumes that prec->dpvt contains an instance of an IOStatus sub-class

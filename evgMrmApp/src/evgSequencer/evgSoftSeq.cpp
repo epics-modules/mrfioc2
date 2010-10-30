@@ -80,8 +80,8 @@ evgSoftSeq::setTimeStampSec(epicsFloat64* timeStamp, epicsUInt32 size) {
 
 	//Convert secs to clock ticks
 	for(unsigned int i = 0; i < size; i++) {
-		timeStampInt[i] = floor(timeStamp[i] * 
-						m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5);
+		timeStampInt[i] = (epicsUInt32)(floor(timeStamp[i] * 
+				   m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
 	}
 
 	return setTimeStampTick(timeStampInt, size);

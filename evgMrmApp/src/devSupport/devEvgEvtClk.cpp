@@ -104,6 +104,7 @@ write_bo_evtClkSrc(boRecord* pbo) {
 static long 
 write_ao_RFref(aoRecord* pao) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
@@ -112,7 +113,7 @@ write_ao_RFref(aoRecord* pao) {
 
 		ret = evtClk->setRFref(pao->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pao, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pao, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -128,6 +129,7 @@ write_ao_RFref(aoRecord* pao) {
 static long 
 write_lo_RFdiv(longoutRecord* plo) {
 	long ret = 0;
+        unsigned long dummy;
 	
 	try {
 		evgEvtClk* evtClk = (evgEvtClk*)plo->dpvt;
@@ -136,7 +138,7 @@ write_lo_RFdiv(longoutRecord* plo) {
 
 		ret = evtClk->setRFdiv(plo->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(plo, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(plo, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -152,6 +154,7 @@ write_lo_RFdiv(longoutRecord* plo) {
 static long 
 write_ao_fracSynFreq(aoRecord* pao) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgEvtClk* evtClk = (evgEvtClk*)pao->dpvt;
@@ -160,7 +163,7 @@ write_ao_fracSynFreq(aoRecord* pao) {
 
 		ret = evtClk->setFracSynFreq(pao->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pao, WRITE_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pao, WRITE_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

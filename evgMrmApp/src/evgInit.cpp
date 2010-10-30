@@ -104,7 +104,7 @@ mrmEvgSetupVME (
 			atVMEA24,                      	// A24 Address space
 			vmeAddress,                    	// Physical address of register space
 			EVG_REGMAP_SIZE,              	// Size of card's register space
-			(volatile void **)&regCpuAddr	// Local address of card's register map
+			(volatile void **)(void *)&regCpuAddr	// Local address of card's register map
 		);	
 
 		if(status) {

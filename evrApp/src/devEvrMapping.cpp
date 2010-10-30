@@ -107,6 +107,8 @@ try {
 
 static long write_lo(longoutRecord* plo)
 {
+  epicsUInt32  dummy;  // Dummy status variable
+
 try {
   map_priv* priv=static_cast<map_priv*>(plo->dpvt);
 
@@ -135,13 +137,13 @@ try {
     priv->card->specialSetMap(priv->last_code,priv->last_func,true);
 
     plo->val = priv->last_code;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
+    dummy = recGblSetSevr((dbCommon *)plo, WRITE_ALARM, MAJOR_ALARM);
 
     return -5;
   } else if (restore) {
     // Can't recover
     plo->val = 0;
-    recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+    dummy = recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
     return -5;
   }
 

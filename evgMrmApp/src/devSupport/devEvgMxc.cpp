@@ -158,6 +158,7 @@ read_li_prescaler(longinRecord* pli) {
 static long 
 write_ao_freq(aoRecord* pao) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgMxc* mxc = (evgMxc*)pao->dpvt;
@@ -166,7 +167,7 @@ write_ao_freq(aoRecord* pao) {
 
 		ret = mxc->setMxcFreq(pao->val);
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pao, READ_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pao, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pao->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {
@@ -181,6 +182,7 @@ write_ao_freq(aoRecord* pao) {
 static long
 read_ai_freq(aiRecord* pai) {
 	long ret = 0;
+        unsigned long dummy;
 
 	try {
 		evgMxc* mxc = (evgMxc*)pai->dpvt;
@@ -190,7 +192,7 @@ read_ai_freq(aiRecord* pai) {
 		pai->val = mxc->getMxcFreq();
 		ret = 2;
 	} catch(std::runtime_error& e) {
-		recGblSetSevr(pai, READ_ALARM, MAJOR_ALARM);
+		dummy = recGblSetSevr(pai, READ_ALARM, MAJOR_ALARM);
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pai->name);
 		ret = S_dev_noDevice;
 	} catch(std::exception& e) {

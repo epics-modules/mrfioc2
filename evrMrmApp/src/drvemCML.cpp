@@ -187,7 +187,7 @@ MRMCML::setTimeHigh(double v)
 {
   double period=1.0/(OutputCMLPatNBit*owner.clock());
 
-  setCountHigh(v/period);
+  setCountHigh((epicsUInt32)(v/period));
 }
 
 void
@@ -195,7 +195,7 @@ MRMCML::setTimeLow (double v)
 {
   double period=1.0/(OutputCMLPatNBit*owner.clock());
 
-  setCountLow(v/period);
+  setCountLow((epicsUInt32)(v/period));
 }
 
   // For Pattern mode

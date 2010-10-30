@@ -368,6 +368,8 @@ epicsStatus EgSeqAoInitRecord (aoRecord *pRec)
 
 epicsStatus EgSeqAoWrite (aoRecord* pRec) {
 
+    epicsUInt32  dummy;         // Dummy status variable
+
     //=====================
     // Extract the Sequence object from the DPVT structure
     //
@@ -396,7 +398,7 @@ epicsStatus EgSeqAoWrite (aoRecord* pRec) {
         // an invalid value.
         //
         case SeqStat_Error:
-            recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+            dummy = recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
             break;
 
         //=====================
@@ -602,6 +604,7 @@ epicsStatus EgSeqBoWrite (boRecord* pRec) {
     //=====================
     // Local variables
     //
+    epicsUInt32     dummy;      // Dummy status variable
     devInfoStruct*  pDevInfo;   // Pointer to device information structure
     Sequence*       pSequence;  // Pointer to Sequence object
     SequenceStatus  status;     // Sequence status variable
@@ -668,7 +671,7 @@ epicsStatus EgSeqBoWrite (boRecord* pRec) {
         // Signal a write alarm condition and set the record to its "Idle" state
         //
         default:
-            recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
+            dummy = recGblSetSevr ((dbCommon *)pRec, WRITE_ALARM, INVALID_ALARM);
             pRec->pact = false;
             pRec->val  = 0;
             pRec->rval = 0;
@@ -812,6 +815,7 @@ epicsStatus EgSeqMbboWrite (mbboRecord* pRec) {
     //=====================
     // Local variables
     //
+    epicsUInt32     dummy;      // Dummy status variable
     devInfoStruct*  pDevInfo;   // Pointer to device information structure
     Sequence*       pSequence;  // Pointer to Sequence object
     SequenceStatus  status;     // Sequence status variable
@@ -839,7 +843,7 @@ epicsStatus EgSeqMbboWrite (mbboRecord* pRec) {
         // an invalid state.
         //
         case SeqStat_Error:
-            recGblSetSevr ((dbCommon *)pRec, STATE_ALARM, INVALID_ALARM);
+            dummy = recGblSetSevr ((dbCommon *)pRec, STATE_ALARM, INVALID_ALARM);
             break;
 
         //=====================
