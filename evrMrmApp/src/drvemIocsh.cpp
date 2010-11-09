@@ -155,6 +155,27 @@ long report(int level)
   return 0;
 }
 
+#ifdef linux
+struct plxholder {
+    volatile void* plx;
+    EVRMRM *evr;
+    plxholder(EVRMRM* a,volatile void* b) : plx(b), evr(a) {}
+};
+
+static
+void PLXISR(void *raw)
+{
+    plxholder *card=static_cast<plxholder*>(raw);
+
+    EVRMRM::isr(static_cast<void*>(card->evr));
+
+    LE_WRITE16(card->plx, INTCSR, INTCSR_INT1_Enable|
+                                  INTCSR_INT1_Polarity|
+                                  INTCSR_PCI_Enable);
+}
+
+#endif
+
 
 extern "C"
 void
@@ -199,23 +220,34 @@ try {
   BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
 
+  // Disable interrupts on device
+
+  NAT_WRITE32(evr, IRQEnable, 0);
+
   /* Enable active high interrupt1 through the PLX to the PCI bus.
    */
   LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
                             INTCSR_INT1_Polarity|
                             INTCSR_PCI_Enable);
 
-  // Install ISR
-
-  NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
-
   // Acknowledge missed interrupts
   //TODO: This avoids a spurious FIFO Full
   NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
+  // Install ISR
+
   EVRMRM *receiver=new EVRMRM(id,evr);
 
-  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver,0)){
+  void (*pciisr)(void *);
+  void *arg=receiver;
+#ifdef linux
+  pciisr=&PLXISR;
+  arg=new plxholder(receiver, plx);
+#else
+  pciisr=&EVRMRM::isr;
+#endif
+
+  if(devPCIConnectInterrupt(cur,pciisr,arg,0)){
       printf("Failed to install ISR\n");
       delete receiver;
   }else{
