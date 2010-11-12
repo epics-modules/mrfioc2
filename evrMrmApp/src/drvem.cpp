@@ -742,6 +742,13 @@ EVRMRM::isr(void *arg)
         return;
     }
 
+    if(active&IRQ_RXErr){
+        evr->count_recv_error++;
+        scanIoRequest(evr->IRQrxError);
+
+        enable &= ~IRQ_RXErr;
+        callbackRequest(&evr->poll_link_cb);
+    }
     if(active&IRQ_BufFull){
         // Silence interrupt
         BITSET(NAT,32,evr->base, DataBufCtrl, DataBufCtrl_stop);
@@ -754,7 +761,7 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQmappedEvent);
     }
     if(active&IRQ_Event){
-        //FIFO not-full
+        //FIFO not-empty
         enable &= ~IRQ_Event;
         callbackRequest(&evr->drain_fifo_cb);
     }
@@ -767,13 +774,6 @@ EVRMRM::isr(void *arg)
         callbackRequest(&evr->drain_fifo_cb);
 
         scanIoRequest(evr->IRQfifofull);
-    }
-    if(active&IRQ_RXErr){
-        evr->count_recv_error++;
-        scanIoRequest(evr->IRQrxError);
-
-        enable &= ~IRQ_RXErr;
-        callbackRequest(&evr->poll_link_cb);
     }
 
     WRITE32(evr->base, IRQEnable, enable|IRQ_Enable);
@@ -799,6 +799,8 @@ EVRMRM::drain_fifo(CALLBACK* cb)
 
         status=READ32(evr->base, IRQFlag);
         if (!(status&IRQ_Event))
+            break;
+        if (status&IRQ_RXErr)
             break;
 
         epicsUInt32 evt=READ32(evr->base, EvtFIFOCode);
@@ -828,9 +830,14 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         }
     }
 
+    if (status&IRQ_FIFOFull) {
+        errlogPrintf("EVR %d FIFO overflow\n", evr->id);
+    }
+
     int iflags=epicsInterruptLock();
 
-    if (status&Status_fifostop) {
+    if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
+        // clear fifo if link lost or buffer overflow
         BITSET(NAT,32, evr->base, Control, Control_fiforst);
     }
 
