@@ -12,6 +12,11 @@
 #include <epicsMutex.h>
 #include <epicsTimer.h>
 #include <errlog.h>
+#include <epicsTime.h>
+#include <generalTimeSup.h>
+#include <epicsThread.h>
+#include <epicsEvent.h>
+#include <epicsMutex.h>
 
 #include "evgEvtClk.h"
 #include "evgSoftEvt.h"
@@ -23,6 +28,7 @@
 #include "evgSequencer/evgSeqRamManager.h"  
 #include "evgSequencer/evgSoftSeqManager.h"
 #include "mrmDataBufTx.h"
+#include "evgRegMap.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -31,6 +37,8 @@
  * Input, Output etc.
  */
 class wdTimer;
+class wdTimer1;
+
 enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm {
@@ -73,6 +81,7 @@ public:
 	evgOutput* 		getOutput		(epicsUInt32, OutputType);
 	evgSeqRamMgr* 	getSeqRamMgr	();	
 	evgSoftSeqMgr* 	getSoftSeqMgr	();
+	epicsEvent* 	getTimerEvent  	();
 
 	struct ppsSrc{
 		InputType type;
@@ -84,7 +93,6 @@ public:
 	CALLBACK                        irqExtInp_cb;
 
 	IOSCANPVT                       ioScanTS;
-	epicsUInt32                     m_pilotCountTS;
 	bool                            m_syncTS;
  	ALARM_TS                        m_alarmTS;
 
@@ -118,50 +126,66 @@ private:
 	epicsTimeStamp                  m_ts;
 	struct ppsSrc                   m_ppsSrc; 
 
-	epicsTimerQueueActive &	        m_queue; 
-	wdTimer*                        m_wdTimer;
+	wdTimer*						m_wdTimer;
+	epicsEvent*						m_timerEvent;
 };
 
-class wdTimer : public epicsTimerNotify {
+/*Creating a timer thread bcz epicsTimer uses epicsGeneralTime and when
+  generalTime stops working even the timer stop working*/
+class wdTimer : public epicsThreadRunable {
 public:
-	wdTimer(const char* name,epicsTimerQueueActive &queue, evgMrm* const evg): 
-	m_name(name),
-	m_timer(queue.createTimer()),
-	m_owner(evg),
-	m_timeout(true) {
-	}
+    wdTimer(const char *name, evgMrm* evg):
+    m_lock(),
+    m_thread(*this,name,epicsThreadGetStackSize(epicsThreadStackSmall),50),
+    m_evg(evg),
+    m_pilotCount(4) {
+        m_thread.start();
+    }
 
-	virtual ~wdTimer() { 
-		m_timer.destroy();
-	}
+    virtual void run() {
+        struct epicsTimeStamp ts;
+        bool timeout;
 
-	void start(double delay) {
-		m_timer.start(*this,delay);
-	}
+        while(1) {
+            m_lock.lock();
+            m_pilotCount = 4;
+            m_lock.unlock();
+            timeout = false;
+            m_evg->getTimerEvent()->wait();
 
-	virtual expireStatus expire(const epicsTime & currentTime) {
-		printf("Timestamp watchdog timer expired\n");
-		currentTime.show(1);
-		m_timeout = true;
-		m_owner->m_alarmTS = TS_ALARM_MAJOR;
-		scanIoRequest(m_owner->ioScanTS);
-		return expireStatus(noRestart);
-	}
+            /*Start of timer. If timeout == true then the timer expired. 
+            If timeout == false then received the signal before the timeout period*/
+            while(!timeout) {
+                timeout = !m_evg->getTimerEvent()->wait(1 + evgAllowedTsGitter);
+            }
+	
+            if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
+                epicsTime time = ts;
+                printf("Timestamping timeout\n");
+		        time.show(1);
+            }
 
-	void clearTimeoutFlag() {
-		m_timeout = false;
-		return;
-	}
+            m_evg->m_alarmTS = TS_ALARM_MAJOR;
+            scanIoRequest(m_evg->ioScanTS);
+        }   
+    }
 
-	bool getTimeoutFlag() {
-		return m_timeout;
-	}
+    void decrPilotCount() {
+        SCOPED_LOCK(m_lock);
+        m_pilotCount--;
+        return;
+    }
 
+    bool getPilotCount() {
+        SCOPED_LOCK(m_lock);
+        return m_pilotCount;
+    }
+
+   epicsMutex      m_lock;
 private:
-	const char* m_name;
-	epicsTimer& m_timer;
-	evgMrm* const m_owner;
-	bool m_timeout;
+    epicsThread    m_thread;
+    evgMrm*        m_evg;
+    epicsInt32     m_pilotCount;
 };
 
 #endif //EVG_MRM_H

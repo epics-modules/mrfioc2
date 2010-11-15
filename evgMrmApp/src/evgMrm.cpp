@@ -26,7 +26,6 @@
 #include "evgRegMap.h"
 
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
-m_pilotCountTS(4),
 m_syncTS(false),
 m_buftx(pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
@@ -34,8 +33,7 @@ m_pReg(pReg),
 m_evtClk(pReg),
 m_softEvt(pReg),
 m_seqRamMgr(this),
-m_softSeqMgr(this),
-m_queue(epicsTimerQueueActive::allocate(true)) {
+m_softSeqMgr(this) {
 
 	try{
 		for(int i = 0; i < evgNumEvtTrig; i++)
@@ -72,7 +70,8 @@ m_queue(epicsTimerQueueActive::allocate(true)) {
 										new evgOutput(i, pReg, Univ_Output);
 		}
 	
-		m_wdTimer = new wdTimer("Watch Dog Timer",m_queue, this);
+		m_wdTimer = new wdTimer("Watch Dog Timer", this);
+		m_timerEvent = new epicsEvent();
 
 		m_ppsSrc.type = None_Input;
 		m_ppsSrc.num = 0;
@@ -113,8 +112,6 @@ evgMrm::~evgMrm() {
 
 	for(int i = 0; i < evgNumUnivOut; i++)
 		delete m_output[std::pair<epicsUInt32, OutputType>(i, Univ_Output)];
-
-	m_queue.release();
 }
 
 void 
@@ -204,25 +201,24 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 
 void
 evgMrm::sendTS(CALLBACK *pCallback) {
+	struct epicsTimeStamp ts;
+	epicsTime ntpTime, storedTime;
 	void* pVoid;
-	epicsTime time;
+	
 	callbackGetUser(pVoid, pCallback);
 	evgMrm* evg = (evgMrm*)pVoid;
    
 	/*If the time since last update is more than 1.5 secs(i.e. if wdTimer expires) 
 	then we need to resync the time*/
-	evg->m_wdTimer->start(1 + evgAllowedTsGitter);
-	if(evg->m_wdTimer->getTimeoutFlag() == true) {
-		evg->m_wdTimer->clearTimeoutFlag();
-		evg->m_pilotCountTS = 4;
-		return;
-	} else	if(evg->m_pilotCountTS) {
-		evg->m_pilotCountTS--;
-		if(evg->m_pilotCountTS == 0) {
+	evg->m_timerEvent->signal();
+
+	if(evg->m_wdTimer->getPilotCount()) {
+		evg->m_wdTimer->decrPilotCount();
+		if(evg->m_wdTimer->getPilotCount() == 0) {
 			evg->syncTS();
-			time = (epicsTime)evg->getTS();
+			storedTime = (epicsTime)evg->getTS();
 			printf("Starting timestamping\n");
-			time.show(1);
+			storedTime.show(1);
 		}
 		return;
 	}
@@ -245,9 +241,6 @@ evgMrm::sendTS(CALLBACK *pCallback) {
 			evg->getSoftEvt()->setEvtCode(0x70);
 		}
 	}
-
-	struct epicsTimeStamp ts;
-	epicsTime ntpTime, storedTime;
 
 	if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
 		ntpTime = ts;
@@ -424,6 +417,11 @@ evgMrm::getSeqRamMgr() {
 evgSoftSeqMgr*
 evgMrm::getSoftSeqMgr() {
 	return &m_softSeqMgr;
+}
+
+epicsEvent* 
+evgMrm::getTimerEvent() {
+	return m_timerEvent;
 }
 
 
