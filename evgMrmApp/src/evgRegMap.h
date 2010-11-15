@@ -257,6 +257,9 @@
 
 #define EVG_EXT_INP_IRQ_ENA   	0x01000000
 
+#ifndef EVG_CONSTANTS
+#define EVG_CONSTANTS
+
 const epicsUInt16	evgNumMxc	  = 8;
 const epicsUInt16 	evgNumEvtTrig = 8;
 const epicsUInt16	evgNumDbusBit = 8;
@@ -267,3 +270,6 @@ const epicsUInt16 	evgNumUnivInp = 4;
 const epicsUInt16	evgNumTbInp	  = 16;
 const epicsUInt16	evgNumSeqRam  = 2;
 const epicsFloat32	evgAllowedTsGitter = 0.5f;
+
+#endif
+
