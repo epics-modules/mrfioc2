@@ -9,5 +9,5 @@ record(longout, "$(P)$(O)src:set") {
 
 record(longin, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
-  field( INP , "@C=$(C), T=$(OT), O=$(IDX), P=Map")
+  field( INP , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
 }
