@@ -83,6 +83,11 @@ evgMrm_DBD += asSupport.dbd
 evgMrm_LIBS += autosave
 endif
 
+ifneq ($(GENERAL_TIME),)
+evgMrm_DBD  += generalTime.dbd
+evgMrm_LIBS += generalTime
+endif
+
 #===========================
 
 include $(TOP)/configure/RULES

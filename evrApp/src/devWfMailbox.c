@@ -30,6 +30,8 @@
 #include <devSup.h>
 #include <waveformRecord.h>
 
+#include <mrfCommon.h>
+
 static long init_record(waveformRecord *prec)
 {
     /* INP must be CONSTANT, PV_LINK, DB_LINK or CA_LINK*/

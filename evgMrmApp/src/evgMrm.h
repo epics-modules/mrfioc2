@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <sys/time.h>
 
 #include <epicsTypes.h>
 #include <dbScan.h>

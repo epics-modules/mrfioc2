@@ -50,8 +50,13 @@ evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
 PROD_IOC += evrtest
 
 evrtest_SRCS += evrMain.cpp
-
 evrtest_LIBS += evr mrfCommon
+
+ifneq ($(GENERAL_TIME),)
+evrtest_LIBS += generalTime
+evrtest_DBD  += generalTime.dbd
+endif
+
 evrtest_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 include $(TOP)/configure/RULES

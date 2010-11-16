@@ -50,9 +50,12 @@
 /*  Include Header Files from the Common Utilities                                                */
 /**************************************************************************************************/
 
-#include <epicsVersion.h>
+#include  <epicsVersion.h>      /* EPICS Version definition                                       */
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
+#include  <epicsTime.h>         /* EPICS Time definitions                                         */
+
 #include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
+#include  <dbAccess.h>          /* EPICS Database Access definitions                              */
 #include  <dbCommon.h>          /* EPICS Common record field definitions                          */
 #include  <devSup.h>            /* EPICS Device support messages and definitions                  */
 #include  <menuYesNo.h>         /* EPICS Yes/No record-support menu                               */
@@ -273,11 +276,29 @@ struct MbbDSET {
 #define menuNO    menuYesNoNO
 #define menuYES   menuYesNoYES
 
-/* Compatibility hacks */
+/**************************************************************************************************/
+/*  Definitions for Compatibiliby with Older Versions of EPICS                                    */
+/**************************************************************************************************/
 
-/* Older versions (< 3.14.9) of recGblRecordError took a non-const string */
+/*---------------------
+ * Older versions (< 3.14.9) of recGblRecordError took a non-const string
+ */
 #if EPICS_VERSION==3 && EPICS_REVISION==14 && EPICS_MODIFICATION<9
 #  define recGblRecordError(ERR, REC, STR) recGblRecordError(ERR, REC, (char*)(STR))
+#endif
+
+/*---------------------
+ * Older versions (< 3.14.10) do not define POSIX_TIME
+ */
+#ifndef POSIX_TIME_AT_EPICS_EPOCH
+#  define POSIX_TIME_AT_EPICS_EPOCH 631152000u
+#endif
+
+/*---------------------
+ * Older versions (< 3.14.10) use DBE_LOG instead of DBE_ARCHIVE
+ */
+#ifndef DBE_ARCHIVE
+#  define DBE_ARCHIVE DBE_LOG
 #endif
 
 #endif
