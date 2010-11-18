@@ -53,6 +53,7 @@
 #include  <epicsVersion.h>      /* EPICS Version definition                                       */
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
 #include  <epicsTime.h>         /* EPICS Time definitions                                         */
+#include  <epicsMath.h>         /* EPICS Common math functions & definitions                      */
 
 #include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
 #include  <dbAccess.h>          /* EPICS Database Access definitions                              */
@@ -300,5 +301,14 @@ struct MbbDSET {
 #ifndef DBE_ARCHIVE
 #  define DBE_ARCHIVE DBE_LOG
 #endif
+
+/*---------------------
+ * epicsMath.h defines "finite()" for vxWorks, but "isfinite()" is the standard.
+ * finite() does not appear to be supported in epicsMath.h for all architectures.
+ */
+#ifndef isfinite
+#  define isfinite finite
+#endif
+
 
 #endif
