@@ -56,18 +56,22 @@ evgInput::enaExtIrq(bool ena) {
 }
 
 epicsStatus
-evgInput::setInpDbusMap(epicsUInt32 dbusMap) {
-	if(dbusMap > 255)
-		throw std::runtime_error("Dbus Map out of range.");
+evgInput::setInpDbusMap(epicsUInt16 dbus, bool ena) {
+	if(dbus > 7)
+		throw std::runtime_error("EVG DBUS ID out of range.");
+
+	epicsUInt32	mask = 0x10000 << dbus;
 
 	//Read-Modify-Write
 	epicsUInt32 map = nat_ioread32(m_pInMap);
 
-	map = map & 0xff00ffff;
-	map = map | (dbusMap << 16);
+	if(ena)
+		map = map | mask;
+	else
+		map = map & ~mask;
 
 	nat_iowrite32(m_pInMap, map);
-
+	
 	return OK;
 }
 

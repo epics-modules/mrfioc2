@@ -313,7 +313,7 @@ common_dset devLoEvgTrigEvt = {
 };
 epicsExportAddress(dset, devLoEvgTrigEvt);
 
-common_dset devBoEvgTrigEvtMxc0 = {
+common_dset devBoEvgTrigEvtMxc = {
     5,
     NULL,
     NULL,
@@ -321,77 +321,7 @@ common_dset devBoEvgTrigEvtMxc0 = {
     NULL,
     (DEVSUPFUN)write_bo_trigSrc_mxc,
 };
-epicsExportAddress(dset, devBoEvgTrigEvtMxc0);
-
-common_dset devBoEvgTrigEvtMxc1 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc1);
-
-common_dset devBoEvgTrigEvtMxc2 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc2);
-
-common_dset devBoEvgTrigEvtMxc3 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc3);
-
-common_dset devBoEvgTrigEvtMxc4 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc4);
-
-common_dset devBoEvgTrigEvtMxc5 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc5);
-
-common_dset devBoEvgTrigEvtMxc6 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc6);
-
-common_dset devBoEvgTrigEvtMxc7 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_mxc,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_mxc,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtMxc7);
+epicsExportAddress(dset, devBoEvgTrigEvtMxc);
 
 common_dset devBoEvgTrigEvtAc = {
     5,
@@ -403,7 +333,7 @@ common_dset devBoEvgTrigEvtAc = {
 };
 epicsExportAddress(dset, devBoEvgTrigEvtAc);
 
-common_dset devBoEvgTrigEvtFpInp0 = {
+common_dset devBoEvgTrigEvtInp = {
     5,
     NULL,
     NULL,
@@ -411,56 +341,7 @@ common_dset devBoEvgTrigEvtFpInp0 = {
     NULL,
     (DEVSUPFUN)write_bo_trigSrc_inp,
 };
-epicsExportAddress(dset, devBoEvgTrigEvtFpInp0);
+epicsExportAddress(dset, devBoEvgTrigEvtInp);
 
-common_dset devBoEvgTrigEvtFpInp1 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_inp,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_inp,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtFpInp1);
-
-common_dset devBoEvgTrigEvtUnivInp0 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_inp,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_inp,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtUnivInp0);
-
-common_dset devBoEvgTrigEvtUnivInp1 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_inp,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_inp,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtUnivInp1);
-
-common_dset devBoEvgTrigEvtUnivInp2 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_inp,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_inp,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtUnivInp2);
-
-common_dset devBoEvgTrigEvtUnivInp3 = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo_trigSrc_inp,
-    NULL,
-    (DEVSUPFUN)write_bo_trigSrc_inp,
-};
-epicsExportAddress(dset, devBoEvgTrigEvtUnivInp3);
 };
 

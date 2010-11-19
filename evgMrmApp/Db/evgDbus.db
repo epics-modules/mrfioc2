@@ -1,5 +1,5 @@
 record(mbbo, "$(P):$(N):Map") {
-  	field( DTYP, "EVG Dbus")
+  	field( DTYP, "EVG Dbus Map")
   	field( OUT , "#C$(cardNum) S$(dbusBit) @")
 	field( PINI, YES)
 	field( UDF, "0")
@@ -20,5 +20,59 @@ record(mbbo, "$(P):$(N):Map") {
 	field( FFSV, "INVALID")
 	field( UNSV, "INVALID")
 	field( IVOA, "Don't drive outputs")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):FpInp0") {
+	field( DTYP, "EVG Dbus FpInp0")
+	field( DESC, "FP Input0 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input0")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):FpInp1") {
+	field( DTYP, "EVG Dbus FpInp0")
+	field( DESC, "FP Input1 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input1")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):UnivInp0") {
+	field( DTYP, "EVG Dbus UnivInp0")
+	field( DESC, "Univ Input0 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input0")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):UnivInp1") {
+	field( DTYP, "EVG Dbus UnivInp1")
+	field( DESC, "Univ Input1 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input1")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):UnivInp2") {
+	field( DTYP, "EVG Dbus UnivInp2")
+	field( DESC, "Univ Input2 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input2")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
+	info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P):$(N):UnivInp3") {
+	field( DTYP, "EVG Dbus UnivInp3")
+	field( DESC, "Univ Input3 on Dbus")
+  	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input3")
+  	field( ZNAM, "Clear")
+  	field( ONAM, "Set")
 	info(autosaveFields_pass0, "VAL")
 }

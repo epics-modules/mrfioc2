@@ -43,46 +43,12 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
 
 
 /**	 Initialization **/
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-init_mbboD(mbboDirectRecord* pmbboD) {
-	long ret = init_record((dbCommon*)pmbboD, &pmbboD->out);
-	if(ret == 0)
-		ret = 2;
-
-	return ret;
-}
-
 /*returns:(0,2)=>(success,success no convert*/
 static long 
 init_bo(boRecord* pbo) {
 	long ret = init_record((dbCommon*)pbo, &pbo->out);
 	if(ret == 0)
 		ret = 2;
-
-	return ret;
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_mbboD_inpDbus(mbboDirectRecord* pmbboD) {
-	long ret = 0;
-        unsigned long dummy;
-
-	try {
-		evgInput* inp = (evgInput*)pmbboD->dpvt;
-		if(!inp)
-			throw std::runtime_error("Device pvt field not initialized");
-
-		ret = inp->setInpDbusMap((epicsUInt32)pmbboD->val);
-	} catch(std::runtime_error& e) {
-		dummy = recGblSetSevr(pmbboD, WRITE_ALARM, MAJOR_ALARM);
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
-		ret = S_dev_noDevice;
-	} catch(std::exception& e) {
-		errlogPrintf("ERROR: %s : %s\n", e.what(), pmbboD->name);
-		ret = S_db_noMemory;
-	}
 
 	return ret;
 }
@@ -113,16 +79,6 @@ write_bo_enaIRQ(boRecord* pbo) {
 
 /** 	device support entry table 		**/
 extern "C" {
-
-common_dset devMbboDEvgInpDbusMap = {
-	5,
-	NULL,
-	NULL,
-	(DEVSUPFUN)init_mbboD,
-	NULL,
-	(DEVSUPFUN)write_mbboD_inpDbus,
-};
-epicsExportAddress(dset, devMbboDEvgInpDbusMap);
 
 common_dset devBoDEvgInpEnaIrq = {
 	5,

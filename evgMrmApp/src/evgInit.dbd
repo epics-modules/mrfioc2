@@ -35,23 +35,23 @@ device( longout, VME_IO, devLoEvgSoftEvt, "EVG Soft Evt")
 device( bo, VME_IO, devBoEvgTrigEvt, "EVG Trig Evt")
 device( longout, VME_IO, devLoEvgTrigEvt, "EVG Trig Evt")
 
-device( bo, VME_IO, devBoEvgTrigEvtMxc0, "EVG Trig Evt Mxc0")
-device( bo, VME_IO, devBoEvgTrigEvtMxc1, "EVG Trig Evt Mxc1")
-device( bo, VME_IO, devBoEvgTrigEvtMxc2, "EVG Trig Evt Mxc2")
-device( bo, VME_IO, devBoEvgTrigEvtMxc3, "EVG Trig Evt Mxc3")
-device( bo, VME_IO, devBoEvgTrigEvtMxc4, "EVG Trig Evt Mxc4")
-device( bo, VME_IO, devBoEvgTrigEvtMxc5, "EVG Trig Evt Mxc5")
-device( bo, VME_IO, devBoEvgTrigEvtMxc6, "EVG Trig Evt Mxc6")
-device( bo, VME_IO, devBoEvgTrigEvtMxc7, "EVG Trig Evt Mxc7")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc0")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc1")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc2")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc3")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc4")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc5")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc6")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc7")
 
 device( bo, VME_IO, devBoEvgTrigEvtAc, "EVG Trig Evt AC")
 
-device( bo, VME_IO, devBoEvgTrigEvtFpInp0, "EVG TrigEvt FpInp0")
-device( bo, VME_IO, devBoEvgTrigEvtFpInp1, "EVG TrigEvt FpInp1")
-device( bo, VME_IO, devBoEvgTrigEvtUnivInp0, "EVG TrigEvt UnivInp0")
-device( bo, VME_IO, devBoEvgTrigEvtUnivInp1, "EVG TrigEvt UnivInp1")
-device( bo, VME_IO, devBoEvgTrigEvtUnivInp2, "EVG TrigEvt UnivInp2")
-device( bo, VME_IO, devBoEvgTrigEvtUnivInp3, "EVG TrigEvt UnivInp3")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt FpInp0")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt FpInp1")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp0")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp1")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp2")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp3")
 
 
 #evgMxc.db
@@ -63,7 +63,6 @@ device( ai, VME_IO, devAiEvgMxcFreq, "EVG Mxc")
 
 
 #evgInput.db
-device( mbboDirect, VME_IO, devMbboDEvgInpDbusMap, "EVG Input DBus")
 device( bo, VME_IO, devBoDEvgInpEnaIrq, "EVG Input IRQ")
 
 
@@ -72,8 +71,13 @@ device( mbbo, VME_IO, devMbboEvgOutMap, "EVG Output")
 
 
 #evgDbus.db
-device( mbbo, VME_IO, devMbboEvgDbusMap, "EVG Dbus")
-
+device( mbbo, VME_IO, devMbboEvgDbusMap,  "EVG Dbus Map")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus FpInp0")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus FpInp1")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp0")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp1")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp2")
+device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp3")
 
 #evgSoftSeq.db
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
