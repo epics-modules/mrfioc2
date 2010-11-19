@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 856
-y 55
+x 161
+y 45
 w 691
-h 766
+h 829
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -45,8 +45,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 360
-y 500
+x 30
+y 560
 w 300
 h 70
 
@@ -58,8 +58,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 360
-y 510
+x 30
+y 570
 w 300
 h 60
 lineColor index 3
@@ -73,8 +73,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 430
-y 530
+x 100
+y 590
 w 70
 h 20
 fgColor index 14
@@ -92,8 +92,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 360
-y 500
+x 30
+y 560
 w 90
 h 20
 font "helvetica-medium-r-12.0"
@@ -110,8 +110,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 400
-y 530
+x 70
+y 590
 w 30
 h 20
 font "helvetica-medium-r-12.0"
@@ -134,7 +134,7 @@ major 4
 minor 0
 release 0
 x 360
-y 240
+y 340
 w 300
 h 170
 
@@ -147,7 +147,7 @@ major 4
 minor 0
 release 0
 x 360
-y 250
+y 350
 w 300
 h 160
 lineColor index 3
@@ -162,7 +162,7 @@ major 4
 minor 0
 release 0
 x 430
-y 310
+y 410
 w 70
 h 20
 fgColor index 14
@@ -184,7 +184,7 @@ major 4
 minor 0
 release 0
 x 430
-y 350
+y 450
 w 70
 h 20
 fgColor index 14
@@ -206,7 +206,7 @@ major 4
 minor 0
 release 0
 x 430
-y 370
+y 470
 w 70
 h 20
 fgColor index 14
@@ -228,7 +228,7 @@ major 4
 minor 0
 release 0
 x 560
-y 310
+y 410
 w 70
 h 20
 fgColor index 14
@@ -250,7 +250,7 @@ major 4
 minor 0
 release 0
 x 560
-y 350
+y 450
 w 70
 h 20
 fgColor index 14
@@ -272,7 +272,7 @@ major 4
 minor 0
 release 0
 x 560
-y 330
+y 430
 w 70
 h 20
 fgColor index 14
@@ -295,7 +295,7 @@ major 4
 minor 0
 release 0
 x 560
-y 370
+y 470
 w 70
 h 20
 fgColor index 14
@@ -317,7 +317,7 @@ major 4
 minor 1
 release 0
 x 510
-y 350
+y 450
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -337,7 +337,7 @@ major 4
 minor 1
 release 0
 x 510
-y 330
+y 430
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -357,7 +357,7 @@ major 4
 minor 1
 release 0
 x 510
-y 310
+y 410
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -377,7 +377,7 @@ major 4
 minor 1
 release 0
 x 380
-y 370
+y 470
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -397,7 +397,7 @@ major 4
 minor 1
 release 0
 x 380
-y 350
+y 450
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -417,7 +417,7 @@ major 4
 minor 1
 release 0
 x 380
-y 330
+y 430
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -437,7 +437,7 @@ major 4
 minor 1
 release 0
 x 380
-y 310
+y 410
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -457,7 +457,7 @@ major 4
 minor 1
 release 0
 x 510
-y 370
+y 470
 w 39
 h 15
 font "helvetica-medium-r-12.0"
@@ -477,7 +477,7 @@ major 4
 minor 1
 release 0
 x 360
-y 240
+y 340
 w 40
 h 20
 font "helvetica-medium-r-12.0"
@@ -495,7 +495,7 @@ major 4
 minor 0
 release 0
 x 430
-y 330
+y 430
 w 70
 h 20
 fgColor index 14
@@ -521,7 +521,7 @@ major 4
 minor 0
 release 0
 x 360
-y 420
+y 520
 w 300
 h 70
 
@@ -534,7 +534,7 @@ major 4
 minor 0
 release 0
 x 360
-y 430
+y 530
 w 300
 h 60
 lineColor index 3
@@ -549,7 +549,7 @@ major 4
 minor 1
 release 0
 x 360
-y 420
+y 520
 w 50
 h 20
 font "helvetica-medium-r-12.0"
@@ -567,7 +567,7 @@ major 4
 minor 1
 release 0
 x 400
-y 450
+y 550
 w 24
 h 15
 font "helvetica-medium-r-12.0"
@@ -587,7 +587,7 @@ major 4
 minor 0
 release 0
 x 430
-y 450
+y 550
 w 70
 h 20
 fgColor index 14
@@ -1198,7 +1198,7 @@ major 4
 minor 1
 release 0
 x 550
-y 450
+y 550
 w 90
 h 20
 fgColor index 14
@@ -1282,7 +1282,7 @@ major 4
 minor 1
 release 0
 x 550
-y 270
+y 370
 w 90
 h 20
 fgColor index 14
@@ -1292,8 +1292,8 @@ botShadowColor index 11
 font "helvetica-medium-r-12.0"
 numItems 14
 symbolTag {
-  0 "Input 0"
-  1 "Input 1"
+  0 "FP Input 0"
+  1 "FP Input 1"
   2 "TB Input 0"
   3 "TB Input 1"
   4 "TB Input 2"
@@ -1347,9 +1347,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 550
-y 530
-w 90
+x 240
+y 590
+w 70
 h 20
 fgColor index 14
 bgColor index 3
@@ -1528,170 +1528,6 @@ endObjectProperties
 
 endGroup
 
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 30
-y 650
-w 630
-h 60
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 30
-y 640
-w 60
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Sequencer"
-}
-autoSize
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 60
-y 670
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Seq 0"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "softSeq"
-}
-symbols {
-  0 "SS=Seq0"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 180
-y 670
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Seq 1"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "softSeq"
-}
-symbols {
-  0 "SS=Seq1"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 300
-y 670
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Seq 2"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "softSeq"
-}
-symbols {
-  0 "SS=Seq2"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 420
-y 670
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Seq 3"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "softSeq"
-}
-symbols {
-  0 "SS=Seq3"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 540
-y 670
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Seq 4"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "softSeq"
-}
-symbols {
-  0 "SS=Seq4"
-}
 endObjectProperties
 
 # (Static Text)
@@ -2215,7 +2051,7 @@ major 4
 minor 1
 release 0
 x 180
-y 370
+y 340
 w 60
 h 20
 font "helvetica-medium-r-12.0"
@@ -2234,7 +2070,7 @@ major 4
 minor 0
 release 0
 x 240
-y 350
+y 320
 w 70
 h 20
 fgColor index 14
@@ -2256,7 +2092,7 @@ major 4
 minor 0
 release 0
 x 240
-y 370
+y 340
 w 70
 h 20
 fgColor index 14
@@ -2278,7 +2114,7 @@ major 4
 minor 0
 release 0
 x 240
-y 330
+y 300
 w 70
 h 20
 fgColor index 14
@@ -2287,7 +2123,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(T):Trig:UnivInp0"
+controlPv "$(P):$(T):Trig:UnivInp1"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -2300,7 +2136,7 @@ major 4
 minor 0
 release 0
 x 240
-y 310
+y 280
 w 70
 h 20
 fgColor index 14
@@ -2322,7 +2158,7 @@ major 4
 minor 1
 release 0
 x 180
-y 310
+y 280
 w 60
 h 20
 font "helvetica-medium-r-12.0"
@@ -2341,7 +2177,7 @@ major 4
 minor 1
 release 0
 x 180
-y 330
+y 300
 w 60
 h 20
 font "helvetica-medium-r-12.0"
@@ -2360,7 +2196,7 @@ major 4
 minor 1
 release 0
 x 180
-y 350
+y 320
 w 60
 h 20
 font "helvetica-medium-r-12.0"
@@ -2372,6 +2208,19 @@ value {
 }
 endObjectProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 700
+w 630
+h 70
+
+beginGroup
+
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
@@ -2379,7 +2228,188 @@ major 4
 minor 0
 release 0
 x 30
-y 590
+y 710
+w 630
+h 60
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 30
+y 700
+w 60
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Sequencer"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 60
+y 730
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Seq 0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "softSeq"
+}
+symbols {
+  0 "SS=Seq0"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 180
+y 730
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Seq 1"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "softSeq"
+}
+symbols {
+  0 "SS=Seq1"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 300
+y 730
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Seq 2"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "softSeq"
+}
+symbols {
+  0 "SS=Seq2"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 420
+y 730
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Seq 3"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "softSeq"
+}
+symbols {
+  0 "SS=Seq3"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 540
+y 730
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Seq 4"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "softSeq"
+}
+symbols {
+  0 "SS=Seq4"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 640
+w 450
+h 50
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 650
 w 450
 h 40
 lineColor index 3
@@ -2394,7 +2424,7 @@ major 10
 minor 0
 release 0
 x 230
-y 600
+y 660
 w 160
 h 20
 controlPv "$(P):TS"
@@ -2412,7 +2442,7 @@ major 4
 minor 0
 release 0
 x 50
-y 600
+y 660
 w 80
 h 20
 fgColor index 14
@@ -2432,7 +2462,7 @@ major 4
 minor 0
 release 0
 x 140
-y 600
+y 660
 w 60
 h 20
 fgColor index 14
@@ -2452,7 +2482,7 @@ major 4
 minor 1
 release 0
 x 30
-y 580
+y 640
 w 61
 h 15
 font "helvetica-medium-r-12.0"
@@ -2471,7 +2501,7 @@ major 4
 minor 0
 release 0
 x 390
-y 600
+y 660
 w 70
 h 20
 fgColor index 14
@@ -2486,5 +2516,282 @@ offLabel "Sync"
 3d
 useEnumNumeric
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 240
+y 370
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(T):Trig:ac"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 210
+y 370
+w 30
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "AC"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 240
+w 300
+h 90
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 250
+w 300
+h 80
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 360
+y 240
+w 60
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "AC Trigger"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 430
+y 270
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):acTrig:byp"
+onLabel "ON"
+offLabel "OFF"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 360
+y 270
+w 70
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "AC Bypass"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 510
+y 270
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Sync Src"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 570
+y 270
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):acTrig:syncSrc"
+onLabel "Mxc 7"
+offLabel "Event Clk"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 380
+y 300
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Divider"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 530
+y 300
+w 35
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Phase"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 430
+y 300
+w 70
+h 19
+controlPv "$(P):acTrig:divider"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 570
+y 300
+w 70
+h 19
+controlPv "$(P):acTrig:phase"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 14
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+clipToDspLimits
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 

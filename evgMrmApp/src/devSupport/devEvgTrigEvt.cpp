@@ -169,6 +169,57 @@ write_bo_trigSrc_mxc(boRecord* pbo) {
 
 /*returns: (0,2)=>(success,success no convert) */
 static long 
+init_bo_trigSrc_ac(boRecord* pbo) {
+	long ret = 0;
+
+	if(pbo->out.type != VME_IO) {
+		errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pbo->name);
+		return(S_db_badField);
+	}
+	
+	try {
+		evgMrm* evg = &evgmap.get(pbo->out.value.vmeio.card);
+		if(!evg)
+			throw std::runtime_error("Failed to lookup EVG");
+
+		evgAcTrig*  acTrig = evg->getAcTrig();
+		pbo->dpvt = acTrig;
+		ret = 2;
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_trigSrc_ac(boRecord* pbo) {
+	long ret = 0;
+
+	try {
+		evgAcTrig* acTrig = (evgAcTrig*)pbo->dpvt;
+		if(!acTrig)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		ret = acTrig->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val);
+	} catch(std::runtime_error& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*returns: (0,2)=>(success,success no convert) */
+static long 
 init_bo_trigSrc_inp(boRecord* pbo) {
 	long ret = 0;
 
@@ -187,7 +238,7 @@ init_bo_trigSrc_inp(boRecord* pbo) {
 		unsigned int i = 0;
 		for(; i < parm.size(); i++) {
 			char a = parm[i];
-			if(a<58 && a >47)
+			if(a<58 && a>47)
 				break;
 		}
 	
@@ -341,6 +392,16 @@ common_dset devBoEvgTrigEvtMxc7 = {
     (DEVSUPFUN)write_bo_trigSrc_mxc,
 };
 epicsExportAddress(dset, devBoEvgTrigEvtMxc7);
+
+common_dset devBoEvgTrigEvtAc = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo_trigSrc_ac,
+    NULL,
+    (DEVSUPFUN)write_bo_trigSrc_ac,
+};
+epicsExportAddress(dset, devBoEvgTrigEvtAc);
 
 common_dset devBoEvgTrigEvtFpInp0 = {
     5,

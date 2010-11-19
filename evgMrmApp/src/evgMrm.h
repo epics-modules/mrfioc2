@@ -18,6 +18,7 @@
 #include <epicsEvent.h>
 #include <epicsMutex.h>
 
+#include "evgAcTrig.h"
 #include "evgEvtClk.h"
 #include "evgSoftEvt.h"
 #include "evgTrigEvt.h"
@@ -72,6 +73,7 @@ public:
 	epicsUInt32 getTSsec();
 	
 	/**	Access	functions 	**/
+	evgAcTrig*		getAcTrig		();
 	evgEvtClk* 		getEvtClk		();
 	evgSoftEvt*		getSoftEvt		();
 	evgTrigEvt* 	getTrigEvt		(epicsUInt32);
@@ -102,6 +104,7 @@ private:
 	const epicsUInt32               m_id;       
 	volatile epicsUInt8* const      m_pReg;
 
+	evgAcTrig						m_acTrig;
 	evgEvtClk                       m_evtClk;
 	evgSoftEvt                      m_softEvt;
 

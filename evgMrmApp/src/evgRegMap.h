@@ -31,10 +31,11 @@
 //=====================
 // AC Trigger Control Registers
 //
-#define  U8_AcTriggerControl    0x0011  // AC Trigger Input Control Register
-#define  U8_AcTriggerDivide     0x0012  // AC Trigger Input Divider
-#define  U8_AcTriggerPhase      0x0013  // AC Trigger Input Phase Delay
-#define  U8_AcTriggerEvent      0x0017  // AC Trigger Input To Trigger Event Mapping
+#define  U32_AcTrigControl   0x0010
+#define  U8_AcTrigControl    0x0011  // AC Trigger Input Control Register
+#define  U8_AcTrigDivider    0x0012  // AC Trigger Input Divider
+#define  U8_AcTrigPhase      0x0013  // AC Trigger Input Phase Delay
+#define  U8_AcTrigEvtMap   0x0017  // AC Trigger Input To Trigger Event Mapping
 
 //=====================
 // Software Event Control Registers
@@ -197,6 +198,13 @@
 /**************************************************************************************************/
 /*  Status Register (0x0000) Bit Assignments                                                      */
 /**************************************************************************************************/
+
+/**************************************************************************************************/
+/*  AC Trigger Register Bit Assignments		                                                      */
+/**************************************************************************************************/
+
+#define EVG_AC_TRIG_BYP         0x02
+#define EVG_AC_TRIG_SYNC        0x01
 
 /**************************************************************************************************/
 /*  Interrupt Flag Register (0x0008) and Interrupt Enable Register (0x000c) Bit Assignments       */
