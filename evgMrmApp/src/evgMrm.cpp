@@ -30,6 +30,7 @@ m_syncTS(false),
 m_buftx(pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
 m_pReg(pReg),
+m_acTrig(pReg),
 m_evtClk(pReg),
 m_softEvt(pReg),
 m_seqRamMgr(this),
@@ -357,6 +358,11 @@ evgMrm::setupTsIrq(bool ena) {
 evgEvtClk*
 evgMrm::getEvtClk() {
 	return &m_evtClk;
+}
+
+evgAcTrig*
+evgMrm::getAcTrig() {
+	return &m_acTrig;
 }
 
 evgSoftEvt*

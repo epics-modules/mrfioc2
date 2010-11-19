@@ -22,7 +22,7 @@ public:
 	~evgInput();
 
 	epicsStatus enaExtIrq(bool);
-	epicsStatus setInpDbusMap(epicsUInt32);
+	epicsStatus setInpDbusMap(epicsUInt16, bool);
 	epicsStatus setInpSeqTrigMap(epicsUInt32 seqTrigMap);
 	epicsStatus setInpTrigEvtMap(epicsUInt16, bool);
 

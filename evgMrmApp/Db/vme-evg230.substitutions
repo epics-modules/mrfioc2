@@ -3,6 +3,11 @@ pattern { P, cardNum}
 {$(P), $(cardNum)}
 }
 
+file evgAcTrig.db {
+pattern {P, cardNum}
+{$(P), $(cardNum)}
+}
+
 file evgEvtClk.db {
 pattern { P, cardNum}
 {$(P), $(cardNum)}

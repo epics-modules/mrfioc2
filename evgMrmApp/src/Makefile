@@ -20,6 +20,9 @@ evgmrm_SRCS += evgInit.cpp
 evgmrm_SRCS += evgMrm.cpp
 evgmrm_SRCS += devEvgMrm.cpp
 
+evgmrm_SRCS += evgAcTrig.cpp
+evgmrm_SRCS += devEvgAcTrig.cpp
+
 evgmrm_SRCS += evgEvtClk.cpp
 evgmrm_SRCS += devEvgEvtClk.cpp
 
