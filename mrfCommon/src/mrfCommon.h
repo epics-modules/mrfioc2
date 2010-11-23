@@ -77,6 +77,30 @@
 #define MRF_SN_STRING_SIZE           18        /* Size of serial number string (including NULL)   */
 #define MRF_DESCRIPTION_SIZE         80        /* Size of description text string (inclucing NULL)*/
 
+/* Event system codes with special meanings.
+ */
+
+/* The idle event.  Not usable */
+#define MRF_EVENT_NULL             0x00
+/* Sending 0x70 or 0x71 will cause the value in the seconds shift register to
+ * be shifted up by 1.  The low bit will be set to 0 or 1 as appropriate.
+ */
+#define MRF_EVENT_TS_SHIFT_0       0x70
+#define MRF_EVENT_TS_SHIFT_1       0x71
+/* Reset the heartbeat timeout counter */
+#define MRF_EVENT_HEARTBEAT        0x7A
+/* Reset prescaler dividers.  Synchronizes the phase of all frequency outputs */
+#define MRF_EVENT_RST_PRESCALERS   0x7B
+/* Increment the fractional part of the timestamp when TS source is Mapped Code */
+#define MRF_EVENT_TS_COUNTER_INC   0x7C
+/* Zeros the fractional part of TS, and copys the seconds shift register to the
+ * primary seconds register.
+ */
+#define MRF_EVENT_TS_COUNTER_RST   0x7D
+/* Special code for use in sequencer.  Used in other contexts is not recommended. */
+#define MRF_EVENT_END_OF_SEQUENCE  0x7F
+
+
 /**************************************************************************************************/
 /*  MRF Supported Bus Types                                                                       */
 /**************************************************************************************************/
