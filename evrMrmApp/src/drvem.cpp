@@ -2,6 +2,7 @@
 #include "drvem.h"
 
 #include <cstdio>
+#include <cstring>
 #include <stdexcept>
 #include <algorithm>
 
@@ -768,6 +769,9 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     void *vptr;
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+    epicsUInt32 queued[256/8];
+
+    memset(queued, 0, sizeof(queued));
 
     SCOPED_LOCK2(evr->events_lock, guard);
 
@@ -788,6 +792,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
             break;
 
         if (evt>NELEMENTS(evr->events)) {
+            // BUG: we get occasional corrupt VME reads of this register
             epicsUInt32 evt2=READ32(evr->base, EvtFIFOCode);
             if (evt2>NELEMENTS(evr->events)) {
                 printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
@@ -795,7 +800,15 @@ EVRMRM::drain_fifo(CALLBACK* cb)
             } else
                 evt=evt2;
         }
-        evt &= 0xff;
+        evt &= 0xff; // (in)santity check
+
+        /* Allow each event to be queued only once per cycle
+         * to avoid overflowing the callback queue when a large
+         * burst of identical events arrive.
+         */
+        if (queued[evt/32] & (1<<(evt%32)))
+            continue;
+        queued[evt/32]|=1<<(evt%32);
 
         evr->events[evt].last_sec=READ32(evr->base, EvtFIFOSec);
         evr->events[evt].last_evt=READ32(evr->base, EvtFIFOEvt);
