@@ -52,6 +52,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
+  ,count_FIFO_overflow(0)
   ,outputs()
   ,prescalers()
   ,pulsers()
@@ -60,6 +61,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
   ,shadowCounterPS(0)
+  ,timestampValid(false)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
@@ -79,9 +81,10 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQbufferReady);
-    scanIoInit(&IRQheadbeat);
+    scanIoInit(&IRQheartbeat);
     scanIoInit(&IRQrxError);
     scanIoInit(&IRQfifofull);
+    scanIoInit(&timestampValidChange);
 
     CBINIT(&drain_fifo_cb, priorityMedium, &EVRMRM::drain_fifo, this);
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
@@ -467,18 +470,6 @@ EVRMRM::linkStatus() const
     return !(READ32(base, Status) & Status_legvio);
 }
 
-IOSCANPVT
-EVRMRM::linkChanged()
-{
-    return IRQrxError;
-}
-
-epicsUInt32
-EVRMRM::recvErrorCount() const
-{
-    return count_recv_error;
-}
-
 void
 EVRMRM::setSourceTS(TSSource src)
 {
@@ -710,17 +701,6 @@ EVRMRM::dbus() const
     return (READ32(base, Status) & Status_dbus_mask) << Status_dbus_shift;
 }
 
-void
-EVRMRM::enableHeartbeat(bool)
-{
-}
-
-IOSCANPVT
-EVRMRM::heartbeatOccured()
-{
-    return IRQheadbeat;
-}
-
 // A place to write to which will keep the read
 // at the end of the ISR from being optimized out.
 // This value should never be used anywhere else.
@@ -767,7 +747,7 @@ EVRMRM::isr(void *arg)
     }
     if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
-        scanIoRequest(evr->IRQheadbeat);
+        scanIoRequest(evr->IRQheartbeat);
     }
     if(active&IRQ_FIFOFull){
         enable &= ~IRQ_FIFOFull;
@@ -832,6 +812,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
 
     if (status&IRQ_FIFOFull) {
         errlogPrintf("EVR %d FIFO overflow\n", evr->id);
+        evr->count_FIFO_overflow++;
     }
 
     int iflags=epicsInterruptLock();

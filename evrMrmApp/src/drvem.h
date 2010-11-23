@@ -79,14 +79,14 @@ public:
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
   virtual double clock() const
-        {SCOPED_LOCK(shadowLock);return eventClock;};
+        {SCOPED_LOCK(shadowLock);return eventClock;}
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
 
   virtual bool linkStatus() const;
-  virtual IOSCANPVT linkChanged();
-  virtual epicsUInt32 recvErrorCount() const;
+  virtual IOSCANPVT linkChanged(){return IRQrxError;}
+  virtual epicsUInt32 recvErrorCount() const{return count_recv_error;}
 
   virtual epicsUInt32 uSecDiv() const;
 
@@ -99,6 +99,11 @@ public:
   virtual double clockTS() const;
   virtual void clockTSSet(double);
   virtual bool interestedInEvent(epicsUInt32 event,bool set);
+
+  virtual bool TimeStampValid() const
+        {SCOPED_LOCK(shadowLock);return timestampValid;}
+  virtual IOSCANPVT TimeStampValidEvent(){return timestampValidChange;}
+
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
   virtual bool getTicks(epicsUInt32 *tks);
   virtual IOSCANPVT eventOccurred(epicsUInt32 event);
@@ -107,8 +112,10 @@ public:
 
   virtual epicsUInt16 dbus() const;
 
-  virtual void enableHeartbeat(bool);
-  virtual IOSCANPVT heartbeatOccured();
+  virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
+  virtual IOSCANPVT heartbeatTIMOOccured(){return IRQheartbeat;}
+
+  virtual epicsUInt32 FIFOFullCount() const{return count_FIFO_overflow;}
 
   static void isr(void*);
 
@@ -123,12 +130,18 @@ private:
   volatile epicsUInt32 count_hardware_irq;
   volatile epicsUInt32 count_heartbeat;
 
+  // Guarded by shadowLock
+  epicsUInt32 count_FIFO_overflow;
+
   // scanIoRequest() from ISR or callback
   IOSCANPVT IRQmappedEvent; // Hardware mapped IRQ
   IOSCANPVT IRQbufferReady; // Event log ready
-  IOSCANPVT IRQheadbeat;    // Heartbeat rx
+  IOSCANPVT IRQheartbeat;   // Heartbeat timeout
   IOSCANPVT IRQrxError;     // Rx link state change
   IOSCANPVT IRQfifofull;    // Fifo overflow
+
+  // Software events
+  IOSCANPVT timestampValidChange;
 
   // Set by ctor, not changed after
 
@@ -176,6 +189,7 @@ private:
   epicsUInt32 shadowCounterPS;
   double eventClock; //!< Stored in Hz
 
+  bool timestampValid;
 
   // bit map of which event #'s are mapped
   // used as a safty check to avoid overloaded mappings

@@ -10,6 +10,13 @@ record(bo, "$(P)enable") {
   info(autosaveFields_pass0, "VAL")
 }
 
+record(longin, "$(P)link:timo") {
+  field(DTYP, "EVR")
+  field(INP , "@C=$(C), P=HB Timeout Count")
+  field(SCAN, "I/O Intr")
+  field(DESC, "# of heartbeat timeout")
+}
+
 record(bi, "$(P)link:sts") {
   field(DTYP, "EVR")
   field(INP , "@C=$(C), P=Link Status")
@@ -18,16 +25,24 @@ record(bi, "$(P)link:sts") {
   field(ZNAM, "Fail")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
+  field(FLNK, "$(P)link:cnt")
 }
 
 record(longin, "$(P)link:cnt") {
   field(DTYP, "EVR")
   field(DESC, "Receive Error Count")
   field(INP , "@C=$(C), P=Receive Error Count")
-  field(PINI, "YES")
-  field(SCAN, "1 second")
   field(DESC, "Rx error count")
   field(TSEL, "$(P)link:sts.TIME")
+  field(FLNK, "$(P)fifo:cnt")
+}
+
+record(longin, "$(P)fifo:cnt") {
+  field(DTYP, "EVR")
+  field(DESC, "FIFO Overflow Count")
+  field(INP , "@C=$(C), P=FIFO Overflow Count")
+  field(DESC, "Rx error count")
+  field(TSEL, "$(P)link:cnt.TIME")
   field(FLNK, "$(P)link:sts:init")
 }
 
@@ -126,6 +141,15 @@ record(fanout, "$(P)ts:init") {
   field(PINI, "YES")
   field(LNK1, "$(P)ts:clock:set")
   field(LNK2, "$(P)ts:source")
+}
+
+record(bi, "$(P)ts:valid") {
+  field(DTYP, "EVR")
+  field(INP , "@C=$(C), P=Timestamp Valid")
+  field(SCAN, "I/O Intr")
+  field(ZSV , "MAJOR")
+  field(ZNAM, "Invalid")
+  field(ONAM, "Valid")
 }
 
 record(mbbo, "$(P)ts:source") {

@@ -45,6 +45,7 @@ prop_entry<EVR,bool> props_bool[] = {
   {"Enable",          property<EVR,bool>(0, &EVR::enabled, &EVR::enable)},
   {"PLL Lock Status", property<EVR,bool>(0, &EVR::pllLocked)},
   {"Link Status",     property<EVR,bool>(0, &EVR::linkStatus, 0, &EVR::linkChanged)},
+  {"Timestamp Valid", property<EVR,bool>(0, &EVR::TimeStampValid, 0, &EVR::TimeStampValidEvent)},
   {NULL,              property<EVR,bool>()}
 };
 
@@ -54,6 +55,8 @@ prop_entry<EVR,epicsUInt32> props_epicsUInt32[] = {
   {"Version",             property<EVR,epicsUInt32>(0, &EVR::version)},
   {"Event Clock TS Div",  property<EVR,epicsUInt32>(0, &EVR::uSecDiv)},
   {"Receive Error Count", property<EVR,epicsUInt32>(0, &EVR::recvErrorCount, 0, &EVR::linkChanged)},
+  {"FIFO Overflow Count", property<EVR,epicsUInt32>(0, &EVR::FIFOFullCount)},
+  {"HB Timeout Count",    property<EVR,epicsUInt32>(0, &EVR::heartbeatTIMOCount, 0, &EVR::heartbeatTIMOOccured)},
   {"Timestamp Prescaler", property<EVR,epicsUInt32>(0, &EVR::tsDiv)},
   {"Timestamp Source",    property<EVR,epicsUInt32>(0, &EVR::SourceTSraw, &EVR::setSourceTSraw)},
   {NULL,                  property<EVR,epicsUInt32>()}
