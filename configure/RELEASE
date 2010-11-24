@@ -22,12 +22,10 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 # Comment out if not present
 
 # IOC statistics (cpu and mem usage, ...)
-DEVIOCSTATS=$(EPICS_BASE)
+#DEVIOCSTATS=$(EPICS_BASE)
 
 # automatic save with restore on boot
-AUTOSAVE=$(EPICS_BASE)
-
-MOTOR=$(EPICS_BASE)
+#AUTOSAVE=$(EPICS_BASE)
 
 ## Required Modules ##
 

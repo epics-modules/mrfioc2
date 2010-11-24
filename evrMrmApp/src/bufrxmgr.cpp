@@ -10,10 +10,6 @@
 #include <cantProceed.h>
 #include <dbDefs.h>
 
-#include "counters.h"
-
-static Counter dispatch_time   ("Rx dispatch time"); // s per buffer per listener
-
 /* Subtract member byte offset, returning pointer to parent object */
 #ifndef CONTAINER
 # ifdef __GNUC__
@@ -135,9 +131,6 @@ bufRxManager::received(CALLBACK* cb)
     void *vptr;
     callbackGetUser(vptr,cb);
     bufRxManager &self=*static_cast<bufRxManager*>(vptr);
-    unsigned int tnorm=0;
-
-    counter_start(dispatch_time);
 
     self.guard.lock();
 
@@ -156,7 +149,6 @@ bufRxManager::received(CALLBACK* cb)
         for(ELLNODE *cur=ellFirst(actions); cur; cur=ellNext(cur)) {
             listener *action=CONTAINER(cur, listener, node);
             (action->fn)(action->fnarg, 0, buf->used-1, &buf->data[1]);
-            tnorm++;
         }
 
         self.guard.lock();
@@ -165,8 +157,6 @@ bufRxManager::received(CALLBACK* cb)
     };
 
     self.guard.unlock();
-
-    counter_stop(dispatch_time, tnorm);
 
 }
 

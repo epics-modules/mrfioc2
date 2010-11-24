@@ -56,7 +56,6 @@ INC += mrf/databuf.h
 INC += property.h
 INC += dsetshared.h
 
-INC += counters.h
 
 ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
 ifeq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
@@ -89,7 +88,6 @@ mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += dsetshared.cpp
 mrfCommon_SRCS += cardmap.cpp
-mrfCommon_SRCS += counters.c
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 
