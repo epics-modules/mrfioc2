@@ -146,6 +146,7 @@ record(fanout, "$(P)ts:init") {
 record(bi, "$(P)ts:valid") {
   field(DTYP, "EVR")
   field(INP , "@C=$(C), P=Timestamp Valid")
+  field(PINI, "YES")
   field(SCAN, "I/O Intr")
   field(ZSV , "MAJOR")
   field(ZNAM, "Invalid")

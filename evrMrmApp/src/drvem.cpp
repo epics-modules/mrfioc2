@@ -63,6 +63,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,shadowSourceTS(TSSourceInternal)
   ,shadowCounterPS(0)
   ,timestampValid(false)
+  ,lastInvalidTimestamp(0)
+  ,prevValidTimestamp(0)
+  ,lastValidTimestamp(0)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
@@ -91,6 +94,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
+    CBINIT(&seconds_tick_cb, priorityMedium,&EVRMRM::seconds_tick , this);
 
     /*
      * Create subunit instances
@@ -202,6 +206,8 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         else
             shadowSourceTS=TSSourceEvent;
     }
+
+    eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick_cb);
 
 }
 
@@ -574,6 +580,9 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) return false;
 
+    SCOPED_LOCK(shadowLock);
+    if(!timestampValid) return false;
+
     if(event>0 && event<=255) {
         // Get time of last event code #
 
@@ -614,11 +623,25 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         WRITE32(base, Control, ctrl);
 
         epicsInterruptUnlock(iflags);
+    }
 
-        //validate seconds (has it been initialized)?
-        if(ts->secPastEpoch==0){
-            return false;
-        }
+    //validate seconds (has it been initialized)?
+    if(ts->secPastEpoch==0 || ts->nsec==0){
+        return false;
+    }
+    if(ts->secPastEpoch==lastInvalidTimestamp) {
+        timestampValid=false;
+        scanIoRequest(timestampValidChange);
+        return false;
+    }
+
+    if(ts->nsec>=1000000000) {
+        SCOPED_LOCK(shadowLock);
+        timestampValid=false;
+        lastInvalidTimestamp=ts->secPastEpoch;
+        scanIoRequest(timestampValidChange);
+        return false;
+
     }
 
     //Link seconds counter is POSIX time
@@ -816,7 +839,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         scanIoRequest(evr->events[evt].occured);
 
         for(eventCode::notifiees_t::const_iterator it=evr->events[evt].notifiees.begin();
-            it!=evr->events[evt].notifiees.begin();
+            it!=evr->events[evt].notifiees.end();
             ++it)
         {
             callbackRequest(*it);
@@ -857,6 +880,12 @@ EVRMRM::poll_link(CALLBACK* cb)
     if(flags&IRQ_RXErr){
         // Still down
         callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
+        {
+            SCOPED_LOCK2(evr->shadowLock, guard);
+            evr->timestampValid=false;
+            evr->lastInvalidTimestamp=evr->lastValidTimestamp;
+            scanIoRequest(evr->timestampValidChange);
+        }
         WRITE32(evr->base, IRQFlag, IRQ_RXErr);
     }else{
         scanIoRequest(evr->IRQrxError);
@@ -864,4 +893,33 @@ EVRMRM::poll_link(CALLBACK* cb)
         BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
         epicsInterruptUnlock(iflags);
     }
+}
+
+void
+EVRMRM::seconds_tick(CALLBACK* cb)
+{
+    void *vptr;
+    callbackGetUser(vptr,cb);
+    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+
+    SCOPED_LOCK2(evr->shadowLock, guard);
+
+    // Don't bother to latch since we are only reading the seconds
+    epicsUInt32 newSec=READ32(evr->base, TSSec);
+
+    if (evr->timestampValid && (    evr->lastValidTimestamp==newSec
+                                 || evr->lastInvalidTimestamp==newSec)
+        )
+    {
+        // TS reset without updated seconds value
+        evr->timestampValid=false;
+        evr->lastInvalidTimestamp=newSec;
+        scanIoRequest(evr->timestampValidChange);
+    } else if (!evr->timestampValid) {
+        // TS becomes value after fault
+        evr->timestampValid=true;
+        evr->lastValidTimestamp=newSec;
+        scanIoRequest(evr->timestampValidChange);
+    }
+
 }

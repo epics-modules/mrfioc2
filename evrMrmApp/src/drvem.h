@@ -190,6 +190,11 @@ private:
   double eventClock; //!< Stored in Hz
 
   bool timestampValid;
+  epicsUInt32 lastInvalidTimestamp;
+  epicsUInt32 prevValidTimestamp;
+  epicsUInt32 lastValidTimestamp;
+  CALLBACK seconds_tick_cb;
+  static void seconds_tick(CALLBACK*);
 
   // bit map of which event #'s are mapped
   // used as a safty check to avoid overloaded mappings
