@@ -6,3 +6,6 @@ include evrSupport.dbd
 device(bo,      INST_IO, devbodataBufRx, "MRF Data Buf Rx")
 device(bi ,     INST_IO, devbidataBufRx, "MRF Data Buf Rx")
 device(waveform, INST_IO, devwaveformindataBufRx, "MRM EVR Buf Rx")
+
+# RTEMS only workaround for VME interrupt timing problem
+registrar(registerISRHack)

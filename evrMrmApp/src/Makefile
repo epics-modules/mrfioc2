@@ -34,6 +34,8 @@ evrMrm_SRCS += drvemRxBuf.cpp
 evrMrm_SRCS += bufrxmgr.cpp
 evrMrm_SRCS += devMrmBufRx.cpp
 
+evrMrm_SRCS += irqHack.cpp
+
 #=============================
 # Install the modular register map event receiver support dbd
 
