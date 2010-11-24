@@ -196,13 +196,17 @@ init_wf_timeStamp(waveformRecord* pwf) {
 static long 
 get_ioint_info_tsRB(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 	tsRbDpvt* dpvt = (tsRbDpvt*)pRec->dpvt;
-	if(!dpvt)
-		errlogPrintf("Initialization failed");			
+	if(!dpvt) {
+		errlogPrintf("Device pvt field not initialized\n");
+		return -1;			
+	}
 
 	evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
-	if(!seq)
+	if(!seq) {
 		errlogPrintf("Failed to lookup EVG Sequence");
-	
+		return -1;
+	}
+
 	*ppvt = seq->ioscanpvt;
 
 	return 0;
@@ -334,9 +338,11 @@ init_bi(biRecord* pbi) {
 static long 
 get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
-	if(!seq)
-		errlogPrintf("Failed to lookup EVG Sequence");
-	
+	if(!seq) {
+		errlogPrintf("Device pvt field not initialized\n");
+		return -1;
+	}
+
 	*ppvt = seq->ioscanpvt;
 
 	return 0;
@@ -345,9 +351,11 @@ get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 static long 
 get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 	evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
-	if(!seq)
-		errlogPrintf("Failed to lookup EVG Sequence");
-	
+	if(!seq) {
+		errlogPrintf("Device pvt field not initialized\n");
+		return -1;
+	}
+
 	*ppvt = seq->ioScanPvtErr;
 
 	return 0;
@@ -361,7 +369,7 @@ read_si_err(stringinRecord* psi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)psi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		strcpy(psi->val, seq->getErr().c_str());
 		ret = 0;
@@ -384,7 +392,7 @@ write_wf_timeStampTick(waveformRecord* pwf) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setTimeStampTick((epicsUInt32*)pwf->bptr, pwf->nord);
@@ -407,7 +415,7 @@ write_wf_eventCode(waveformRecord* pwf) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nord);
@@ -430,7 +438,7 @@ read_wf_eventCode(waveformRecord* pwf) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		std::vector<epicsUInt8> eventCode = seq->getEventCodeCt();
@@ -459,7 +467,7 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pmbbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setRunMode((SeqRunMode)pmbbo->val);
@@ -482,7 +490,7 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pmbbi->val = seq->getRunModeCt();
@@ -505,7 +513,7 @@ write_mbbo_trigSrc(mbboRecord* pmbbo) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pmbbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->setTrigSrc((SeqTrigSrc)pmbbo->rval);
@@ -528,7 +536,7 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pmbbi->rval = seq->getTrigSrcCt();
@@ -556,7 +564,7 @@ write_bo_loadSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->load();
@@ -587,7 +595,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->unload();
@@ -618,7 +626,7 @@ write_bo_commitSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->commit();
@@ -649,7 +657,7 @@ write_bo_enableSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->enable();
@@ -680,7 +688,7 @@ write_bo_disableSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->disable();
@@ -710,7 +718,7 @@ write_bo_haltSeq(boRecord* pbo) {
 
 		seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		ret = seq->halt(pbo->val);
@@ -738,7 +746,7 @@ write_bo_softTrig(boRecord* pbo) {
 
 		evgSoftSeq* seq = (evgSoftSeq*)pbo->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		evgSeqRam* seqRam = seq->getSeqRam();
 		if(!seqRam)
@@ -765,7 +773,7 @@ read_bi_loadStatus(biRecord* pbi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pbi->val = seq->isLoaded();
@@ -788,7 +796,7 @@ read_bi_enaStatus(biRecord* pbi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pbi->val = seq->isEnabled();
@@ -811,7 +819,7 @@ read_bi_commitStatus(biRecord* pbi) {
 	try {
 		evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
 		if(!seq)
-			throw std::runtime_error("Failed to lookup EVG Sequence");
+			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
 		pbi->val = seq->isCommited();
@@ -866,6 +874,11 @@ read_wf_loadedSeq(waveformRecord* pwf) {
 
 	try {
 		evgSeqRamMgr* seqRamMgr = (evgSeqRamMgr*)pwf->dpvt;
+		if(!seqRamMgr) {
+			errlogPrintf("Device pvt field not initialized\n");
+			return -1;
+		}
+
 		epicsInt32* pBuf = (epicsInt32*)pwf->bptr;
 		evgSoftSeq* seq;
 
