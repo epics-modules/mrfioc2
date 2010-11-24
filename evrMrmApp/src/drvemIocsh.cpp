@@ -10,6 +10,7 @@
 #include <drvSup.h>
 #include <iocsh.h>
 #include <initHooks.h>
+#include <epicsExit.h>
 #include <epicsExport.h>
 
 #include <devLibPCI.h>
@@ -32,6 +33,12 @@ extern "C" {
 int evrmrmVerb=1;
 epicsExportAddress(int,evrmrmVerb);
 }
+
+/* Bit mask used to communicate which VME interrupt levels
+ * are used.  Bits are set by mrmEvrSetupEVR().  Levels are
+ * enabled later during iocInit.
+ */
+static epicsUInt8 vme_level_mask = 0;
 
 #define DBG evrmrmVerb
 
@@ -298,12 +305,44 @@ enableIRQ(int,short,EVRMRM& mrm)
 }
 
 static
+bool
+disableIRQ(int,short,EVRMRM& mrm)
+{
+    WRITE32(mrm.base, IRQEnable, 0);
+    return true;
+}
+
+static
+void
+evrShutdown(void*)
+{
+    evrmap.visit(0, &disableIRQ);
+}
+
+static
 void inithooks(initHookState state)
 {
+  epicsUInt8 lvl;
   switch(state)
   {
   case initHookAfterInterruptAccept:
+    // Register hook to disable interrupts on IOC shutdown
+    epicsAtExit(&evrShutdown, NULL);
+    // First enable interrupts for each EVR
     evrmap.visit(0, &enableIRQ);
+    // Then enable all used levels
+    for(lvl=1; lvl<=7; ++lvl)
+    {
+      if (vme_level_mask&(1<<(lvl-1))) {
+       if(devEnableInterruptLevelVME(lvl))
+       {
+          printf("Failed to enable interrupt level %d\n",lvl);
+          return;
+        }
+      }
+
+    }
+
     break;
   default:
     break;
@@ -392,12 +431,9 @@ try {
     //TODO: This avoids a spurious FIFO Full
     NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
-    if(devEnableInterruptLevelVME(level&0x7))
-    {
-      printf("Failed to enable interrupt level %d\n",level&0x7);
-      delete receiver;
-      return;
-    }
+    level&=0x7;
+    // Level with be enabled later during iocInit()
+    vme_level_mask|=1<<(level-1);
 
     if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
     {
