@@ -81,7 +81,7 @@ m_softSeqMgr(this) {
 														m_seqRamMgr.getSeqRam(0));
 		init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_cb, 
 														m_seqRamMgr.getSeqRam(1));
-		init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::sendTS, this);
+		init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
 	
 		scanIoInit(&ioScanTS);
 	} catch(std::exception& e) {
@@ -201,65 +201,71 @@ evgMrm::process_cb(CALLBACK *pCallback) {
 
 
 void
-evgMrm::sendTS(CALLBACK *pCallback) {
-	struct epicsTimeStamp ts;
-	epicsTime ntpTime, storedTime;
+evgMrm::process_inp_cb(CALLBACK *pCallback) {
 	void* pVoid;
-	
 	callbackGetUser(pVoid, pCallback);
 	evgMrm* evg = (evgMrm*)pVoid;
    
-	/*If the time since last update is more than 1.5 secs(i.e. if wdTimer expires) 
-	then we need to resync the time*/
-	evg->m_timerEvent->signal();
-
-	if(evg->m_wdTimer->getPilotCount()) {
-		evg->m_wdTimer->decrPilotCount();
-		if(evg->m_wdTimer->getPilotCount() == 0) {
-			evg->syncTS();
-			storedTime = (epicsTime)evg->getTS();
-			printf("Starting timestamping\n");
-			storedTime.show(1);
-		}
+	epicsUInt32 data = evg->sendTS();
+	if(!data)
 		return;
-	}
 
-	evg->m_alarmTS = TS_ALARM_NONE;
-
-	evg->incrementTSsec();
-	scanIoRequest(evg->ioScanTS);
-
-	if(evg->m_syncTS) {
-		evg->syncTS();
-		evg->m_syncTS = false;
-	}
-
-	epicsUInt32 sec = evg->getTSsec() + 1 + POSIX_TIME_AT_EPICS_EPOCH;
-	for(int i = 0; i < 32; sec <<= 1, i++) {
-		if( sec & 0x80000000 ) {
+	for(int i = 0; i < 32; data <<= 1, i++) {
+		if( data & 0x80000000 )
 			evg->getSoftEvt()->setEvtCode(0x71);
-		} else {
+		else
 			evg->getSoftEvt()->setEvtCode(0x70);
+	}
+}
+
+epicsUInt32
+evgMrm::sendTS() {
+	/*Start the timer*/
+	m_timerEvent->signal();
+
+	/*If the time since last update is more than 1.5 secs(i.e. if wdTimer expires) 
+	then we need to resync the time after 5 good pulses*/
+	if(m_wdTimer->getPilotCount()) {
+		m_wdTimer->decrPilotCount();
+		if(m_wdTimer->getPilotCount() == 0) {
+			syncTS();
+			printf("Starting timestamping\n");
+			((epicsTime)getTS()).show(1);
 		}
+		return 0;
 	}
 
+	m_alarmTS = TS_ALARM_NONE;
+
+	incrementTSsec();
+	scanIoRequest(ioScanTS);
+
+	if(m_syncTS) {
+		syncTS();
+		m_syncTS = false;
+	}
+
+	struct epicsTimeStamp ts;
+	epicsTime ntpTime, storedTime;
 	if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
 		ntpTime = ts;
-		storedTime = (epicsTime)evg->getTS();
+		storedTime = (epicsTime)getTS();
 
 		double errorTime = ntpTime - storedTime;
 
 		/*If there is an error between storedTime and ntpTime then we just print
 		  the relevant information but we send out storedTime*/
 		if(fabs(errorTime) > evgAllowedTsGitter) {
-			evg->m_alarmTS = TS_ALARM_MINOR;
+			m_alarmTS = TS_ALARM_MINOR;
 			printf("NTP time:\n");
 			ntpTime.show(1);
 			printf("Expected time:\n");
 			storedTime.show(1);
 			printf("----Timestamping Error of %f Secs----\n", errorTime);
-    	}
- 	}
+    	} 
+	}
+
+	return getTSsec() + 1 + POSIX_TIME_AT_EPICS_EPOCH;
 }
 
 epicsTimeStamp

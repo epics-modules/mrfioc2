@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 20
-y 45
-w 648
-h 708
+x 74
+y 65
+w 630
+h 688
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -23,13 +23,26 @@ showGrid
 snapToGrid
 endScreenProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 320
+y 360
+w 300
+h 150
+
+beginGroup
+
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 330
+x 320
 y 370
 w 300
 h 140
@@ -38,13 +51,319 @@ fill
 fillColor index 3
 endObjectProperties
 
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 390
+y 390
+w 70
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):Map"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 320
+y 360
+w 100
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Distributed Bus"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 360
+y 390
+w 30
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Map"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 390
+y 440
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):FpInp1"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 340
+y 440
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Inp1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 340
+y 420
+w 50
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "FP Inp0"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 390
+y 420
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):FpInp0"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 530
+y 420
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):UnivInp0"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 530
+y 440
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):UnivInp1"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 530
+y 460
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):UnivInp2"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 530
+y 480
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(D):UnivInp3"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 470
+y 480
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Univ Inp3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 470
+y 460
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Univ Inp2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 470
+y 440
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Univ Inp1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 470
+y 420
+w 60
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Univ Inp0"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
 # (Group)
 object activeGroupClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 330
+x 320
 y 230
 w 300
 h 120
@@ -57,7 +376,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 330
+x 320
 y 240
 w 300
 h 110
@@ -72,7 +391,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 352
+x 342
 y 263
 w 41
 h 15
@@ -92,7 +411,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 340
+x 330
 y 290
 w 54
 h 15
@@ -111,7 +430,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 340
+x 330
 y 320
 w 62
 h 15
@@ -130,7 +449,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 330
+x 320
 y 230
 w 130
 h 20
@@ -148,7 +467,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 400
+x 390
 y 320
 w 100
 h 20
@@ -170,7 +489,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 500
+x 490
 y 320
 w 30
 h 20
@@ -192,7 +511,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 400
+x 390
 y 290
 w 100
 h 19
@@ -215,7 +534,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 540
+x 530
 y 320
 w 70
 h 20
@@ -234,7 +553,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 400
+x 390
 y 260
 w 70
 h 20
@@ -1182,7 +1501,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 540
+x 530
 y 260
 w 70
 h 20
@@ -1250,7 +1569,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 540
+x 530
 y 390
 w 70
 h 20
@@ -1390,100 +1709,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 170
-y 40
-w 150
-h 60
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 170
-y 50
-w 150
-h 50
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 180
-y 70
-w 55
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Evt Code"
-}
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 240
-y 70
-w 70
-h 20
-controlPv "$(P):SoftEvt:Code"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-editable
-motifWidget
-limitsFromDb
-nullColor index 14
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 170
-y 40
-w 100
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Software Event"
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 330
+x 320
 y 40
 w 300
 h 180
@@ -1496,7 +1722,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 330
+x 320
 y 50
 w 300
 h 170
@@ -1511,7 +1737,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 360
+x 350
 y 130
 w 50
 h 20
@@ -1530,7 +1756,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 360
+x 350
 y 70
 w 50
 h 15
@@ -1549,7 +1775,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 370
+x 360
 y 100
 w 40
 h 20
@@ -1568,7 +1794,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 330
+x 320
 y 40
 w 80
 h 20
@@ -1586,7 +1812,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 420
+x 410
 y 70
 w 100
 h 20
@@ -1610,7 +1836,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 420
+x 410
 y 130
 w 100
 h 20
@@ -1632,7 +1858,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 420
+x 410
 y 100
 w 100
 h 20
@@ -1657,7 +1883,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 530
+x 520
 y 70
 w 30
 h 20
@@ -1679,7 +1905,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 530
+x 520
 y 130
 w 30
 h 20
@@ -1701,7 +1927,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 350
+x 340
 y 190
 w 60
 h 20
@@ -1720,7 +1946,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 350
+x 340
 y 160
 w 70
 h 20
@@ -1739,7 +1965,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 420
+x 410
 y 160
 w 100
 h 20
@@ -1758,7 +1984,7 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 420
+x 410
 y 190
 w 100
 h 20
@@ -1781,140 +2007,8 @@ major 4
 minor 0
 release 0
 x 10
-y 550
-w 450
-h 60
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 560
-w 450
-h 50
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 210
-y 580
-w 160
-h 20
-controlPv "$(P):TS"
-fgColor index 14
-fgAlarm
-bgColor index 3
-fill
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 30
-y 580
-w 80
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):TsInpType"
-indicatorPv "$(P):TsInpTypeRB"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 120
-y 580
-w 60
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):TsInpNum"
-indicatorPv "$(P):TsInpNumRB"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 10
-y 550
-w 80
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Timestamp"
-}
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 370
-y 580
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):SyncTS"
-releaseValue "1"
-onLabel "Sync"
-offLabel "Sync"
-3d
-useEnumNumeric
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
 y 620
-w 620
+w 610
 h 60
 
 beginGroup
@@ -1927,7 +2021,7 @@ minor 0
 release 0
 x 10
 y 630
-w 620
+w 610
 h 50
 lineColor index 3
 fill
@@ -1942,7 +2036,7 @@ minor 1
 release 0
 x 10
 y 620
-w 80
+w 79
 h 20
 font "helvetica-bold-r-12.0"
 fgColor index 14
@@ -1960,7 +2054,7 @@ minor 2
 release 0
 x 40
 y 650
-w 90
+w 89
 h 20
 fgColor index 14
 bgColor index 3
@@ -1984,9 +2078,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 160
+x 158
 y 650
-w 90
+w 89
 h 20
 fgColor index 14
 bgColor index 3
@@ -2010,9 +2104,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 280
+x 276
 y 650
-w 90
+w 89
 h 20
 fgColor index 14
 bgColor index 3
@@ -2036,9 +2130,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 400
+x 394
 y 650
-w 90
+w 89
 h 20
 fgColor index 14
 bgColor index 3
@@ -2062,9 +2156,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 520
+x 512
 y 650
-w 90
+w 89
 h 20
 fgColor index 14
 bgColor index 3
@@ -2086,307 +2180,18 @@ endGroup
 
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
+# (Group)
+object activeGroupClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 400
-y 390
-w 70
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):Map"
-font "helvetica-medium-r-12.0"
-endObjectProperties
+x 10
+y 450
+w 300
+h 90
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 330
-y 360
-w 100
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Distributed Bus"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 370
-y 390
-w 30
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Map"
-}
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 440
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):FpInp1"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 350
-y 440
-w 50
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FP Inp1"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 350
-y 420
-w 50
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "FP Inp0"
-}
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 420
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):FpInp0"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 540
-y 420
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):UnivInp0"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 540
-y 440
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):UnivInp1"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 540
-y 460
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):UnivInp2"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 540
-y 480
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(D):UnivInp3"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 480
-y 480
-w 60
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Univ Inp3"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 480
-y 460
-w 60
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Univ Inp2"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 480
-y 440
-w 60
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Univ Inp1"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 480
-y 420
-w 60
-h 20
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Univ Inp0"
-}
-endObjectProperties
+beginGroup
 
 # (Rectangle)
 object activeRectangleClass
@@ -2432,7 +2237,7 @@ y 480
 w 70
 h 20
 fgColor index 14
-onColor index 3
+onColor index 8
 offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
@@ -2491,8 +2296,8 @@ minor 1
 release 0
 x 30
 y 510
-w 50
-h 20
+w 39
+h 15
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -2595,5 +2400,217 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P):acTrig:syncSrc"
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 560
+w 340
+h 50
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 130
+y 580
+w 160
+h 20
+controlPv "$(P):TS"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 580
+w 60
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):TsInpType"
+indicatorPv "$(P):TsInpTypeRB"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 580
+w 40
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):TsInpNum"
+indicatorPv "$(P):TsInpNumRB"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 550
+w 80
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Timestamp"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 300
+y 580
+w 40
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):SyncTS"
+releaseValue "1"
+onLabel "Sync"
+offLabel "Sync"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 170
+y 40
+w 140
+h 60
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 170
+y 50
+w 140
+h 50
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 170
+y 70
+w 55
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Evt Code"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 230
+y 70
+w 70
+h 20
+controlPv "$(P):SoftEvt:Code"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+motifWidget
+limitsFromDb
+nullColor index 14
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 170
+y 40
+w 100
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Software Event"
+}
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 

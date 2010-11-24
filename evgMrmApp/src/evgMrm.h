@@ -57,9 +57,10 @@ public:
 	static void isr(void*);
 	static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
 	static void process_cb(CALLBACK*);
+	static void process_inp_cb(CALLBACK*);
 
 	/** TimeStamp	**/
-	static void sendTS(CALLBACK*);
+	epicsUInt32 sendTS();
 	epicsTimeStamp getTS();
 	epicsStatus syncTS();
 	epicsStatus syncTsRequest();
@@ -157,14 +158,12 @@ public:
 
             /*Start of timer. If timeout == true then the timer expired. 
             If timeout == false then received the signal before the timeout period*/
-            while(!timeout) {
+            while(!timeout)
                 timeout = !m_evg->getTimerEvent()->wait(1 + evgAllowedTsGitter);
-            }
 	
             if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
-                epicsTime time = ts;
                 printf("Timestamping timeout\n");
-		        time.show(1);
+		        ((epicsTime)ts).show(1);
             }
 
             m_evg->m_alarmTS = TS_ALARM_MAJOR;
