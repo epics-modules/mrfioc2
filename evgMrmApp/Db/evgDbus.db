@@ -1,26 +1,27 @@
 record(mbbo, "$(P):$(N):Map") {
-  	field( DTYP, "EVG Dbus Map")
-        field( OUT , "#C$(cardNum) S$(dbusBit) @")
-        field( PINI, YES)
-        field( UDF, "0")
-        field( ZRST, "Off")
-        field( ONST, "Ext Inp")
-        field( TWST, "Mxc")
-        field( THST, "UpstreamEVG")
-        field( FVSV, "INVALID")
-        field( SXSV, "INVALID")
-        field( SVSV, "INVALID")
-        field( EISV, "INVALID")
-        field( NISV, "INVALID")
-        field( TESV, "INVALID")
-        field( ELSV, "INVALID")
-        field( TVSV, "INVALID")
-        field( TTSV, "INVALID")
-        field( FTSV, "INVALID")
-        field( FFSV, "INVALID")
-        field( UNSV, "INVALID")
-        field( IVOA, "Don't drive outputs")
-        info(autosaveFields_pass0, "VAL")
+	field( DTYP, "EVG Dbus Map")
+	field( OUT , "#C$(cardNum) S$(dbusBit) @")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
+	field( ZRST, "Off")
+	field( ONST, "Ext Inp")
+	field( TWST, "Mxc")
+	field( THST, "UpstreamEVG")
+	field( FVSV, "INVALID")
+	field( SXSV, "INVALID")
+	field( SVSV, "INVALID")
+	field( EISV, "INVALID")
+	field( NISV, "INVALID")
+	field( TESV, "INVALID")
+	field( ELSV, "INVALID")
+	field( TVSV, "INVALID")
+	field( TTSV, "INVALID")
+	field( FTSV, "INVALID")
+	field( FFSV, "INVALID")
+	field( UNSV, "INVALID")
+	field( IVOA, "Don't drive outputs")
+	info(autosaveFields_pass0, "VAL")
 }
 
 record(bo, "$(P):$(N):FpInp0") {
@@ -29,6 +30,9 @@ record(bo, "$(P):$(N):FpInp0") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input0")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -38,6 +42,9 @@ record(bo, "$(P):$(N):FpInp1") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input1")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -47,6 +54,9 @@ record(bo, "$(P):$(N):UnivInp0") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input0")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -56,6 +66,9 @@ record(bo, "$(P):$(N):UnivInp1") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input1")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -65,6 +78,9 @@ record(bo, "$(P):$(N):UnivInp2") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input2")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }
 
@@ -74,5 +90,8 @@ record(bo, "$(P):$(N):UnivInp3") {
   	field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input3")
   	field( ZNAM, "Clear")
   	field( ONAM, "Set")
+	field( PINI, "YES")
+	field( VAL, "0")
+	field( UDF, "0")
 	info(autosaveFields_pass0, "VAL")
 }

@@ -39,7 +39,6 @@ record(ai, "$(P):$(N):Freq:RB") {
         field( DTYP, "EVG Mxc")
         field( DESC, "EVG Mux Frequency")
         field( INP, "#C$(cardNum) S$(mxcNum) @")
-        field( UDF, "0")
         field( EGU, "Hz")
         field( HOPR, "62500000")
         field( LOPR, "0.029")
