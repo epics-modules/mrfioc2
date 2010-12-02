@@ -49,10 +49,6 @@ mrf_DBD  += generalTime.dbd
 mrf_LIBS += generalTime
 endif
 
-ifneq ($(MOTOR),)
-mrf_DBD += motorRecord.dbd devOms.dbd
-mrf_LIBS += asyn oms motor asyn
-endif
 
 #===========================
 

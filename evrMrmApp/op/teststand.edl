@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1356
-y 104
+x 1348
+y 88
 w 170
-h 196
+h 314
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -111,8 +111,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 15
-y 160
+x 10
+y 230
 w 140
 h 35
 fgColor index 14
@@ -120,17 +120,20 @@ bgColor index 0
 topShadowColor index 0
 botShadowColor index 14
 font "helvetica-medium-r-18.0"
-buttonLabel "IOC Status"
+buttonLabel "Status"
 numPvs 4
-numDsps 1
+numDsps 2
 displayFileName {
   0 "ioc_stats.edl"
+  1 "save_restoreStatus_more"
 }
 menuLabel {
-  0 "IOC Status"
+  0 "Stats"
+  1 "autosave"
 }
 symbols {
   0 "ioc=mrftest,HOME=teststand.edl"
+  1 "P=mrftest:"
 }
 endObjectProperties
 
@@ -160,6 +163,93 @@ menuLabel {
 }
 symbols {
   0 "P=evr4"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 155
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVG"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evgMain.edl"
+}
+menuLabel {
+  0 "VME EVG"
+}
+symbols {
+  0 "P=evg1"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 190
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVR (3)"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrmain.edl"
+}
+menuLabel {
+  0 "VME EVR"
+}
+symbols {
+  0 "P=rf:evr"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 10
+y 275
+w 140
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Demo"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "sequencedemo.edl"
+}
+menuLabel {
+  0 "Demo"
+}
+symbols {
+  0 "P=evr2:"
 }
 endObjectProperties
 

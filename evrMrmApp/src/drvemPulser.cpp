@@ -192,6 +192,8 @@ MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
 
     epicsUInt32 pmask=1<<id;
 
+    SCOPED_LOCK2(mapLock, guard);
+
     if( (action!=MapType::None) && _ismap(evt) )
         throw std::runtime_error("Ignore request for duplicate mapping");
 
@@ -200,8 +202,7 @@ MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
     else
         _unmap(evt);
 
-    errlogPrintf("EVR #%d pulser #%d code %02x action %d\n",
-        owner.id,id,evt, action);
+    guard.unlock();
 
     if(action==MapType::Trigger)
         BITSET(NAT,32, owner.base, MappingRam(0,evt,Trigger), pmask);

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 717
-y 206
+x 766
+y 433
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -81,13 +81,14 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 330
-y 150
-w 30
+x 350
+y 140
+w 40
 h 20
 controlPv "$(P):link:cnt"
 format "decimal"
 font "helvetica-medium-r-12.0"
+fontAlign "right"
 fgColor index 14
 bgColor index 0
 useDisplayBg
@@ -126,14 +127,14 @@ minor 1
 release 0
 x 420
 y 180
-w 57
-h 15
+w 40
+h 20
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Last Time:"
+  "Time:"
 }
 endObjectProperties
 
@@ -358,7 +359,7 @@ release 0
 x 340
 y 90
 w 54
-h 16
+h 15
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -564,13 +565,14 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 480
+x 460
 y 180
-w 150
-h 15
+w 160
+h 20
 controlPv "$(P):ts"
 font "helvetica-medium-r-10.0"
 fgColor index 14
+fgAlarm
 bgColor index 3
 useDisplayBg
 limitsFromDb
@@ -578,6 +580,7 @@ nullColor index 14
 smartRefresh
 fastUpdate
 useHexPrefix
+useAlarmBorder
 newPos
 objType "monitors"
 endObjectProperties
@@ -611,39 +614,17 @@ major 4
 minor 1
 release 0
 x 290
-y 150
-w 30
+y 140
+w 50
 h 20
 font "helvetica-medium-r-8.0"
+fontAlign "right"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Err Cnt:"
+  "Link Err Cnt:"
 }
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 370
-y 150
-w 20
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):link:cnt"
-pressValue "0"
-onLabel "R"
-offLabel "R"
-3d
-font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Rectangle)
@@ -1304,7 +1285,7 @@ release 0
 x 20
 y 80
 w 42
-h 16
+h 15
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -2368,5 +2349,139 @@ useDisplayBg
 value {
   "Up"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 350
+y 160
+w 40
+h 20
+controlPv "$(P):link:timo"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 280
+y 160
+w 60
+h 20
+font "helvetica-medium-r-8.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "HBt TIMO Cnt:"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 350
+y 180
+w 40
+h 20
+controlPv "$(P):fifo:cnt"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 280
+y 180
+w 60
+h 20
+font "helvetica-medium-r-8.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "FIFO OFlw Cnt:"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 580
+y 160
+w 40
+h 20
+fgColor index 14
+onColor index 16
+offColor index 20
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+indicatorPv "$(P):ts:valid"
+3d
+font "helvetica-medium-r-8.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 580
+y 130
+w 34
+h 30
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Time"
+  "Status"
+}
+autoSize
 endObjectProperties
 

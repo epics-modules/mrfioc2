@@ -30,8 +30,8 @@ record(ao, "$(P)$(N)delay") {
   field(VAL , 0)
   field(EGU , "us")
   field(LINR, "LINEAR")
-  field(ESLO, 1e6)
-  field(PREC, 6)
+  field(ESLO, "1e6")
+  field(PREC, "3")
   field(FLNK, "$(P)$(N)delay:raw")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
@@ -54,9 +54,8 @@ record(ao, "$(P)$(N)width") {
   field(VAL , 0)
   field(EGU , "us")
   field(LINR, "LINEAR")
-  field(ESLO, 1e6)
-  field(PREC, 6)
-  field(FLNK, "$(P)$(N)width")
+  field(ESLO, "1e6")
+  field(PREC, "3")
   field(FLNK, "$(P)$(N)width:raw")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }

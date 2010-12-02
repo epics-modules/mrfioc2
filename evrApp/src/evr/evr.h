@@ -133,6 +133,10 @@ public:
    */
   virtual bool interestedInEvent(epicsUInt32 event,bool set)=0;
 
+
+  virtual bool TimeStampValid() const=0;
+  virtual IOSCANPVT TimeStampValidEvent()=0;
+
   /** Gives the current time stamp as sec+nsec
    *@param ts This pointer will be filled in with the current time
    *@param event N<=0 Return the current wall clock time
@@ -164,8 +168,10 @@ public:
 
   virtual epicsUInt16 dbus() const=0;
 
-  virtual void enableHeartbeat(bool)=0;
-  virtual IOSCANPVT heartbeatOccured()=0;
+  virtual epicsUInt32 heartbeatTIMOCount() const=0;
+  virtual IOSCANPVT heartbeatTIMOOccured()=0;
+
+  virtual epicsUInt32 FIFOFullCount() const=0;
 
 
   /**\defgroup devhelp Device Support Helpers

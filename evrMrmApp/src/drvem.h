@@ -78,24 +78,32 @@ public:
   virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
-  virtual double clock() const{return eventClock;};
+  virtual double clock() const
+        {SCOPED_LOCK(shadowLock);return eventClock;}
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
 
   virtual bool linkStatus() const;
-  virtual IOSCANPVT linkChanged();
-  virtual epicsUInt32 recvErrorCount() const;
+  virtual IOSCANPVT linkChanged(){return IRQrxError;}
+  virtual epicsUInt32 recvErrorCount() const{return count_recv_error;}
 
   virtual epicsUInt32 uSecDiv() const;
 
-  virtual epicsUInt32 tsDiv() const{return shadowCounterPS;}
+  virtual epicsUInt32 tsDiv() const
+        {SCOPED_LOCK(shadowLock);return shadowCounterPS;}
 
   virtual void setSourceTS(TSSource);
-  virtual TSSource SourceTS() const{return shadowSourceTS;}
+  virtual TSSource SourceTS() const
+        {SCOPED_LOCK(shadowLock);return shadowSourceTS;}
   virtual double clockTS() const;
   virtual void clockTSSet(double);
   virtual bool interestedInEvent(epicsUInt32 event,bool set);
+
+  virtual bool TimeStampValid() const
+        {SCOPED_LOCK(shadowLock);return timestampValid;}
+  virtual IOSCANPVT TimeStampValidEvent(){return timestampValidChange;}
+
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
   virtual bool getTicks(epicsUInt32 *tks);
   virtual IOSCANPVT eventOccurred(epicsUInt32 event);
@@ -104,8 +112,10 @@ public:
 
   virtual epicsUInt16 dbus() const;
 
-  virtual void enableHeartbeat(bool);
-  virtual IOSCANPVT heartbeatOccured();
+  virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
+  virtual IOSCANPVT heartbeatTIMOOccured(){return IRQheartbeat;}
+
+  virtual epicsUInt32 FIFOFullCount() const{return count_FIFO_overflow;}
 
   static void isr(void*);
 
@@ -115,23 +125,23 @@ public:
   mrmBufRx bufrx;
 private:
 
-  // Set by clockTSSet() with IRQ disabled
-  double stampClock;
-  TSSource shadowSourceTS;
-  epicsUInt32 shadowCounterPS;
-  double eventClock; //!< Stored in Hz
-
   // Set by ISR
   volatile epicsUInt32 count_recv_error;
   volatile epicsUInt32 count_hardware_irq;
   volatile epicsUInt32 count_heartbeat;
 
+  // Guarded by shadowLock
+  epicsUInt32 count_FIFO_overflow;
+
   // scanIoRequest() from ISR or callback
   IOSCANPVT IRQmappedEvent; // Hardware mapped IRQ
   IOSCANPVT IRQbufferReady; // Event log ready
-  IOSCANPVT IRQheadbeat;    // Heartbeat rx
+  IOSCANPVT IRQheartbeat;   // Heartbeat timeout
   IOSCANPVT IRQrxError;     // Rx link state change
   IOSCANPVT IRQfifofull;    // Fifo overflow
+
+  // Software events
+  IOSCANPVT timestampValidChange;
 
   // Set by ctor, not changed after
 
@@ -169,6 +179,22 @@ private:
   CALLBACK poll_link_cb;
   static void poll_link(CALLBACK*);
 
+  /** Guards access to all data members not accessed by ISR
+   */
+  mutable epicsMutex shadowLock;
+
+  // Set by clockTSSet() with IRQ disabled
+  double stampClock;
+  TSSource shadowSourceTS;
+  epicsUInt32 shadowCounterPS;
+  double eventClock; //!< Stored in Hz
+
+  bool timestampValid;
+  epicsUInt32 lastInvalidTimestamp;
+  epicsUInt32 prevValidTimestamp;
+  epicsUInt32 lastValidTimestamp;
+  CALLBACK seconds_tick_cb;
+  static void seconds_tick(CALLBACK*);
 
   // bit map of which event #'s are mapped
   // used as a safty check to avoid overloaded mappings

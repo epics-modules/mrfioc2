@@ -10,6 +10,7 @@
 #include <drvSup.h>
 #include <iocsh.h>
 #include <initHooks.h>
+#include <epicsExit.h>
 #include <epicsExport.h>
 
 #include <devLibPCI.h>
@@ -32,6 +33,12 @@ extern "C" {
 int evrmrmVerb=1;
 epicsExportAddress(int,evrmrmVerb);
 }
+
+/* Bit mask used to communicate which VME interrupt levels
+ * are used.  Bits are set by mrmEvrSetupEVR().  Levels are
+ * enabled later during iocInit.
+ */
+static epicsUInt8 vme_level_mask = 0;
 
 #define DBG evrmrmVerb
 
@@ -96,8 +103,7 @@ REGINFO("CML4High",OutputCMLCountHigh(0),16),
 REGINFO("CML4Low",OutputCMLCountLow(0),16),
 REGINFO("CML4Len",OutputCMLPatLength(0),32),
 REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
-REGINFO("CML4Pat1",OutputCMLPat(0,1),32),
-REGINFO("TXBuf0",DataTx(0),8)
+REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
 #undef REGINFO
 };
 
@@ -155,6 +161,27 @@ long report(int level)
   return 0;
 }
 
+#ifdef linux
+struct plxholder {
+    volatile void* plx;
+    EVRMRM *evr;
+    plxholder(EVRMRM* a,volatile void* b) : plx(b), evr(a) {}
+};
+
+static
+void PLXISR(void *raw)
+{
+    plxholder *card=static_cast<plxholder*>(raw);
+
+    EVRMRM::isr(static_cast<void*>(card->evr));
+
+    LE_WRITE16(card->plx, INTCSR, INTCSR_INT1_Enable|
+                                  INTCSR_INT1_Polarity|
+                                  INTCSR_PCI_Enable);
+}
+
+#endif
+
 
 extern "C"
 void
@@ -199,23 +226,34 @@ try {
   BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
 
+  // Disable interrupts on device
+
+  NAT_WRITE32(evr, IRQEnable, 0);
+
   /* Enable active high interrupt1 through the PLX to the PCI bus.
    */
   LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
                             INTCSR_INT1_Polarity|
                             INTCSR_PCI_Enable);
 
-  // Install ISR
-
-  NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
-
   // Acknowledge missed interrupts
   //TODO: This avoids a spurious FIFO Full
   NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
+  // Install ISR
+
   EVRMRM *receiver=new EVRMRM(id,evr);
 
-  if(devPCIConnectInterrupt(cur,&EVRMRM::isr,receiver,0)){
+  void (*pciisr)(void *);
+  void *arg=receiver;
+#ifdef linux
+  pciisr=&PLXISR;
+  arg=new plxholder(receiver, plx);
+#else
+  pciisr=&EVRMRM::isr;
+#endif
+
+  if(devPCIConnectInterrupt(cur,pciisr,arg,0)){
       printf("Failed to install ISR\n");
       delete receiver;
   }else{
@@ -266,12 +304,44 @@ enableIRQ(int,short,EVRMRM& mrm)
 }
 
 static
+bool
+disableIRQ(int,short,EVRMRM& mrm)
+{
+    WRITE32(mrm.base, IRQEnable, 0);
+    return true;
+}
+
+static
+void
+evrShutdown(void*)
+{
+    evrmap.visit(0, &disableIRQ);
+}
+
+static
 void inithooks(initHookState state)
 {
+  epicsUInt8 lvl;
   switch(state)
   {
   case initHookAfterInterruptAccept:
+    // Register hook to disable interrupts on IOC shutdown
+    epicsAtExit(&evrShutdown, NULL);
+    // First enable interrupts for each EVR
     evrmap.visit(0, &enableIRQ);
+    // Then enable all used levels
+    for(lvl=1; lvl<=7; ++lvl)
+    {
+      if (vme_level_mask&(1<<(lvl-1))) {
+       if(devEnableInterruptLevelVME(lvl))
+       {
+          printf("Failed to enable interrupt level %d\n",lvl);
+          return;
+        }
+      }
+
+    }
+
     break;
   default:
     break;
@@ -360,12 +430,9 @@ try {
     //TODO: This avoids a spurious FIFO Full
     NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
-    if(devEnableInterruptLevelVME(level&0x7))
-    {
-      printf("Failed to enable interrupt level %d\n",level&0x7);
-      delete receiver;
-      return;
-    }
+    level&=0x7;
+    // Level with be enabled later during iocInit()
+    vme_level_mask|=1<<(level-1);
 
     if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
     {
@@ -431,49 +498,6 @@ static const iocshFuncDef mrmEvrDumpMapFuncDef =
 static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
 {
     mrmEvrDumpMap(args[0].ival,args[1].ival,args[2].ival);
-}
-
-extern "C"
-void mrmEvrSendBuf(int id, int size, int val)
-{
-  size&=DataTxCtrl_len_mask;
-  if(size<=0) {
-    printf("Size too small %d\n",size);
-    return;
-  }
-
-  EVRMRM *card=&evrmap.get<EVRMRM>(id);
-  if(!card){
-    printf("Invalid card\n");
-    return;
-  }
-
-  EVRMRM* mrm=dynamic_cast<EVRMRM*>(card);
-  if(!mrm){
-    printf("Card not MRM EVR\n");
-    return;
-  }
-
-  // Setup
-  BITSET(NAT,32,mrm->base, DataTxCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
-
-  // Zero size
-  BITCLR(NAT,32,mrm->base, DataTxCtrl, DataTxCtrl_len_mask);
-
-  for(int i=0; i<size; i++)
-    WRITE8(mrm->base, DataTx(i), val+i);
-
-  // Set size and start
-  BITSET(NAT,32,mrm->base, DataTxCtrl, size|DataTxCtrl_trig);
-
-  // Wait for completion
-  epicsUInt32 ctrl;
-  while( (ctrl=READ32(mrm->base, DataTxCtrl))&DataTxCtrl_run)
-    epicsThreadSleep(epicsThreadSleepQuantum());
-
-  printf("Finished %sok\n",
-    ctrl&DataTxCtrl_done ? "":"not "
-  );
 }
 
 static

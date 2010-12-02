@@ -84,28 +84,20 @@ mrf_handler(int irq, struct uio_info *info)
 {
     void __iomem *base = info->mem[2].internal_addr;
     void __iomem *plx = info->mem[0].internal_addr;
-    u32 plxctrl= ioread32(plx + LAS0BRD);
-    u32 status, enable;
+    u32 plxcsr= ioread32(plx + INTCSR);
 
-    /* Test endianness since we allow user
-     * apps to use whatever is convenient
-     */
-    if (plxctrl & LAS0BRD_ENDIAN) {
-        status = ioread32be(base + IRQFlag);
-        enable = ioread32be(base + IRQEnable);
-    } else {
-        status = ioread32(base + IRQFlag);
-        enable = ioread32(base + IRQEnable);
-    }
+    if (!(plxcsr&(INTCSR_INT1_Status|INTCSR_INT2_Status)))
+        return IRQ_NONE;
 
-    if (!(status & enable))
-            return IRQ_NONE;
+    if (plxcsr&INTCSR_INT1_Status)
+        plxcsr&=~INTCSR_INT1_Enable;
 
-    /* Disable interrupt */
-    if (plxctrl & LAS0BRD_ENDIAN)
-        iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
-    else
-        iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
+    if (plxcsr&INTCSR_INT2_Status)
+        plxcsr&=~INTCSR_INT2_Enable;
+
+    /* Enable active high interrupt1 through the PLX to the PCI bus. */
+    iowrite16(plxcsr, plx + INTCSR);
+
     return IRQ_HANDLED;
 }
 
@@ -171,10 +163,6 @@ mrf_probe(struct pci_dev *dev,
         ret = uio_register_device(&dev->dev, info);
         if (ret)
                 goto err_unmap;
-
-        /* Enable active high interrupt1 through the PLX to the PCI bus. */
-        iowrite16(INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable,
-                  info->mem[0].internal_addr + INTCSR);
 
         return 0;
 
