@@ -1,10 +1,4 @@
-TODO:
--Add the debug flag.
--Extended device support
--Software trigger for sequence Ram.
--Priority of the event sent out.
-
-Majorly complete
+Completed
 	-Clock Control
 	-Software Event
 	-Trigger Event
@@ -15,11 +9,13 @@ Majorly complete
 	-Benchmarking
 	-Interrupts.
 	-TimeStamping
-
-Currently working on
 	-Sequencer
 	-Soft Sequence
-
-Not yet started.
-	-AC trigger
 	-Data Buffer
+	-AC trigger
+
+TODO:
+	-irqStart Irq
+	-TimeStamp values greater than 0xffffffff
+	-When event clock changes all the time calculation changes (Sequencer).
+	-Change of Event Clock produces spurious events.

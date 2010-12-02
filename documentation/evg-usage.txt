@@ -1,0 +1,293 @@
+
+---------------Epics device driver for MRF VME-EVG-230-------------------------
+
+Author: Jayesh Shah, NSLS2, BNL
+		jshah@bnl.gov
+
+Acknowlegement:
+	Parts of the MRF VME-EVG-230 device driver code has been reused from 
+		- Epics device driver for MRF EVR-230 by Micheal Davidsaver, NSLS2, BNL.
+		- Epics device driver for MRF EVG-230 by Eric Bjorklund, LANSCE, LANL.
+
+
+Read evgTODO.txt to get the current status of the driver development.
+
+TODO: Introduction to Timing System
+TODO: Introduction to EVG
+TODO: Introduction to EVR 
+
+Brief note about all the classes/Sub-Component of VME-EVG-230 driver
+-------------------------------------------------------------------------------
+EVG:
+-------------------------------------------------------------------------------
+Class: evgMrm
+Files: evgMrm.h/evgMrm.cpp/devEvgMrm.cpp/evgMrm.db
+
+Enable/Disable (bo):
+	Global EVG enable and disable.
+
+Synchronize Timestamp (bo):
+	Sync the current time with the NTP server.
+
+1PPS source for Timestamping:
+	-Input Type (mbbo/mbbi):
+		Types of input could be Front Panel, Universal or Transitional.
+
+	-Input Number (mbbo/mbbi):
+		Input number identifies a particular instance of the selected input type.
+
+-------------------------------------------------------------------------------
+Event Clock:
+-------------------------------------------------------------------------------
+All the operations on EVG are synchronised to the event clock. Which is derived
+from either externally provided RF clock or from an on-board fractional synthesiser.
+
+Class: evgEvtClk
+Files: evgEvtClk.h/evgEvtClk.cpp/devEvgEvtClk.cpp/evgEvtClk.db
+
+Source (bo):
+	The event clock may be derived from external RF clock signal or from an on-board
+	fractional synthesiser.
+
+RF reference frequency (ao):
+	Set the RF Input frequency in MHz. Frequncy can range from 50 to 1600.
+	
+RF Divider (longout):
+	Divider to derive desired event clock from RF reference frequency.
+
+Fractional Synthesiser frquency (ao):
+	This frequency could be used to derive event clock.
+
+Event Clock Readback (ai):
+	Gets the current event clock frquency in MHz.	
+
+-------------------------------------------------------------------------------
+Software Events:
+-------------------------------------------------------------------------------
+Software event is used to send out an event code by writing that event to a
+particular register in EVG.
+
+Class: evgSoftEvt
+Files: evgSoftEvt.h/evgSoftEvt.cpp/devEvgSoftEvt.cpp/evgSoftEvt.db
+
+Send Event Code (longout):
+	Sends out the event code onto the event stream. Event code can range form 0 to 255.
+
+-------------------------------------------------------------------------------
+Trigger Events:
+-------------------------------------------------------------------------------
+There are currently 8 trigger event sources. Trigger events are used to send
+out event code into the event streams, every time a trigger is received. The stimulus
+could be a rising edge on an external input signal or a multliplexed counter output
+or the ac signal.
+
+Class: evgTrigEvt
+Files: evgTrigEvt.h/evgTrigEvt.cpp/devEvgTrigEvt.cpp/evgTrigEvt.db
+
+Enable/Disable (bo):
+	Enable/Disable the transmission of Trigger Events.
+
+Event code to be sent (longout):
+	Sets the event code to be sent out, whenever a trigger is received.
+	Event Code can range form 0 to 255.
+
+Trigger (bo):
+	The trigger could come from one or multiple sources. It could come from any of 
+	the external inputs and/or any multiplexed counter output and/or from ac signal.
+	If multiple trigger sources are selected then those signal are OR'ed together 
+	and the resulting signal works as the trigger.
+
+-------------------------------------------------------------------------------
+Distributed bus:
+-------------------------------------------------------------------------------
+There are in all 8 distributed bus bits.
+
+Class: evgDbus
+Files: evgDbus.h/evgDbus.cpp/devEvgDbus.cpp/evgDbus.db
+
+Signal Source/Map (mbbo):
+	The bits of the distributed bus can be driven by selecting one of the following
+	sources.
+	1. Sampling of the external input signals at event rate
+	2. Sampling of the corresponding multiplexed counter output at event rate
+	3. Forwarding the state of distributed bus bit of upstram EVG.	
+
+Selecting the input (bo):
+	When the source for the distributed bus signals is external input signal, we
+	need to specify which input signal needs to be mapped onto the distributed bus.
+	If multiple inputs are mapped onto a single distributed bus bit then those
+	signals are ORed together and the resulting signal is used to drive the
+	distributed bus bit. 
+	
+-------------------------------------------------------------------------------
+Multiplexed Counter:
+-------------------------------------------------------------------------------
+There are 8 32-bit multiplexed counters that generate clock signals with 
+programmable frequencies from event clock/2^32-1 to event clock/2. 
+The counter outputs may be programmed to trigger events, drive distributed
+bus signals and trigger sequence RAMs.  
+
+Class: evgMxc
+Files: evgMxc.h/evgMxc.cpp/devEvgMxc.cpp/evgMxc.db
+
+Polarity (bo):
+	Set the Multiplex Counter(Mxc) output polarity.
+
+Frequency (ao/ai):
+	Request a signal with a particular frequency.
+
+-------------------------------------------------------------------------------
+Input:
+-------------------------------------------------------------------------------
+VME-EVG-230 has 2 Front panel, 4 Universal and 16 Transitional Inputs.
+
+Class: evgInput
+Files: evgInput.h/evgInput.cpp/devEvgInput.cpp/evgInput.db
+
+External Input Interrupt (bo):
+	Enable or Disable the External Interrupt. When enabled, an interrupt is
+ 	received on every rising edge the input signal.
+
+-------------------------------------------------------------------------------
+Output:
+-------------------------------------------------------------------------------
+It is used to configure the 4 front panel outputs and 4 four front panel universal
+outputs.
+
+Class: evgOutput
+Files: evegOutput.h/evgOut.cpp
+
+Map (mbbo):
+	The output could be mapped to any of the eight distributed bus bits or It could
+	br forced to logic 1 or logic 0.
+
+-------------------------------------------------------------------------------
+AC Trigger:
+-------------------------------------------------------------------------------
+EVG provides synchronization to the mains voltage frequency or another external
+clock.
+
+Divider (longout):
+	The mains voltage frquency can be divided by an eight bit programmable divider.
+
+Phase (ao):
+	The output of the divider may be delayed by 0 to 25.5 ms by a phase shifter in
+	0.1ms steps to adjust the triggering position relative to mains voltage phase.
+
+AC Bypass (bo):
+	It is set to bypass the AC divider and phase shifter circuitry.
+
+Sync (bo):
+	The AC Trigger could be synchronized either with event clock or the output of
+	multiplexed counter 7. 
+
+-------------------------------------------------------------------------------
+Sequencer:
+-------------------------------------------------------------------------------
+	MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence). The sequencer
+can hold upto 2048 <event code, timeStamp> pair. When the sequencer is triggered,
+an internal counter starts counting. When the counter value matches the timeStamp
+of the next event, the attched event code is transmitted.
+	
+	All the information that needs to be loaded into the sequenceRam or hard
+sequence to make it functional, can be stored into an object called soft sequence.
+The IOC can have any number of these soft sequences but at a time the number of
+these soft sequences that can be loaded is restricted by the number of hard sequence. 
+
+The idea being the user can create or modify these soft sequences even if 
+1. The soft sequence is not loaded in the hard sequence. 
+2. The soft sequence is loaded into hard sequence and is running.
+
+Refer to the evg-seq diagram to understand the operation of sequercer.
+
+	A soft sequence can be loaded in the hardware by using the 'load' record.
+The user can modify any loaded soft sequence anytime but if that sequence happens to
+be loaded, the changes are not propogated to the hardware until user commits the
+soft sequence. 'commit' record can be used to commit the updated soft sequence
+to the hardware. 'commit' makes sure that the sequenceRam is not modified when
+it is active.
+
+Class: evgSeqRamMgr
+Files: evgSeqRamManager.h/evgSeqRamManager.cpp
+
+Class: evgSeqRam
+Files: evgSeqRam.h/evgSeqRam.cpp
+
+Class: evgSoftSeqMgr
+Files: evgSoftSeqManager.h/evgSoftSeqManager.cpp
+
+Class: evgSoftSeq
+Files: evgSoftSeq.h/evgSoftSeq.cpp/devEvgSoftSeq.cpp/evgSoftSeq.db
+
+A soft sequence could be in different states like
+LOADED or UNLOADED, COMITTED or DIRTY, ENABLED or DISABLED.
+
+Load (bo):
+	If successful, load causes a soft sequence to move from UNLOADED state to
+	LOADED state. In the LOADED state, an hard sequence is assigned to a soft
+	sequence. If the soft sequence is already in LOADED state then load will
+	return with an error message. Then operation will fail if all the hard sequences
+	are already assigned. An allocation scheme ensures that at any given time,
+	each hard sequence is connected to only one soft sequence.
+
+Unload (bo):
+	The unload caused the soft sequence to enter into UNLOADED state. This operation
+	cannot fail. In unloaded state the assignment of a hard sequence to a soft
+	sequence is released.
+
+Commit (bo):
+	Whenever you modify a soft sequence, the scratch copy in the soft sequence is
+	modified (Refer to evg-seq diagram). Commit causes the changes from the scratch
+	sequence to be copied to the complete sequence. If the soft sequence is loaded,
+	commit also initiates sync operation and copies the changes from complete
+	sequence to the hardware.
+
+	Modifing the sequenceRam while it is running gives undefined behavior hence
+ 	'commit' makes sure that the changes are not written to the hardware while it
+	is running. It waits for the current sequence to finish before writing to the
+	sequenceRam.
+
+Enable (bo):
+	It puts the soft sequence in the ENABLEDED state. In enabled state, a loaded
+	sequence is armed and waits for the trigger. If is already in ENABLED state
+	the record does nothing. 
+	
+Disable (bo):
+	In DISABLED state the armed sequence is disarmed, so even if the sequencer
+	receives the trigger the sequence is does not run again.
+
+Halt (bo):
+	The difference between halt and disable is that halt terminates currently
+	running sequence(if any) immediately and then disarms it. while disable allows
+	the running sequence to complete.
+
+Following record are used to create and modify scratch copy of the soft sequences. They do not directly interact with the hardware.
+
+Event Code Array (waveform):
+	It is used to set the list of the eventCodes of the soft sequence. These
+	eventCodes are transmitted whenever the timeStamp associated with eventCode
+	matches the counter value of sequencer. The counter on the sequencer is
+	triggered by source selected by 'trigSrc'.
+
+Timestamp Array - RAW (waveform):
+	It is used to set the timeStamps for the events on the soft sequence in the
+	'Event Clock' ticks.	
+ 
+Timestamp Array (waveform):
+	It is used to set the timeStamps for the events in the soft sequence in seconds.
+
+Run Mode (mbbo/mbbi):
+	Run mode is used determine what will the sequencer do at the end of the
+ 	sequence. where mode could be any of the following:
+	Single 	 -  Disarms the sequencer at the end of the sequence.
+	Automatic - Restarts the sequence immediately after the end of the sequence.
+	Normal    -	At the end of the sequence, the sequncer rearms and waits for the
+				trigger to restart the sequence.
+
+Trigger Source (mbbo/mbbi):
+	Trigger Src is used to select the source of the trigger, which starts the
+ 	sequencer.
+	Mxc0 to Mxc7 - Trigger from MXC0 - MXC7
+	AC			 - Trigger from AC sync logic
+	RAM0/RAM1	 - Trigger from RAM0/RAM1 software trigger
+
