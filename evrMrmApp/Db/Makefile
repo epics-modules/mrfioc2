@@ -15,7 +15,7 @@ DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 endif
 
 # Omitted before 3.14.10
-USR_DBFLAGS += -I $(INSTALL_LOCATION)/db
+USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

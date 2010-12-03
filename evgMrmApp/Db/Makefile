@@ -29,7 +29,7 @@ endif
 endif
 
 # Omitted before 3.14.10
-USR_DBFLAGS += -I $(INSTALL_LOCATION)/db
+USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
