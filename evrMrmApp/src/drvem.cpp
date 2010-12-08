@@ -558,7 +558,7 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
     if (   (set  && entry->interested==0) // first interested
         || (!set && entry->interested==1) // or last un-interested
     ) {
-        specialSetMap(event, 127, set);
+        specialSetMap(event, ActionFIFOSave, set);
     }
 
     if (set)

@@ -258,6 +258,16 @@ enum evrForm {
 #define U32__MappingRam(M,E,N) (U32_MappingRam_base + (0x2000*(M)) + (0x10*(E)) + (N))
 #define U32_MappingRam(M,E,N) U32__MappingRam(M,E, MappingRamBlock##N)
 
+// MappingRam actions
+#define ActionFIFOSave 127
+#define ActionTSLatch  126
+#define ActionLEDBlink 125
+#define ActionEvtFwd   124
+#define ActionLogStop  123
+#define ActionLogSave  122
+#define ActionHeartBeat 101
+#define ActionPSRst    100
+
 #define U8_SFPDIAG_base 0x8300
 #define U8_SFPDIAG(N) (U8_SFPDIAG_base + (N))
 
