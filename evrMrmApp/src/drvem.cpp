@@ -64,7 +64,6 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,shadowCounterPS(0)
   ,timestampValid(false)
   ,lastInvalidTimestamp(0)
-  ,prevValidTimestamp(0)
   ,lastValidTimestamp(0)
 {
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
