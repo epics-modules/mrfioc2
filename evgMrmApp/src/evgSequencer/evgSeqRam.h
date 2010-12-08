@@ -17,7 +17,7 @@ public:
 	const epicsUInt32 getId();
 
 	epicsStatus setEventCode(std::vector<epicsUInt8>);
-	epicsStatus setTimeStamp(std::vector<epicsUInt32>);
+	epicsStatus setTimestamp(std::vector<uint64_t>);
 
 	epicsStatus setSoftTrig();
 	epicsStatus setTrigSrc(SeqTrigSrc);

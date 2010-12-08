@@ -79,12 +79,13 @@ device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp1")
 device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp2")
 device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp3")
 
+
 #evgSoftSeq.db
 device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
 device( waveform, VME_IO, devWfEvgEventCodeRB, "EVG SEQ EVENT CODE RB")
-device( waveform, VME_IO, devWfEvgTimeStampTick, "EVG SEQ TIME STAMP TICK")
-device( waveform, VME_IO, devWfEvgTimeStamp, "EVG SEQ TIME STAMP")
-device( waveform, VME_IO, devWfEvgTimeStampRB, "EVG SEQ TIME STAMP RB")
+device( waveform, VME_IO, devWfEvgTimestampRaw, "EVG SEQ TIMESTAMP RAW")
+device( waveform, VME_IO, devWfEvgTimestamp, "EVG SEQ TIMESTAMP")
+device( waveform, VME_IO, devWfEvgTimestampRB, "EVG SEQ TIMESTAMP RB")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbi, VME_IO, devMbbiEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")

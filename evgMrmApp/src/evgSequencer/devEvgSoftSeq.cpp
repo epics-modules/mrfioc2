@@ -100,7 +100,7 @@ init_wf_empty() {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_wf_timeStamp(waveformRecord* pwf) {
+write_wf_timestamp(waveformRecord* pwf) {
 	epicsStatus ret = 0;
 
 	try {
@@ -123,7 +123,7 @@ write_wf_timeStamp(waveformRecord* pwf) {
 			ts[i] = ts[i] / pvt->scaler;
 		}
 
-		ret = seq->setTimeStampSec(ts, size);
+		ret = seq->setTimestamp(ts, size);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
 		ret = S_dev_noDevice;
@@ -136,15 +136,15 @@ write_wf_timeStamp(waveformRecord* pwf) {
 }
 
 extern "C" {
-common_dset devWfEvgTimeStamp = {
+common_dset devWfEvgTimestamp = {
     5,
     NULL,
  	(DEVSUPFUN)init,
     (DEVSUPFUN)init_wf_empty,
     NULL,
-    (DEVSUPFUN)write_wf_timeStamp,
+    (DEVSUPFUN)write_wf_timestamp,
 };
-epicsExportAddress(dset, devWfEvgTimeStamp);
+epicsExportAddress(dset, devWfEvgTimestamp);
 
 };
 
@@ -155,7 +155,7 @@ struct tsRbDpvt {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long
-init_wf_timeStamp(waveformRecord* pwf) {
+init_wf_timestamp(waveformRecord* pwf) {
 	long ret = 0;
 	
 	if(pwf->inp.type != VME_IO) {
@@ -214,7 +214,7 @@ get_ioint_info_tsRB(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long
-read_wf_timeStamp(waveformRecord* pwf) {
+read_wf_timestamp(waveformRecord* pwf) {
 	long ret = 0;
 
 	try {
@@ -226,7 +226,7 @@ read_wf_timeStamp(waveformRecord* pwf) {
 		evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
 		
 		SCOPED_LOCK2(seq->m_lock, guard);
-		std::vector<epicsUInt32> timeStamp = seq->getTimeStampCt();
+		std::vector<uint64_t> timestamp = seq->getTimestampCt();
 		epicsFloat64 evtClk = evg->getEvtClk()->getEvtClkSpeed() * pow(10,6);
 		epicsFloat64 timeScaler = 0.0f;
 
@@ -237,10 +237,10 @@ read_wf_timeStamp(waveformRecord* pwf) {
 		}
 
 		epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
-		for(unsigned int i = 0; i < timeStamp.size(); i++) {
-			bptr[i] = timeStamp[i] * timeScaler / evtClk;
+		for(unsigned int i = 0; i < timestamp.size(); i++) {
+			bptr[i] = timestamp[i] * timeScaler / evtClk;
 		}
-		pwf->nord = timeStamp.size();
+		pwf->nord = timestamp.size();
 		ret = 0;
 
 	} catch(std::runtime_error& e) {
@@ -386,7 +386,7 @@ read_si_err(stringinRecord* psi) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_wf_timeStampTick(waveformRecord* pwf) {
+write_wf_timestampRaw(waveformRecord* pwf) {
 	long ret = 0;
 
 	try {
@@ -395,7 +395,7 @@ write_wf_timeStampTick(waveformRecord* pwf) {
 			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
-		ret = seq->setTimeStampTick((epicsUInt32*)pwf->bptr, pwf->nord);
+		ret = seq->setTimestampRaw((epicsUInt32*)pwf->bptr, pwf->nord);
 	} catch(std::runtime_error& e) {
 		errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
 		ret = S_dev_noDevice;
@@ -906,25 +906,25 @@ read_wf_loadedSeq(waveformRecord* pwf) {
 /** 	device support entry table 		**/
 extern "C" {
 
-common_dset devWfEvgTimeStampRB = {
-    5,
-    NULL,
-	NULL,
-    (DEVSUPFUN)init_wf_timeStamp,
-	(DEVSUPFUN)get_ioint_info_tsRB,
-    (DEVSUPFUN)read_wf_timeStamp,
-};
-epicsExportAddress(dset, devWfEvgTimeStampRB);
-
-common_dset devWfEvgTimeStampTick = {
+common_dset devWfEvgTimestampRaw = {
     5,
     NULL,
 	NULL,
     (DEVSUPFUN)init_wf,
     NULL,
-    (DEVSUPFUN)write_wf_timeStampTick,
+    (DEVSUPFUN)write_wf_timestampRaw,
 };
-epicsExportAddress(dset, devWfEvgTimeStampTick);
+epicsExportAddress(dset, devWfEvgTimestampRaw);
+
+common_dset devWfEvgTimestampRB = {
+    5,
+    NULL,
+	NULL,
+    (DEVSUPFUN)init_wf_timestamp,
+	(DEVSUPFUN)get_ioint_info_tsRB,
+    (DEVSUPFUN)read_wf_timestamp,
+};
+epicsExportAddress(dset, devWfEvgTimestampRB);
 
 common_dset devWfEvgEventCode = {
     5,

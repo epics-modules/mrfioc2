@@ -32,9 +32,9 @@ evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
 }
 
 epicsStatus
-evgSeqRam::setTimeStamp(std::vector<epicsUInt32> timeStamp){
-	for(unsigned int i = 0; i < timeStamp.size(); i++) {
-		WRITE32(m_pReg, SeqRamTS(m_id,i), timeStamp[i]);
+evgSeqRam::setTimestamp(std::vector<uint64_t> timestamp){
+	for(unsigned int i = 0; i < timestamp.size(); i++) {
+		WRITE32(m_pReg, SeqRamTS(m_id,i), (epicsUInt32)timestamp[i]);
 	}
 	
 	return OK;
@@ -98,13 +98,11 @@ evgSeqRam::enable() {
 		throw std::runtime_error("Trying to enable Unallocated seqRam");
 }
 
-
 epicsStatus 
 evgSeqRam::disable() {
 	BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_DISABLE);
 	return OK;
 }
-
 
 epicsStatus 
 evgSeqRam::reset() {

@@ -49,18 +49,13 @@ public:
 	std::string getErr();
 
 	epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
-	epicsStatus setTimeStampTick(epicsUInt32*, epicsUInt32);
-	epicsStatus setTimeStampSec(epicsFloat64*, epicsUInt32);
+	epicsStatus setTimestampRaw(epicsUInt32*, epicsUInt32);
+	epicsStatus setTimestamp(epicsFloat64*, epicsUInt32);
 	epicsStatus setTrigSrc(SeqTrigSrc);
 	epicsStatus setRunMode(SeqRunMode);
 
-	void ctEventCode();
-	void ctTimeStamp();
-	void ctTrigSrc();
-	void ctRunMode();
-
 	std::vector<epicsUInt8> getEventCodeCt();
-	std::vector<epicsUInt32> getTimeStampCt();
+	std::vector<uint64_t> getTimestampCt();
 	SeqTrigSrc getTrigSrcCt();
 	SeqRunMode getRunModeCt();
 
@@ -80,6 +75,8 @@ public:
 	epicsStatus sync	();
 	epicsStatus isRunning();
 	epicsStatus inspectSoftSeq();
+	void commitSoftSeq();
+	epicsStatus rollover();
 
 	IOSCANPVT 					ioscanpvt;
 	IOSCANPVT 					ioScanPvtErr;
@@ -93,22 +90,21 @@ private:
 	std::string 				m_err;
 
 	std::vector<epicsUInt8> 	m_eventCode;
-	std::vector<epicsUInt32>	m_timeStamp;
+	std::vector<uint64_t>		m_timestamp;
 	SeqTrigSrc 					m_trigSrc;
 	SeqRunMode 					m_runMode;
 	
 	std::vector<epicsUInt8> 	m_eventCodeCt;
-	std::vector<epicsUInt32>	m_timeStampCt;
+	std::vector<uint64_t>		m_timestampCt;
 	SeqTrigSrc					m_trigSrcCt;
 	SeqRunMode 					m_runModeCt;
 	
 	evgSeqRam*  				m_seqRam;
 	evgSeqRamMgr*				m_seqRamMgr; 
-	epicsUInt32					m_ecSize;
-	epicsUInt32					m_tsSize;
 	
 	bool						m_isEnabled;
 	bool						m_isCommited;
+	bool						m_timestampRaw;
 };
 
 #endif //EVG_SEQUENCE_H

@@ -15,24 +15,24 @@ record(waveform, "$(P):$(N):eventCodeRB") {
         field( FTVL, "UCHAR")
 }
 
-record(waveform, "$(P):$(N):timeStamp:tick") {
-        field( DTYP, "EVG SEQ TIME STAMP TICK")
+record(waveform, "$(P):$(N):timestampRaw") {
+        field( DTYP, "EVG SEQ TIMESTAMP RAW")
         field( DESC, "Sequence timestamp (ticks)")
         field( INP, "#C$(cardNum) S$(seqNum) @")
         field( NELM, "$(NELM)")
         field( FTVL, "LONG")
 }
 
-record(waveform, "$(P):$(N):timeStamp") {
-        field( DTYP, "EVG SEQ TIME STAMP")
+record(waveform, "$(P):$(N):timestamp") {
+        field( DTYP, "EVG SEQ TIMESTAMP")
         field( DESC, "Sequence timestamp array")
         field( INP, "#C$(cardNum) S$(seqNum) @1000000")
         field( NELM, "$(NELM)")
         field( FTVL, "DOUBLE")
 }
 
-record(waveform, "$(P):$(N):timeStampRB") {
-        field( DTYP, "EVG SEQ TIME STAMP RB")
+record(waveform, "$(P):$(N):timestampRB") {
+        field( DTYP, "EVG SEQ TIMESTAMP RB")
         field( DESC, "Sequence timestamp readback")
         field( INP, "#C$(cardNum) S$(seqNum) @1000000")
         field( SCAN, "I/O Intr")
