@@ -209,9 +209,19 @@ record(bo, "$(P):$(N):disable") {
         field( ONAM, "1")
 }
 
-record(bo, "$(P):$(N):halt") {
-        field( DTYP, "EVG HALT SEQ")
-        field( DESC, "HALT Sequence immediately")
+record(bo, "$(P):$(N):abort") {
+        field( DTYP, "EVG ABORT SEQ")
+        field( DESC, "Abort Sequence immediately")
+        field( OUT, "#C$(cardNum) S$(seqNum) @")
+        field( VAL , "0")
+        field( UDF, "0")
+        field( ZNAM, "0")
+        field( ONAM, "1")
+}
+
+record(bo, "$(P):$(N):pause") {
+        field( DTYP, "EVG PAUSE SEQ")
+        field( DESC, "Pause Sequence immediately")
         field( OUT, "#C$(cardNum) S$(seqNum) @")
         field( VAL , "0")
         field( UDF, "0")

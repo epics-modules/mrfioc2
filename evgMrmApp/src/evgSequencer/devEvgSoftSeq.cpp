@@ -708,7 +708,7 @@ write_bo_disableSeq(boRecord* pbo) {
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_bo_haltSeq(boRecord* pbo) {
+write_bo_abortSeq(boRecord* pbo) {
 	long ret = 0;
 	evgSoftSeq* seq = 0;
 
@@ -721,7 +721,36 @@ write_bo_haltSeq(boRecord* pbo) {
 			throw std::runtime_error("Device pvt field not initialized");
 
 		SCOPED_LOCK2(seq->m_lock, guard);
-		ret = seq->halt(pbo->val);
+		ret = seq->abort(pbo->val);
+		seq->setErr("");
+	} catch(std::runtime_error& e) {
+		seq->setErr(e.what());
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_dev_noDevice;
+	} catch(std::exception& e) {
+		errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+		ret = S_db_noMemory;
+	}
+
+	return ret;
+}
+
+/*returns: (-1,0)=>(failure,success)*/
+static long 
+write_bo_pauseSeq(boRecord* pbo) {
+	long ret = 0;
+	evgSoftSeq* seq = 0;
+
+	try {
+		if(!pbo->val)
+			return 0;
+
+		seq = (evgSoftSeq*)pbo->dpvt;
+		if(!seq)
+			throw std::runtime_error("Device pvt field not initialized");
+
+		SCOPED_LOCK2(seq->m_lock, guard);
+		ret = seq->pause();
 		seq->setErr("");
 	} catch(std::runtime_error& e) {
 		seq->setErr(e.what());
@@ -1036,15 +1065,25 @@ common_dset devBoEvgDisableSeq = {
 };
 epicsExportAddress(dset, devBoEvgDisableSeq);
 
-common_dset devBoEvgHaltSeq = {
+common_dset devBoEvgAbortSeq = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_bo,
     NULL,
-    (DEVSUPFUN)write_bo_haltSeq,
+    (DEVSUPFUN)write_bo_abortSeq,
 };
-epicsExportAddress(dset, devBoEvgHaltSeq);
+epicsExportAddress(dset, devBoEvgAbortSeq);
+
+common_dset devBoEvgPauseSeq = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_pauseSeq,
+};
+epicsExportAddress(dset, devBoEvgPauseSeq);
 
 common_dset devBoEvgSoftTrig = {
     5,

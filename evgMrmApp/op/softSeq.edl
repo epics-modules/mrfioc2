@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 153
-y 260
-w 290
-h 294
+x 157
+y 280
+w 298
+h 313
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -77,7 +77,7 @@ bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Event Code / Time Stamp"
+buttonLabel "Event Code / Timestamp"
 numCmds 1
 command {
   0 "python /home/jshah/qt/EvgSoftSeq/evgSoftSeq.py $(P) $(SS)"
@@ -110,7 +110,7 @@ major 4
 minor 0
 release 0
 x 200
-y 190
+y 180
 w 70
 h 20
 fgColor index 14
@@ -133,7 +133,7 @@ major 4
 minor 0
 release 0
 x 30
-y 160
+y 180
 w 70
 h 20
 fgColor index 14
@@ -155,8 +155,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 200
-y 160
+x 150
+y 240
 w 70
 h 20
 fgColor index 14
@@ -164,10 +164,10 @@ onColor index 3
 offColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):halt"
+controlPv "$(P):$(SS):pause"
 releaseValue "1"
-onLabel "Halt"
-offLabel "Halt"
+onLabel "Pause"
+offLabel "Pause"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -178,8 +178,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 200
-y 220
+x 80
+y 240
 w 70
 h 20
 fgColor index 14
@@ -201,8 +201,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 30
-y 220
+x 10
+y 240
 w 70
 h 20
 fgColor index 14
@@ -224,8 +224,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 30
-y 190
+x 130
+y 180
 w 70
 h 20
 fgColor index 14
@@ -248,7 +248,7 @@ major 10
 minor 0
 release 0
 x 30
-y 250
+y 270
 w 240
 h 20
 controlPv "$(P):$(SS):err"
@@ -265,9 +265,9 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 110
+x 30
 y 160
-w 80
+w 70
 h 20
 controlPv "$(P):$(SS):commitStatus"
 font "helvetica-medium-r-12.0"
@@ -288,9 +288,9 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 110
+x 10
 y 220
-w 80
+w 280
 h 20
 controlPv "$(P):$(SS):enaStatus"
 font "helvetica-medium-r-12.0"
@@ -311,9 +311,9 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 110
-y 190
-w 80
+x 130
+y 160
+w 140
 h 20
 controlPv "$(P):$(SS):loadStatus"
 font "helvetica-medium-r-12.0"
@@ -376,7 +376,7 @@ minor 5
 release 0
 x 30
 y 100
-w 90
+w 100
 h 20
 controlPv "$(P):$(SS):runModeRB"
 font "helvetica-medium-r-12.0"
@@ -399,7 +399,7 @@ minor 5
 release 0
 x 170
 y 100
-w 90
+w 100
 h 20
 controlPv "$(P):$(SS):trigSrcRB"
 font "helvetica-medium-r-12.0"
@@ -412,5 +412,28 @@ nullColor index 14
 useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 220
+y 240
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 21
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(SS):abort"
+releaseValue "1"
+onLabel "Abort"
+offLabel "Abort"
+3d
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

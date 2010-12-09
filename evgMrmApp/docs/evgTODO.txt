@@ -15,7 +15,5 @@ Completed
 	-AC trigger
 
 TODO:
-	-irqStart Irq
-	-TimeStamp values greater than 0xffffffff
-	-When event clock changes all the time calculation changes (Sequencer).
-	-Change of Event Clock produces spurious events.
+	-Autosave and timestamp changing on event clock change in sequencer.
+	-Better interface for event code and timestamp array in edm/Python.

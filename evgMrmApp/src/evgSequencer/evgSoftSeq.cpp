@@ -291,11 +291,9 @@ evgSoftSeq::disable() {
 }
 
 epicsStatus
-evgSoftSeq::halt(bool callBack) {
-	if( (!m_seqRam) || (!m_seqRam->isEnabled()) )
-		return OK;
-	else {
-		m_seqRam->disable();
+evgSoftSeq::abort(bool callBack) {
+	if( m_seqRam && m_seqRam->isEnabled() ) {
+		m_seqRam->reset();
 		m_isEnabled = false;
 		scanIoRequest(ioscanpvt);
 
@@ -307,6 +305,17 @@ evgSoftSeq::halt(bool callBack) {
 			else 
 				callbackRequest(&m_owner->irqStop1_cb);
 		}
+	}
+
+	return OK;
+}
+
+epicsStatus
+evgSoftSeq::pause() {
+	if( m_seqRam && m_seqRam->isEnabled() ) {
+		m_seqRam->disable();
+		m_isEnabled = false;
+		scanIoRequest(ioscanpvt);
 	}
 
 	return OK;

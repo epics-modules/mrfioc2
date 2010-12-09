@@ -7,6 +7,7 @@ record(bo, "$(P):$(N):Ena") {
 	field( PINI, "YES")
 	field( VAL, "1")
 	field( UDF, "0")
+	info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(P):$(N):Code") {

@@ -256,12 +256,19 @@ Disable (bo):
 	In DISABLED state the armed sequence is disarmed, so even if the sequencer
 	receives the trigger the sequence is does not run again.
 
-Halt (bo):
-	The difference between halt and disable is that halt terminates currently
-	running sequence(if any) immediately and then disarms it. while disable allows
-	the running sequence to complete.
+Pause (bo):
+	This stops the currently running sequence(if any) and then disarms it.
+	Pause leaves the sequence in DISABLED state. When the sequence starts running
+	again(Arm + Trigger), it continues the from where it was stopped.
 
-Following record are used to create and modify scratch copy of the soft sequences. They do not directly interact with the hardware.
+Abort (bo):
+	This causes the currently running sequence(if any) to stop and then disarmed.
+ 	Abort leaves the sequence in DISABLED state. After disarming it also resets
+	the timestamp and eventCode registers. So when the sequence starts running
+	again(Arm + Trigger), it continues the from the start.
+
+Following record are used to create and modify scratch copy of the soft sequences.
+They do not directly interact with the hardware.
 
 Event Code Array (waveform):
 	It is used to set the list of the eventCodes of the soft sequence. These
@@ -269,12 +276,13 @@ Event Code Array (waveform):
 	matches the counter value of sequencer. The counter on the sequencer is
 	triggered by source selected by 'trigSrc'.
 
-Timestamp Array - RAW (waveform):
-	It is used to set the timeStamps for the events on the soft sequence in the
-	'Event Clock' ticks.	
+Timestamp Array RAW (waveform):
+	It is used to set the timeStamps for the events in the soft sequence in units
+	of 'Event Clock' ticks.	
  
 Timestamp Array (waveform):
-	It is used to set the timeStamps for the events in the soft sequence in seconds.
+	It is used to set the timeStamps for the events in the soft sequence in
+	terms of seconds, millisecond, microsecond etc.
 
 Run Mode (mbbo/mbbi):
 	Run mode is used determine what will the sequencer do at the end of the
@@ -291,3 +299,15 @@ Trigger Source (mbbo/mbbi):
 	AC			 - Trigger from AC sync logic
 	RAM0/RAM1	 - Trigger from RAM0/RAM1 software trigger
 
+-------------------------------------------------------------------------------
+Caveats for sequencer
+-------------------------------------------------------------------------------
+-In the Event Code and Timestamp arrays provided by user are of different lengths
+then the length of the sequence would be the length of the smaller of the two
+arrays. The remaining extra elements of the longer array would be ignored.
+
+-Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end of
+the sequence and it will be sent at the next event clock tick after the last
+event in the sequence has been sent out. If user provides 0x7f with a timestamp then that would be used instead of the default one. 
+
+-Ihe user interface for setting Event Code and Timestamp is not functional but you can use caput -a for now.

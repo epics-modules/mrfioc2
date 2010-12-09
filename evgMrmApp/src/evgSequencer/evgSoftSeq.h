@@ -71,7 +71,8 @@ public:
 	epicsStatus commit	();
 	epicsStatus enable	();
 	epicsStatus disable	();
-	epicsStatus halt	(bool);
+	epicsStatus abort	(bool);
+	epicsStatus pause	();
 	epicsStatus sync	();
 	epicsStatus isRunning();
 	epicsStatus inspectSoftSeq();
