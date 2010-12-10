@@ -11,14 +11,14 @@ class evgMrm;
 
 class evgSeqRamMgr {
 public:
-	evgSeqRamMgr(evgMrm*);	
+    evgSeqRamMgr(evgMrm*);	
 
-	evgSeqRam* getSeqRam(epicsUInt32);	
-	epicsUInt32 numOfRams();
+    evgSeqRam* getSeqRam(epicsUInt32);	
+    epicsUInt32 numOfRams();
 
 private:
-	evgMrm*							m_owner;
-	std::vector<evgSeqRam*> 		m_seqRam;
+    evgMrm*                 m_owner;
+    std::vector<evgSeqRam*> m_seqRam;
 };
 
 #endif //EVG_SEQ_RAM_MGR_H

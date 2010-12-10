@@ -1,19 +1,21 @@
 Completed
-	-Clock Control
-	-Software Event
-	-Trigger Event
-	-Distributed Bus
-	-Multiplexed Counter
-	-Front Panel Input
-	-Front Panel Output
-	-Benchmarking
-	-Interrupts.
-	-TimeStamping
-	-Sequencer
-	-Soft Sequence
-	-Data Buffer
-	-AC trigger
+    -Clock Control
+    -Software Event
+    -Trigger Event
+    -Distributed Bus
+    -Multiplexed Counter
+    -Front Panel Input
+    -Front Panel Output
+    -Benchmarking
+    -Interrupts.
+    -TimeStamping
+    -Sequencer
+    -Soft Sequence
+    -Data Buffer
+    -AC trigger
 
 TODO:
-	-Autosave and timestamp changing on event clock change in sequencer.
-	-Better interface for event code and timestamp array in edm/Python.
+    -Autosave and timestamp changing on event clock change in sequencer.
+    -Better interface for event code and timestamp array in edm/Python.
+    -Higher level control for seqeuencer
+    -Documentation

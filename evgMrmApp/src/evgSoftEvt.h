@@ -7,14 +7,14 @@
 class evgSoftEvt {
 
 public:
-	evgSoftEvt(volatile epicsUInt8* const);
+    evgSoftEvt(volatile epicsUInt8* const);
 
-	bool pend();
-	epicsStatus setEvtCode(epicsUInt32);
+    bool pend();
+    epicsStatus setEvtCode(epicsUInt32);
 
 private:
-	volatile epicsUInt8* const	m_pReg;
-	epicsMutex 					m_lock;
+    volatile epicsUInt8* const m_pReg;
+    epicsMutex                 m_lock;
 
 };
 

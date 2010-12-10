@@ -226,9 +226,12 @@ Load (bo):
 	If successful, load causes a soft sequence to move from UNLOADED state to
 	LOADED state. In the LOADED state, an hard sequence is assigned to a soft
 	sequence. If the soft sequence is already in LOADED state then load will
-	return with an error message. Then operation will fail if all the hard sequences
+	return with an error message. The operation will fail if all the hard sequences
 	are already assigned. An allocation scheme ensures that at any given time,
 	each hard sequence is connected to only one soft sequence.
+	If a sequence is 'committed' (See the 'commit'command below) then the load also
+	copies the commited data to the hardware but if the sequence is in uncommitted
+	state then the writing to the hardware does not happen.
 
 Unload (bo):
 	The unload caused the soft sequence to enter into UNLOADED state. This operation
@@ -308,6 +311,8 @@ arrays. The remaining extra elements of the longer array would be ignored.
 
 -Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end of
 the sequence and it will be sent at the next event clock tick after the last
-event in the sequence has been sent out. If user provides 0x7f with a timestamp then that would be used instead of the default one. 
+event in the sequence has been sent out. If user provides 0x7f with a timestamp
+then that would be used instead of the default one. 
 
--Ihe user interface for setting Event Code and Timestamp is not functional but you can use caput -a for now.
+-Ihe user interface for setting Event Code and Timestamp is not functional
+ but you can use caput -a for now.

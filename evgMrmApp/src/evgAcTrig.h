@@ -15,7 +15,7 @@ public:
     epicsStatus setTrigEvtMap(epicsUInt16, bool);
 
 private:
-	volatile epicsUInt8* const m_pReg;
+    volatile epicsUInt8* const m_pReg;
 };
 
 #endif //EVG_AC_TRIG_H

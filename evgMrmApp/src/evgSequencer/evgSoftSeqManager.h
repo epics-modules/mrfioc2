@@ -9,12 +9,12 @@
 
 class evgSoftSeqMgr {
 public:
-	evgSoftSeqMgr(evgMrm* const);
-	evgSoftSeq* getSoftSeq(epicsUInt32);
+    evgSoftSeqMgr(evgMrm* const);
+    evgSoftSeq* getSoftSeq(epicsUInt32);
 
 private:
-	evgMrm*	const						m_owner;
-	std::map<epicsUInt32, evgSoftSeq*> 	m_softSeq;
-	epicsMutex							m_lock;
+    evgMrm* const                      m_owner;
+    std::map<epicsUInt32, evgSoftSeq*> m_softSeq;
+    epicsMutex                         m_lock;
 };
 #endif //EVG_SEQ_MGR_H

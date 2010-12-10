@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <mrfCommonIO.h>  
+#include <mrfCommonIO.h>    
 #include <mrfCommon.h> 
 
 #include "evgRegMap.h"
@@ -48,27 +48,27 @@ evgAcTrig::setSyncSrc(bool syncSrc) {
     if(syncSrc)
         BITSET8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
     else
-        BITCLR8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
+         BITCLR8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
 
     return OK;
 }
 
 epicsStatus
 evgAcTrig::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
-	if(trigEvt > 7)
-		throw std::runtime_error("EVG Trig Event ID too large.");
+    if(trigEvt > 7)
+        throw std::runtime_error("EVG Trig Event ID too large.");
 
-	epicsUInt8	mask = 1 << trigEvt;
-	//Read-Modify-Write
-	epicsUInt8 map = READ8(m_pReg, AcTrigEvtMap);
+    epicsUInt8    mask = 1 << trigEvt;
+    //Read-Modify-Write
+    epicsUInt8 map = READ8(m_pReg, AcTrigEvtMap);
 
-	if(ena)
-		map = map | mask;
-	else
-		map = map & ~mask;
+    if(ena)
+        map = map | mask;
+    else
+        map = map & ~mask;
 
-	WRITE8(m_pReg, AcTrigEvtMap, map);
+    WRITE8(m_pReg, AcTrigEvtMap, map);
 
-	return OK;
+    return OK;
 }
 

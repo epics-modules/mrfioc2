@@ -21,16 +21,16 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
         errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
         return S_db_badField;
     }
-	
+    
     try {
         evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
-		
+    
         evgAcTrig* acTrig = evg->getAcTrig();
         if(!acTrig)
             throw std::runtime_error("Failed to lookup EVG AC Trigger");
-	
+    
         pRec->dpvt = acTrig;
         ret = 0;
     } catch(std::runtime_error& e) {
@@ -44,7 +44,7 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
     return ret;
 }
 
-/** 	Initialization	**/
+/**     Initialization    **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 init_lo(longoutRecord* plo) {
@@ -67,7 +67,7 @@ init_bo(boRecord* pbo) {
     long ret = init_record((dbCommon*)pbo, &pbo->out);
     if (ret == 0)
         ret = 2;
-	
+    
     return ret;
 }
 
@@ -79,10 +79,10 @@ write_lo_divider(longoutRecord* plo) {
     unsigned long dummy;
 
     try {
-       evgAcTrig* acTrig = (evgAcTrig*)plo->dpvt;
+         evgAcTrig* acTrig = (evgAcTrig*)plo->dpvt;
         if(!acTrig)
              throw std::runtime_error("Device pvt field not initialized");
-		
+    
         ret = acTrig->setDivider(plo->val);
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(plo, READ_ALARM, MAJOR_ALARM);
@@ -103,10 +103,10 @@ write_ao_phase(aoRecord* pao) {
     unsigned long dummy;
 
     try {
-       evgAcTrig* acTrig = (evgAcTrig*)pao->dpvt;
+         evgAcTrig* acTrig = (evgAcTrig*)pao->dpvt;
         if(!acTrig)
              throw std::runtime_error("Device pvt field not initialized");
-		
+    
         ret = acTrig->setPhase(pao->val);
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pao, READ_ALARM, MAJOR_ALARM);
@@ -130,7 +130,7 @@ write_bo_bypass(boRecord* pbo) {
         evgAcTrig* acTrig = (evgAcTrig*)pbo->dpvt;
         if(!acTrig)
             throw std::runtime_error("Device pvt field not initialized");
-		
+    
         ret = acTrig->bypass(pbo->val);
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, READ_ALARM, MAJOR_ALARM);
@@ -154,7 +154,7 @@ write_bo_syncSrc(boRecord* pbo) {
         evgAcTrig* acTrig = (evgAcTrig*)pbo->dpvt;
         if(!acTrig)
             throw std::runtime_error("Device pvt field not initialized");
-		
+    
         ret = acTrig->setSyncSrc(pbo->val);
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, READ_ALARM, MAJOR_ALARM);
@@ -168,7 +168,7 @@ write_bo_syncSrc(boRecord* pbo) {
     return ret;
 }
 
-/** 	device support entry table 	**/
+/**     device support entry table     **/
 extern "C" {
 common_dset devLoEvgAcDivider = {
     5,
