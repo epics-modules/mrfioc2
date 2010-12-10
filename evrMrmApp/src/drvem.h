@@ -186,7 +186,7 @@ private:
   epicsTime lastFifoRun;
 
   // Take lock when accessing interest counter or TS members
-  epicsMutex events_lock; // really should be a rwlock
+  mutable epicsMutex events_lock; // really should be a rwlock
   eventCode events[256];
 
   // Buffer received

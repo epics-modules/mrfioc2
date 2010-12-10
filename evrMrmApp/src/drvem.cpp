@@ -249,12 +249,11 @@ EVRMRM::enabled() const
 void
 EVRMRM::enable(bool v)
 {
-    int iflags=epicsInterruptLock();
+    SCOPED_LOCK(shadowLock);
     if(v)
         BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
     else
         BITCLR(NAT,32,base, Control, Control_enable|Control_mapena);
-    epicsInterruptUnlock(iflags);
 }
 
 MRMPulser*
@@ -599,10 +598,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     } else {
         // Get current absolute time
 
-        // must disable interrupts when manipulating
-        // bits in the control register
-        int iflags=epicsInterruptLock();
-
         epicsUInt32 ctrl=READ32(base, Control);
 
         // Latch on
@@ -615,8 +610,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         // Latch off
         ctrl&= ~Control_tsltch;
         WRITE32(base, Control, ctrl);
-
-        epicsInterruptUnlock(iflags);
     }
 
     //validate seconds (has it been initialized)?
@@ -817,7 +810,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     }
     evr->lastFifoRun=now;
 
-    SCOPED_LOCK2(evr->events_lock, guard);
+    SCOPED_LOCK2(evr->events_lock, eventGuard);
 
     epicsUInt32 status;
 
@@ -873,12 +866,16 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         evr->count_FIFO_overflow++;
     }
 
-    int iflags=epicsInterruptLock();
+    eventGuard.unlock();
+    SCOPED_LOCK2(evr->shadowLock, shadowGuard);
+
 
     if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
         // clear fifo if link lost or buffer overflow
         BITSET(NAT,32, evr->base, Control, Control_fiforst);
     }
+
+    int iflags=epicsInterruptLock();
 
     BITSET(NAT,32, evr->base, IRQEnable, IRQ_Event|IRQ_BufFull);
 
