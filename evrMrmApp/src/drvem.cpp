@@ -584,7 +584,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 
         SCOPED_LOCK(events_lock);
 
-        // The timestamp service registers permenant interest
+        // Fail if event is not mapped
         if (!entry->interested ||
             ( entry->last_sec==0 &&
               entry->last_evt==0) )
@@ -952,16 +952,20 @@ EVRMRM::seconds_tick(CALLBACK* cb)
     // Don't bother to latch since we are only reading the seconds
     epicsUInt32 newSec=READ32(evr->base, TSSec);
 
-    if (evr->timestampValid && (    evr->lastValidTimestamp==newSec
-                                 || evr->lastInvalidTimestamp==newSec)
-        )
+    /* When a new seconds value is received it must differ from
+     * the previous valid seconds value, and not an invalid value.
+     */
+    if (evr->lastValidTimestamp==newSec
+        || evr->lastInvalidTimestamp==newSec)
     {
-        // TS reset without updated seconds value
-        evr->timestampValid=false;
-        evr->lastInvalidTimestamp=newSec;
-        scanIoRequest(evr->timestampValidChange);
+        if (evr->timestampValid) {
+            // TS reset without updated seconds value
+            evr->timestampValid=false;
+            evr->lastInvalidTimestamp=newSec;
+            scanIoRequest(evr->timestampValidChange);
+        }
     } else if (!evr->timestampValid) {
-        // TS becomes value after fault
+        // TS becomes valid after fault
         evr->timestampValid=true;
         evr->lastValidTimestamp=newSec;
         scanIoRequest(evr->timestampValidChange);
