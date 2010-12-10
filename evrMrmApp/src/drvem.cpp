@@ -50,6 +50,7 @@ CardMap<dataBufRx> datarxmap;
 
 EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   :EVR()
+  ,evrLock()
   ,id(i)
   ,base(b)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
@@ -63,7 +64,6 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,pulsers()
   ,shortcmls()
   ,count_FIFO_sw_overrate(0)
-  ,events_lock()
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
   ,shadowCounterPS(0)
@@ -185,7 +185,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
         CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
     }
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
 
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;
@@ -249,7 +249,7 @@ EVRMRM::enabled() const
 void
 EVRMRM::enable(bool v)
 {
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
     if(v)
         BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
     else
@@ -392,7 +392,7 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     epicsUInt32 bit  =func%32;
     epicsUInt32 mask=1<<bit;
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
 
     epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
 
@@ -427,7 +427,7 @@ EVRMRM::clockSet(double freq)
     if(newfrac==0)
         throw std::out_of_range("New frequency can't be used");
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
 
     epicsUInt32 oldfrac=READ32(base, FracDiv);
 
@@ -488,7 +488,7 @@ EVRMRM::setSourceTS(TSSource src)
         throw std::out_of_range("TS source invalid");
     }
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
 
     switch(src){
     case TSSourceInternal:
@@ -512,7 +512,7 @@ EVRMRM::setSourceTS(TSSource src)
 double
 EVRMRM::clockTS() const
 {
-    //Note: acquires shadowLock 3 times.
+    //Note: acquires evrLock 3 times.
 
     TSSource src=SourceTS();
 
@@ -533,7 +533,7 @@ EVRMRM::clockTSSet(double clk)
     TSSource src=SourceTS();
     double eclk=clock();
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
 
     if(src==TSSourceInternal){
         epicsUInt16 div=(epicsUInt16)(eclk/clk);
@@ -552,7 +552,7 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
 
     eventCode *entry=&events[event];
 
-    SCOPED_LOCK(events_lock);
+    SCOPED_LOCK(evrLock);
 
     if (   (set  && entry->interested==0) // first interested
         || (!set && entry->interested==1) // or last un-interested
@@ -573,7 +573,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) return false;
 
-    SCOPED_LOCK(shadowLock);
+    SCOPED_LOCK(evrLock);
     if(!timestampValid) return false;
 
     if(event>0 && event<=255) {
@@ -581,7 +581,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 
         eventCode *entry=&events[event];
 
-        SCOPED_LOCK(events_lock);
+        SCOPED_LOCK(evrLock);
 
         // Fail if event is not mapped
         if (!entry->interested ||
@@ -623,7 +623,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     }
 
     if(ts->nsec>=1000000000) {
-        SCOPED_LOCK(shadowLock);
+        SCOPED_LOCK(evrLock);
         timestampValid=false;
         lastInvalidTimestamp=ts->secPastEpoch;
         scanIoRequest(timestampValidChange);
@@ -667,7 +667,7 @@ EVRMRM::eventNotityAdd(epicsUInt32 event, CALLBACK* cb)
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
 
-    SCOPED_LOCK2(events_lock, guard);
+    SCOPED_LOCK2(evrLock, guard);
 
     if (std::find(events[event].notifiees.begin(),
                   events[event].notifiees.end(),
@@ -690,7 +690,7 @@ EVRMRM::eventNotityDel(epicsUInt32 event, CALLBACK* cb)
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
 
-    SCOPED_LOCK2(events_lock, guard);
+    SCOPED_LOCK2(evrLock, guard);
 
     eventCode::notifiees_t::iterator it;
 
@@ -772,7 +772,7 @@ EVRMRM::isr(void *arg)
 }
 
 
-// Caller must hold events_lock
+// Caller must hold evrLock
 static
 void
 eventInvoke(eventCode& event)
@@ -810,7 +810,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     }
     evr->lastFifoRun=now;
 
-    SCOPED_LOCK2(evr->events_lock, eventGuard);
+    SCOPED_LOCK2(evr->evrLock, eventGuard);
 
     epicsUInt32 status;
 
@@ -867,7 +867,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     }
 
     eventGuard.unlock();
-    SCOPED_LOCK2(evr->shadowLock, shadowGuard);
+    SCOPED_LOCK2(evr->evrLock, shadowGuard);
 
 
     if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
@@ -889,7 +889,7 @@ EVRMRM::sentinel_done(CALLBACK* cb)
     callbackGetUser(vptr,cb);
     eventCode *sent=static_cast<eventCode*>(vptr);
 
-    SCOPED_LOCK2(sent->owner->events_lock, guard);
+    SCOPED_LOCK2(sent->owner->evrLock, guard);
 
     // Is this the last callback queue?
     if (--sent->waitingfor)
@@ -923,7 +923,7 @@ EVRMRM::poll_link(CALLBACK* cb)
         // Still down
         callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
         {
-            SCOPED_LOCK2(evr->shadowLock, guard);
+            SCOPED_LOCK2(evr->evrLock, guard);
             evr->timestampValid=false;
             evr->lastInvalidTimestamp=evr->lastValidTimestamp;
             scanIoRequest(evr->timestampValidChange);
@@ -944,7 +944,7 @@ EVRMRM::seconds_tick(CALLBACK* cb)
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
 
-    SCOPED_LOCK2(evr->shadowLock, guard);
+    SCOPED_LOCK2(evr->evrLock, guard);
 
     // Don't bother to latch since we are only reading the seconds
     epicsUInt32 newSec=READ32(evr->base, TSSec);

@@ -62,7 +62,14 @@ struct eventCode {
  */
 class EVRMRM : public EVR
 {
-public:
+public:    
+  /** @brief Guards access to instance
+   *  All callers must take this lock before any operations on
+   *  this object.
+   */
+  mutable epicsMutex evrLock;
+
+
   EVRMRM(int,volatile unsigned char*);
 
   virtual ~EVRMRM();
@@ -93,7 +100,7 @@ public:
   virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
 
   virtual double clock() const
-        {SCOPED_LOCK(shadowLock);return eventClock;}
+        {SCOPED_LOCK(evrLock);return eventClock;}
   virtual void clockSet(double);
 
   virtual bool pllLocked() const;
@@ -105,17 +112,17 @@ public:
   virtual epicsUInt32 uSecDiv() const;
 
   virtual epicsUInt32 tsDiv() const
-        {SCOPED_LOCK(shadowLock);return shadowCounterPS;}
+        {SCOPED_LOCK(evrLock);return shadowCounterPS;}
 
   virtual void setSourceTS(TSSource);
   virtual TSSource SourceTS() const
-        {SCOPED_LOCK(shadowLock);return shadowSourceTS;}
+        {SCOPED_LOCK(evrLock);return shadowSourceTS;}
   virtual double clockTS() const;
   virtual void clockTSSet(double);
   virtual bool interestedInEvent(epicsUInt32 event,bool set);
 
   virtual bool TimeStampValid() const
-        {SCOPED_LOCK(shadowLock);return timestampValid;}
+        {SCOPED_LOCK(evrLock);return timestampValid;}
   virtual IOSCANPVT TimeStampValidEvent(){return timestampValidChange;}
 
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
@@ -130,9 +137,9 @@ public:
   virtual IOSCANPVT heartbeatTIMOOccured(){return IRQheartbeat;}
 
   virtual epicsUInt32 FIFOFullCount() const
-        {SCOPED_LOCK(events_lock);return count_FIFO_overflow;}
+        {SCOPED_LOCK(evrLock);return count_FIFO_overflow;}
   virtual epicsUInt32 FIFOOverRate() const
-        {SCOPED_LOCK(events_lock);return count_FIFO_sw_overrate;}
+        {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
 
   static void isr(void*);
 
@@ -147,7 +154,7 @@ private:
   volatile epicsUInt32 count_hardware_irq;
   volatile epicsUInt32 count_heartbeat;
 
-  // Guarded by shadowLock
+  // Guarded by evrLock
   epicsUInt32 count_FIFO_overflow;
 
   // scanIoRequest() from ISR or callback
@@ -185,8 +192,6 @@ private:
   epicsUInt32 count_FIFO_sw_overrate;
   epicsTime lastFifoRun;
 
-  // Take lock when accessing interest counter or TS members
-  mutable epicsMutex events_lock; // really should be a rwlock
   eventCode events[256];
 
   // Buffer received
@@ -199,10 +204,6 @@ private:
   // Periodic callback to detect when link state goes from down to up
   CALLBACK poll_link_cb;
   static void poll_link(CALLBACK*);
-
-  /** Guards access to all data members not accessed by ISR
-   */
-  mutable epicsMutex shadowLock;
 
   // Set by clockTSSet() with IRQ disabled
   double stampClock;
