@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 157
-y 280
+x 50
+y 315
 w 298
 h 313
 font "helvetica-medium-r-12.0"
@@ -80,7 +80,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Event Code / Timestamp"
 numCmds 1
 command {
-  0 "python /home/jshah/qt/EvgSoftSeq/evgSoftSeq.py $(P) $(SS)"
+  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(P) $(SS)"
 }
 endObjectProperties
 
@@ -252,7 +252,7 @@ y 270
 w 240
 h 20
 controlPv "$(P):$(SS):err"
-fgColor index 14
+fgColor index 21
 fgAlarm
 bgColor index 3
 fill
