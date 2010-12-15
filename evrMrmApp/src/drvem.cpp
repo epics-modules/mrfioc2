@@ -618,16 +618,23 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 
         epicsUInt32 ctrl=READ32(base, Control);
 
-        // Latch on
-        ctrl|= Control_tsltch;
-        WRITE32(base, Control, ctrl);
+        // Latch timestamp
+        WRITE32(base, Control, ctrl|Control_tsltch);
 
         ts->secPastEpoch=READ32(base, TSSecLatch);
         ts->nsec=READ32(base, TSEvtLatch);
 
-        // Latch off
-        ctrl&= ~Control_tsltch;
-        WRITE32(base, Control, ctrl);
+        /* BUG: There is a firmware bug which occasionally
+         * causes the previous write to fail with a VME bus
+         * error, and 0 the Control register.
+         * Note: When this occurs the card is _disabled_ and
+         * unresponsive for a short interval.
+         */
+        epicsUInt32 ctrl2=READ32(base, Control);
+        if (ctrl2!=ctrl) { // tsltch bit is write-only
+            printf("Control register write fault %08x %08x\n",ctrl,ctrl2);
+            WRITE32(base, Control, ctrl);
+        }
     }
 
     //validate seconds (has it been initialized)?
