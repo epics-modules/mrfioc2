@@ -589,7 +589,7 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
 bool
 EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
-    if(!ts) return false;
+    if(!ts) throw std::runtime_error("Invalid argument");
 
     SCOPED_LOCK(evrLock);
     if(!timestampValid) return false;
@@ -598,8 +598,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         // Get time of last event code #
 
         eventCode *entry=&events[event];
-
-        SCOPED_LOCK(evrLock);
 
         // Fail if event is not mapped
         if (!entry->interested ||
@@ -635,25 +633,54 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
             printf("Control register write fault %08x %08x\n",ctrl,ctrl2);
             WRITE32(base, Control, ctrl);
         }
+
     }
 
-    //validate seconds (has it been initialized)?
+    if(!convertTS(ts))
+        return false;
+
+    return true;
+}
+
+/** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
+ @returns false if conversion failed
+ */
+bool
+EVRMRM::convertTS(epicsTimeStamp* ts)
+{
+    // First validate the input
+
+    //Has it been initialized?
     if(ts->secPastEpoch==0 || ts->nsec==0){
         return false;
     }
-    if(ts->secPastEpoch==lastInvalidTimestamp) {
-        timestampValid=false;
-        scanIoRequest(timestampValidChange);
-        return false;
-    }
 
+    // 1 sec. reset is late
     if(ts->nsec>=1000000000) {
         SCOPED_LOCK(evrLock);
         timestampValid=false;
         lastInvalidTimestamp=ts->secPastEpoch;
         scanIoRequest(timestampValidChange);
         return false;
+    }
 
+    // recurrence of an invalid time
+    if(ts->secPastEpoch==lastInvalidTimestamp) {
+        timestampValid=false;
+        scanIoRequest(timestampValidChange);
+        return false;
+    }
+
+    /* Reported seconds timestamp should be no more
+     * then 1sec in the future.
+     */
+    if(ts->secPastEpoch > lastValidTimestamp+1)
+    {
+        errlogPrintf("EVR ignoring invalid TS %08x %08x (expect %08x)\n",
+                     ts->secPastEpoch, ts->nsec, lastValidTimestamp);
+        timestampValid=false;
+        scanIoRequest(timestampValidChange);
+        return false;
     }
 
     //Link seconds counter is POSIX time
@@ -999,19 +1026,22 @@ EVRMRM::seconds_tick(CALLBACK* cb)
      * the previous valid seconds value, and not an invalid value.
      */
     if (evr->lastValidTimestamp==newSec
-        || evr->lastInvalidTimestamp==newSec)
+        || evr->lastInvalidTimestamp==newSec
+        || newSec==0)
     {
         if (evr->timestampValid) {
-            // TS reset without updated seconds value
+            errlogPrintf("TS reset w/ old or invalid seconds %08x (%08x %08x)\n",
+                         newSec, evr->lastValidTimestamp, evr->lastInvalidTimestamp);
             evr->timestampValid=false;
             evr->lastInvalidTimestamp=newSec;
             scanIoRequest(evr->timestampValidChange);
         }
+        return;
     } else if (!evr->timestampValid) {
-        // TS becomes valid after fault
+        errlogPrintf("TS becomes valid after fault %08x\n",newSec);
         evr->timestampValid=true;
-        evr->lastValidTimestamp=newSec;
         scanIoRequest(evr->timestampValidChange);
     }
+    evr->lastValidTimestamp=newSec;
 
 }

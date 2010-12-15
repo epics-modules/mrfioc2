@@ -149,6 +149,8 @@ public:
   virtual void eventNotityAdd(epicsUInt32, CALLBACK*);
   virtual void eventNotityDel(epicsUInt32, CALLBACK*);
 
+  bool convertTS(epicsTimeStamp* ts);
+
   virtual epicsUInt16 dbus() const;
 
   virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
