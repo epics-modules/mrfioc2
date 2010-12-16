@@ -1005,7 +1005,7 @@ EVRMRM::poll_link(CALLBACK* cb)
     }else{
         scanIoRequest(evr->IRQrxError);
         int iflags=epicsInterruptLock();
-        BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr);
+        BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr|IRQ_Enable);
         epicsInterruptUnlock(iflags);
     }
 }
