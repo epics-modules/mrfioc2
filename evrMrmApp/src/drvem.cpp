@@ -39,7 +39,20 @@ do { \
  */
 
 extern "C" {
-    double mrmEvrFIFOPeriod = 0.02;
+    /* Arbitrary throttleing of FIFO thread.
+     * The FIFO thread has to run at a high priority
+     * so the callbacks have low latency.  At the same
+     * time we want to prevent starvation of lower
+     * priority tasks if too many events are received.
+     * This would cause the CA server to be starved
+     * preventing remote correction of the problem.
+     *
+     * This should be the highest event rate which
+     * needs to be timestamped.
+     *
+     * Set to 0.0 to disable
+     */
+    double mrmEvrFIFOPeriod = 1.0/ 2000.0; /* 1/rate in Hz */
 }
 
 // Fractional synthesizer reference clock frequency
@@ -63,6 +76,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,prescalers()
   ,pulsers()
   ,shortcmls()
+  ,drain_fifo_method(*this)
+  ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
+                   epicsThreadGetStackSize(epicsThreadStackBig),
+                   epicsThreadPriorityHigh )
+  ,drain_fifo_wakeup(3,sizeof(int))
   ,count_FIFO_sw_overrate(0)
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
@@ -91,7 +109,6 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     scanIoInit(&IRQfifofull);
     scanIoInit(&timestampValidChange);
 
-    CBINIT(&drain_fifo_cb, priorityMedium, &EVRMRM::drain_fifo, this);
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
@@ -205,6 +222,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick_cb);
 
+    drain_fifo_task.start();
 }
 
 EVRMRM::~EVRMRM()
@@ -752,7 +770,8 @@ EVRMRM::isr(void *arg)
     if(active&IRQ_Event){
         //FIFO not-empty
         enable &= ~IRQ_Event;
-        callbackRequest(&evr->drain_fifo_cb);
+        int wakeup=0;
+        evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
     }
     if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
@@ -760,7 +779,8 @@ EVRMRM::isr(void *arg)
     }
     if(active&IRQ_FIFOFull){
         enable &= ~IRQ_FIFOFull;
-        callbackRequest(&evr->drain_fifo_cb);
+        int wakeup=0;
+        evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
 
         scanIoRequest(evr->IRQfifofull);
     }
@@ -788,98 +808,117 @@ eventInvoke(eventCode& event)
 }
 
 void
-EVRMRM::drain_fifo(CALLBACK* cb)
+EVRMRM::drain_fifo()
 {
     size_t i;
-    void *vptr;
-    callbackGetUser(vptr,cb);
-    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+    printf("EVR FIFO task start\n");
 
-    epicsTime now;
-    now=epicsTime::getCurrent();
+    SCOPED_LOCK2(evrLock, guard);
 
-    double since=now-evr->lastFifoRun;
+    while(true) {
+        int code, err;
 
-    if (since<mrmEvrFIFOPeriod && since>0) {
-        /* To prevent from completely overwelming lower priority tasks
-         * (ie channel access) ensure FIFO callback waits for
-         * mrmEvrFIFOPeriod seconds between runs.
-         */
-        callbackRequestDelayed(cb,mrmEvrFIFOPeriod-since);
-        return;
-    }
-    evr->lastFifoRun=now;
+        guard.unlock();
 
-    SCOPED_LOCK2(evr->evrLock, eventGuard);
+        err=drain_fifo_wakeup.receive(&code, sizeof(code));
 
-    epicsUInt32 status;
+        if (err<0) {
+            errlogPrintf("FIFO wakeup error %d\n",err);
+            epicsThreadSleep(0.1); // avoid message flood
+            guard.lock();
+            continue;
 
-    // Bound the number of events taken from the FIFO
-    // at one time.
-    for(i=0; i<512; i++) {
-
-        status=READ32(evr->base, IRQFlag);
-        if (!(status&IRQ_Event))
+        } else if(code==1) {
+            // Request thread stop
+            guard.lock();
             break;
-        if (status&IRQ_RXErr)
-            break;
+        }
 
-        epicsUInt32 evt=READ32(evr->base, EvtFIFOCode);
-        if (!evt)
-            break;
+        epicsTime now;
+        now=epicsTime::getCurrent();
 
-        if (evt>NELEMENTS(evr->events)) {
-            // BUG: we get occasional corrupt VME reads of this register
-            epicsUInt32 evt2=READ32(evr->base, EvtFIFOCode);
-            if (evt2>NELEMENTS(evr->events)) {
-                printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
+        guard.lock();
+
+        double since=now-lastFifoRun;
+
+        if (since<mrmEvrFIFOPeriod && since>0) {
+            /* To prevent from completely overwelming lower priority tasks
+             * (ie channel access) ensure FIFO callback waits for
+             * mrmEvrFIFOPeriod seconds between runs.
+             */
+            guard.unlock();
+            epicsThreadSleep(mrmEvrFIFOPeriod-since);
+            guard.lock();
+        }
+        lastFifoRun=now;
+
+        epicsUInt32 status;
+
+        // Bound the number of events taken from the FIFO
+        // at one time.
+        for(i=0; i<512; i++) {
+
+            status=READ32(base, IRQFlag);
+            if (!(status&IRQ_Event))
                 break;
-            } else
-                evt=evt2;
-        }
-        evt &= 0xff; // (in)santity check
+            if (status&IRQ_RXErr)
+                break;
 
-        evr->events[evt].last_sec=READ32(evr->base, EvtFIFOSec);
-        evr->events[evt].last_evt=READ32(evr->base, EvtFIFOEvt);
+            epicsUInt32 evt=READ32(base, EvtFIFOCode);
+            if (!evt)
+                break;
 
-        if (evr->events[evt].again) {
-            // ignore extra events in buffer.
-        } else if (evr->events[evt].waitingfor>0) {
-            // already queued, but occured again before
-            // callbacks finished so disable event
-            evr->events[evt].again=true;
-            evr->specialSetMap(evt, ActionFIFOSave, false);
-            evr->count_FIFO_sw_overrate++;
-        } else {
-            // needs to be queued
-            eventInvoke(evr->events[evt]);
-            evr->events[evt].waitingfor=NUM_CALLBACK_PRIORITIES;
-            for(int p=0; p<NUM_CALLBACK_PRIORITIES; p++) {
-                evr->events[evt].done.priority=p;
-                callbackRequest(&evr->events[evt].done);
+            if (evt>NELEMENTS(events)) {
+                // BUG: we get occasional corrupt VME reads of this register
+                epicsUInt32 evt2=READ32(base, EvtFIFOCode);
+                if (evt2>NELEMENTS(events)) {
+                    printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
+                    break;
+                } else
+                    evt=evt2;
             }
+            evt &= 0xff; // (in)santity check
+
+            events[evt].last_sec=READ32(base, EvtFIFOSec);
+            events[evt].last_evt=READ32(base, EvtFIFOEvt);
+
+            if (events[evt].again) {
+                // ignore extra events in buffer.
+            } else if (events[evt].waitingfor>0) {
+                // already queued, but occured again before
+                // callbacks finished so disable event
+                events[evt].again=true;
+                specialSetMap(evt, ActionFIFOSave, false);
+                count_FIFO_sw_overrate++;
+            } else {
+                // needs to be queued
+                eventInvoke(events[evt]);
+                events[evt].waitingfor=NUM_CALLBACK_PRIORITIES;
+                for(int p=0; p<NUM_CALLBACK_PRIORITIES; p++) {
+                    events[evt].done.priority=p;
+                    callbackRequest(&events[evt].done);
+                }
+            }
+
         }
 
+        if (status&IRQ_FIFOFull) {
+            count_FIFO_overflow++;
+        }
+
+        if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
+            // clear fifo if link lost or buffer overflow
+            BITSET(NAT,32, base, Control, Control_fiforst);
+        }
+
+        int iflags=epicsInterruptLock();
+
+        BITSET(NAT,32, base, IRQEnable, IRQ_Event|IRQ_FIFOFull|IRQ_Enable);
+
+        epicsInterruptUnlock(iflags);
     }
 
-    if (status&IRQ_FIFOFull) {
-        evr->count_FIFO_overflow++;
-    }
-
-    eventGuard.unlock();
-    SCOPED_LOCK2(evr->evrLock, shadowGuard);
-
-
-    if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
-        // clear fifo if link lost or buffer overflow
-        BITSET(NAT,32, evr->base, Control, Control_fiforst);
-    }
-
-    int iflags=epicsInterruptLock();
-
-    BITSET(NAT,32, evr->base, IRQEnable, IRQ_Event|IRQ_BufFull);
-
-    epicsInterruptUnlock(iflags);
+    printf("FIFO task exiting\n");
 }
 
 void

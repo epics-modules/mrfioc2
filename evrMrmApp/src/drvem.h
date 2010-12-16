@@ -13,6 +13,8 @@
 
 #include <dbScan.h>
 #include <epicsTime.h>
+#include <epicsThread.h>
+#include <epicsMessageQueue.h>
 #include <callback.h>
 #include <epicsMutex.h>
 
@@ -24,6 +26,22 @@
 #include "drvemRxBuf.h"
 
 #include "mrmDataBufTx.h"
+
+//! @brief Helper to allow one class to have several runable methods
+template<class C,void (C::*Method)()>
+class epicsThreadRunableMethod : public epicsThreadRunable
+{
+    C& owner;
+public:
+    epicsThreadRunableMethod(C& o)
+        :owner(o)
+    {}
+    virtual ~epicsThreadRunableMethod(){}
+    virtual void run()
+    {
+        (owner.*Method)();
+    }
+};
 
 class EVRMRM;
 
@@ -184,9 +202,11 @@ private:
   typedef std::vector<MRMCML*> shortcmls_t;
   shortcmls_t shortcmls;
 
-  // Called when FIFO not-full IRQ is received
-  CALLBACK drain_fifo_cb;
-  static void drain_fifo(CALLBACK*);
+  // run when FIFO not-full IRQ is received
+  void drain_fifo();
+  epicsThreadRunableMethod<EVRMRM, &EVRMRM::drain_fifo> drain_fifo_method;
+  epicsThread drain_fifo_task;
+  epicsMessageQueue drain_fifo_wakeup;
   static void sentinel_done(CALLBACK*);
 
   epicsUInt32 count_FIFO_sw_overrate;
