@@ -39,7 +39,7 @@ do { \
  */
 
 extern "C" {
-    double mrmEvrFIFOPeriod = 0.1;
+    double mrmEvrFIFOPeriod = 0.02;
 }
 
 // Fractional synthesizer reference clock frequency
@@ -179,14 +179,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     }
 
     for(size_t i=0; i<NELEMENTS(this->events); i++) {
-        events[i].code=0;
-
-        events[i].interested=0;
-
-        events[i].last_sec=0;
-        events[i].last_evt=0;
-
-        scanIoInit(&events[i].occured);
+        events[i].code=i;
+        events[i].owner=this;
+        CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
     }
 
     SCOPED_LOCK(shadowLock);
@@ -782,6 +777,22 @@ EVRMRM::isr(void *arg)
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
 }
 
+
+// Caller must hold events_lock
+static
+void
+eventInvoke(eventCode& event)
+{
+    scanIoRequest(event.occured);
+
+    for(eventCode::notifiees_t::const_iterator it=event.notifiees.begin();
+        it!=event.notifiees.end();
+        ++it)
+    {
+        callbackRequest(*it);
+    }
+}
+
 void
 EVRMRM::drain_fifo(CALLBACK* cb)
 {
@@ -789,7 +800,6 @@ EVRMRM::drain_fifo(CALLBACK* cb)
     void *vptr;
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
-    epicsUInt32 queued[256/8];
 
     epicsTime now;
     now=epicsTime::getCurrent();
@@ -805,8 +815,6 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         return;
     }
     evr->lastFifoRun=now;
-
-    memset(queued, 0, sizeof(queued));
 
     SCOPED_LOCK2(evr->events_lock, guard);
 
@@ -837,29 +845,29 @@ EVRMRM::drain_fifo(CALLBACK* cb)
         }
         evt &= 0xff; // (in)santity check
 
-        /* Allow each event to be queued only once per cycle
-         * to avoid overflowing the callback queue when a large
-         * burst of identical events arrive.
-         */
-        if (queued[evt/32] & (1<<(evt%32)))
-            continue;
-        queued[evt/32]|=1<<(evt%32);
-
         evr->events[evt].last_sec=READ32(evr->base, EvtFIFOSec);
         evr->events[evt].last_evt=READ32(evr->base, EvtFIFOEvt);
 
-        scanIoRequest(evr->events[evt].occured);
-
-        for(eventCode::notifiees_t::const_iterator it=evr->events[evt].notifiees.begin();
-            it!=evr->events[evt].notifiees.end();
-            ++it)
-        {
-            callbackRequest(*it);
+        if (evr->events[evt].again) {
+            // ignore extra events in buffer.
+        } else if (evr->events[evt].waitingfor>0) {
+            // already queued, but occured again before
+            // callbacks finished so disable event
+            evr->events[evt].again=true;
+            evr->specialSetMap(evt, ActionFIFOSave, false);
+        } else {
+            // needs to be queued
+            eventInvoke(evr->events[evt]);
+            evr->events[evt].waitingfor=NUM_CALLBACK_PRIORITIES;
+            for(int p=0; p<NUM_CALLBACK_PRIORITIES; p++) {
+                evr->events[evt].done.priority=p;
+                callbackRequest(&evr->events[evt].done);
+            }
         }
+
     }
 
     if (status&IRQ_FIFOFull) {
-        errlogPrintf("EVR %d FIFO overflow\n", evr->id);
         evr->count_FIFO_overflow++;
     }
 
@@ -874,6 +882,29 @@ EVRMRM::drain_fifo(CALLBACK* cb)
 
     epicsInterruptUnlock(iflags);
 }
+
+void
+EVRMRM::sentinel_done(CALLBACK* cb)
+{
+    void *vptr;
+    callbackGetUser(vptr,cb);
+    eventCode *sent=static_cast<eventCode*>(vptr);
+
+    SCOPED_LOCK2(sent->owner->events_lock, guard);
+
+    // Is this the last callback queue?
+    if (--sent->waitingfor)
+        return;
+
+    bool run=sent->again;
+    sent->again=false;
+
+    // Re-enable mapping if disabled
+    if (run && sent->interested) {
+        sent->owner->specialSetMap(sent->code, ActionFIFOSave, true);
+    }
+}
+
 
 void
 EVRMRM::drain_log(CALLBACK*)

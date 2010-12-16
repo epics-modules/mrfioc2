@@ -25,8 +25,11 @@
 
 #include "mrmDataBufTx.h"
 
+class EVRMRM;
+
 struct eventCode {
   epicsUInt8 code; // constant
+  EVRMRM* owner;
 
   // For efficiency events will only
   // be mapped into the FIFO when this
@@ -40,6 +43,17 @@ struct eventCode {
 
   typedef std::list<CALLBACK*> notifiees_t;
   notifiees_t notifiees;
+
+  CALLBACK done;
+  size_t waitingfor;
+  bool again;
+
+  eventCode():owner(0), interested(0), last_sec(0)
+          ,last_evt(0), notifiees(), waitingfor(0), again(false)
+  {
+    scanIoInit(&occured);
+    // done - initialized in EVRMRM::EVRMRM()
+  }
 };
 
 /**@brief Modular Register Map Event Receivers
@@ -163,6 +177,7 @@ private:
   // Called when FIFO not-full IRQ is received
   CALLBACK drain_fifo_cb;
   static void drain_fifo(CALLBACK*);
+  static void sentinel_done(CALLBACK*);
 
   epicsTime lastFifoRun;
 
