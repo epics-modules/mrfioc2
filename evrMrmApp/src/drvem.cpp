@@ -692,8 +692,7 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
     if(period<=0 || !isfinite(period))
         return false;
 
-    ts->nsec*=(epicsUInt32)period;
-
+    ts->nsec=(epicsUInt32)(ts->nsec*period);
     return true;
 }
 
