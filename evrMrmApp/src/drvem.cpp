@@ -38,6 +38,10 @@ do { \
  *      constructs like a ISR safe spinlock.
  */
 
+extern "C" {
+    double mrmEvrFIFOPeriod = 0.1;
+}
+
 // Fractional synthesizer reference clock frequency
 static
 const double fracref=24.0; // MHz
@@ -781,10 +785,26 @@ EVRMRM::isr(void *arg)
 void
 EVRMRM::drain_fifo(CALLBACK* cb)
 {
+    size_t i;
     void *vptr;
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
     epicsUInt32 queued[256/8];
+
+    epicsTime now;
+    now=epicsTime::getCurrent();
+
+    double since=now-evr->lastFifoRun;
+
+    if (since<mrmEvrFIFOPeriod && since>0) {
+        /* To prevent from completely overwelming lower priority tasks
+         * (ie channel access) ensure FIFO callback waits for
+         * mrmEvrFIFOPeriod seconds between runs.
+         */
+        callbackRequestDelayed(cb,mrmEvrFIFOPeriod-since);
+        return;
+    }
+    evr->lastFifoRun=now;
 
     memset(queued, 0, sizeof(queued));
 
@@ -794,7 +814,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
 
     // Bound the number of events taken from the FIFO
     // at one time.
-    for(size_t i=0; i<512; i++) {
+    for(i=0; i<512; i++) {
 
         status=READ32(evr->base, IRQFlag);
         if (!(status&IRQ_Event))

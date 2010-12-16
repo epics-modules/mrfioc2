@@ -164,6 +164,8 @@ private:
   CALLBACK drain_fifo_cb;
   static void drain_fifo(CALLBACK*);
 
+  epicsTime lastFifoRun;
+
   // Take lock when accessing interest counter or TS members
   epicsMutex events_lock; // really should be a rwlock
   eventCode events[256];
