@@ -129,7 +129,10 @@ public:
   virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
   virtual IOSCANPVT heartbeatTIMOOccured(){return IRQheartbeat;}
 
-  virtual epicsUInt32 FIFOFullCount() const{return count_FIFO_overflow;}
+  virtual epicsUInt32 FIFOFullCount() const
+        {SCOPED_LOCK(events_lock);return count_FIFO_overflow;}
+  virtual epicsUInt32 FIFOOverRate() const
+        {SCOPED_LOCK(events_lock);return count_FIFO_sw_overrate;}
 
   static void isr(void*);
 
@@ -179,6 +182,7 @@ private:
   static void drain_fifo(CALLBACK*);
   static void sentinel_done(CALLBACK*);
 
+  epicsUInt32 count_FIFO_sw_overrate;
   epicsTime lastFifoRun;
 
   // Take lock when accessing interest counter or TS members

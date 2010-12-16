@@ -172,6 +172,7 @@ public:
   virtual IOSCANPVT heartbeatTIMOOccured()=0;
 
   virtual epicsUInt32 FIFOFullCount() const=0;
+  virtual epicsUInt32 FIFOOverRate() const=0;
 
 
   /**\defgroup devhelp Device Support Helpers

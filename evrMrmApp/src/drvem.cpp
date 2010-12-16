@@ -62,6 +62,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
   ,prescalers()
   ,pulsers()
   ,shortcmls()
+  ,count_FIFO_sw_overrate(0)
   ,events_lock()
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
@@ -855,6 +856,7 @@ EVRMRM::drain_fifo(CALLBACK* cb)
             // callbacks finished so disable event
             evr->events[evt].again=true;
             evr->specialSetMap(evt, ActionFIFOSave, false);
+            evr->count_FIFO_sw_overrate++;
         } else {
             // needs to be queued
             eventInvoke(evr->events[evt]);

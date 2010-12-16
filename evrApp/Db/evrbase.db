@@ -39,9 +39,16 @@ record(longin, "$(P)link:cnt") {
 
 record(longin, "$(P)fifo:cnt") {
   field(DTYP, "EVR")
-  field(DESC, "FIFO Overflow Count")
+  field(DESC, "FIFO Hw Overflow Count")
   field(INP , "@C=$(C), P=FIFO Overflow Count")
-  field(DESC, "Rx error count")
+  field(TSEL, "$(P)link:cnt.TIME")
+  field(FLNK, "$(P)fiforate:cnt")
+}
+
+record(longin, "$(P)fiforate:cnt") {
+  field(DTYP, "EVR")
+  field(DESC, "FIFO Sw Overrate Count")
+  field(INP , "@C=$(C), P=FIFO Over rate")
   field(TSEL, "$(P)link:cnt.TIME")
   field(FLNK, "$(P)link:sts:init")
 }

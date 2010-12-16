@@ -56,6 +56,7 @@ prop_entry<EVR,epicsUInt32> props_epicsUInt32[] = {
   {"Event Clock TS Div",  property<EVR,epicsUInt32>(0, &EVR::uSecDiv)},
   {"Receive Error Count", property<EVR,epicsUInt32>(0, &EVR::recvErrorCount, 0, &EVR::linkChanged)},
   {"FIFO Overflow Count", property<EVR,epicsUInt32>(0, &EVR::FIFOFullCount)},
+  {"FIFO Over rate",      property<EVR,epicsUInt32>(0, &EVR::FIFOOverRate)},
   {"HB Timeout Count",    property<EVR,epicsUInt32>(0, &EVR::heartbeatTIMOCount, 0, &EVR::heartbeatTIMOOccured)},
   {"Timestamp Prescaler", property<EVR,epicsUInt32>(0, &EVR::tsDiv)},
   {"Timestamp Source",    property<EVR,epicsUInt32>(0, &EVR::SourceTSraw, &EVR::setSourceTSraw)},
