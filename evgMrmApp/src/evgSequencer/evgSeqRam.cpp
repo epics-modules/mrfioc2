@@ -133,7 +133,7 @@ evgSeqRam::isEnabled() const {
 
 bool 
 evgSeqRam::isRunning() const {
-    return    READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
+    return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
 }
 
 bool

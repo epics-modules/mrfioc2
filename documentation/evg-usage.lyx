@@ -374,9 +374,27 @@ Synchronize Timestamp
 \emph on
 Timestamp Input Type
 \emph default
- (mbbo/mbbi): Types of input could be Front Panel, Universal or Transitional.
+ (mbbo/mbbi): Types of input could be
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+None : Stop timestamping
+\end_layout
+
+\begin_layout Itemize
+FP : Front Panel Input 
+\end_layout
+
+\begin_layout Itemize
+Univ : Universal Input 
+\end_layout
+
+\begin_layout Itemize
+TB : Transitional Input
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 
 \emph on
@@ -554,15 +572,16 @@ Signal Source/Map
 
 \begin_deeper
 \begin_layout Itemize
-Sampling of the external input signals at event rate.
+Ext Inp : Sampling of the external input signals at event rate.
 \end_layout
 
 \begin_layout Itemize
-Sampling of the corresponding multiplexed counter output at event rate.
+MXC : Sampling of the corresponding multiplexed counter output at event
+ rate.
 \end_layout
 
 \begin_layout Itemize
-Forwarding the state of distributed bus bit of upstream EVG.
+Upstream EVG : Forwarding the state of distributed bus bit of upstream EVG.
  
 \end_layout
 
@@ -664,10 +683,23 @@ Files : evgOutput.h/evgOutput.cpp/devEvgOutput.cpp/evgOutput.db
 \emph on
 Map
 \emph default
- (mbbo): The output could be mapped to any of the eight distributed bus
- bits or It could be forced to logic 1 or logic 0.
+ (mbbo): The output could be mapped to 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Any of the eight distributed bus bits
+\end_layout
+
+\begin_layout Itemize
+Forced logic 1
+\end_layout
+
+\begin_layout Itemize
+Forced logic 0.
+\end_layout
+
+\end_deeper
 \begin_layout Subsection
 AC Trigger
 \end_layout
@@ -823,13 +855,24 @@ Run Mode
 \emph default
  (mbbo/mbbi): Run mode is used determine what will the sequencer do at the
  end of the sequence.
- where mode could be any of the following: Single - Disarms the sequencer
- at the end of the sequence.
- Automatic - Restarts the sequence immediately after the end of the sequence.
- Normal - At the end of the sequence, the sequencer rearms and waits for
+ where mode could be any of the following:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Single : Disarms the sequencer at the end of the sequence.
+\end_layout
+
+\begin_layout Itemize
+Automatic : Restarts the sequence immediately after the end of the sequence.
+\end_layout
+
+\begin_layout Itemize
+Normal : At the end of the sequence, the sequencer rearms and waits for
  the trigger to restart the sequence.
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 
 \emph on
@@ -837,10 +880,22 @@ Trigger Source
 \emph default
  (mbbo/mbbi): Trigger Src is used to select the source of the trigger, which
  starts the sequencer.
- Mxc0 to Mxc7 - Trigger from MXC0 - MXC7 AC - Trigger from AC sync logic
- RAM0/RAM1 - Trigger from RAM0/RAM1 software trigger.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Mxc : Trigger from MXC0 - MXC7 
+\end_layout
+
+\begin_layout Itemize
+AC : Trigger from AC sync logic 
+\end_layout
+
+\begin_layout Itemize
+Swt RAM : Trigger from RAM0/RAM1 software trigger.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 Above records only deal with the scratch copy of the soft sequence.
  They do not directly interact with the hardware sequence.
@@ -955,18 +1010,52 @@ In the Event Code and Timestamp arrays provided by user are of different
 
 \begin_layout Itemize
 Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end
- of the sequence and it will be sent at the next event clock tick after
+ of the sequence and it will be sent 'evgEndOfSeqBuf' event clock tick after
  the last event in the sequence has been sent out.
+ Which currently defaults to five event clock ticks.
  If user provides 0x7f with a timestamp then that would be used instead
  of the default one.
  
 \end_layout
 
 \begin_layout Itemize
-The user interface for setting Event Code and Timestamp is very basic.
- 
+The current user interface for setting Event Code and Timestamp is not very
+ sophasticated(Python scipt).
+ e.g.
+ It does not provide a readback of the event code/timestamp array when you
+ close and open the panel again.
 \end_layout
 
+\begin_layout Itemize
+When user enters the timestamps in terms of sub-seconds, he has an option
+ of choosing the units of sub-seconds by proving an interger divider that
+ is used to convert the sub-seconds to seconds.
+ This is done by modifying the '@parm' part of VME_IO hardware input link
+ of the record $(P):$(N):timestamp.
+ e.g.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+To enter timestamps in terms of microseconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1000000'
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of milliseconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1000'
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of seconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1'
+\end_layout
+
+\begin_layout Quote
+Default unit is microseconds.
+\end_layout
+
+\end_deeper
 \begin_layout Section
 Acknowledgment
 \end_layout

@@ -6,7 +6,6 @@ Completed
     -Multiplexed Counter
     -Front Panel Input
     -Front Panel Output
-    -Benchmarking
     -Interrupts.
     -TimeStamping
     -Sequencer
@@ -18,4 +17,5 @@ TODO:
     -Autosave and timestamp changing on event clock change in sequencer.
     -Better interface for event code and timestamp array in edm/Python.
     -Higher level control for seqeuencer
-    -Documentation
+    -Pause State for sequencer(No. The readback is for the complete sequence)
+ 
