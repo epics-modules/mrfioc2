@@ -6,7 +6,7 @@ record(mbbo, "$(P):$(N):Map") {
     field( UDF, "0")
     field( ZRST, "Off")
     field( ONST, "Ext Inp")
-    field( TWST, "Mxc")
+    field( TWST, "Mxc $(dbusBit)")
     field( THST, "UpstreamEVG")
     field( FVSV, "INVALID")
     field( SXSV, "INVALID")

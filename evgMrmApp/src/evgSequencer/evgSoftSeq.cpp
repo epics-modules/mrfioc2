@@ -83,7 +83,7 @@ evgSoftSeq::setTimestamp(epicsFloat64* timestamp, epicsUInt32 size) {
 
     for(unsigned int i = 0; i < size; i++) {
         curValue = (uint64_t)(floor(timestamp[i] * 
-                   m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
+            m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
 
         m_timestamp[i] = curValue - preValue;
 
@@ -147,9 +147,9 @@ evgSoftSeq::commitSoftSeq() {
     /*Appending 'End of Sequence' EventCode and Timestamp. */
     m_eventCodeCt.push_back(0x7f);
     if(m_timestampCt.size() == 0)
-        m_timestampCt.push_back(1);
+        m_timestampCt.push_back(evgEndOfSeqBuf);
     else
-        m_timestampCt.push_back(m_timestampCt[m_timestampCt.size()-1] + 1);
+        m_timestampCt.push_back(m_timestampCt[m_timestampCt.size()-1] + evgEndOfSeqBuf);
 }
 
 std::vector<epicsUInt8>

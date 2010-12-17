@@ -24,18 +24,16 @@ evgSeqRam::getId() {
 
 epicsStatus
 evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
-    for(unsigned int i = 0; i < eventCode.size(); i++) {
+    for(unsigned int i = 0; i < eventCode.size(); i++)
         WRITE8(m_pReg, SeqRamEvent(m_id,i), eventCode[i]);
-    }
 
     return OK;
 }
 
 epicsStatus
 evgSeqRam::setTimestamp(std::vector<uint64_t> timestamp){
-    for(unsigned int i = 0; i < timestamp.size(); i++) {
+    for(unsigned int i = 0; i < timestamp.size(); i++) 
         WRITE32(m_pReg, SeqRamTS(m_id,i), (epicsUInt32)timestamp[i]);
-    }
 	
     return OK;
 }
