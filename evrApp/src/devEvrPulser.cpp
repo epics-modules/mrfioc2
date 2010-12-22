@@ -32,61 +32,61 @@
 
 struct addr
 {
-  epicsUInt32 card;
-  epicsUInt32 pulser;
-  char prop[20];
+    epicsUInt32 card;
+    epicsUInt32 pulser;
+    char prop[20];
 };
 
 static const
 linkOptionDef eventdef[] = 
 {
-  linkInt32   (addr, card , "C", 1, 0),
-  linkInt32   (addr, pulser,"I", 1, 0),
-  linkString  (addr, prop , "P", 1, 0),
-  linkOptionEnd
+    linkInt32   (addr, card , "C", 1, 0),
+    linkInt32   (addr, pulser,"I", 1, 0),
+    linkString  (addr, prop , "P", 1, 0),
+    linkOptionEnd
 };
 
 static const
 prop_entry<Pulser,double> props_double[] = {
-  {"Delay", property<Pulser,double>(0, &Pulser::delay, &Pulser::setDelay)},
-  {"Width", property<Pulser,double>(0, &Pulser::width, &Pulser::setWidth)},
-  {NULL,property<Pulser,double>()}
+    {"Delay", property<Pulser,double>(0, &Pulser::delay, &Pulser::setDelay)},
+    {"Width", property<Pulser,double>(0, &Pulser::width, &Pulser::setWidth)},
+    {NULL,property<Pulser,double>()}
 };
 
 static const
 prop_entry<Pulser,bool> props_bool[] = {
-  {"Enable",   property<Pulser,bool>(0, &Pulser::enabled, &Pulser::enable)},
-  {"Polarity", property<Pulser,bool>(0, &Pulser::polarityInvert, &Pulser::setPolarityInvert)},
-  {NULL,property<Pulser,bool>()}
+    {"Enable",   property<Pulser,bool>(0, &Pulser::enabled, &Pulser::enable)},
+    {"Polarity", property<Pulser,bool>(0, &Pulser::polarityInvert, &Pulser::setPolarityInvert)},
+    {NULL,property<Pulser,bool>()}
 };
 
 static const
 prop_entry<Pulser,epicsUInt32> props_epicsUInt32[] = {
-  {"Delay", property<Pulser,epicsUInt32>(0, &Pulser::delayRaw, &Pulser::setDelayRaw)},
-  {"Width", property<Pulser,epicsUInt32>(0, &Pulser::widthRaw, &Pulser::setWidthRaw)},
-  {"Prescaler", property<Pulser,epicsUInt32>(0, &Pulser::prescaler, &Pulser::setPrescaler)},
-  {NULL,property<Pulser,epicsUInt32>()}
+    {"Delay", property<Pulser,epicsUInt32>(0, &Pulser::delayRaw, &Pulser::setDelayRaw)},
+    {"Width", property<Pulser,epicsUInt32>(0, &Pulser::widthRaw, &Pulser::setWidthRaw)},
+    {"Prescaler", property<Pulser,epicsUInt32>(0, &Pulser::prescaler, &Pulser::setPrescaler)},
+    {NULL,property<Pulser,epicsUInt32>()}
 };
 
 static
 Pulser* get_pulser(const char* hwlink, std::string& propname)
 {
-  addr inst_addr;
+    addr inst_addr;
 
-  if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
-    throw std::runtime_error("Couldn't parse link string");
+    if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
+        throw std::runtime_error("Couldn't parse link string");
 
-  EVR* card=&evrmap.get(inst_addr.card);
-  if(!card)
-    throw std::runtime_error("Failed to lookup device");
+    EVR* card=&evrmap.get(inst_addr.card);
+    if(!card)
+        throw std::runtime_error("Failed to lookup device");
 
-  Pulser* pul=card->pulser(inst_addr.pulser);
-  if(!pul)
-    throw std::runtime_error("Failed to lookup pulser");
+    Pulser* pul=card->pulser(inst_addr.pulser);
+    if(!pul)
+        throw std::runtime_error("Failed to lookup pulser");
 
-  propname=std::string(inst_addr.prop);
+    propname=std::string(inst_addr.prop);
 
-  return pul;
+    return pul;
 }
 
 /*************** boiler plate *******************/

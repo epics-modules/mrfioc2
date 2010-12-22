@@ -30,63 +30,63 @@
 CardMap<EVR> evrmap;
 
 struct addr {
-  epicsUInt32 card;
-  char prop[20];
+    epicsUInt32 card;
+    char prop[20];
 };
 
 static const
 linkOptionDef eventdef[] = 
 {
-  linkInt32   (addr, card , "C" , 1, 0),
-  linkString  (addr, prop , "P"  , 1, 0),
-  linkOptionEnd
+    linkInt32   (addr, card , "C" , 1, 0),
+    linkString  (addr, prop , "P"  , 1, 0),
+    linkOptionEnd
 };
 
 static const
 prop_entry<EVR,double> props_double[] = {
-  {"Clock",           property<EVR,double>(0, &EVR::clock, &EVR::clockSet)},
-  {"Timestamp Clock", property<EVR,double>(0, &EVR::clockTS, &EVR::clockTSSet)},
-  {NULL,              property<EVR,double>()}
+    {"Clock",           property<EVR,double>(0, &EVR::clock, &EVR::clockSet)},
+    {"Timestamp Clock", property<EVR,double>(0, &EVR::clockTS, &EVR::clockTSSet)},
+    {NULL,              property<EVR,double>()}
 };
 
 static const
 prop_entry<EVR,bool> props_bool[] = {
-  {"Enable",          property<EVR,bool>(0, &EVR::enabled, &EVR::enable)},
-  {"PLL Lock Status", property<EVR,bool>(0, &EVR::pllLocked)},
-  {"Link Status",     property<EVR,bool>(0, &EVR::linkStatus, 0, &EVR::linkChanged)},
-  {"Timestamp Valid", property<EVR,bool>(0, &EVR::TimeStampValid, 0, &EVR::TimeStampValidEvent)},
-  {NULL,              property<EVR,bool>()}
+    {"Enable",          property<EVR,bool>(0, &EVR::enabled, &EVR::enable)},
+    {"PLL Lock Status", property<EVR,bool>(0, &EVR::pllLocked)},
+    {"Link Status",     property<EVR,bool>(0, &EVR::linkStatus, 0, &EVR::linkChanged)},
+    {"Timestamp Valid", property<EVR,bool>(0, &EVR::TimeStampValid, 0, &EVR::TimeStampValidEvent)},
+    {NULL,              property<EVR,bool>()}
 };
 
 static const
 prop_entry<EVR,epicsUInt32> props_epicsUInt32[] = {
-  {"Model",               property<EVR,epicsUInt32>(0, &EVR::model)},
-  {"Version",             property<EVR,epicsUInt32>(0, &EVR::version)},
-  {"Event Clock TS Div",  property<EVR,epicsUInt32>(0, &EVR::uSecDiv)},
-  {"Receive Error Count", property<EVR,epicsUInt32>(0, &EVR::recvErrorCount, 0, &EVR::linkChanged)},
-  {"FIFO Overflow Count", property<EVR,epicsUInt32>(0, &EVR::FIFOFullCount)},
-  {"FIFO Over rate",      property<EVR,epicsUInt32>(0, &EVR::FIFOOverRate)},
-  {"HB Timeout Count",    property<EVR,epicsUInt32>(0, &EVR::heartbeatTIMOCount, 0, &EVR::heartbeatTIMOOccured)},
-  {"Timestamp Prescaler", property<EVR,epicsUInt32>(0, &EVR::tsDiv)},
-  {"Timestamp Source",    property<EVR,epicsUInt32>(0, &EVR::SourceTSraw, &EVR::setSourceTSraw)},
-  {NULL,                  property<EVR,epicsUInt32>()}
+    {"Model",               property<EVR,epicsUInt32>(0, &EVR::model)},
+    {"Version",             property<EVR,epicsUInt32>(0, &EVR::version)},
+    {"Event Clock TS Div",  property<EVR,epicsUInt32>(0, &EVR::uSecDiv)},
+    {"Receive Error Count", property<EVR,epicsUInt32>(0, &EVR::recvErrorCount, 0, &EVR::linkChanged)},
+    {"FIFO Overflow Count", property<EVR,epicsUInt32>(0, &EVR::FIFOFullCount)},
+    {"FIFO Over rate",      property<EVR,epicsUInt32>(0, &EVR::FIFOOverRate)},
+    {"HB Timeout Count",    property<EVR,epicsUInt32>(0, &EVR::heartbeatTIMOCount, 0, &EVR::heartbeatTIMOOccured)},
+    {"Timestamp Prescaler", property<EVR,epicsUInt32>(0, &EVR::tsDiv)},
+    {"Timestamp Source",    property<EVR,epicsUInt32>(0, &EVR::SourceTSraw, &EVR::setSourceTSraw)},
+    {NULL,                  property<EVR,epicsUInt32>()}
 };
 
 static
 EVR* get_evr(const char* hwlink, std::string& propname)
 {
-  addr inst_addr;
+    addr inst_addr;
 
-  if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
-    throw std::runtime_error("Couldn't parse link string");
+    if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
+        throw std::runtime_error("Couldn't parse link string");
 
-  EVR* card=&evrmap.get(inst_addr.card);
-  if(!card)
-    throw std::runtime_error("Failed to lookup device");
+    EVR* card=&evrmap.get(inst_addr.card);
+    if(!card)
+        throw std::runtime_error("Failed to lookup device");
 
-  propname=std::string(inst_addr.prop);
+    propname=std::string(inst_addr.prop);
 
-  return card;
+    return card;
 }
 
 /************* Boiler plate *****************/

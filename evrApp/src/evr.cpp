@@ -53,11 +53,11 @@ CML::~CML()
 
 long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 {
-  IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
+    IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
 
-  if(!stat) return 1;
+    if(!stat) return 1;
 
-  *io=stat->statusChange(dir);
-  
-  return 0;
+    *io=stat->statusChange(dir);
+
+    return 0;
 }
