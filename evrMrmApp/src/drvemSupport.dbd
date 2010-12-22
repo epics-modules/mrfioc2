@@ -1,4 +1,3 @@
-variable(evrmrmVerb,int)
 registrar(mrmsetupreg)
 driver(drvEvrMrm)
 include evrSupport.dbd

@@ -32,8 +32,6 @@
 #include <dbScan.h>
 #include <epicsInterrupt.h>
 
-#define DBG evrmrmVerb
-
 #define CBINIT(ptr, prio, fn, valptr) \
 do { \
   callbackSetPriority(prio, ptr); \
@@ -141,18 +139,18 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
 
     switch(v){
     case evrFormCPCI:
-        if(DBG) printf("CPCI ");
+        printf("CPCI ");
         nOFPUV=4;
         nIFP=2;
         nORB=6;
         break;
     case evrFormPMC:
-        if(DBG) printf("PMC ");
+        printf("PMC ");
         nOFP=3;
         nIFP=1;
         break;
     case evrFormVME64:
-        if(DBG) printf("VME64 ");
+        printf("VME64 ");
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
         nOFPUV=4;
@@ -162,9 +160,9 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
     default:
         printf("Unknown EVR variant %d\n",v);
     }
-    if(DBG) printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
-                   (unsigned int)nOFP,(unsigned int)nOFPUV,
-                   (unsigned int)nORB,(unsigned int)nIFP);
+    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
+           (unsigned int)nOFP,(unsigned int)nOFPUV,
+           (unsigned int)nORB,(unsigned int)nIFP);
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);

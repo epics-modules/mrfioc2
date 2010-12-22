@@ -38,18 +38,11 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
-extern "C" {
-int evrmrmVerb=1;
-epicsExportAddress(int,evrmrmVerb);
-}
-
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvrSetupEVR().  Levels are
  * enabled later during iocInit.
  */
 static epicsUInt8 vme_level_mask = 0;
-
-#define DBG evrmrmVerb
 
 static const epicsPCIID mrmevrs[] = {
    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,

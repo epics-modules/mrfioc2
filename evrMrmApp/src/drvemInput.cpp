@@ -17,8 +17,6 @@
 
 #include <stdexcept>
 
-#define DBG evrmrmVerb
-
 MRMInput::MRMInput(volatile unsigned char *b, size_t i)
   :base(b)
   ,idx(i)
