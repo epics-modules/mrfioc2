@@ -31,7 +31,7 @@ record(mbbo, "$(P):$(N):Map") {
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
     field( PINI, "YES")
-    field( UDF, "0")
-    field( VAL, "0")
+    field( UDF,  "0")
+    field( VAL,  "0")
     info(autosaveFields_pass0, "VAL")
 }

@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 50
-y 315
-w 298
-h 313
+x 58
+y 355
+w 303
+h 281
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -109,31 +109,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 200
-y 180
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(SS):unload"
-releaseValue "1"
-onLabel "Unload"
-offLabel "Unload"
-3d
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
 x 30
-y 180
+y 220
 w 70
 h 20
 fgColor index 14
@@ -156,7 +133,7 @@ major 4
 minor 0
 release 0
 x 150
-y 240
+y 170
 w 70
 h 20
 fgColor index 14
@@ -179,7 +156,7 @@ major 4
 minor 0
 release 0
 x 80
-y 240
+y 170
 w 70
 h 20
 fgColor index 14
@@ -202,7 +179,7 @@ major 4
 minor 0
 release 0
 x 10
-y 240
+y 170
 w 70
 h 20
 fgColor index 14
@@ -218,29 +195,6 @@ offLabel "Enable"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 130
-y 180
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(SS):load"
-releaseValue "1"
-onLabel "Load"
-offLabel "Load"
-3d
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
 # (Text Update)
 object TextupdateClass
 beginObjectProperties
@@ -248,7 +202,7 @@ major 10
 minor 0
 release 0
 x 30
-y 270
+y 250
 w 240
 h 20
 controlPv "$(P):$(SS):err"
@@ -266,7 +220,7 @@ major 4
 minor 5
 release 0
 x 30
-y 160
+y 200
 w 70
 h 20
 controlPv "$(P):$(SS):commitStatus"
@@ -289,7 +243,7 @@ major 4
 minor 5
 release 0
 x 10
-y 220
+y 150
 w 280
 h 20
 controlPv "$(P):$(SS):enaStatus"
@@ -312,7 +266,7 @@ major 4
 minor 5
 release 0
 x 130
-y 160
+y 200
 w 140
 h 20
 controlPv "$(P):$(SS):loadStatus"
@@ -421,7 +375,7 @@ major 4
 minor 0
 release 0
 x 220
-y 240
+y 170
 w 70
 h 20
 fgColor index 14
@@ -433,6 +387,52 @@ controlPv "$(P):$(SS):abort"
 releaseValue "1"
 onLabel "Abort"
 offLabel "Abort"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 220
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(SS):load"
+releaseValue "1"
+onLabel "Load"
+offLabel "Load"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 220
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(SS):unload"
+releaseValue "1"
+onLabel "Unload"
+offLabel "Unload"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties

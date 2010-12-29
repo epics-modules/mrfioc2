@@ -27,6 +27,9 @@ m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_isEnabled(0),
 m_isCommited(0) {
+    m_eventCodeCt.push_back(0x7f);
+    m_timestampCt.push_back(evgEndOfSeqBuf);
+
     scanIoInit(&ioscanpvt);
     scanIoInit(&ioScanPvtErr);
 }
@@ -69,6 +72,7 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 
     m_isCommited = false;
     scanIoRequest(ioscanpvt);
+
     return OK;
 }
 
@@ -77,28 +81,18 @@ evgSoftSeq::setTimestamp(epicsFloat64* timestamp, epicsUInt32 size) {
     std::vector<uint64_t> timestamp_bk = m_timestamp;
     m_timestamp.clear();
     m_timestamp.resize(size);
+ 
+    /*
+     *Converting seconds to clock ticks
+     */
+    for(unsigned int i = 0; i < size; i++)
+        m_timestamp[i] = (uint64_t)(floor(timestamp[i] * 
+            m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
 
-    uint64_t preValue = 0;
-    uint64_t curValue = 0;
-
-    for(unsigned int i = 0; i < size; i++) {
-        curValue = (uint64_t)(floor(timestamp[i] * 
-                   m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
-
-        m_timestamp[i] = curValue - preValue;
-
-        if(m_timestamp[i] <= 0) {
-            m_timestamp = timestamp_bk;
-            throw std::runtime_error("Timestamp values are not Sorted/Unique");
-        }
-
-        preValue = curValue;
-    }
-
-    m_timestampRaw = false; 
+    m_isTimestampRaw = false;    
     m_isCommited = false;
     scanIoRequest(ioscanpvt);
-	
+
     return OK;
 }
 
@@ -110,7 +104,7 @@ evgSoftSeq::setTimestampRaw(epicsUInt32* timestamp, epicsUInt32 size) {
     m_timestamp.clear();
     m_timestamp.assign(timestamp, timestamp + size);
 
-    m_timestampRaw = true; 
+    m_isTimestampRaw = true;
     m_isCommited = false;
     scanIoRequest(ioscanpvt);
 	
@@ -135,21 +129,6 @@ evgSoftSeq::setRunMode(SeqRunMode runMode) {
         scanIoRequest(ioscanpvt);
     }
     return OK;
-}
-
-void
-evgSoftSeq::commitSoftSeq() {
-    m_timestampCt = m_timestamp;
-    m_eventCodeCt = m_eventCode;
-    m_trigSrcCt = m_trigSrc;
-    m_runModeCt = m_runMode;
-
-    /*Appending 'End of Sequence' EventCode and Timestamp. */
-    m_eventCodeCt.push_back(0x7f);
-    if(m_timestampCt.size() == 0)
-        m_timestampCt.push_back(1);
-    else
-        m_timestampCt.push_back(m_timestampCt[m_timestampCt.size()-1] + 1);
 }
 
 std::vector<epicsUInt8>
@@ -206,7 +185,10 @@ evgSoftSeq::load() {
     evgSeqRam* seqRam = 0;
     evgSeqRam* seqRamIter = 0;
 
-    /*Initialize the seqRam if hardware is available(un-allocated)*/
+    /* 
+     * Assign the first avialable(unallocated) hardware sequenceRam to this soft
+     * sequence if none is currently assingned.
+     */
     for(unsigned int i = 0; i < m_seqRamMgr->numOfRams(); i++) {
         seqRamIter = m_seqRamMgr->getSeqRam(i);
         if( seqRamIter->isAllocated() ) {
@@ -222,14 +204,11 @@ evgSoftSeq::load() {
         }
     }
 
-    /*If a seqRam is avialable*/
     if(seqRam != 0) {
         setSeqRam(seqRam);
         seqRam->alloc(this);
         scanIoRequest(ioscanpvt);
-        if(m_isCommited)
-            sync(); 
-		
+        sync(); 
         return OK;	
     } else {
         char err[80];
@@ -254,11 +233,9 @@ evgSoftSeq::unload() {
 
 epicsStatus
 evgSoftSeq::commit() {	
-    inspectSoftSeq();	
-    commitSoftSeq();
+    inspectSoftSeq();
 
-    if(m_seqRam != 0)
-        sync();
+    if(m_seqRam) sync();
 
     m_isCommited = true;
     scanIoRequest(ioscanpvt);
@@ -268,8 +245,10 @@ evgSoftSeq::commit() {
 epicsStatus
 evgSoftSeq::enable() {
     if(m_seqRam) {
-        /*RunMode and TrigSrc could be modified in the hardware. So it is 
-          necessary to sync them before enabling the sequence.*/
+        /*
+         * RunMode and TrigSrc could be modified in the hardware. So it is 
+         * necessary to sync them before enabling the sequence.
+         */
         m_seqRam->setTrigSrc(getTrigSrcCt());
         m_seqRam->setRunMode(getRunModeCt());
         m_seqRam->enable();
@@ -298,8 +277,10 @@ evgSoftSeq::abort(bool callBack) {
         scanIoRequest(ioscanpvt);
 
         if(callBack) {
-            /*Satisfy any callback request pending on irqStop0 or irqStop1 recList.
-            As no 'End of sequence' Intrrupt will be generated. */
+            /*
+             * Satisfy any callback request pending on irqStop0 or irqStop1
+             * recList. As no 'End of sequence' Intrrupt will be generated. 
+             */
             if(m_seqRam->getId() == 0)
                 callbackRequest(&m_owner->irqStop0_cb);
             else 
@@ -340,24 +321,29 @@ evgSoftSeq::sync() {
     if(m_isEnabled) m_seqRam->enable();
 
     scanIoRequest(ioscanpvt);
-
     return OK;
 }
 
-/* This function makes sure that this sequence does not run again.*/
+/**
+ * Make sure that this soft sequence does not run again.
+ */
 epicsStatus
 evgSoftSeq::isRunning() {
     m_seqRam->setRunMode(Single);
     m_seqRam->setTrigSrc(SW_Ram0);
 	
-    /*Clear the sequencer stop interrupt flag*/
+    /*
+     * Clear the sequencer stop interrupt flag
+     */
     WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
 
     if(!m_seqRam->isRunning()) {
         m_seqRam->disable();
         return 0;
     } else {	
-        /*Enable the sequencer stop interrupt*/	
+        /*
+         * Enable the sequencer stop interrupt
+         */	
         BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
         return 1;
     }		
@@ -367,47 +353,67 @@ epicsStatus
 evgSoftSeq::inspectSoftSeq() {
     int64_t tsUInt64;
     epicsUInt8 ecUInt8;
-    int64_t pre = 0;
+    uint64_t preTs = 0;
+    uint64_t curTs = 0;
 
     std::vector<uint64_t> timestamp;
     std::vector<epicsUInt8> eventCode;
 
-    /*Make EventCode and Timestamp vector of same size(Smaller of the two vectors).
-      Also take care of rollover if timestamp input was in units of seconds*/
+    /*
+     * Make EventCode and Timestamp vector of same size(Smaller of the two vectors).
+     * Also take care of rollover if timestamp input was in units of seconds
+     */
     std::vector<uint64_t>::iterator itTS = m_timestamp.begin();
     std::vector<epicsUInt8>::iterator itEC = m_eventCode.begin();
     for(; itTS < m_timestamp.end() && itEC < m_eventCode.end(); itTS++, itEC++) {
         ecUInt8 = *itEC;
 
-        if(!m_timestampRaw) {
-            tsUInt64 = *itTS + pre;
+        if(m_isTimestampRaw)
+            tsUInt64 = *itTS;
+        else {
+            curTs = *itTS;
+            tsUInt64 = curTs - preTs;
+            if(timestamp.size())
+                tsUInt64 += timestamp.back();
+
             for(;tsUInt64 > 0xffffffff; tsUInt64 -= 0xffffffff) {
                 timestamp.push_back(0xffffffff);
                 eventCode.push_back(0);
             }
-        } else 
-            tsUInt64 = *itTS;
-
-            timestamp.push_back(tsUInt64);
-            eventCode.push_back(ecUInt8);
-            pre = tsUInt64;
+            preTs = curTs;
         }
 
-    m_timestamp = timestamp;
-    m_eventCode = eventCode;
+        timestamp.push_back(tsUInt64);
+        eventCode.push_back(ecUInt8);
+    }
 
-    /*Check if the timestamps are sorted and Unique */
-    if(m_timestamp.size() > 1) {
-        for(unsigned int i = 0; i < m_timestamp.size()-1; i++) {
-            if( m_timestamp[i] >= m_timestamp[i+1] ) {
-                if( (m_timestamp[i] == 0xffffffff) && (m_eventCode[i] == 0))
+    /*
+     * Check if the timestamps are sorted and unique 
+     */
+    if(timestamp.size() > 1) {
+        for(unsigned int i = 0; i < timestamp.size()-1; i++) {
+            if( timestamp[i] >= timestamp[i+1] ) {
+                if( (timestamp[i] == 0xffffffff) && (eventCode[i] == 0))
                     continue;
                 else
-                    throw std::runtime_error("Sequencer timestamps are not \
-					      Sorted/Unique");
+                    throw std::runtime_error("Sequencer timestamps are not Sorted/Unique");
             } 
         }
     }
+
+    /*
+     * Appending 'End of Sequence' event code and timestamp. 
+     */
+    eventCode.push_back(0x7f);
+    if(timestamp.size() == 0)
+        timestamp.push_back(evgEndOfSeqBuf);
+    else
+        timestamp.push_back(timestamp[timestamp.size()-1] + evgEndOfSeqBuf);
+
+    m_timestampCt = timestamp;
+    m_eventCodeCt = eventCode;
+    m_trigSrcCt = m_trigSrc;
+    m_runModeCt = m_runMode;
 
     return OK;
 }

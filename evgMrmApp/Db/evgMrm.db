@@ -1,13 +1,13 @@
 record(bo, "$(P):Enable") {
     field( DTYP, "EVG")
     field( DESC, "EVG Master Enable")
-    field( OUT , "#C$(cardNum) S @")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S @")
+    field( UDF,  "0")
     field( PINI, "YES")
-    field( VAL, "1")
+    field( VAL,  "1")
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
-    info(autosaveFields_pass0, "VAL")
+    info( autosaveFields_pass0, "VAL")
 }
 
 record( stringin, "$(P):TS") {
@@ -20,18 +20,18 @@ record( stringin, "$(P):TS") {
 record( bo,"$(P):SyncTS" ) {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG Sync TimeStamp")
-    field( OUT, "#C$(cardNum) S @")
-    field( UDF, "0")
-    field( VAL, "1")
+    field( OUT,  "#C$(cardNum) S @")
+    field( UDF,  "0")
+    field( VAL,  "1")
 }
 
 record( mbbo, "$(P):TsInpType") {
     field( DTYP, "EVG TS INP TYPE")
     field( DESC, "EVG TimeStamp Inp Type")
     field( OUT , "#C$(cardNum) S @")
-    field( PINI, YES)
-    field( UDF, "0")
-    field( VAL, "0")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "0")
     field( ZRST, "None")
     field( ONST, "FP")
     field( TWST, "Univ")
@@ -90,9 +90,9 @@ record( mbbo, "$(P):TsInpNum") {
     field( DTYP, "EVG TS INP NUM")
     field( DESC, "EVG TimeStamp Inp Num")
     field( OUT , "#C$(cardNum) S @")
-    field( PINI, YES)
-    field( UDF, "0")
-    field( VAL, "0")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "0")
     field( ZRST, "0")
     field( ONST, "1")
     field( TWST, "2")
@@ -171,6 +171,6 @@ record( mbbi, "$(P):TsInpNumRB") {
 record( longin, "$(P):Status" ) {
     field( DTYP, "EVG")
     field( DESC, "EVG Status")
-    field( INP, "#C$(cardNum) S @")
+    field( INP,  "#C$(cardNum) S @")
 }
 

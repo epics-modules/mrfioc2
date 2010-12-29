@@ -76,8 +76,6 @@ public:
     epicsStatus sync();
     epicsStatus isRunning();
     epicsStatus inspectSoftSeq();
-    void commitSoftSeq();
-    epicsStatus rollover();
 
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
@@ -104,7 +102,7 @@ private:
 
     bool                       m_isEnabled;
     bool                       m_isCommited;
-    bool                       m_timestampRaw;
+    bool                       m_isTimestampRaw;
 };
 
 #endif //EVG_SEQUENCE_H

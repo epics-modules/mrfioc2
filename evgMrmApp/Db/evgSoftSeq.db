@@ -1,40 +1,25 @@
 record(waveform, "$(P):$(N):eventCode") {
     field( DTYP, "EVG SEQ EVENT CODE")
     field( DESC, "Sequence event code array")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( NELM, "$(NELM)")
     field( FTVL, "UCHAR")
+    info( autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P):$(N):eventCodeRB") {
     field( DTYP, "EVG SEQ EVENT CODE RB")
     field( DESC, "Sequence event code readback")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM)")
     field( FTVL, "UCHAR")
 }
 
-record(waveform, "$(P):$(N):timestampRaw") {
-    field( DTYP, "EVG SEQ TIMESTAMP RAW")
-    field( DESC, "Sequence timestamp (ticks)")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
-    field( NELM, "$(NELM)")
-    field( FTVL, "LONG")
-}
-
-record(waveform, "$(P):$(N):timestamp") {
-    field( DTYP, "EVG SEQ TIMESTAMP")
-    field( DESC, "Sequence timestamp array")
-    field( INP, "#C$(cardNum) S$(seqNum) @1000000")
-    field( NELM, "$(NELM)")
-    field( FTVL, "DOUBLE")
-}
-
 record(waveform, "$(P):$(N):timestampRB") {
     field( DTYP, "EVG SEQ TIMESTAMP RB")
     field( DESC, "Sequence timestamp readback")
-    field( INP, "#C$(cardNum) S$(seqNum) @1000000")
+    field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM)")
     field( FTVL, "DOUBLE")
@@ -42,8 +27,8 @@ record(waveform, "$(P):$(N):timestampRB") {
 
 record(mbbo, "$(P):$(N):runMode") {
     field( DTYP, "EVG SEQ RUN MODE")
-    field( OUT , "#C$(cardNum) S$(seqNum) @")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( UDF,  "0")
     field( ZRST, "Normal")
     field( ONST, "Automatic")
     field( TWST, "Single")
@@ -62,6 +47,7 @@ record(mbbo, "$(P):$(N):runMode") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P):$(N):runModeRB") {
@@ -119,12 +105,13 @@ record(mbbo, "$(P):$(N):trigSrc") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P):$(N):trigSrcRB") {
     field( DTYP, "EVG SEQ TRIG SRC")
     field( INP , "#C$(cardNum) S$(seqNum) @")
-    field( UDF, "0")
+    field( UDF,  "0")
     field( SCAN, "I/O Intr")
     field( ZRST, "Mxc0")
     field( ONST, "Mxc1")
@@ -159,9 +146,9 @@ record(mbbi, "$(P):$(N):trigSrcRB") {
 record(bo, "$(P):$(N):commit") {
     field( DTYP, "EVG COMMIT SEQ")
     field( DESC, "Commit EVG Sequence")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "1")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
     field( FLNK, "$(P):loadedSeq")
@@ -170,9 +157,9 @@ record(bo, "$(P):$(N):commit") {
 record(bo, "$(P):$(N):load") {
     field( DTYP, "EVG LOAD SEQ")
     field( DESC, "ALLOC EVG Sequence")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "1")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
     field( FLNK, "$(P):loadedSeq")
@@ -181,9 +168,9 @@ record(bo, "$(P):$(N):load") {
 record(bo, "$(P):$(N):unload") {
     field( DTYP, "EVG UNLOAD SEQ")
     field( DESC, "Dealloc EVG Sequence")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
     field( FLNK, "$(P):loadedSeq")
@@ -192,9 +179,9 @@ record(bo, "$(P):$(N):unload") {
 record(bo, "$(P):$(N):enable") {
     field( DTYP, "EVG ENABLE SEQ")
     field( DESC, "Enable EVG Sequence")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -202,9 +189,9 @@ record(bo, "$(P):$(N):enable") {
 record(bo, "$(P):$(N):disable") {
     field( DTYP, "EVG DISABLE SEQ")
     field( DESC, "Disable EVG Sequence")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -212,9 +199,9 @@ record(bo, "$(P):$(N):disable") {
 record(bo, "$(P):$(N):abort") {
     field( DTYP, "EVG ABORT SEQ")
     field( DESC, "Abort Sequence immediately")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -222,9 +209,9 @@ record(bo, "$(P):$(N):abort") {
 record(bo, "$(P):$(N):pause") {
     field( DTYP, "EVG PAUSE SEQ")
     field( DESC, "Pause Sequence immediately")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -232,9 +219,9 @@ record(bo, "$(P):$(N):pause") {
 record(bo, "$(P):$(N):softTrig") {
     field( DTYP, "EVG SOFT TRIG")
     field( DESC, "Sequence RAM soft trigger")
-    field( OUT, "#C$(cardNum) S$(seqNum) @")
-    field( VAL , "0")
-    field( UDF, "0")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "0")
+    field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -242,19 +229,18 @@ record(bo, "$(P):$(N):softTrig") {
 record(bi, "$(P):$(N):loadStatus") {
     field( DTYP, "EVG LOAD STATUS")
     field( DESC, "Soft Seq Load status")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")
-    field( PINI, "YES")
     field( ZNAM, "Unloaded")
     field( ONAM, "Loaded")
+    info( autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P):$(N):enaStatus") {
     field( DTYP, "EVG ENA STATUS")
     field( DESC, "Soft Seq Ena status")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")    
-    field( PINI, "YES")
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
 }
@@ -262,25 +248,110 @@ record(bi, "$(P):$(N):enaStatus") {
 record(bi, "$(P):$(N):commitStatus") {
     field( DTYP, "EVG COMMIT STATUS")
     field( DESC, "Soft Seq Commit status")
-    field( INP, "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")    
-    field( PINI, "YES")
     field( ZNAM, "Uncommitted")
     field( ONAM, "Committed")
+    info( autosaveFields_pass0, "VAL")
 }
 
 record(waveform, "$(P):loadedSeq") {
     field( DTYP, "EVG LOADED SEQ")
     field( DESC, "Soft Seqs Loaded in Rams")
-    field( INP, "#C$(cardNum) S @")
+    field( INP,  "#C$(cardNum) S @")
     field( NELM, "2")
     field( FTVL, "LONG")
-    field( PINI, "YES")
 }
 
-record( stringin, "$(P):$(N):err") {
+record(stringin, "$(P):$(N):err") {
     field( DTYP, "EVG SEQ ERR")
     field( DESC, "Sequence error msg.")
-    field( INP , "#C$(cardNum) S$(seqNum) @")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")
 }
+
+
+#
+# On boot Process load record if the sequence was perviously in LOADED state
+#
+
+record(calcout, "$(P):$(N):calcoutLoad") {
+    field( CALC, "A")
+    field( INPA, "$(P):$(N):loadStatus NPP NMS")
+    field( OOPT, "When Non-zero")
+    field( OUT,  "$(P):$(N):load PP")
+}
+
+#
+# At a time only one set of records should be enabled either Timestamp or
+# TimestampRaw. Keeping both enable will have problems with autosave.
+#
+
+##########################################################################
+#                             Timestamp                                  #  
+##########################################################################
+
+record(fanout, "$(P):$(N):fo") {
+    field( DESC, "Boot of sequence for sequencer")
+    field( SELM, "All")
+    field( PINI, "YES")
+    field( LNK1, "$(P):$(N):eventCode")
+    field( LNK2, "$(P):$(N):runMode")
+    field( LNK3, "$(P):$(N):trigSrc")
+    field( LNK4, "$(P):$(N):commit")
+    field( LNK5, "$(P):$(N):calcoutLoad")
+}
+
+record(waveform, "$(P):$(N):timestamp") {
+    field( DTYP, "EVG SEQ TIMESTAMP")
+    field( DESC, "Sequence timestamp array")
+    field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
+    field( NELM, "$(NELM)")
+    field( FTVL, "DOUBLE")
+    info( autosaveFields_pass0, "INP")
+    info( autosaveFields_pass1, "VAL")
+}
+
+record(ai, "$(P):$(N):Freq:Update") {
+    field( INP,  "$(P):EvtClkSpeed CP")
+    field( FLNK, "$(P):$(N):calcoutCommit")
+}
+
+#
+#Process commit record if the sequence was perviously in COMMITTED state
+#
+
+record(calcout, "$(P):$(N):calcoutCommit") {
+    field( CALC, "A")
+    field( INPA, "$(P):$(N):commitStatus NPP NMS")
+    field( INPB, "$(P):$(N):timestamp PP")
+    field( OOPT, "When Non-zero")
+    field( OUT,  "$(P):$(N):commit PP")
+}
+
+##########################################################################
+#                               TimestampRaw                             #
+##########################################################################
+
+#record(fanout, "$(P):$(N):fo") {
+#    field( DESC, "Boot of sequence for sequencer")
+#    field( SELM, "All")
+#    field( PINI, "YES")
+#    field( LNK1, "$(P):$(N):eventCode")
+#    field( LNK2, "$(P):$(N):timestampRaw")
+#    field( LNK3, "$(P):$(N):runMode")
+#    field( LNK4, "$(P):$(N):trigSrc")
+#    field( LNK5, "$(P):$(N):commit")
+#    field( LNK6, "$(P):$(N):calcoutLoad")
+#}
+
+#record(waveform, "$(P):$(N):timestampRaw") {
+#    field( DTYP, "EVG SEQ TIMESTAMP RAW")
+#    field( DESC, "Sequence timestamp (ticks)")
+#    field( INP,  "#C$(cardNum) S$(seqNum) @")
+#    field( NELM, "$(NELM)")
+#    field( FTVL, "LONG")
+#    info( autosaveFields_pass1, "VAL")
+#}
+
+
