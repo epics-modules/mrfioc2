@@ -112,16 +112,12 @@ write_wf_timestamp(waveformRecord* pwf) {
         if(!seq)
             throw std::runtime_error("Failed to lookup EVG Sequence");
     
-        epicsFloat64* ts = (epicsFloat64*)pwf->bptr;
         epicsUInt32 size = pwf->nord;
-
-        if(size == 0)
-            return 0;
+        epicsFloat64 ts[size];
 
         /*Scale the time to seconds*/
-        for(unsigned int i = 0; i < size; i++) {
-            ts[i] = ts[i] / pvt->scaler;
-        }
+        for(unsigned int i = 0; i < size; i++)
+            ts[i] = ((epicsFloat64*)pwf->bptr)[i] / pvt->scaler;
 
         ret = seq->setTimestamp(ts, size);
     } catch(std::runtime_error& e) {
@@ -550,7 +546,7 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 static long 
 write_bo_loadSeq(boRecord* pbo) {
     long ret = 0;
-                unsigned long dummy;
+    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -581,7 +577,7 @@ write_bo_loadSeq(boRecord* pbo) {
 static long 
 write_bo_unloadSeq(boRecord* pbo) {
     long ret = 0;
-                unsigned long dummy;
+    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -643,7 +639,7 @@ write_bo_commitSeq(boRecord* pbo) {
 static long 
 write_bo_enableSeq(boRecord* pbo) {
     long ret = 0;
-                unsigned long dummy;
+    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -674,7 +670,7 @@ write_bo_enableSeq(boRecord* pbo) {
 static long 
 write_bo_disableSeq(boRecord* pbo) {
     long ret = 0;
-                unsigned long dummy;
+    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {

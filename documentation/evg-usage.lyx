@@ -792,7 +792,11 @@ Files : evgSoftSeqManager.h/evgSoftSeqManager.cpp
 \end_layout
 
 \begin_layout Standard
-Class: evgSoftSeq
+Class: evg
+\end_layout
+
+\begin_layout Standard
+SoftSeq
 \end_layout
 
 \begin_layout Standard
@@ -844,10 +848,47 @@ Event Code List
 Timestamp List
 \emph default
  (waveform): It is used to set the timeStamps for the events in the soft
- sequence in units of 'Event Clock' ticks(Raw) or in uints of seconds or
- subseconds.
+ sequence.
+ The timestamps can be in units of 'Event Clock' ticks(Raw) or in units
+ of sub-seconds.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+User can select from either units of timestamping by modifing the db file
+ in evgSoftSeq.db in evgMrmApp/Db.
+ Follow the instructions in db file to chose one or the other.
+\end_layout
+
+\begin_layout Itemize
+When user enters the timestamps in terms of sub-seconds, he has an option
+ of choosing the units of sub-seconds by proving an interger divider that
+ is used to convert the sub-seconds to seconds.
+ This is done by modifying the '@parm' part of VME_IO hardware input link
+ of the record $(P):$(N):timestamp.
+ e.g.
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of microseconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1000000'
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of milliseconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1000'
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of seconds do: caput $(P):$(N):timestamp.INP
+ '#C2 S0 @1'
+\end_layout
+
+\begin_layout Quote
+Default unit is microseconds.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 
 \emph on
@@ -919,8 +960,7 @@ Load
  The operation will fail if all the hard sequences are already assigned.
  An allocation scheme ensures that at any given time, each hard sequence
  is connected to only one soft sequence.
- If a sequence is committed (See the commit command below) then the load
- also copies the committed data to the hardware.
+ Load also copies the last committed data to the hardware.
 \end_layout
 
 \begin_layout Itemize
@@ -941,8 +981,8 @@ Commit
 \emph default
  (bo): Whenever you modify a soft sequence, the scratch copy in the soft
  sequence is modified (Refer to evg-seq diagram).
- Commit causes the changes from the scratch sequence to be copied to the
- complete sequence.
+ Commit causes the changes from the 'scratch sequence' to be copied to the
+ 'complete sequence'.
  If the soft sequence is loaded, commit also initiates sync operation and
  copies the changes from complete sequence to the hardware.
  Modifying the sequenceRam while it is running gives undefined behavior
@@ -1026,36 +1066,6 @@ The current user interface for setting Event Code and Timestamp is not very
  close and open the panel again.
 \end_layout
 
-\begin_layout Itemize
-When user enters the timestamps in terms of sub-seconds, he has an option
- of choosing the units of sub-seconds by proving an interger divider that
- is used to convert the sub-seconds to seconds.
- This is done by modifying the '@parm' part of VME_IO hardware input link
- of the record $(P):$(N):timestamp.
- e.g.
-\end_layout
-
-\begin_deeper
-\begin_layout Quote
-To enter timestamps in terms of microseconds do: caput $(P):$(N):timestamp.INP
- '#C2 S0 @1000000'
-\end_layout
-
-\begin_layout Quote
-To enter timestamps in terms of milliseconds do: caput $(P):$(N):timestamp.INP
- '#C2 S0 @1000'
-\end_layout
-
-\begin_layout Quote
-To enter timestamps in terms of seconds do: caput $(P):$(N):timestamp.INP
- '#C2 S0 @1'
-\end_layout
-
-\begin_layout Quote
-Default unit is microseconds.
-\end_layout
-
-\end_deeper
 \begin_layout Section
 Acknowledgment
 \end_layout

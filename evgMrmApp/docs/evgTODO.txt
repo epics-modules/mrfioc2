@@ -18,4 +18,5 @@ TODO:
     -Better interface for event code and timestamp array in edm/Python.
     -Higher level control for seqeuencer
     -Pause State for sequencer(No. The readback is for the complete sequence)
- 
+    -NSLS-II Naming convections for records
+

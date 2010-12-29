@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 54
-y 335
+x 58
+y 355
 w 303
 h 281
 font "helvetica-medium-r-12.0"
@@ -109,29 +109,6 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 200
-y 220
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(SS):unload"
-releaseValue "1"
-onLabel "Unload"
-offLabel "Unload"
-3d
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
 x 30
 y 220
 w 70
@@ -214,29 +191,6 @@ controlPv "$(P):$(SS):enable"
 releaseValue "1"
 onLabel "Enable"
 offLabel "Enable"
-3d
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 130
-y 220
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P):$(SS):load"
-releaseValue "1"
-onLabel "Load"
-offLabel "Load"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -433,6 +387,52 @@ controlPv "$(P):$(SS):abort"
 releaseValue "1"
 onLabel "Abort"
 offLabel "Abort"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 220
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(SS):load"
+releaseValue "1"
+onLabel "Load"
+offLabel "Load"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 220
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(SS):unload"
+releaseValue "1"
+onLabel "Unload"
+offLabel "Unload"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
