@@ -1,4 +1,4 @@
-#LyX 1.6.6.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -28,7 +28,7 @@
 \pdf_colorlinks true
 \pdf_backref false
 \pdf_pdfusetitle true
-\pdf_quoted_options "linkcolor=blue"
+\pdf_quoted_options "linkcolor=blue, urlcolor=blue, citecolor=blue"
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -53,7 +53,7 @@
 \begin_body
 
 \begin_layout Title
-MRF EVR Usage Guide
+MRFIOC2 Usage Guide
 \end_layout
 
 \begin_layout Author
@@ -61,8 +61,9 @@ Michael Davidsaver <mdavidsaver@bnl.gov>
 \end_layout
 
 \begin_layout Date
-Aug 2010, Rev.
- 3
+Feb.
+ 2011, Rev.
+ 4
 \end_layout
 
 \begin_layout Standard
@@ -173,9 +174,49 @@ Overview
 
 \begin_layout Standard
 The purpose of this document is to act as a guide and reference when using
- the 'mrfioc2' EPICS support module for the Micro Research Finland (MRF)
- timing Event Receiver (EVR).
- Usage of the Event Generator (EVG) is described elsewhere.
+ the 'mrfioc2' EPICS support module for the Micro Research Finland (MRF
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "MRF"
+description "Micro Research Finland.  The company which makes these products."
+
+\end_inset
+
+) timing system
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+List of supported hardware given in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:supported"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+ It describes software for using the Event Generator (EVG
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "EVG"
+description "Event Generator.  Source of timing events"
+
+\end_inset
+
+) and Event Receiver (EVR
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "EVR"
+description "Event Receiver.  Endpoints for timing events"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
@@ -190,8 +231,16 @@ reference "img:sys:confs"
 ).
  The first is a unidirectional broadcast from a single source (EVG) to multiple
  destinations (EVRs).
- The Repeater devices simply retransmit its single input to all outputs.
- In the second configuration a return patch from many EVRs back up to single
+ The Repeater
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Repeater"
+description "\"Dumb\" hub.  Has one input and many outputs."
+
+\end_inset
+
+ devices simply retransmit its single input to all outputs (one to many).
+ In the second configuration a return path from many EVRs back up to single
  central (master) EVR is added.
 \end_layout
 
@@ -274,8 +323,9 @@ reference "img:wire:frames"
 
 \begin_layout Standard
 In addition to data, the use of 8b10b encoding on the event link allows
- the local oscillator of each EVR to be phase locked to the master on the
- EVG.
+ the local oscillator of each EVR to be phase locked to a reference send
+ by the EVG.
+ The EVG itself is typically driven from an external oscillator.
 \end_layout
 
 \begin_layout Standard
@@ -324,6 +374,535 @@ name "img:wire:frames"
 \end_layout
 
 \begin_layout Standard
+When discussing the MRF timing system there are three clocks.
+ The external reference clock for the EVG, the bit clock for transceiver,
+ and the Event Clock.
+ The relation between the reference and the Event clocks is determined by
+ a programmable divider in the EVG and is usually a small integer number
+ (eg.
+ 4).
+ The Event clock must be in the range between 50MHz and 125MHz.
+ The relation between the Event clock and the bit clock is a fixed factor
+ of 20 which is determined by the frame size described above.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+F_{bit}/20=F_{Event}=F_{Ext}/N_{Divide}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Event Link Data
+\end_layout
+
+\begin_layout Standard
+Data which is transferred over the event link is interpreted in four ways:
+ Event Codes, DBus bits, Data Buffers, and Clock Phase.
+ Each carries a different meaning, and is used in different ways.
+\end_layout
+
+\begin_layout Subsubsection
+Event Codes
+\end_layout
+
+\begin_layout Standard
+An event is momentary.
+ Typically an event causes something to happen (a trigger).
+ The 256 usable event codes available in the MRF system can be though of
+ as 256 seperate physical wires.
+ On every tick of the Event Clock a pulse is sent on one (and only one)
+ of the wires.
+ The special 0 wire is the ``idle'' event which is sent when no other event
+ is queued.
+\end_layout
+
+\begin_layout Standard
+Event Codes will most often be used as triggers for external delay channels.
+ However, there are a number of event codes which have special meaning in
+ the MRF system.
+ The meaning of all other codes is left to the system operator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Code
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x00
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Idle, or null, event.
+ Send when nothing happens.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x70
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift 0 into EVR timestamp shift register
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x71
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift 1 into EVR timestamp shift register
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7A
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset EVR heartbeat timeout counter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7B
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset all EVR divider.
+ Synchronize global phase
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7C
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Increment EVR timestamp counter (depending on mode)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7D
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset timestamp counter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7F
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+End of sequence (not transmitted).
+ 
+\size footnotesize
+Use in other contexts is discouraged.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Special Event codes
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tbl:spec:codes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Distributed Bus (DBus) bits
+\end_layout
+
+\begin_layout Standard
+The Distributed Bus (DBus
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "DBus"
+description "Distributed Bus.  Special state stored on EVR and periodically updated from EVG."
+
+\end_inset
+
+) consists of 8 bits of data which are stored on every EVR.
+ This data is initialized to zero when the EVR starts, and overwritten whenever
+ the EVR receives an event frame with DBus data.
+ Depending on configuration this is either every frame, or every second
+ frame (See fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:wire:frames"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The DBus can thus be used to distribute either periodic, or non-periodic,
+ signals with bandwidth up to 
+\begin_inset Formula $\frac{1}{2}$
+\end_inset
+
+ (or 
+\begin_inset Formula $\frac{1}{4}$
+\end_inset
+
+) of the Event clock.
+\end_layout
+
+\begin_layout Standard
+The bits of the DBus can be routed to physical output.
+ A special feature of DBus bit 4 allows its rising edge to increment the
+ timestamp counter (depending on mode).
+\end_layout
+
+\begin_layout Subsubsection
+Data Buffers
+\end_layout
+
+\begin_layout Standard
+When configured a protocol is used to broadcast arbitrary byte arrays from
+ the EVG to all EVRs.
+ Bytes are sent one at a time in the data part of every second frame.
+ Special 8b10b codes are used to mark the beginning and end for each transfer.
+ A simple checksum is also sent.
+ The 230 series hardware allows buffers up to 2047 bytes in length.
+\end_layout
+
+\begin_layout Standard
+In keeping with the convention of the original MRF EPICS Support package
+ the first byte of a buffer is used as a header (Protocol ID) to identify
+ it.
+ No restrictions are placed on the body of buffer.
+\end_layout
+
+\begin_layout Subsubsection
+Event Clock Phase
+\end_layout
+
+\begin_layout Standard
+The use of 8b10b encoding allows each EVR's local oscillator to lock to
+ the EVG's reference clock.
+ This allows operation at speeds higher then the event clock rate.
+ This is used by the CML outputs described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:evr:cml"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Global Time Distribution
+\end_layout
+
+\begin_layout Standard
+The model of time implemented by the MRF hardware is two 32-bit unsigned
+ integers: counter, and 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The counter is maintained by each EVR and incremented quickly.
+ The value of the 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ is sent periodically from the EVG at a lower rate.
+ 
+\end_layout
+
+\begin_layout Standard
+During each 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+ 33 special codes (see sec.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tbl:spec:codes"
+
+\end_inset
+
+) must be sent.
+ The first 32 are the shift 0/1 codes which contain the value of the next
+ 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The last is the timestamp reset event.
+ When received this code transfers the new 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+ value out of the shift register, and resets the counter to zero.
+ These actions start the next 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Note that while it is referred to as 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ this value is an arbitrary integer which can have other meanings.
+ Currently only one time model is implemented, but implementing others is
+ possible.
+\end_layout
+
+\begin_layout Subsubsection
+Light Source Time Model
+\end_layout
+
+\begin_layout Standard
+In this model the 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is an actual 1Hz counter.
+ The software default is the POSIX time of seconds since 1 Jan.
+ 1970 UTC.
+ Each new second is started with a trigger from an external 1Hz oscillator,
+ usually a GPS receiver.
+ Most GPS receivers have a one pulse per second (PPS
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "PPS"
+description "Pulse Per Second. 1Hz clock"
+
+\end_inset
+
+) output.
+\end_layout
+
+\begin_layout Standard
+Several methods of sending the seconds value to the EVG are possible:
+\end_layout
+
+\begin_layout Paragraph
+External hardware
+\end_layout
+
+\begin_layout Standard
+has been created by Diamond light source which communicates with a GPS receiver
+ over a serial (RS232) link to receive the timestamp and connects to two
+ external inputs on the EVG.
+ These inputs must be programmed to send the shift 0/1 codes.
+\end_layout
+
+\begin_layout Paragraph
+Time from an NTP server
+\end_layout
+
+\begin_layout Standard
+can be used without special hardware.
+ This assumes that the the 1Hz (PPS) signal is coming from the same source
+ as the NTP time.
+ However, several commerial vendors supply dedicated NTP servers with buildin
+ GPS receivers.
+ A software function is provided on the EVG which is triggered by the 1Hz
+ signal.
+ At the start of each second it sends the next second (current+1), which
+ will be latched after the following 1Hz tick.
+\end_layout
+
+\begin_layout Section
+Components
+\end_layout
+
+\begin_layout Subsection
+Event Receiver
+\end_layout
+
+\begin_layout Standard
 Internally an EVR can be thought of as a number of logical sub-units (Fig.
  
 \begin_inset CommandInset ref
@@ -332,8 +911,8 @@ reference "img:evr:blocks"
 
 \end_inset
 
-) connected to the up- and down- stream event links, and to the local inputs
- and outputs of the EVR.
+) connecting the upstream and downstream event links to the local inputs
+ and outputs.
  These sub-units include: the Event Mapping Ram, Pulse Generators, Prescalers
  (clock dividers), and the logical controls for the physical inputs and
  outputs.
@@ -380,22 +959,27 @@ name "img:evr:blocks"
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Pulse Generators
 \end_layout
 
 \begin_layout Standard
-Each pulse generator has a an associated delay, width, polarity (active
- low/high), and (sometimes) a prescaler (clock divider).
- When triggered by the Mapping Ram it will wait for a set time in its inactive
- state (delay).
- Then it will transition to its active state, wait another set time (width)
- before transitioning back to its inactive state.
+Each pulse generator has a an associated Delay, Width, Polarity (active
+ low/high), and (sometimes) a Prescaler (clock divider).
+ When triggered by the Mapping Ram it will wait for the Delay time in its
+ inactive state.
+ Then it will transition to its active state, wait for the Width time before
+ transitioning back to its inactive state.
+\end_layout
+
+\begin_layout Standard
+Resolution of the delay and width is determined by the prescaler.
+ A setting of 1 gives the best resolution.
 \end_layout
 
 \begin_layout Standard
 In addition, the Mapping Ram can force a Pulse Generator into either state
- (Set/Reset).
+ (Active/Inactive).
 \end_layout
 
 \begin_layout Standard
@@ -425,7 +1009,7 @@ Note:
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Event Mapping Ram
 \end_layout
 
@@ -467,7 +1051,7 @@ reference "sec:spec:mappings"
  Most applications will use Trigger mappings.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Prescalers (Clock Divider)
 \end_layout
 
@@ -475,10 +1059,10 @@ Prescalers (Clock Divider)
 Prescaler sub-units take the EVR's local oscillator and output a lower frequency
  clock which is phased locked to the local clock, which is in sync with
  the global master clock.
- The lower frequency will be an integer divisor of the system clock.
+ The lower frequency must be an integer divisor of the Event clock.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Outputs (TTL)
 \end_layout
 
@@ -508,19 +1092,26 @@ reference "sec:out:mappings"
  for a complete list).
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Outputs (CML)
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:cml"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Current Mode Logic outputs can send a bit pattern at the bit rate of the
- event link (20x the Event Clock).
+ event link bit clock (20x the Event Clock).
  This pattern may be specified in one of three possible ways.
 \end_layout
 
 \begin_layout Standard
 As four 20 bit sub-patterns (rising, high, falling, and low).
- As two times (high and low).
+ As two periods (high and low).
  These specify a square wave with variable frequency and duty factor.
  As an arbitrary bit pattern (<= 40940 bits) which begins when the output
  goes [TODO: high or low?].
@@ -532,7 +1123,7 @@ In the sub-pattern mode.
  while the high and low patterns are repeated inbetween level changes.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Inputs
 \end_layout
 
@@ -543,7 +1134,11 @@ An EVR's local TTL input can cause several actions when triggered.
  local Mapping Ram.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Standard
+The rising edge of a local input can be timestamped.
+\end_layout
+
+\begin_layout Subsubsection
 Global Timestamp Reception
 \end_layout
 
@@ -554,24 +1149,189 @@ Each EVR receives synchronous time broadcasts from an EVG.
  This can be accomplished with the 'event' record device support.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Standard
+Each EVR may be configured with a different method of incrementing the timestamp
+ counter.
+ See section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:evr:ts:src"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
 Data Buffer Tx/Rx
 \end_layout
 
 \begin_layout Standard
-When the event system is configured to share the data byte of each frame
- EVR can receive data broadcasts from an EVG and/or send data back to the
- master EVR.
- Each data block has a one byte header (Protocol ID) used to identify interested
- recipients.
+A recipient can register callback functions for each Protocol ID.
+ It will then be shown the body of every buffer arriving with this ID.
 \end_layout
 
 \begin_layout Standard
-Recipients will register callback functions.
+A default recipient is provided which stores data in a waveform record.
+\end_layout
+
+\begin_layout Subsection
+Event Generator
 \end_layout
 
 \begin_layout Standard
-The default recipient stores data in a waveform record.
+Internally an EVG can be thought of as a number of logical sub-units (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:evg:blocks"
+
+\end_inset
+
+) connecting the upstream and downstream event links to the local inputs
+ and outputs.
+ These sub-units include: the Multiplexed Counters, Sequencers, Event Triggers,
+ and the logical controls for the physical inputs and outputs.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename EVG_Block_Daigram.JPG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Event Generator logical sub-units
+\begin_inset CommandInset label
+LatexCommand label
+name "img:evg:blocks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Trigger Sources
+\end_layout
+
+\begin_layout Standard
+Sub-units which generate signals which can be feed into other sub-units.
+\end_layout
+
+\begin_layout Paragraph
+Each Multiplexed counter
+\end_layout
+
+\begin_layout Standard
+is a simple divider on the Event clock.
+ It can be connected to drive a combination of Sequencers, Event Triggers,
+ and DBus bits.
+\end_layout
+
+\begin_layout Paragraph
+AC Line Sync
+\end_layout
+
+\begin_layout Standard
+is used to generate a trigger at the AC line frequency (50 or 60 Hz).
+ The phase can be adjusted, and the frequency further divided if necessary.
+\end_layout
+
+\begin_layout Paragraph
+External Input
+\end_layout
+
+\begin_layout Standard
+Gives a trigger from an arbitrary external source.
+\end_layout
+
+\begin_layout Subsubsection
+Trigger Sinks
+\end_layout
+
+\begin_layout Standard
+Sub-units which must be triggered.
+ Each of these must be associated with one (or more) triggering sub-units.
+\end_layout
+
+\begin_layout Paragraph
+Sequencers
+\end_layout
+
+\begin_layout Standard
+sends a pre-programmed list of events with delays relative to the trigger
+ time.
+ The sequencer is both the most useful, and most complicated, feature of
+ the EVG.
+ It will be discussed in depth in a later section.
+\end_layout
+
+\begin_layout Paragraph
+Event Triggers
+\end_layout
+
+\begin_layout Standard
+immediately sends a single event code.
+\end_layout
+
+\begin_layout Paragraph
+DBus controls
+\end_layout
+
+\begin_layout Standard
+select the source of each DBus bit.
+ These sources are polled each time a DBus data update is sent.
+\end_layout
+
+\begin_layout Paragraph
+Local Outputs
+\end_layout
+
+\begin_layout Standard
+can mirror any of the DBus bits.
+\end_layout
+
+\begin_layout Subsubsection
+Misc.
+\end_layout
+
+\begin_layout Paragraph
+Software Event
+\end_layout
+
+\begin_layout Standard
+is an arbitrary event codes can be sent from software.
+ This feature can be used to send arbitrary unsynchronized events codes.
+ A common use is to send the Heartbeat event code to signal that software
+ on the EVG is alive.
 \end_layout
 
 \begin_layout Section
@@ -777,7 +1537,7 @@ Linux >= 2.6.26.
 \end_layout
 
 \begin_layout Subsection
-The Source
+Source
 \end_layout
 
 \begin_layout Standard
@@ -842,7 +1602,7 @@ mrmShared
 \end_layout
 
 \begin_layout Standard
-Contains code shared with the EVG.
+Contains code shared between the EVR and EVG.
  This includes data buffer transmission.
 \end_layout
 
@@ -867,14 +1627,30 @@ evrMrmApp
 \end_layout
 
 \begin_layout Standard
-The is the driver for the Modular Register Map (MRM) firmware version for
- the EVR.
+The is the driver for the Modular Register Map (MRM
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "MRM"
+description "Modular Register Map.  Name for the common register map for all 230 and 300 series EVRs or EVGs"
+
+\end_inset
+
+) firmware version for the Event Receiver.
  It provides a concrete implimentation of the abstract classes defined in
  'evrApp'.
- It also provided IOC shell functions to instanciate a device in 'evrMrmApp/src/
+ It also provided IOC shell functions to instantiate a device in 'evrMrmApp/src/
 drvemIocsh.cpp'.
  'evrMrmApp/Db/evr-*.substitutions' will create a complete example database.
  An example IOC using the database is in 'iocBoot/iocevrmrm/'.
+\end_layout
+
+\begin_layout Subsubsection
+evgMrmApp
+\end_layout
+
+\begin_layout Standard
+Driver for the MRM version of the Event Generator.
+ Sequencer management code can be found in the evgSequencer sub-directory.
 \end_layout
 
 \begin_layout Section
@@ -893,16 +1669,10 @@ The following devices are supported.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
+\begin_inset Float table
+placement H
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
@@ -1216,6 +1986,166 @@ Supports PCI side-by-side module
 
 \end_layout
 
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Support Event Receiver Models
+\begin_inset CommandInset label
+LatexCommand label
+name "tbl:support:evr"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP UNIV
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP Inputs
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RTM
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+VME-EVG-230
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Support Event Generator Models
+\begin_inset CommandInset label
+LatexCommand label
+name "tbl:support:evg"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_inset
 
 
@@ -1231,13 +2161,40 @@ This section outlines a general strategy for adding an EVR to an IOC.
  the extra steps needed to use mrfioc2 under Linux.
 \end_layout
 
+\begin_layout Standard
+An example IOC shell script is included as 
+\begin_inset Quotes eld
+\end_inset
+
+iocBoot/iocevrmrm/st.cmd
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Device ID Numbers
+\end_layout
+
+\begin_layout Standard
+All EVGs and EVRs in an IOC are identified by an integer number.
+ This number is first given in the IOC shell functions described below,
+ and repeated in the INP or OUT field of all database records which reference
+ it.
+ Both EVGs, and EVRs share the same namespace.
+ So it is not possible to have EVG 1 and EVR 1 in the same IOC.
+ This restriction is needed since some code is shared between these two
+ devices.
+\end_layout
+
 \begin_layout Subsection
 VME64x Device Configuration
 \end_layout
 
 \begin_layout Standard
-The VME bus based EVRs are configured using the mrmEvrSetupVME() IOC shell
- function.
+The VME bus based EVRs and EVGs are configured using one of the following
+ IOC shell functions.
 \end_layout
 
 \begin_layout Standard
@@ -1248,7 +2205,22 @@ status open
 
 \begin_layout Plain Layout
 
-mrmEvrSetupVME(1,5,0x20000000,3,0x26)
+# Generator
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvgSetupVME(10,5,0x20000000,3,0x26)
+\end_layout
+
+\begin_layout Plain Layout
+
+# Receiver
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME(1,3,0x30000000,4,0x28)
 \end_layout
 
 \end_inset
@@ -1260,6 +2232,7 @@ mrmEvrSetupVME(1,5,0x20000000,3,0x26)
 In this example EVR #1 is defined to be the VME card in slot 5.
  It is given the A32 base address of 0x20000000 and configured to interrupt
  on level 3 with vector 0x26.
+ EVG #10 is then defined as the card in slot 3.
 \end_layout
 
 \begin_layout Standard
@@ -1346,6 +2319,11 @@ status open
 
 \begin_layout Plain Layout
 
+# Receiver
+\end_layout
+
+\begin_layout Plain Layout
+
 mrmEvrSetupPCI(0,1,2,0)
 \end_layout
 
@@ -1378,97 +2356,6 @@ Note:
 \series default
  Before setup is done the PCI identifer fields are verified so that specifying
  an incorrect location is detected and setup will safely abort.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Example Databases
-\end_layout
-
-\begin_layout Standard
-The MRFIOC2 module includes example database templates for all supported
- devices (see 
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-textsection
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:supported"
-
-\end_inset
-
-).
- While fully functional it is expected that most sites will make modifications.
- It is suggested that the original be left unchanged and a copy be made
- with the institute name and other information as a suffix.
- (evr-pmc-230.substitutions becomes evr-pmc-230-nsls2.substitutions).
-\end_layout
-
-\begin_layout Standard
-The authors would like to encouraged users to submit their customized databases
- back so that they may be included as examples in future releases of MRFIOC2.
-\end_layout
-
-\begin_layout Standard
-The templates consist of a substitutions file for each model (PMC, cPCI,
- VME-RF).
- This template instanciates the correct number of records for the inputs/outputs
- found on each device.
- It also includes entries for event mappings and database events which will
- be frequent targets for customization.
-\end_layout
-
-\begin_layout Standard
-Each substitutions file will be expanded during the build process with the
- MSI utility to create a database file with two undefined macros (P and
- C).
- 'P' is the common prefix shared by all PVs and must be unique in the system.
- 'C' is a card number also given as the first argument of one of the mrmEvrSetup
-*() IOC shell functions (unique in each IOC).
-\end_layout
-
-\begin_layout Standard
-Thus an IOC with two identical VME cards could use a configuration like:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=bash"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-mrmEvrSetupVME(1,5,0x20000000,3,0x26)
-\end_layout
-
-\begin_layout Plain Layout
-
-mrmEvrSetupVME(2,6,0x21000000,3,0x28)
-\end_layout
-
-\begin_layout Plain Layout
-
-dbLoadRecords("evr-vmerf-230.db", "P=test:evra:, C=1")
-\end_layout
-
-\begin_layout Plain Layout
-
-dbLoadRecords("evr-vmerf-230.db", "P=test:evrb:, C=2")
 \end_layout
 
 \end_inset
@@ -1653,15 +2540,341 @@ Note:
 
 \end_layout
 
-\begin_layout Section
-Device Support Design
+\begin_layout Subsection
+Example Databases
 \end_layout
 
 \begin_layout Standard
-The EPICS support module for EVRs consists of a number of supports which
- are generally tied to a specific logical sub-unit.
+The MRFIOC2 module includes example database templates for all supported
+ devices (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:supported"
+
+\end_inset
+
+).
+ While each is fully functional, it is expected that most sites will make
+ modifications.
+ It is suggested that the original be left unchanged and a copy be made
+ with the institute name and other information as a suffix.
+ (evr-pmc-230.substitutions becomes evr-pmc-230-nsls2.substitutions).
+\end_layout
+
+\begin_layout Standard
+The authors would like to encouraged users to send their customized databases
+ back so that they may be included as examples in future releases of MRFIOC2.
+\end_layout
+
+\begin_layout Standard
+The templates consist of a substitutions file for each model (PMC, cPCI,
+ VME-RF).
+ This template instanciates the correct number of records for the inputs/outputs
+ found on each device.
+ It also includes entries for event mappings and database events which will
+ be frequent targets for customization.
+\end_layout
+
+\begin_layout Standard
+Each substitutions file will be expanded during the build process with the
+ MSI utility to create a database file with two undefined macros (P and
+ C).
+ 'P' is the common prefix shared by all PVs and must be unique in the system.
+ 'C' is a card number also given as the first argument of one of the mrmEvrSetup
+*() IOC shell functions (unique in each IOC).
+\end_layout
+
+\begin_layout Standard
+Thus an IOC with two identical VME cards could use a configuration like:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME(1,5,0x20000000,3,0x26)
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME(2,6,0x21000000,3,0x28)
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("evr-vmerf-230.db", "P=test:evra:, C=1")
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("evr-vmerf-230.db", "P=test:evrb:, C=2")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME(3,3,0x30000000,4,0x30)
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("vme-evg230.db", "P=test:evg:, cardNum=3")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+autosave
+\end_layout
+
+\begin_layout Standard
+All example database files include 
+\begin_inset Quotes eld
+\end_inset
+
+info()
+\begin_inset Quotes erd
+\end_inset
+
+ entries to generate autosave request files.
+ The example IOC shell script 
+\begin_inset Quotes eld
+\end_inset
+
+iocBoot/iocevrmrm/st.cmd
+\begin_inset Quotes erd
+\end_inset
+
+ includes the following to configure autosave.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+save_restoreDebug(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:") 
+\end_layout
+
+\begin_layout Plain Layout
+
+save_restoreSet_status_prefix("mrftest:")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+set_savefile_path("${mnt}/as","/save")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_requestfile_path("${mnt}/as","/req")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This enables some extra debug information which is useful for testing, and
+ loads the autosave on-line status database.
+ It also sets the locations where .sav and .req files will be searched for.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+set_pass0_restoreFile("mrf_settings.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass0_restoreFile("mrf_values.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass1_restoreFile("mrf_values.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass1_restoreFile("mrf_waveforms.sav")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sets three files which will be loaded.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+values
+\begin_inset Quotes erd
+\end_inset
+
+ is loaded twices as is the autosave convention.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+iocInit()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields") 
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After the IOC has started the request files are generated.
+ This where the association between 
+\begin_inset Quotes eld
+\end_inset
+
+info()
+\begin_inset Quotes erd
+\end_inset
+
+ entries and request file names is made.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_settings.req", 5 , "")
+\end_layout
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_values.req", 5 , "")
+\end_layout
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_waveforms.req", 30 , "") 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally the request files are re-read and monitor sets are created.
+\end_layout
+
+\begin_layout Section
+Testing Procedures
+\end_layout
+
+\begin_layout Standard
+This section presents several step by step procedures which may be useful
+ when testing the function of hardware and software.
+\end_layout
+
+\begin_layout Subsection
+Standalone EVR
+\end_layout
+
+\begin_layout Subsection
+EVG and EVR Checkout
+\end_layout
+
+\begin_layout Subsection
+Sequencer Demo
+\end_layout
+
+\begin_layout Section
+System Design
+\end_layout
+
+\begin_layout Standard
+This section presents some advice on implementing a system with the MRF
+ timing hardware.
+\end_layout
+
+\begin_layout Section
+EVR Device Support Reference
+\end_layout
+
+\begin_layout Standard
+The EPICS support module for MRF devices consists of a number of supports
+ which are generally tied to a specific logical sub-unit.
  Each sub-unit may be thought of as having a number of properties.
- For example each Delay Generator has properties 'Delay' and 'Width'.
+ For example, each Delay Generator has properties 'Delay' and 'Width'.
  These properties can be set in several ways.
  A delay can specified as an integer number of ticks of its reference clock
  (hardware view), or in seconds as a floating point number (user view).
@@ -1669,7 +2882,9 @@ The EPICS support module for EVRs consists of a number of supports which
 
 \begin_layout Standard
 In this example the properties 'Delay' and 'Width' should be settable in
- exact integer as well as the more useful, but inexact, units of seconds.
+ exact integer as well as the more useful, but imprecise, floating point
+ units (eg.
+ seconds).
  This needs to be accomplish by two different device supports (longout,
  and ao).
  Of course it is also useful to have some confirmation that settings have
@@ -1677,7 +2892,7 @@ In this example the properties 'Delay' and 'Width' should be settable in
 \end_layout
 
 \begin_layout Standard
-To this end the Pulser impliments the following device supports.
+To this end the Pulser implements the following device supports.
 \end_layout
 
 \begin_layout Standard
@@ -1883,12 +3098,31 @@ This provides setting in engineering units and readbacks in both EGU and
 \end_layout
 
 \begin_layout Standard
-It is generally inadvisible to have both raw and engineering settings in
- a production database unless steps are taken to synchronize them.
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ In is inadvisible to have to output records pointing to the same property
+ of the same device.
+ However, it is allowed since there are cases where this is desireable.
 \end_layout
 
-\begin_layout Section
-Device Support Reference
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1926,11 +3160,33 @@ Master enable for the EVR.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
 If disabled, an EVR will automatically enable when the event link becomes
  active.
  This allows for bumpless cold starts.
  For this reason the enable property should be included in any autosave
  request files.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Waiting on update to PMC firmware to enable this feature
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1944,6 +3200,7 @@ Implimented for: bi
 \begin_layout Standard
 This indicates whether the phase locked loop which synchronizes an EVR's
  local oscilator with the phase of the EVG's oscilator.
+ Outputs will not be stable unless the PLL is locked.
 \end_layout
 
 \begin_layout Standard
@@ -1967,14 +3224,87 @@ Implimented for: bi
 
 \begin_layout Standard
 Indicates when the event link is active.
- This means that the receiver sees light, that the phase is locked, and
- that valid data is being received from the EVG.
+ This means that the receiver sees light, and that valid data is being decoded.
 \end_layout
 
 \begin_layout Standard
 A reading of false may be caused by a number of conditions including: EVG
  down, fiber unplugged or broken, and/or incorrent fractional synthesizer
  frequency.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Valid
+\end_layout
+
+\begin_layout Standard
+Implimented for: bi
+\end_layout
+
+\begin_layout Standard
+Indicates if the EVR has a current, valid timestamp.
+ Condition under which the timestamp is declared invalid include:
+\end_layout
+
+\begin_layout Itemize
+TS counter reset event received, but 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value not updated.
+\end_layout
+
+\begin_layout Itemize
+Found timestamp with previous invalid value.
+ Catches old timestamp in buffers.
+\end_layout
+
+\begin_layout Itemize
+TS counter exceeded limit (eg.
+ missed reset event)
+\end_layout
+
+\begin_layout Itemize
+New 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is less then the last valid values, or more then two greater then
+ the last valid value.
+ (Light Source time model only).
+ This will reject single 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ values sent by the EVG.
+\end_layout
+
+\begin_layout Itemize
+Event Link error (Status is error).
+\end_layout
+
+\begin_layout Standard
+The timestamp will become valid when a new 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is received from the EVG.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2002,6 +3332,78 @@ The firmware version.
 \end_layout
 
 \begin_layout Subsubsection
+FIFO Overflow counter
+\end_layout
+
+\begin_layout Standard
+Implimented for: longin
+\end_layout
+
+\begin_layout Standard
+Counter the number of hardware event buffer overflows.
+ There is a single hardware buffer for all event codes.
+ When it overflows arbitrary events will fail to be delivered to software.
+ This can cause the timestamp to falsely be invalidated, and can disrupt
+ database processing which depends on event reception.
+\end_layout
+
+\begin_layout Standard
+This is a serious error which should be corrected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ An overflow does 
+\series bold
+not
+\series default
+ effect physical output.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+FIFO Over rate
+\end_layout
+
+\begin_layout Standard
+Implimented for: longin
+\end_layout
+
+\begin_layout Standard
+Counts overflows in all of the per event software buffers.
+\end_layout
+
+\begin_layout Standard
+This indicates that the period between successive events is shorter then
+ the runtime of the code (callbacks, and database processing) that is causes.
+ Extra events are being dropped and cause no action.
+\end_layout
+
+\begin_layout Standard
+Actions of other event codes are not effected.
+\end_layout
+
+\begin_layout Subsubsection
 Clock
 \end_layout
 
@@ -2023,6 +3425,13 @@ The native analog units are Hertz (Hz).
 
 \begin_layout Subsubsection
 Timestamp Source
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:ts:src"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3197,6 +4606,16 @@ record(longout, "$(P)$(N)$(M)") {
 
 \begin_layout Plain Layout
 
+	field( DRVL, "0")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DRVH, "255")
+\end_layout
+
+\begin_layout Plain Layout
+
 }
 \end_layout
 
@@ -3207,7 +4626,7 @@ record(longout, "$(P)$(N)$(M)") {
 
 \begin_layout Standard
 In this example the event '$(EVT)' specified in the 'VAL' field will cause
- function '$(F)' on Pulse Generator #'$(PID)'.
+ function '$(F)' on Pulse Generator # '$(PID)'.
  Current functions are 'Trig', 'Reset', and 'Set'.
 \end_layout
 
@@ -3372,7 +4791,7 @@ Database Events
 \end_layout
 
 \begin_layout Standard
-Implimented for: event
+Implimented for: longout
 \end_layout
 
 \begin_layout Standard
@@ -3394,7 +4813,7 @@ status open
 
 \begin_layout Plain Layout
 
-record(event, "$(P)$(N)") {
+record(longout, "$(P)$(N)") {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3415,6 +4834,16 @@ record(event, "$(P)$(N)") {
 \begin_layout Plain Layout
 
 	field(VAL , "$(EVNT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(TSE , "-2") # from device support
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(FLNK, "$(P)$(N):count")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3445,6 +4874,11 @@ record(calc, "$(P)$(N):count") {
 \begin_layout Plain Layout
 
 	field(INPA, "$(P)$(N):count NPP")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(TSEL, "$(P)$(N).TIME")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3489,6 +4923,640 @@ Note:
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Rx
+\end_layout
+
+\begin_layout Standard
+Records accessing properties in this section will have DTYP set to "MRM
+ EVR Buf Rx".
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/mrmevrbufrx.db
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+Selects Event link data mode.
+ This chooses between DBus only, and DBus+Buffer modes.
+ In DBus only mode Data Buffer reception is not possible.
+\end_layout
+
+\begin_layout Subsubsection
+Data Rx
+\end_layout
+
+\begin_layout Standard
+Implimented for: waveform
+\end_layout
+
+\begin_layout Standard
+When a buffer with the given Protocol ID is received a copy is placed in
+ this record.
+ It is possible to have many records receiving the same Protocol ID.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ In order to avoid extra copy overhead this record bypasses the normal scanning
+ process.
+ It function like 
+\begin_inset Quotes eld
+\end_inset
+
+I/O Intr
+\begin_inset Quotes erd
+\end_inset
+
+, however the SCAN field should be left as 
+\begin_inset Quotes eld
+\end_inset
+
+Passive
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Endianness?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(waveform, "$(P)dbus:recv:u32")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DESC, "Recv Buffer") 
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "MRM EVR Buf Rx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Rx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FTVL, "ULONG")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(NELM, "2046")
+\end_layout
+
+\begin_layout Plain Layout
+
+  info(autosaveFields_pass0, "INP")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Tx
+\end_layout
+
+\begin_layout Standard
+Records accessing properties in this section will have DTYP set to "MRF
+ Data Buf Tx".
+\end_layout
+
+\begin_layout Standard
+This section is shared between the EVR and EVG.
+\end_layout
+
+\begin_layout Subsubsection
+Outgoing Event Data Mode
+\end_layout
+
+\begin_layout Standard
+See: mrmShared/Db/databuftxCtrl.db
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+Selects Event link data mode.
+ This chooses between DBus only, and DBus+Buffer modes.
+ In DBus only mode Data Buffer transmission is not possible.
+\end_layout
+
+\begin_layout Subsubsection
+Data Tx
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:data:tx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+See: mrmShared/Db/databuftx.db
+\end_layout
+
+\begin_layout Standard
+This records sends a block of data with the given Protocol ID.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Endianness?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(waveform, "$(P)dbus:send:u32")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DESC, "Send Buffer")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "MRF Data Buf Tx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FTVL, "ULONG")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(NELM, "2046")
+\end_layout
+
+\begin_layout Plain Layout
+
+  info(autosaveFields_pass0, "INP")
+\end_layout
+
+\begin_layout Plain Layout
+
+  info(autosaveFields_pass1, "VAL")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+EVG Device Support Reference
+\end_layout
+
+\begin_layout Standard
+The following sections list the properties for all sub-units with functional
+ descriptions.
+\end_layout
+
+\begin_layout Subsection
+Global
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the EVG as a whole.
+\end_layout
+
+\begin_layout Standard
+See: evgMrmApp/Db/evgMrm.db
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG
+\end_layout
+
+\begin_layout Standard
+Master enable for the EVG.
+ If not set then very little will happen.
+\end_layout
+
+\begin_layout Subsection
+Event Clock
+\end_layout
+
+\begin_layout Standard
+See: evgMrmApp/Db/evgEvtClk.db
+\end_layout
+
+\begin_layout Subsubsection
+Clock Source
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG Evt Clk Source
+\end_layout
+
+\begin_layout Standard
+Selects either the internal fractional synthesizer, or the external clock
+ input (RFIN).
+\end_layout
+
+\begin_layout Subsubsection
+RF Divider
+\end_layout
+
+\begin_layout Standard
+Implimented for: longout
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG RF Divider
+\end_layout
+
+\begin_layout Standard
+Sets the programmable divider which converts the external clock input (RFIN)
+ to the Event clock frequency.
+\end_layout
+
+\begin_layout Standard
+Valid only for the external clock source.
+\end_layout
+
+\begin_layout Subsubsection
+RF Ref.
+ Frequency
+\end_layout
+
+\begin_layout Standard
+Implimented for: ao
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG Clk RFref
+\end_layout
+
+\begin_layout Standard
+When using the external clock input (RFIN).
+ This property must be set to the frequency being given to RFIN.
+ The EVG is not able to measure this, so it must be provided by the user.
+\end_layout
+
+\begin_layout Standard
+This number is used to convert Event clock ticks into real time (nanoseconds).
+ An incorrect setting will result in incorrect delays and periods being
+ calculated.
+\end_layout
+
+\begin_layout Subsubsection
+Synth.
+ Frequency
+\end_layout
+
+\begin_layout Standard
+Implimented for: ao
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG Clk
+\end_layout
+
+\begin_layout Standard
+When using the internal fractional synthesizer this property sets the Event
+ clock frequency used.
+\end_layout
+
+\begin_layout Standard
+If the fractional synthesizer is not able to produce the requested frequency
+ then it will attempt to find a frequency as close as possible.
+\end_layout
+
+\begin_layout Subsubsection
+Event Clock Frequency
+\end_layout
+
+\begin_layout Standard
+Implimented for: ai
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG Clk
+\end_layout
+
+\begin_layout Standard
+Current Event clock frequency.
+ When using the external clock this is a readback of the value of the RF
+ Ref.
+ Frequency property.
+ When using the internal fractional synthesizer this is a readback of the
+ actual output frequency, which may be different then what was requested
+ with the Synth.
+ Frequency.
+\end_layout
+
+\begin_layout Subsection
+AC Line Sync.
+\end_layout
+
+\begin_layout Standard
+The AC Line Sync unit is a trigger source which relates to the phase of
+ its input.
+ The trigger is given on the closest 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: next?
+\end_layout
+
+\end_inset
+
+ tick of the syncroniszation source.
+\end_layout
+
+\begin_layout Standard
+Typically this is used to provide a trigger from the facility power mains.
+\end_layout
+
+\begin_layout Standard
+See: evgMrmApp/Db/evgAcTrig.db
+\end_layout
+
+\begin_layout Subsubsection
+Divider
+\end_layout
+
+\begin_layout Standard
+Implimented for: longout
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG AC Divider
+\end_layout
+
+\begin_layout Standard
+The mains voltage frequency can be divided by an eight bit programmable
+ divider.
+\end_layout
+
+\begin_layout Subsubsection
+Phase
+\end_layout
+
+\begin_layout Standard
+Implimented for: ao
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG AC Phase
+\end_layout
+
+\begin_layout Standard
+The output of the divider may be delayed by 0 to 25.5 ms by a phase shifter
+ in 0.1ms steps to adjust the triggering position relative to mains voltage
+ phase.
+\end_layout
+
+\begin_layout Subsubsection
+Bypass
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG AC Bypass
+\end_layout
+
+\begin_layout Standard
+Bypass the AC divider and phase shifter circuitry.
+ Equivalent to setting divide by 1 and phase 0.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: check
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Synchronization Source
+\end_layout
+
+\begin_layout Standard
+Implimented for: bo
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG AC Sync
+\end_layout
+
+\begin_layout Standard
+The AC Trigger could be synchronized either with event clock or the output
+ of multiplexed counter 7.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: say something about coincidence
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Software Event
+\end_layout
+
+\begin_layout Standard
+See: evgMrmApp/Db/evgSoftEvt.db
+\end_layout
+
+\begin_layout Standard
+Implimented for: longout
+\end_layout
+
+\begin_layout Standard
+DTYP: EVG Soft Evt
+\end_layout
+
+\begin_layout Standard
+When processed immediately queues the code stored in the value field to
+ be sent over the event link.
+ Software events have the lowest priority in the queue and will be sent
+ in the next otherwise empty frame.
+\end_layout
+
+\begin_layout Standard
+Only one software event can be queued.
+ If there are more then one records then each will wait until it can queue
+ its code, and will continue to wait until the code is sent.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Is this correct
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Event Triggers
+\end_layout
+
+\begin_layout Standard
+See: evgMrmApp/Db/evgSoftEvt.db
+\end_layout
+
+\begin_layout Subsection
+Inputs
+\end_layout
+
+\begin_layout Subsection
+Outputs
+\end_layout
+
+\begin_layout Subsection
+DBus Bits
+\end_layout
+
+\begin_layout Subsection
+Multiplexed Counters
+\end_layout
+
+\begin_layout Subsection
+Software Sequences
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Tx
+\end_layout
+
+\begin_layout Standard
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:evr:data:tx"
+
+\end_inset
+
+.
 \end_layout
 
 \end_body
