@@ -18,7 +18,8 @@
 
 CardMap<evgMrm> evgmap;
 
-static const 
+std::string Description("EVG");
+static const
 struct VMECSRID vmeEvgIDs[] = {
     {MRF_VME_IEEE_OUI, MRF_VME_EVG_BID|MRF_SERIES_230, VMECSRANY},
     VMECSR_END
@@ -91,7 +92,6 @@ mrmEvgSetupVME (
             CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
         }
             
-        std::string Description("EVG");
         std::ostringstream oss;
         oss<<cardNum;
         Description += oss.str();
@@ -267,7 +267,7 @@ REGINFO("SeqRamEvent(1,4)", SeqRamEvent(1,4),  8),
 static void
 printregisters(volatile epicsUInt8 *evg) {
     size_t reg;
-    printf("\n--- Register Dump @%p        ---\n", evg);
+    printf("\n--- Register Dump @%p ---\n", evg);
 
     for(reg=0; reg<NELEMENTS(printreg); reg++){
         switch(printreg[reg].rsize){

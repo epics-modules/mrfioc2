@@ -2,7 +2,7 @@
 #define EVGSEQRAM_H
 
 #include <vector>
-
+#include <stdint.h>
 #include <epicsTypes.h>
 #include <dbCommon.h>
 

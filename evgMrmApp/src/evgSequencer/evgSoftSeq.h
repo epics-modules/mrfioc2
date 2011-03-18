@@ -8,6 +8,7 @@
 #include <epicsMutex.h>
 #include <dbAccess.h>
 #include <dbScan.h>
+#include <stdint.h>
 
 class evgMrm;
 class evgSeqRam;
