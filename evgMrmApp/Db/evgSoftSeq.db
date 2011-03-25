@@ -1,3 +1,23 @@
+record(bo, "$(P):$(N):timestampInpMode") {
+    field( DTYP, "EVG SEQ INPUT MODE")
+    field( DESC, "EVG Sequence")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( ZNAM, "EGU")
+    field( ONAM, "TICKS")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P):$(N):timestampInpModeRB") {
+    field( DTYP, "EVG SEQ INPUT MODE")
+    field( DESC, "EVG Sequence Input Mode")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
+    field( SCAN, "I/O Intr")
+    field( ZNAM, "EGU")
+    field( ONAM, "TICKS")
+}
+
 record(waveform, "$(P):$(N):eventCode") {
     field( DTYP, "EVG SEQ EVENT CODE")
     field( DESC, "Sequence event code array")
@@ -14,6 +34,16 @@ record(waveform, "$(P):$(N):eventCodeRB") {
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM)")
     field( FTVL, "UCHAR")
+}
+
+record(waveform, "$(P):$(N):timestamp") {
+    field( DTYP, "EVG SEQ TIMESTAMP")
+    field( DESC, "Sequence timestamp array")
+    field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
+    field( NELM, "$(NELM)")
+    field( FTVL, "DOUBLE")
+    info( autosaveFields_pass0, "INP")
+    info( autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P):$(N):timestampRB") {
@@ -154,6 +184,17 @@ record(bo, "$(P):$(N):commit") {
     field( FLNK, "$(P):loadedSeq")
 }
 
+record(bo, "$(P):$(N):commit") {
+    field( DTYP, "EVG COMMIT SEQ")
+    field( DESC, "Commit EVG Sequence")
+    field( OUT,  "#C$(cardNum) S$(seqNum) @")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+    field( FLNK, "$(P):loadedSeq")
+}
+
 record(bo, "$(P):$(N):load") {
     field( DTYP, "EVG LOAD SEQ")
     field( DESC, "ALLOC EVG Sequence")
@@ -180,7 +221,7 @@ record(bo, "$(P):$(N):enable") {
     field( DTYP, "EVG ENABLE SEQ")
     field( DESC, "Enable EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
-    field( VAL,  "0")
+    field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
@@ -236,15 +277,6 @@ record(bi, "$(P):$(N):loadStatus") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P):$(N):enaStatus") {
-    field( DTYP, "EVG ENA STATUS")
-    field( DESC, "Soft Seq Ena status")
-    field( INP,  "#C$(cardNum) S$(seqNum) @")
-    field( SCAN, "I/O Intr")    
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
-}
-
 record(bi, "$(P):$(N):commitStatus") {
     field( DTYP, "EVG COMMIT STATUS")
     field( DESC, "Soft Seq Commit status")
@@ -252,6 +284,16 @@ record(bi, "$(P):$(N):commitStatus") {
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Uncommitted")
     field( ONAM, "Committed")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P):$(N):enaStatus") {
+    field( DTYP, "EVG ENA STATUS")
+    field( DESC, "Soft Seq Ena status")
+    field( INP,  "#C$(cardNum) S$(seqNum) @")
+    field( SCAN, "I/O Intr")    
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -283,41 +325,6 @@ record(calcout, "$(P):$(N):calcoutLoad") {
 }
 
 #
-# At a time only one set of records should be enabled either Timestamp or
-# TimestampRaw. Keeping both enable will have problems with autosave.
-#
-
-##########################################################################
-#                             Timestamp                                  #  
-##########################################################################
-
-record(fanout, "$(P):$(N):fo") {
-    field( DESC, "Boot of sequence for sequencer")
-    field( SELM, "All")
-    field( PINI, "YES")
-    field( LNK1, "$(P):$(N):eventCode")
-    field( LNK2, "$(P):$(N):runMode")
-    field( LNK3, "$(P):$(N):trigSrc")
-    field( LNK4, "$(P):$(N):commit")
-    field( LNK5, "$(P):$(N):calcoutLoad")
-}
-
-record(waveform, "$(P):$(N):timestamp") {
-    field( DTYP, "EVG SEQ TIMESTAMP")
-    field( DESC, "Sequence timestamp array")
-    field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
-    field( NELM, "$(NELM)")
-    field( FTVL, "DOUBLE")
-    info( autosaveFields_pass0, "INP")
-    info( autosaveFields_pass1, "VAL")
-}
-
-record(ai, "$(P):$(N):Freq:Update") {
-    field( INP,  "$(P):EvtClkSpeed CP")
-    field( FLNK, "$(P):$(N):calcoutCommit")
-}
-
-#
 #Process commit record if the sequence was perviously in COMMITTED state
 #
 
@@ -329,29 +336,38 @@ record(calcout, "$(P):$(N):calcoutCommit") {
     field( OUT,  "$(P):$(N):commit PP")
 }
 
-##########################################################################
-#                               TimestampRaw                             #
-##########################################################################
+record(calcout, "$(P):$(N):calcoutEnable") {
+    field( CALC, "A")
+    field( INPA, "$(P):$(N):enaStatus NPP NMS")
+    field( OOPT, "When Non-zero")
+    field( OUT,  "$(P):$(N):enable PP")
+}
 
-#record(fanout, "$(P):$(N):fo") {
-#    field( DESC, "Boot of sequence for sequencer")
-#    field( SELM, "All")
-#    field( PINI, "YES")
-#    field( LNK1, "$(P):$(N):eventCode")
-#    field( LNK2, "$(P):$(N):timestampRaw")
-#    field( LNK3, "$(P):$(N):runMode")
-#    field( LNK4, "$(P):$(N):trigSrc")
-#    field( LNK5, "$(P):$(N):commit")
-#    field( LNK6, "$(P):$(N):calcoutLoad")
-#}
+record(fanout, "$(P):$(N):fo") {
+    field( DESC, "Boot of sequence for sequencer")
+    field( SELM, "All")
+    field( PINI, "YES")
+    field( LNK1, "$(P):$(N):timestampInpMode")
+    field( LNK2, "$(P):$(N):eventCode")
+    field( LNK3, "$(P):$(N):timestamp")
+    field( LNK4, "$(P):$(N):runMode")
+    field( LNK5, "$(P):$(N):trigSrc")
+    field( LNK6, "$(P):$(N):fo2")
+}
 
-#record(waveform, "$(P):$(N):timestampRaw") {
-#    field( DTYP, "EVG SEQ TIMESTAMP RAW")
-#    field( DESC, "Sequence timestamp (ticks)")
-#    field( INP,  "#C$(cardNum) S$(seqNum) @")
-#    field( NELM, "$(NELM)")
-#    field( FTVL, "LONG")
-#    info( autosaveFields_pass1, "VAL")
-#}
+record(fanout, "$(P):$(N):fo2") {
+    field( DESC, "Boot of sequence for sequencer")
+    field( SELM, "All")
+    field( LNK1, "$(P):$(N):calcoutLoad")
+    field( LNK2, "$(P):$(N):calcoutCommit")
+    field( LNK3, "$(P):$(N):calcoutEnable")
+}
+
+record(ai, "$(P):$(N):Freq:Update") {
+    field( INP,  "$(P):EvtClkSpeed CP")
+    field( FLNK, "$(P):$(N):calcoutCommit")
+}
+
+
 
 

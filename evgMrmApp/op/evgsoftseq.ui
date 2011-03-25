@@ -2122,7 +2122,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Sub-Second (Convert)</string>
+     <string>Sub-Second (EGU)</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -2138,7 +2138,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Event Clock Ticks (RAW)</string>
+     <string>Event Clock Ticks (TICKS)</string>
     </property>
    </widget>
    <widget class="QLabel" name="Label_timestampUnit">
@@ -2146,7 +2146,7 @@
      <rect>
       <x>10</x>
       <y>230</y>
-      <width>111</width>
+      <width>171</width>
       <height>16</height>
      </rect>
     </property>
@@ -2158,7 +2158,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Timestamp Unit</string>
+     <string>Timestamp Input Mode</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_tsRes">

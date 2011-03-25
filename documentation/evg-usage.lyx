@@ -1,4 +1,4 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -849,21 +849,19 @@ Timestamp List
 \emph default
  (waveform): It is used to set the timeStamps for the events in the soft
  sequence.
- The timestamps can be in units of 'Event Clock' ticks(Raw) or in units
- of sub-seconds.
+\end_layout
+
+\begin_layout Itemize
+Timestamp Input Mode(bo): There are two mode to enter the timestamping data
+ in the sequencer i.e.
+ EGU and TICKS.
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-User can select from either units of timestamping by modifing the db file
- in evgSoftSeq.db in evgMrmApp/Db.
- Follow the instructions in db file to chose one or the other.
-\end_layout
-
-\begin_layout Itemize
-When user enters the timestamps in terms of sub-seconds, he has an option
- of choosing the units of sub-seconds by proving an interger divider that
- is used to convert the sub-seconds to seconds.
+EGU: In EGU mode user can enter the timestamps in terms of sub-seconds,
+ he/she has an option of choosing the units of sub-seconds by provding an
+ interger divider that is used to convert the sub-seconds to seconds.
  This is done by modifying the '@parm' part of VME_IO hardware input link
  of the record $(P):$(N):timestamp.
  e.g.
@@ -885,7 +883,11 @@ To enter timestamps in terms of seconds do: caput $(P):$(N):timestamp.INP
 \end_layout
 
 \begin_layout Quote
-Default unit is microseconds.
+Default unit is in microseconds.
+\end_layout
+
+\begin_layout Itemize
+TICKS: Here user can provides timestamps in terms of Event Clock ticks.
 \end_layout
 
 \end_deeper
@@ -1064,6 +1066,12 @@ The current user interface for setting Event Code and Timestamp is not very
  e.g.
  It does not provide a readback of the event code/timestamp array when you
  close and open the panel again.
+\end_layout
+
+\begin_layout Itemize
+If a soft sequence is uncommited and running then when the IOC restarts
+ the sequence would be in uncomitted state but wont be running i.e.
+ last committed sequence is lost.
 \end_layout
 
 \begin_layout Section

@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 
 from PyQt4 import QtCore as core
+from PyQt4.QtCore import *
 from PyQt4 import QtGui as gui
+from PyQt4.QtGui import *
 import sys
 import os
 from subprocess import *
@@ -21,6 +23,7 @@ class evgSoftSeq(gui.QMainWindow):
         self.srcText=None
         labels = ["Event Code", "Time Stamp"]
         self.ui.tableWidget.setHorizontalHeaderLabels(labels)
+
         self.connect(self.ui.pb_setSoftSeq, SIGNAL("clicked()"), self.setSoftSeq)
         self.connect(self.ui.rb_tsConvert, SIGNAL("clicked()"), self.setTsResConvert)
         self.connect(self.ui.rb_tsRaw, SIGNAL("clicked()"), self.setTsResRaw)
@@ -39,51 +42,83 @@ class evgSoftSeq(gui.QMainWindow):
 
         pv = self.arg1 + ":EvtClkSpeed"
         camonitor(pv, self.cb_evtClkSpeed)
+
+        pv = self.arg1 + ":" + self.arg2 + ":timestampInpMode"
+        if(caget(pv)):
+            self.ui.rb_tsRaw.setChecked(1);
+        else:
+            self.ui.rb_tsConvert.setChecked(1);
+
+        self.arrayReadback()
 	
+
+    def arrayReadback(self):
+        pvEC = self.arg1 + ":" + self.arg2 + ":eventCode"
+        valueEC = caget(pvEC)
+
+        pvTS = self.arg1 + ":" + self.arg2 + ":timestamp"
+        valueTS = caget(pvTS)
+
+        if valueEC.ok == True & valueTS.ok == True:
+            for x in range(self.ui.tableWidget.rowCount()):
+                item = QTableWidgetItem(QString.number(valueEC[x]))
+                self.ui.tableWidget.setItem(x, 0, item)
+                item = QTableWidgetItem(QString.number(valueTS[x]))
+                self.ui.tableWidget.setItem(x, 1, item)
+
+
+    def setTsResConvert(self):
+            self.ui.label_tsRes.setText( '%e Seconds'%(self.tsResConvert) )
+
+
     def cb_timestampInp(self, value):
         value = value[value.find('@')+1:]
         self.tsResConvert = 1.0/int(value)
         if self.ui.rb_tsConvert.isChecked():
-            self.setTsResConvert() 
-	
+            self.setTsResConvert()
+
+
+    def setTsResRaw(self):
+            self.ui.label_tsRes.setText( '%e Seconds'%(self.tsResRaw) )
+
+
     def cb_evtClkSpeed(self, value):
         self.tsResRaw = 1.0/(value*1000000)
         if self.ui.rb_tsRaw.isChecked():
             self.setTsResRaw()
-	
-    def setTsResConvert(self):
-        self.ui.label_tsRes.setText( '%e Seconds'%(self.tsResConvert) )
 
-    def setTsResRaw(self):
-        self.ui.label_tsRes.setText( '%e Seconds'%(self.tsResRaw) )
-		
+  		
     def setSoftSeq(self):
+        self.setTimestampInpMode()       
         self.setEvtCode()
         self.setTimeStamp()
+
+
+    def setTimestampInpMode(self):
+        pv = self.arg1 + ":" + self.arg2 + ":timestampInpMode"
+        if self.ui.rb_tsConvert.isChecked():
+            caput(pv, 0)
+        else:
+            caput(pv, 1)
 	
+
     def setEvtCode(self):
         args = []
-        for x in range(self.ui.tableWidget.rowCount()):    
+        for x in range(self.ui.tableWidget.rowCount()): 
             item = self.ui.tableWidget.item(x,0)
             if item == None:
                 break
             else:
                 (val, OK) = item.text().toInt()
-		
-            if val == 0:
-                tsItem = self.ui.tableWidget.item(x,1)
-                if tsItem == None:
-                    break
-                else:
-                    (tsVal, tsOK) = tsItem.text().toInt()
-                if tsVal != 255:
-                    break
-		
+ 
+            if val <= 0 or val > 255:
+		        break
             args.append(val)
 	  
         print args
         pv = self.arg1 + ":" + self.arg2 + ":eventCode"
         caput(pv, args)
+
       	
     def setTimeStamp(self):
         args = []
@@ -99,11 +134,7 @@ class evgSoftSeq(gui.QMainWindow):
             args.append(val)
 	  
         print args
-	if self.ui.rb_tsConvert.isChecked():
-            pv = self.arg1 + ":" + self.arg2 + ":timestamp"
-        else:
-            pv = self.arg1 + ":" + self.arg2 + ":timestampRaw"
-	    
+        pv = self.arg1 + ":" + self.arg2 + ":timestamp" 
         caput(pv, args)
 	
 if __name__ == '__main__':

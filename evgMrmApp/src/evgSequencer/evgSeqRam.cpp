@@ -31,7 +31,7 @@ evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
 }
 
 epicsStatus
-evgSeqRam::setTimestamp(std::vector<uint64_t> timestamp){
+evgSeqRam::setTimestamp(std::vector<epicsUInt64> timestamp){
     for(unsigned int i = 0; i < timestamp.size(); i++)
         WRITE32(m_pReg, SeqRamTS(m_id,i), (epicsUInt32)timestamp[i]);
 

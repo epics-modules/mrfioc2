@@ -81,11 +81,12 @@ device( bo,   VME_IO, devBoEvgDbusInp, "EVG Dbus UnivInp3")
 
 
 #evgSoftSeq.db
-device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
-device( waveform, VME_IO, devWfEvgEventCodeRB, "EVG SEQ EVENT CODE RB")
-device( waveform, VME_IO, devWfEvgTimestampRaw, "EVG SEQ TIMESTAMP RAW")
+device( bo,   VME_IO, devBoEvgTimestampInpMode, "EVG SEQ INPUT MODE")
+device( bi,   VME_IO, devBiEvgTimestampInpMode, "EVG SEQ INPUT MODE")
 device( waveform, VME_IO, devWfEvgTimestamp, "EVG SEQ TIMESTAMP")
 device( waveform, VME_IO, devWfEvgTimestampRB, "EVG SEQ TIMESTAMP RB")
+device( waveform, VME_IO, devWfEvgEventCode, "EVG SEQ EVENT CODE")
+device( waveform, VME_IO, devWfEvgEventCodeRB, "EVG SEQ EVENT CODE RB")
 device( mbbo, VME_IO, devMbboEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbi, VME_IO, devMbbiEvgRunMode, "EVG SEQ RUN MODE")
 device( mbbo, VME_IO, devMbboEvgTrigSrc, "EVG SEQ TRIG SRC")
@@ -106,3 +107,5 @@ device( bi, VME_IO, devBiEvgCommitStatus, "EVG COMMIT STATUS")
 
 device( stringin, VME_IO, devSiErr, "EVG SEQ ERR")
 device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")
+
+

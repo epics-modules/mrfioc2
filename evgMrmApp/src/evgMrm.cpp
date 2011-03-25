@@ -307,7 +307,7 @@ evgMrm::setTsInpType(InputType type) {
     if(m_ppsSrc.type == type)
         return OK;
 
-    /*Check if such an input exists*/
+    /*Check if such an input exists. If not throws an exception*/
     if(type != None_Input)
         getInput(m_ppsSrc.num, type);
 
