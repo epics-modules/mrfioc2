@@ -8,10 +8,22 @@
 #include <epicsMutex.h>
 #include <dbAccess.h>
 #include <dbScan.h>
+#include <stdint.h>
 
 class evgMrm;
 class evgSeqRam;
 class evgSeqRamMgr;
+
+#if __STDC_VERSION__ < 199901L
+#include <inttypes.h>
+typedef int64_t         epicsInt64;
+typedef uint64_t        epicsUInt64;
+#endif
+
+enum TimestampInpMode {
+    EGU = 0,
+    TICKS
+};
 
 enum SeqRunMode {
     Normal = 0,
@@ -48,14 +60,16 @@ public:
     epicsStatus setErr(std::string);
     std::string getErr();
 
-    epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
-    epicsStatus setTimestampRaw(epicsUInt32*, epicsUInt32);
-    epicsStatus setTimestamp(epicsFloat64*, epicsUInt32);
-    epicsStatus setTrigSrc(SeqTrigSrc);
-    epicsStatus setRunMode(SeqRunMode);
+    epicsStatus setTimestampInpMode(TimestampInpMode);
+    TimestampInpMode getTimestampInpMode();
 
+    epicsStatus setTimestamp(epicsUInt64*, epicsUInt32);
+    epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
+    epicsStatus setTrigSrc(SeqTrigSrc);
+    epicsStatus setRunMode(SeqRunMode);    
+
+    std::vector<epicsUInt64> getTimestampCt();
     std::vector<epicsUInt8> getEventCodeCt();
-    std::vector<uint64_t> getTimestampCt();
     SeqTrigSrc getTrigSrcCt();
     SeqRunMode getRunModeCt();
 
@@ -64,7 +78,7 @@ public:
 
     bool isLoaded();
     bool isEnabled();
-    bool isCommited(); 
+    bool isCommited();
 
     epicsStatus load();
     epicsStatus unload();
@@ -75,7 +89,7 @@ public:
     epicsStatus pause();
     epicsStatus sync();
     epicsStatus isRunning();
-    epicsStatus inspectSoftSeq();
+    epicsStatus commitSoftSeq();
 
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
@@ -87,13 +101,16 @@ private:
     volatile epicsUInt8* const m_pReg;
     std::string                m_desc;
     std::string                m_err;
+
+    TimestampInpMode           m_timestampInpMode;
+
+    std::vector<epicsUInt64>   m_timestamp;
     std::vector<epicsUInt8>    m_eventCode;
-    std::vector<uint64_t>      m_timestamp;
     SeqTrigSrc                 m_trigSrc;
-    SeqRunMode                 m_runMode;
-	
+    SeqRunMode                 m_runMode;   
+
+    std::vector<epicsUInt64>   m_timestampCt;
     std::vector<epicsUInt8>    m_eventCodeCt;
-    std::vector<uint64_t>      m_timestampCt;
     SeqTrigSrc                 m_trigSrcCt;
     SeqRunMode                 m_runModeCt;
 
@@ -102,7 +119,6 @@ private:
 
     bool                       m_isEnabled;
     bool                       m_isCommited;
-    bool                       m_isTimestampRaw;
 };
 
 #endif //EVG_SEQUENCE_H

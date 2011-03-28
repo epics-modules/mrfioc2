@@ -19,6 +19,7 @@ m_lock(),
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
+m_timestampInpMode(EGU),
 m_trigSrc(Mxc0),
 m_runMode(Normal),
 m_trigSrcCt(Mxc0),
@@ -63,6 +64,36 @@ evgSoftSeq::getErr() {
 }
 
 epicsStatus
+evgSoftSeq::setTimestampInpMode(TimestampInpMode mode) {
+    if(m_timestampInpMode != mode) {
+        m_timestampInpMode = mode;
+        m_isCommited = false;
+        scanIoRequest(ioscanpvt);
+    }
+
+    return OK;
+}
+
+TimestampInpMode
+evgSoftSeq::getTimestampInpMode() {
+    return m_timestampInpMode;
+}
+
+epicsStatus
+evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
+    if(size > 2047)
+        throw std::runtime_error("Too many Timestamps.");
+
+    m_timestamp.clear();
+    m_timestamp.assign(timestamp, timestamp + size);
+
+    m_isCommited = false;
+    scanIoRequest(ioscanpvt);
+
+    return OK;
+}
+
+epicsStatus
 evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
     if(size > 2047)
         throw std::runtime_error("Too many EventCodes.");
@@ -76,41 +107,6 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
     return OK;
 }
 
-epicsStatus
-evgSoftSeq::setTimestamp(epicsFloat64* timestamp, epicsUInt32 size) {
-    std::vector<uint64_t> timestamp_bk = m_timestamp;
-    m_timestamp.clear();
-    m_timestamp.resize(size);
- 
-    /*
-     *Converting seconds to clock ticks
-     */
-    for(unsigned int i = 0; i < size; i++)
-        m_timestamp[i] = (uint64_t)(floor(timestamp[i] * 
-            m_owner->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5));
-
-    m_isTimestampRaw = false;    
-    m_isCommited = false;
-    scanIoRequest(ioscanpvt);
-
-    return OK;
-}
-
-epicsStatus
-evgSoftSeq::setTimestampRaw(epicsUInt32* timestamp, epicsUInt32 size) {
-    if(size > 2047)
-        throw std::runtime_error("Too many Timestamps.");
-
-    m_timestamp.clear();
-    m_timestamp.assign(timestamp, timestamp + size);
-
-    m_isTimestampRaw = true;
-    m_isCommited = false;
-    scanIoRequest(ioscanpvt);
-	
-    return OK;
-}
-
 epicsStatus 
 evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
     if(trigSrc != m_trigSrc) {
@@ -118,6 +114,7 @@ evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
         m_isCommited = false;
         scanIoRequest(ioscanpvt);
     }
+
     return OK;
 }
 
@@ -128,15 +125,20 @@ evgSoftSeq::setRunMode(SeqRunMode runMode) {
         m_isCommited = false;
         scanIoRequest(ioscanpvt);
     }
+
     return OK;
 }
+
+/*
+ * Retrive commited(Ct) data.
+ */
 
 std::vector<epicsUInt8>
 evgSoftSeq::getEventCodeCt() {
     return m_eventCodeCt;
 }
 
-std::vector<uint64_t>
+std::vector<epicsUInt64>
 evgSoftSeq::getTimestampCt() {
     return m_timestampCt;
 }
@@ -233,7 +235,7 @@ evgSoftSeq::unload() {
 
 epicsStatus
 evgSoftSeq::commit() {	
-    inspectSoftSeq();
+    commitSoftSeq();
 
     if(m_seqRam) sync();
 
@@ -350,38 +352,35 @@ evgSoftSeq::isRunning() {
 }
 
 epicsStatus
-evgSoftSeq::inspectSoftSeq() {
+evgSoftSeq::commitSoftSeq() {
     int64_t tsUInt64;
     epicsUInt8 ecUInt8;
-    uint64_t preTs = 0;
-    uint64_t curTs = 0;
+    epicsUInt64 preTs = 0;
+    epicsUInt64 curTs = 0;
 
-    std::vector<uint64_t> timestamp;
+    std::vector<epicsUInt64> timestamp;
     std::vector<epicsUInt8> eventCode;
 
     /*
      * Make EventCode and Timestamp vector of same size(Smaller of the two vectors).
-     * Also take care of rollover if timestamp input was in units of seconds
      */
-    std::vector<uint64_t>::iterator itTS = m_timestamp.begin();
+    std::vector<epicsUInt64>::iterator itTS = m_timestamp.begin();
     std::vector<epicsUInt8>::iterator itEC = m_eventCode.begin();
     for(; itTS < m_timestamp.end() && itEC < m_eventCode.end(); itTS++, itEC++) {
         ecUInt8 = *itEC;
+        if(ecUInt8 <= 0 || ecUInt8 >255)
+            break;
 
-        if(m_isTimestampRaw)
-            tsUInt64 = *itTS;
-        else {
-            curTs = *itTS;
-            tsUInt64 = curTs - preTs;
-            if(timestamp.size())
-                tsUInt64 += timestamp.back();
+        curTs = *itTS;
+        tsUInt64 = curTs - preTs;
+        if(timestamp.size())
+            tsUInt64 += timestamp.back();
 
-            for(;tsUInt64 > 0xffffffff; tsUInt64 -= 0xffffffff) {
-                timestamp.push_back(0xffffffff);
-                eventCode.push_back(0);
-            }
-            preTs = curTs;
+        for(;tsUInt64 > 0xffffffff; tsUInt64 -= 0xffffffff) {
+            timestamp.push_back(0xffffffff);
+            eventCode.push_back(0);
         }
+        preTs = curTs;
 
         timestamp.push_back(tsUInt64);
         eventCode.push_back(ecUInt8);
