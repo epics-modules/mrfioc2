@@ -1,4 +1,4 @@
-record(mbbo, "$(P):$(N):Map") {
+record(mbbo, "$(P)$(N)Map") {
     field( DTYP, "EVG Output")
     field( OUT , "#C$(cardNum) S$(outNum) @$(outType)")
     field( ZRST, "Off")

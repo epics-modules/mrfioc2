@@ -1,4 +1,4 @@
-record(bo, "$(P):$(N):Polarity") {
+record(bo, "$(P)$(N)Polarity") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Output Polarity")
     field( OUT , "#C$(cardNum) S$(mxcNum) @")
@@ -10,7 +10,7 @@ record(bo, "$(P):$(N):Polarity") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P):$(N):Status") {
+record(bi, "$(P)$(N)Status") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Output Status")
     field( INP , "#C$(cardNum) S$(mxcNum) @")
@@ -18,7 +18,7 @@ record(bi, "$(P):$(N):Status") {
     field( ONAM, "1")
 }
 
-record(ao, "$(P):$(N):Freq") {
+record(ao, "$(P)$(N)Freq") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Frequency")
     field( OUT,  "#C$(cardNum) S$(mxcNum) @")
@@ -30,11 +30,11 @@ record(ao, "$(P):$(N):Freq") {
     field( DRVH, "62500000")
     field( DRVL, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P):$(N):Freq:RB")
+    field( FLNK, "$(P)$(N)Freq:RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P):$(N):Freq:RB") {
+record(ai, "$(P)$(N)Freq:RB") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Frequency")
     field( INP,  "#C$(cardNum) S$(mxcNum) @")
@@ -42,16 +42,16 @@ record(ai, "$(P):$(N):Freq:RB") {
     field( HOPR, "62500000")
     field( LOPR, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P):$(N):Prescaler:RB")
+    field( FLNK, "$(P)$(N)Prescaler:RB")
 }
 
-record(longin , "$(P):$(N):Prescaler:RB") {
+record(longin , "$(P)$(N)Prescaler:RB") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Prescaler RB")
     field( INP,  "#C$(cardNum) S$(mxcNum) @")
 }
 
-record(ai, "$(P):$(N):Freq:Update") {
-    field( INP,  "$(P):EvtClkSpeed CP")
-    field( FLNK, "$(P):$(N):Freq")
+record(ai, "$(P)$(N)Freq:Update") {
+    field( INP,  "$(P)EvtClkSpeed CP")
+    field( FLNK, "$(P)$(N)Freq")
 }

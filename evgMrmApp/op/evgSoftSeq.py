@@ -21,7 +21,7 @@ class evgSoftSeq(gui.QMainWindow):
         self.ui = Ui_EvgSoftSeq()
         self.ui.setupUi(self)
         self.srcText=None
-        labels = ["Event Code", "Time Stamp"]
+        labels = ["Event Code", "Timestamp"]
         self.ui.tableWidget.setHorizontalHeaderLabels(labels)
 
         self.connect(self.ui.pb_setSoftSeq, SIGNAL("clicked()"), self.setSoftSeq)
@@ -34,16 +34,16 @@ class evgSoftSeq(gui.QMainWindow):
         self.tsResRaw = 0
         print argv	
 	
-        heading = self.arg1 + " - Soft " + self.arg2
+        heading = self.arg1 + " Soft " + self.arg2
         self.ui.heading_label.setText(heading)
 	
-        pv = self.arg1 + ":" + self.arg2 + ":timestamp.INP"
+        pv = self.arg1 + self.arg2 + "timestamp.INP"
         camonitor(pv, self.cb_timestampInp)
 
         pv = self.arg1 + ":EvtClkSpeed"
         camonitor(pv, self.cb_evtClkSpeed)
 
-        pv = self.arg1 + ":" + self.arg2 + ":timestampInpMode"
+        pv = self.arg1 + self.arg2 + "timestampInpMode"
         if(caget(pv)):
             self.ui.rb_tsRaw.setChecked(1);
         else:
@@ -53,10 +53,10 @@ class evgSoftSeq(gui.QMainWindow):
 	
 
     def arrayReadback(self):
-        pvEC = self.arg1 + ":" + self.arg2 + ":eventCode"
+        pvEC = self.arg1 + self.arg2 + "eventCode"
         valueEC = caget(pvEC)
 
-        pvTS = self.arg1 + ":" + self.arg2 + ":timestamp"
+        pvTS = self.arg1 + self.arg2 + "timestamp"
         valueTS = caget(pvTS)
 
         if valueEC.ok == True & valueTS.ok == True:
@@ -95,7 +95,7 @@ class evgSoftSeq(gui.QMainWindow):
 
 
     def setTimestampInpMode(self):
-        pv = self.arg1 + ":" + self.arg2 + ":timestampInpMode"
+        pv = self.arg1 + self.arg2 + "timestampInpMode"
         if self.ui.rb_tsConvert.isChecked():
             caput(pv, 0)
         else:
@@ -116,7 +116,7 @@ class evgSoftSeq(gui.QMainWindow):
             args.append(val)
 	  
         print args
-        pv = self.arg1 + ":" + self.arg2 + ":eventCode"
+        pv = self.arg1 + self.arg2 + "eventCode"
         caput(pv, args)
 
       	
@@ -134,7 +134,7 @@ class evgSoftSeq(gui.QMainWindow):
             args.append(val)
 	  
         print args
-        pv = self.arg1 + ":" + self.arg2 + ":timestamp" 
+        pv = self.arg1 + self.arg2 + "timestamp" 
         caput(pv, args)
 	
 if __name__ == '__main__':

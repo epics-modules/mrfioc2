@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 206
-y 85
+x 210
+y 105
 w 130
 h 146
 font "helvetica-medium-r-12.0"
@@ -45,7 +45,7 @@ displayFileName {
   0 "evgMain"
 }
 symbols {
-  0 "P=EVG2"
+  0 "P=EVG2:"
 }
 endObjectProperties
 
@@ -71,7 +71,7 @@ displayFileName {
   0 "evgMain"
 }
 symbols {
-  0 "P=evg1"
+  0 "P=EVG1:"
 }
 endObjectProperties
 

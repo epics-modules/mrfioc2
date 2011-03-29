@@ -1,4 +1,4 @@
-record(bo, "$(P):Enable") {
+record(bo, "$(P)Enable") {
     field( DTYP, "EVG")
     field( DESC, "EVG Master Enable")
     field( OUT,  "#C$(cardNum) S @")
@@ -10,14 +10,14 @@ record(bo, "$(P):Enable") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record( stringin, "$(P):TS") {
+record( stringin, "$(P)TS") {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG TimeStamp")
     field( INP , "#C$(cardNum) S @")
     field( SCAN, "I/O Intr")
 }
 
-record( bo,"$(P):SyncTS" ) {
+record( bo,"$(P)SyncTS" ) {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG Sync TimeStamp")
     field( OUT,  "#C$(cardNum) S @")
@@ -25,7 +25,7 @@ record( bo,"$(P):SyncTS" ) {
     field( VAL,  "1")
 }
 
-record( mbbo, "$(P):TsInpType") {
+record( mbbo, "$(P)TsInpType") {
     field( DTYP, "EVG TS INP TYPE")
     field( DESC, "EVG TimeStamp Inp Type")
     field( OUT , "#C$(cardNum) S @")
@@ -54,11 +54,11 @@ record( mbbo, "$(P):TsInpType") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
-    field( FLNK, "$(P):TsInpTypeRB")
+    field( FLNK, "$(P)TsInpTypeRB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record( mbbi, "$(P):TsInpTypeRB") {
+record( mbbi, "$(P)TsInpTypeRB") {
     field( DTYP, "EVG TS INP TYPE")
     field( DESC, "EVG TimeStamp Inp Type")
     field( INP , "#C$(cardNum) S @")
@@ -86,7 +86,7 @@ record( mbbi, "$(P):TsInpTypeRB") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record( mbbo, "$(P):TsInpNum") {
+record( mbbo, "$(P)TsInpNum") {
     field( DTYP, "EVG TS INP NUM")
     field( DESC, "EVG TimeStamp Inp Num")
     field( OUT , "#C$(cardNum) S @")
@@ -125,11 +125,11 @@ record( mbbo, "$(P):TsInpNum") {
     field( TTVL, "13")
     field( FTVL, "14")
     field( FFVL, "15")
-    field( FLNK, "$(P):TsInpNumRB")
+    field( FLNK, "$(P)TsInpNumRB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record( mbbi, "$(P):TsInpNumRB") {
+record( mbbi, "$(P)TsInpNumRB") {
     field( DTYP, "EVG TS INP NUM")
     field( DESC, "EVG TimeStamp Inp Num")
     field( INP , "#C$(cardNum) S @")
@@ -168,7 +168,7 @@ record( mbbi, "$(P):TsInpNumRB") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record( longin, "$(P):Status" ) {
+record( longin, "$(P)Status" ) {
     field( DTYP, "EVG")
     field( DESC, "EVG Status")
     field( INP,  "#C$(cardNum) S @")

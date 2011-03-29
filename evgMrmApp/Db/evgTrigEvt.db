@@ -1,4 +1,4 @@
-record(bo, "$(P):$(N):Ena") {
+record(bo, "$(P)$(N)Ena") {
     field( DTYP, "EVG Trig Evt")
     field( DESC, "EVG Trigger Event Enable")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @")
@@ -10,7 +10,7 @@ record(bo, "$(P):$(N):Ena") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P):$(N):Code") {
+record(longout, "$(P)$(N)Code") {
     field( DTYP, "EVG Trig Evt")
     field( DESC, "EVG Trigger Event Code")
     field( OUT,  "#C$(cardNum) S$(trigEvtNum) @")
@@ -24,7 +24,7 @@ record(longout, "$(P):$(N):Code") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc0") {
+record(bo, "$(P)$(N)Trig:Mxc0") {
     field( DTYP, "EVG Trig Evt Mxc0")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @0")
     field( ZNAM, "Clear")
@@ -35,7 +35,7 @@ record(bo, "$(P):$(N):Trig:Mxc0") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc1") {
+record(bo, "$(P)$(N)Trig:Mxc1") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @1")
     field( ZNAM, "Clear")
@@ -46,7 +46,7 @@ record(bo, "$(P):$(N):Trig:Mxc1") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc2") {
+record(bo, "$(P)$(N)Trig:Mxc2") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @2")
     field( ZNAM, "Clear")
@@ -57,7 +57,7 @@ record(bo, "$(P):$(N):Trig:Mxc2") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc3") {
+record(bo, "$(P)$(N)Trig:Mxc3") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @3")
     field( ZNAM, "Clear")
@@ -68,7 +68,7 @@ record(bo, "$(P):$(N):Trig:Mxc3") {
     info( autosaveFields_pass0, "VAL")
 } 
 
-record(bo, "$(P):$(N):Trig:Mxc4") {
+record(bo, "$(P)$(N)Trig:Mxc4") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @4")
     field( ZNAM, "Clear")
@@ -79,7 +79,7 @@ record(bo, "$(P):$(N):Trig:Mxc4") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc5") {
+record(bo, "$(P)$(N)Trig:Mxc5") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @5")
     field( ZNAM, "Clear")
@@ -90,7 +90,7 @@ record(bo, "$(P):$(N):Trig:Mxc5") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc6") {
+record(bo, "$(P)$(N)Trig:Mxc6") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @6")
     field( ZNAM, "Clear")
@@ -101,7 +101,7 @@ record(bo, "$(P):$(N):Trig:Mxc6") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:Mxc7") {
+record(bo, "$(P)$(N)Trig:Mxc7") {
     field( DTYP, "EVG Trig Evt Mxc1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @7")
     field( ZNAM, "Clear")
@@ -112,7 +112,7 @@ record(bo, "$(P):$(N):Trig:Mxc7") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:ac") {
+record(bo, "$(P)$(N)Trig:ac") {
     field( DTYP, "EVG Trig Evt AC")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @")
     field( ZNAM, "Clear")
@@ -123,7 +123,7 @@ record(bo, "$(P):$(N):Trig:ac") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:FpInp0") {
+record(bo, "$(P)$(N)Trig:FpInp0") {
     field( DTYP, "EVG TrigEvt FpInp0")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @FP_Input0")
     field( ZNAM, "Clear")
@@ -134,7 +134,7 @@ record(bo, "$(P):$(N):Trig:FpInp0") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:FpInp1") {
+record(bo, "$(P)$(N)Trig:FpInp1") {
     field( DTYP, "EVG TrigEvt FpInp1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @FP_Input1")
     field( ZNAM, "Clear")
@@ -145,7 +145,7 @@ record(bo, "$(P):$(N):Trig:FpInp1") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:UnivInp0") {
+record(bo, "$(P)$(N)Trig:UnivInp0") {
     field( DTYP, "EVG TrigEvt UnivInp0")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @Univ_Input0")
     field( ZNAM, "Clear")
@@ -156,7 +156,7 @@ record(bo, "$(P):$(N):Trig:UnivInp0") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:UnivInp1") {
+record(bo, "$(P)$(N)Trig:UnivInp1") {
     field( DTYP, "EVG TrigEvt UnivInp1")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @Univ_Input1")
     field( ZNAM, "Clear")
@@ -167,7 +167,7 @@ record(bo, "$(P):$(N):Trig:UnivInp1") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:UnivInp2") {
+record(bo, "$(P)$(N)Trig:UnivInp2") {
     field( DTYP, "EVG TrigEvt UnivInp2")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @Univ_Input2")
     field( ZNAM, "Clear")
@@ -178,7 +178,7 @@ record(bo, "$(P):$(N):Trig:UnivInp2") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P):$(N):Trig:UnivInp3") {
+record(bo, "$(P)$(N)Trig:UnivInp3") {
     field( DTYP, "EVG TrigEvt UnivInp3")
     field( OUT , "#C$(cardNum) S$(trigEvtNum) @Univ_Input3")
     field( ZNAM, "Clear")

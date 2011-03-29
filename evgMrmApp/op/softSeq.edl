@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 58
-y 355
+x 62
+y 375
 w 303
 h 281
 font "helvetica-medium-r-12.0"
@@ -39,7 +39,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):trigSrc"
+controlPv "$(P)$(SS)trigSrc"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -58,7 +58,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):runMode"
+controlPv "$(P)$(SS)runMode"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -118,7 +118,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):commit"
+controlPv "$(P)$(SS)commit"
 releaseValue "1"
 onLabel "Commit"
 offLabel "Commit"
@@ -141,7 +141,7 @@ onColor index 3
 offColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):pause"
+controlPv "$(P)$(SS)pause"
 releaseValue "1"
 onLabel "Pause"
 offLabel "Pause"
@@ -164,7 +164,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):disable"
+controlPv "$(P)$(SS)disable"
 releaseValue "1"
 onLabel "Disable"
 offLabel "Disable"
@@ -187,7 +187,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):enable"
+controlPv "$(P)$(SS)enable"
 releaseValue "1"
 onLabel "Enable"
 offLabel "Enable"
@@ -205,7 +205,7 @@ x 30
 y 250
 w 240
 h 20
-controlPv "$(P):$(SS):err"
+controlPv "$(P)$(SS)err"
 fgColor index 21
 fgAlarm
 bgColor index 3
@@ -222,8 +222,8 @@ release 0
 x 30
 y 200
 w 70
-h 20
-controlPv "$(P):$(SS):commitStatus"
+h 15
+controlPv "$(P)$(SS)commitStatus"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -245,8 +245,8 @@ release 0
 x 10
 y 150
 w 280
-h 20
-controlPv "$(P):$(SS):enaStatus"
+h 15
+controlPv "$(P)$(SS)enaStatus"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -268,8 +268,8 @@ release 0
 x 130
 y 200
 w 140
-h 20
-controlPv "$(P):$(SS):loadStatus"
+h 15
+controlPv "$(P)$(SS)loadStatus"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -331,8 +331,8 @@ release 0
 x 30
 y 100
 w 100
-h 20
-controlPv "$(P):$(SS):runModeRB"
+h 15
+controlPv "$(P)$(SS)runModeRB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -354,8 +354,8 @@ release 0
 x 170
 y 100
 w 100
-h 20
-controlPv "$(P):$(SS):trigSrcRB"
+h 15
+controlPv "$(P)$(SS)trigSrcRB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -383,7 +383,7 @@ onColor index 3
 offColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):abort"
+controlPv "$(P)$(SS)abort"
 releaseValue "1"
 onLabel "Abort"
 offLabel "Abort"
@@ -406,7 +406,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):load"
+controlPv "$(P)$(SS)load"
 releaseValue "1"
 onLabel "Load"
 offLabel "Load"
@@ -429,7 +429,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(SS):unload"
+controlPv "$(P)$(SS)unload"
 releaseValue "1"
 onLabel "Unload"
 offLabel "Unload"
