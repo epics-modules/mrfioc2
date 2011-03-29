@@ -63,7 +63,7 @@ class evgSoftSeq(gui.QMainWindow):
             for x in range(self.ui.tableWidget.rowCount()):
                 item = QTableWidgetItem(QString.number(valueEC[x]))
                 self.ui.tableWidget.setItem(x, 0, item)
-                item = QTableWidgetItem(QString.number(valueTS[x]))
+                item = QTableWidgetItem(QString.number(valueTS[x], "G", 14))
                 self.ui.tableWidget.setItem(x, 1, item)
 
 
