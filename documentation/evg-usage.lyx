@@ -1074,6 +1074,23 @@ If a soft sequence is uncommited and running then when the IOC restarts
  last committed sequence is lost.
 \end_layout
 
+\begin_layout Standard
+PyQt script.
+ (Front end for Event Code and Timestamp arrays)
+\end_layout
+
+\begin_layout Itemize
+You can have timestamp as 'zero' for the first event code in the sequencer.
+ So this will allow the first event code in the sequencer to be sent out
+ immediately after sequencer receives the trigger.
+ But adding 'zero' as timestamp anywhere else(other than for first event
+ code) is an error and the sequence would be truncated as soon as a zero
+ is encountered.
+ e.g.
+ timestamp array: 0x20, 0x30, 0, 0x40 would be truncated to 0x20, 0x30.
+ (Just first two elements before zero.)
+\end_layout
+
 \begin_layout Section
 Acknowledgment
 \end_layout

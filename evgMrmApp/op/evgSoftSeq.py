@@ -129,7 +129,7 @@ class evgSoftSeq(gui.QMainWindow):
             else:
                 (val, OK) = item.text().toDouble()
 		
-            if val == 0:
+            if val == 0 and x > 0:
                 break
             args.append(val)
 	  
