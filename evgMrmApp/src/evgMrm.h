@@ -51,6 +51,7 @@ public:
     volatile epicsUInt8* getRegAddr(); 
     epicsUInt32 getFwVersion();
     epicsStatus enable(bool ena);
+    epicsStatus resetMxc(bool reset);
     epicsUInt32 getStatus();
 
     /**    Interrupt and Callback    **/

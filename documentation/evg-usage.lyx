@@ -125,6 +125,34 @@ The VME bus based EVGs are configured using the mrmEvgSetupVME() IOC shell
 \end_layout
 
 \begin_layout Standard
+mrmEvgSetupVME ( 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 cardNum, // Logical card number 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 slot, // VME slot 
+\end_layout
+
+\begin_layout Quote
+epicsUInt32 vmeAddress, // Desired VME address in A24 space 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 irqLevel // IRQ Level 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 irqVector, // Desired interrupt vector number 
+\end_layout
+
+\begin_layout Standard
+)
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=bash"
 inline false
@@ -217,15 +245,7 @@ Classes/Sub-Component
 \end_layout
 
 \begin_layout Subsection
-EVG 
-\end_layout
-
-\begin_layout Standard
-Class: evgMrm 
-\end_layout
-
-\begin_layout Standard
-Files: evgMrm.h/evgMrm.cpp/devEvgMrm.cpp/evgMrm.db
+EVG
 \end_layout
 
 \begin_layout Subsubsection
@@ -415,14 +435,6 @@ All the operations on EVG are synchronized to the event clock.
  fractional synthesizer.
 \end_layout
 
-\begin_layout Standard
-Class: evgEvtClk
-\end_layout
-
-\begin_layout Standard
-Files : evgEvtClk.h/evgEvtClk.cpp/devEvgEvtClk.cpp/evgEvtClk.db
-\end_layout
-
 \begin_layout Itemize
 
 \emph on
@@ -476,14 +488,6 @@ Software event is used to send out an event code by writing that event to
  a particular register in EVG.
 \end_layout
 
-\begin_layout Standard
-Class: evgSoftEvt 
-\end_layout
-
-\begin_layout Standard
-Files : evgSoftEvt.h/evgSoftEvt.cpp/devEvgSoftEvt.cpp/evgSoftEvt.db
-\end_layout
-
 \begin_layout Itemize
 
 \emph on
@@ -503,14 +507,6 @@ There are currently 8 trigger event sources.
  every time a trigger is received.
  The stimulus could be a rising edge on an external input signal or a multiplexe
 d counter output or the ac signal.
-\end_layout
-
-\begin_layout Standard
-Class: evgTrigEvt 
-\end_layout
-
-\begin_layout Standard
-Files : evgTrigEvt.h/evgTrigEvt.cpp/devEvgTrigEvt.cpp/evgTrigEvt.db
 \end_layout
 
 \begin_layout Itemize
@@ -550,14 +546,6 @@ Distributed bus
 The distributed bus allows transmission of eight simultaneous signals with
  the event clock rate.
  
-\end_layout
-
-\begin_layout Standard
-Class: evgDbus 
-\end_layout
-
-\begin_layout Standard
-Files : evgDbus.h/evgDbus.cpp/devEvgDbus.cpp/evgDbus.db
 \end_layout
 
 \begin_layout Itemize
@@ -612,14 +600,6 @@ There are 8 32-bit multiplexed counters that generate clock signals with
  
 \end_layout
 
-\begin_layout Standard
-Class: evgMxc 
-\end_layout
-
-\begin_layout Standard
-Files : evgMxc.h/evgMxc.cpp/devEvgMxc.cpp/evgMxc.db
-\end_layout
-
 \begin_layout Itemize
 
 \emph on
@@ -636,20 +616,17 @@ Frequency
  (ao/ai): Request a signal with a particular frequency.
 \end_layout
 
+\begin_layout Itemize
+Reset: Reset all the multiplexed counters.
+ After reset all the counters are in phase/sync with each other.
+\end_layout
+
 \begin_layout Subsection
 Input
 \end_layout
 
 \begin_layout Standard
 VME-EVG-230 has 2 Front panel, 4 Universal and 16 Transitional Inputs.
-\end_layout
-
-\begin_layout Standard
-Class: evgInput 
-\end_layout
-
-\begin_layout Standard
-Files : evgInput.h/evgInput.cpp/devEvgInput.cpp/evgInput.db
 \end_layout
 
 \begin_layout Itemize
@@ -668,14 +645,6 @@ Output
 \begin_layout Standard
 It is used to configure the 4 front panel outputs and 4 four front panel
  universal outputs.
-\end_layout
-
-\begin_layout Standard
-Class: evgOutput 
-\end_layout
-
-\begin_layout Standard
-Files : evgOutput.h/evgOutput.cpp/devEvgOutput.cpp/evgOutput.db
 \end_layout
 
 \begin_layout Itemize
@@ -707,14 +676,6 @@ AC Trigger
 \begin_layout Standard
 EVG provides synchronization to the mains voltage frequency or another external
  clock.
-\end_layout
-
-\begin_layout Standard
-Class: evgAcTrig
-\end_layout
-
-\begin_layout Standard
-Files : evgAcTrig.h/evgAcTrig.cpp/devEvgAcTrig.cpp/evgAcTrig.db
 \end_layout
 
 \begin_layout Itemize
@@ -765,42 +726,6 @@ MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
  When the counter value matches the timeStamp of the next event, the attached
  event code is transmitted.
  
-\end_layout
-
-\begin_layout Standard
-Class: evgSeqRamMgr
-\end_layout
-
-\begin_layout Standard
-Files : evgSeqRamManager.h/evgSeqRamManager.cpp
-\end_layout
-
-\begin_layout Standard
-Class: evgSeqRam
-\end_layout
-
-\begin_layout Standard
-Files : evgSeqRam.h/evgSeqRam.cpp
-\end_layout
-
-\begin_layout Standard
-Class: evgSoftSeqMgr
-\end_layout
-
-\begin_layout Standard
-Files : evgSoftSeqManager.h/evgSoftSeqManager.cpp
-\end_layout
-
-\begin_layout Standard
-Class: evg
-\end_layout
-
-\begin_layout Standard
-SoftSeq
-\end_layout
-
-\begin_layout Standard
-Files : evgSoftSeq.h/evgSoftSeq.cpp/devEvgSoftSeq.cpp/evgSoftSeq.db
 \end_layout
 
 \begin_layout Standard
@@ -888,6 +813,12 @@ Default unit is in microseconds.
 
 \begin_layout Itemize
 TICKS: Here user can provides timestamps in terms of Event Clock ticks.
+\end_layout
+
+\begin_layout Itemize
+All the timestamps are offset from the time at which the sequencer receives
+ the trigger.
+ 
 \end_layout
 
 \end_deeper

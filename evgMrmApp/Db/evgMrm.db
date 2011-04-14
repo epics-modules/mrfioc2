@@ -10,6 +10,12 @@ record(bo, "$(P)Enable") {
     info( autosaveFields_pass0, "VAL")
 }
 
+record(bo, "$(P)ResetMxc") {
+    field( DTYP, "EVG")
+    field( DESC, "EVG Reset MXC")
+    field( OUT,  "#C$(cardNum) S @")
+}
+
 record( stringin, "$(P)TS") {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG TimeStamp")

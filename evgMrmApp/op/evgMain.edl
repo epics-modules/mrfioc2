@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 377
-y 93
+x 42
+y 139
 w 634
 h 678
 font "helvetica-medium-r-12.0"
@@ -229,6 +229,31 @@ inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(M)Polarity"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 530
+y 300
+w 70
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)ResetMxc"
+pressValue "1"
+releaseValue "1"
+onLabel "Reset"
+offLabel "Reset"
+3d
+useEnumNumeric
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1555,98 +1580,6 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 10
-y 50
-w 150
-h 60
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 60
-w 150
-h 50
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 30
-y 80
-w 39
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Enable"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 10
-y 50
-w 45
-h 15
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Control"
-}
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 80
-y 80
-w 70
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)Enable"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
 x 170
 y 50
 w 140
@@ -2603,5 +2536,97 @@ value0 {
   2 "FP_Output2:"
   3 "FP_Output3:"
 }
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 50
+w 150
+h 60
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 60
+w 150
+h 50
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 30
+y 80
+w 39
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Enable"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 50
+w 45
+h 15
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Control"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 80
+w 70
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)Enable"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 
