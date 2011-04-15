@@ -26,6 +26,10 @@ dbLoadRecords("db/evr-vmerf-230.db","P=evr3:,C=2")
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
 # Auto save/restore
+save_restoreDebug(2)
+dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:")
+save_restoreSet_status_prefix("mrftest:")
+
 set_savefile_path("${mnt}/as","/save")
 set_requestfile_path("${mnt}/as","/req")
 
