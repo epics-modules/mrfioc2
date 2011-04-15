@@ -24,9 +24,9 @@
  * Registers for Modular Register Map version of EVR
  *
  * For firmware version #4
- * as documented in EVR-MRM-001.doc
+ * as documented in EVR-MRM-004.doc
  * Jukka Pietarinen
- * 01 Apr 2010
+ * 07 Apr 2011
  */
 
 #define U32_Status      0x000
@@ -45,6 +45,14 @@
 /* Loopback 0 - normal, 1 - connects local tx to local rx */
 #  define Control_txloop  0x20000000
 #  define Control_rxloop  0x10000000
+
+#  define Control_outena  0x08000000 /* cPCI-EVRTG-300 only */
+
+#  define Control_sreset  0x04000000 /* soft FPGA reset */
+
+#  define Control_endian  0x02000000 /* 0 - MSB, 1 - LSB, 300 PCI devices only */
+
+#  define Control_GTXio   0x01000000 /* GTX use external inhibit */
 
 /*                        Timestamp clock on DBUS #4 */
 #  define Control_tsdbus  0x00004000
@@ -104,12 +112,14 @@
 #  define FWVersion_ver_shift  0
 
 enum evrForm {
-  evrFormCPCI=0,
+  evrFormCPCI=0, // 3U
   evrFormPMC=1,
-  evrFormVME64=2
+  evrFormVME64=2,
+  evrFormCRIO=3,
+  evrFormCPCIFULL=4, // 6U
 };
 
-#define U32_CounterPS   0x040
+#define U32_CounterPS   0x040 /* Timestamp event counter prescaler */
 
 #define U32_USecDiv     0x04C
 
@@ -136,6 +146,9 @@ enum evrForm {
 #define U32_GPIODir     0x090
 #define U32_GPIOIn      0x094
 #define U32_GPIOOut     0x098
+
+#define U32_SPIDData    0x0A0
+#define U32_SPIDCtrl    0x0A4
 
 #define U32_ScalerN     0x100
 #  define ScalerMax 3
@@ -203,12 +216,22 @@ enum evrForm {
 #define U8_InputMapFPBEvt(N) (U8_InputMapFPDBEvt + (4*(N)))
 #define U8_InputMapFPEEvt(N) (U8_InputMapFPDEEvt + (4*(N)))
 
-/* Current mode logic (CML) outputs */
+/* GTX delay */
+#define U32_GTXDelayN 0x580
+#define U32_GTXDelay(N) (U32_GTXDelayN + (4*(N)))
+
+/* Current mode logic (CML) and GTX outputs */
 #define U32_OutputCMLNLow  0x600
 #define U32_OutputCMLNRise 0x604
 #define U32_OutputCMLNFall 0x608
 #define U32_OutputCMLNHigh 0x60c
 #define U32_OutputCMLNEna  0x610
+#  define OutputCMLEna_type_mask 0x0c00
+#  define OutputCMLEna_type_300 0x0800
+#  define OutputCMLEna_type_203 0x0400
+#  define OutputCMLEna_type_cml 0x0000
+#  define OutputCMLEna_pha_mask 0x0300
+#  define OutputCMLEna_pha_shift 8
 #  define OutputCMLEna_cycl 0x80
 #  define OutputCMLEna_ftrg 0x40
 #  define OutputCMLEna_mode_mask 0x30
@@ -225,10 +248,9 @@ enum evrForm {
 
 #define U32_OutputCMLNPat_base 0x20000
 #define U32_OutputCMLPat(i,N) (U32_OutputCMLNPat_base + 0x4000*(i) + 4*(N))
-#  define OutputCMLPatNBit 20
-#  define OutputCMLPatMask ((1<<OutputCMLPatNBit)-1)
 
 #  define OutputCMLMax 3
+#  define OutputGTXMax 8
 
 /* 0 <= N <= 2 */
 #define U32_OutputCMLLow(N)  (U32_OutputCMLNLow +(0x20*(N)))
@@ -277,6 +299,8 @@ enum evrForm {
 #define ActionHeartBeat 101
 #define ActionPSRst    100
 
+#define U8_SFPEEPROM_base 0x8200
+#define U8_SFPEEPROM(N) (U8_SFPEEPROM_base + (N))
 #define U8_SFPDIAG_base 0x8300
 #define U8_SFPDIAG(N) (U8_SFPDIAG_base + (N))
 
