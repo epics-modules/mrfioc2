@@ -31,9 +31,6 @@ mrf_SRCS += mrf_registerRecordDeviceDriver.cpp
 # Build the main IOC entry point on workstation OSs.
 mrf_SRCS_DEFAULT += mrfMain.cpp
 
-# Finally link to the EPICS Base libraries
-mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
-
 ifneq ($(DEVIOCSTATS),)
 mrf_DBD += devIocStats.dbd
 mrf_LIBS += devIocStats
@@ -49,6 +46,8 @@ mrf_DBD  += generalTime.dbd
 mrf_LIBS += generalTime
 endif
 
+# Finally link to the EPICS Base libraries
+mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 

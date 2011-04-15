@@ -72,10 +72,6 @@ evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp
 # Build the main IOC entry point on workstation OSs.
 evgMrm_SRCS_DEFAULT += evgMrmMain.cpp
 
-#evgMrm_INCLUDES += -I/usr/powerpc-rtems4.9/mvme3100/lib/include
-# Finally link to the EPICS Base libraries
-evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
-
 ifneq ($(DEVIOCSTATS),)
 evgMrm_DBD += devIocStats.dbd
 evgMrm_LIBS += devIocStats
@@ -90,6 +86,9 @@ ifneq ($(GENERAL_TIME),)
 evgMrm_DBD  += generalTime.dbd
 evgMrm_LIBS += generalTime
 endif
+
+# Finally link to the EPICS Base libraries
+evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 
