@@ -44,7 +44,37 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 #  define INTCSR_PCI_Enable    0x40
 #  define INTCSR_SW_INTR       0x80
 
-/* For MRM EVR 230 series
+/*
+ * A selection of registers for the PLX PCI9056
+ *
+ * This device is exposed as BAR #0
+ */
+
+#define BIGEND9056 0x0C // 8 bit
+#  define BIGEND9056_BIG (1<<2)
+
+#define INTCSR9056 0x68 // 32 bit
+#  define INTCSR9056_PCI_Enable (1<<8)
+
+#  define INTCSR9056_DBL_Enable (1<<9)
+#  define INTCSR9056_ABT_Enable (1<<10)
+#  define INTCSR9056_LCL_Enable (1<<11)
+#  define INTCSR9056_DBL_Status (1<<13) /* PCI doorbell */
+#  define INTCSR9056_ABT_Status (1<<14) /* PCI abort */
+#  define INTCSR9056_LCL_Status (1<<15) /* local */
+
+#  define INTCSR9056_LBL_Enable (1<<17)
+#  define INTCSR9056_DM0_Enable (1<<18)
+#  define INTCSR9056_DM1_Enable (1<<19)
+#  define INTCSR9056_LBL_Status (1<<20) /* Local doorbell */
+#  define INTCSR9056_DM0_Status (1<<21) /* DMA 0 */
+#  define INTCSR9056_DM1_Status (1<<22) /* DMA 1 */
+
+#  define INTCSR9056_Status (INTCSR9056_DBL_Status| \
+    INTCSR9056_ABT_Status|INTCSR9056_LCL_Status|INTCSR9056_LBL_Status| \
+    INTCSR9056_DM0_Status|INTCSR9056_DM1_Status)
+
+/* For MRM EVR 230 and 300 series
  */
 
 #define IRQFlag     0x008
@@ -80,7 +110,7 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 static
 irqreturn_t
-mrf_handler(int irq, struct uio_info *info)
+mrf_handler9030(int irq, struct uio_info *info)
 {
     void __iomem *base = info->mem[2].internal_addr;
     void __iomem *plx = info->mem[0].internal_addr;
@@ -97,6 +127,41 @@ mrf_handler(int irq, struct uio_info *info)
 
     /* Enable active high interrupt1 through the PLX to the PCI bus. */
     iowrite16(plxcsr, plx + INTCSR);
+
+    return IRQ_HANDLED;
+}
+
+static
+irqreturn_t
+mrf_handler9056(int irq, struct uio_info *info)
+{
+    void __iomem *base = info->mem[2].internal_addr;
+    void __iomem *plx = info->mem[0].internal_addr;
+    u32 plxcsr= ioread32(plx + INTCSR9056);
+
+    if (!(plxcsr&INTCSR9056_Status))
+        return IRQ_NONE;
+
+    if (plxcsr&INTCSR9056_DBL_Status)
+        plxcsr&=~INTCSR9056_DBL_Enable;
+
+    if (plxcsr&INTCSR9056_ABT_Status)
+        plxcsr&=~INTCSR9056_ABT_Enable;
+
+    if (plxcsr&INTCSR9056_LCL_Status)
+        plxcsr&=~INTCSR9056_LCL_Enable;
+
+    if (plxcsr&INTCSR9056_LBL_Status)
+        plxcsr&=~INTCSR9056_LBL_Enable;
+
+    if (plxcsr&INTCSR9056_DM0_Status)
+        plxcsr&=~INTCSR9056_DM0_Enable;
+
+    if (plxcsr&INTCSR9056_DM1_Status)
+        plxcsr&=~INTCSR9056_DM1_Enable;
+
+    /* Enable active high interrupt1 through the PLX to the PCI bus. */
+    iowrite32(plxcsr, plx + INTCSR);
 
     return IRQ_HANDLED;
 }
@@ -153,7 +218,17 @@ mrf_probe(struct pci_dev *dev,
 
         info->irq = dev->irq;
         info->irq_flags = IRQF_SHARED;
-        info->handler = mrf_handler;
+        switch(dev->device) {
+        case PCI_DEVICE_ID_PLX_9030:
+            dev_info(&dev->dev, "Select 9030\n");
+            info->handler = mrf_handler9030; break;
+        case PCI_DEVICE_ID_PLX_9056:
+            dev_info(&dev->dev, "Select 9056\n");
+            info->handler = mrf_handler9056; break;
+        default:
+            dev_err(&dev->dev, "Unknown device 0x%04x\n", dev->device);
+            goto err_unmap;
+        }
 
         info->name = DRV_NAME;
         info->version = DRV_VERSION;
@@ -180,8 +255,12 @@ err_free:
 
 #define PCI_SUBVENDOR_ID_MRF             0x1a3e
 
+/* PMC-EVR-230 */
 #define PCI_SUBDEVICE_ID_MRF_PMCEVR_230   0x11e6
+/* cPCI-EVR-230 */
 #define PCI_SUBDEVICE_ID_MRF_PXIEVR_230   0x10e6
+/* cPCI-EVRTG-300 */
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
 
 static struct pci_device_id mrf_pci_ids[] __devinitdata = {
     {
@@ -195,6 +274,12 @@ static struct pci_device_id mrf_pci_ids[] __devinitdata = {
         .device =       PCI_DEVICE_ID_PLX_9030,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_PMCEVR_230,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_PLX,
+        .device =       PCI_DEVICE_ID_PLX_9056,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_MRF_EVRTG_300,
     },
     { 0, }
 };
