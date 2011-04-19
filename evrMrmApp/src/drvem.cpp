@@ -79,6 +79,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)
+  ,shadowIRQEna(0)
   ,count_FIFO_overflow(0)
   ,outputs()
   ,prescalers()
@@ -774,6 +775,21 @@ EVRMRM::dbus() const
     return (READ32(base, Status) & Status_dbus_mask) << Status_dbus_shift;
 }
 
+void
+EVRMRM::enableIRQ(void)
+{
+    int key=epicsInterruptLock();
+
+    shadowIRQEna = IRQ_Enable
+                   |IRQ_RXErr    |IRQ_BufFull
+                   |IRQ_Heartbeat|IRQ_HWMapped
+                   |IRQ_Event    |IRQ_FIFOFull;
+
+    WRITE32(base, IRQEnable, shadowIRQEna);
+
+    epicsInterruptUnlock(key);
+}
+
 // A place to write to which will keep the read
 // at the end of the ISR from being optimized out.
 // This value should never be used anywhere else.
@@ -786,9 +802,7 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
-    epicsUInt32 enable=READ32(evr->base, IRQEnable);
-
-    epicsUInt32 active=flags&enable;
+    epicsUInt32 active=flags&evr->shadowIRQEna;
 
     if(!active)
       return;
@@ -797,7 +811,7 @@ EVRMRM::isr(void *arg)
         evr->count_recv_error++;
         scanIoRequest(evr->IRQrxError);
 
-        enable &= ~IRQ_RXErr;
+        evr->shadowIRQEna &= ~IRQ_RXErr;
         callbackRequest(&evr->poll_link_cb);
     }
     if(active&IRQ_BufFull){
@@ -813,7 +827,7 @@ EVRMRM::isr(void *arg)
     }
     if(active&IRQ_Event){
         //FIFO not-empty
-        enable &= ~IRQ_Event;
+        evr->shadowIRQEna &= ~IRQ_Event;
         int wakeup=0;
         evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
     }
@@ -822,14 +836,14 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQheartbeat);
     }
     if(active&IRQ_FIFOFull){
-        enable &= ~IRQ_FIFOFull;
+        evr->shadowIRQEna &= ~IRQ_FIFOFull;
         int wakeup=0;
         evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
 
         scanIoRequest(evr->IRQfifofull);
     }
 
-    WRITE32(evr->base, IRQEnable, enable|IRQ_Enable);
+    WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     WRITE32(evr->base, IRQFlag, flags);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
@@ -957,7 +971,8 @@ EVRMRM::drain_fifo()
 
         int iflags=epicsInterruptLock();
 
-        BITSET(NAT,32, base, IRQEnable, IRQ_Event|IRQ_FIFOFull|IRQ_Enable);
+        shadowIRQEna |= IRQ_Event|IRQ_FIFOFull;
+        WRITE32(base, IRQEnable, shadowIRQEna);
 
         epicsInterruptUnlock(iflags);
     }
@@ -1015,7 +1030,8 @@ EVRMRM::poll_link(CALLBACK* cb)
     }else{
         scanIoRequest(evr->IRQrxError);
         int iflags=epicsInterruptLock();
-        BITSET(NAT,32, evr->base, IRQEnable, IRQ_RXErr|IRQ_Enable);
+        evr->shadowIRQEna |= IRQ_RXErr;
+        WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
         epicsInterruptUnlock(iflags);
     }
 }

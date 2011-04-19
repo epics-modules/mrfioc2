@@ -170,6 +170,8 @@ public:
     virtual epicsUInt32 FIFOOverRate() const
     {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
 
+    void enableIRQ(void);
+
     static void isr(void*);
 
     const int id;
@@ -183,6 +185,8 @@ private:
     volatile epicsUInt32 count_recv_error;
     volatile epicsUInt32 count_hardware_irq;
     volatile epicsUInt32 count_heartbeat;
+
+    epicsUInt32 shadowIRQEna;
 
     // Guarded by evrLock
     epicsUInt32 count_FIFO_overflow;
