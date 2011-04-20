@@ -125,7 +125,7 @@ try {
 static long del_record_waveform(dbCommon *praw)
 {
     long ret=0;
-    if (!praw->dpvt) return -1;
+    if (!praw->dpvt) return 0;
     addr *paddr=static_cast<addr*>(praw->dpvt);
     try {
 

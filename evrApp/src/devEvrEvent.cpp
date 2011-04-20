@@ -93,6 +93,7 @@ long del_record(struct dbCommon *precord)
     longoutRecord* prec=(longoutRecord*)(precord);
     priv *p=static_cast<priv*>(prec->dpvt);
     long ret=0;
+    if (!p) return 0;
 try {
 
     p->evr->interestedInEvent(p->event, false);

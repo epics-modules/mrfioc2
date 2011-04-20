@@ -89,6 +89,7 @@ add_record (dbCommon *pRec) {
 static long
 del_record (dbCommon *pRec) {
     Pvt* pvt = (Pvt*)pRec->dpvt;
+    if (!pvt) return 0;
     delete pvt;
 
     return 0;
