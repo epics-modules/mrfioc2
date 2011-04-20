@@ -111,12 +111,15 @@ REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
 
 static
 void
-printregisters(volatile epicsUInt8 *evr)
+printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
 {
     size_t reg;
 
     printf("EVR\n");
     for(reg=0; reg<NELEMENTS(printreg); reg++){
+
+        if(printreg[reg].offset+printreg[reg].rsize/8 > len)
+            continue;
 
         switch(printreg[reg].rsize){
         case 8:
@@ -148,7 +151,7 @@ bool reportCard(int level,short id,EVRMRM& evr)
     printf("Clock: %.6f MHz\n",evr.clock()*1e-6);
 
     if(level>=2){
-        printregisters(evr.base);
+        printregisters(evr.base, evr.baselen);
     }
 
     return true;
@@ -218,6 +221,12 @@ try {
         return;
     }
 
+    epicsUInt32 evrlen;
+    if( devPCIBarLen(cur,2,&evrlen) ) {
+        printf("Can't find BAR #2 length\n");
+        return;
+    }
+
     /* Use the PLX device on the EVR to swap access on
      * little endian systems so we don't have no worry about
      * byte order :)
@@ -244,7 +253,7 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,evr);
+    EVRMRM *receiver=new EVRMRM(id,evr,evrlen);
 
     void (*pciisr)(void *);
     void *arg=receiver;
@@ -417,7 +426,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,evr);
+    EVRMRM *receiver=new EVRMRM(id,evr,0x20000);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

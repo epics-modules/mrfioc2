@@ -97,7 +97,7 @@ public:
     mutable epicsMutex evrLock;
 
 
-    EVRMRM(int,volatile unsigned char*);
+    EVRMRM(int,volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 
@@ -174,6 +174,7 @@ public:
 
     const int id;
     volatile unsigned char * const base;
+    epicsUInt32 baselen;
     mrmDataBufTx buftx;
     mrmBufRx bufrx;
 private:

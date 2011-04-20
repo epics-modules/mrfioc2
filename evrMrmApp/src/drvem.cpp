@@ -68,11 +68,12 @@ const double fracref=24.0; // MHz
 
 CardMap<dataBufRx> datarxmap;
 
-EVRMRM::EVRMRM(int i,volatile unsigned char* b)
+EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
   :EVR()
   ,evrLock()
   ,id(i)
   ,base(b)
+  ,baselen(bl)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
   ,bufrx(b, 10) // Sets depth of Rx queue
   ,count_recv_error(0)
