@@ -552,11 +552,14 @@ EVRMRM::clockTS() const
 void
 EVRMRM::clockTSSet(double clk)
 {
-    if(clk<=0 || !isfinite(clk))
+    if(clk<0.0 || !isfinite(clk))
         throw std::out_of_range("TS Clock rate invalid");
 
     TSSource src=SourceTS();
     double eclk=clock();
+
+    if(clk>eclk || clk==0.0)
+        clk=eclk;
 
     SCOPED_LOCK(evrLock);
 
