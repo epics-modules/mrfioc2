@@ -250,6 +250,26 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
 
     SCOPED_LOCK(evrLock);
 
+    // restore mapping ram to a clean state
+    // needed when the IOC is started w/o a device reset (ie Linux)
+    //TODO: find a way to do this that doesn't require clearing
+    //      mapping which will shortly be set again...
+    for(size_t i=0; i<255; i++) {
+        WRITE32(base, MappingRam(0, i, Internal), 0);
+        WRITE32(base, MappingRam(0, i, Trigger), 0);
+        WRITE32(base, MappingRam(0, i, Set), 0);
+        WRITE32(base, MappingRam(0, i, Reset), 0);
+    }
+
+    // restore default special mappings
+    // These may be replaced later
+    specialSetMap(MRF_EVENT_TS_SHIFT_0,     96, true);
+    specialSetMap(MRF_EVENT_TS_SHIFT_1,     97, true);
+    specialSetMap(MRF_EVENT_TS_COUNTER_INC, 98, true);
+    specialSetMap(MRF_EVENT_TS_COUNTER_RST, 99, true);
+    specialSetMap(MRF_EVENT_RST_PRESCALERS, 100, true);
+    specialSetMap(MRF_EVENT_HEARTBEAT,      101, true);
+
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;
 
