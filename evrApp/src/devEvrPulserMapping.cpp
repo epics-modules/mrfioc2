@@ -116,6 +116,10 @@ try {
         return -2;
 
     epicsUInt32 code=plo->val;
+    if(code<=0 || code>255) {
+        dummy = recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+        return 0;
+    }
 
     switch(priv->next_func){
     case MapType::None:
