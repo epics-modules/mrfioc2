@@ -24,20 +24,12 @@ evr_SRCS += evr.cpp
 INC += evrmap.h
 evr_SRCS += evrGTIF.cpp
 
-evr_SRCS += devEvr.cpp
 evr_SRCS += devEvrStringIO.cpp
 
-evr_SRCS += devEvrInput.cpp
-
-evr_SRCS += devPreScaler.cpp
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
-evr_SRCS += devEvrOutput.cpp
 
-evr_SRCS += devEvrPulser.cpp
 evr_SRCS += devEvrPulserMapping.cpp
-
-evr_SRCS += devEvrCML.cpp
 
 evr_SRCS += asub.c
 evr_SRCS += devWfMailbox.c

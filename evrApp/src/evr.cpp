@@ -15,6 +15,7 @@
 #include "evr/prescaler.h"
 #include "evr/cml.h"
 #include "evr/util.h"
+#include "evrmap.h"
 
 #include "dbCommon.h"
 
@@ -61,6 +62,8 @@ long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 
     return 0;
 }
+
+CardMap<EVR> evrmap;
 
 OBJECT_BEGIN(EVR) {
 
