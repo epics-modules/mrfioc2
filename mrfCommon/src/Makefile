@@ -54,13 +54,14 @@ INC += cardmap.h
 INC += mrf/databuf.h
 INC += mrf/object.h
 
+INC += devObj.h
 INC += property.h
 INC += dsetshared.h
 
 
 TESTPROD_HOST += objectTest
 objectTest_SRCS += objectTest.c
-objectTest_LIBS += mrfCommon Com
+objectTest_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 TESTS += objectTest
 
 ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
@@ -95,6 +96,12 @@ mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += dsetshared.cpp
 mrfCommon_SRCS += cardmap.cpp
 mrfCommon_SRCS += object.cpp
+mrfCommon_SRCS += devObjAnalog.cpp
+mrfCommon_SRCS += devObjLong.cpp
+mrfCommon_SRCS += devObjBinary.cpp
+mrfCommon_SRCS += devObjMBB.cpp
+mrfCommon_SRCS += devObjMBBDirect.cpp
+mrfCommon_SRCS += devObjWf.cpp
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 

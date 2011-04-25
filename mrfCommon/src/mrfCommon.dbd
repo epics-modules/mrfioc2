@@ -1,1 +1,50 @@
 registrar (FracSynthRegistrar)
+registrar (objectsreg)
+
+# link format
+# "@OBJ=..., PROP=..."
+
+# from devObjLong.cpp
+device(longin , INST_IO, devLIFromUINT32, "Obj Prop uint32")
+device(longin , INST_IO, devLIFromUINT16, "Obj Prop uint16")
+device(longin , INST_IO, devLIFromBool,   "Obj Prop bool")
+
+device(longout , INST_IO, devLOFromUINT32, "Obj Prop uint32")
+device(longout , INST_IO, devLOFromUINT16, "Obj Prop uint16")
+device(longout , INST_IO, devLOFromBool,   "Obj Prop bool")
+
+# from devObjBinary.cpp
+device(bi , INST_IO, devBIFromUINT32, "Obj Prop uint32")
+device(bi , INST_IO, devBIFromUINT16, "Obj Prop uint16")
+device(bi , INST_IO, devBIFromBool,   "Obj Prop bool")
+
+device(bo , INST_IO, devBOFromUINT32, "Obj Prop uint32")
+device(bo , INST_IO, devBOFromUINT16, "Obj Prop uint16")
+device(bo , INST_IO, devBOFromBool,   "Obj Prop bool")
+
+# from devObjMBB.cpp
+device(mbbi , INST_IO, devMBBIFromUINT32, "Obj Prop uint32")
+device(mbbi , INST_IO, devMBBIFromUINT16, "Obj Prop uint16")
+
+device(mbbo , INST_IO, devMBBOFromUINT32, "Obj Prop uint32")
+device(mbbo , INST_IO, devMBBOFromUINT16, "Obj Prop uint16")
+
+# from devObjMBBDirect.cpp
+device(mbbiDirect , INST_IO, devMBBIDirFromUINT32, "Obj Prop uint32")
+device(mbbiDirect , INST_IO, devMBBIDirFromUINT16, "Obj Prop uint16")
+
+device(mbboDirect , INST_IO, devMBBODirFromUINT32, "Obj Prop uint32")
+device(mbboDirect , INST_IO, devMBBODirFromUINT16, "Obj Prop uint16")
+
+# from devObjAnalog.cpp
+device(ai , INST_IO, devAIFromDouble, "Obj Prop double")
+device(ai , INST_IO, devAIFromUINT32, "Obj Prop uint32")
+device(ai , INST_IO, devAIFromUINT16, "Obj Prop uint16")
+
+device(ao , INST_IO, devAOFromDouble, "Obj Prop double")
+device(ao , INST_IO, devAOFromUINT32, "Obj Prop uint32")
+device(ao , INST_IO, devAOFromUINT16, "Obj Prop uint16")
+
+# from devObjWf.cpp
+device(waveform , INST_IO, devWFIn, "Obj Prop waveform in")
+device(waveform , INST_IO, devWFOut, "Obj Prop waveform out")
