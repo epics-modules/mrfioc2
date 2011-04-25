@@ -1,0 +1,120 @@
+
+#include "mrf/object.h"
+
+#include <vector>
+#include <algorithm>
+
+#include "epicsUnitTest.h"
+#include "epicsString.h"
+#include "testMain.h"
+
+using namespace mrf;
+
+class mine : public ObjectInst<mine>
+{
+public:
+    int ival;
+    double dval;
+    std::vector<double> darr;
+
+    mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0)
+    {}
+
+    int getI() const{return ival;}
+    void setI(int i){ival=i;}
+
+    double val() const{return dval;}
+    void setVal(double v){dval=v;}
+
+    size_t getdarr(double* v, size_t l) const
+    {
+        if(!v) return darr.size();
+        l=std::min(l,darr.size());
+        std::copy(darr.begin(), darr.begin()+l, v);
+        return l;
+    }
+    void setdarr(const double* v, size_t l)
+    {
+        darr.resize(l);
+        std::copy(v, v+l, darr.begin());
+    }
+};
+
+OBJECT_BEGIN(mine)
+OBJECT_PROP2("I",   &mine::getI,    &mine::setI);
+OBJECT_PROP2("val", &mine::getI,    &mine::setI);
+OBJECT_PROP2("val", &mine::val,     &mine::setVal);
+OBJECT_PROP2("darr",&mine::getdarr, &mine::setdarr);
+OBJECT_END(mine)
+
+MAIN(objectTest)
+{
+    testPlan(0);
+    mine m("test");
+
+    testOk1(m.getI()==0);
+
+    std::auto_ptr<property<int> > I=m.getProperty<int>("I");
+    testOk1(I.get()!=NULL);
+
+    if(I.get()) {
+        testOk1(I->get()==0);
+        I->set(42);
+        testOk1(m.ival==42);
+    }
+
+    Object *o = &m;
+
+    std::auto_ptr<property<double> > V=o->getProperty<double>("val");
+    testOk1(V.get()!=NULL);
+
+    if(V.get()) {
+        testOk1(V->get()==0.0);
+        V->set(4.2);
+        testOk1(m.dval==4.2);
+    }
+
+    std::auto_ptr<property<int> > I2=o->getProperty<int>("I");
+    testOk1(I2.get()!=NULL);
+    testOk1((*I)==(*I2));
+
+    if(I2.get())
+        testOk1(I2->get()==42);
+
+    I2=o->getProperty<int>("val");
+    testOk1(I2.get()!=NULL);
+    testOk1((*I)!=(*I2));
+
+    if(I2.get())
+        testOk1(I2->get()==42);
+
+    std::auto_ptr<property<double[]> > A=o->getProperty<double[]>("darr");
+    testOk1(A.get()!=NULL);
+
+    const double tst[] = {1.0, 2.0, 3.0};
+    double tst2[3];
+
+    if(A.get()) {
+        A->set(tst,3);
+        testOk1(m.darr.size()==3);
+        testOk1(A->get(tst2,3)==3);
+    }
+
+    testOk1(std::equal(tst,tst+3,tst2));
+
+    V=o->getProperty<double>("other");
+    testOk1(V.get()==NULL);
+
+    try {
+        mine n("test"); // duplicate name
+        testFail("Duplicate name not prevented");
+    } catch(std::runtime_error& e) {
+        testPass("Duplicate name prevented: %s",e.what());
+    }
+
+    Object *p=Object::getObject("test");
+    testOk1(p!=NULL);
+    testOk1(p==o);
+
+    return testDone();
+}

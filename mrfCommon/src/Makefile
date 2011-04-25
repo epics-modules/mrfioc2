@@ -52,10 +52,16 @@ INC += mrfcsr.h
 
 INC += cardmap.h
 INC += mrf/databuf.h
+INC += mrf/object.h
 
 INC += property.h
 INC += dsetshared.h
 
+
+TESTPROD_HOST += objectTest
+objectTest_SRCS += objectTest.c
+objectTest_LIBS += mrfCommon Com
+TESTS += objectTest
 
 ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
 ifeq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
@@ -88,6 +94,7 @@ mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += dsetshared.cpp
 mrfCommon_SRCS += cardmap.cpp
+mrfCommon_SRCS += object.cpp
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 
