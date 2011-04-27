@@ -1,7 +1,7 @@
 file "evrbase.db"
 {pattern
 {P, OBJ, EVNT1HZ}
-{$(P), EVR$(C), 1}
+{$(P), EVR$(C), 125}
 }
 
 file "databuftx.db"
@@ -24,16 +24,24 @@ file "mrmevrbufrx.db"
 
 file "evrmap.db"
 {pattern
-{P, C, M, func, EVT}
-{$(P), $(C), "blink1", Blink, 15}
-{$(P), $(C), "blink2", Blink, 0}
+{P, M, OBJ, func, EVT}
+{$(P), "map:blink1", "EVR$(C)", Blink, 15}
+{$(P), "map:blink2", "EVR$(C)", Blink, 0}
 }
 
 file "evrevent.db"
 {pattern
-{P, C, N, CODE, EVNT}
-{$(P), $(C), "dbevt", 15, 15}
-{$(P), $(C), "1hz", 0x7d, 1}
+{P, N, OBJ, CODE, EVNT}
+{$(P), "dbevt","EVR$(C)", 15, 15}
+{$(P), "1hz",  "EVR$(C)", 0x7d, 125}
+{$(P), "evta", "EVR$(C)", 10, 10}
+{$(P), "evtb", "EVR$(C)", 11, 11}
+{$(P), "evtc", "EVR$(C)", 12, 12}
+{$(P), "evtd", "EVR$(C)", 13, 13}
+{$(P), "evte", "EVR$(C)", 14, 14}
+{$(P), "evtf", "EVR$(C)", 15, 15}
+{$(P), "evtg", "EVR$(C)", 16, 16}
+{$(P), "evth", "EVR$(C)", 17, 17}
 }
 
 file "evrscale.db"
@@ -70,34 +78,34 @@ file "evrpulser.db"
 # Default to 3 possible trigger mappings per pulser
 file "evrpulsermap.db"
 {pattern
-{P, C, PID, F, N, M, EVT}
-{$(P), $(C), 0, Trig, "pul0:", "trig0", 0}
-{$(P), $(C), 0, Trig, "pul0:", "trig1", 0}
-{$(P), $(C), 0, Trig, "pul0:", "trig2", 0}
-{$(P), $(C), 1, Trig, "pul1:", "trig0", 0}
-{$(P), $(C), 1, Trig, "pul1:", "trig1", 0}
-{$(P), $(C), 1, Trig, "pul1:", "trig2", 0}
-{$(P), $(C), 2, Trig, "pul2:", "trig0", 0}
-{$(P), $(C), 2, Trig, "pul2:", "trig1", 0}
-{$(P), $(C), 2, Trig, "pul2:", "trig2", 0}
-{$(P), $(C), 3, Trig, "pul3:", "trig0", 0}
-{$(P), $(C), 3, Trig, "pul3:", "trig1", 0}
-{$(P), $(C), 3, Trig, "pul3:", "trig2", 0}
-{$(P), $(C), 4, Trig, "pul4:", "trig0", 0}
-{$(P), $(C), 4, Trig, "pul4:", "trig1", 0}
-{$(P), $(C), 4, Trig, "pul4:", "trig2", 0}
-{$(P), $(C), 5, Trig, "pul5:", "trig0", 0}
-{$(P), $(C), 5, Trig, "pul5:", "trig1", 0}
-{$(P), $(C), 5, Trig, "pul5:", "trig2", 0}
-{$(P), $(C), 6, Trig, "pul6:", "trig0", 0}
-{$(P), $(C), 6, Trig, "pul6:", "trig1", 0}
-{$(P), $(C), 6, Trig, "pul6:", "trig2", 0}
-{$(P), $(C), 7, Trig, "pul7:", "trig0", 0}
-{$(P), $(C), 7, Trig, "pul7:", "trig1", 0}
-{$(P), $(C), 7, Trig, "pul7:", "trig2", 0}
-{$(P), $(C), 8, Trig, "pul8:", "trig0", 0}
-{$(P), $(C), 8, Trig, "pul8:", "trig1", 0}
-{$(P), $(C), 8, Trig, "pul8:", "trig2", 0}
+{P, ID, N, M, OBJ, F, EVT}
+{$(P), 0, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 0, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 0, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 1, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 1, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 1, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 2, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 2, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 2, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 3, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 3, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 3, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 4, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 4, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 4, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 5, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 5, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 5, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 6, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 6, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 6, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 7, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 7, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 7, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 8, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 8, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
+{$(P), 8, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
 }
 
 file "evrin.db"

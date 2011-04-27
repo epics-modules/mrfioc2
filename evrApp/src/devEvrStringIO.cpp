@@ -16,8 +16,9 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
+#include <errlog.h>
 #include "linkoptions.h"
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include <stringinRecord.h>
 
@@ -29,9 +30,9 @@
 #include <stdexcept>
 #include <string>
 
-struct addr {
+struct ts_priv {
     EVR* evr;
-    epicsUInt32 card;
+    char obj[30];
     epicsUInt32 code;
     epicsUInt32 last_bad;
 };
@@ -39,8 +40,8 @@ struct addr {
 static const
 linkOptionDef eventdef[] = 
 {
-    linkInt32   (addr, card , "C" , 1, 0),
-    linkInt32   (addr, code , "Code" , 0, 0),
+    linkString  (ts_priv, obj ,  "OBJ"  , 1, 0),
+    linkInt32   (ts_priv, code , "Code" , 0, 0),
     linkOptionEnd
 };
 
@@ -53,18 +54,23 @@ long stringin_add(dbCommon *praw)
     long ret=0;
 try {
     assert(prec->inp.type==INST_IO);
-    addr *priv=new addr;
+    std::auto_ptr<ts_priv> priv(new ts_priv);
     priv->code=0;
     priv->last_bad=0;
 
-    if (linkOptionsStore(eventdef, priv, prec->inp.value.instio.string, 0))
+    if (linkOptionsStore(eventdef, priv.get(), prec->inp.value.instio.string, 0))
         throw std::runtime_error("Couldn't parse link string");
 
-    priv->evr=&evrmap.get(priv->card);
+    mrf::Object *O=mrf::Object::getObject(priv->obj);
+    if(!O) {
+        errlogPrintf("%s: failed to find object '%s'\n", praw->name, priv->obj);
+        return S_db_errArg;
+    }
+    priv->evr=dynamic_cast<EVR*>(O);
     if(!priv->evr)
         throw std::runtime_error("Failed to lookup device");
 
-    prec->dpvt=static_cast<void*>(priv);
+    prec->dpvt=(void*)priv.release();
 
     return 0;
 
@@ -82,8 +88,10 @@ try {
 
 static long read_si(stringinRecord* prec)
 {
+    if(!prec->dpvt)
+        return S_db_errArg;
 try {
-    addr *priv=static_cast<addr*>(prec->dpvt);
+    ts_priv *priv=static_cast<ts_priv*>(prec->dpvt);
 
     epicsTimeStamp ts;
 
@@ -115,7 +123,7 @@ try {
 
 extern "C" {
 
-dsxt dxtSIEVR={stringin_add,del_record_empty};
+dsxt dxtSIEVR={&stringin_add,&del_record_delete<ts_priv>};
 static
 common_dset devSIEVR = {
     5,

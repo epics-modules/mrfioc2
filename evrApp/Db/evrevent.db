@@ -1,10 +1,19 @@
+# Mapping between hardware event code and a software database event
+#
+# Macros:
+#  P = record name prefix
+#  N = Object suffix
+#  OBJ = EVR devObj name
+#  CODE = Event code (hardware)
+#  EVNT = Database event code (software)
+#
 
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
 record(longout, "$(P)$(N)") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
-  field(OUT , "@Card=$(C),Code=$(CODE)")
+  field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
   field(VAL , "$(EVNT)")
   field(TSE , "-2") # from device support
   field(FLNK, "$(P)$(N):count")

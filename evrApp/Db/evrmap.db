@@ -1,7 +1,18 @@
+# Control for mapping a function to an event code in hardware
+#
+# Macros:
+#  P = record name prefix
+#  M = Object suffix
+#  OBJ = EVR devObj name
+#  func = Function to be mapped
+#    Choices are: "FIFO", "Latch TS", "Blink", "Forward",
+#                 "Stop Log", "Log", "Heartbeat", "Reset PS",
+#                 "TS reset", "TS tick", "Shift 1", "Shift 0",
+#
 
-record(longout, "$(P)map:$(M)") {
+record(longout, "$(P)$(M)") {
   field( DTYP, "EVR Mapping" )
-  field( OUT , "@C=$(C), Func=$(func)")
+  field( OUT , "@OBJ=$(OBJ), Func=$(func)")
   field( PINI, "YES")
   field( DESC, "Mapping for $(M)")
   field( VAL , $(EVT))

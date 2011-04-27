@@ -17,16 +17,16 @@
 #include <devSup.h>
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
+#include <errlog.h>
 
 #include <longoutRecord.h>
 #include <stringinRecord.h>
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
-#include "evrmap.h"
+#include "devObj.h"
 #include "evr/pulser.h"
 #include "linkoptions.h"
-#include "dsetshared.h"
 
 #include <stdexcept>
 #include <string>
@@ -45,7 +45,7 @@
 /***************** Mapping record ******************/
 
 struct map_priv {
-    epicsUInt32 card_id, pulser_id;
+    char obj[30];
     Pulser* pulser;
     epicsUInt32 last_code;
     MapType::type last_func;
@@ -63,8 +63,7 @@ linkOptionEnumType funcEnum[] = {
 static const
 linkOptionDef eventdef[] = 
 {
-    linkInt32   (map_priv, card_id  , "C"  , 1, 0),
-    linkInt32   (map_priv, pulser_id, "I", 1, 0),
+    linkString  (map_priv, obj , "OBJ"  , 1, 0),
     linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
     linkOptionEnd
 };
@@ -72,37 +71,38 @@ linkOptionDef eventdef[] =
 static long add_lo(dbCommon* praw)
 {
     long ret=0;
-    longoutRecord *plo = (longoutRecord*)praw;
+    longoutRecord *prec = (longoutRecord*)praw;
 try {
-    assert(plo->out.type==INST_IO);
+    assert(prec->out.type==INST_IO);
 
-    map_priv *priv=new map_priv;
+    std::auto_ptr<map_priv> priv(new map_priv);
     priv->last_code=0;
     priv->last_func=MapType::None;
 
-    if (linkOptionsStore(eventdef, priv, plo->out.value.instio.string, 0))
+    if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
         throw std::runtime_error("Couldn't parse link string");
 
-    EVR *card=&evrmap.get(priv->card_id);
-    if(!card)
+    mrf::Object *O=mrf::Object::getObject(priv->obj);
+    if(!O) {
+        errlogPrintf("%s: failed to find object '%s'\n", praw->name, priv->obj);
+        return S_db_errArg;
+    }
+    priv->pulser=dynamic_cast<Pulser*>(O);
+    if(!priv->pulser)
         throw std::runtime_error("Failed to lookup device");
 
-    priv->pulser=card->pulser(priv->pulser_id);
-    if(!priv->pulser)
-        throw std::runtime_error("Failed to lookup pulser unit");
-
-    plo->dpvt=static_cast<void*>(priv);
+    prec->dpvt=(void*)priv.release();
 
     return 0;
 
 } catch(std::runtime_error& e) {
-    recGblRecordError(S_dev_noDevice, (void*)plo, e.what());
+    recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
     ret=S_dev_noDevice;
 } catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)plo, e.what());
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
     ret=S_db_noMemory;
 }
-    mrfDisableRecord((dbCommon*)plo);
+    mrfDisableRecord((dbCommon*)prec);
     return ret;
 }
 
@@ -162,15 +162,15 @@ try {
 
 extern "C" {
 
-dsxt dxtLOEVRPulserMap={add_lo,del_record_empty};
+dsxt dxtLOEVRPulserMap={add_lo,&del_record_delete<map_priv>};
 static
 common_dset devLOEVRPulserMap = {
     5,
     NULL,
     dset_cast(&init_dset<&dxtLOEVRPulserMap>),
-    (DEVSUPFUN) init_record_empty,
+    (DEVSUPFUN) &init_record_empty,
     NULL,
-    (DEVSUPFUN) write_lo
+    (DEVSUPFUN) &write_lo
 };
 epicsExportAddress(dset,devLOEVRPulserMap);
 

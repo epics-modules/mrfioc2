@@ -16,12 +16,13 @@
 #include <recGbl.h>
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
+#include <errlog.h>
 
 #include <longoutRecord.h>
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
-#include "evrmap.h"
+#include "devObj.h"
 #include "evr/evr.h"
 
 #include "linkoptions.h"
@@ -33,7 +34,7 @@
 
 struct priv {
     EVR* evr;
-    epicsUInt32 card;
+    char obj[30];
     int event;
 };
 typedef struct priv priv;
@@ -41,7 +42,7 @@ typedef struct priv priv;
 static const
 linkOptionDef eventdef[] = 
 {
-    linkInt32   (priv, card , "Card" , 1, 0),
+    linkString  (priv, obj , "OBJ"  , 1, 0),
     linkInt32   (priv, event, "Code", 1, 0),
     linkOptionEnd
 };
@@ -51,29 +52,28 @@ long add_record(struct dbCommon *precord)
 {
     longoutRecord* prec=(longoutRecord*)(precord);
     long ret=0;
-    priv *p=NULL;
 try {
     assert(prec->out.type==INST_IO);
 
-    if (prec->dpvt) {
-        p=static_cast<priv*>(prec->dpvt);
-        prec->dpvt=NULL;
-    } else
-        p=new priv;
-    p->card=0;
+    std::auto_ptr<priv> p(new priv);
     p->event=0;
 
-    if (linkOptionsStore(eventdef, p, prec->out.value.instio.string, 0))
+    if (linkOptionsStore(eventdef, p.get(), prec->out.value.instio.string, 0))
         throw std::runtime_error("Couldn't parse link string");
 
-    p->evr=&evrmap.get(p->card);
+    mrf::Object *O=mrf::Object::getObject(p->obj);
+    if(!O) {
+        errlogPrintf("%s: failed to find object '%s'\n", prec->name, p->obj);
+        return S_db_errArg;
+    }
+    p->evr=dynamic_cast<EVR*>(O);
     if(!p->evr)
         throw std::runtime_error("Failed to lookup device");
 
     if (!p->evr->interestedInEvent(p->event, true))
         throw std::runtime_error("Failed to register interest");
 
-    prec->dpvt=static_cast<void*>(p);
+    prec->dpvt=(void*)p.release();
 
     return 0;
 } catch(std::runtime_error& e) {
@@ -83,7 +83,6 @@ try {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
     ret=S_db_noMemory;
 }
-    if (!prec->dpvt) delete p;
     return ret;
 }
 
@@ -97,6 +96,8 @@ long del_record(struct dbCommon *precord)
 try {
 
     p->evr->interestedInEvent(p->event, false);
+    delete p;
+    prec->dpvt=0;
 
 } catch(std::runtime_error& e) {
     recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
@@ -108,26 +109,13 @@ try {
     return ret;
 }
 
-dsxt devext={add_record,del_record};
-
-static
-long init(int i)
-{
-    if (i==0) devExtend(&devext);
-    return 0;
-}
-
-static
-long init_record(longoutRecord *prec)
-{
-    return 0;
-}
-
 static
 long
 get_ioint_info(int dir,dbCommon* precord,IOSCANPVT* io)
 {
     longoutRecord* prec=(longoutRecord*)(precord);
+    if(!prec->dpvt)
+        return S_db_errArg;
     priv *p=static_cast<priv*>(prec->dpvt);
     long ret=0;
 try {
@@ -176,23 +164,17 @@ try {
     return ret;
 }
 
+dsxt dxtEventEVR={add_record,del_record};
+static common_dset devEventEVR = {
+  6, NULL,
+  dset_cast(&init_dset<&dxtEventEVR>),
+  (DEVSUPFUN) init_record_empty,
+  (DEVSUPFUN) &get_ioint_info,
+  dset_cast(&read_event),
+  NULL };
+
 extern "C" {
 
-struct {
-    long      number;
-    DEVSUPFUN report;
-    DEVSUPFUN init;
-    DEVSUPFUN init_record;
-    DEVSUPFUN get_ioint_info;
-    DEVSUPFUN read_event;
-} devEventEVR = {
-    5,
-    NULL,
-    (DEVSUPFUN) init,
-    (DEVSUPFUN) init_record,
-    (DEVSUPFUN) get_ioint_info,
-    (DEVSUPFUN) read_event
-};
 epicsExportAddress(dset,devEventEVR);
 
 };
