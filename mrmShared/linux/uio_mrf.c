@@ -132,7 +132,7 @@ mrf_handler(int irq, struct uio_info *info)
     }
 
     /* Test endianness since we allow user
--     * apps to use whatever is convenient
+     * apps to use whatever is convenient
      */
     if (end) {
         status = ioread32be(base + IRQFlag);
@@ -145,11 +145,25 @@ mrf_handler(int irq, struct uio_info *info)
     if (!(status & enable))
             return IRQ_NONE;
 
+    if(!(enable & IRQ_Enable))
+        dev_info(&dev->dev, "Interrupt when not enabled! 0x%08lx 0x%08lx\n",
+                 (unsigned long)enable, (unsigned long)status);
+
     /* Disable interrupt */
     if (end)
         iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
     else
         iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
+    /* Ensure interrupts have really been disabled */
+    wmb();
+    if (end) {
+        enable = ioread32be(base + IRQEnable);
+    } else {
+        enable = ioread32(base + IRQEnable);
+    }
+    if(enable & IRQ_Enable)
+        dev_info(&dev->dev, "Interrupt not disabled!!!");
+
 
     return IRQ_HANDLED;
 }
