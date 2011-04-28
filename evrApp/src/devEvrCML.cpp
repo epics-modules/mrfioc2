@@ -185,7 +185,7 @@ try {
     CML *pcml=static_cast<CML*>(prec->dpvt);
 
     unsigned char *buf=static_cast<unsigned char*>(prec->bptr);
-    epicsUInt32 blen=pcml->lenPatternMax();
+    epicsUInt32 blen=pcml->lenPatternMax(CML::patternWaveform);
 
     blen=blen > prec->nord ? prec->nord : blen;
 
@@ -196,7 +196,7 @@ try {
         throw std::out_of_range("Invalid element type");
     }
 
-    pcml->setPattern(buf, blen);
+    pcml->setPattern(CML::patternWaveform, buf, blen);
 
     return 0;
 } catch(std::exception& e) {
@@ -212,10 +212,8 @@ try {
     CML *pcml=static_cast<CML*>(prec->dpvt);
 
     unsigned char *buf=static_cast<unsigned char*>(prec->bptr);
-    epicsUInt32 blen=prec->nelm;
 
-    pcml->getPattern(buf, &blen);
-    prec->nord = blen;
+    prec->nord = pcml->getPattern(CML::patternWaveform, buf, prec->nelm);
 
     return 0;
 } catch(std::exception& e) {

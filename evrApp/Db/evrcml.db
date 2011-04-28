@@ -60,9 +60,19 @@ record(mbbo, "$(P)$(CML)mode") {
   info(autosaveFields_pass0, "VAL")
 }
 
+record(longin, "$(P)$(CML)res:mult") {
+  field(DTYP, "EVR CML")
+  field(INP, "@C=$(C), I=$(IDX), P=Freq Mult")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
 record(calcout, "$(P)$(CML)res") {
   field(INPA, "$(P)clock:period CP")
-  field(CALC, "1e9*A/20")
+  field(INPB, "$(P)$(CML)res:mult PP")
+  field(CALC, "1e9*A/B")
   field(EGU , "ns")
   field(TSEL, "$(P)clock:period.TIME CA")
   field(FLNK, "$(P)$(CML)res:fo")

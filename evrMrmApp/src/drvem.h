@@ -138,6 +138,10 @@ public:
 
     virtual epicsUInt32 uSecDiv() const;
 
+    //! Using external hardware input for inhibit?
+    virtual bool extInhib() const;
+    virtual void setExtInhib(bool);
+
     virtual epicsUInt32 tsDiv() const
         {SCOPED_LOCK(evrLock);return shadowCounterPS;}
 

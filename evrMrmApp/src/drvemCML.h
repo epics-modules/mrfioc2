@@ -13,18 +13,22 @@
 
 #include "evr/cml.h"
 
+#include "evrRegMap.h"
+
 class EVRMRM;
 
 class MRMCML : public CML
 {
 public:
-    MRMCML(unsigned char, EVRMRM&);
+    enum outkind { typeCML, typeTG300, typeTG203 };
+
+    MRMCML(unsigned char, EVRMRM&, outkind, evrForm);
     virtual ~MRMCML();
 
-    virtual cmlMode mode() const{return shadowMode;}
+    virtual cmlMode mode() const;
     virtual void setMode(cmlMode);
 
-    virtual bool enabled() const{return shadowEnable;}
+    virtual bool enabled() const;
     virtual void enable(bool);
 
     virtual bool inReset() const;
@@ -33,10 +37,10 @@ public:
     virtual bool powered() const;
     virtual void power(bool);
 
-    // For original (Classic) mode
+    virtual epicsUInt32 freqMultiple() const{return mult;}
 
-    virtual epicsUInt32 pattern(cmlShort) const;
-    virtual void patternSet(cmlShort, epicsUInt32);
+    virtual double fineDelay() const;
+    virtual void setFineDelay(double);
 
     // For Frequency mode
 
@@ -58,18 +62,25 @@ public:
     virtual bool recyclePat() const;
     virtual void setRecyclePat(bool);
 
-    virtual epicsUInt32 lenPattern() const;
-    virtual epicsUInt32 lenPatternMax() const;
-    virtual void getPattern(unsigned char*, epicsUInt32*) const;
-    virtual void setPattern(const unsigned char*, epicsUInt32);
+    virtual epicsUInt32 lenPattern(pattern) const;
+    virtual epicsUInt32 lenPatternMax(pattern) const;
+    virtual epicsUInt32 getPattern(pattern, unsigned char*, epicsUInt32) const;
+    virtual void setPattern(pattern, const unsigned char*, epicsUInt32);
 
 private:
+    epicsUInt32 getPattern20(pattern, unsigned char*, epicsUInt32) const;
+    void setPattern20(pattern, const unsigned char*, epicsUInt32);
+    epicsUInt32 getPattern40(pattern, unsigned char*, epicsUInt32) const;
+    void setPattern40(pattern, const unsigned char*, epicsUInt32);
+
+    epicsUInt32 mult;
     volatile unsigned char *base;
     unsigned char N;
     EVRMRM& owner;
 
-    bool shadowEnable;
-    cmlMode shadowMode;
+    epicsUInt32 shadowEnable;
+
+    outkind kind;
 };
 
 #endif // EVRMRMCMLSHORT_HPP_INC

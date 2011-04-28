@@ -17,6 +17,18 @@ record(longin, "$(P)link:timo") {
   field(DESC, "# of heartbeat timeout")
 }
 
+record(bo, "$(P)ext:inhib") {
+  field(DTYP, "EVR")
+  field(OUT , "@C=$(C), P=External Inhibit")
+  field(PINI, "YES")
+  field(DESC, "Use HW trigger inhibit (EVRTG only)")
+  field(MASK, "1")
+  field(ZNAM, "Use Inhibit")
+  field(ONAM, "Always Permit")
+  field(OSV, "MINOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
 record(bi, "$(P)link:sts") {
   field(DTYP, "EVR")
   field(INP , "@C=$(C), P=Link Status")

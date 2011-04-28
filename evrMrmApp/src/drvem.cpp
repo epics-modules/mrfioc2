@@ -486,6 +486,23 @@ EVRMRM::uSecDiv() const
 }
 
 bool
+EVRMRM::extInhib() const
+{
+    epicsUInt32 v = READ32(base, Control);
+    return v&Control_GTXio;
+}
+
+void
+EVRMRM::setExtInhib(bool v)
+{
+    SCOPED_LOCK(evrLock);
+    if(v)
+        BITSET(NAT,32,base, Control, Control_GTXio);
+    else
+        BITCLR(NAT,32,base, Control, Control_GTXio);
+}
+
+bool
 EVRMRM::pllLocked() const
 {
     return READ32(base, ClkCtrl) & ClkCtrl_cglock;

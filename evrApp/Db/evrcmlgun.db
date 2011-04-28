@@ -1,0 +1,33 @@
+
+# Extra properties for cPCI-EVRTG-300
+# in addition to evrcml.db
+
+record(ao, "$(P)$(CML)delay") {
+    field( DTYP, "EVR CML")
+    field( OUT , "@C=$(C), I=$(IDX), P=Fine Delay")
+    field(PINI, "YES")
+    field( VAL, "0.0")
+    field( UDF, "0")
+    field(HOPR, "8")
+    field(LOPR, "0")
+    field(DRVH, "7") # GUN-RC-300 operates only at ~500 MHz RF
+    field(DRVL, "0")
+    field( EGU, "ns")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(P)$(CML)delay:rbv") {
+    field( DTYP, "EVR CML")
+    field( OUT , "@C=$(C), I=$(IDX), P=Fine Delay")
+    field(PINI, "YES")
+    field( VAL, "0.0")
+    field( UDF, "0")
+    field(HOPR, "8")
+    field(LOPR, "0")
+    field(DRVH, "7") # GUN-RC-300 operates only at ~500 MHz RF
+    field(DRVL, "0")
+    field( EGU, "ns")
+    info(autosaveFields_pass0, "VAL")
+}
+
+

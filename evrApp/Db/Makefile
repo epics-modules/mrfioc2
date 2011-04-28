@@ -11,6 +11,7 @@ DB += evrscale.db
 DB += evrpulser.db
 DB += evrpulsermap.db
 DB += evrcml.db
+DB += evrcmlgun.db
 DB += evrcmlextra.db
 DB += evrevent.db
 

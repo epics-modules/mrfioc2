@@ -116,6 +116,10 @@ public:
   virtual epicsUInt32 uSecDiv() const=0;
   /*@}*/
 
+  //! Using external hardware input for inhibit?
+  virtual bool extInhib() const=0;
+  virtual void setExtInhib(bool)=0;
+
   /**\defgroup ts Time Stamp
    *
    * Configuration and access to the hardware timestamp

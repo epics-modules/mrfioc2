@@ -22,16 +22,17 @@ enum cmlMode {
   cmlModeInvalid
 };
 
-enum cmlShort {
-  cmlShortRise=0,
-  cmlShortHigh,
-  cmlShortFall,
-  cmlShortLow
-};
-
 class CML : public IOStatus
 {
 public:
+  enum pattern {
+    patternWaveform,
+    patternRise,
+    patternHigh,
+    patternFall,
+    patternLow
+  };
+
   virtual ~CML()=0;
 
   virtual cmlMode mode() const=0;
@@ -46,10 +47,12 @@ public:
   virtual bool powered() const=0;
   virtual void power(bool)=0;
 
-  // For original (20bit x 4) mode
+  //! Speed of CML clock as a multiple of the event clock
+  virtual epicsUInt32 freqMultiple() const=0;
 
-  virtual epicsUInt32 pattern(cmlShort) const=0;
-  virtual void patternSet(cmlShort, epicsUInt32)=0;
+  //! delay by fraction of one event clock period.  Units of sec
+  virtual double fineDelay() const=0;
+  virtual void setFineDelay(double)=0;
 
   // For Frequency mode
 
@@ -66,30 +69,32 @@ public:
   virtual void setTimeHigh(double)=0;
   virtual void setTimeLow (double)=0;
 
-  // For Pattern mode (20bit x 2048) mode
-  /* Patterns are given as an array of bytes.
-   * each byte represents one bit in the result.
-   * Lengths are given in bytes, but should be a
-   * multiple of 20.
-   */
+  // waveform mode
 
   virtual bool recyclePat() const=0;
   virtual void setRecyclePat(bool)=0;
 
-  virtual epicsUInt32 lenPattern() const=0;
-  virtual epicsUInt32 lenPatternMax() const=0;
-  virtual void getPattern(unsigned char*, epicsUInt32*) const=0;
-  virtual void setPattern(const unsigned char*, epicsUInt32)=0;
+  // waveform and 4x pattern modes
+
+  virtual epicsUInt32 lenPattern(pattern) const=0;
+  virtual epicsUInt32 lenPatternMax(pattern) const=0;
+  virtual epicsUInt32 getPattern(pattern, unsigned char*, epicsUInt32) const=0;
+  virtual void setPattern(pattern, const unsigned char*, epicsUInt32)=0;
 
   // Helpers
 
-  template<cmlShort I>
-  epicsUInt32
-  getPattern() const{return this->pattern(I);};
+  template<pattern P>
+  epicsUInt32 lenPattern() const{return lenPattern(P);}
+  template<pattern P>
+  epicsUInt32 lenPatternMax() const{return lenPatternMax(P);}
 
-  template<cmlShort I>
+  template<pattern P>
+  epicsUInt32
+  getPattern(unsigned char* b, epicsUInt32 l) const{return this->getPattern(P,b,l);};
+
+  template<pattern P>
   void
-  setPattern(epicsUInt32 v){return this->patternSet(I,v);};
+  setPattern(const unsigned char* b, epicsUInt32 l){this->setPattern(P,b,l);};
 
   void setModRaw(epicsUInt16 r){setMode((cmlMode)r);};
   epicsUInt16 modeRaw() const{return (epicsUInt16)mode();};
