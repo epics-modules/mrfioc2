@@ -32,8 +32,19 @@ record(ao, "$(P)$(N)delay") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)delay:raw")
+  field(FLNK, "$(P)$(N)delay:rbv")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
+}
+
+record(ai, "$(P)$(N)delay:rbv") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "@C=$(C), I=$(PID), P=Delay")
+  field(VAL , 0)
+  field(EGU , "us")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(N)delay:raw")
 }
 
 record(longin, "$(P)$(N)delay:raw") {
@@ -56,8 +67,19 @@ record(ao, "$(P)$(N)width") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)width:raw")
+  field(FLNK, "$(P)$(N)width:rbv")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
+}
+
+record(ai, "$(P)$(N)width:rbv") {
+  field(DTYP, "EVR Pulser")
+  field(INP , "@C=$(C), I=$(PID), P=Width")
+  field(VAL , 0)
+  field(EGU , "us")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "3")
+  field(FLNK, "$(P)$(N)width:raw")
 }
 
 record(longin, "$(P)$(N)width:raw") {
