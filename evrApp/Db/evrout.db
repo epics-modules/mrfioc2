@@ -1,13 +1,20 @@
+# Record set for an EVR's physical output
+#
+# Macros:
+#  P = record name prefix
+#  O = Object suffix
+#  OBJ = devObj name
+#  DESC = Physical label found on output jack
 
 record(longout, "$(P)$(O)src:set") {
-  field( DTYP, "EVR Output")
-  field( DESC, "Output $(IDX)")
-  field( OUT , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Output $(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(P)$(O)src")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)$(O)src") {
-  field( DTYP, "EVR Output")
-  field( INP , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
+  field( DTYP, "Obj Prop uint32")
+  field( INP , "@OBJ=$(OBJ), PROP=Map")
 }

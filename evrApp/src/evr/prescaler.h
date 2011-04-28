@@ -14,13 +14,14 @@
 #include <epicsTypes.h>
 
 #include <evr/util.h>
+#include "mrf/object.h"
 
 class EVR;
 
-class PreScaler : public IOStatus
+class PreScaler : public mrf::ObjectInst<PreScaler>, public IOStatus
 {
 public:
-  PreScaler(EVR& o):owner(o){};
+  PreScaler(const std::string& n, EVR& o):mrf::ObjectInst<PreScaler>(n),owner(o){};
   virtual ~PreScaler()=0;
 
   virtual epicsUInt32 prescaler() const=0;

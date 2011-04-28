@@ -1,10 +1,15 @@
-
-# Output mapping
+# Record set for an EVR's physical output
+#
+# Macros:
+#  P = record name prefix
+#  O = Object suffix
+#  OBJ = devObj name
+#  DESC = Physical label found on output jack
 
 record(longout, "$(P)$(O)src:set") {
-  field( DTYP, "EVR Output")
-  field( DESC, "Output $(IDX)")
-  field( OUT , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "$(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(P)$(O)src")
   field( PINI, "YES")
   field( VAL , "63")
@@ -113,9 +118,9 @@ record(mbbo, "$(P)$(O)src:scale:set") {
 # Mapping readback
 
 record(longin, "$(P)$(O)src") {
-  field( DTYP, "EVR Output")
-  field( DESC, "$(DESC=$(OT) $(IDX))")
-  field( INP , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "$(DESC)")
+  field( INP , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(P)$(O)src:pulse")
 }
 

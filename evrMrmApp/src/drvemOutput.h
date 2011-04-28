@@ -23,7 +23,7 @@
 class MRMOutput : public Output
 {
 public:
-  MRMOutput(volatile unsigned char *);
+  MRMOutput(const std::string& n, volatile unsigned char *);
   virtual ~MRMOutput();
 
   virtual epicsUInt32 source() const;

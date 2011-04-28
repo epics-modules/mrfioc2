@@ -12,6 +12,7 @@
 #define EVR_HPP_INC
 
 #include "evr/util.h"
+#include "mrf/object.h"
 
 #include <epicsTypes.h>
 #include <epicsTime.h>
@@ -44,9 +45,10 @@ enum TSSource {
  * Device support can use one of the functions returning IOSCANPVT
  * to impliment get_ioint_info().
  */
-class EVR
+class EVR : public mrf::ObjectInst<EVR>
 {
 public:
+  EVR(const std::string& n) : mrf::ObjectInst<EVR>(n) {}
 
   virtual ~EVR()=0;
 
@@ -148,7 +150,7 @@ public:
 
 
   virtual bool TimeStampValid() const=0;
-  virtual IOSCANPVT TimeStampValidEvent()=0;
+  virtual IOSCANPVT TimeStampValidEvent() const=0;
 
   /** Gives the current time stamp as sec+nsec
    *@param ts This pointer will be filled in with the current time
@@ -165,7 +167,7 @@ public:
    */
   virtual bool getTicks(epicsUInt32 *tks)=0;
 
-  virtual IOSCANPVT eventOccurred(epicsUInt32 event)=0;
+  virtual IOSCANPVT eventOccurred(epicsUInt32 event) const=0;
 
   virtual void eventNotityAdd(epicsUInt32 event, CALLBACK*)=0;
   virtual void eventNotityDel(epicsUInt32 event, CALLBACK*)=0;
@@ -175,14 +177,14 @@ public:
    */
   /*@{*/
   virtual bool linkStatus() const=0;
-  virtual IOSCANPVT linkChanged()=0;
+  virtual IOSCANPVT linkChanged() const=0;
   virtual epicsUInt32 recvErrorCount() const=0;
   /*@}*/
 
   virtual epicsUInt16 dbus() const=0;
 
   virtual epicsUInt32 heartbeatTIMOCount() const=0;
-  virtual IOSCANPVT heartbeatTIMOOccured()=0;
+  virtual IOSCANPVT heartbeatTIMOOccured() const=0;
 
   virtual epicsUInt32 FIFOFullCount() const=0;
   virtual epicsUInt32 FIFOOverRate() const=0;

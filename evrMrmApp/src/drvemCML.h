@@ -22,7 +22,7 @@ class MRMCML : public CML
 public:
     enum outkind { typeCML, typeTG300, typeTG203 };
 
-    MRMCML(unsigned char, EVRMRM&, outkind, evrForm);
+    MRMCML(const std::string&, unsigned char, EVRMRM&, outkind, evrForm);
     virtual ~MRMCML();
 
     virtual cmlMode mode() const;

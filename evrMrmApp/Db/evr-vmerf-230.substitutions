@@ -1,7 +1,7 @@
 file "evrbase.db"
 {pattern
-{P, C, EVNT1HZ}
-{$(P), $(C), 1}
+{P, OBJ, EVNT1HZ}
+{$(P), EVR$(C), 1}
 }
 
 file "databuftx.db"
@@ -46,30 +46,30 @@ file "evrevent.db"
 
 file "evrscale.db"
 {pattern
-{P, C, IDX, O, MAX}
-{$(P), $(C), 0, "scale0", "0xffff"}
-{$(P), $(C), 1, "scale1", "0xffff"}
-{$(P), $(C), 2, "scale2", "0xffff"}
+{P, IDX, O, OBJ, MAX}
+{$(P), 0, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
+{$(P), 1, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
+{$(P), 2, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
 }
 
 file "mrmevrout.db"
 {pattern
-{P, C, OT, IDX, O, DESC}
-{$(P), $(C), Front, 0, "fpout0:", "OUT0 (TTL)"}
-{$(P), $(C), Front, 1, "fpout1:", "OUT1 (TTL)"}
-{$(P), $(C), Front, 2, "fpout2:", "OUT2 (TTL)"}
-{$(P), $(C), Front, 3, "fpout3:", "OUT3 (TTL)"}
-{$(P), $(C), Front, 4, "fpout4:", "OUT4 (CML)"}
-{$(P), $(C), Front, 5, "fpout5:", "OUT5 (CML)"}
-{$(P), $(C), Front, 6, "fpout6:", "OUT6 (CML)"}
+{P, O, OBJ, DESC}
+{$(P), "fpout0:", "EVR$(C):FrontOut0", "OUT0 (TTL)"}
+{$(P), "fpout1:", "EVR$(C):FrontOut1", "OUT1 (TTL)"}
+{$(P), "fpout2:", "EVR$(C):FrontOut2", "OUT2 (TTL)"}
+{$(P), "fpout3:", "EVR$(C):FrontOut3", "OUT3 (TTL)"}
+{$(P), "fpout4:", "EVR$(C):FrontOut4", "OUT4 (TTL)"}
+{$(P), "fpout5:", "EVR$(C):FrontOut5", "OUT5 (TTL)"}
+{$(P), "fpout6:", "EVR$(C):FrontOut6", "OUT6 (TTL)"}
 }
 
 file "evrcml.db"
 {pattern
-{P, C, IDX, CML}
-{$(P), $(C), 0, "fpout4:"}
-{$(P), $(C), 1, "fpout5:"}
-{$(P), $(C), 2, "fpout6:"}
+{P, O, OBJ}
+{$(P), "fpout4:", "EVR$(C):CML0"}
+{$(P), "fpout5:", "EVR$(C):CML1"}
+{$(P), "fpout6:", "EVR$(C):CML2"}
 }
 
 file "evrcmlextra.db"
@@ -85,16 +85,16 @@ file "evrcmlextra.db"
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"
 {pattern
-{P, C, PID, N, DMAX, WMAX, PMAX, NOPS}
-{$(P), $(C), 0, "pul0:", "0xfffffff", "0xffff", "0xff", 0}
-{$(P), $(C), 1, "pul1:", "0xfffffff", "0xffff", "0xff", 0}
-{$(P), $(C), 2, "pul2:", "0xfffffff", "0xffff", "0xff", 0}
-{$(P), $(C), 3, "pul3:", "0xfffffff", "0xffff", "0xff", 0}
-{$(P), $(C), 4, "pul4:", "0xfffffff", "0xffff", "1", 1}
-{$(P), $(C), 5, "pul5:", "0xfffffff", "0xffff", "1", 1}
-{$(P), $(C), 6, "pul6:", "0xfffffff", "0xffff", "1", 1}
-{$(P), $(C), 7, "pul7:", "0xfffffff", "0xffff", "1", 1}
-{$(P), $(C), 8, "pul8:", "0xfffffff", "0xffff", "1", 1}
+{P, PID, N, OBJ, DMAX, WMAX, PMAX, NOPS}
+{$(P), 0, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
+{$(P), 1, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
+{$(P), 2, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
+{$(P), 3, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
+{$(P), 4, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
+{$(P), 5, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
+{$(P), 6, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
+{$(P), 7, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
+{$(P), 8, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
 }
 
 # Default to 3 possible trigger mappings per pulser
@@ -132,7 +132,7 @@ file "evrpulsermap.db"
 
 file "evrin.db"
 {pattern
-{P, C, IDX, I}
-{$(P), $(C), 0, "in0:"}
-{$(P), $(C), 1, "in1:"}
+{P, I, OBJ, DESC}
+{$(P), "in0:", "EVR$(C):FPIn0", "IN0 (TTL)"}
+{$(P), "in1:", "EVR$(C):FPIn1", "IN1 (TTL)"}
 }

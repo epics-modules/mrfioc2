@@ -1,7 +1,16 @@
+# Record set for an EVR's programable frequency divider
+#
+# Macros:
+#  P = record name prefix
+#  O = Object suffix
+#  OBJ = devObj name
+#  IDX = ID # corresponding to output mapping codes
+#  MAX = Maximum division
 
 record(longout, "$(P)$(O)") {
-  field( DTYP, "EVR Prescaler")
-  field( OUT , "@C=$(C), I=$(IDX), P=Divide")
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Divide")
   field( PINI, "YES")
   field( VAL , "2")
   field( HOPR, "$(MAX=0xffff)")

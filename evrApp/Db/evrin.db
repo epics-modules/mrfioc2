@@ -1,8 +1,15 @@
+# Record set for an EVR's physical input
+#
+# Macros:
+#  P = record name prefix
+#  I = Object suffix
+#  OBJ = devObj name
+#  DESC = Physical label found on output jack
 
 record(bo, "$(P)$(I)level") {
-  field( DTYP, "EVR Input")
-  field( DESC, "Input $(IDX)")
-  field( OUT , "@C=$(C), I=$(IDX), P=Active Level")
+  field( DTYP, "Obj Prop bool")
+  field( DESC, "Input $(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Active Level")
   field( PINI, "YES")
   field( VAL , "1")
   field( ZNAM, "Active Low")
@@ -11,8 +18,8 @@ record(bo, "$(P)$(I)level") {
 }
 
 record(bo, "$(P)$(I)edge") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=Active Edge")
+  field( DTYP, "Obj Prop bool")
+  field( OUT , "@OBJ=$(OBJ), PROP=Active Edge")
   field( PINI, "YES")
   field( VAL , "1")
   field( ZNAM, "Active Falling")
@@ -21,8 +28,8 @@ record(bo, "$(P)$(I)edge") {
 }
 
 record(mbbo, "$(P)$(I)ext:trig") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=External Mode")
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=External Mode")
   field( PINI, "YES")
   field( ZRST, "Off")
   field( ONST, "Level")
@@ -49,8 +56,8 @@ record(mbbo, "$(P)$(I)ext:trig") {
 }
 
 record(longout, "$(P)$(I)ext:code") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=External Code")
+  field( DTYP, "Obj Prop uint32")
+  field( OUT , "@OBJ=$(OBJ), PROP=External Code")
   field( PINI, "YES")
   field( LOPR, "0")
   field( HOPR, "255")
@@ -60,8 +67,8 @@ record(longout, "$(P)$(I)ext:code") {
 }
 
 record(mbbo, "$(P)$(I)back:trig") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=Backwards Mode")
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")
   field( PINI, "YES")
   field( ZRST, "Off")
   field( ONST, "Level")
@@ -88,8 +95,8 @@ record(mbbo, "$(P)$(I)back:trig") {
 }
 
 record(longout, "$(P)$(I)back:code") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=Backwards Code")
+  field( DTYP, "Obj Prop uint32")
+  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Code")
   field( PINI, "YES")
   field( LOPR, "0")
   field( HOPR, "255")
@@ -99,8 +106,8 @@ record(longout, "$(P)$(I)back:code") {
 }
 
 record(mbbo, "$(P)$(I)dbus") {
-  field( DTYP, "EVR Input")
-  field( OUT , "@C=$(C), I=$(IDX), P=DBus Mask")
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=DBus Mask")
   field( PINI, "YES")
   field( ZRST, "Bit 0")
   field( ONST, "Bit 1")

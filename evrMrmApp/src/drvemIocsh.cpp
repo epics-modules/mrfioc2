@@ -14,6 +14,7 @@
 #include <cstring>
 
 #include <stdexcept>
+#include <sstream>
 #include <map>
 
 #include <drvSup.h>
@@ -253,7 +254,9 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,evr,evrlen);
+    std::ostringstream nstr;
+    nstr<<"EVR"<<id;
+    EVRMRM *receiver=new EVRMRM(nstr.str(),evr,evrlen);
 
     void (*pciisr)(void *);
     void *arg=receiver;
@@ -420,7 +423,9 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,evr,0x20000);
+    std::ostringstream nstr;
+    nstr<<"EVR"<<id;
+    EVRMRM *receiver=new EVRMRM(nstr.str(),evr,0x20000);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

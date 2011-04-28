@@ -12,12 +12,14 @@
 #define OUTPUT_HPP_INC
 
 #include "evr/util.h"
+#include "mrf/object.h"
 
 #include <epicsTypes.h>
 
-class Output : public IOStatus
+class Output : public mrf::ObjectInst<Output>, public IOStatus
 {
 public:
+  Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}
   virtual ~Output()=0;
 
   /**\defgroup src Control which source(s) effect this output.

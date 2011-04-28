@@ -1,8 +1,18 @@
-# Pulser sub-unit records for an EVR
+# Record set for an EVR's programmable pulse generator
+#
+# Macros:
+#  P = record name prefix
+#  N = Object suffix
+#  OBJ = devObj name
+#  PID = Pulse gen ID number (corresponds to output mappings)
+#  DMAX = Max delay setting
+#  WMAX = Max width setting
+#  PMAX = Max prescaler (divider) setting
+#  NOPS = 0 - enable prescaler, 1 - disable prescaler
 
 record(bo, "$(P)$(N)enable") {
-  field(DTYP, "EVR Pulser")
-  field(OUT , "@C=$(C), I=$(PID), P=Enable")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
   field(VAL , "1")
   field(MASK, "1")
@@ -12,8 +22,8 @@ record(bo, "$(P)$(N)enable") {
 }
 
 record(bo, "$(P)$(N)polarity") {
-  field(DTYP, "EVR Pulser")
-  field(OUT , "@C=$(C), I=$(PID), P=Polarity")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Polarity")
   field(PINI, "YES")
   field(VAL , "0")
   field(MASK, "1")
@@ -23,8 +33,8 @@ record(bo, "$(P)$(N)polarity") {
 }
 
 record(ao, "$(P)$(N)delay") {
-  field(DTYP, "EVR Pulser")
-  field(OUT , "@C=$(C), I=$(PID), P=Delay")
+  field(DTYP, "Obj Prop double")
+  field(OUT , "@OBJ=$(OBJ), PROP=Delay")
   field(PINI, "YES")
   field(DESC, "Pulse Generator $(PID)")
   field(VAL , 0)
@@ -37,8 +47,8 @@ record(ao, "$(P)$(N)delay") {
 }
 
 record(ai, "$(P)$(N)delay:rbv") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "@C=$(C), I=$(PID), P=Delay")
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(VAL , 0)
   field(EGU , "us")
   field(LINR, "LINEAR")
@@ -48,8 +58,8 @@ record(ai, "$(P)$(N)delay:rbv") {
 }
 
 record(longin, "$(P)$(N)delay:raw") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "@C=$(C), I=$(PID), P=Delay")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(EGU , "cnts")
   field(HOPR, "$(DMAX=0xffff)")
   field(LOPR, "0")
@@ -58,8 +68,8 @@ record(longin, "$(P)$(N)delay:raw") {
 }
 
 record(ao, "$(P)$(N)width") {
-  field(DTYP, "EVR Pulser")
-  field(OUT , "@C=$(C), I=$(PID), P=Width")
+  field(DTYP, "Obj Prop double")
+  field(OUT , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
   field(DESC, "Pulser pulse width")
   field(VAL , 0)
@@ -72,8 +82,8 @@ record(ao, "$(P)$(N)width") {
 }
 
 record(ai, "$(P)$(N)width:rbv") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "@C=$(C), I=$(PID), P=Width")
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(VAL , 0)
   field(EGU , "us")
   field(LINR, "LINEAR")
@@ -83,8 +93,8 @@ record(ai, "$(P)$(N)width:rbv") {
 }
 
 record(longin, "$(P)$(N)width:raw") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "@C=$(C), I=$(PID), P=Width")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
   field(HOPR, "$(WMAX=0xffff)")
   field(LOPR, "0")
@@ -93,8 +103,8 @@ record(longin, "$(P)$(N)width:raw") {
 }
 
 record(longout, "$(P)$(N)prescaler:set") {
-  field(DTYP, "EVR Pulser")
-  field(OUT , "@C=$(C), I=$(PID), P=Prescaler")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=Prescaler")
   field(DESC, "Pulser prescaler")
   field(PINI, "YES")
   field(HOPR, "$(PMAX)")
@@ -109,8 +119,8 @@ record(longout, "$(P)$(N)prescaler:set") {
 }
 
 record(longin, "$(P)$(N)prescaler") {
-  field(DTYP, "EVR Pulser")
-  field(INP , "@C=$(C), I=$(PID), P=Prescaler")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Prescaler")
   field(HOPR, "$(PMAX=0xffff)")
   field(LOPR, "1")
   field(HIGH, "$(PMAX=0xffff)")

@@ -18,8 +18,8 @@ class MRMPreScaler : public PreScaler
     volatile unsigned char* base;
 
 public:
-    MRMPreScaler(EVR& o,volatile unsigned char* b):
-            PreScaler(o),base(b) {};
+    MRMPreScaler(const std::string& n, EVR& o,volatile unsigned char* b):
+            PreScaler(n,o),base(b) {};
     virtual ~MRMPreScaler(){};
 
     virtual epicsUInt32 prescaler() const;

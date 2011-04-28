@@ -17,8 +17,9 @@
 
 #include <stdexcept>
 
-MRMInput::MRMInput(volatile unsigned char *b, size_t i)
-  :base(b)
+MRMInput::MRMInput(const std::string& n, volatile unsigned char *b, size_t i)
+  :Input(n)
+  ,base(b)
   ,idx(i)
 {
 }

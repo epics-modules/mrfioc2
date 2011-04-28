@@ -1,6 +1,7 @@
 registrar(mrmsetupreg)
 driver(drvEvrMrm)
 include evrSupport.dbd
+include mrfCommon.dbd
 
 device(bo,      INST_IO, devbodataBufRx, "MRF Data Buf Rx")
 device(bi ,     INST_IO, devbidataBufRx, "MRF Data Buf Rx")

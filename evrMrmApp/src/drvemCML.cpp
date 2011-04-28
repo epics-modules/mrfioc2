@@ -18,8 +18,9 @@
 #include "evrRegMap.h"
 #include "drvem.h"
 
-MRMCML::MRMCML(unsigned char i,EVRMRM& o, outkind k, evrForm f)
-  :mult(f==evrFormCPCIFULL ? 40 : 20)
+MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, evrForm f)
+  :CML(n)
+  ,mult(f==evrFormCPCIFULL ? 40 : 20)
   ,base(o.base)
   ,N(i)
   ,owner(o)

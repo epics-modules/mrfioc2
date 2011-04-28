@@ -23,7 +23,7 @@ class MRMPulser : public Pulser
     EVRMRM& owner;
 
 public:
-    MRMPulser(epicsUInt32,EVRMRM&);
+    MRMPulser(const std::string& n, epicsUInt32,EVRMRM&);
     virtual ~MRMPulser(){};
 
     virtual bool enabled() const;

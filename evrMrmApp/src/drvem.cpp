@@ -14,6 +14,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
 
 #include <epicsMath.h>
 #include <errlog.h>
@@ -68,10 +69,10 @@ const double fracref=24.0; // MHz
 
 CardMap<dataBufRx> datarxmap;
 
-EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
-  :EVR()
+EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
+  :EVR(n)
   ,evrLock()
-  ,id(i)
+  ,id(n)
   ,base(b)
   ,baselen(bl)
   ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
@@ -178,53 +179,67 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
 
     inputs.resize(nIFP);
     for(size_t i=0; i<nIFP; i++){
-        inputs[i]=new MRMInput(base,i);
+        std::ostringstream name;
+        name<<id<<":FPIn"<<i;
+        inputs[i]=new MRMInput(name.str(), base,i);
     }
 
     for(size_t i=0; i<nOFP; i++){
-        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(base+U16_OutputMapFP(i));
+        std::ostringstream name;
+        name<<id<<":FrontOut"<<i;
+        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), base+U16_OutputMapFP(i));
     }
 
     for(size_t i=0; i<nOFPUV; i++){
-        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(base+U16_OutputMapFPUniv(i));
+        std::ostringstream name;
+        name<<id<<":FrontUnivOut"<<i;
+        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), base+U16_OutputMapFPUniv(i));
     }
 
     for(size_t i=0; i<nORB; i++){
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(base+U16_OutputMapRB(i));
+        std::ostringstream name;
+        name<<id<<":RearUniv"<<i;
+        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), base+U16_OutputMapRB(i));
     }
 
     prescalers.resize(nPS);
     for(size_t i=0; i<nPS; i++){
-        prescalers[i]=new MRMPreScaler(*this,base+U32_Scaler(i));
+        std::ostringstream name;
+        name<<id<<":PS"<<i;
+        prescalers[i]=new MRMPreScaler(name.str(), *this,base+U32_Scaler(i));
     }
 
     pulsers.resize(nPul);
     for(size_t i=0; i<nPul; i++){
-        pulsers[i]=new MRMPulser(i,*this);
-    }
-
-    if(nCML && ver>=4){
-        shortcmls.resize(nCML);
-        for(size_t i=0; i<nCML; i++){
-            shortcmls[i]=new MRMCML(i,*this,kind,form);
-        }
-    }else if(nCML){
-        printf("CML outputs not supported with this firmware\n");
+        std::ostringstream name;
+        name<<id<<":Pul"<<i;
+        pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
     if(v==evrFormCPCIFULL) {
         shortcmls.resize(8);
         for(size_t i=4; i<8; i++) {
+            std::ostringstream name;
+            name<<id<<":FrontOut"<<i;
             // front panel outputs on EVRTG are swapped even/odd
             size_t ip = i+(i%2==0 ? 1 : -1);
-            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(base+U16_OutputMapFP(ip));
+            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), base+U16_OutputMapFP(ip));
         }
         for(size_t i=0; i<4; i++)
             shortcmls[i]=0;
-        shortcmls[4]=new MRMCML(4,*this,MRMCML::typeCML,form);
-        shortcmls[5]=new MRMCML(5,*this,MRMCML::typeCML,form);
-        shortcmls[6]=new MRMCML(6,*this,MRMCML::typeTG300,form);
-        shortcmls[7]=new MRMCML(7,*this,MRMCML::typeTG300,form);
+        shortcmls[4]=new MRMCML(id+":CML4", 4,*this,MRMCML::typeCML,form);
+        shortcmls[5]=new MRMCML(id+":CML5", 5,*this,MRMCML::typeCML,form);
+        shortcmls[6]=new MRMCML(id+":CML6", 6,*this,MRMCML::typeTG300,form);
+        shortcmls[7]=new MRMCML(id+":CML7", 7,*this,MRMCML::typeTG300,form);
+    } else if(nCML && ver>=4){
+        shortcmls.resize(nCML);
+        for(size_t i=0; i<nCML; i++){
+            std::ostringstream name;
+            name<<id<<":CML"<<i;
+            shortcmls[i]=new MRMCML(name.str(), i,*this,kind,form);
+        }
+    }else if(nCML){
+        printf("CML outputs not supported with this firmware\n");
     }
 
     for(size_t i=0; i<NELEMENTS(this->events); i++) {
@@ -755,7 +770,7 @@ EVRMRM::getTicks(epicsUInt32 *tks)
 }
 
 IOSCANPVT
-EVRMRM::eventOccurred(epicsUInt32 event)
+EVRMRM::eventOccurred(epicsUInt32 event) const
 {
     if (event>0 && event<=255)
         return events[event].occured;

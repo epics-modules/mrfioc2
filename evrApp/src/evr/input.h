@@ -12,6 +12,7 @@
 #define INPUT_HPP_INC
 
 #include "evr/util.h"
+#include "mrf/object.h"
 
 #include <epicsTypes.h>
 
@@ -21,9 +22,10 @@ enum TrigMode {
   TrigEdge=2
 };
 
-class Input : public IOStatus
+class Input : public mrf::ObjectInst<Input>, public IOStatus
 {
 public:
+  Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}
   virtual ~Input()=0;
 
   //! Set mask of dbus bits are driven by this input

@@ -24,7 +24,7 @@
 class MRMInput : public Input
 {
 public:
-    MRMInput(volatile unsigned char *, size_t);
+    MRMInput(const std::string& n, volatile unsigned char *, size_t);
     virtual ~MRMInput(){};
 
     virtual void dbusSet(epicsUInt16);

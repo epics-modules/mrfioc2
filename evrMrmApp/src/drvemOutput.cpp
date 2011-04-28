@@ -15,8 +15,9 @@
 
 #include <stdexcept>
 
-MRMOutput::MRMOutput(volatile unsigned char *b)
-    :base(b)
+MRMOutput::MRMOutput(const std::string& n, volatile unsigned char *b)
+    :Output(n)
+    ,base(b)
 {
 }
 

@@ -1,7 +1,13 @@
+# Extra controls for CML/GTX outputs
+#
+# Macros:
+#  P = record name prefix
+#  O = Object suffix (usually the same as for evrout.db)
+#  OBJ = devObj name
 
-record(bo, "$(P)$(CML)enable") {
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Enable")
+record(bo, "$(P)$(O)enable") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -10,9 +16,9 @@ record(bo, "$(P)$(CML)enable") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P)$(CML)power") {
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Power")
+record(bo, "$(P)$(O)power") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Power")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -21,9 +27,9 @@ record(bo, "$(P)$(CML)power") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P)$(CML)reset") {
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Reset")
+record(bo, "$(P)$(O)reset") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Reset")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -32,9 +38,9 @@ record(bo, "$(P)$(CML)reset") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(P)$(CML)mode") {
-  field( DTYP, "EVR CML")
-  field( OUT , "@C=$(C), I=$(IDX), P=Mode")
+record(mbbo, "$(P)$(O)mode") {
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Mode")
   field( PINI, "YES")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
@@ -60,37 +66,37 @@ record(mbbo, "$(P)$(CML)mode") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)$(CML)res:mult") {
-  field(DTYP, "EVR CML")
-  field(INP, "@C=$(C), I=$(IDX), P=Freq Mult")
+record(longin, "$(P)$(O)res:mult") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Freq Mult")
   field(HIGH, "65535")
   field(LOW, "20")
   field(HSV, "INVALID")
   field(LSV, "INVALID")
 }
 
-record(calcout, "$(P)$(CML)res") {
+record(calcout, "$(P)$(O)res") {
   field(INPA, "$(P)clock:period CP")
-  field(INPB, "$(P)$(CML)res:mult PP")
+  field(INPB, "$(P)$(O)res:mult PP")
   field(CALC, "1e9*A/B")
   field(EGU , "ns")
   field(TSEL, "$(P)clock:period.TIME CA")
-  field(FLNK, "$(P)$(CML)res:fo")
+  field(FLNK, "$(P)$(O)res:fo")
 }
 
-record(fanout, "$(P)$(CML)res:fo") {
+record(fanout, "$(P)$(O)res:fo") {
   field(DESC, "Clock change resync")
-  field(TSEL, "$(P)$(CML)res.TIME")
-  field(LNK1, "$(P)$(CML)freq:high")
-  field(LNK2, "$(P)$(CML)freq:low")
-  field(LNK3, "$(P)$(CML)pat:x:calc")
-  field(LNK4, "$(P)$(CML)pat:dly:calc")
+  field(TSEL, "$(P)$(O)res.TIME")
+  field(LNK1, "$(P)$(O)freq:high")
+  field(LNK2, "$(P)$(O)freq:low")
+  field(LNK3, "$(P)$(O)pat:x:calc")
+  field(LNK4, "$(P)$(O)pat:dly:calc")
 }
 
-record(longout, "$(P)$(CML)rise") {
+record(longout, "$(P)$(O)rise") {
   field(DESC, "Rising edge pattern")
   field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Pat Rise")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat Rise")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -101,10 +107,10 @@ record(longout, "$(P)$(CML)rise") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(CML)high") {
+record(longout, "$(P)$(O)high") {
   field(DESC, "Level high pattern")
   field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Pat High")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat High")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0xfffff")
@@ -115,10 +121,10 @@ record(longout, "$(P)$(CML)high") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(CML)fall") {
+record(longout, "$(P)$(O)fall") {
   field(DESC, "Falling edge pattern")
   field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Pat Fall")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat Fall")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -129,10 +135,10 @@ record(longout, "$(P)$(CML)fall") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(CML)low") {
+record(longout, "$(P)$(O)low") {
   field(DESC, "Level low pattern")
   field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Pat Low")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat Low")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -143,9 +149,9 @@ record(longout, "$(P)$(CML)low") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P)$(CML)freq:level") {
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Freq Trig Lvl")
+record(bo, "$(P)$(O)freq:level") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Freq Trig Lvl")
   field(PINI, "YES")
   field(UDF, "0")
   field(VAL, "0")
@@ -154,10 +160,10 @@ record(bo, "$(P)$(CML)freq:level") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)$(CML)freq:high") {
+record(ao, "$(P)$(O)freq:high") {
   field(DESC, "Time active")
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Counts High")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
   field(VAL , "10")
@@ -165,23 +171,23 @@ record(ao, "$(P)$(CML)freq:high") {
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
   field(PREC, "3")
-  field(FLNK, "$(P)$(CML)freq:high:rbv")
+  field(FLNK, "$(P)$(O)freq:high:rbv")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)$(CML)freq:high:rbv") {
-  field(DTYP, "EVR CML")
-  field(INP, "@C=$(C), I=$(IDX), P=Counts High")
+record(longin, "$(P)$(O)freq:high:rbv") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts High")
   field(HIGH, "65535")
   field(LOW, "20")
   field(HSV, "INVALID")
   field(LSV, "INVALID")
 }
 
-record(ao, "$(P)$(CML)freq:low") {
+record(ao, "$(P)$(O)freq:low") {
   field(DESC, "Time inactive")
-  field(DTYP, "EVR CML")
-  field(OUT, "@C=$(C), I=$(IDX), P=Counts Low")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
   field(VAL , "10")
@@ -189,60 +195,60 @@ record(ao, "$(P)$(CML)freq:low") {
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
   field(PREC, "3")
-  field(FLNK, "$(P)$(CML)freq:low:rbv")
+  field(FLNK, "$(P)$(O)freq:low:rbv")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)$(CML)freq:low:rbv") {
-  field(DTYP, "EVR CML")
-  field(INP, "@C=$(C), I=$(IDX), P=Counts Low")
+record(longin, "$(P)$(O)freq:low:rbv") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts Low")
   field(HIGH, "65535")
   field(LOW, "20")
   field(HSV, "INVALID")
   field(LSV, "INVALID")
 }
 
-record(waveform, "$(P)$(CML)pat") {
+record(waveform, "$(P)$(O)pat") {
   field(DESC, "Pattern setting")
-  field(DTYP, "EVR CML Pattern Set")
-  field(INP, "@C=$(C), I=$(IDX), P=Pattern Set")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Waveform")
   field(PINI, "YES")
   field(FTVL, "UCHAR")
   field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
-  field(FLNK, "$(P)$(CML)pat:rbv")
+  field(FLNK, "$(P)$(O)pat:rbv")
   info(autosaveFields_pass1, "VAL")
 }
 
-record(waveform, "$(P)$(CML)pat:rbv") {
+record(waveform, "$(P)$(O)pat:rbv") {
   field(DESC, "Pattern readback")
-  field(DTYP, "EVR CML Pattern Get")
+  field(DTYP, "Obj Prop waveform in")
   field(PINI, "YES")
-  field(INP, "@C=$(C), I=$(IDX), P=Pattern Get")
+  field(INP, "@OBJ=$(OBJ), PROP=Waveform")
   field(FTVL, "UCHAR")
   field(NELM, "$(MAX=40940)") # 20*2047
   field(HOPR, "1")
   field(LOPR, "0")
-  field(FLNK, "$(P)$(CML)pat:x:calc")
+  field(FLNK, "$(P)$(O)pat:x:calc")
 }
 
-record(aSub, "$(P)$(CML)pat:x:calc") {
+record(aSub, "$(P)$(O)pat:x:calc") {
   field(SNAM, "Timeline")
   field(BRSV, "INVALID")
   field(INPA, "0")
   field( FTA, "DOUBLE")
-  field(INPB, "$(P)$(CML)res NPP")
+  field(INPB, "$(P)$(O)res NPP")
   field( FTB, "DOUBLE")
-  field(INPC, "$(P)$(CML)pat.NORD NPP")
+  field(INPC, "$(P)$(O)pat.NORD NPP")
   field( FTC, "LONG")
-  field(OUTA, "$(P)$(CML)pat:x PP")
+  field(OUTA, "$(P)$(O)pat:x PP")
   field(FTVA, "DOUBLE")
   field(NOVA, "$(MAX=40940)") # 20*2047
-  field(TSEL, "$(P)$(CML)pat:rbv.TIME")
+  field(TSEL, "$(P)$(O)pat:rbv.TIME")
 }
 
-record(waveform, "$(P)$(CML)pat:x") {
+record(waveform, "$(P)$(O)pat:x") {
   field(FTVL, "DOUBLE")
   field(NELM, "$(MAX=40940)")
   field(EGU , "ns")
@@ -250,7 +256,7 @@ record(waveform, "$(P)$(CML)pat:x") {
 
 # Delay gen calculator for CML waveform
 
-record(bo, "$(P)$(CML)pat:dly:ena") {
+record(bo, "$(P)$(O)pat:dly:ena") {
   field(DESC, "Disable calculator")
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
@@ -258,34 +264,34 @@ record(bo, "$(P)$(CML)pat:dly:ena") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)$(CML)pat:dly") {
+record(ao, "$(P)$(O)pat:dly") {
   field(PINI, "YES")
-  field(OUT , "$(P)$(CML)pat:dly:calc.A PP")
+  field(OUT , "$(P)$(O)pat:dly:calc.A PP")
   field(EGU , "ns")
   field(UDF , "0")
   field(VAL , "16")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
-record(ao, "$(P)$(CML)pat:dly:wth") {
+record(ao, "$(P)$(O)pat:dly:wth") {
   field(PINI, "YES")
-  field(OUT , "$(P)$(CML)pat:dly:calc.B PP")
+  field(OUT , "$(P)$(O)pat:dly:calc.B PP")
   field(EGU , "ns")
   field(UDF , "0")
   field(VAL , "50")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
-record(aSub, "$(P)$(CML)pat:dly:calc") {
-  field(SDIS, "$(P)$(CML)pat:dly:ena")
+record(aSub, "$(P)$(O)pat:dly:calc") {
+  field(SDIS, "$(P)$(O)pat:dly:ena")
   field(DISV, "0")
   field(SNAM, "Delay Gen")
   field(BRSV, "INVALID")
   field( FTA, "DOUBLE")
   field( FTB, "DOUBLE")
-  field(INPC, "$(P)$(CML)res NPP")
+  field(INPC, "$(P)$(O)res NPP")
   field( FTC, "DOUBLE")
-  field(OUTA, "$(P)$(CML)pat PP")
+  field(OUTA, "$(P)$(O)pat PP")
   field(FTVA, "UCHAR")
   field(NOVA, "$(MAX=40940)") # 20*2047
 }

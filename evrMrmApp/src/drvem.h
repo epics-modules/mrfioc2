@@ -97,7 +97,7 @@ public:
     mutable epicsMutex evrLock;
 
 
-    EVRMRM(int,volatile unsigned char*,epicsUInt32);
+    EVRMRM(const std::string& n,volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 
@@ -133,7 +133,7 @@ public:
     virtual bool pllLocked() const;
 
     virtual bool linkStatus() const;
-    virtual IOSCANPVT linkChanged(){return IRQrxError;}
+    virtual IOSCANPVT linkChanged() const{return IRQrxError;}
     virtual epicsUInt32 recvErrorCount() const{return count_recv_error;}
 
     virtual epicsUInt32 uSecDiv() const;
@@ -154,11 +154,11 @@ public:
 
     virtual bool TimeStampValid() const
         {SCOPED_LOCK(evrLock);return timestampValid;}
-    virtual IOSCANPVT TimeStampValidEvent(){return timestampValidChange;}
+    virtual IOSCANPVT TimeStampValidEvent() const{return timestampValidChange;}
 
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
     virtual bool getTicks(epicsUInt32 *tks);
-    virtual IOSCANPVT eventOccurred(epicsUInt32 event);
+    virtual IOSCANPVT eventOccurred(epicsUInt32 event) const;
     virtual void eventNotityAdd(epicsUInt32, CALLBACK*);
     virtual void eventNotityDel(epicsUInt32, CALLBACK*);
 
@@ -167,7 +167,7 @@ public:
     virtual epicsUInt16 dbus() const;
 
     virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
-    virtual IOSCANPVT heartbeatTIMOOccured(){return IRQheartbeat;}
+    virtual IOSCANPVT heartbeatTIMOOccured() const{return IRQheartbeat;}
 
     virtual epicsUInt32 FIFOFullCount() const
     {SCOPED_LOCK(evrLock);return count_FIFO_overflow;}
@@ -178,7 +178,7 @@ public:
 
     static void isr(void*);
 
-    const int id;
+    const std::string id;
     volatile unsigned char * const base;
     epicsUInt32 baselen;
     mrmDataBufTx buftx;

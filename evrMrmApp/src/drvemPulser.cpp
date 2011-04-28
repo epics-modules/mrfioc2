@@ -22,8 +22,9 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-MRMPulser::MRMPulser(epicsUInt32 i,EVRMRM& o)
-  :id(i)
+MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)
+  :Pulser(n)
+  ,id(i)
   ,owner(o)
 {
     if(id>31)
@@ -178,13 +179,13 @@ MRMPulser::mappedSource(epicsUInt32 evt) const
         insanity++;
     }
     if(insanity>1){
-        errlogPrintf("EVR #%d pulser #%d code %02x maps too many actions %08x %08x %08x\n",
-            owner.id,id,evt,map[0],map[1],map[2]);
+        errlogPrintf("EVR %s pulser #%d code %02x maps too many actions %08x %08x %08x\n",
+            owner.id.c_str(),id,evt,map[0],map[1],map[2]);
     }
 
     if( (ret==MapType::None) ^ _ismap(evt) ){
-        errlogPrintf("EVR #%d pulser #%d code %02x mapping (%08x %08x %08x) is out of sync with view (%d)\n",
-            owner.id,id,evt,map[0],map[1],map[2],_ismap(evt));
+        errlogPrintf("EVR %s pulser #%d code %02x mapping (%08x %08x %08x) is out of sync with view (%d)\n",
+            owner.id.c_str(),id,evt,map[0],map[1],map[2],_ismap(evt));
     }
 
     return ret;
