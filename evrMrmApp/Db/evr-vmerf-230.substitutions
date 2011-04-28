@@ -54,14 +54,14 @@ file "evrscale.db"
 
 file "mrmevrout.db"
 {pattern
-{P, C, OT, IDX, O}
-{$(P), $(C), Front, 0, "fpout0:"}
-{$(P), $(C), Front, 1, "fpout1:"}
-{$(P), $(C), Front, 2, "fpout2:"}
-{$(P), $(C), Front, 3, "fpout3:"}
-{$(P), $(C), Front, 4, "fpout4:"}
-{$(P), $(C), Front, 5, "fpout5:"}
-{$(P), $(C), Front, 6, "fpout6:"}
+{P, C, OT, IDX, O, DESC}
+{$(P), $(C), Front, 0, "fpout0:", "OUT0 (TTL)"}
+{$(P), $(C), Front, 1, "fpout1:", "OUT1 (TTL)"}
+{$(P), $(C), Front, 2, "fpout2:", "OUT2 (TTL)"}
+{$(P), $(C), Front, 3, "fpout3:", "OUT3 (TTL)"}
+{$(P), $(C), Front, 4, "fpout4:", "OUT4 (CML)"}
+{$(P), $(C), Front, 5, "fpout5:", "OUT5 (CML)"}
+{$(P), $(C), Front, 6, "fpout6:", "OUT6 (CML)"}
 }
 
 file "evrcml.db"

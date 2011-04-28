@@ -46,10 +46,10 @@ file "evrscale.db"
 
 file "mrmevrout.db"
 {pattern
-{P, C, OT, IDX, O}
-{$(P), $(C), Front, 0, "fpout0:"}
-{$(P), $(C), Front, 1, "fpout1:"}
-{$(P), $(C), Front, 2, "fpout2:"}
+{P, C, OT, IDX, O, DESC}
+{$(P), $(C), Front, 0, "fpout0:", "OUT0 (TTL)"}
+{$(P), $(C), Front, 1, "fpout1:", "OUT1 (TTL)"}
+{$(P), $(C), Front, 2, "fpout2:", "OUT2 (TTL)"}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1

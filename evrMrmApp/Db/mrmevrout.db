@@ -114,6 +114,7 @@ record(mbbo, "$(P)$(O)src:scale:set") {
 
 record(longin, "$(P)$(O)src") {
   field( DTYP, "EVR Output")
+  field( DESC, "$(DESC=$(OT) $(IDX))")
   field( INP , "@C=$(C), T=$(OT), I=$(IDX), P=Map")
   field( FLNK, "$(P)$(O)src:pulse")
 }
