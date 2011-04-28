@@ -129,6 +129,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
 
     v&=FWVersion_form_mask;
     v>>=FWVersion_form_shift;
+    evrForm form=(evrForm)v;
 
     size_t nPul=10; // number of pulsers
     size_t nPS=3;   // number of prescalers
@@ -136,10 +137,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
     size_t nOFP=0, nOFPUV=0, nORB=0;
     // # of CML outputs
     size_t nCML=0;
+    MRMCML::outkind kind=MRMCML::typeCML;
     // # of FP inputs
     size_t nIFP=0;
 
-    switch(v){
+    switch(form){
     case evrFormCPCI:
         printf("CPCI ");
         nOFPUV=4;
@@ -158,6 +160,11 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
         nOFPUV=4;
         nORB=16;
         nIFP=2;
+        break;
+    case evrFormCPCIFULL:
+        printf("TG ");
+        nOFPUV=4;
+        kind=MRMCML::typeTG300;
         break;
     default:
         printf("Unknown EVR variant %d\n",v);
@@ -199,10 +206,25 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b,epicsUInt32 bl)
     if(nCML && ver>=4){
         shortcmls.resize(nCML);
         for(size_t i=0; i<nCML; i++){
-            shortcmls[i]=new MRMCML(i,*this);
+            shortcmls[i]=new MRMCML(i,*this,kind,form);
         }
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
+    }
+
+    if(v==evrFormCPCIFULL) {
+        shortcmls.resize(8);
+        for(size_t i=4; i<8; i++) {
+            // front panel outputs on EVRTG are swapped even/odd
+            size_t ip = i+(i%2==0 ? 1 : -1);
+            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(base+U16_OutputMapFP(ip));
+        }
+        for(size_t i=0; i<4; i++)
+            shortcmls[i]=0;
+        shortcmls[4]=new MRMCML(4,*this,MRMCML::typeCML,form);
+        shortcmls[5]=new MRMCML(5,*this,MRMCML::typeCML,form);
+        shortcmls[6]=new MRMCML(6,*this,MRMCML::typeTG300,form);
+        shortcmls[7]=new MRMCML(7,*this,MRMCML::typeTG300,form);
     }
 
     for(size_t i=0; i<NELEMENTS(this->events); i++) {
@@ -278,9 +300,9 @@ EVRMRM::enable(bool v)
 {
     SCOPED_LOCK(evrLock);
     if(v)
-        BITSET(NAT,32,base, Control, Control_enable|Control_mapena);
+        BITSET(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena);
     else
-        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena);
+        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena);
 }
 
 MRMPulser*
@@ -354,7 +376,7 @@ EVRMRM::prescaler(epicsUInt32 i) const
 MRMCML*
 EVRMRM::cml(epicsUInt32 i)
 {
-    if(i>=shortcmls.size())
+    if(i>=shortcmls.size() || !shortcmls[i])
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
@@ -362,7 +384,7 @@ EVRMRM::cml(epicsUInt32 i)
 const MRMCML*
 EVRMRM::cml(epicsUInt32 i) const
 {
-    if(i>=shortcmls.size())
+    if(i>=shortcmls.size() || !shortcmls[i])
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
 }
