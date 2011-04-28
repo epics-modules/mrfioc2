@@ -26,6 +26,7 @@
 #include <ostream>
 #include <sstream>
 #include <map>
+#include <set>
 #include <cstring>
 #include <string>
 #include <memory>
@@ -54,6 +55,8 @@ struct propertyBase
     virtual ~propertyBase()=0;
     virtual const char* name() const=0;
     virtual const std::type_info& type() const=0;
+    //! @brief Print the value of the field w/o leading or trailing whitespace
+    virtual void  show(std::ostream&) const;
 };
 
 static inline
@@ -194,6 +197,10 @@ public:
           throw opNotImplemented("T get() not implemented");
       return (inst->*(prop.getter))();
   }
+  virtual void show(std::ostream& strm) const
+  {
+      strm<<get();
+  }
 };
 
 //! Binder for scalar instances
@@ -242,15 +249,27 @@ unboundProperty<C,P[]>::bind(C* inst)
  */
 class Object
 {
+public:
+    struct _compName {
+        bool operator()(const Object* a, const Object* b){return a->name()<b->name();}
+    };
 private:
     const std::string m_obj_name;
+    const Object * const m_obj_parent;
+    typedef std::set<Object*,_compName> m_obj_children_t;
+    mutable m_obj_children_t m_obj_children;
 protected:
-    Object(const std::string& n);
+    Object(const std::string& n, const Object *par=0);
     virtual ~Object()=0;
-    virtual propertyBase* getPropertyBase(const char*, const std::type_info&)=0;
 public:
     const std::string& name() const{return m_obj_name;}
+    const Object* parent() const{return m_obj_parent;}
 
+    typedef m_obj_children_t::const_iterator child_iterator;
+    child_iterator beginChild() const{return m_obj_children.begin();}
+    child_iterator endChild() const{return m_obj_children.end();}
+
+    virtual propertyBase* getPropertyBase(const char*, const std::type_info&)=0;
     template<typename P>
     std::auto_ptr<property<P> > getProperty(const char* pname)
     {
@@ -262,6 +281,8 @@ public:
             return std::auto_ptr<property<P> >();
         return std::auto_ptr<property<P> >(p);
     }
+
+    virtual void visitProperties(bool (*)(propertyBase*, void*), void*)=0;
 
     static Object* getObject(const std::string&);
 
@@ -318,6 +339,25 @@ public:
         if(it==end)
             return 0;
         return it->second->bind(static_cast<C*>(this));
+    }
+
+    void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
+    {
+        std::string emsg;
+        epicsThreadOnce(&initId, &initObject, (void*)&emsg);
+        if(!m_props)
+            throw std::runtime_error(emsg);
+
+        std::auto_ptr<propertyBase> cur;
+        for(typename m_props_t::const_iterator it=m_props->begin();
+            it!=m_props->end(); ++it)
+        {
+            cur.reset(it->second->bind(static_cast<C*>(this)));
+            if(!cur.get())
+                continue;
+            if(!(*cb)(cur.get(), arg))
+                break;
+        }
     }
 };
 
