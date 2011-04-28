@@ -55,7 +55,6 @@ file "evrscale.db"
 file "mrmevrout.db"
 {pattern
 {P, C, OT, IDX, O}
-{$(P), $(C), Int, 0, "irqmap:"}
 {$(P), $(C), Front, 0, "fpout0:"}
 {$(P), $(C), Front, 1, "fpout1:"}
 {$(P), $(C), Front, 2, "fpout2:"}

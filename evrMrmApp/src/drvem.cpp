@@ -165,7 +165,7 @@ EVRMRM::EVRMRM(int i,volatile unsigned char* b)
            (unsigned int)nORB,(unsigned int)nIFP);
 
     // Special output for mapping bus interrupt
-    outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
+    //outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
 
     inputs.resize(nIFP);
     for(size_t i=0; i<nIFP; i++){
@@ -804,8 +804,8 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQbufferReady);
     }
     if(active&IRQ_HWMapped){
-        evr->count_hardware_irq++;
-        scanIoRequest(evr->IRQmappedEvent);
+        evr->shadowIRQEna &= ~IRQ_HWMapped;
+        //TODO: think of a way to use this feature...
     }
     if(active&IRQ_Event){
         //FIFO not-empty
