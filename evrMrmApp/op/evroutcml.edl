@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 520
-y 552
+x 993
+y 697
 w 585
 h 409
 font "helvetica-medium-r-12.0"
@@ -20,7 +20,6 @@ ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
 title "EVR $(P) CML $(O)"
-pvType "$(P)"
 endScreenProperties
 
 # (Rectangle)
@@ -244,102 +243,6 @@ bgColor index 3
 value {
   "4x Pattern Mode"
 }
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 182
-y 70
-w 89
-h 21
-controlPv "$(P):$(O):rise"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-editable
-motifWidget
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 182
-y 117
-w 89
-h 21
-controlPv "$(P):$(O):high"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-editable
-motifWidget
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 321
-y 70
-w 89
-h 21
-controlPv "$(P):$(O):fall"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-editable
-motifWidget
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 321
-y 117
-w 89
-h 21
-controlPv "$(P):$(O):low"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-editable
-motifWidget
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "controls"
 endObjectProperties
 
 # (Static Text)
@@ -650,7 +553,7 @@ x 547
 y 105
 w 20
 h 21
-controlPv "evr2:fpout4:freq:high.EGU"
+controlPv "$(P):$(O):freq:high.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -672,7 +575,7 @@ x 547
 y 135
 w 20
 h 21
-controlPv "evr2:fpout4:freq:low.EGU"
+controlPv "$(P):$(O):freq:low.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -906,219 +809,107 @@ font "helvetica-medium-r-12.0"
 objType "controls"
 endObjectProperties
 
-# (Byte)
-object ByteClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 0
+minor 2
 release 0
-x 189
-y 95
-w 87
-h 12
-controlPv "$(P):$(O):rise"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 15
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 157
-y 95
-w 31
-h 12
-controlPv "$(P):$(O):rise"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 5
-shift 15
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 142
-y 95
-w 12
-h 12
-font "helvetica-bold-r-10.0"
+x 184
+y 74
+w 47
+h 20
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "T0"
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Rise"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcmlpat.edl"
+}
+symbols {
+  0 "O=$(O), R=rise"
 }
 endObjectProperties
 
-# (Byte)
-object ByteClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 0
+minor 2
 release 0
-x 333
-y 95
-w 87
-h 12
-controlPv "$(P):$(O):fall"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 15
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 301
-y 95
-w 31
-h 12
-controlPv "$(P):$(O):fall"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 5
-shift 15
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 286
-y 95
-w 12
-h 12
-font "helvetica-bold-r-10.0"
+x 184
+y 122
+w 47
+h 20
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "T0"
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "High"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcmlpat.edl"
+}
+symbols {
+  0 "O=$(O), R=high"
 }
 endObjectProperties
 
-# (Byte)
-object ByteClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 0
+minor 2
 release 0
-x 190
-y 148
-w 87
-h 12
-controlPv "$(P):$(O):high"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 15
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 158
-y 148
-w 31
-h 12
-controlPv "$(P):$(O):high"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 5
-shift 15
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 143
-y 148
-w 12
-h 12
-font "helvetica-bold-r-10.0"
+x 324
+y 122
+w 47
+h 20
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "T0"
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Low"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcmlpat.edl"
+}
+symbols {
+  0 "O=$(O), R=low"
 }
 endObjectProperties
 
-# (Byte)
-object ByteClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 0
+minor 2
 release 0
-x 333
-y 147
-w 87
-h 12
-controlPv "$(P):$(O):low"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 15
-endObjectProperties
-
-# (Byte)
-object ByteClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 301
-y 147
-w 31
-h 12
-controlPv "$(P):$(O):low"
-lineColor index 14
-onColor index 14
-offColor index 3
-numBits 5
-shift 15
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 286
-y 147
-w 12
-h 12
-font "helvetica-bold-r-10.0"
+x 324
+y 74
+w 47
+h 20
 fgColor index 14
 bgColor index 3
-useDisplayBg
-value {
-  "T0"
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Fall"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evroutcmlpat.edl"
+}
+symbols {
+  0 "O=$(O), R=fall"
 }
 endObjectProperties
 

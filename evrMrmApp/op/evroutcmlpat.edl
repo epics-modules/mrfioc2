@@ -1,0 +1,1189 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 517
+y 451
+w 464
+h 102
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 7
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 3
+ctlBgColor2 index 5
+topShadowColor index 1
+botShadowColor index 11
+title "EVR: $(P) CML: $(O) Pattern: $(R)"
+showGrid
+snapToGrid
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 20
+w 440
+h 70
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 10
+w 100
+h 20
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "$(R) pattern"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 40
+w 160
+h 10
+controlPv "$(P):$(O):$(R):0"
+lineColor index 14
+onColor index 31
+offColor index 3
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 180
+y 40
+w 160
+h 10
+controlPv "$(P):$(O):$(R):1"
+lineColor index 14
+onColor index 31
+offColor index 3
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 340
+y 40
+w 80
+h 10
+controlPv "$(P):$(O):$(R):2"
+lineColor index 14
+onColor index 31
+offColor index 3
+numBits 8
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 15
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 14
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 13
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 50
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 12
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 60
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 11
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 70
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 10
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 80
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 9
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 8
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 7
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 110
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 6
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 120
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 5
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 4
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 140
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 3
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 150
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 2
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 160
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 1
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 170
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):0"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 180
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 15
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 190
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 14
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 13
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 210
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 12
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 220
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 11
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 230
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 10
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 240
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 9
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 250
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 8
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 260
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 7
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 270
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 6
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 280
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 5
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 290
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 4
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 300
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 3
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 310
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 2
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 320
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 1
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 330
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):1"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 340
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 7
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 350
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 6
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 5
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 370
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 4
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 380
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 3
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 390
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 2
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 1
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 410
+y 50
+w 10
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P):$(O):$(R):2"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+controlBitPos 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 370
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 320
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 270
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 220
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 170
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 120
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 70
+y 20
+w 10
+h 20
+lineColor index 14
+fill
+fillColor index 14
+endObjectProperties
+
