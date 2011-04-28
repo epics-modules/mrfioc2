@@ -51,7 +51,7 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
  */
 
 #define BIGEND9056 0x0C // 8 bit
-#  define BIGEND9056_BIG (1<<2)
+#  define BIGEND9056_LAS0END (1<<2)
 
 #define INTCSR9056 0x68 // 32 bit
 #  define INTCSR9056_PCI_Enable (1<<8)

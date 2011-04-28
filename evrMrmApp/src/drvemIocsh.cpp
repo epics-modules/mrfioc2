@@ -33,6 +33,7 @@
 #include "drvem.h"
 #include "evrRegMap.h"
 #include "plx9030.h"
+#include "plx9056.h"
 
 #include <evrmap.h>
 
@@ -50,6 +51,8 @@ static const epicsPCIID mrmevrs[] = {
                                PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
                                 PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9056,    PCI_VENDOR_ID_PLX,
+                                PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -228,25 +231,48 @@ try {
         return;
     }
 
-    /* Use the PLX device on the EVR to swap access on
-     * little endian systems so we don't have no worry about
-     * byte order :)
-     */
+    // handle various PCI to local bus bridges
+    switch(cur->id.device) {
+    case PCI_DEVICE_ID_PLX_9030:
+        /* Use the PLX device on the EVR to swap access on
+         * little endian systems so we don't have no worry about
+         * byte order :)
+         */
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-    BITSET(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
+        BITSET(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-    BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
+        BITCLR(LE,32, plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
 
-    // Disable interrupts on device
+        // Disable interrupts on device
 
-    NAT_WRITE32(evr, IRQEnable, 0);
+        NAT_WRITE32(evr, IRQEnable, 0);
 
-    /* Enable active high interrupt1 through the PLX to the PCI bus.
-     */
-    LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
-               INTCSR_INT1_Polarity|
-               INTCSR_PCI_Enable);
+        /* Enable active high interrupt1 through the PLX to the PCI bus.
+         */
+        LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
+                   INTCSR_INT1_Polarity|
+                   INTCSR_PCI_Enable);
+        break;
+
+    case PCI_DEVICE_ID_PLX_9056:
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+        BITSET(LE,8, plx, BIGEND9056, BIGEND9056_BIG);
+#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+        BITCLR(LE,8, plx, BIGEND9056, BIGEND9056_BIG);
+#endif
+
+        // Disable interrupts on device
+
+        NAT_WRITE32(evr, IRQEnable, 0);
+
+        BITSET(LE,32,plx, INTCSR9056, INTCSR9056_PCI_Enable|INTCSR9056_LCL_Enable);
+        break;
+
+    default:
+        printf("Unknown PCI bridge %04x\n", cur->id.device);
+        return;
+    }
 
     // Acknowledge missed interrupts
     //TODO: This avoids a spurious FIFO Full
