@@ -93,61 +93,215 @@ record(fanout, "$(P)$(O)res:fo") {
   field(LNK4, "$(P)$(O)pat:dly:calc")
 }
 
-record(longout, "$(P)$(O)rise") {
+# Rising pattern
+
+record(mbboDirect, "$(P)$(O)rise:0") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)rise:calc.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)$(O)rise:1") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)rise:calc.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)$(O)rise:2") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(P)$(O)rise:calc.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(P)$(O)rise:calc") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "40")
+  field(OUTA, "$(P)$(O)rise PP")
+}
+
+record(waveform, "$(P)$(O)rise") {
   field(DESC, "Rising edge pattern")
-  field(DTYP, "EVR CML")
-  field(OUT, "@OBJ=$(OBJ), PROP=Pat Rise")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Rise")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "0")
-  field(HOPR, "0xfffff")
+  field(FTVL, "UCHAR")
+  field(NELM, "40")
+  field(HOPR, "1")
   field(LOPR, "0")
-  field(DRVH, "0xfffff")
-  field(DRVL, "0")
+}
+
+# High pattern
+
+record(mbboDirect, "$(P)$(O)high:0") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)high:calc.A PP")
+  field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(O)high") {
-  field(DESC, "Level high pattern")
-  field(DTYP, "EVR CML")
-  field(OUT, "@OBJ=$(OBJ), PROP=Pat High")
+record(mbboDirect, "$(P)$(O)high:1") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)high:calc.B PP")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "0xfffff")
-  field(HOPR, "0xfffff")
-  field(LOPR, "0")
-  field(DRVH, "0xfffff")
-  field(DRVL, "0")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(O)fall") {
-  field(DESC, "Falling edge pattern")
-  field(DTYP, "EVR CML")
-  field(OUT, "@OBJ=$(OBJ), PROP=Pat Fall")
+record(mbboDirect, "$(P)$(O)high:2") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(P)$(O)high:calc.C PP")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "0")
-  field(HOPR, "0xfffff")
-  field(LOPR, "0")
-  field(DRVH, "0xfffff")
-  field(DRVL, "0")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)$(O)low") {
-  field(DESC, "Level low pattern")
-  field(DTYP, "EVR CML")
-  field(OUT, "@OBJ=$(OBJ), PROP=Pat Low")
+record(aSub, "$(P)$(O)high:calc") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "40")
+  field(OUTA, "$(P)$(O)high PP")
+}
+
+record(waveform, "$(P)$(O)high") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat High")
   field(PINI, "YES")
-  field(UDF, "0")
-  field(VAL, "0")
-  field(HOPR, "0xfffff")
+  field(FTVL, "UCHAR")
+  field(NELM, "40")
+  field(HOPR, "1")
   field(LOPR, "0")
-  field(DRVH, "0xfffff")
-  field(DRVL, "0")
+}
+
+# Falling pattern
+
+record(mbboDirect, "$(P)$(O)fall:0") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)fall:calc.A PP")
+  field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
+
+record(mbboDirect, "$(P)$(O)fall:1") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)fall:calc.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)$(O)fall:2") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(P)$(O)fall:calc.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(P)$(O)fall:calc") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "40")
+  field(OUTA, "$(P)$(O)fall PP")
+}
+
+record(waveform, "$(P)$(O)fall") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Fall")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "40")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# Low pattern
+
+record(mbboDirect, "$(P)$(O)low:0") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)low:calc.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)$(O)low:1") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(P)$(O)low:calc.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)$(O)low:2") {
+  field(DTYP, "Raw Soft Channel")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(P)$(O)low:calc.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(P)$(O)low:calc") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "40")
+  field(OUTA, "$(P)$(O)low PP")
+}
+
+record(waveform, "$(P)$(O)low") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Low")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "40")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# frequency mode
 
 record(bo, "$(P)$(O)freq:level") {
   field(DTYP, "Obj Prop bool")
@@ -291,6 +445,8 @@ record(aSub, "$(P)$(O)pat:dly:calc") {
   field( FTB, "DOUBLE")
   field(INPC, "$(P)$(O)res NPP")
   field( FTC, "DOUBLE")
+  field(INPD, "$(P)$(O)res:mult NPP")
+  field( FTD, "LONG")
   field(OUTA, "$(P)$(O)pat PP")
   field(FTVA, "UCHAR")
   field(NOVA, "$(MAX=40940)") # 20*2047

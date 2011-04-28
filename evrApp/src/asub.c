@@ -18,6 +18,8 @@
 #include <menuFtype.h>
 #include <aSubRecord.h>
 
+#define NINPUTS (aSubRecordU - aSubRecordA)
+
 /**@brief Generate a time series
  *
  *@param A The first value
@@ -87,6 +89,8 @@ long gen_timeline(aSubRecord *prec)
  *@type B DOUBLE
  *@param C EGU per tick (sample period)
  *@type C DOUBLE
+ *@param D Ensure output length is a multiple of this number
+ *@type D LONG
  *
  *@param OUTA The output sequence
  *@type OUTA UCHAR
@@ -95,15 +99,16 @@ static
 long gen_delaygen(aSubRecord *prec)
 {
     double delay, width, egupertick;
-    epicsUInt32 count, i;
+    epicsUInt32 count, i, mult;
     unsigned char *result;
     epicsUInt32 idelay, iwidth;
 
     if (prec->fta != menuFtypeDOUBLE
         || prec->ftb != menuFtypeDOUBLE
         || prec->ftc != menuFtypeDOUBLE
+        || prec->ftd != menuFtypeLONG
         ) {
-        errlogPrintf("%s incorrect input type. A,B,C (DOUBLE)",
+        errlogPrintf("%s incorrect input type. A,B,C (DOUBLE) D (LONG)",
                      prec->name);
         return -1;
     }
@@ -118,6 +123,7 @@ long gen_delaygen(aSubRecord *prec)
     delay=*(double*)prec->a;
     width=*(double*)prec->b;
     egupertick=*(double*)prec->c;
+    mult=*(epicsUInt32*)prec->d;
     result=prec->vala;
     count=prec->nova;
 
@@ -143,7 +149,7 @@ long gen_delaygen(aSubRecord *prec)
         } else {
             /* ensure last element is 0 */
             result[i]=0;
-            if (i%20==19) {
+            if (i%mult==mult-1) {
                 i++;
                 break;
             }
@@ -155,8 +161,71 @@ long gen_delaygen(aSubRecord *prec)
     return 0;
 }
 
+/**@brief Bool array constructor
+ * Build a >16-bit boolean array from component integers.
+ *
+ * Bits are taken for each component in MSB order and placed
+ * into the output array in MSB order.
+ *
+ *@param A First (Most significant) 16 bits
+ *@type A SHORT
+ *@param B Next 16 bits
+ *@type B SHORT
+ *@param C Next 16 bits
+ *@type C SHORT
+ *
+ *@param OUTA The output sequence
+ *@type OUTA UCHAR
+ */
+static
+long gen_bitarraygen(aSubRecord *prec)
+{
+    epicsEnum16 *intype=&prec->fta;
+    epicsUInt16 **indata=(epicsUInt16 **)&prec->a;
+    epicsUInt32 *inlen=&prec->noa;
+
+    epicsUInt32 outlen=prec->nova, curlen;
+
+    epicsUInt8 *result=prec->vala;
+    epicsUInt32 numinputs = outlen/16;
+
+    if(prec->ftva!=menuFtypeUCHAR) {
+        errlogPrintf("%s incorrect output type. A (UCHAR))\n",
+                     prec->name);
+        return -1;
+    }
+    if(outlen%16)
+        numinputs++;
+    if(numinputs>NINPUTS)
+        numinputs=numinputs;
+
+    for(curlen=0; curlen<numinputs; curlen++) {
+        if(intype[curlen]!=menuFtypeUSHORT) {
+            errlogPrintf("%s incorrect input type. %c (UCHAR))\n",
+                         prec->name, 'A'+curlen);
+            return -1;
+        } else if(inlen[curlen]!=1){
+            errlogPrintf("%s incorrect input length. %c (1))\n",
+                         prec->name, 'A'+curlen);
+            return -1;
+        }
+    }
+
+    for(curlen=0; curlen<outlen; curlen++) {
+        epicsUInt32 I=curlen/16;
+        epicsUInt32 B=15-(curlen%16);
+        if(I>NINPUTS)
+            break;
+
+        result[curlen]=!!(*indata[I]&(1<<B));
+    }
+
+    return 0;
+}
+
 static registryFunctionRef asub_seq[] = {
     {"Timeline", (REGISTRYFUNCTION) gen_timeline},
+    {"Bit Array Gen", (REGISTRYFUNCTION) gen_bitarraygen},
     {"Delay Gen", (REGISTRYFUNCTION) gen_delaygen}
 };
 

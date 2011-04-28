@@ -68,17 +68,18 @@ public:
     virtual void setPattern(pattern, const unsigned char*, epicsUInt32);
 
 private:
-    epicsUInt32 getPattern20(pattern, unsigned char*, epicsUInt32) const;
-    void setPattern20(pattern, const unsigned char*, epicsUInt32);
-    epicsUInt32 getPattern40(pattern, unsigned char*, epicsUInt32) const;
-    void setPattern40(pattern, const unsigned char*, epicsUInt32);
 
-    epicsUInt32 mult;
+    epicsUInt32 mult, wordlen;
     volatile unsigned char *base;
     unsigned char N;
     EVRMRM& owner;
 
     epicsUInt32 shadowEnable;
+
+    epicsUInt32 *shadowPattern[5]; // 5 is wavefrom + 4x pattern
+    epicsUInt32  shadowWaveformlength;
+
+    void syncPattern(pattern);
 
     outkind kind;
 };
