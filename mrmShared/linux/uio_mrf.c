@@ -51,7 +51,7 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
  */
 
 #define BIGEND9056 0x0C // 8 bit
-#  define BIGEND9056_LAS0END (1<<2)
+#  define BIGEND9056_BIG (1<<2)
 
 #define INTCSR9056 0x68 // 32 bit
 #  define INTCSR9056_PCI_Enable (1<<8)
@@ -110,9 +110,54 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 static
 irqreturn_t
-mrf_handler9030(int irq, struct uio_info *info)
+mrf_handlermrm(int irq, struct uio_info *info)
 {
     void __iomem *base = info->mem[2].internal_addr;
+    void __iomem *plx = info->mem[0].internal_addr;
+    struct pci_dev *dev = info->priv;
+    u32 plxctrl, status, enable;
+    int end;
+
+    switch(dev->device) {
+    case PCI_DEVICE_ID_PLX_9030:
+        plxctrl = ioread32(plx + LAS0BRD);
+        end = plxctrl & LAS0BRD_ENDIAN;
+        break;
+    case PCI_DEVICE_ID_PLX_9056:
+        plxctrl = ioread32(plx + BIGEND9056);
+        end = plxctrl & BIGEND9056_BIG;
+        break;
+    default:
+        return IRQ_NONE; /* hope this never happens :) */
+    }
+
+    /* Test endianness since we allow user
+-     * apps to use whatever is convenient
+     */
+    if (end) {
+        status = ioread32be(base + IRQFlag);
+        enable = ioread32be(base + IRQEnable);
+    } else {
+        status = ioread32(base + IRQFlag);
+        enable = ioread32(base + IRQEnable);
+    }
+
+    if (!(status & enable))
+            return IRQ_NONE;
+
+    /* Disable interrupt */
+    if (end)
+        iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
+    else
+        iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
+
+    return IRQ_HANDLED;
+}
+
+static
+irqreturn_t
+mrf_handler9030(int irq, struct uio_info *info)
+{
     void __iomem *plx = info->mem[0].internal_addr;
     u32 plxcsr= ioread32(plx + INTCSR);
 
@@ -135,7 +180,6 @@ static
 irqreturn_t
 mrf_handler9056(int irq, struct uio_info *info)
 {
-    void __iomem *base = info->mem[2].internal_addr;
     void __iomem *plx = info->mem[0].internal_addr;
     u32 plxcsr= ioread32(plx + INTCSR9056);
 
@@ -229,9 +273,11 @@ mrf_probe(struct pci_dev *dev,
             dev_err(&dev->dev, "Unknown device 0x%04x\n", dev->device);
             goto err_unmap;
         }
+        info->handler = mrf_handlermrm;
 
         info->name = DRV_NAME;
         info->version = DRV_VERSION;
+        info->priv = dev;
 
         pci_set_drvdata(dev, info);
 
