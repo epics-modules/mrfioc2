@@ -110,7 +110,7 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 static
 irqreturn_t
-mrf_handlermrm(int irq, struct uio_info *info)
+mrf_handler(int irq, struct uio_info *info)
 {
     void __iomem *base = info->mem[2].internal_addr;
     void __iomem *plx = info->mem[0].internal_addr;
@@ -150,62 +150,6 @@ mrf_handlermrm(int irq, struct uio_info *info)
         iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
     else
         iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
-
-    return IRQ_HANDLED;
-}
-
-static
-irqreturn_t
-mrf_handler9030(int irq, struct uio_info *info)
-{
-    void __iomem *plx = info->mem[0].internal_addr;
-    u32 plxcsr= ioread32(plx + INTCSR);
-
-    if (!(plxcsr&(INTCSR_INT1_Status|INTCSR_INT2_Status)))
-        return IRQ_NONE;
-
-    if (plxcsr&INTCSR_INT1_Status)
-        plxcsr&=~INTCSR_INT1_Enable;
-
-    if (plxcsr&INTCSR_INT2_Status)
-        plxcsr&=~INTCSR_INT2_Enable;
-
-    /* Enable active high interrupt1 through the PLX to the PCI bus. */
-    iowrite16(plxcsr, plx + INTCSR);
-
-    return IRQ_HANDLED;
-}
-
-static
-irqreturn_t
-mrf_handler9056(int irq, struct uio_info *info)
-{
-    void __iomem *plx = info->mem[0].internal_addr;
-    u32 plxcsr= ioread32(plx + INTCSR9056);
-
-    if (!(plxcsr&INTCSR9056_Status))
-        return IRQ_NONE;
-
-    if (plxcsr&INTCSR9056_DBL_Status)
-        plxcsr&=~INTCSR9056_DBL_Enable;
-
-    if (plxcsr&INTCSR9056_ABT_Status)
-        plxcsr&=~INTCSR9056_ABT_Enable;
-
-    if (plxcsr&INTCSR9056_LCL_Status)
-        plxcsr&=~INTCSR9056_LCL_Enable;
-
-    if (plxcsr&INTCSR9056_LBL_Status)
-        plxcsr&=~INTCSR9056_LBL_Enable;
-
-    if (plxcsr&INTCSR9056_DM0_Status)
-        plxcsr&=~INTCSR9056_DM0_Enable;
-
-    if (plxcsr&INTCSR9056_DM1_Status)
-        plxcsr&=~INTCSR9056_DM1_Enable;
-
-    /* Enable active high interrupt1 through the PLX to the PCI bus. */
-    iowrite32(plxcsr, plx + INTCSR);
 
     return IRQ_HANDLED;
 }
@@ -262,18 +206,7 @@ mrf_probe(struct pci_dev *dev,
 
         info->irq = dev->irq;
         info->irq_flags = IRQF_SHARED;
-        switch(dev->device) {
-        case PCI_DEVICE_ID_PLX_9030:
-            dev_info(&dev->dev, "Select 9030\n");
-            info->handler = mrf_handler9030; break;
-        case PCI_DEVICE_ID_PLX_9056:
-            dev_info(&dev->dev, "Select 9056\n");
-            info->handler = mrf_handler9056; break;
-        default:
-            dev_err(&dev->dev, "Unknown device 0x%04x\n", dev->device);
-            goto err_unmap;
-        }
-        info->handler = mrf_handlermrm;
+        info->handler = mrf_handler;
 
         info->name = DRV_NAME;
         info->version = DRV_VERSION;

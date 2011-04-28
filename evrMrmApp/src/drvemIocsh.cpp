@@ -170,27 +170,6 @@ long report(int level)
     return 0;
 }
 
-#ifdef linux
-struct plxholder {
-    volatile void* plx;
-    EVRMRM *evr;
-    plxholder(EVRMRM* a,volatile void* b) : plx(b), evr(a) {}
-};
-
-static
-void PLXISR(void *raw)
-{
-    plxholder *card=static_cast<plxholder*>(raw);
-
-    EVRMRM::isr(static_cast<void*>(card->evr));
-
-    LE_WRITE16(card->plx, INTCSR, INTCSR_INT1_Enable|
-                                  INTCSR_INT1_Polarity|
-                                  INTCSR_PCI_Enable);
-}
-
-#endif
-
 
 extern "C"
 void
@@ -284,16 +263,9 @@ try {
     nstr<<"EVR"<<id;
     EVRMRM *receiver=new EVRMRM(nstr.str(),evr,evrlen);
 
-    void (*pciisr)(void *);
     void *arg=receiver;
-#ifdef linux
-    pciisr=&PLXISR;
-    arg=new plxholder(receiver, plx);
-#else
-    pciisr=&EVRMRM::isr;
-#endif
 
-    if(devPCIConnectInterrupt(cur,pciisr,arg,0)){
+    if(devPCIConnectInterrupt(cur, &EVRMRM::isr, arg, 0)){
         printf("Failed to install ISR\n");
         delete receiver;
     }else{
