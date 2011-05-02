@@ -63,6 +63,9 @@ extern "C" {
     double mrmEvrFIFOPeriod = 1.0/ 2000.0; /* 1/rate in Hz */
 }
 
+/* Number of good updates before the time is considered valid */
+#define TSValidThreshold 5
+
 // Fractional synthesizer reference clock frequency
 static
 const double fracref=24.0; // MHz
@@ -95,7 +98,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
   ,shadowCounterPS(0)
-  ,timestampValid(false)
+  ,timestampValid(0)
   ,lastInvalidTimestamp(0)
   ,lastValidTimestamp(0)
 {
@@ -698,12 +701,19 @@ EVRMRM::interestedInEvent(epicsUInt32 event,bool set)
 }
 
 bool
+EVRMRM::TimeStampValid() const
+{
+    SCOPED_LOCK(evrLock);
+    return timestampValid>=TSValidThreshold;
+}
+
+bool
 EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 {
     if(!ts) throw std::runtime_error("Invalid argument");
 
     SCOPED_LOCK(evrLock);
-    if(!timestampValid) return false;
+    if(timestampValid<TSValidThreshold) return false;
 
     if(event>0 && event<=255) {
         // Get time of last event code #
@@ -733,11 +743,12 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         ts->secPastEpoch=READ32(base, TSSecLatch);
         ts->nsec=READ32(base, TSEvtLatch);
 
-        /* BUG: There is a firmware bug which occasionally
+        /* BUG: There was a firmware bug which occasionally
          * causes the previous write to fail with a VME bus
          * error, and 0 the Control register.
-         * Note: When this occurs the card is _disabled_ and
-         * unresponsive for a short interval.
+         *
+         * This issues has been fixed in VME firmwares EVRv 5
+         * pre2 and EVG v3 pre2.  Feb 2011
          */
         epicsUInt32 ctrl2=READ32(base, Control);
         if (ctrl2!=ctrl) { // tsltch bit is write-only
@@ -769,7 +780,7 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
     // 1 sec. reset is late
     if(ts->nsec>=1000000000) {
         SCOPED_LOCK(evrLock);
-        timestampValid=false;
+        timestampValid=0;
         lastInvalidTimestamp=ts->secPastEpoch;
         scanIoRequest(timestampValidChange);
         return false;
@@ -777,19 +788,21 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
 
     // recurrence of an invalid time
     if(ts->secPastEpoch==lastInvalidTimestamp) {
-        timestampValid=false;
+        timestampValid=0;
         scanIoRequest(timestampValidChange);
         return false;
     }
 
     /* Reported seconds timestamp should be no more
      * then 1sec in the future.
+     * reporting values in the past should be caught by
+     * generalTime
      */
     if(ts->secPastEpoch > lastValidTimestamp+1)
     {
         errlogPrintf("EVR ignoring invalid TS %08x %08x (expect %08x)\n",
                      ts->secPastEpoch, ts->nsec, lastValidTimestamp);
-        timestampValid=false;
+        timestampValid=0;
         scanIoRequest(timestampValidChange);
         return false;
     }
@@ -1121,7 +1134,7 @@ EVRMRM::poll_link(CALLBACK* cb)
         callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
         {
             SCOPED_LOCK2(evr->evrLock, guard);
-            evr->timestampValid=false;
+            evr->timestampValid=0;
             evr->lastInvalidTimestamp=evr->lastValidTimestamp;
             scanIoRequest(evr->timestampValidChange);
         }
@@ -1147,26 +1160,45 @@ EVRMRM::seconds_tick(CALLBACK* cb)
     // Don't bother to latch since we are only reading the seconds
     epicsUInt32 newSec=READ32(evr->base, TSSec);
 
-    /* When a new seconds value is received it must differ from
-     * the previous valid seconds value, and not an invalid value.
-     */
-    if (evr->lastValidTimestamp==newSec
-        || evr->lastInvalidTimestamp==newSec
-        || newSec==0)
+    printf("Tick %08x ", newSec);
+
+    bool valid=true;
+
+    /* Received a known bad value */
+    if(evr->lastInvalidTimestamp==newSec)
+        valid=false;
+
+    /* Received a value which is inconsistent with a previous value */
+    if(evr->timestampValid>0
+       &&  evr->lastValidTimestamp!=(newSec-1) )
+        valid=false;
+
+    /* received the previous value again */
+    else if(evr->lastValidTimestamp==newSec)
+        valid=false;
+
+
+    if (!valid)
     {
-        if (evr->timestampValid) {
+        printf("Invalid \n");
+        if (evr->timestampValid>0) {
             errlogPrintf("TS reset w/ old or invalid seconds %08x (%08x %08x)\n",
                          newSec, evr->lastValidTimestamp, evr->lastInvalidTimestamp);
-            evr->timestampValid=false;
-            evr->lastInvalidTimestamp=newSec;
             scanIoRequest(evr->timestampValidChange);
         }
-        return;
-    } else if (!evr->timestampValid) {
-        errlogPrintf("TS becomes valid after fault %08x\n",newSec);
-        evr->timestampValid=true;
-        scanIoRequest(evr->timestampValidChange);
+        evr->timestampValid=0;
+        evr->lastInvalidTimestamp=newSec;
+
+    } else {
+        evr->timestampValid++;
+        evr->lastValidTimestamp=newSec;
+        printf("Valid %u \n", evr->timestampValid);
+
+        if (evr->timestampValid == TSValidThreshold) {
+            errlogPrintf("TS becomes valid after fault %08x\n",newSec);
+            scanIoRequest(evr->timestampValidChange);
+        }
     }
-    evr->lastValidTimestamp=newSec;
+
 
 }

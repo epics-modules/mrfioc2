@@ -155,8 +155,7 @@ public:
     virtual void clockTSSet(double);
     virtual bool interestedInEvent(epicsUInt32 event,bool set);
 
-    virtual bool TimeStampValid() const
-        {SCOPED_LOCK(evrLock);return timestampValid;}
+    virtual bool TimeStampValid() const;
     virtual IOSCANPVT TimeStampValidEvent() const{return timestampValidChange;}
 
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
@@ -254,7 +253,7 @@ private:
     epicsUInt32 shadowCounterPS;
     double eventClock; //!< Stored in Hz
 
-    bool timestampValid;
+    epicsUInt32 timestampValid;
     epicsUInt32 lastInvalidTimestamp;
     epicsUInt32 lastValidTimestamp;
     CALLBACK seconds_tick_cb;
