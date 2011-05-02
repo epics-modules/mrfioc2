@@ -100,6 +100,9 @@ public:
     EVRMRM(const std::string& n,volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
+private:
+    void cleanup();
+public:
 
     virtual epicsUInt32 model() const;
 

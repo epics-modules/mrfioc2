@@ -99,6 +99,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   ,lastInvalidTimestamp(0)
   ,lastValidTimestamp(0)
 {
+try{
     epicsUInt32 v = READ32(base, FWVersion),evr,ver;
 
     evr=v&FWVersion_type_mask;
@@ -250,6 +251,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
 
     SCOPED_LOCK(evrLock);
 
+    memset(_mapped, 0, sizeof(_mapped));
     // restore mapping ram to a clean state
     // needed when the IOC is started w/o a device reset (ie Linux)
     //TODO: find a way to do this that doesn't require clearing
@@ -289,22 +291,45 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
     eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick_cb);
 
     drain_fifo_task.start();
+
+} catch (std::exception& e) {
+    printf("Aborting EVR initializtion: %s\n", e.what());
+    cleanup();
+    throw;
+}
 }
 
 EVRMRM::~EVRMRM()
 {
+    cleanup();
+}
+
+void
+EVRMRM::cleanup()
+{
+    printf("%s shuting down... ", name().c_str());
+    int wakeup=1;
+    drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
+    drain_fifo_task.exitWait();
+
     for(outputs_t::iterator it=outputs.begin();
         it!=outputs.end(); ++it)
     {
         delete it->second;
     }
     outputs.clear();
-    for(prescalers_t::iterator it=prescalers.begin();
-        it!=prescalers.end(); ++it)
-    {
-        delete (*it);
-    }
-    //TODO: cleanup the rest
+#define CLEANVEC(TYPE, VAR) \
+    for(TYPE::iterator it=VAR.begin(); it!=VAR.end(); ++it) \
+    { delete (*it); } \
+    VAR.clear();
+
+    CLEANVEC(inputs_t, inputs);
+    CLEANVEC(prescalers_t, prescalers);
+    CLEANVEC(pulsers_t, pulsers);
+    CLEANVEC(shortcmls_t, shortcmls);
+
+#undef CLEANVEC
+    printf("complete\n");
 }
 
 epicsUInt32
