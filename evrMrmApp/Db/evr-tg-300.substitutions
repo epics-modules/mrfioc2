@@ -63,11 +63,11 @@ file "mrmevrout.db"
 
 file "evrcml.db"
 {pattern
-{P, O, OBJ}
-{$(P), "fpout0:", "EVR$(C):CML4"}
-{$(P), "fpout1:", "EVR$(C):CML5"}
-{$(P), "fpout2:", "EVR$(C):CML6"}
-{$(P), "fpout3:", "EVR$(C):CML7"}
+{P, O, OBJ, NBIT}
+{$(P), "fpout0:", "EVR$(C):CML4", 40}
+{$(P), "fpout1:", "EVR$(C):CML5", 40}
+{$(P), "fpout2:", "EVR$(C):CML6", 40}
+{$(P), "fpout3:", "EVR$(C):CML7", 40}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1

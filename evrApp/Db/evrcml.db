@@ -130,7 +130,7 @@ record(aSub, "$(P)$(O)rise:calc") {
   field( FTB, "USHORT")
   field( FTC, "USHORT")
   field(FTVA, "UCHAR")
-  field(NOVA, "40")
+  field(NOVA, "$(NBIT=20)")
   field(OUTA, "$(P)$(O)rise PP")
 }
 
@@ -140,7 +140,7 @@ record(waveform, "$(P)$(O)rise") {
   field(INP, "@OBJ=$(OBJ), PROP=Pat Rise")
   field(PINI, "YES")
   field(FTVL, "UCHAR")
-  field(NELM, "40")
+  field(NELM, "$(NBIT=20)")
   field(HOPR, "1")
   field(LOPR, "0")
 }
@@ -182,7 +182,7 @@ record(aSub, "$(P)$(O)high:calc") {
   field( FTB, "USHORT")
   field( FTC, "USHORT")
   field(FTVA, "UCHAR")
-  field(NOVA, "40")
+  field(NOVA, "$(NBIT=20)")
   field(OUTA, "$(P)$(O)high PP")
 }
 
@@ -192,7 +192,7 @@ record(waveform, "$(P)$(O)high") {
   field(INP, "@OBJ=$(OBJ), PROP=Pat High")
   field(PINI, "YES")
   field(FTVL, "UCHAR")
-  field(NELM, "40")
+  field(NELM, "$(NBIT=20)")
   field(HOPR, "1")
   field(LOPR, "0")
 }
@@ -234,7 +234,7 @@ record(aSub, "$(P)$(O)fall:calc") {
   field( FTB, "USHORT")
   field( FTC, "USHORT")
   field(FTVA, "UCHAR")
-  field(NOVA, "40")
+  field(NOVA, "$(NBIT=20)")
   field(OUTA, "$(P)$(O)fall PP")
 }
 
@@ -244,7 +244,7 @@ record(waveform, "$(P)$(O)fall") {
   field(INP, "@OBJ=$(OBJ), PROP=Pat Fall")
   field(PINI, "YES")
   field(FTVL, "UCHAR")
-  field(NELM, "40")
+  field(NELM, "$(NBIT=20)")
   field(HOPR, "1")
   field(LOPR, "0")
 }
@@ -286,7 +286,7 @@ record(aSub, "$(P)$(O)low:calc") {
   field( FTB, "USHORT")
   field( FTC, "USHORT")
   field(FTVA, "UCHAR")
-  field(NOVA, "40")
+  field(NOVA, "$(NBIT=20)")
   field(OUTA, "$(P)$(O)low PP")
 }
 
@@ -296,7 +296,7 @@ record(waveform, "$(P)$(O)low") {
   field(INP, "@OBJ=$(OBJ), PROP=Pat Low")
   field(PINI, "YES")
   field(FTVL, "UCHAR")
-  field(NELM, "40")
+  field(NELM, "$(NBIT=20)")
   field(HOPR, "1")
   field(LOPR, "0")
 }
