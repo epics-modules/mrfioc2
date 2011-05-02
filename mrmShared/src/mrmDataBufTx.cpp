@@ -120,14 +120,15 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
         temp |= ubuf[index-1];
 
         if(byte==3)
-            nat_iowrite32(&dataBuf[index/4], temp );
+            nat_iowrite32(&dataBuf[index-3], temp );
     }
 	
     for(; index%4; index++) {
         temp <<= 8;
+        len++;
 
         if(index%4==3)
-            nat_iowrite32(&dataBuf[index/4], temp );
+            nat_iowrite32(&dataBuf[index-3], temp );
     }
 
     wbarr();
