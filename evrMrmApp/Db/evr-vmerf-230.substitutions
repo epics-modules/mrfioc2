@@ -1,138 +1,143 @@
+# Record set for a VME-EVRRF-230
+#
+# Macros:
+#  C = Card ID number (same as mrmEvrSetupPCI())
+#  SYS = System name (ie SR-TM)
+#  D = Device name (ie EVR:Diag2)
+#
+# Record names have the general forms:
+#  $(SYS){$(D)}Signal-SD
+#  $(SYS){$(D)-SubDev}Signal-SD
+
 file "evrbase.db"
 {pattern
 {P, OBJ, EVNT1HZ}
-{$(P), EVR$(C), 125}
+{"$(SYS){$(D)}", EVR$(C), 125}
 }
 
 file "databuftx.db"
 {pattern
 {P, C, PROTO}
-{$(P), $(C), 1}
+{"$(SYS){$(D)}", $(C), 1}
 }
 
 file "databuftxCtrl.db"
 {pattern
 {P, C}
-{$(P), $(C)}
+{"$(SYS){$(D)}", $(C)}
 }
 
 file "mrmevrbufrx.db"
 {pattern
 {P, OBJ, PROTO}
-{$(P), EVR$(C):BUFRX, 1}
+{"$(SYS){$(D)}", EVR$(C):BUFRX, 1}
 }
 
 file "evrmap.db"
 {pattern
-{P, M, OBJ, func, EVT}
-{$(P), "map:blink1", "EVR$(C)", Blink, 15}
-{$(P), "map:blink2", "EVR$(C)", Blink, 0}
+{NAME, OBJ, func, EVT}
+{"$(SYS){$(D)}Evt:Blink0-SP", "EVR$(C)", Blink, 15}
+{"$(SYS){$(D)}Evt:Blink1-SP", "EVR$(C)", Blink, 0}
 }
 
 file "evrevent.db"
 {pattern
-{P, N, OBJ, CODE, EVNT}
-{$(P), "dbevt","EVR$(C)", 15, 15}
-{$(P), "1hz",  "EVR$(C)", 0x7d, 125}
-{$(P), "evta", "EVR$(C)", 10, 10}
-{$(P), "evtb", "EVR$(C)", 11, 11}
-{$(P), "evtc", "EVR$(C)", 12, 12}
-{$(P), "evtd", "EVR$(C)", 13, 13}
-{$(P), "evte", "EVR$(C)", 14, 14}
-{$(P), "evtf", "EVR$(C)", 15, 15}
-{$(P), "evtg", "EVR$(C)", 16, 16}
-{$(P), "evth", "EVR$(C)", 17, 17}
+{EN, OBJ, CODE, EVNT}
+{"$(SYS){$(D)}1hz",  "EVR$(C)", 0x7d, 125}
+{"$(SYS){$(D)}EvtA", "EVR$(C)", 10, 10}
+{"$(SYS){$(D)}EvtB", "EVR$(C)", 11, 11}
+{"$(SYS){$(D)}EvtC", "EVR$(C)", 12, 12}
+{"$(SYS){$(D)}EvtD", "EVR$(C)", 13, 13}
+{"$(SYS){$(D)}EvtE", "EVR$(C)", 14, 14}
+{"$(SYS){$(D)}EvtF", "EVR$(C)", 15, 15}
+{"$(SYS){$(D)}EvtG", "EVR$(C)", 16, 16}
+{"$(SYS){$(D)}EvtH", "EVR$(C)", 17, 17}
 }
 
 file "evrscale.db"
 {pattern
-{P, IDX, O, OBJ, MAX}
-{$(P), 0, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
-{$(P), 1, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
-{$(P), 2, "scale$(IDX)", "EVR$(C):PS$(IDX)", "0xffff"}
+{IDX, P, SN, OBJ, MAX}
+{0, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "EVR$(C):PS$(IDX)", "0xffff"}
+{1, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "EVR$(C):PS$(IDX)", "0xffff"}
+{2, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "EVR$(C):PS$(IDX)", "0xffff"}
 }
+
 
 file "mrmevrout.db"
 {pattern
-{P, O, OBJ, DESC}
-{$(P), "fpout0:", "EVR$(C):FrontOut0", "OUT0 (TTL)"}
-{$(P), "fpout1:", "EVR$(C):FrontOut1", "OUT1 (TTL)"}
-{$(P), "fpout2:", "EVR$(C):FrontOut2", "OUT2 (TTL)"}
-{$(P), "fpout3:", "EVR$(C):FrontOut3", "OUT3 (TTL)"}
-{$(P), "fpout4:", "EVR$(C):FrontOut4", "OUT4 (TTL)"}
-{$(P), "fpout5:", "EVR$(C):FrontOut5", "OUT5 (TTL)"}
-{$(P), "fpout6:", "EVR$(C):FrontOut6", "OUT6 (TTL)"}
+{ON, OBJ, DESC}
+{"$(SYS){$(D)-Out:FP0}", "EVR$(C):FrontOut0", "OUT0 (TTL)"}
+{"$(SYS){$(D)-Out:FP1}", "EVR$(C):FrontOut1", "OUT1 (TTL)"}
+{"$(SYS){$(D)-Out:FP2}", "EVR$(C):FrontOut2", "OUT2 (TTL)"}
+{"$(SYS){$(D)-Out:FP3}", "EVR$(C):FrontOut3", "OUT3 (TTL)"}
+{"$(SYS){$(D)-Out:FP4}", "EVR$(C):FrontOut4", "OUT4 (CML)"}
+{"$(SYS){$(D)-Out:FP5}", "EVR$(C):FrontOut5", "OUT5 (CML)"}
+{"$(SYS){$(D)-Out:FP6}", "EVR$(C):FrontOut6", "OUT6 (CML)"}
 }
 
 file "evrcml.db"
 {pattern
-{P, O, OBJ}
-{$(P), "fpout4:", "EVR$(C):CML0"}
-{$(P), "fpout5:", "EVR$(C):CML1"}
-{$(P), "fpout6:", "EVR$(C):CML2"}
-}
-
-file "evrcmlextra.db"
-{pattern
-{P, CML, PAT, EVNT}
-{$(P), "fpout4:", "pat:0", 13}
-{$(P), "fpout4:", "pat:1", 14}
-{$(P), "fpout4:", "pat:2", 15}
-{$(P), "fpout4:", "pat:3", 16}
-{$(P), "fpout4:", "pat:4", 17}
+{P, ON, OBJ}
+{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FP4}", "EVR$(C):CML0"}
+{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FP5}", "EVR$(C):CML1"}
+{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FP6}", "EVR$(C):CML2"}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"
 {pattern
-{P, PID, N, OBJ, DMAX, WMAX, PMAX, NOPS}
-{$(P), 0, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
-{$(P), 1, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
-{$(P), 2, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
-{$(P), 3, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "0xff", 0}
-{$(P), 4, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
-{$(P), 5, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
-{$(P), 6, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
-{$(P), 7, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
-{$(P), 8, "pul$(PID):", "EVR$(C):Pul$(PID)",  "0xfffffff", "0xffff", "1", 1}
+{PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
+{0, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
+{1, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
+{2, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
+{3, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
+{4, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{5, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{6, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{7, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{8, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{9, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "EVR$(C):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
 }
 
 # Default to 3 possible trigger mappings per pulser
 file "evrpulsermap.db"
 {pattern
-{P, ID, N, M, OBJ, F, EVT}
-{$(P), 0, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 0, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 0, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 1, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 1, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 1, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 2, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 2, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 2, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 3, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 3, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 3, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 4, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 4, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 4, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 5, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 5, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 5, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 6, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 6, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 6, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 7, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 7, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 7, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 8, "pul$(ID):", "trig0", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 8, "pul$(ID):", "trig1", "EVR$(C):Pul$(ID)", Trig, 0}
-{$(P), 8, "pul$(ID):", "trig2", "EVR$(C):Pul$(ID)", Trig, 0}
+{PID, NAME, OBJ, F, EVT}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{2, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{2, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{2, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{3, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{3, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{3, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{4, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{4, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{4, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{5, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{5, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{5, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{6, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{6, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{6, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{7, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{7, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{7, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{8, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{8, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{8, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "EVR$(C):Pul$(PID)", Trig, 0}
+{9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "EVR$(C):Pul$(PID)", Trig, 0}
 }
 
 file "evrin.db"
 {pattern
-{P, I, OBJ, DESC}
-{$(P), "in0:", "EVR$(C):FPIn0", "IN0 (TTL)"}
-{$(P), "in1:", "EVR$(C):FPIn1", "IN1 (TTL)"}
+{IN, OBJ, DESC}
+{"$(SYS){$(D)-In:0}", "EVR$(C):FPIn0", "IN0 (TTL)"}
+{"$(SYS){$(D)-In:1}", "EVR$(C):FPIn1", "IN1 (TTL)"}
 }

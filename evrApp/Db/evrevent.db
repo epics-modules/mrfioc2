@@ -1,8 +1,7 @@
 # Mapping between hardware event code and a software database event
 #
 # Macros:
-#  P = record name prefix
-#  N = Object suffix
+#  EN = record name prefix
 #  OBJ = EVR devObj name
 #  CODE = Event code (hardware)
 #  EVNT = Database event code (software)
@@ -10,20 +9,20 @@
 
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
-record(longout, "$(P)$(N)") {
+record(longout, "$(EN)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
   field(VAL , "$(EVNT)")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(P)$(N):count")
+  field(FLNK, "$(EN)Cnt-I")
   info(autosaveFields_pass0, "OUT VAL")
 }
 
-record(calc, "$(P)$(N):count") {
-  field(SDIS, "$(P)$(N)")
+record(calc, "$(EN)Cnt-I") {
+  field(SDIS, "$(EN)-SP")
   field(DISV, "0")
   field(CALC, "A+1")
-  field(INPA, "$(P)$(N):count NPP")
-  field(TSEL, "$(P)$(N).TIME")
+  field(INPA, "$(EN)Cnt-I NPP")
+  field(TSEL, "$(EN)-SP.TIME")
 }

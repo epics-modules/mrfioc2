@@ -1,16 +1,15 @@
 # Record set for an EVR's physical output
 #
 # Macros:
-#  P = record name prefix
-#  O = Object suffix
+#  ON = record name prefix
 #  OBJ = devObj name
 #  DESC = Physical label found on output jack
 
-record(longout, "$(P)$(O)src:set") {
+record(longout, "$(ON)Src-SP") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( OUT , "@OBJ=$(OBJ), PROP=Map")
-  field( FLNK, "$(P)$(O)src")
+  field( FLNK, "$(ON)Src-RB")
   field( PINI, "YES")
   field( VAL , "63")
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
@@ -19,9 +18,9 @@ record(longout, "$(P)$(O)src:set") {
 # Settings
 # Users use will set one of these at a time.
 
-record(mbbo, "$(P)$(O)src:pulse:set") {
+record(mbbo, "$(ON)Src:Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set PP")
+  field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -53,9 +52,9 @@ record(mbbo, "$(P)$(O)src:pulse:set") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(P)$(O)src:dbus:set") {
+record(mbbo, "$(ON)Src:DBus-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set PP")
+  field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -85,9 +84,9 @@ record(mbbo, "$(P)$(O)src:dbus:set") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(P)$(O)src:scale:set") {
+record(mbbo, "$(ON)Src:Scale-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)$(O)src:set PP")
+  field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")
@@ -117,16 +116,16 @@ record(mbbo, "$(P)$(O)src:scale:set") {
 
 # Mapping readback
 
-record(longin, "$(P)$(O)src") {
+record(longin, "$(ON)Src-RB") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( INP , "@OBJ=$(OBJ), PROP=Map")
-  field( FLNK, "$(P)$(O)src:pulse")
+  field( FLNK, "$(ON)Src:Pulse-RB")
 }
 
-record(mbbi, "$(P)$(O)src:pulse") {
+record(mbbi, "$(ON)Src:Pulse-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(P)$(O)src")
+  field( INP , "$(ON)Src-RB")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -154,12 +153,12 @@ record(mbbi, "$(P)$(O)src:pulse") {
   field( FTSV, "MAJOR")
   field( FFSV, "MAJOR")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(P)$(O)src:dbus")
+  field( FLNK, "$(ON)Src:DBus-RB")
 }
 
-record(mbbi, "$(P)$(O)src:dbus") {
+record(mbbi, "$(ON)Src:DBus-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(P)$(O)src")
+  field( INP , "$(ON)Src-RB")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -185,12 +184,12 @@ record(mbbi, "$(P)$(O)src:dbus") {
   field( FTSV, "MAJOR")
   field( FFSV, "MAJOR")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(P)$(O)src:scale")
+  field( FLNK, "$(ON)Src:Scale-RB")
 }
 
-record(mbbi, "$(P)$(O)src:scale") {
+record(mbbi, "$(ON)Src:Scale-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(P)$(O)src")
+  field( INP , "$(ON)Src-RB")
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")

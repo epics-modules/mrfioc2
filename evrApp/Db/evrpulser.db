@@ -1,8 +1,8 @@
 # Record set for an EVR's programmable pulse generator
 #
 # Macros:
-#  P = record name prefix
-#  N = Object suffix
+#  PN = delaygen record name prefix
+#  P  = base record name prefix
 #  OBJ = devObj name
 #  PID = Pulse gen ID number (corresponds to output mappings)
 #  DMAX = Max delay setting
@@ -10,7 +10,7 @@
 #  PMAX = Max prescaler (divider) setting
 #  NOPS = 0 - enable prescaler, 1 - disable prescaler
 
-record(bo, "$(P)$(N)enable") {
+record(bo, "$(PN)Ena-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
@@ -21,7 +21,7 @@ record(bo, "$(P)$(N)enable") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P)$(N)polarity") {
+record(bo, "$(PN)Polarity-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Polarity")
   field(PINI, "YES")
@@ -32,7 +32,7 @@ record(bo, "$(P)$(N)polarity") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)$(N)delay") {
+record(ao, "$(PN)Delay-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Delay")
   field(PINI, "YES")
@@ -42,11 +42,11 @@ record(ao, "$(P)$(N)delay") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)delay:rbv")
+  field(FLNK, "$(PN)Delay-RB")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
 
-record(ai, "$(P)$(N)delay:rbv") {
+record(ai, "$(PN)Delay-RB") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(VAL , 0)
@@ -54,10 +54,10 @@ record(ai, "$(P)$(N)delay:rbv") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)delay:raw")
+  field(FLNK, "$(PN)Delay:Raw-RB")
 }
 
-record(longin, "$(P)$(N)delay:raw") {
+record(longin, "$(PN)Delay:Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(EGU , "cnts")
@@ -67,7 +67,7 @@ record(longin, "$(P)$(N)delay:raw") {
   field( HSV, "MAJOR")
 }
 
-record(ao, "$(P)$(N)width") {
+record(ao, "$(PN)Width-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
@@ -77,11 +77,11 @@ record(ao, "$(P)$(N)width") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)width:rbv")
+  field(FLNK, "$(PN)Width-RB")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
 
-record(ai, "$(P)$(N)width:rbv") {
+record(ai, "$(PN)Width-RB") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(VAL , 0)
@@ -89,10 +89,10 @@ record(ai, "$(P)$(N)width:rbv") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(P)$(N)width:raw")
+  field(FLNK, "$(PN)Width:Raw-RB")
 }
 
-record(longin, "$(P)$(N)width:raw") {
+record(longin, "$(PN)Width:Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
@@ -102,7 +102,7 @@ record(longin, "$(P)$(N)width:raw") {
   field( HSV, "MAJOR")
 }
 
-record(longout, "$(P)$(N)prescaler:set") {
+record(longout, "$(PN)Prescaler-SP") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Prescaler")
   field(DESC, "Pulser prescaler")
@@ -112,33 +112,33 @@ record(longout, "$(P)$(N)prescaler:set") {
   field(DRVH, "$(PMAX)")
   field(DRVL, "1")
   field(VAL , "1")
-  field(FLNK, "$(P)$(N)prescaler")
+  field(FLNK, "$(PN)Prescaler-RB")
   field(DISP, "$(NOPS=0)")
   field(DISA, "$(NOPS=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)$(N)prescaler") {
+record(longin, "$(PN)Prescaler-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Prescaler")
   field(HOPR, "$(PMAX=0xffff)")
   field(LOPR, "1")
   field(HIGH, "$(PMAX=0xffff)")
   field( HSV, "MAJOR")
-  field(FLNK, "$(P)$(N)res")
+  field(FLNK, "$(PN)Res-I")
 }
 
-record(calc, "$(P)$(N)res") {
+record(calc, "$(PN)Res-I") {
   field(DESC, "Resolution")
-  field(INPA, "$(P)$(N)prescaler MS")
-  field(INPB, "$(P)clock:period CP")
+  field(INPA, "$(PN)Prescaler-RB MS")
+  field(INPB, "$(P)Link:ClkPeriod-I CP")
   field(CALC, "1e9*(A?A:1)*B")
   field(EGU, "ns")
-  field(FLNK, "$(P)$(N)res:fo")
+  field(FLNK, "$(PN)Res-FO_")
 }
 
-record(fanout, "$(P)$(N)res:fo") {
+record(fanout, "$(PN)Res-FO_") {
   field(DESC, "Clock change resync")
-  field(LNK1, "$(P)$(N)delay")
-  field(LNK2, "$(P)$(N)width")
+  field(LNK1, "$(PN)Delay-SP")
+  field(LNK2, "$(PN)Width-SP")
 }

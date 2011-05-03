@@ -1,21 +1,19 @@
 # Control for mapping a pulse geneator to an event code in hardware
 #
 # Macros:
-#  P = record name prefix
-#  N = Object suffix (this will usually be the same as a evrpulser.db)
-#  ID = Pulder ID #
-#  M = Mapping id
+#  NAME = record name
+#  PID = Pulder ID #
 #  OBJ = EVR devObj name
 #  F = Pulse generator action
 #    Choices are: "Trig", "Set", "Reset"
 #  EVT = Initial event code
 #
 
-record(longout, "$(P)$(N)$(M)") {
+record(longout, "$(NAME)") {
   field( DTYP, "EVR Pulser Mapping" )
   field( OUT , "@OBJ=$(OBJ), Func=$(F=Trig)")
   field( PINI, "YES")
-  field( DESC, "Mapping for Pulser $(ID)")
+  field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , "$(EVT)")
   field( LOPR, "0")
   field( HOPR, "255")

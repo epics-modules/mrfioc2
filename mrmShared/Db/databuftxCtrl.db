@@ -1,4 +1,4 @@
-record(bo, "$(P)dbus:mode") {
+record(bo, "$(P)Link:TxMode-Sel") {
   field(DESC, "Data mode")
   field(DTYP, "MRF Data Buf Tx")
   field(OUT , "@C=$(C), Proto=0, P=Enable")
