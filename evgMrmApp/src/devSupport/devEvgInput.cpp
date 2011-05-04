@@ -1,13 +1,15 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <boRecord.h>
 #include <mbboDirectRecord.h>
 #include <devSup.h>
 #include <dbAccess.h>
+#include <recGbl.h>
 #include <epicsExport.h>
 #include <errlog.h>
 
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include <evgInit.h>
 

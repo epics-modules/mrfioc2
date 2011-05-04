@@ -8,7 +8,7 @@
 #include <errlog.h>
 #include <epicsExport.h>
 
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include <evgInit.h>
 

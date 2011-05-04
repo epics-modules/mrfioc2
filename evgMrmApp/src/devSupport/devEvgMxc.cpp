@@ -4,15 +4,19 @@
 
 #include <biRecord.h>
 #include <boRecord.h>
+#include <aiRecord.h>
+#include <aoRecord.h>
 #include <longoutRecord.h>
+#include <longinRecord.h>
 #include <mbboDirectRecord.h>
 
 #include <devSup.h>
 #include <dbAccess.h>
+#include <recGbl.h>
 #include <errlog.h>
 #include <epicsExport.h>
 
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include <evgInit.h>
 

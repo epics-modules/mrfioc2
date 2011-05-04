@@ -7,10 +7,12 @@
 
 #include <devSup.h>
 #include <dbAccess.h>
+#include <recGbl.h>
 #include <errlog.h>
 #include <epicsExport.h>
 
-#include "dsetshared.h"
+#include "devObj.h"
+
 #include <evgInit.h>
 
 static long 

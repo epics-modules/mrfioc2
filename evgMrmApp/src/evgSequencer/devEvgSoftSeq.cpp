@@ -9,6 +9,7 @@
 #include <mbboRecord.h>
 #include <mbbiRecord.h>
 #include <boRecord.h>
+#include <biRecord.h>
 
 #include <devSup.h>
 #include <dbAccess.h>
@@ -16,7 +17,7 @@
 #include <epicsExport.h>
 #include <errlog.h>
 
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include "evgInit.h"
 #include "evgRegMap.h"
