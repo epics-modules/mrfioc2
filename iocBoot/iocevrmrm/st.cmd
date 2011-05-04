@@ -18,10 +18,10 @@ bspExtVerbosity=0
 mrmEvrSetupVME(1,5,0x20000000,3,0x26)
 mrmEvrSetupVME(2,8,0x21000000,4,0x24)
 
-dbLoadRecords("db/evr-pmc-230.db","P=evr1:,C=0")
+dbLoadRecords("db/evr-pmc-230.db","SYS=TST, D=evr:1, C=0")
 
-dbLoadRecords("db/evr-vmerf-230.db","P=evr2:,C=1")
-dbLoadRecords("db/evr-vmerf-230.db","P=evr3:,C=2")
+dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:2, C=1")
+dbLoadRecords("db/evr-vmerf-230.db","PSYS=TST, D=evr:3, C=2")
 
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
