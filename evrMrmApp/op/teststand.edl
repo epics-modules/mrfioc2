@@ -4,9 +4,9 @@ major 4
 minor 0
 release 1
 x 1348
-y 88
+y 128
 w 170
-h 314
+h 363
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
 btnFont "helvetica-medium-r-18.0"
@@ -50,7 +50,7 @@ menuLabel {
   0 "PMC EVR"
 }
 symbols {
-  0 "P=evr1"
+  0 "SYS=TST,D=evr:0"
 }
 endObjectProperties
 
@@ -82,7 +82,7 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "P=evr2"
+  0 "SYS=TST, D=evr:1"
 }
 endObjectProperties
 
@@ -112,7 +112,7 @@ major 4
 minor 2
 release 0
 x 10
-y 230
+y 275
 w 140
 h 35
 fgColor index 14
@@ -162,7 +162,7 @@ menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "P=evr4"
+  0 "SYS=TST, D=evr:3"
 }
 endObjectProperties
 
@@ -191,7 +191,7 @@ menuLabel {
   0 "VME EVG"
 }
 symbols {
-  0 "P=evg1"
+  0 "P=evg2:"
 }
 endObjectProperties
 
@@ -220,7 +220,7 @@ menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "P=rf:evr"
+  0 "P=evr4"
 }
 endObjectProperties
 
@@ -231,7 +231,7 @@ major 4
 minor 2
 release 0
 x 10
-y 275
+y 320
 w 140
 h 35
 fgColor index 14

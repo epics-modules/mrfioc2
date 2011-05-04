@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 517
-y 451
+x 521
+y 476
 w 464
 h 102
 font "helvetica-medium-r-12.0"
@@ -68,7 +68,7 @@ x 20
 y 40
 w 160
 h 10
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 lineColor index 14
 onColor index 31
 offColor index 3
@@ -84,7 +84,7 @@ x 180
 y 40
 w 160
 h 10
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 lineColor index 14
 onColor index 31
 offColor index 3
@@ -100,7 +100,7 @@ x 340
 y 40
 w 80
 h 10
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 lineColor index 14
 onColor index 31
 offColor index 3
@@ -123,7 +123,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -147,7 +147,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -171,7 +171,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -195,7 +195,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -219,7 +219,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -243,7 +243,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -267,7 +267,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -291,7 +291,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -315,7 +315,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -339,7 +339,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -363,7 +363,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -387,7 +387,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -411,7 +411,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -435,7 +435,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -459,7 +459,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -483,7 +483,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):0"
+controlPv "$(ON)Pat:$(R)00_15-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -507,7 +507,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -531,7 +531,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -555,7 +555,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -579,7 +579,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -603,7 +603,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -627,7 +627,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -651,7 +651,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -675,7 +675,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -699,7 +699,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -723,7 +723,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -747,7 +747,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -771,7 +771,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -795,7 +795,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -819,7 +819,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -843,7 +843,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -867,7 +867,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):1"
+controlPv "$(ON)Pat:$(R)16_31-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -891,7 +891,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -915,7 +915,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -939,7 +939,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -963,7 +963,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -987,7 +987,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -1011,7 +1011,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -1035,7 +1035,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -1059,7 +1059,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):$(R):2"
+controlPv "$(ON)Pat:$(R)32_39-SP"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
@@ -1074,9 +1074,9 @@ major 4
 minor 0
 release 0
 x 370
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1089,9 +1089,9 @@ major 4
 minor 0
 release 0
 x 320
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1104,9 +1104,9 @@ major 4
 minor 0
 release 0
 x 270
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1119,9 +1119,9 @@ major 4
 minor 0
 release 0
 x 220
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1134,9 +1134,9 @@ major 4
 minor 0
 release 0
 x 170
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1149,9 +1149,9 @@ major 4
 minor 0
 release 0
 x 120
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1164,9 +1164,9 @@ major 4
 minor 0
 release 0
 x 20
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14
@@ -1179,9 +1179,9 @@ major 4
 minor 0
 release 0
 x 70
-y 20
+y 30
 w 10
-h 20
+h 10
 lineColor index 14
 fill
 fillColor index 14

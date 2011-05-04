@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 993
-y 697
+x 4
+y 665
 w 585
 h 409
 font "helvetica-medium-r-12.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
-title "EVR $(P) CML $(O)"
+title "EVR $(SYS) $(D) CML $(O)"
 endScreenProperties
 
 # (Rectangle)
@@ -76,14 +76,14 @@ minor 1
 release 0
 x 9
 y 12
-w 205
+w 425
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EVR: $(P) CML: $(O)"
+  "EVR: $(SYS) $(D) CML: $(O)"
 }
 endObjectProperties
 
@@ -136,7 +136,7 @@ bgColor index 4
 inconsistentColor index 14
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):mode"
+controlPv "$(ON)Mode-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -176,7 +176,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):reset"
+controlPv "$(ON)Rst-Sel"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -198,7 +198,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):power"
+controlPv "$(ON)Pwr-Sel"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -220,7 +220,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):enable"
+controlPv "$(ON)Ena-Sel"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -365,7 +365,7 @@ x 486
 y 105
 w 59
 h 21
-controlPv "$(P):$(O):freq:high"
+controlPv "$(ON)Freq:High-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -390,7 +390,7 @@ x 486
 y 135
 w 59
 h 21
-controlPv "$(P):$(O):freq:low"
+controlPv "$(ON)Freq:Low-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -421,7 +421,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):freq:level"
+controlPv "$(ON)Freq:Lvl-SP"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -519,12 +519,12 @@ y2Max 1
 # Trace Properties
 numTraces 2
 xPv {
-  0 "$(P):$(O):pat:x"
-  1 "$(P):$(O):pat:x"
+  0 "$(ON)Pat:WfX-I"
+  1 "$(ON)Pat:WfX-I"
 }
 yPv {
-  0 "$(P):$(O):pat"
-  1 "$(P):$(O):pat:rbv"
+  0 "$(ON)Pat:Wf-SP"
+  1 "$(ON)Pat:Wf-RB"
 }
 lineStyle {
   1 "dash"
@@ -553,7 +553,7 @@ x 547
 y 105
 w 20
 h 21
-controlPv "$(P):$(O):freq:high.EGU"
+controlPv "$(ON)Freq:High-SP.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -575,7 +575,7 @@ x 547
 y 135
 w 20
 h 21
-controlPv "$(P):$(O):freq:low.EGU"
+controlPv "$(ON)Freq:Low-SP.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -647,7 +647,7 @@ x 400
 y 212
 w 19
 h 19
-controlPv "$(P):$(O):pat:dly:wth.EGU"
+controlPv "$(ON)WfCalc:Width-SP.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -669,7 +669,7 @@ x 263
 y 212
 w 19
 h 19
-controlPv "$(P):$(O):pat:dly.EGU"
+controlPv "$(ON)WfCalc:Delay-SP.EGU"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -729,7 +729,7 @@ x 325
 y 212
 w 69
 h 19
-controlPv "$(P):$(O):pat:dly:wth"
+controlPv "$(ON)WfCalc:Width-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -753,7 +753,7 @@ x 189
 y 212
 w 69
 h 19
-controlPv "$(P):$(O):pat:dly"
+controlPv "$(ON)WfCalc:Delay-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -803,7 +803,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):pat:dly:ena"
+controlPv "$(ON)WfCalc:Ena-SP"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -831,7 +831,7 @@ displayFileName {
   0 "evroutcmlpat.edl"
 }
 symbols {
-  0 "O=$(O), R=rise"
+  0 "O=$(O), R=Rise"
 }
 endObjectProperties
 
@@ -857,7 +857,7 @@ displayFileName {
   0 "evroutcmlpat.edl"
 }
 symbols {
-  0 "O=$(O), R=high"
+  0 "O=$(O), R=High"
 }
 endObjectProperties
 
@@ -883,7 +883,7 @@ displayFileName {
   0 "evroutcmlpat.edl"
 }
 symbols {
-  0 "O=$(O), R=low"
+  0 "O=$(O), R=Low"
 }
 endObjectProperties
 
@@ -909,7 +909,7 @@ displayFileName {
   0 "evroutcmlpat.edl"
 }
 symbols {
-  0 "O=$(O), R=fall"
+  0 "O=$(O), R=Fall"
 }
 endObjectProperties
 

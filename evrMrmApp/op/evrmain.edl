@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 883
-y 437
+x 397
+y 119
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
-title "EVR $(P)"
+title "EVR $(SYS) $(D)"
 showGrid
 disableScroll
 endScreenProperties
@@ -183,7 +183,7 @@ x 360
 y 60
 w 40
 h 20
-controlPv "$(P):link:cnt"
+controlPv "$(SYS)\{$(D)\}Cnt:RxErr-I"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -246,7 +246,7 @@ x 480
 y 160
 w 60
 h 20
-controlPv "$(P):ts:div"
+controlPv "$(SYS)\{$(D)\}Time:Div-I"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -272,7 +272,7 @@ x 480
 y 140
 w 100
 h 20
-controlPv "$(P):ts:clock"
+controlPv "$(SYS)\{$(D)\}Time:Clock-I"
 format "float"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -298,7 +298,7 @@ x 480
 y 120
 w 77
 h 19
-controlPv "$(P):ts:clock:set"
+controlPv "$(SYS)\{$(D)\}Time:Clock-SP"
 format "float"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -329,7 +329,7 @@ bgColor index 4
 inconsistentColor index 14
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):ts:source"
+controlPv "$(SYS)\{$(D)\}Time:Src-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -362,7 +362,7 @@ x 220
 y 130
 w 100
 h 20
-controlPv "$(P):clock:error"
+controlPv "$(SYS)\{$(D)\}Link:ClkErr-I"
 format "float"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -388,7 +388,7 @@ x 220
 y 110
 w 100
 h 20
-controlPv "$(P):clock"
+controlPv "$(SYS)\{$(D)\}Link:Clk-I"
 format "float"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -414,7 +414,7 @@ x 220
 y 90
 w 81
 h 19
-controlPv "$(P):clock:set"
+controlPv "$(SYS)\{$(D)\}Link:Clk-SP"
 format "float"
 font "helvetica-medium-r-12.0"
 fgColor index 14
@@ -511,14 +511,14 @@ minor 1
 release 0
 x 10
 y 10
-w 191
+w 408
 h 22
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EVR: $(P)"
+  "EVR: $(SYS) $(D)"
 }
 endObjectProperties
 
@@ -667,7 +667,7 @@ x 460
 y 180
 w 160
 h 20
-controlPv "$(P):ts"
+controlPv "$(SYS)\{$(D)\}Time-I"
 font "helvetica-medium-r-10.0"
 fgColor index 14
 fgAlarm
@@ -699,7 +699,7 @@ offColor index 20
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-indicatorPv "$(P):link:sts"
+indicatorPv "$(SYS)\{$(D)\}Link-Sts"
 3d
 font "helvetica-medium-r-12.0"
 objType "controls"
@@ -774,16 +774,15 @@ bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-numItems 8
+numItems 7
 symbolTag {
-  0 "FP0"
-  1 "FP1"
-  2 "FP2"
-  3 "FP3"
-  4 "FP4 (CML)"
-  5 "FP5 (CML)"
-  6 "FP6 (CML)"
-  7 "IRQ"
+  0 "Front 0"
+  1 "Front 1"
+  2 "Front 2"
+  3 "Front 3"
+  4 "Front 4"
+  5 "Front 5"
+  6 "Front 6"
 }
 symbol0 {
   0 "O"
@@ -793,17 +792,15 @@ symbol0 {
   4 "O"
   5 "O"
   6 "O"
-  7 "O"
 }
 value0 {
-  0 "fpout0"
-  1 "fpout1"
-  2 "fpout2"
-  3 "fpout3"
-  4 "fpout4"
-  5 "fpout5"
-  6 "fpout6"
-  7 "irqmap"
+  0 "FP0"
+  1 "FP1"
+  2 "FP2"
+  3 "FP3"
+  4 "FP4"
+  5 "FP5"
+  6 "FP6"
 }
 endObjectProperties
 
@@ -823,8 +820,8 @@ selectColor index 8
 inconsistentColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):src:scale:set"
-indicatorPv "$(P):$(O):src:scale"
+controlPv "$(SYS)\{$(D)-Out:$(O)\}Src:Scale-SP"
+indicatorPv "$(SYS)\{$(D)-Out:$(O)\}Src:Scale-RB"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -844,8 +841,8 @@ selectColor index 8
 inconsistentColor index 25
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):src:dbus:set"
-indicatorPv "$(P):$(O):src:dbus"
+controlPv "$(SYS)\{$(D)-Out:$(O)\}Src:DBus-SP"
+indicatorPv "$(SYS)\{$(D)-Out:$(O)\}Src:DBus-RB"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -865,8 +862,8 @@ selectColor index 8
 inconsistentColor index 25
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(O):src:pulse:set"
-indicatorPv "$(P):$(O):src:pulse"
+controlPv "$(SYS)\{$(D)-Out:$(O)\}Src:Pulse-SP"
+indicatorPv "$(SYS)\{$(D)-Out:$(O)\}Src:Pulse-RB"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -920,7 +917,7 @@ offColor index 20
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-indicatorPv "$(P):pll"
+indicatorPv "$(SYS)\{$(D)\}Pll-Sts"
 3d
 font "helvetica-medium-r-8.0"
 objType "controls"
@@ -936,7 +933,7 @@ x 350
 y 300
 w 100
 h 21
-controlPv "$(P):$(N):prescaler:set"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Prescaler-SP"
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
@@ -944,7 +941,7 @@ editable
 autoHeight
 motifWidget
 limitsFromDb
-nullPv "$(P):$(N):res"
+nullPv "$(SYS)\{$(D)-DlyGen:$(N)\}Res-I"
 nullColor index 6
 nullCondition "nullEq0"
 useHexPrefix
@@ -963,7 +960,7 @@ x 350
 y 330
 w 116
 h 21
-controlPv "$(P):$(N):delay"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Delay-SP"
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
@@ -987,7 +984,7 @@ x 350
 y 360
 w 116
 h 21
-controlPv "$(P):$(N):width"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Width-SP"
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 0
@@ -1030,7 +1027,7 @@ x 290
 y 420
 w 34
 h 19
-controlPv "$(P):$(N):trig0"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Evt:Trig0-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -1063,7 +1060,7 @@ offColor index 4
 inconsistentColor index 14
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(N):enable"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Ena-Sel"
 3d
 font "helvetica-medium-r-10.0"
 objType "controls"
@@ -1084,7 +1081,7 @@ bgColor index 4
 inconsistentColor index 14
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(N):polarity"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1129,16 +1126,16 @@ symbol0 {
   9 "N"
 }
 value0 {
-  0 "pul0"
-  1 "pul1"
-  2 "pul2"
-  3 "pul3"
-  4 "pul4"
-  5 "pul5"
-  6 "pul6"
-  7 "pul7"
-  8 "pul8"
-  9 "pul9"
+  0 "0"
+  1 "1"
+  2 "2"
+  3 "3"
+  4 "4"
+  5 "5"
+  6 "6"
+  7 "7"
+  8 "8"
+  9 "9"
 }
 endObjectProperties
 
@@ -1228,7 +1225,7 @@ x 520
 y 300
 w 60
 h 20
-controlPv "$(P):$(N):res"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Res-I"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -1252,7 +1249,7 @@ x 340
 y 420
 w 34
 h 19
-controlPv "$(P):$(N):trig1"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Evt:Trig1-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -1279,7 +1276,7 @@ x 390
 y 420
 w 34
 h 19
-controlPv "$(P):$(N):trig2"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Evt:Trig2-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -1365,7 +1362,7 @@ offColor index 4
 inconsistentColor index 20
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):enable"
+controlPv "$(SYS)\{$(D)\}Ena-Sel"
 onLabel "On"
 offLabel "Off"
 labelType "literal"
@@ -1423,7 +1420,7 @@ x 572
 y 336
 w 50
 h 20
-controlPv "$(P):$(N):delay:raw.HOPR"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Delay:Raw-RB.HOPR"
 format "hex"
 font "helvetica-medium-r-8.0"
 fontAlign "right"
@@ -1447,7 +1444,7 @@ x 572
 y 323
 w 50
 h 20
-controlPv "$(P):$(N):delay:raw"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Delay:Raw-RB"
 format "hex"
 font "helvetica-medium-r-8.0"
 fontAlign "right"
@@ -1506,7 +1503,7 @@ x 40
 y 550
 w 60
 h 20
-controlPv "$(P):scale0"
+controlPv "$(SYS)\{$(D)-PS:0\}Div-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -1514,7 +1511,7 @@ editable
 autoHeight
 motifWidget
 limitsFromDb
-nullPv "$(P):scale0.DRVH"
+nullPv "$(SYS)\{$(D)-PS:0\}Div-SP.DRVH"
 nullColor index 9
 nullCondition "nullEq0"
 smartRefresh
@@ -1533,7 +1530,7 @@ x 120
 y 550
 w 40
 h 20
-controlPv "$(P):scale0.DRVH"
+controlPv "$(SYS)\{$(D)-PS:0\}Div-SP.DRVH"
 format "hex"
 font "helvetica-medium-r-10.0"
 fgColor index 14
@@ -1576,7 +1573,7 @@ x 170
 y 550
 w 60
 h 20
-controlPv "$(P):scale0:rate"
+controlPv "$(SYS)\{$(D)-PS:0\}Rate-I"
 font "helvetica-medium-r-10.0"
 fgColor index 14
 bgColor index 3
@@ -1600,7 +1597,7 @@ x 40
 y 580
 w 60
 h 19
-controlPv "$(P):scale1"
+controlPv "$(SYS)\{$(D)-PS:1\}Div-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -1608,7 +1605,7 @@ editable
 autoHeight
 motifWidget
 limitsFromDb
-nullPv "$(P):scale1.DRVH"
+nullPv "$(SYS)\{$(D)-PS:1\}Div-SP.DRVH"
 nullColor index 9
 nullCondition "nullEq0"
 smartRefresh
@@ -1627,7 +1624,7 @@ x 120
 y 580
 w 40
 h 20
-controlPv "$(P):scale1.DRVH"
+controlPv "$(SYS)\{$(D)-PS:1\}Div-SP.DRVH"
 format "hex"
 font "helvetica-medium-r-10.0"
 fgColor index 14
@@ -1670,7 +1667,7 @@ x 170
 y 580
 w 60
 h 20
-controlPv "$(P):scale1:rate"
+controlPv "$(SYS)\{$(D)-PS:1\}Rate-I"
 font "helvetica-medium-r-10.0"
 fgColor index 14
 bgColor index 3
@@ -1694,7 +1691,7 @@ x 40
 y 610
 w 60
 h 19
-controlPv "$(P):scale2"
+controlPv "$(SYS)\{$(D)-PS:2\}Div-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -1702,7 +1699,7 @@ editable
 autoHeight
 motifWidget
 limitsFromDb
-nullPv "$(P):scale2.DRVH"
+nullPv "$(SYS)\{$(D)-PS:2\}Div-SP.DRVH"
 nullColor index 9
 nullCondition "nullEq0"
 smartRefresh
@@ -1721,7 +1718,7 @@ x 120
 y 610
 w 40
 h 20
-controlPv "$(P):scale2.DRVH"
+controlPv "$(SYS)\{$(D)-PS:2\}Div-SP.DRVH"
 format "hex"
 font "helvetica-medium-r-10.0"
 fgColor index 14
@@ -1764,7 +1761,7 @@ x 170
 y 610
 w 60
 h 20
-controlPv "$(P):scale2:rate"
+controlPv "$(SYS)\{$(D)-PS:2\}Rate-I"
 font "helvetica-medium-r-10.0"
 fgColor index 14
 bgColor index 3
@@ -1894,8 +1891,8 @@ symbol0 {
   1 "I"
 }
 value0 {
-  0 "in0"
-  1 "in1"
+  0 "0"
+  1 "1"
 }
 endObjectProperties
 
@@ -1952,7 +1949,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(I):level"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Lvl-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1971,7 +1968,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(I):edge"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Edge-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2047,7 +2044,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(I):ext:trig"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Trig:Ext-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2066,7 +2063,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):$(I):back:trig"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Trig:Back-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2099,7 +2096,7 @@ x 370
 y 600
 w 40
 h 19
-controlPv "$(P):$(I):ext:code"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Code:Ext-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -2123,7 +2120,7 @@ x 480
 y 600
 w 40
 h 19
-controlPv "$(P):$(I):back:code"
+controlPv "$(SYS)\{$(D)-In:$(I)\}Code:Back-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
@@ -2166,7 +2163,7 @@ x 40
 y 170
 w 30
 h 19
-controlPv "$(P):map:blink1"
+controlPv "$(SYS)\{$(D)\}Evt:Blink0-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -2192,7 +2189,7 @@ x 80
 y 170
 w 30
 h 19
-controlPv "$(P):map:blink2"
+controlPv "$(SYS)\{$(D)\}Evt:Blink1-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -2230,7 +2227,7 @@ displayFileName {
   0 "evroutcml.edl"
 }
 symbols {
-  0 "O=$(O)"
+  0 "ON=$(SYS)\{$(D)-Out:$(O)\}, O=$(O)"
 }
 endObjectProperties
 
@@ -2249,7 +2246,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):dbus:mode"
+controlPv "$(SYS)\{$(D)\}Link:TxMode-Sel"
 font "helvetica-medium-r-8.0"
 endObjectProperties
 
@@ -2268,7 +2265,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):dbus:recv:mode"
+controlPv "$(SYS)\{$(D)\}Link:RxMode-Sel"
 font "helvetica-medium-r-8.0"
 endObjectProperties
 
@@ -2324,7 +2321,7 @@ x 360
 y 80
 w 40
 h 20
-controlPv "$(P):link:timo"
+controlPv "$(SYS)\{$(D)\}Cnt:LinkTimo-I"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2369,7 +2366,7 @@ x 360
 y 100
 w 40
 h 20
-controlPv "$(P):fifo:cnt"
+controlPv "$(SYS)\{$(D)\}Cnt:HwOflw-I"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2420,7 +2417,7 @@ offColor index 20
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-indicatorPv "$(P):ts:valid"
+indicatorPv "$(SYS)\{$(D)\}Time:Valid-Sts"
 3d
 font "helvetica-medium-r-8.0"
 objType "controls"
@@ -2458,7 +2455,7 @@ x 360
 y 120
 w 40
 h 20
-controlPv "$(P):fiforate:cnt"
+controlPv "$(SYS)\{$(D)\}Cnt:SwOflw-I"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2543,7 +2540,7 @@ x 469
 y 360
 w 95
 h 20
-controlPv "$(P):$(N):width:rbv"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Width-RB"
 font "helvetica-medium-r-10.0"
 fontAlign "right"
 fgColor index 14
@@ -2574,7 +2571,7 @@ bgColor index 4
 inconsistentColor index 14
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P):ext:inhib"
+controlPv "$(SYS)\{$(D)\}ExtInhib-Sel"
 font "helvetica-medium-r-10.0"
 endObjectProperties
 
@@ -2588,7 +2585,7 @@ x 469
 y 330
 w 95
 h 20
-controlPv "$(P):$(N):delay:rbv"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Delay-RB"
 font "helvetica-medium-r-10.0"
 fontAlign "right"
 fgColor index 14
@@ -2613,7 +2610,7 @@ x 181
 y 345
 w 78
 h 20
-controlPv "$(P):$(O):src.DESC"
+controlPv "$(SYS)\{$(D)-Out:$(O)\}Src-SP.DESC"
 font "helvetica-medium-r-10.0"
 fontAlign "center"
 fgColor index 14
@@ -2656,7 +2653,7 @@ x 571
 y 367
 w 50
 h 20
-controlPv "$(P):$(N):width:raw.HOPR"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Width:Raw-RB.HOPR"
 format "hex"
 font "helvetica-medium-r-8.0"
 fontAlign "right"
@@ -2680,7 +2677,7 @@ x 571
 y 354
 w 50
 h 20
-controlPv "$(P):$(N):width:raw"
+controlPv "$(SYS)\{$(D)-DlyGen:$(N)\}Width:Raw-RB"
 format "hex"
 font "helvetica-medium-r-8.0"
 fontAlign "right"
