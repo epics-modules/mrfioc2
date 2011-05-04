@@ -126,7 +126,6 @@ try{
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
-    CBINIT(&seconds_tick_cb, priorityMedium,&EVRMRM::seconds_tick , this);
 
     /*
      * Create subunit instances
@@ -291,7 +290,7 @@ try{
             shadowSourceTS=TSSourceEvent;
     }
 
-    eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick_cb);
+    eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick, (void*)this);
 
     drain_fifo_task.start();
 
@@ -837,46 +836,27 @@ EVRMRM::eventOccurred(epicsUInt32 event) const
 }
 
 void
-EVRMRM::eventNotityAdd(epicsUInt32 event, CALLBACK* cb)
+EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
 
     SCOPED_LOCK2(evrLock, guard);
 
-    if (std::find(events[event].notifiees.begin(),
-                  events[event].notifiees.end(),
-                  cb)
-                    != events[event].notifiees.end())
-    {
-        throw std::runtime_error("callback already registered for this event");
-    }
-
-    events[event].notifiees.push_back(cb);
-
-    guard.unlock();
+    events[event].notifiees.insert( std::make_pair(cb,arg));
 
     interestedInEvent(event, true);
 }
 
 void
-EVRMRM::eventNotityDel(epicsUInt32 event, CALLBACK* cb)
+EVRMRM::eventNotityDel(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
 
     SCOPED_LOCK2(evrLock, guard);
 
-    eventCode::notifiees_t::iterator it;
-
-    it=std::find(events[event].notifiees.begin(),
-                 events[event].notifiees.end(),
-                 cb);
-    if (it==events[event].notifiees.end())
-        return;
-
-    events[event].notifiees.erase(it);
-    guard.unlock();
+    events[event].notifiees.erase(std::make_pair(cb,arg));
 
     interestedInEvent(event, false);
 }
@@ -973,7 +953,7 @@ eventInvoke(eventCode& event)
         it!=event.notifiees.end();
         ++it)
     {
-        callbackRequest(*it);
+        (*it->first)(it->second, event.code);
     }
 }
 
@@ -1040,6 +1020,7 @@ EVRMRM::drain_fifo()
 
             if (evt>NELEMENTS(events)) {
                 // BUG: we get occasional corrupt VME reads of this register
+                // Fixed in firmware.  Feb 2011
                 epicsUInt32 evt2=READ32(base, EvtFIFOCode);
                 if (evt2>NELEMENTS(events)) {
                     printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
@@ -1149,11 +1130,9 @@ EVRMRM::poll_link(CALLBACK* cb)
 }
 
 void
-EVRMRM::seconds_tick(CALLBACK* cb)
+EVRMRM::seconds_tick(void *raw, epicsUInt32)
 {
-    void *vptr;
-    callbackGetUser(vptr,cb);
-    EVRMRM *evr=static_cast<EVRMRM*>(vptr);
+    EVRMRM *evr=static_cast<EVRMRM*>(raw);
 
     SCOPED_LOCK2(evr->evrLock, guard);
 

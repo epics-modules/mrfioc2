@@ -68,7 +68,7 @@ struct eventCode {
 
     IOSCANPVT occured;
 
-    typedef std::list<CALLBACK*> notifiees_t;
+    typedef std::set<std::pair<EVR::eventCallback,void*> > notifiees_t;
     notifiees_t notifiees;
 
     CALLBACK done;
@@ -161,8 +161,8 @@ public:
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
     virtual bool getTicks(epicsUInt32 *tks);
     virtual IOSCANPVT eventOccurred(epicsUInt32 event) const;
-    virtual void eventNotityAdd(epicsUInt32, CALLBACK*);
-    virtual void eventNotityDel(epicsUInt32, CALLBACK*);
+    virtual void eventNotityAdd(epicsUInt32, eventCallback, void*);
+    virtual void eventNotityDel(epicsUInt32, eventCallback, void*);
 
     bool convertTS(epicsTimeStamp* ts);
 
@@ -256,8 +256,7 @@ private:
     epicsUInt32 timestampValid;
     epicsUInt32 lastInvalidTimestamp;
     epicsUInt32 lastValidTimestamp;
-    CALLBACK seconds_tick_cb;
-    static void seconds_tick(CALLBACK*);
+    static void seconds_tick(void*, epicsUInt32);
 
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings
