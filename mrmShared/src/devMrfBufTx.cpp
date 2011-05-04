@@ -10,6 +10,11 @@
 #include <mbboRecord.h>
 #include <waveformRecord.h>
 #include <menuFtype.h>
+#include <epicsEndian.h>
+
+// for htons() et al.
+#include <netinet/in.h> // on rtems
+#include <arpa/inet.h> // on linux
 
 #include "mrf/databuf.h"
 #include "linkoptions.h"
@@ -21,11 +26,12 @@
 
 struct priv
 {
-    char obj[40];
+  char obj[40];
   epicsUInt32 proto;
   char prop[20];
 
   dataBufTx *priv;
+  epicsUInt8 *scratch;
 };
 
 static const
@@ -58,6 +64,12 @@ try {
   if(!paddr->priv)
     throw std::runtime_error("Failed to lookup device");
 
+  // scratch space for endian swap if needed
+  if(dbValueSize(prec->ftvl)>1 && dbValueSize(prec->ftvl)<=8)
+      paddr->scratch = new epicsUInt8[prec->nelm*dbValueSize(prec->ftvl)];
+  else
+      paddr->scratch = 0;
+
   // prec->dpvt is set again to indicate
   // This also serves to indicate successful
   // initialization to other dset functions
@@ -80,8 +92,9 @@ static long del_record_waveform(dbCommon *praw)
     long ret=0;
     if (!praw->dpvt) return 0;
     try {
-        delete (priv*)praw->dpvt;
+        std::auto_ptr<priv> paddr((priv*)praw->dpvt);
         praw->dpvt = 0;
+        delete[] paddr->scratch;
 
     } catch(std::runtime_error& e) {
         recGblRecordError(S_dev_noDevice, (void*)praw, e.what());
@@ -99,14 +112,38 @@ static long write_waveform(waveformRecord* prec)
 try {
   priv *paddr=static_cast<priv*>(prec->dpvt);
 
-  unsigned char *buf=static_cast<unsigned char*>(prec->bptr);
-
   epicsUInt32 capacity=paddr->priv->lenMax();
   const long esize=dbValueSize(prec->ftvl);
   epicsUInt32 requested=prec->nord*esize;
 
   if (requested > capacity)
     requested=capacity;
+
+  epicsUInt8 *buf;
+  if(esize==1 || esize>8)
+      buf=static_cast<epicsUInt8*>(prec->bptr);
+  else {
+      buf=paddr->scratch;
+      for(size_t i=0; i<requested; i+=esize) {
+          switch(esize) {
+          case 2:
+            *(epicsUInt16*)(buf+i) = htons( *(epicsUInt16*)((char*)prec->bptr+i) );
+            break;
+          case 4:
+            *(epicsUInt32*)(buf+i) = htonl( *(epicsUInt32*)((char*)prec->bptr+i) );
+            break;
+          case 8:
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+            *(epicsUInt32*)(buf+i) = *(epicsUInt32*)((char*)prec->bptr+i);
+            *(epicsUInt32*)(buf+i+4) = *(epicsUInt32*)((char*)prec->bptr+i+4);
+#else
+            *(epicsUInt32*)(buf+i+4) = htonl( *(epicsUInt32*)((char*)prec->bptr+i) );
+            *(epicsUInt32*)(buf+i) = htonl( *(epicsUInt32*)((char*)prec->bptr+i+4) );
+#endif
+            break;
+          }
+      }
+  }
 
   paddr->priv->dataSend(paddr->proto,requested,buf);
 

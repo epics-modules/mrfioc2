@@ -23,6 +23,10 @@
 #include <menuFtype.h>
 #include <callback.h>
 
+// for htons() et al.
+#include <netinet/in.h> // on rtems
+#include <arpa/inet.h> // on linux
+
 #include "mrf/databuf.h"
 #include "linkoptions.h"
 #include "devObj.h"
@@ -175,14 +179,38 @@ try {
 
   } else if(paddr->buf) {
 
-      epicsUInt32 capacity=prec->nelm*dbValueSize(prec->ftvl);
+      long esize = dbValueSize(prec->ftvl);
+      epicsUInt32 capacity=prec->nelm*esize;
 
       if (paddr->blen > capacity) {
           paddr->blen=capacity;
           dummy = recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
       }
 
-      memcpy(prec->bptr, paddr->buf, paddr->blen);
+      if(esize==1 || esize>8) // char or string
+          memcpy(prec->bptr, paddr->buf, paddr->blen);
+      else {
+          epicsUInt8 *buf=(epicsUInt8*)prec->bptr;
+          for(size_t i=0; i<paddr->blen; i+=esize) {
+              switch(esize) {
+              case 2:
+                *(epicsUInt16*)(buf+i) = htons( *(epicsUInt16*)(paddr->buf+i) );
+                break;
+              case 4:
+                *(epicsUInt32*)(buf+i) = htonl( *(epicsUInt32*)(paddr->buf+i) );
+                break;
+              case 8:
+    #if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+                *(epicsUInt32*)(buf+i) = *(epicsUInt32*)(paddr->buf+i);
+                *(epicsUInt32*)(buf+i+4) = *(epicsUInt32*)(paddr->buf+i+4);
+    #else
+                *(epicsUInt32*)(buf+i+4) = htonl( *(epicsUInt32*)(paddr->buf+i) );
+                *(epicsUInt32*)(buf+i) = htonl( *(epicsUInt32*)(paddr->buf+i+4) );
+    #endif
+                break;
+              }
+          }
+      }
 
       prec->nord = paddr->blen/dbValueSize(prec->ftvl);
   }
