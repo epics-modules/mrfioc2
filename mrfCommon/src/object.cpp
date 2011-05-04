@@ -118,7 +118,12 @@ bool showProp(propertyBase* prop, void* raw)
 {
     propArgs *args=(propArgs*)raw;
     args->strm <<args->indent <<prop->type().name() << " " <<prop->name() << " = ";
-    prop->show(args->strm);
+    try {
+        prop->show(args->strm);
+    } catch (std::exception& e) {
+        args->strm << "<Error: "<<e.what()<<">";
+    }
+
     args->strm<<"\n";
     return true;
 }
