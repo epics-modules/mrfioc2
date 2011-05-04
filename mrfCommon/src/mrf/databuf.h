@@ -17,11 +17,11 @@
 typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
                            epicsUInt32 len, const epicsUInt8* buf);
 
-class dataBufTx {
+class dataBufTx : public mrf::ObjectInst<dataBufTx> {
     struct impl;
     impl *pimpl;
 public:
-
+    dataBufTx(const std::string& n) : mrf::ObjectInst<dataBufTx>(n) {}
     virtual ~dataBufTx()=0;
 
     //! Is card configured for buffer transmission?
@@ -33,29 +33,11 @@ public:
 
     virtual epicsUInt32 lenMax() const=0;
 
-    /**@brief Request transmission of a byte array
-     *
-     * The request is added to the Tx queue.  If a
-     * callback is given then it will be called
-     * after the transmission has occured.
-     *
-     * If a callback is given then the pointer to the
-     * buffer may not be modified until the callback
-     * is invoked.
-     * If not callback is given then a copy of the buffer
-     * is made before 'send' returns and the buffer may
-     * be modified immediately.
-     *
-     * To avoid unnecessary copying it is better to
-     * provide a callback.
+    /**@brief Transmit a byte array
      *
      *@param id Send buffer with this Protocol ID.
      *@param len Number of bytes to send
      *@param buf[in] Pointer to byte array to be sent
-     *@param fptr[in] Function pointer invoken after Tx
-     *@param arg[in] Arbitrary pointer passed to completion function
-     *
-     *@throws dataBufOverflow If no space is available in the Tx queue
      */
     virtual void dataSend(epicsUInt8 id, epicsUInt32 len, const epicsUInt8 *buf)=0;
 

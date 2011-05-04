@@ -13,15 +13,15 @@
 
 #include "mrf/databuf.h"
 #include "linkoptions.h"
-#include "dsetshared.h"
+#include "devObj.h"
 
 #include <stdexcept>
 #include <string>
 #include <cfloat>
 
-struct addr
+struct priv
 {
-  epicsUInt32 card;
+    char obj[40];
   epicsUInt32 proto;
   char prop[20];
 
@@ -31,57 +31,37 @@ struct addr
 static const
 linkOptionDef eventdef[] = 
 {
-  linkInt32   (addr, card , "C", 1, 0),
-  linkInt32   (addr, proto, "Proto", 1, 0),
-  linkString  (addr, prop , "P", 1, 0),
+  linkString  (priv, obj , "OBJ"  , 1, 0),
+  linkInt32   (priv, proto, "Proto", 1, 0),
+  linkString  (priv, prop , "P", 1, 0),
   linkOptionEnd
 };
-
-static const
-prop_entry<dataBufTx,bool> props_bool[] = {
-  {"Enable",property<dataBufTx,bool>(0, &dataBufTx::dataTxEnabled, &dataBufTx::dataTxEnable)},
-  {"RTS",property<dataBufTx,bool>(0, &dataBufTx::dataRTS)},
-  {NULL,property<dataBufTx,bool>()}
-};
-
-static
-dataBufTx* get_tx(const char* hwlink, std::string& propname)
-{
-  addr inst_addr;
-
-  if (linkOptionsStore(eventdef, &inst_addr, hwlink, 0))
-    throw std::runtime_error("Couldn't parse link string");
-
-  dataBufTx* card=&datatxmap.get(inst_addr.card);
-  if(!card)
-    throw std::runtime_error("Failed to lookup device");
-
-  propname=std::string(inst_addr.prop);
-
-  return card;
-}
 
 static long add_record_waveform(dbCommon *praw)
 {
   waveformRecord *prec=(waveformRecord*)praw;
   long ret=0;
-  addr *paddr=NULL;
 try {
   assert(prec->inp.type==INST_IO);
 
-  paddr = getdpvt<addr>(prec);
+  std::auto_ptr<priv> paddr(new priv);
 
-  if (linkOptionsStore(eventdef, paddr, prec->inp.value.instio.string, 0))
+  if (linkOptionsStore(eventdef, paddr.get(), prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
 
-  paddr->priv=&datatxmap.get(paddr->card);
+  mrf::Object *O=mrf::Object::getObject(paddr->obj);
+  if(!O) {
+      errlogPrintf("%s: failed to find object '%s'\n", prec->name, paddr->obj);
+      return S_db_errArg;
+  }
+  paddr->priv=dynamic_cast<dataBufTx*>(O);
   if(!paddr->priv)
     throw std::runtime_error("Failed to lookup device");
 
   // prec->dpvt is set again to indicate
   // This also serves to indicate successful
   // initialization to other dset functions
-  setdpvt(prec, paddr);
+  prec->dpvt = paddr.release();
 
   return 0;
 
@@ -92,15 +72,32 @@ try {
   recGblRecordError(S_db_noMemory, (void*)prec, e.what());
   ret=S_db_noMemory;
 }
-  delete paddr;
   return ret;
+}
+
+static long del_record_waveform(dbCommon *praw)
+{
+    long ret=0;
+    if (!praw->dpvt) return 0;
+    try {
+        delete (priv*)praw->dpvt;
+        praw->dpvt = 0;
+
+    } catch(std::runtime_error& e) {
+        recGblRecordError(S_dev_noDevice, (void*)praw, e.what());
+        ret=S_dev_noDevice;
+    } catch(std::exception& e) {
+        recGblRecordError(S_db_noMemory, (void*)praw, e.what());
+        ret=S_db_noMemory;
+    }
+    return ret;
 }
 
 static long write_waveform(waveformRecord* prec)
 {
   if (!prec->dpvt) return -1;
 try {
-  addr *paddr=static_cast<addr*>(prec->dpvt);
+  priv *paddr=static_cast<priv*>(prec->dpvt);
 
   unsigned char *buf=static_cast<unsigned char*>(prec->bptr);
 
@@ -124,10 +121,7 @@ try {
 
 extern "C" {
 
-PROPERTY_DSET_BI(dataBufTx, get_tx, props_bool);
-PROPERTY_DSET_BO(dataBufTx, get_tx, props_bool);
-
-dsxt dxtwaveformBufTx={add_record_waveform,del_record_empty};
+dsxt dxtwaveformBufTx={add_record_waveform,del_record_waveform};
 
 
 static common_dset devwaveformoutdataBufTx = {

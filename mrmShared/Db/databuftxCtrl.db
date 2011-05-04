@@ -1,7 +1,7 @@
 record(bo, "$(P)Link:TxMode-Sel") {
   field(DESC, "Data mode")
-  field(DTYP, "MRF Data Buf Tx")
-  field(OUT , "@C=$(C), Proto=0, P=Enable")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
   field(VAL , "1")
   field(ZNAM, "DBus only")

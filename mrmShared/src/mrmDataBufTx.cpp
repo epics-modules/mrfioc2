@@ -24,10 +24,10 @@ CardMap<dataBufTx> datatxmap;
 dataBufTx::~dataBufTx() {}
 dataBufRx::~dataBufRx() {}
 
-mrmDataBufTx::mrmDataBufTx(
+mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
                  volatile epicsUInt8* buffer
-) :dataBufTx()
+) :dataBufTx(n)
   ,dataCtrl(bufcontrol)
   ,dataBuf(buffer)
   ,dataGuard()

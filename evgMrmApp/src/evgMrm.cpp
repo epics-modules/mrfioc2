@@ -1,6 +1,7 @@
 #include "evgMrm.h"
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <math.h>
 
@@ -25,9 +26,17 @@
 
 #include "evgRegMap.h"
 
+static inline
+std::string namer(epicsUInt32 id)
+{
+    std::ostringstream strm;
+    strm<<"EVG"<<id;
+    return strm.str();
+}
+
 evgMrm::evgMrm(const epicsUInt32 id, volatile epicsUInt8* const pReg):
 m_syncTS(false),
-m_buftx(pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+m_buftx(namer(id)+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
 m_pReg(pReg),
 m_acTrig(pReg),

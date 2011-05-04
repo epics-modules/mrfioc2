@@ -78,7 +78,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   ,id(n)
   ,base(b)
   ,baselen(bl)
-  ,buftx(b+U32_DataTxCtrl, b+U32_DataTx_base)
+  ,buftx(n+":BUFTX", b+U32_DataTxCtrl, b+U32_DataTx_base)
   ,bufrx(n+":BUFRX", b, 10) // Sets depth of Rx queue
   ,count_recv_error(0)
   ,count_hardware_irq(0)

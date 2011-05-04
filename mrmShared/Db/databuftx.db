@@ -2,7 +2,7 @@
 record(waveform, "$(P)dbus:send:s8") {
   field(DESC, "Send Buffer")
   field(DTYP, "MRF Data Buf Tx")
-  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
+  field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "CHAR")
   field(NELM, "2046")
   info(autosaveFields_pass0, "INP")
@@ -12,7 +12,7 @@ record(waveform, "$(P)dbus:send:s8") {
 record(waveform, "$(P)dbus:send:u32") {
   field(DESC, "Send Buffer")
   field(DTYP, "MRF Data Buf Tx")
-  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
+  field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "ULONG")
   field(NELM, "2046")
   info(autosaveFields_pass0, "INP")

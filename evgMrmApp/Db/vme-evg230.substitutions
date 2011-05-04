@@ -102,11 +102,13 @@ pattern { P, cardNum, N, seqNum, NELM}
 }
 
 file databuftx.db
-{pattern {P, C, PROTO}
-{ $(P), $(cardNum), 1 }
+{pattern
+{P, OBJ, PROTO}
+{$(P), "EVG$(cardNum):BUFTX", 1}
 }
 
-file databuftxCtrl.db
-{pattern {P, C}
-{ $(P), $(cardNum) }
+file "databuftxCtrl.db"
+{pattern
+{P, OBJ}
+{$(P), "EVG$(cardNum):BUFTX"}
 }

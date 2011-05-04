@@ -17,14 +17,14 @@ file "evrbase.db"
 
 file "databuftx.db"
 {pattern
-{P, C, PROTO}
-{"$(SYS){$(D)}", $(C), 1}
+{P, OBJ, PROTO}
+{"$(SYS){$(D)}", "EVR$(C):BUFTX", 1}
 }
 
 file "databuftxCtrl.db"
 {pattern
-{P, C}
-{"$(SYS){$(D)}", $(C)}
+{P, OBJ}
+{"$(SYS){$(D)}", "EVR$(C):BUFTX"}
 }
 
 file "mrmevrbufrx.db"

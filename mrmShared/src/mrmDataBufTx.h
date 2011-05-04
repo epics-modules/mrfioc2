@@ -13,7 +13,8 @@ class mrmDataBufTx : public dataBufTx
 {
 public:
 
-    mrmDataBufTx(volatile epicsUInt8* bufcontrol,
+    mrmDataBufTx(const std::string& n,
+                 volatile epicsUInt8* bufcontrol,
                  volatile epicsUInt8* buffer);
     virtual ~mrmDataBufTx();
 
