@@ -55,8 +55,6 @@ INC += mrf/databuf.h
 INC += mrf/object.h
 
 INC += devObj.h
-INC += property.h
-INC += dsetshared.h
 
 
 TESTPROD_HOST += objectTest
@@ -93,7 +91,6 @@ LIBRARY_IOC += mrfCommon
 mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += mrfIoLink.cpp
 mrfCommon_SRCS += linkoptions.c
-mrfCommon_SRCS += dsetshared.cpp
 mrfCommon_SRCS += cardmap.cpp
 mrfCommon_SRCS += object.cpp
 mrfCommon_SRCS += devObjAnalog.cpp
