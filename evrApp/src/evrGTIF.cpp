@@ -35,9 +35,9 @@ bool visitTime(priv* p,short,EVR& evr)
     bool tsok=evr.getTimeStamp(p->ts, p->event);
     if (tsok) {
         p->ok=epicsTimeOK;
-        return true;
-    } else
         return false;
+    } else
+        return true;
 }
 
 extern "C"
