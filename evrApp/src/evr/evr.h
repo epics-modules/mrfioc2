@@ -12,6 +12,7 @@
 #define EVR_HPP_INC
 
 #include "evr/util.h"
+#include "evr/output.h"
 #include "mrf/object.h"
 
 #include <epicsTypes.h>
@@ -23,13 +24,6 @@ class Output;
 class PreScaler;
 class Input;
 class CML;
-
-enum OutputType {
-  OutputInt=0, //!< Internal
-  OutputFP=1,  //!< Front Panel
-  OutputFPUniv=2, //!< FP Universal
-  OutputRB=3 //!< Rear Breakout
-};
 
 enum TSSource {
   TSSourceInternal=0,

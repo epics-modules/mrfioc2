@@ -66,7 +66,7 @@ static
 const
 struct printreg
 {
-    char label[10];
+    const char *label;
     epicsUInt32 offset;
     int rsize;
 } printreg[] = {
@@ -76,7 +76,7 @@ REGINFO("Control", Control, 32),
 REGINFO("Status",  Status, 32),
 REGINFO("IRQ Flag",IRQFlag, 32),
 REGINFO("IRQ Ena", IRQEnable, 32),
-REGINFO("IRQPlsmap",IRQPulseMap, 16),
+REGINFO("IRQPlsmap",IRQPulseMap, 32),
 REGINFO("DBufCtrl",DataBufCtrl, 32),
 REGINFO("DBufTxCt",DataTxCtrl, 32),
 REGINFO("CountPS", CounterPS, 32),
@@ -93,23 +93,21 @@ REGINFO("Pul0Ctrl",PulserCtrl(0),32),
 REGINFO("Pul0Scal",PulserScal(0),32),
 REGINFO("Pul0Dely",PulserDely(0),32),
 REGINFO("Pul0Wdth",PulserWdth(0),32),
-REGINFO("FP0MAP",OutputMapFP(0),16),
-REGINFO("FPU0MAP",OutputMapFPUniv(0),16),
-REGINFO("RB0MAP",OutputMapRB(0),16),
-REGINFO("FPIN0CFG",InputMapFPCfg(0),8),
-REGINFO("FPIN0DBs",InputMapFPDBus(0),8),
-REGINFO("FPIN0Bck",InputMapFPBEvt(0),8),
-REGINFO("FPIN0Ext",InputMapFPEEvt(0),8),
+REGINFO("FP01MAP",OutputMapFP(0),32),
+REGINFO("FPU01MAP",OutputMapFPUniv(0),32),
+REGINFO("RB01MAP",OutputMapRB(0),32),
+REGINFO("FPIN0",InputMapFP(0),32),
 REGINFO("CML4Low",OutputCMLLow(0),32),
 REGINFO("CML4Rise",OutputCMLRise(0),32),
 REGINFO("CML4High",OutputCMLHigh(0),32),
 REGINFO("CML4Fall",OutputCMLFall(0),32),
 REGINFO("CML4Ena",OutputCMLEna(0),32),
-REGINFO("CML4High",OutputCMLCountHigh(0),16),
-REGINFO("CML4Low",OutputCMLCountLow(0),16),
+REGINFO("CML4Cnt",OutputCMLCount(0),32),
 REGINFO("CML4Len",OutputCMLPatLength(0),32),
 REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
 REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
+REGINFO("TXBuf0-3",DataTx(0),32),
+REGINFO("RXBuf0-3",DataRx(0),32)
 #undef REGINFO
 };
 

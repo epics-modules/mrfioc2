@@ -37,6 +37,7 @@ mrmBufRx::dataRxEnabled() const
 void
 mrmBufRx::dataRxEnable(bool v)
 {
+    //TODO: control for mode...
     if (v)
         BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_mode|DataBufCtrl_rx);
     else
@@ -78,8 +79,22 @@ mrmBufRx::drainbuf(CALLBACK* cb)
                 rsize=bsize;
             }
 
-            for(unsigned int i=0; i<rsize; i++)
-                buf[i]=READ8(self.base, DataRx(i));
+            epicsUInt32 val=0;
+            for(unsigned int i=0; i<rsize; i++) {
+                if(i%4==0)
+                    val=READ32(self.base, DataRx(i));
+                buf[i] = val>>24;
+                val<<=8;
+            }
+
+            if(rsize%4) {
+                epicsUInt32 rem=READ32(self.base, DataRx(rsize&~0x3));
+                // maximum of 3 iterations
+                for(unsigned int i=rsize-rsize%4; i<rsize; i++) {
+                    buf[i] = rem>>24; // take top byte
+                    rem<<=8; // shift next byte up
+                }
+            }
 /*
             const unsigned int dblen=10;
             char pbuf[dblen*2+1];

@@ -12,12 +12,19 @@
 
 #include <epicsMMIO.h>
 #include "evrRegMap.h"
+#include "drvem.h"
+
+#include <mrfCommon.h>
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
 
 #include <stdexcept>
 
-MRMOutput::MRMOutput(const std::string& n, volatile unsigned char *b)
+MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int idx)
     :Output(n)
-    ,base(b)
+    ,owner(o)
+    ,type(t)
+    ,N(idx)
 {
 }
 
@@ -28,7 +35,20 @@ MRMOutput::~MRMOutput()
 epicsUInt32
 MRMOutput::source() const
 {
-    return nat_ioread16(base);
+    epicsUInt32 val=64;
+    switch(type) {
+    case OutputInt:
+        return  READ32(owner->base, IRQPulseMap) & 0xffff;
+    case OutputFP:
+        val = READ32(owner->base, OutputMapFP(N)); break;
+    case OutputFPUniv:
+        val = READ32(owner->base, OutputMapFPUniv(N)); break;
+    case OutputRB:
+        val = READ32(owner->base, OutputMapRB(N)); break;
+    }
+    val &= Output_mask(N);
+    val >>= Output_shift(N);
+    return val;
 }
 
 void
@@ -40,7 +60,34 @@ MRMOutput::setSource(epicsUInt32 v)
     )
         throw std::out_of_range("Mapping code is out of range");
 
-    nat_iowrite16(base, v);
+    if(type!=OutputInt)
+        v <<= Output_shift(N);
+
+    epicsUInt32 val=62;
+    switch(type) {
+    case OutputInt:
+        WRITE32(owner->base, IRQPulseMap, v); return;
+    case OutputFP:
+        val = READ32(owner->base, OutputMapFP(N)); break;
+    case OutputFPUniv:
+        val = READ32(owner->base, OutputMapFPUniv(N)); break;
+    case OutputRB:
+        val = READ32(owner->base, OutputMapRB(N)); break;
+    }
+
+    val &= ~Output_mask(N);
+    val |= v << Output_shift(N);
+
+    switch(type) {
+    case OutputInt:
+        break; // will not get here
+    case OutputFP:
+        WRITE32(owner->base, OutputMapFP(N), val); break;
+    case OutputFPUniv:
+        WRITE32(owner->base, OutputMapFPUniv(N), val); break;
+    case OutputRB:
+        WRITE32(owner->base, OutputMapRB(N), val); break;
+    }
 }
 
 const char*

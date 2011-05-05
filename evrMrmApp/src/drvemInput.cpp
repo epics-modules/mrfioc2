@@ -27,153 +27,178 @@ MRMInput::MRMInput(const std::string& n, volatile unsigned char *b, size_t i)
 void
 MRMInput::dbusSet(epicsUInt16 v)
 {
-    epicsUInt8 mask=v;
+    epicsUInt32 val;
 
-    WRITE8(base, InputMapFPDBus(idx), mask);
+    val = READ32(base, InputMapFP(idx) );
+    val &= ~InputMapFP_dbus_mask;
+    val |= v << InputMapFP_dbus_shft;
+    WRITE32(base, InputMapFP(idx), val);
 }
 
 epicsUInt16
 MRMInput::dbus() const
 {
-    return READ8(base, InputMapFPDBus(idx));
+    epicsUInt32 val;
+    val = READ32(base, InputMapFP(idx) );
+    val &= InputMapFP_dbus_mask;
+    val >>= InputMapFP_dbus_shft;
+    return val;
 }
 
 void
 MRMInput::levelHighSet(bool v)
 {
     if(v)
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_lvl);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_lvl);
     else
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_lvl);
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_lvl);
 }
 
 bool
 MRMInput::levelHigh() const
 {
-    return !(READ8(base,InputMapFPCfg(idx)) & InputMapFPCfg_lvl);
+    return !(READ32(base,InputMapFP(idx)) & InputMapFP_lvl);
 }
 
 void
 MRMInput::edgeRiseSet(bool v)
 {
     if(v)
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_edge);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_edge);
     else
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_edge);
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_edge);
 }
 
 bool
 MRMInput::edgeRise() const
 {
-    return !(READ8(base,InputMapFPCfg(idx)) & InputMapFPCfg_edge);
+    return !(READ32(base,InputMapFP(idx)) & InputMapFP_edge);
 }
 
 void
 MRMInput::extModeSet(TrigMode m)
 {
     switch(m){
-	case TrigNone:
-		// Disable both level and edge
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_eedg);
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_elvl);
-		break;
-	case TrigLevel:
-		// disable edge, enable level
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_eedg);
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_elvl);
-		break;
-	case TrigEdge:
-		// disable level, enable edge
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_eedg);
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_elvl);
-		break;
+    case TrigNone:
+        // Disable both level and edge
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_eedg);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_elvl);
+        break;
+    case TrigLevel:
+        // disable edge, enable level
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_eedg);
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_elvl);
+        break;
+    case TrigEdge:
+        // disable level, enable edge
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_eedg);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_elvl);
+        break;
     }
 }
 
 TrigMode
 MRMInput::extMode() const
 {
-	epicsUInt8 v=READ8(base, InputMapFPCfg(idx));
+    epicsUInt32 v=READ32(base, InputMapFP(idx));
 
-	bool e=v&InputMapFPCfg_eedg;
-	bool l=v&InputMapFPCfg_elvl;
+    bool e=v&InputMapFP_eedg;
+    bool l=v&InputMapFP_elvl;
 
-	if(!e && !l)
-		return TrigNone;
-	else if(e && !l)
-		return TrigEdge;
-	else if(!e && l)
-		return TrigLevel;
-	else
-		throw std::runtime_error("Input Ext has both Edge and Level at the same time??");
+    if(!e && !l)
+        return TrigNone;
+    else if(e && !l)
+        return TrigEdge;
+    else if(!e && l)
+        return TrigLevel;
+    else
+        throw std::runtime_error("Input Ext has both Edge and Level at the same time??");
 }
 
 void
 MRMInput::extEvtSet(epicsUInt32 e)
 {
-	if(e>255)
-		std::out_of_range("Event code # out of range");
+    if(e>255)
+        std::out_of_range("Event code # out of range");
 
-	WRITE8(base, InputMapFPEEvt(idx), (epicsUInt8)e);
+    epicsUInt32 val;
+
+    val = READ32(base, InputMapFP(idx) );
+    val &= ~InputMapFP_ext_mask;
+    val |= e << InputMapFP_ext_shft;
+    WRITE32(base, InputMapFP(idx), val);
 }
 
 epicsUInt32
 MRMInput::extEvt() const
 {
-    return READ8(base, InputMapFPEEvt(idx));
+    epicsUInt32 val;
+    val = READ32(base, InputMapFP(idx) );
+    val &= InputMapFP_ext_mask;
+    val >>= InputMapFP_ext_shft;
+    return val;
 }
 
 void
 MRMInput::backModeSet(TrigMode m)
 {
     switch(m){
-	case TrigNone:
-		// Disable both level and edge
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_bedg);
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_blvl);
-		break;
-	case TrigLevel:
-		// disable edge, enable level
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_bedg);
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_blvl);
-		break;
-	case TrigEdge:
-		// disable level, enable edge
-        BITSET(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_bedg);
-        BITCLR(NAT,8, base, InputMapFPCfg(idx), InputMapFPCfg_blvl);
-		break;
+    case TrigNone:
+        // Disable both level and edge
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_bedg);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_blvl);
+        break;
+    case TrigLevel:
+        // disable edge, enable level
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_bedg);
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_blvl);
+        break;
+    case TrigEdge:
+        // disable level, enable edge
+        BITSET(NAT,32, base, InputMapFP(idx), InputMapFP_bedg);
+        BITCLR(NAT,32, base, InputMapFP(idx), InputMapFP_blvl);
+        break;
     }
 }
 
 TrigMode
 MRMInput::backMode() const
 {
-	epicsUInt8 v=READ8(base, InputMapFPCfg(idx));
+    epicsUInt32 v=READ32(base, InputMapFP(idx));
 
-	bool e=v&InputMapFPCfg_bedg;
-	bool l=v&InputMapFPCfg_blvl;
+    bool e=v&InputMapFP_bedg;
+    bool l=v&InputMapFP_blvl;
 
-	if(!e && !l)
-		return TrigNone;
-	else if(e && !l)
-		return TrigEdge;
-	else if(!e && l)
-		return TrigLevel;
-	else
-		throw std::runtime_error("Input Back has both Edge and Level at the same time??");
+    if(!e && !l)
+        return TrigNone;
+    else if(e && !l)
+        return TrigEdge;
+    else if(!e && l)
+        return TrigLevel;
+    else
+        throw std::runtime_error("Input Back has both Edge and Level at the same time??");
 }
 
 void
 MRMInput::backEvtSet(epicsUInt32 e)
 {
-	if(e>255)
-		std::out_of_range("Event code # out of range");
+    if(e>255)
+        std::out_of_range("Event code # out of range");
 
-	WRITE8(base, InputMapFPBEvt(idx), (epicsUInt8)e);
+    epicsUInt32 val;
+
+    val = READ32(base, InputMapFP(idx) );
+    val &= ~InputMapFP_back_mask;
+    val |= e << InputMapFP_back_shft;
+    WRITE32(base, InputMapFP(idx), val);
 }
 
 epicsUInt32
 MRMInput::backEvt() const
 {
-    return READ8(base, InputMapFPBEvt(idx));
+    epicsUInt32 val;
+    val = READ32(base, InputMapFP(idx) );
+    val &= InputMapFP_back_mask;
+    val >>= InputMapFP_back_shft;
+    return val;
 }

@@ -10,14 +10,14 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
-#define DataTxCtrl_len_max 0x7ff
-
 #define DataTxCtrl_done 0x100000
 #define DataTxCtrl_run  0x080000
 #define DataTxCtrl_trig 0x040000
 #define DataTxCtrl_ena  0x020000
 #define DataTxCtrl_mode 0x010000
 #define DataTxCtrl_len_mask 0x0007fc
+
+#define DataTxCtrl_len_max DataTxCtrl_len_mask
 
 CardMap<dataBufTx> datatxmap;
 
@@ -94,6 +94,8 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     if (len > DataTxCtrl_len_max-1)
         throw std::out_of_range("Tx buffer is too long");
 
+    STATIC_ASSERT(DataTxCtrl_len_max%4==0);
+
     dataGuard.lock();
 
     // TODO: Timeout needed?
@@ -103,19 +105,31 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
-    epicsUInt32 index = 0;
-    iowrite8(&dataBuf[index], id);
+    // start with proto id
+    epicsUInt32 temp = id;
     len++;
 
-    for(index=1; index<len; index++)
-        iowrite8(&dataBuf[index], ubuf[index-1]);
-	
-    if(len%4) {
-        for(epicsUInt32 i = 4-len%4; i > 0; i--, index++) {
-            len++;
-            iowrite8(&dataBuf[index], 0);
-        }
+    epicsUInt32 index;
+    for(index=1; index<len; index++) {
+        int byte=index%4;
+
+        if(byte==0)
+            temp=0;
+
+        temp <<= 8;
+        temp |= ubuf[index-1];
+
+        if(byte==3)
+            nat_iowrite32(&dataBuf[index/4], temp );
     }
+	
+    for(; index%4; index++) {
+        temp <<= 8;
+
+        if(index%4==3)
+            nat_iowrite32(&dataBuf[index/4], temp );
+    }
+
     wbarr();
 
     epicsUInt32 reg=len&DataTxCtrl_len_mask;

@@ -190,13 +190,17 @@ MRMCML::polarityInvert() const
 epicsUInt32
 MRMCML::countHigh() const
 {
-    return READ16(base, OutputCMLCountHigh(N));
+    epicsUInt32 val = READ32(base, OutputCMLCount(N));
+    val >>= OutputCMLCount_high_shft;
+    return val & OutputCMLCount_mask;
 }
 
 epicsUInt32
 MRMCML::countLow () const
 {
-    return READ16(base, OutputCMLCountLow(N));
+    epicsUInt32 val = READ32(base, OutputCMLCount(N));
+    val >>= OutputCMLCount_low_shft;
+    return val & OutputCMLCount_mask;
 }
 
 void
@@ -204,7 +208,11 @@ MRMCML::setCountHigh(epicsUInt32 v)
 {
     if(v<=20 || v>=65535)
         throw std::out_of_range("Invalid CML freq. count");
-    WRITE16(base, OutputCMLCountHigh(N), v);
+
+    epicsUInt32 val = READ32(base, OutputCMLCount(N));
+    val &= ~(OutputCMLCount_mask << OutputCMLCount_high_shft);
+    val |= v << OutputCMLCount_high_shft;
+    WRITE32(base, OutputCMLCount(N), v);
 }
 
 void
@@ -212,7 +220,11 @@ MRMCML::setCountLow (epicsUInt32 v)
 {
     if(v<=20 || v>=65535)
         throw std::out_of_range("Invalid CML freq. count");
-    WRITE16(base, OutputCMLCountLow(N), v);
+
+    epicsUInt32 val = READ32(base, OutputCMLCount(N));
+    val &= ~(OutputCMLCount_mask << OutputCMLCount_low_shft);
+    val |= v << OutputCMLCount_low_shft;
+    WRITE32(base, OutputCMLCount(N), v);
 }
 
 double
@@ -329,8 +341,6 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
 
     if(blen>lenPatternMax(p))
         throw std::out_of_range("Pattern is too long");
-    else if(blen==0)
-        printf("Empty pattern\n");
 
 
     epicsUInt32 val=0;

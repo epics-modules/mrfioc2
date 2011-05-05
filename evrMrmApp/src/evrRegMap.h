@@ -27,6 +27,13 @@
  * as documented in EVR-MRM-004.doc
  * Jukka Pietarinen
  * 07 Apr 2011
+ *
+ * Important note about data width
+ *
+ * All registers can be accessed with 8, 16, or 32 width
+ * however, to support transparent operation for both
+ * VME and PCI bus it is necessary to use only 32 bit
+ * access.
  */
 
 #define U32_Status      0x000
@@ -82,9 +89,7 @@
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
 
-/* Listed as 32-bit, but uses the same format as the 16-bit mappings */
-/*#define U32_IRQPulseMap 0x010*/
-#define U16_IRQPulseMap 0x012
+#define U32_IRQPulseMap 0x010
 
 #define U32_DataBufCtrl 0x020
 /* Write 1 to start, read for run status */
@@ -176,45 +181,53 @@ enum evrForm {
 #define U32_PulserDely(N) (U32_PulserNDely + (16*(N)))
 #define U32_PulserWdth(N) (U32_PulserNWdth + (16*(N)))
 
+/* 2x 16-bit registers are treated as one to take advantage
+ * of VME/PCI invariance.  Unfortunatly this only works for
+ * 32-bit operations...
+ */
+
+#define Output_mask(N)  ( (N)%1 ? 0xffff0000 : 0x0000ffff )
+#define Output_shift(N) ( (N)%1 ? 16 : 0)
+
 /* Front panel outputs */
-#define U16_OutputMapFPN 0x400
+#define U32_OutputMapFPN 0x400
 #  define OutputMapFPMax 8
 
 /* 0 <= N <= 7 */
-#define U16_OutputMapFP(N) (U16_OutputMapFPN + (2*(N)))
+#define U32_OutputMapFP(N) (U32_OutputMapFPN + (2*( (N) & (~0x1) )))
 
 /* Front panel universal outputs */
-#define U16_OutputMapFPUnivN 0x440
+#define U32_OutputMapFPUnivN 0x440
 #  define OutputMapFPUnivMax 10
 
 /* 0 <= N <= 9 */
-#define U16_OutputMapFPUniv(N) (U16_OutputMapFPUnivN + (2*(N)))
+#define U32_OutputMapFPUniv(N) (U32_OutputMapFPUnivN + (2*( (N) & (~0x1) )))
 
 /* Transition board outputs */
-#define U16_OutputMapRBN 0x480
+#define U32_OutputMapRBN 0x480
 #  define OutputMapRBMax 32
 
 /* 0 <= N <= 31 */
-#define U16_OutputMapRB(N) (U16_OutputMapRBN + (2*(N)))
+#define U32_OutputMapRB(N) (U32_OutputMapRBN + (2*( (N) & (~0x1) )))
 
 /* Front panel inputs */
-#define U8_InputMapFPCfgN  0x500
-#  define InputMapFPCfg_lvl  0x20
-#  define InputMapFPCfg_blvl 0x10
-#  define InputMapFPCfg_elvl 0x08
-#  define InputMapFPCfg_edge 0x04
-#  define InputMapFPCfg_bedg 0x02
-#  define InputMapFPCfg_eedg 0x01
-#define U8_InputMapFPDBusN 0x501
-#define U8_InputMapFPDBEvt 0x502
-#define U8_InputMapFPDEEvt 0x503
+#define U32_InputMapFPN  0x500
+#  define InputMapFP_lvl  0x20000000
+#  define InputMapFP_blvl 0x10000000
+#  define InputMapFP_elvl 0x08000000
+#  define InputMapFP_edge 0x04000000
+#  define InputMapFP_bedg 0x02000000
+#  define InputMapFP_eedg 0x01000000
+#  define InputMapFP_dbus_mask 0x00ff0000
+#  define InputMapFP_dbus_shft 16
+#  define InputMapFP_back_mask 0x0000ff00
+#  define InputMapFP_back_shft 8
+#  define InputMapFP_ext_mask  0x000000ff
+#  define InputMapFP_ext_shft  0
 #  define InputMapFPMax 2
 
 /* 0 <= N <= 1 */
-#define U8_InputMapFPCfg(N)  (U8_InputMapFPCfgN  + (4*(N)))
-#define U8_InputMapFPDBus(N) (U8_InputMapFPDBusN + (4*(N)))
-#define U8_InputMapFPBEvt(N) (U8_InputMapFPDBEvt + (4*(N)))
-#define U8_InputMapFPEEvt(N) (U8_InputMapFPDEEvt + (4*(N)))
+#define U32_InputMapFP(N)  (U32_InputMapFPN  + (4*(N)))
 
 /* GTX delay */
 #define U32_GTXDelayN 0x580
@@ -241,8 +254,10 @@ enum evrForm {
 #  define OutputCMLEna_rst 0x04
 #  define OutputCMLEna_pow 0x02
 #  define OutputCMLEna_ena 0x01
-#define U16_OutputCMLNCountHigh 0x0614
-#define U16_OutputCMLNCountLow  0x0616
+#define U32_OutputCMLNCount 0x0614
+#  define OutputCMLCount_mask      0xffff
+#  define OutputCMLCount_high_shft 16
+#  define OutputCMLCount_low_shft  0
 #define U32_OutputCMLNPatLength 0x0618
 #  define OutputCMLPatLengthMax 2047
 
@@ -258,20 +273,19 @@ enum evrForm {
 #define U32_OutputCMLFall(N) (U32_OutputCMLNFall +(0x20*(N)))
 #define U32_OutputCMLHigh(N) (U32_OutputCMLNHigh +(0x20*(N)))
 #define U32_OutputCMLEna(N)  (U32_OutputCMLNEna +(0x20*(N)))
-#define U16_OutputCMLCountHigh(N) (U16_OutputCMLNCountHigh +(0x20*(N)))
-#define U16_OutputCMLCountLow(N)  (U16_OutputCMLNCountLow  +(0x20*(N)))
+#define U32_OutputCMLCount(N) (U32_OutputCMLNCount +(0x20*(N)))
 #define U32_OutputCMLPatLength(N) (U32_OutputCMLNPatLength +(0x20*(N)))
 
-#define U8_DataRx_base     0x0800
-#define U8_DataTx_base     0x1800
-#define U8_EventLog_base   0x2000
+#define U32_DataRx_base     0x0800
+#define U32_DataTx_base     0x1800
+#define U32_EventLog_base   0x2000
 
 /* 0 <= N <= 0x7ff */
-#define U8_DataRx(N)      (U8_DataRx_base + (N))
-#define U8_DataTx(N)      (U8_DataTx_base + (N))
+#define U32_DataRx(N)      (U32_DataRx_base + (N))
+#define U32_DataTx(N)      (U32_DataTx_base + (N))
 
 /* 0 <= N <= 0xfff */
-#define U8_EventLog(N)    (U8_EventLog_base
+#define U32_EventLog(N)    (U32_EventLog_base
 
 /* 0 <= M <= 1   ram select
  * 0 <= E <= 255 event code number
@@ -299,9 +313,9 @@ enum evrForm {
 #define ActionHeartBeat 101
 #define ActionPSRst    100
 
-#define U8_SFPEEPROM_base 0x8200
-#define U8_SFPEEPROM(N) (U8_SFPEEPROM_base + (N))
-#define U8_SFPDIAG_base 0x8300
-#define U8_SFPDIAG(N) (U8_SFPDIAG_base + (N))
+#define U32_SFPEEPROM_base 0x8200
+#define U32_SFPEEPROM(N) (U32_SFPEEPROM_base + (N))
+#define U32_SFPDIAG_base 0x8300
+#define U32_SFPDIAG(N) (U32_SFPDIAG_base + (N))
 
 #endif /* EVRREGMAP_H */

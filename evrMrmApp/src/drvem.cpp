@@ -75,7 +75,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   ,id(n)
   ,base(b)
   ,baselen(bl)
-  ,buftx(b+U32_DataTxCtrl, b+U8_DataTx_base)
+  ,buftx(b+U32_DataTxCtrl, b+U32_DataTx_base)
   ,bufrx(b, 10) // Sets depth of Rx queue
   ,count_recv_error(0)
   ,count_hardware_irq(0)
@@ -187,19 +187,19 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
     for(size_t i=0; i<nOFP; i++){
         std::ostringstream name;
         name<<id<<":FrontOut"<<i;
-        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), base+U16_OutputMapFP(i));
+        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
     }
 
     for(size_t i=0; i<nOFPUV; i++){
         std::ostringstream name;
         name<<id<<":FrontUnivOut"<<i;
-        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), base+U16_OutputMapFPUniv(i));
+        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
     for(size_t i=0; i<nORB; i++){
         std::ostringstream name;
         name<<id<<":RearUniv"<<i;
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), base+U16_OutputMapRB(i));
+        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
     }
 
     prescalers.resize(nPS);
@@ -221,9 +221,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
         for(size_t i=4; i<8; i++) {
             std::ostringstream name;
             name<<id<<":FrontOut"<<i;
-            // front panel outputs on EVRTG are swapped even/odd
-            size_t ip = i+(i%2==0 ? 1 : -1);
-            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), base+U16_OutputMapFP(ip));
+            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
         }
         for(size_t i=0; i<4; i++)
             shortcmls[i]=0;
@@ -231,6 +229,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
         shortcmls[5]=new MRMCML(id+":CML5", 5,*this,MRMCML::typeCML,form);
         shortcmls[6]=new MRMCML(id+":CML6", 6,*this,MRMCML::typeTG300,form);
         shortcmls[7]=new MRMCML(id+":CML7", 7,*this,MRMCML::typeTG300,form);
+
     } else if(nCML && ver>=4){
         shortcmls.resize(nCML);
         for(size_t i=0; i<nCML; i++){
@@ -238,6 +237,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
             name<<id<<":CML"<<i;
             shortcmls[i]=new MRMCML(name.str(), i,*this,kind,form);
         }
+
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
     }

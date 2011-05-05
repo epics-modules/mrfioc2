@@ -12,6 +12,9 @@
 #define EVRMRMOUTPUT_H_INC
 
 #include "evr/output.h"
+#include "evr/evr.h"
+
+class EVRMRM;
 
 /**
  * Controls only the single output mapping register
@@ -23,7 +26,7 @@
 class MRMOutput : public Output
 {
 public:
-  MRMOutput(const std::string& n, volatile unsigned char *);
+  MRMOutput(const std::string& n, EVRMRM* owner, OutputType t, unsigned int idx);
   virtual ~MRMOutput();
 
   virtual epicsUInt32 source() const;
@@ -32,7 +35,9 @@ public:
   virtual const char*sourceName(epicsUInt32) const;
 
 private:
-  volatile unsigned char *base;
+  EVRMRM *owner;
+  OutputType type;
+  unsigned int N;
 };
 
 
