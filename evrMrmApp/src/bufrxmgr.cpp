@@ -40,7 +40,7 @@ do { \
   (ptr)->timer=NULL;              \
 } while(0)
 
-void defaulterr(void *, epicsStatus err,
+void defaulterr(void *, epicsStatus err, epicsUInt8,
                 epicsUInt32 , const epicsUInt8* )
 {
     switch(err) {
@@ -158,7 +158,7 @@ bufRxManager::received(CALLBACK* cb)
 
         for(ELLNODE *cur=ellFirst(actions); cur; cur=ellNext(cur)) {
             listener *action=CONTAINER(cur, listener, node);
-            (action->fn)(action->fnarg, 0, buf->used-1, &buf->data[1]);
+            (action->fn)(action->fnarg, 0, proto, buf->used-1, &buf->data[1]);
         }
 
         self.guard.lock();
@@ -183,6 +183,13 @@ void
 bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
 {
     listener *l;
+
+    if(p==AllProtocol) {
+        for(epicsUInt16 i=0; i<=255; i++)
+            dataRxAddReceive(i, fn, arg);
+        return;
+    } else if(p>255)
+        throw std::invalid_argument("protocol id out of range");
 
     guard.lock();
     ELLLIST *actions=&dispatch[p&0xff];
@@ -210,6 +217,13 @@ void
 bufRxManager::dataRxDeleteReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
 {
     listener *l;
+
+    if(p==AllProtocol) {
+        for(epicsUInt16 i=0; i<=255; i++)
+            dataRxDeleteReceive(i, fn, arg);
+        return;
+    }
+
     guard.lock();
 
     ELLLIST *actions=&dispatch[p&0xff];

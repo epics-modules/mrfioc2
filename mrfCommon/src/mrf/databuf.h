@@ -14,7 +14,7 @@
  *@param len Number of bytes in buffer.
  *@param buf[in] Byte array
  */
-typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
+typedef void (*dataBufComplete)(void *arg, epicsStatus ok, epicsUInt8 proto,
                            epicsUInt32 len, const epicsUInt8* buf);
 
 class dataBufTx : public mrf::ObjectInst<dataBufTx> {

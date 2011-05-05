@@ -39,7 +39,7 @@
  */
 
 static
-void datarx(void *, epicsStatus ,epicsUInt32 , const epicsUInt8* );
+void datarx(void *, epicsStatus ,epicsUInt8 , epicsUInt32 , const epicsUInt8* );
 
 struct priv
 {
@@ -127,7 +127,7 @@ static long del_record_waveform(dbCommon *praw)
 }
 
 static
-void datarx(void *arg, epicsStatus ok,
+void datarx(void *arg, epicsStatus ok, epicsUInt8,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     //TODO: scan lock!

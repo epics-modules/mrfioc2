@@ -67,7 +67,7 @@ private:
     void* onerror_arg;
 
 protected:
-    void haderror(epicsStatus e){onerror(onerror_arg,e,0,NULL);}
+    void haderror(epicsStatus e){onerror(onerror_arg,e,0xff,0,NULL);}
 
 private:
     ELLLIST freebufs;

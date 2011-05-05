@@ -30,7 +30,7 @@ file "databuftxCtrl.db"
 file "mrmevrbufrx.db"
 {pattern
 {P, OBJ, PROTO}
-{"$(SYS){$(D)}", EVR$(C):BUFRX, 1}
+{"$(SYS){$(D)}", EVR$(C):BUFRX, 0xff00}
 }
 
 file "evrmap.db"
