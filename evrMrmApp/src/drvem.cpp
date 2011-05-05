@@ -1160,8 +1160,6 @@ EVRMRM::seconds_tick(CALLBACK* cb)
     // Don't bother to latch since we are only reading the seconds
     epicsUInt32 newSec=READ32(evr->base, TSSec);
 
-    printf("Tick %08x ", newSec);
-
     bool valid=true;
 
     /* Received a known bad value */
@@ -1180,7 +1178,6 @@ EVRMRM::seconds_tick(CALLBACK* cb)
 
     if (!valid)
     {
-        printf("Invalid \n");
         if (evr->timestampValid>0) {
             errlogPrintf("TS reset w/ old or invalid seconds %08x (%08x %08x)\n",
                          newSec, evr->lastValidTimestamp, evr->lastInvalidTimestamp);
@@ -1192,7 +1189,6 @@ EVRMRM::seconds_tick(CALLBACK* cb)
     } else {
         evr->timestampValid++;
         evr->lastValidTimestamp=newSec;
-        printf("Valid %u \n", evr->timestampValid);
 
         if (evr->timestampValid == TSValidThreshold) {
             errlogPrintf("TS becomes valid after fault %08x\n",newSec);
