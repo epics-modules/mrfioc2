@@ -18,8 +18,8 @@ file "databuftxCtrl.db"
 
 file "mrmevrbufrx.db"
 {pattern
-{P, C, PROTO}
-{$(P), $(C), 1}
+{P, OBJ, PROTO}
+{$(P), EVR$(C):BUFRX, 1}
 }
 
 file "evrmap.db"

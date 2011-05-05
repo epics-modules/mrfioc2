@@ -102,6 +102,7 @@ mrfCommon_SRCS += devObjBinary.cpp
 mrfCommon_SRCS += devObjMBB.cpp
 mrfCommon_SRCS += devObjMBBDirect.cpp
 mrfCommon_SRCS += devObjWf.cpp
+mrfCommon_SRCS += databuf.cpp
 
 #OBJS_IOC += $(mrfCommon_SRCS)
 

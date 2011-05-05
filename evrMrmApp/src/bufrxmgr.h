@@ -20,7 +20,7 @@
 class bufRxManager : public dataBufRx
 {
 public:
-    bufRxManager(unsigned int qdepth, unsigned int bsize=0);
+    bufRxManager(const std::string&, unsigned int qdepth, unsigned int bsize=0);
 
     virtual ~bufRxManager();
 

@@ -5,6 +5,7 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
+#include "mrf/object.h"
 #include "cardmap.h"
 
 /**
@@ -62,8 +63,9 @@ public:
 
 extern CardMap<dataBufTx> datatxmap;
 
-class dataBufRx {
+class dataBufRx : public mrf::ObjectInst<dataBufRx> {
 public:
+    dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
 
     enum {
         // Special Protocol ID to receive buffers from all IDs.

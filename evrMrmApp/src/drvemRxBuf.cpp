@@ -17,8 +17,8 @@
 
 #include "evrRegMap.h"
 
-mrmBufRx::mrmBufRx(volatile void *b,unsigned int qdepth, unsigned int bsize)
-    :bufRxManager(qdepth, bsize)
+mrmBufRx::mrmBufRx(const std::string& n, volatile void *b,unsigned int qdepth, unsigned int bsize)
+    :bufRxManager(n, qdepth, bsize)
     ,base((volatile unsigned char *)b)
 {
 }
@@ -37,11 +37,13 @@ mrmBufRx::dataRxEnabled() const
 void
 mrmBufRx::dataRxEnable(bool v)
 {
-    //TODO: control for mode...
-    if (v)
+    if (v) {
+        // start reception and switch to DBus+data
         BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_mode|DataBufCtrl_rx);
-    else
-        BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_mode|DataBufCtrl_stop);
+    } else {
+        BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_stop); // stop reception
+        BITCLR(NAT,32,base, DataBufCtrl, DataBufCtrl_mode); // switch to DBus only
+    }
 }
 
 void

@@ -51,8 +51,9 @@ void defaulterr(void *, epicsStatus err,
     }
 }
 
-bufRxManager::bufRxManager(unsigned int qdepth, unsigned int bsize)
-  :guard()
+bufRxManager::bufRxManager(const std::string& n, unsigned int qdepth, unsigned int bsize)
+  :dataBufRx(n)
+  ,guard()
   ,onerror(defaulterr)
   ,onerror_arg(NULL)
   ,m_bsize(bsize ? bsize : 2046)

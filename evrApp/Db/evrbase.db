@@ -258,3 +258,14 @@ record(stringin, "$(P)ts") {
   field(EVNT, "$(EVNT1HZ)")
 }
 
+record(bo, "$(P)dbus:recv:mode") {
+  field(DESC, "Downstream data mode")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ):BUFRX, PROP=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
+}
+

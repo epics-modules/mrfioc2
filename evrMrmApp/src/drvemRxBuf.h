@@ -18,7 +18,7 @@
 class mrmBufRx : public bufRxManager
 {
 public:
-    mrmBufRx(volatile void *base,unsigned int qdepth, unsigned int bsize=0);
+    mrmBufRx(const std::string&, volatile void *base,unsigned int qdepth, unsigned int bsize=0);
     virtual ~mrmBufRx();
 
     virtual bool dataRxEnabled() const;
