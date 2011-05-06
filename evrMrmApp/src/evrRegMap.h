@@ -184,10 +184,13 @@ enum evrForm {
 /* 2x 16-bit registers are treated as one to take advantage
  * of VME/PCI invariance.  Unfortunatly this only works for
  * 32-bit operations...
+ *
+ * Even numbered outputs are the high word,
+ * odd outputs are the low word
  */
 
-#define Output_mask(N)  ( (N)%1 ? 0xffff0000 : 0x0000ffff )
-#define Output_shift(N) ( (N)%1 ? 16 : 0)
+#define Output_mask(N)  ( ((N)&1) ? 0x0000ffff : 0xffff0000 )
+#define Output_shift(N) ( ((N)&1) ? 0 : 16)
 
 /* Front panel outputs */
 #define U32_OutputMapFPN 0x400

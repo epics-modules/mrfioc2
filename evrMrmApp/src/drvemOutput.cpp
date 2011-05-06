@@ -60,9 +60,6 @@ MRMOutput::setSource(epicsUInt32 v)
     )
         throw std::out_of_range("Mapping code is out of range");
 
-    if(type!=OutputInt)
-        v <<= Output_shift(N);
-
     epicsUInt32 val=62;
     switch(type) {
     case OutputInt:
