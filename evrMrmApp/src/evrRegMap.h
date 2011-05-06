@@ -276,6 +276,7 @@ enum evrForm {
 #define U32_OutputCMLFall(N) (U32_OutputCMLNFall +(0x20*(N)))
 #define U32_OutputCMLHigh(N) (U32_OutputCMLNHigh +(0x20*(N)))
 #define U32_OutputCMLEna(N)  (U32_OutputCMLNEna +(0x20*(N)))
+/* The Count is offset by 1.  0 sends 1 word, 1 sends 2 words, ... */
 #define U32_OutputCMLCount(N) (U32_OutputCMLNCount +(0x20*(N)))
 #define U32_OutputCMLPatLength(N) (U32_OutputCMLNPatLength +(0x20*(N)))
 

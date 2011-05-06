@@ -99,7 +99,7 @@ MRMCML::setMode(cmlMode m)
         break;
 
     case cmlModePattern:
-        WRITE32(base, OutputCMLPatLength(N), shadowWaveformlength);
+        WRITE32(base, OutputCMLPatLength(N), shadowWaveformlength-1);
         syncPattern(patternWaveform);
         break;
 
@@ -152,7 +152,7 @@ MRMCML::powered() const
 void
 MRMCML::power(bool s)
 {
-    if(s)
+    if(!s)
         shadowEnable |= OutputCMLEna_pow;
     else
         shadowEnable &= ~OutputCMLEna_pow;
@@ -212,7 +212,7 @@ MRMCML::setCountHigh(epicsUInt32 v)
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_high_shft);
     val |= v << OutputCMLCount_high_shft;
-    WRITE32(base, OutputCMLCount(N), v);
+    WRITE32(base, OutputCMLCount(N), val);
 }
 
 void
@@ -224,7 +224,7 @@ MRMCML::setCountLow (epicsUInt32 v)
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_low_shft);
     val |= v << OutputCMLCount_low_shft;
-    WRITE32(base, OutputCMLCount(N), v);
+    WRITE32(base, OutputCMLCount(N), val);
 }
 
 double
@@ -308,11 +308,12 @@ MRMCML::getPattern(pattern p, unsigned char *buf, epicsUInt32 blen) const
         size_t cmlword = (i/mult);
         size_t cmlbit  = (i%mult);
 
-        size_t cpuword = 0, cpubit;
+        size_t cpuword, cpubit;
         bool first; // first bit in CPU word
 
         if(mult<32) {
             first = cmlbit==0;
+            cpuword = cmlword;
             cpubit = 19 - cmlbit;
         } else {
             first = cmlbit==0 || cmlbit==8;
@@ -347,8 +348,9 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
     for(epicsUInt32 i=0; i<blen; i++) {
         size_t cmlword = (i/mult);
         size_t cmlbit  = (i%mult);
-        size_t cpuword = 0, cpubit;
+        size_t cpuword, cpubit;
         if(mult<32) {
+            cpuword = cmlword;
             cpubit = 19 - cmlbit;
         } else {
             cpuword = 2*cmlword + (cmlbit<8 ? 0 : 1);
@@ -375,7 +377,7 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
         enable(false);
 
     if(mode()==cmlModePattern)
-        WRITE32(base, OutputCMLPatLength(N), shadowWaveformlength);
+        WRITE32(base, OutputCMLPatLength(N), shadowWaveformlength-1);
 
     syncPattern(p);
 
