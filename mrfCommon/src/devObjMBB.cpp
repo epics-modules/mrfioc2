@@ -76,7 +76,7 @@ try {
 OBJECT_DSET(MBBOFromUINT32,
             (&add_record_out<mbboRecord,epicsUInt32>),
             &del_record_property,
-            &init_record_empty,
+            &init_record_return2,
             &write_mbbo_from_integer<epicsUInt32>,
             NULL);
 
@@ -86,7 +86,7 @@ OBJECT_DSET(MBBOFromUINT32,
 OBJECT_DSET(MBBOFromUINT16,
             (&add_record_out<mbboRecord,epicsUInt16>),
             &del_record_property,
-            &init_record_empty,
+            &init_record_return2,
             &write_mbbo_from_integer<epicsUInt16>,
             NULL);
 
