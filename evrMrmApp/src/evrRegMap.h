@@ -242,6 +242,8 @@ enum evrForm {
 #define U32_OutputCMLNFall 0x608
 #define U32_OutputCMLNHigh 0x60c
 #define U32_OutputCMLNEna  0x610
+#  define OutputCMLEna_ftrig_mask 0xffff0000
+#  define OutputCMLEna_ftrig_shft 16
 #  define OutputCMLEna_type_mask 0x0c00
 #  define OutputCMLEna_type_300 0x0800
 #  define OutputCMLEna_type_203 0x0400

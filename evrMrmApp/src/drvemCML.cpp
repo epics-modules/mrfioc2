@@ -203,6 +203,14 @@ MRMCML::countLow () const
     return val & OutputCMLCount_mask;
 }
 
+
+epicsUInt32
+MRMCML::countInit () const
+{
+    epicsUInt32 v = shadowEnable & OutputCMLEna_ftrig_mask;
+    return v >> OutputCMLEna_ftrig_shft;
+}
+
 void
 MRMCML::setCountHigh(epicsUInt32 v)
 {
@@ -227,6 +235,18 @@ MRMCML::setCountLow (epicsUInt32 v)
     WRITE32(base, OutputCMLCount(N), val);
 }
 
+void
+MRMCML::setCountInit (epicsUInt32 v)
+{
+    if(v>=65535)
+        throw std::out_of_range("Invalid CML freq. count");
+
+    v <<= OutputCMLEna_ftrig_shft;
+    shadowEnable &= ~OutputCMLEna_ftrig_mask;
+    shadowEnable |= v;
+    WRITE32(base, OutputCMLEna(N), shadowEnable);
+}
+
 double
 MRMCML::timeHigh() const
 {
@@ -243,6 +263,14 @@ MRMCML::timeLow () const
     return countLow()*period;
 }
 
+double
+MRMCML::timeInit () const
+{
+    double period=1.0/(mult*owner.clock());
+
+    return countInit()*period;
+}
+
 void
 MRMCML::setTimeHigh(double v)
 {
@@ -257,6 +285,14 @@ MRMCML::setTimeLow (double v)
     double period=1.0/(mult*owner.clock());
 
     setCountLow((epicsUInt32)(v/period));
+}
+
+void
+MRMCML::setTimeInit (double v)
+{
+    double period=1.0/(mult*owner.clock());
+
+    setCountInit((epicsUInt32)(v/period));
 }
 
   // For Pattern mode

@@ -174,6 +174,9 @@ OBJECT_BEGIN(CML) {
     OBJECT_PROP2("Counts Low", &CML::timeLow, &CML::setTimeLow);
     OBJECT_PROP2("Counts Low", &CML::countLow, &CML::setCountLow);
 
+    OBJECT_PROP2("Counts Init", &CML::timeInit, &CML::setTimeInit);
+    OBJECT_PROP2("Counts Init", &CML::countInit, &CML::setCountInit);
+
     OBJECT_PROP2("Fine Delay", &CML::fineDelay, &CML::setFineDelay);
 
     OBJECT_PROP1("Freq Mult", &CML::freqMultiple);

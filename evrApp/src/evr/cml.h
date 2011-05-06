@@ -64,12 +64,16 @@ public:
 
   virtual epicsUInt32 countHigh() const=0;
   virtual epicsUInt32 countLow () const=0;
+  virtual epicsUInt32 countInit () const=0;
   virtual void setCountHigh(epicsUInt32)=0;
   virtual void setCountLow (epicsUInt32)=0;
+  virtual void setCountInit (epicsUInt32)=0;
   virtual double timeHigh() const=0;
   virtual double timeLow () const=0;
+  virtual double timeInit () const=0;
   virtual void setTimeHigh(double)=0;
   virtual void setTimeLow (double)=0;
+  virtual void setTimeInit (double)=0;
 
   // waveform mode
 

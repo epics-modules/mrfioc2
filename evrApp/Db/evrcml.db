@@ -305,6 +305,7 @@ record(waveform, "$(ON)Pat:Low-SP") {
 
 record(bo, "$(ON)Freq:Lvl-SP") {
   field(DTYP, "Obj Prop bool")
+  field(DESC, "Trigger level")
   field(OUT, "@OBJ=$(OBJ), PROP=Freq Trig Lvl")
   field(PINI, "YES")
   field(UDF, "0")
@@ -312,6 +313,31 @@ record(bo, "$(ON)Freq:Lvl-SP") {
   field(ZNAM, "Active high")
   field(ONAM, "Active low")
   info(autosaveFields_pass0, "VAL")
+}
+
+record(ao, "$(ON)Freq:Init-SP") {
+  field(DESC, "Trigger point")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts Init")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(VAL , "0")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(ON)Freq:High-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Freq:Init-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Initial counter val.")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts Init")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
 }
 
 record(ao, "$(ON)Freq:High-SP") {
@@ -361,6 +387,22 @@ record(longin, "$(ON)Freq:Low-RB") {
   field(HSV, "INVALID")
   field(LSV, "INVALID")
 }
+
+# waveform mode
+
+
+record(bo, "$(ON)Pat:WfCycle-SP") {
+  field(DESC, "Waveform cycle mode")
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat Recycle")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Single shot")
+  field(ONAM, "Loop")
+  info(autosaveFields_pass0, "VAL")
+}
+
 
 record(waveform, "$(ON)Pat:Wf-SP") {
   field(DESC, "Pattern setting")

@@ -50,12 +50,16 @@ public:
 
     virtual epicsUInt32 countHigh() const;
     virtual epicsUInt32 countLow () const;
+    virtual epicsUInt32 countInit () const;
     virtual void setCountHigh(epicsUInt32);
     virtual void setCountLow (epicsUInt32);
+    virtual void setCountInit (epicsUInt32);
     virtual double timeHigh() const;
     virtual double timeLow () const;
+    virtual double timeInit () const;
     virtual void setTimeHigh(double);
     virtual void setTimeLow (double);
+    virtual void setTimeInit (double);
 
     // For Pattern mode
 
