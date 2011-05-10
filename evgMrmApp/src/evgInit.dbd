@@ -58,7 +58,8 @@ device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp3")
 #evgMxc.db
 device( bo, VME_IO, devBoEvgMxcPolarity, "EVG Mxc")
 device( bi, VME_IO, devBiEvgMxcStatus, "EVG Mxc")
-device( longin, VME_IO, devLiEvgMxcPrescaler, "EVG Mxc")
+device( longout, VME_IO, devLoEvgMxcPrescaler, "EVG Mxc")
+device( longin , VME_IO, devLiEvgMxcPrescaler, "EVG Mxc")
 device( ao, VME_IO, devAoEvgMxcFreq, "EVG Mxc")
 device( ai, VME_IO, devAiEvgMxcFreq, "EVG Mxc")
 

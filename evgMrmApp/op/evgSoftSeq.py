@@ -40,7 +40,7 @@ class evgSoftSeq(gui.QMainWindow):
         pv = self.arg1 + self.arg2 + "timestamp.INP"
         camonitor(pv, self.cb_timestampInp)
 
-        pv = self.arg1 + ":EvtClkSpeed"
+        pv = self.arg1 + "EvtClkSpeed"
         camonitor(pv, self.cb_evtClkSpeed)
 
         pv = self.arg1 + self.arg2 + "timestampInpMode"

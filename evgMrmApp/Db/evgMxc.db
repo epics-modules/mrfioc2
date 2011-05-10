@@ -22,15 +22,13 @@ record(ao, "$(P)$(N)Freq") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Frequency")
     field( OUT,  "#C$(cardNum) S$(mxcNum) @")
-    field( VAL,  "1")
-    field( UDF,  "0")
     field( EGU,  "Hz")
     field( HOPR, "62500000")
     field( LOPR, "0.029")
     field( DRVH, "62500000")
     field( DRVL, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)$(N)Freq:RB")
+    field( FLNK, "$(P)$(N)Freq:RB PP")
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -42,7 +40,19 @@ record(ai, "$(P)$(N)Freq:RB") {
     field( HOPR, "62500000")
     field( LOPR, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)$(N)Prescaler:RB")
+    field( FLNK, "$(P)$(N)Prescaler:RB PP")
+}
+
+record(longout, "$(P)$(N)Prescaler") {
+    field( DTYP, "EVG Mxc")
+    field( DESC, "EVG Mux Prescaler")
+    field( OUT,  "#C$(cardNum) S$(mxcNum) @")
+    field( PINI, "YES")
+    field( VAL,  "2")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( FLNK, "$(P)$(N)Freq:RB PP")
+    info( autosaveFields_pass0, "VAL")
 }
 
 record(longin , "$(P)$(N)Prescaler:RB") {
@@ -53,5 +63,5 @@ record(longin , "$(P)$(N)Prescaler:RB") {
 
 record(ai, "$(P)$(N)Freq:Update") {
     field( INP,  "$(P)EvtClkSpeed CP")
-    field( FLNK, "$(P)$(N)Freq")
+    field( FLNK, "$(P)$(N)Freq:RB")
 }
