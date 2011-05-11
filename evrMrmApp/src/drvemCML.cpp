@@ -162,13 +162,19 @@ MRMCML::power(bool s)
 double
 MRMCML::fineDelay() const
 {
-    return 0.0;
+    // The GTX output fine delay is an external chip
+    // and not related to the clock frequency.
+    // So just scale it to [0, 1) and use ESLO for the
+    // actual calibration
+    return READ32(base, GTXDelay(N))/1024.0;
 }
 
 void
-MRMCML::setFineDelay(double)
+MRMCML::setFineDelay(double v)
 {
-
+    if(v>1024.0)
+        v=1024.0;
+    WRITE32(base, GTXDelay(N), lround(v*1024.0));
 }
 
 void

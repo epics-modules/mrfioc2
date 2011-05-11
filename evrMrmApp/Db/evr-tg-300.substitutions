@@ -80,6 +80,15 @@ file "evrcml.db"
 {"$(SYS){$(D)}", "$(SYS){$(D)-Out:FP3}", "EVR$(C):CML7", 40}
 }
 
+file "evrcmlgun.db"
+{pattern
+{ON, OBJ}
+{"$(SYS){$(D)-Out:FP0}", "EVR$(C):CML4"}
+{"$(SYS){$(D)-Out:FP1}", "EVR$(C):CML5"}
+{"$(SYS){$(D)-Out:FP2}", "EVR$(C):CML6"}
+{"$(SYS){$(D)-Out:FP3}", "EVR$(C):CML7"}
+}
+
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"
 {pattern
