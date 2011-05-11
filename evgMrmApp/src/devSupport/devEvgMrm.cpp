@@ -92,7 +92,7 @@ init_li(longinRecord* pli) {
 /**        bo - Enable EVG    **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-write_bo_Enable(boRecord* pbo) {
+write_bo_enable(boRecord* pbo) {
     long ret = 0;
     
     try {
@@ -101,6 +101,29 @@ write_bo_Enable(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         ret = evg->enable(pbo->val);
+    } catch(std::runtime_error& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+        ret = S_dev_noDevice;
+    } catch(std::exception& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
+        ret = S_db_noMemory;
+    }
+
+    return ret;
+}
+
+/**        bo - Reset Multilpled Counters    **/
+/*returns: (-1,0)=>(failure,success)*/
+static long
+write_bo_resetMxc(boRecord* pbo) {
+    long ret = 0;
+
+    try {
+        evgMrm* evg = (evgMrm*)pbo->dpvt;
+        if(!evg)
+            throw std::runtime_error("Device pvt field not initialized");
+
+        ret = evg->resetMxc(pbo->val);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -309,9 +332,19 @@ common_dset devBoEvgEnable = {
     NULL,
     (DEVSUPFUN)init_bo,
     NULL,
-    (DEVSUPFUN)write_bo_Enable,
+    (DEVSUPFUN)write_bo_enable,
 };
 epicsExportAddress(dset, devBoEvgEnable);
+
+common_dset devBoEvgResetMxc = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bo,
+    NULL,
+    (DEVSUPFUN)write_bo_resetMxc,
+};
+epicsExportAddress(dset, devBoEvgResetMxc);
 
 common_dset devSiTimeStamp = {
     5,

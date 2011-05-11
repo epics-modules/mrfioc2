@@ -161,6 +161,14 @@ evgMrm::enable(bool ena) {
 
     BITSET32(m_pReg, Control, EVG_DIS_EVT_REC);
     BITSET32(m_pReg, Control, EVG_REV_PWD_DOWN);
+    BITSET32(m_pReg, Control, EVG_MXC_RESET);
+    return OK;
+}
+
+epicsStatus
+evgMrm::resetMxc(bool reset) {
+    if(reset)
+        BITSET32(m_pReg, Control, EVG_MXC_RESET);
 
     return OK;
 }

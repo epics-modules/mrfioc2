@@ -66,6 +66,12 @@ init_bi(biRecord* pbi) {
 }
 
 /*returns: (-1,0)=>(failure,success)*/
+static long
+init_lo(longoutRecord* plo) {
+    return init_record((dbCommon*)plo, &plo->out);
+}
+
+/*returns: (-1,0)=>(failure,success)*/
 static long 
 init_li(longinRecord* pli) {
     return init_record((dbCommon*)pli, &pli->inp);
@@ -134,6 +140,27 @@ read_bi_status(biRecord* pbi) {
     return ret;
 }
 
+/*returns: (-1,0)=>(failure,success)*/
+static long
+write_lo_prescaler(longoutRecord* plo) {
+    long ret = 0;
+
+    try {
+        evgMxc* mxc = (evgMxc*)plo->dpvt;
+        if(!mxc)
+            throw std::runtime_error("Device pvt field not initialized");
+
+        ret = mxc->setMxcPrescaler(plo->val);
+    } catch(std::runtime_error& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+        ret = S_dev_noDevice;
+    } catch(std::exception& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), plo->name);
+        ret = S_db_noMemory;
+    }
+
+    return ret;
+}
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
@@ -230,6 +257,16 @@ common_dset devBiEvgMxcStatus = {
     (DEVSUPFUN)read_bi_status,
 };
 epicsExportAddress(dset, devBiEvgMxcStatus);
+
+common_dset devLoEvgMxcPrescaler = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_lo,
+    NULL,
+    (DEVSUPFUN)write_lo_prescaler,
+};
+epicsExportAddress(dset, devLoEvgMxcPrescaler);
 
 common_dset devLiEvgMxcPrescaler = {
     5,

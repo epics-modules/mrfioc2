@@ -231,6 +231,7 @@
 #define  EVG_MASTER_ENA         0x80000000
 #define  EVG_DIS_EVT_REC        0x40000000
 #define  EVG_REV_PWD_DOWN       0x20000000
+#define  EVG_MXC_RESET          0x01000000
 
 /**************************************************************************************************/
 /* External Input Interrupt Enable                                                                    */
