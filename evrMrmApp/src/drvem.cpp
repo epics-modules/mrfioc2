@@ -921,7 +921,7 @@ EVRMRM::isr(void *arg)
         //FIFO not-empty
         evr->shadowIRQEna &= ~IRQ_Event;
         int wakeup=0;
-        evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
+        evr->drain_fifo_wakeup.trySend(&wakeup, sizeof(wakeup));
     }
     if(active&IRQ_Heartbeat){
         evr->count_heartbeat++;
@@ -930,7 +930,7 @@ EVRMRM::isr(void *arg)
     if(active&IRQ_FIFOFull){
         evr->shadowIRQEna &= ~IRQ_FIFOFull;
         int wakeup=0;
-        evr->drain_fifo_wakeup.send(&wakeup, sizeof(wakeup));
+        evr->drain_fifo_wakeup.trySend(&wakeup, sizeof(wakeup));
 
         scanIoRequest(evr->IRQfifofull);
     }
