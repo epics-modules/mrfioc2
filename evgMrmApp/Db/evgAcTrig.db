@@ -1,4 +1,28 @@
-record(longout, "$(P)acTrig:divider") {
+record(bo, "$(P)Bypass-Sel") {
+    field( DTYP, "EVG AC Bypass")
+    field( DESC, "Bypass AC divider and Phase shifter")
+    field( OUT,  "#C$(cardNum) S @")
+    field( PINI, "YES")
+    field( VAL , "1")
+    field( UDF,  "0")
+    field( ZNAM, "Off")
+    field( ONAM, "On")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)Sync-Sel") {
+    field( DTYP, "EVG AC Sync")
+    field( DESC, "Sync to Event Clock or Mxc7")
+    field( OUT,  "#C$(cardNum) S @")
+    field( PINI, "YES")
+    field( VAL , "0")
+    field( UDF,  "0")
+    field( ZNAM, "Event Clk")
+    field( ONAM, "Mxc7")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(P)Divider-SP") {
     field( DTYP, "EVG AC Divider")
     field( DESC, "EVG AC Divider")
     field( OUT,  "#C$(cardNum) S @")
@@ -12,7 +36,7 @@ record(longout, "$(P)acTrig:divider") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)acTrig:phase") {
+record(ao, "$(P)Phase-SP") {
     field( DTYP, "EVG AC Phase")
     field( DESC, "EVG AC Phase Shifter")
     field( OUT,  "#C$(cardNum) S @")
@@ -31,30 +55,4 @@ record(ao, "$(P)acTrig:phase") {
     field( PREC, "1")
     info( autosaveFields_pass0, "VAL")
 }
-
-record(bo, "$(P)acTrig:byp") {
-    field( DTYP, "EVG AC Bypass")
-    field( DESC, "Bypass AC divider and Phase shifter")
-    field( OUT,  "#C$(cardNum) S @")
-    field( PINI, "YES")
-    field( VAL , "1")
-    field( UDF,  "0")
-    field( ZNAM, "Off")
-    field( ONAM, "On")
-    info( autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P)acTrig:syncSrc") {
-    field( DTYP, "EVG AC Sync")
-    field( DESC, "Sync to Event Clock or Mxc7")
-    field( OUT,  "#C$(cardNum) S @")
-    field( PINI, "YES")
-    field( VAL , "0")
-    field( UDF,  "0")
-    field( ZNAM, "Event Clk")
-    field( ONAM, "Mxc7")
-    info( autosaveFields_pass0, "VAL")
-}
-
-
 

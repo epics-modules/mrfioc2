@@ -14,7 +14,7 @@
    <string>EvgSoftSeq</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="heading_label">
+   <widget class="QLabel" name="label_Heading">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -2099,7 +2099,7 @@
     <column/>
     <column/>
    </widget>
-   <widget class="QPushButton" name="pb_setSoftSeq">
+   <widget class="QPushButton" name="pb_setSequence">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -2112,7 +2112,7 @@
      <string>Set</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rb_tsConvert">
+   <widget class="QRadioButton" name="rb_TsInpModeEGU">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -2128,7 +2128,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rb_tsRaw">
+   <widget class="QRadioButton" name="rb_TsInpModeTicks">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -2161,7 +2161,7 @@
      <string>Timestamp Input Mode</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_tsRes">
+   <widget class="QLabel" name="label_tsResolution">
     <property name="geometry">
      <rect>
       <x>80</x>

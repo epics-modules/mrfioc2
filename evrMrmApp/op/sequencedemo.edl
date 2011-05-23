@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1303
-y 38
+x 1311
+y 78
 w 202
 h 380
 font "helvetica-medium-r-18.0"
@@ -32,7 +32,7 @@ x 3
 y 26
 w 194
 h 28
-controlPv "$(P)evta:count"
+controlPv "$(SYS)\{$(D)\}EvtACnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -48,7 +48,7 @@ x 3
 y 60
 w 194
 h 28
-controlPv "$(P)evtb:count"
+controlPv "$(SYS)\{$(D)\}EvtBCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -64,7 +64,7 @@ x 3
 y 95
 w 194
 h 28
-controlPv "$(P)evtc:count"
+controlPv "$(SYS)\{$(D)\}EvtCCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -80,7 +80,7 @@ x 3
 y 138
 w 194
 h 28
-controlPv "$(P)evtd:count"
+controlPv "$(SYS)\{$(D)\}EvtDCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -96,7 +96,7 @@ x 3
 y 178
 w 194
 h 28
-controlPv "$(P)evte:count"
+controlPv "$(SYS)\{$(D)\}EvtECnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -112,7 +112,7 @@ x 3
 y 220
 w 194
 h 28
-controlPv "$(P)evtf:count"
+controlPv "$(SYS)\{$(D)\}EvtFCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -128,7 +128,7 @@ x 3
 y 255
 w 194
 h 28
-controlPv "$(P)evtg:count"
+controlPv "$(SYS)\{$(D)\}EvtGCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -144,7 +144,7 @@ x 3
 y 296
 w 194
 h 28
-controlPv "$(P)evth:count"
+controlPv "$(SYS)\{$(D)\}EvtHCnt-I"
 lineColor index 14
 onColor index 15
 offColor index 0
@@ -165,7 +165,7 @@ onColor index 0
 offColor index 0
 topShadowColor index 0
 botShadowColor index 14
-controlPv "$(P)demo:reset.PROC"
+controlPv "$(SYS)\{$(D)\}demo:reset.PROC"
 releaseValue "1"
 onLabel "Reset"
 offLabel "Reset"

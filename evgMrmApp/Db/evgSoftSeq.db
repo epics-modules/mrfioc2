@@ -1,4 +1,4 @@
-record(bo, "$(P)$(N)timestampInpMode") {
+record(bo, "$(P)TsInpMode-Sel") {
     field( DTYP, "EVG SEQ INPUT MODE")
     field( DESC, "EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -9,7 +9,7 @@ record(bo, "$(P)$(N)timestampInpMode") {
     info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)$(N)timestampInpModeRB") {
+record(bi, "$(P)TsInpMode-RB") {
     field( DTYP, "EVG SEQ INPUT MODE")
     field( DESC, "EVG Sequence Input Mode")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -18,7 +18,7 @@ record(bi, "$(P)$(N)timestampInpModeRB") {
     field( ONAM, "TICKS")
 }
 
-record(waveform, "$(P)$(N)eventCode") {
+record(waveform, "$(P)EvtCode-SP") {
     field( DTYP, "EVG SEQ EVENT CODE")
     field( DESC, "Sequence event code array")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -27,7 +27,7 @@ record(waveform, "$(P)$(N)eventCode") {
     info( autosaveFields_pass1, "VAL")
 }
 
-record(waveform, "$(P)$(N)eventCodeRB") {
+record(waveform, "$(P)EvtCode-RB") {
     field( DTYP, "EVG SEQ EVENT CODE RB")
     field( DESC, "Sequence event code readback")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -36,7 +36,7 @@ record(waveform, "$(P)$(N)eventCodeRB") {
     field( FTVL, "UCHAR")
 }
 
-record(waveform, "$(P)$(N)timestamp") {
+record(waveform, "$(P)Timestamp-SP") {
     field( DTYP, "EVG SEQ TIMESTAMP")
     field( DESC, "Sequence timestamp array")
     field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
@@ -46,7 +46,7 @@ record(waveform, "$(P)$(N)timestamp") {
     info( autosaveFields_pass1, "VAL")
 }
 
-record(waveform, "$(P)$(N)timestampRB") {
+record(waveform, "$(P)Timestamp-RB") {
     field( DTYP, "EVG SEQ TIMESTAMP RB")
     field( DESC, "Sequence timestamp readback")
     field( INP,  "#C$(cardNum) S$(seqNum) @1000000")
@@ -55,7 +55,7 @@ record(waveform, "$(P)$(N)timestampRB") {
     field( FTVL, "DOUBLE")
 }
 
-record(mbbo, "$(P)$(N)runMode") {
+record(mbbo, "$(P)RunMode-Sel") {
     field( DTYP, "EVG SEQ RUN MODE")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
     field( UDF,  "0")
@@ -80,7 +80,7 @@ record(mbbo, "$(P)$(N)runMode") {
     info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbi, "$(P)$(N)runModeRB") {
+record(mbbi, "$(P)RunMode-RB") {
     field( DTYP, "EVG SEQ RUN MODE")
     field( INP , "#C$(cardNum) S$(seqNum) @")
     field( SCAN, "I/O Intr")
@@ -103,7 +103,7 @@ record(mbbi, "$(P)$(N)runModeRB") {
     field( UNSV, "INVALID")
 }
 
-record(mbbo, "$(P)$(N)trigSrc") {
+record(mbbo, "$(P)TrigSrc-Sel") {
     field( DTYP, "EVG SEQ TRIG SRC")
     field( OUT , "#C$(cardNum) S$(seqNum) @")
     field( ZRST, "Mxc0")
@@ -138,7 +138,7 @@ record(mbbo, "$(P)$(N)trigSrc") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(mbbi, "$(P)$(N)trigSrcRB") {
+record(mbbi, "$(P)TrigSrc-RB") {
     field( DTYP, "EVG SEQ TRIG SRC")
     field( INP , "#C$(cardNum) S$(seqNum) @")
     field( UDF,  "0")
@@ -173,7 +173,7 @@ record(mbbi, "$(P)$(N)trigSrcRB") {
     field( UNSV, "INVALID")
 }
 
-record(bo, "$(P)$(N)commit") {
+record(bo, "$(P)Commit-Cmd") {
     field( DTYP, "EVG COMMIT SEQ")
     field( DESC, "Commit EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -181,21 +181,10 @@ record(bo, "$(P)$(N)commit") {
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
-    field( FLNK, "$(P)loadedSeq")
+    field( FLNK, "$(P)LoadedSeq-RB")
 }
 
-record(bo, "$(P)$(N)commit") {
-    field( DTYP, "EVG COMMIT SEQ")
-    field( DESC, "Commit EVG Sequence")
-    field( OUT,  "#C$(cardNum) S$(seqNum) @")
-    field( VAL,  "1")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-    field( FLNK, "$(P)loadedSeq")
-}
-
-record(bo, "$(P)$(N)load") {
+record(bo, "$(P)Load-Cmd") {
     field( DTYP, "EVG LOAD SEQ")
     field( DESC, "ALLOC EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -203,10 +192,10 @@ record(bo, "$(P)$(N)load") {
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
-    field( FLNK, "$(P)loadedSeq")
+    field( FLNK, "$(P)LoadedSeq-RB")
 }
 
-record(bo, "$(P)$(N)unload") {
+record(bo, "$(P)Unload-Cmd") {
     field( DTYP, "EVG UNLOAD SEQ")
     field( DESC, "Dealloc EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -214,10 +203,10 @@ record(bo, "$(P)$(N)unload") {
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
-    field( FLNK, "$(P)loadedSeq")
+    field( FLNK, "$(P)LoadedSeq-RB")
 }
 
-record(bo, "$(P)$(N)enable") {
+record(bo, "$(P)Enable-Cmd") {
     field( DTYP, "EVG ENABLE SEQ")
     field( DESC, "Enable EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -227,7 +216,7 @@ record(bo, "$(P)$(N)enable") {
     field( ONAM, "1")
 }
 
-record(bo, "$(P)$(N)disable") {
+record(bo, "$(P)Disable-Cmd") {
     field( DTYP, "EVG DISABLE SEQ")
     field( DESC, "Disable EVG Sequence")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -237,7 +226,7 @@ record(bo, "$(P)$(N)disable") {
     field( ONAM, "1")
 }
 
-record(bo, "$(P)$(N)abort") {
+record(bo, "$(P)Abort-Cmd") {
     field( DTYP, "EVG ABORT SEQ")
     field( DESC, "Abort Sequence immediately")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -247,7 +236,7 @@ record(bo, "$(P)$(N)abort") {
     field( ONAM, "1")
 }
 
-record(bo, "$(P)$(N)pause") {
+record(bo, "$(P)Pause-Cmd") {
     field( DTYP, "EVG PAUSE SEQ")
     field( DESC, "Pause Sequence immediately")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -257,7 +246,7 @@ record(bo, "$(P)$(N)pause") {
     field( ONAM, "1")
 }
 
-record(bo, "$(P)$(N)softTrig") {
+record(bo, "$(P)SoftTrig-Sel") {
     field( DTYP, "EVG SOFT TRIG")
     field( DESC, "Sequence RAM soft trigger")
     field( OUT,  "#C$(cardNum) S$(seqNum) @")
@@ -267,7 +256,7 @@ record(bo, "$(P)$(N)softTrig") {
     field( ONAM, "1")
 }
 
-record(bi, "$(P)$(N)loadStatus") {
+record(bi, "$(P)Load-RB") {
     field( DTYP, "EVG LOAD STATUS")
     field( DESC, "Soft Seq Load status")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -277,7 +266,7 @@ record(bi, "$(P)$(N)loadStatus") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)$(N)commitStatus") {
+record(bi, "$(P)Commit-RB") {
     field( DTYP, "EVG COMMIT STATUS")
     field( DESC, "Soft Seq Commit status")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -287,7 +276,7 @@ record(bi, "$(P)$(N)commitStatus") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)$(N)enaStatus") {
+record(bi, "$(P)Enable-RB") {
     field( DTYP, "EVG ENA STATUS")
     field( DESC, "Soft Seq Ena status")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -297,7 +286,7 @@ record(bi, "$(P)$(N)enaStatus") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(waveform, "$(P)loadedSeq") {
+record(waveform, "$(P)LoadedSeq-RB") {
     field( DTYP, "EVG LOADED SEQ")
     field( DESC, "Soft Seqs Loaded in Rams")
     field( INP,  "#C$(cardNum) S @")
@@ -305,7 +294,7 @@ record(waveform, "$(P)loadedSeq") {
     field( FTVL, "LONG")
 }
 
-record(stringin, "$(P)$(N)err") {
+record(stringin, "$(P)Error-RB") {
     field( DTYP, "EVG SEQ ERR")
     field( DESC, "Sequence error msg.")
     field( INP,  "#C$(cardNum) S$(seqNum) @")
@@ -314,60 +303,60 @@ record(stringin, "$(P)$(N)err") {
 
 
 #
-# On boot Process load record if the sequence was perviously in LOADED state
+#Process Load-Cmd record if the sequence  was perviously in LOADED state
 #
 
-record(calcout, "$(P)$(N)calcoutLoad") {
+record(calcout, "$(P)Load-Calc_") {
     field( CALC, "A")
-    field( INPA, "$(P)$(N)loadStatus NPP NMS")
+    field( INPA, "$(P)Load-RB NPP NMS")
     field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)$(N)load PP")
+    field( OUT,  "$(P)Load-Cmd PP")
 }
 
 #
-#Process commit record if the sequence was perviously in COMMITTED state
+#Process Commit-Cmd record if the sequence was perviously in COMMITTED state
 #
 
-record(calcout, "$(P)$(N)calcoutCommit") {
+record(calcout, "$(P)Commit-Calc_") {
     field( CALC, "A")
-    field( INPA, "$(P)$(N)commitStatus NPP NMS")
-    field( INPB, "$(P)$(N)timestamp PP")
+    field( INPA, "$(P)Commit-RB NPP NMS")
     field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)$(N)commit PP")
+    field( OUT,  "$(P)Commit-Cmd PP")
 }
 
-record(calcout, "$(P)$(N)calcoutEnable") {
+#
+#Process Enable-Cmd record if the sequence was perviously in ENABLED state
+#
+
+record(calcout, "$(P)Enable-Calc_") {
     field( CALC, "A")
-    field( INPA, "$(P)$(N)enaStatus NPP NMS")
+    field( INPA, "$(P)Enable-RB NPP NMS")
     field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)$(N)enable PP")
+    field( OUT,  "$(P)Enable-Cmd PP")
 }
 
-record(fanout, "$(P)$(N)fo") {
+record(fanout, "$(P)InitSeq-FOut_") {
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
-    field( PINI, "YES")
-    field( LNK1, "$(P)$(N)timestampInpMode")
-    field( LNK2, "$(P)$(N)eventCode")
-    field( LNK3, "$(P)$(N)timestamp")
-    field( LNK4, "$(P)$(N)runMode")
-    field( LNK5, "$(P)$(N)trigSrc")
-    field( LNK6, "$(P)$(N)fo2")
+    field( PINI, "RUNNING")
+    field( LNK1, "$(P)TsInpMode-Sel")
+    field( LNK2, "$(P)EvtCode-SP")
+    field( LNK3, "$(P)Timestamp-SP")
+    field( LNK4, "$(P)RunMode-Sel")
+    field( LNK5, "$(P)TrigSrc-Sel")
+    field( LNK6, "$(P)InitSeq:Cont-FOut_")
 }
 
-record(fanout, "$(P)$(N)fo2") {
+record(fanout, "$(P)InitSeq:Cont-FOut_") {
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
-    field( LNK1, "$(P)$(N)calcoutLoad")
-    field( LNK2, "$(P)$(N)calcoutCommit")
-    field( LNK3, "$(P)$(N)calcoutEnable")
+    field( LNK1, "$(P)Load-Calc_")
+    field( LNK2, "$(P)Commit-Calc_")
+    field( LNK3, "$(P)Enable-Calc_")
 }
 
-record(ai, "$(P)$(N)Freq:Update") {
-    field( INP,  "$(P)EvtClkSpeed CP")
-    field( FLNK, "$(P)$(N)calcoutCommit")
+record(ai, "$(P)EvtClkFreq-RB_") {
+    field( INP,  "$(P)EvtClkFreq-RB CP")
+    field( FLNK, "$(P)Commit-Calc_")
 }
-
-
-
 

@@ -1,4 +1,4 @@
-record(mbbo, "$(P)$(N)driveMap") {
+record(mbbo, "$(P)Src-Sel") {
     field( DESC, "EVG DBUS Source")
     field( PINI, "YES")
     field( VAL,  "0")
@@ -25,26 +25,11 @@ record(mbbo, "$(P)$(N)driveMap") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
-    field( OUT, "$(P)$(N)mapConv PP")
+    field( OUT, "$(P)MapConv-Sel_ PP")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(mbbiDirect, "$(P)$(N)driveMapDirect") {
-    field( DESC, "EVG Trig Evt Trig")
-    field( INP,  "$(P)$(N)driveMap.RVAL CP")
-}
-
-record(dfanout, "$(P)$(N)omsl") {
-    field( PINI, "YES")
-    field( VAL,  "0")
-    field( UDF,  "0")
-    field( OMSL, "supervisory")
-    field( OUTA, "$(P)$(N)fpInp0.OMSL")
-    field( OUTB, "$(P)$(N)fpInp1.OMSL")
-    info( autosaveFields_pass0, "VAL")
-}
-
-record(mbbo, "$(P)$(N)mapConv") {
+record(mbbo, "$(P)MapConv-Sel_") {
     field( DTYP, "Raw Soft Channel")
     field( ZRVL, 0)
     field( ONVL, 1)
@@ -64,11 +49,11 @@ record(mbbo, "$(P)$(N)mapConv") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
-    field( OUT, "$(P)$(N)map PP")
+    field( OUT, "$(P)Map-Sel PP")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(P)$(N)map") {
+record(mbbo, "$(P)Map-Sel") {
     field( DTYP, "EVG Dbus Map")
     field( OUT , "#C$(cardNum) S$(dbusBit) @")
     field( PINI, "YES")
@@ -95,27 +80,42 @@ record(mbbo, "$(P)$(N)map") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(P)$(N)fpInp0") {
+record(mbbiDirect, "$(P)Src-MbbiDir_") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( INP,  "$(P)Src-Sel.RVAL CP")
+}
+
+record(dfanout, "$(P)Omsl-FOut") {
+    field( PINI, "YES")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( OMSL, "supervisory")
+    field( OUTA, "$(P)Src:FpInp0-Sel.OMSL")
+    field( OUTB, "$(P)Src:FpInp1-Sel.OMSL")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)Src:FpInp0-Sel") {
     field( DTYP, "EVG Dbus FpInp0")
     field( DESC, "FP Input0 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)$(N)DriveMapDirect.B0 CP")
+    field( DOL,  "$(P)SrcDirect.B0 CP")
 }
 
-record(bo, "$(P)$(N)fpInp1") {
+record(bo, "$(P)Src:FpInp1-Sel") {
     field( DTYP, "EVG Dbus FpInp0")
     field( DESC, "FP Input1 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @FP_Input1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)$(N)DriveMapDirect.B1 CP")
+    field( DOL,  "$(P)SrcDirect.B1 CP")
 }
 
-record(bo, "$(P)$(N)univInp0") {
+record(bo, "$(P)Src:UnivInp0-Sel") {
     field( DTYP, "EVG Dbus UnivInp0")
     field( DESC, "Univ Input0 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input0")
@@ -123,7 +123,7 @@ record(bo, "$(P)$(N)univInp0") {
     field( ONAM, "Set")
 }
 
-record(bo, "$(P)$(N)univInp1") {
+record(bo, "$(P)Src:UnivInp1-Sel") {
     field( DTYP, "EVG Dbus UnivInp1")
     field( DESC, "Univ Input1 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input1")
@@ -131,7 +131,7 @@ record(bo, "$(P)$(N)univInp1") {
     field( ONAM, "Set")
 }
 
-record(bo, "$(P)$(N)univInp2") {
+record(bo, "$(P)Src:UnivInp2-Sel") {
     field( DTYP, "EVG Dbus UnivInp2")
     field( DESC, "Univ Input2 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input2")
@@ -139,7 +139,7 @@ record(bo, "$(P)$(N)univInp2") {
     field( ONAM, "Set")
 }
 
-record(bo, "$(P)$(N)univInp3") {
+record(bo, "$(P)Src:UnivInp3-Sel") {
     field( DTYP, "EVG Dbus UnivInp3")
     field( DESC, "Univ Input3 on Dbus")
     field( OUT , "#C$(cardNum) S$(dbusBit) @Univ_Input3")

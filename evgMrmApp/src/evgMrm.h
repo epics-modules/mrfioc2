@@ -52,7 +52,7 @@ public:
     epicsUInt32 getFwVersion();
     epicsStatus enable(bool ena);
     epicsStatus resetMxc(bool reset);
-    epicsUInt32 getStatus();
+    epicsUInt32 getDbusStatus();
 
     /**    Interrupt and Callback    **/
     static void isr(void*);

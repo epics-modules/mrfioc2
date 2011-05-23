@@ -1,4 +1,4 @@
-record(bo, "$(P)$(N)Polarity") {
+record(bo, "$(P)OutPolarity-Sel") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Output Polarity")
     field( OUT , "#C$(cardNum) S$(mxcNum) @")
@@ -10,7 +10,7 @@ record(bo, "$(P)$(N)Polarity") {
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)$(N)Status") {
+record(bi, "$(P)OutStatus-RB") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Output Status")
     field( INP , "#C$(cardNum) S$(mxcNum) @")
@@ -18,7 +18,7 @@ record(bi, "$(P)$(N)Status") {
     field( ONAM, "1")
 }
 
-record(ao, "$(P)$(N)Freq") {
+record(ao, "$(P)Freq-SP") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Frequency")
     field( OUT,  "#C$(cardNum) S$(mxcNum) @")
@@ -28,11 +28,11 @@ record(ao, "$(P)$(N)Freq") {
     field( DRVH, "62500000")
     field( DRVL, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)$(N)Freq:RB PP")
+    field( FLNK, "$(P)Freq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P)$(N)Freq:RB") {
+record(ai, "$(P)Freq-RB") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Frequency")
     field( INP,  "#C$(cardNum) S$(mxcNum) @")
@@ -40,10 +40,10 @@ record(ai, "$(P)$(N)Freq:RB") {
     field( HOPR, "62500000")
     field( LOPR, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)$(N)Prescaler:RB PP")
+    field( FLNK, "$(P)Prescaler-RB")
 }
 
-record(longout, "$(P)$(N)Prescaler") {
+record(longout, "$(P)Prescaler-SP") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Prescaler")
     field( OUT,  "#C$(cardNum) S$(mxcNum) @")
@@ -51,17 +51,20 @@ record(longout, "$(P)$(N)Prescaler") {
     field( VAL,  "2")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
-    field( FLNK, "$(P)$(N)Freq:RB PP")
+    field( FLNK, "$(P)Freq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(longin , "$(P)$(N)Prescaler:RB") {
+record(longin , "$(P)Prescaler-RB") {
     field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Prescaler RB")
     field( INP,  "#C$(cardNum) S$(mxcNum) @")
 }
 
-record(ai, "$(P)$(N)Freq:Update") {
-    field( INP,  "$(P)EvtClkSpeed CP")
-    field( FLNK, "$(P)$(N)Freq:RB")
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(P)EvtClkFreq-RB_") {
+    field( INP,  "$(P)EvtClkFreq-RB CP")
+    field( FLNK, "$(P)Freq-RB")
 }

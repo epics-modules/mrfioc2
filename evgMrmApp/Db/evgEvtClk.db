@@ -1,4 +1,4 @@
-record(bo, "$(P)EvtClkSrc") {
+record(bo, "$(P)EvtClkSrc-Sel") {
     field( DTYP, "EVG Clk")
     field( DESC, "EVG Evt Clk Source")
     field( OUT,  "#C$(cardNum) S @")
@@ -7,13 +7,13 @@ record(bo, "$(P)EvtClkSrc") {
     field( UDF,  "0")
     field( ZNAM, "FracSyn")
     field( ONAM, "RF")
-    field( FLNK, "$(P)EvtClkSpeed")
+    field( FLNK, "$(P)EvtClkFreq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)RFref") {
-    field( DTYP, "EVG Clk RFref")
-    field( DESC, "EVG Clk RF Frequency")
+record(ao, "$(P)RFFreq-SP") {
+    field( DTYP, "EVG RF Freq")
+    field( DESC, "EVG RF Frequency")
     field( OUT,  "#C$(cardNum) S @")
     field( PINI, "YES")
     field( VAL,  "500")
@@ -28,13 +28,13 @@ record(ao, "$(P)RFref") {
     field( DRVH, "1600")
     field( DRVL, "50")
     field( PREC, "3")
-    field( FLNK, "$(P)EvtClkSpeed")
+    field( FLNK, "$(P)EvtClkFreq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)RFdiv") {
+record(longout, "$(P)RFDiv-SP") {
     field( DTYP, "EVG Clk")
-    field( DESC, "EVG RF Divider")
+    field( DESC, "RF Divider")
     field( OUT,  "#C$(cardNum) S @")
     field( PINI, "YES")
     field( VAL,  "4")
@@ -43,13 +43,13 @@ record(longout, "$(P)RFdiv") {
     field( LOLO, "0")
     field( HHSV, "MAJOR")
     field( LLSV, "MAJOR")
-    field( FLNK, "$(P)EvtClkSpeed")
+    field( FLNK, "$(P)EvtClkFreq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ao, "$(P)FracSynFreq") {
+record(ao, "$(P)FracSynFreq-SP") {
     field( DTYP, "EVG Clk")
-    field( DESC, "EVG Frac Synth Freq")
+    field( DESC, "Fractional Synthesizer Freq")
     field( OUT,  "#C$(cardNum) S @")
     field( EGU,  "MHz")
     field( PINI, "YES")
@@ -64,13 +64,13 @@ record(ao, "$(P)FracSynFreq") {
     field( DRVH, "125")
     field( DRVL, "50")
     field( PREC, "3")
-    field( FLNK, "$(P)EvtClkSpeed")
+    field( FLNK, "$(P)EvtClkFreq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P)EvtClkSpeed") {
+record(ai, "$(P)EvtClkFreq-RB") {
     field( DTYP, "EVG Clk")
-    field( DESC, "EVG Clk Speed")
+    field( DESC, "EVG Event Clock Frequecny")
     field( INP,  "#C$(cardNum) S @")
     field( EGU,  "MHz")
     field( PREC, "3")

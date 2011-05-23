@@ -1,114 +1,108 @@
-file evgMrm.db {
-pattern { P, cardNum}
-{$(P), $(cardNum)}
-}
-
 file evgAcTrig.db {
 pattern {P, cardNum}
-{$(P), $(cardNum)}
+{"$(S){$(D)-AcTrig}", $(cardNum)}
+}
+
+file evgDbus.db {
+pattern { P, cardNum, dbusBit }
+{ "$(S){$(D)-Dbus:0}", $(cardNum), 0 }
+{ "$(S){$(D)-Dbus:1}", $(cardNum), 1 }
+{ "$(S){$(D)-Dbus:2}", $(cardNum), 2 }
+{ "$(S){$(D)-Dbus:3}", $(cardNum), 3 }
+{ "$(S){$(D)-Dbus:4}", $(cardNum), 4 }
+{ "$(S){$(D)-Dbus:5}", $(cardNum), 5 }
+{ "$(S){$(D)-Dbus:6}", $(cardNum), 6 }
+{ "$(S){$(D)-Dbus:7}", $(cardNum), 7 }
 }
 
 file evgEvtClk.db {
 pattern { P, cardNum}
-{$(P), $(cardNum)}
+{"$(S){$(D)}", $(cardNum)}
+}
+
+file evgInput.db {
+pattern { P, cardNum, inpNum, inpType }
+{ "$(S){$(D)-Inp-FP:0}",   $(cardNum),  0, "FP_Input" }
+{ "$(S){$(D)-Inp-FP:1}",   $(cardNum),  1, "FP_Input" }
+{ "$(S){$(D)-Inp-Univ:0}", $(cardNum),  0, "Univ_Input" }
+{ "$(S){$(D)-Inp-Univ:1}", $(cardNum),  1, "Univ_Input" }
+{ "$(S){$(D)-Inp-Univ:2}", $(cardNum),  2, "Univ_Input" }
+{ "$(S){$(D)-Inp-Univ:3}", $(cardNum),  3, "Univ_Input" }
+{ "$(S){$(D)-Inp-TB:0}",   $(cardNum),  0, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:1}",   $(cardNum),  1, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:2}",   $(cardNum),  2, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:3}",   $(cardNum),  3, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:4}",   $(cardNum),  4, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:5}",   $(cardNum),  5, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:6}",   $(cardNum),  6, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:7}",   $(cardNum),  7, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:8}",   $(cardNum),  8, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:9}",   $(cardNum),  9, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:10}",  $(cardNum), 10, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:11}",  $(cardNum), 11, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:12}",  $(cardNum), 12, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:13}",  $(cardNum), 13, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:14}",  $(cardNum), 14, "TB_Input" }
+{ "$(S){$(D)-Inp-TB:15}",  $(cardNum), 15, "TB_Input" }
+}
+
+file evgMrm.db {
+pattern { P, cardNum}
+{"$(S){$(D)}", $(cardNum)}
+}
+
+file evgMxc.db {
+pattern { P, cardNum, mxcNum }
+{ "$(S){$(D)-Mxc:0}", $(cardNum), 0 }
+{ "$(S){$(D)-Mxc:1}", $(cardNum), 1 }
+{ "$(S){$(D)-Mxc:2}", $(cardNum), 2 }
+{ "$(S){$(D)-Mxc:3}", $(cardNum), 3 }
+{ "$(S){$(D)-Mxc:4}", $(cardNum), 4 }
+{ "$(S){$(D)-Mxc:5}", $(cardNum), 5 }
+{ "$(S){$(D)-Mxc:6}", $(cardNum), 6 }
+{ "$(S){$(D)-Mxc:7}", $(cardNum), 7 }
+}
+
+file evgOutput.db {
+pattern { P, cardNum, outNum, outType }
+{ "$(S){$(D)-Out-FP:0}",   $(cardNum), 0, "FP_Output" }
+{ "$(S){$(D)-Out-FP:1}",   $(cardNum), 1, "FP_Output" }
+{ "$(S){$(D)-Out-FP:2}",   $(cardNum), 2, "FP_Output" }
+{ "$(S){$(D)-Out-FP:3}",   $(cardNum), 3, "FP_Output" }
 }
 
 file evgSoftEvt.db {
 pattern { P, cardNum}
-{$(P), $(cardNum)}
-}
-
-file evgTrigEvt.db {
-pattern { P, cardNum, N, trigEvtNum }
-{ $(P), $(cardNum), "TrigEvt0:", 0 }
-{ $(P), $(cardNum), "TrigEvt1:", 1 }
-{ $(P), $(cardNum), "TrigEvt2:", 2 }
-{ $(P), $(cardNum), "TrigEvt3:", 3 }
-{ $(P), $(cardNum), "TrigEvt4:", 4 }
-{ $(P), $(cardNum), "TrigEvt5:", 5 }
-{ $(P), $(cardNum), "TrigEvt6:", 6 }
-{ $(P), $(cardNum), "TrigEvt7:", 7 }
-}
-
-file evgInput.db {
-pattern { P, cardNum, N, inpNum, inpType }
-{ $(P), $(cardNum), "FP_Input0:",   0, "FP_Input" }
-{ $(P), $(cardNum), "FP_Input1:",   1, "FP_Input" }
-{ $(P), $(cardNum), "Univ_Input0:", 0, "Univ_Input" }
-{ $(P), $(cardNum), "Univ_Input1:", 1, "Univ_Input" }
-{ $(P), $(cardNum), "Univ_Input2:", 2, "Univ_Input" }
-{ $(P), $(cardNum), "Univ_Input3:", 3, "Univ_Input" }
-{ $(P), $(cardNum), "TB_Input0:",   0, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input1:",   1, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input2:",   2, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input3:",   3, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input4:",   4, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input5:",   5, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input6:",   6, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input7:",   7, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input8:",   8, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input9:",   9, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input10:", 10, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input11:", 11, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input12:", 12, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input13:", 13, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input14:", 14, "TB_Input" }
-{ $(P), $(cardNum), "TB_Input15:", 15, "TB_Input" }
-}
-
-file evgOutput.db {
-pattern { P, cardNum, N, outNum, outType }
-{ $(P), $(cardNum), "FP_Output0:", 0, "FP_Output" }
-{ $(P), $(cardNum), "FP_Output1:", 1, "FP_Output" }
-{ $(P), $(cardNum), "FP_Output2:", 2, "FP_Output" }
-{ $(P), $(cardNum), "FP_Output3:", 3, "FP_Output" }
-{ $(P), $(cardNum), "Univ_Output0:", 0, "Univ_Output" }
-{ $(P), $(cardNum), "Univ_Output1:", 1, "Univ_Output" }
-{ $(P), $(cardNum), "Univ_Output2:", 2, "Univ_Output" }
-{ $(P), $(cardNum), "Univ_Output3:", 3, "Univ_Output" }
-}
-
-file evgDbus.db {
-pattern { P, cardNum, N, dbusBit }
-{ $(P), $(cardNum), "Dbus0:", 0 }
-{ $(P), $(cardNum), "Dbus1:", 1 }
-{ $(P), $(cardNum), "Dbus2:", 2 }
-{ $(P), $(cardNum), "Dbus3:", 3 }
-{ $(P), $(cardNum), "Dbus4:", 4 }
-{ $(P), $(cardNum), "Dbus5:", 5 }
-{ $(P), $(cardNum), "Dbus6:", 6 }
-{ $(P), $(cardNum), "Dbus7:", 7 }
-}
-
-file evgMxc.db {
-pattern { P, cardNum, N, mxcNum }
-{ $(P), $(cardNum), "Mxc0:", 0 }
-{ $(P), $(cardNum), "Mxc1:", 1 }
-{ $(P), $(cardNum), "Mxc2:", 2 }
-{ $(P), $(cardNum), "Mxc3:", 3 }
-{ $(P), $(cardNum), "Mxc4:", 4 }
-{ $(P), $(cardNum), "Mxc5:", 5 }
-{ $(P), $(cardNum), "Mxc6:", 6 }
-{ $(P), $(cardNum), "Mxc7:", 7 }
+{"$(S){$(D)-SoftEvt}", $(cardNum)}
 }
 
 file evgSoftSeq.db {
-pattern { P, cardNum, N, seqNum, NELM}
-{ $(P), $(cardNum), "Seq0:", 0, 2047 }
-{ $(P), $(cardNum), "Seq1:", 1, 2047 }
-{ $(P), $(cardNum), "Seq2:", 2, 2047 }
-{ $(P), $(cardNum), "Seq3:", 3, 2047 }
-{ $(P), $(cardNum), "Seq4:", 4, 2047 }
+pattern { P, cardNum, seqNum, NELM}
+{ "$(S){$(D)-SoftSeq:0}", $(cardNum), 0, 2047 }
+{ "$(S){$(D)-SoftSeq:1}", $(cardNum), 1, 2047 }
+{ "$(S){$(D)-SoftSeq:2}", $(cardNum), 2, 2047 }
+}
+
+file evgTrigEvt.db {
+pattern { P, cardNum, trigEvtNum }
+{ "$(S){$(D)-TrigEvt:0}", $(cardNum), 0 }
+{ "$(S){$(D)-TrigEvt:1}", $(cardNum), 1 }
+{ "$(S){$(D)-TrigEvt:2}", $(cardNum), 2 }
+{ "$(S){$(D)-TrigEvt:3}", $(cardNum), 3 }
+{ "$(S){$(D)-TrigEvt:4}", $(cardNum), 4 }
+{ "$(S){$(D)-TrigEvt:5}", $(cardNum), 5 }
+{ "$(S){$(D)-TrigEvt:6}", $(cardNum), 6 }
+{ "$(S){$(D)-TrigEvt:7}", $(cardNum), 7 }
 }
 
 file databuftx.db
 {pattern
 {P, OBJ, PROTO}
-{$(P), "EVG$(cardNum):BUFTX", 1}
+{"$(S){$(D)}", "EVG$(cardNum):BUFTX", 1}
 }
 
 file "databuftxCtrl.db"
 {pattern
 {P, OBJ}
-{$(P), "EVG$(cardNum):BUFTX"}
+{"$(S){$(D)}", "EVG$(cardNum):BUFTX"}
 }

@@ -25,7 +25,7 @@
 /**    Extended Device Support **/
 
 /*
- *There are two modes to emter the timestamps in sequencer. EGU and TICKS.
+ *There are two modes to enter the timestamps in sequencer. EGU and TICKS.
  *In EGU mode user can enter the time in units of sub-seconds (i.e. 1, 0.1,
  *0.001, 0.0001, ... seconds). This units of sub-seconds can be selected by
  *providing an interger divider (The '@Parm' field of VME_IO hardware INP link
@@ -136,7 +136,7 @@ write_wf_timestamp(waveformRecord* pwf) {
                 ts[i] = (epicsUInt64)floor(((epicsFloat64*)pwf->bptr)[i] + 0.5);
         } else {
             /*
-             * When timestamp Input mode is EGU; Scaling the time to seconds
+             * When timestamp Input mode is EGU; Scale the time to seconds
              * and then converting seconds to clock ticks
              */
             epicsFloat64 seconds;
@@ -379,7 +379,7 @@ read_bi_timestampInpMode(biRecord* pbi) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        pbi->val = seq->getTimestampInpMode();
+        pbi->rval = seq->getTimestampInpMode();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
         ret = S_dev_noDevice;
@@ -417,8 +417,12 @@ read_wf_timestamp(waveformRecord* pwf) {
             throw std::runtime_error("Failed to read scaler");
 
         epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
-        for(unsigned int i = 0; i < timestamp.size(); i++)
-            bptr[i] = timestamp[i] * timeScaler / evtClk;
+        for(unsigned int i = 0; i < timestamp.size(); i++) {
+            if(seq->getTimestampInpMode() == TICKS)
+                 bptr[i] = (epicsFloat64)timestamp[i];
+            else
+                bptr[i] = timestamp[i] * timeScaler / evtClk;
+        }
 
         pwf->nord = timestamp.size();
         ret = 0;

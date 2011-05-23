@@ -148,7 +148,7 @@ evgMrm::getFwVersion() {
 }
 
 epicsUInt32
-evgMrm::getStatus() {
+evgMrm::getDbusStatus() {
     return READ32( m_pReg, Status);
 }
 

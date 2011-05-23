@@ -1,4 +1,4 @@
-record(longout, "$(P)SoftEvt:Code") {
+record(longout, "$(P)EvtCode-SP") {
     field( DTYP, "EVG Soft Evt")
     field( DESC, "EVG Software Event Code")
     field( OUT,  "#C$(cardNum) S @")

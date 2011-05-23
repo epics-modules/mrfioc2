@@ -362,14 +362,13 @@ evgSoftSeq::commitSoftSeq() {
     std::vector<epicsUInt8> eventCode;
 
     /*
-     * Make EventCode and Timestamp vector of same size(Smaller of the two vectors).
+     * Make EventCode and Timestamp vector of same size
+     *(Smaller of the two vectors sizes).
      */
     std::vector<epicsUInt64>::iterator itTS = m_timestamp.begin();
     std::vector<epicsUInt8>::iterator itEC = m_eventCode.begin();
     for(; itTS < m_timestamp.end() && itEC < m_eventCode.end(); itTS++, itEC++) {
         ecUInt8 = *itEC;
-        if(ecUInt8 <= 0 || ecUInt8 >255)
-            break;
 
         curTs = *itTS;
         tsUInt64 = curTs - preTs;
@@ -401,13 +400,16 @@ evgSoftSeq::commitSoftSeq() {
     }
 
     /*
-     * Appending 'End of Sequence' event code and timestamp. 
+     * If not already present append 'End of Sequence' event code(0x7f) and
+     * timestamp.
      */
-    eventCode.push_back(0x7f);
-    if(timestamp.size() == 0)
-        timestamp.push_back(evgEndOfSeqBuf);
-    else
-        timestamp.push_back(timestamp[timestamp.size()-1] + evgEndOfSeqBuf);
+    if(eventCode[eventCode.size()-1] != 0x7f) {
+        eventCode.push_back(0x7f);
+        if(timestamp.size() == 0)
+            timestamp.push_back(evgEndOfSeqBuf);
+        else
+            timestamp.push_back(timestamp[timestamp.size()-1] + evgEndOfSeqBuf);
+    }
 
     m_timestampCt = timestamp;
     m_eventCodeCt = eventCode;

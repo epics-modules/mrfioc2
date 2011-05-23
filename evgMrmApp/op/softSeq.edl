@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 66
-y 395
+x 805
+y 643
 w 303
 h 281
 font "helvetica-medium-r-12.0"
@@ -21,7 +21,6 @@ topShadowColor index 1
 botShadowColor index 11
 showGrid
 snapToGrid
-pvType "$(P)"
 endScreenProperties
 
 # (Menu Button)
@@ -39,7 +38,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)trigSrc"
+controlPv "$(S)\{$(D)-$(SS)\}TrigSrc-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -58,7 +57,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)runMode"
+controlPv "$(S)\{$(D)-$(SS)\}RunMode-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -80,7 +79,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Event Code / Timestamp"
 numCmds 1
 command {
-  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(P) $(SS)"
+  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(S) $(D) $(SS)"
 }
 endObjectProperties
 
@@ -100,7 +99,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "$(P) Soft $(SS)"
+  "$(D) $(SS)"
 }
 endObjectProperties
 
@@ -119,7 +118,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)commit"
+controlPv "$(S)\{$(D)-$(SS)\}Commit-Cmd"
 releaseValue "1"
 onLabel "Commit"
 offLabel "Commit"
@@ -142,7 +141,7 @@ onColor index 3
 offColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)pause"
+controlPv "$(S)\{$(D)-$(SS)\}Pause-Cmd"
 releaseValue "1"
 onLabel "Pause"
 offLabel "Pause"
@@ -165,7 +164,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)disable"
+controlPv "$(S)\{$(D)-$(SS)\}Disable-Cmd"
 releaseValue "1"
 onLabel "Disable"
 offLabel "Disable"
@@ -188,7 +187,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)enable"
+controlPv "$(S)\{$(D)-$(SS)\}Enable-Cmd"
 releaseValue "1"
 onLabel "Enable"
 offLabel "Enable"
@@ -206,7 +205,7 @@ x 30
 y 250
 w 240
 h 20
-controlPv "$(P)$(SS)err"
+controlPv "$(S)\{$(D)-$(SS)\}Error-RB"
 fgColor index 21
 fgAlarm
 bgColor index 3
@@ -224,7 +223,7 @@ x 30
 y 200
 w 70
 h 15
-controlPv "$(P)$(SS)commitStatus"
+controlPv "$(S)\{$(D)-$(SS)\}Commit-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -247,7 +246,7 @@ x 10
 y 150
 w 280
 h 15
-controlPv "$(P)$(SS)enaStatus"
+controlPv "$(S)\{$(D)-$(SS)\}Enable-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -270,7 +269,7 @@ x 130
 y 200
 w 140
 h 15
-controlPv "$(P)$(SS)loadStatus"
+controlPv "$(S)\{$(D)-$(SS)\}Load-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -333,7 +332,7 @@ x 30
 y 100
 w 100
 h 15
-controlPv "$(P)$(SS)runModeRB"
+controlPv "$(S)\{$(D)-$(SS)\}RunMode-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -356,7 +355,7 @@ x 170
 y 100
 w 100
 h 15
-controlPv "$(P)$(SS)trigSrcRB"
+controlPv "$(S)\{$(D)-$(SS)\}TrigSrc-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -384,7 +383,7 @@ onColor index 3
 offColor index 21
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)abort"
+controlPv "$(S)\{$(D)-$(SS)\}Abort-Cmd"
 releaseValue "1"
 onLabel "Abort"
 offLabel "Abort"
@@ -407,7 +406,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)load"
+controlPv "$(S)\{$(D)-$(SS)\}Load-Cmd"
 releaseValue "1"
 onLabel "Load"
 offLabel "Load"
@@ -430,7 +429,7 @@ onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(SS)unload"
+controlPv "$(S)\{$(D)-$(SS)\}Unload-Cmd"
 releaseValue "1"
 onLabel "Unload"
 offLabel "Unload"

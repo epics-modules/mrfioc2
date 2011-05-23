@@ -299,10 +299,9 @@ read_mbbi_tsInpNum(mbbiRecord* pmbbi) {
     return ret;
 }
 
-/**    longin - Status    **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
-read_li(longinRecord* pli) {
+read_li_dbusStatus(longinRecord* pli) {
     long ret = 0;
     
     try {
@@ -310,7 +309,7 @@ read_li(longinRecord* pli) {
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        pli->val = evg->getStatus();
+        pli->val = evg->getDbusStatus();
         ret = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
@@ -406,15 +405,15 @@ common_dset devMbbiEvgTsInpNum = {
 };
 epicsExportAddress(dset, devMbbiEvgTsInpNum);
 
-common_dset devLiEvgStatus = {
+common_dset devLiEvgDbusStatus = {
     5,
     NULL,
     NULL,
     (DEVSUPFUN)init_li,
     NULL,
-    (DEVSUPFUN)read_li,
+    (DEVSUPFUN)read_li_dbusStatus,
 };
-epicsExportAddress(dset, devLiEvgStatus);
+epicsExportAddress(dset, devLiEvgDbusStatus);
 
 };
 

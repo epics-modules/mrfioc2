@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 652
-y 99
+x 830
+y 596
 w 316
 h 223
 font "helvetica-medium-r-12.0"
@@ -104,7 +104,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(O)Map"
+controlPv "$(S)\{$(D)-Out-$(O)\}Map-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -145,6 +145,42 @@ value {
   "EVG: $(P)"
 }
 autoSize
+endObjectProperties
+
+# (Menu Mux)
+object menuMuxClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 220
+y 180
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+numItems 4
+symbolTag {
+  0 "Output 0"
+  1 "Output 1"
+  2 "Output 2"
+  3 "Output 3"
+}
+symbol0 {
+  0 "O"
+  1 "O"
+  2 "O"
+  3 "O"
+}
+value0 {
+  0 "FP:0"
+  1 "FP:1"
+  2 "FP:2"
+  3 "FP:3"
+}
 endObjectProperties
 
 # (Group)
@@ -209,7 +245,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)acTrig:byp"
+controlPv "$(S)\{$(D)-AcTrig\}Bypass-Sel"
 onLabel "ON"
 offLabel "OFF"
 3d
@@ -305,7 +341,7 @@ x 80
 y 110
 w 70
 h 19
-controlPv "$(P)acTrig:divider"
+controlPv "$(S)\{$(D)-AcTrig\}Divider-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -331,7 +367,7 @@ x 220
 y 110
 w 80
 h 19
-controlPv "$(P)acTrig:phase"
+controlPv "$(S)\{$(D)-AcTrig\}Phase-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -365,47 +401,11 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)acTrig:syncSrc"
+controlPv "$(S)\{$(D)-AcTrig\}Sync-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
 endGroup
 
-endObjectProperties
-
-# (Menu Mux)
-object menuMuxClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 220
-y 180
-w 80
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-bold-r-12.0"
-numItems 4
-symbolTag {
-  0 "Output 0"
-  1 "Output 1"
-  2 "Output 2"
-  3 "Output 3"
-}
-symbol0 {
-  0 "O"
-  1 "O"
-  2 "O"
-  3 "O"
-}
-value0 {
-  0 "FP_Output0:"
-  1 "FP_Output1:"
-  2 "FP_Output2:"
-  3 "FP_Output3:"
-}
 endObjectProperties
 

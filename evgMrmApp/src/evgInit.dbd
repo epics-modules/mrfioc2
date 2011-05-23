@@ -17,12 +17,12 @@ device( mbbo,    VME_IO,  devMbboEvgTsInpType, "EVG TS INP TYPE")
 device( mbbo,    VME_IO,  devMbboEvgTsInpNum,  "EVG TS INP NUM")
 device( mbbi,    VME_IO,  devMbbiEvgTsInpType, "EVG TS INP TYPE")
 device( mbbi,    VME_IO,  devMbbiEvgTsInpNum,  "EVG TS INP NUM")
-device( longin,  VME_IO,  devLiEvgStatus,      "EVG")
+device( longin,  VME_IO,  devLiEvgDbusStatus,  "EVG")
 
 
 #evgEvtClk.db
 device( bo,      VME_IO,  devBoEvgEvtClkSrc,   "EVG Clk")
-device( ao,      VME_IO,  devAoEvgRFref,       "EVG Clk RFref")
+device( ao,      VME_IO,  devAoEvgRFref,       "EVG RF Freq")
 device( longout, VME_IO,  devLoEvgRFdiv,       "EVG Clk")
 device( ao,      VME_IO,  devAoEvgFracSynFreq, "EVG Clk")
 device( ai,      VME_IO,  devAiEvgEvtClkSpeed, "EVG Clk")
