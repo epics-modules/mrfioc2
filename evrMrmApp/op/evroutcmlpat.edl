@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 521
-y 476
+x 967
+y 408
 w 464
 h 102
 font "helvetica-medium-r-12.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
-title "EVR: $(P) CML: $(O) Pattern: $(R)"
+title "EVR: $(SYS) $(D) CML: $(O) Pattern: $(R)"
 showGrid
 snapToGrid
 endScreenProperties

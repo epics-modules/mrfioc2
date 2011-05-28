@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 4
-y 665
+x 947
+y 655
 w 585
 h 409
 font "helvetica-medium-r-12.0"
@@ -43,9 +43,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 140
+x 323
 y 61
-w 286
+w 103
 h 116
 lineColor index 3
 fill
@@ -95,7 +95,7 @@ minor 0
 release 0
 x 6
 y 60
-w 127
+w 309
 h 116
 lineColor index 3
 fill
@@ -232,8 +232,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 140
-y 51
+x 323
+y 44
 w 101
 h 20
 font "helvetica-medium-r-12.0"
@@ -251,8 +251,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 147
-y 70
+x 331
+y 65
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -270,8 +270,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 147
-y 117
+x 331
+y 93
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -289,8 +289,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 286
-y 70
+x 331
+y 121
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -308,8 +308,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 286
-y 117
+x 331
+y 149
 w 41
 h 21
 font "helvetica-medium-r-10.0"
@@ -614,7 +614,7 @@ minor 0
 release 0
 x 13
 y 202
-w 409
+w 394
 h 36
 
 beginGroup
@@ -627,7 +627,7 @@ minor 0
 release 0
 x 13
 y 202
-w 409
+w 394
 h 36
 lineColor index 14
 fillColor index 3
@@ -643,7 +643,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 400
+x 382
 y 212
 w 19
 h 19
@@ -665,7 +665,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 263
+x 251
 y 212
 w 19
 h 19
@@ -687,7 +687,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 292
+x 274
 y 212
 w 35
 h 18
@@ -706,7 +706,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 147
+x 135
 y 212
 w 35
 h 18
@@ -725,7 +725,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 325
+x 307
 y 212
 w 69
 h 19
@@ -749,7 +749,7 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 189
+x 177
 y 212
 w 69
 h 19
@@ -815,8 +815,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 184
-y 74
+x 369
+y 65
 w 47
 h 20
 fgColor index 14
@@ -841,8 +841,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 184
-y 122
+x 369
+y 93
 w 47
 h 20
 fgColor index 14
@@ -867,8 +867,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 324
-y 122
+x 369
+y 150
 w 47
 h 20
 fgColor index 14
@@ -893,8 +893,8 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 324
-y 74
+x 369
+y 121
 w 47
 h 20
 fgColor index 14
@@ -911,5 +911,74 @@ displayFileName {
 symbols {
   0 "O=$(O), R=Fall"
 }
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 211
+y 81
+w 69
+h 19
+controlPv "$(ON)Delay-SP"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+editable
+motifWidget
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 151
+y 81
+w 53
+h 24
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Fine Delay"
+  "(GTX only)"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 211
+y 102
+w 72
+h 16
+controlPv "$(ON)Delay-RB"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+limitsFromDb
+nullColor index 14
+smartRefresh
+fastUpdate
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
 endObjectProperties
 
