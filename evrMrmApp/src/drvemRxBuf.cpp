@@ -17,6 +17,14 @@
 
 #include "evrRegMap.h"
 
+#ifndef bswap32
+#define bswap32(value) (  \
+        (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
+        (((epicsUInt32)(value) & 0x0000ff00) << 8)    |                \
+        (((epicsUInt32)(value) & 0x00ff0000) >> 8)    |                \
+        (((epicsUInt32)(value) & 0xff000000) >> 24))
+#endif
+
 mrmBufRx::mrmBufRx(const std::string& n, volatile void *b,unsigned int qdepth, unsigned int bsize)
     :bufRxManager(n, qdepth, bsize)
     ,base((volatile unsigned char *)b)
@@ -84,13 +92,13 @@ mrmBufRx::drainbuf(CALLBACK* cb)
             epicsUInt32 val=0;
             for(unsigned int i=0; i<rsize; i++) {
                 if(i%4==0)
-                    val=READ32(self.base, DataRx(i));
+                    val=bswap32(READ32(self.base, DataRx(i)));
                 buf[i] = val>>24;
                 val<<=8;
             }
 
             if(rsize%4) {
-                epicsUInt32 rem=READ32(self.base, DataRx(rsize&~0x3));
+                epicsUInt32 rem=bswap32(READ32(self.base, DataRx(rsize&~0x3)));
                 // maximum of 3 iterations
                 for(unsigned int i=rsize-rsize%4; i<rsize; i++) {
                     buf[i] = rem>>24; // take top byte

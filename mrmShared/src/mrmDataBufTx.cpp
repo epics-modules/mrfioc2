@@ -10,6 +10,14 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
+#ifndef bswap32
+#define bswap32(value) (  \
+        (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
+        (((epicsUInt32)(value) & 0x0000ff00) << 8)    |                \
+        (((epicsUInt32)(value) & 0x00ff0000) >> 8)    |                \
+        (((epicsUInt32)(value) & 0xff000000) >> 24))
+#endif
+
 #define DataTxCtrl_done 0x100000
 #define DataTxCtrl_run  0x080000
 #define DataTxCtrl_trig 0x040000
@@ -120,7 +128,7 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
         temp |= ubuf[index-1];
 
         if(byte==3)
-            nat_iowrite32(&dataBuf[index-3], temp );
+            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
     }
 	
     for(; index%4; index++) {
@@ -128,7 +136,7 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
         len++;
 
         if(index%4==3)
-            nat_iowrite32(&dataBuf[index-3], temp );
+            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
     }
 
     wbarr();
