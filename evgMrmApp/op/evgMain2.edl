@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 830
-y 596
+x 1141
+y 443
 w 316
 h 223
 font "helvetica-medium-r-12.0"
@@ -135,16 +135,15 @@ minor 1
 release 0
 x 10
 y 10
-w 86
-h 22
+w 270
+h 20
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "EVG: $(P)"
+  "$(D)"
 }
-autoSize
 endObjectProperties
 
 # (Menu Mux)

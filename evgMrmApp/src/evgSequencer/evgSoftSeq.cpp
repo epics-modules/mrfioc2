@@ -327,12 +327,12 @@ evgSoftSeq::sync() {
 }
 
 /**
- * Make sure that this soft sequence does not run again.
+ * Make sure that this soft sequence does not re-run.
  */
 epicsStatus
 evgSoftSeq::isRunning() {
     m_seqRam->setRunMode(Single);
-    m_seqRam->setTrigSrc(SW_Ram0);
+    m_seqRam->setTrigSrc(None);
 	
     /*
      * Clear the sequencer stop interrupt flag

@@ -1,13 +1,13 @@
 #include "epicsTypes.h"
 
 /**************************************************************************************************/
-/*    Series 2xx Event Generator Modular Register Map                                                                                             */
-/*                                                                                                                                                                                                */
-/*    Note: The "Uxx_" tag at the beginning of each of definitions below should not be included         */
-/*                whe the defined offset is passed to one of the I/O access macros.    The macros will            */
-/*                append the appropriate suffix to the offset name based on the number of bits to be            */
-/*                read or written.    The purpose of this method is to produce a compiler error if you            */
-/*                attempt to use a macro that does not match the size of the register.                                        */
+/*    Series 2xx Event Generator Modular Register Map                                             */
+/*                                                                                                */
+/*    Note: The "Uxx_" tag at the beginning of each of definitions below should not be included   */
+/*          when the defined offset is passed to one of the I/O access macros. The macros will    */
+/*          append the appropriate suffix to the offset name based on the number of bits to be    */
+/*          read or written.    The purpose of this method is to produce a compiler error if you  */
+/*          attempt to use a macro that does not match the size of the register.                  */
 /**************************************************************************************************/
 
 //=====================
@@ -169,18 +169,18 @@
 
 
 /**************************************************************************************************/
-/*    Status Register (0x0000) Bit Assignments                                                                                                            */
+/*    Status Register (0x0000) Bit Assignments                                                    */
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/*    AC Trigger Register Bit Assignments                                                                                                                    */
+/*    AC Trigger Register Bit Assignmen                                                           */
 /**************************************************************************************************/
 
 #define  EVG_AC_TRIG_BYP        0x02
 #define  EVG_AC_TRIG_SYNC       0x01
 
 /**************************************************************************************************/
-/*    Interrupt Flag Register (0x0008) and Interrupt Enable Register (0x000c) Bit Assignments             */
+/*    Interrupt Flag Register (0x0008) and Interrupt Enable Register (0x000c) Bit Assignments     */
 /**************************************************************************************************/
 
 #define  EVG_IRQ_ENABLE         0x80000000  // Master Interrupt Enable Bit
@@ -194,13 +194,13 @@
 #define  EVG_IRQ_RXVIO          0x00000001  // Receiver Violation Bit
 
 /**************************************************************************************************/
-/*    Outgoing Event Link Clock Source Register (0x0050) Bit Assignments                                                        */
+/*    Outgoing Event Link Clock Source Register (0x0050) Bit Assignments                          */
 /**************************************************************************************************/
 
 #define  EVG_CLK_SRC_EXTRF      0x01  // External/Internal reference clock select
 
 /**************************************************************************************************/
-/*    Sequence RAM Control Register (0x0070, 0x0074) Bit Assignments                                                                */
+/*    Sequence RAM Control Register (0x0070, 0x0074) Bit Assignments                              */
 /**************************************************************************************************/
 
 #define  EVG_SEQ_RAM_RUNNING    0x02000000  // Sequence RAM is Running (read only)
@@ -218,14 +218,14 @@
 
 
 /**************************************************************************************************/
-/* Multiplexed Counter                                                                                */
+/* Multiplexed Counter                                                                            */
 /**************************************************************************************************/
 
 #define  EVG_MUX_POLARITY       0x40000000 
 #define  EVG_MUX_STATUS         0x80000000 
 
 /**************************************************************************************************/
-/* Control Register flags                                                                            */
+/* Control Register flags                                                                         */
 /**************************************************************************************************/
 
 #define  EVG_MASTER_ENA         0x80000000
@@ -234,7 +234,7 @@
 #define  EVG_MXC_RESET          0x01000000
 
 /**************************************************************************************************/
-/* External Input Interrupt Enable                                                                    */
+/* Input                                                                                          */
 /**************************************************************************************************/
 
 #define  EVG_EXT_INP_IRQ_ENA    0x01000000
@@ -255,9 +255,4 @@ const epicsFloat32 evgAllowedTsGitter = 0.5f;
 const epicsUInt16 evgEndOfSeqBuf = 5;
 
 #endif
-
-
-
-
-
 

@@ -175,6 +175,15 @@ In this example EVG #1 is defined to be the VME card in slot 5.
 \end_layout
 
 \begin_layout Standard
+You can look at example startup script(st.cmd file) for EVG and EVG in ./mrfioc2/i
+ocBoot/iocevgmrm and iocevrmrm directory respectively.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Box Boxed
 position "t"
 hor_pos "c"
@@ -716,16 +725,22 @@ Sync
 \end_layout
 
 \begin_layout Subsection
-Sequencer
+Event Sequencer
 \end_layout
 
 \begin_layout Standard
-MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
+Event Sequencer provids a method of transmitting or playing back sequences
+ of events stored in random access memory with defined timing.
+ MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
  The sequencer can hold up to 2048 <event code, timeStamp> pair.
  When the sequencer is triggered, an internal counter starts counting.
  When the counter value matches the timeStamp of the next event, the attached
  event code is transmitted.
  
+\end_layout
+
+\begin_layout Section*
+Functional block diagram of device support for event sequencer
 \end_layout
 
 \begin_layout Standard
@@ -739,16 +754,41 @@ MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
 \end_layout
 
 \begin_layout Standard
-The existence of the software and hardware sequences is an abstraction made
- to separate the process of assembling a sequence from the process of placing
- it into hardware.
- This puts a complete ready to run copy of all sequences in the IOC at all
- times.
+Device support for sequencer introduces a concept of software sequence(a.k.a.
+ soft sequence).
+ The existence of the software and hardware sequences is an abstraction
+ made to separate the process of assembling a sequence from the process
+ of placing it into hardware.
+ Software seqeunce maintains a complete ready to run copy of all sequences
+ in the IOC at all times.
  The IOC is then free to choose which sequence to place into hardware.
  Since this is a local operation it can be done quickly and efficiently.
  The IOC can have any number of these soft sequences but at a time the number
- of these soft sequences that can be loaded is restricted by the number
- of hard sequences.
+ of these soft sequences that can be loaded into the EVG hardware is restricted
+ by the number of hardware sequences.
+ 
+\end_layout
+
+\begin_layout Standard
+As shown in the picture above IOC maintains 2 copies of sequencer data (i.e.
+ Event Code's, Timestamps, Trigger Source and Run Mode).
+ Scratch sequence and complete sequence.
+ Users are allowed to make changes to the scratch sequence directly.
+ Scratch sequence is like the working copy.
+ When user are satisfied with the changes made to the working copy then
+ they can 
+\emph on
+'commit'
+\emph default
+ the soft sequence which will update the complete sequence with the scratch
+ sequence.
+ If the software sequence has an assocaited hardware sequence with it then
+ the complete sequence is copied to the hardware on 
+\emph on
+commit
+\emph default
+.
+ This is the Sync operation of sequencer.
  
 \end_layout
 
@@ -764,7 +804,7 @@ Event Code List
  (waveform): It is used to set the list of the eventCodes of the soft sequence.
  These eventCodes are transmitted whenever the timeStamp associated with
  eventCode matches the counter value of sequencer.
- The counter on the sequencer is triggered by source selected by 'trigSrc'.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -777,8 +817,12 @@ Timestamp List
 \end_layout
 
 \begin_layout Itemize
-Timestamp Input Mode(bo): There are two mode to enter the timestamping data
- in the sequencer i.e.
+
+\emph on
+Timestamp Input Mode
+\emph default
+(bo): There are two mode to enter the timestamping data in the sequencer
+ i.e.
  EGU and TICKS.
 \end_layout
 
@@ -788,23 +832,27 @@ EGU: In EGU mode user can enter the timestamps in terms of sub-seconds,
  he/she has an option of choosing the units of sub-seconds by provding an
  interger divider that is used to convert the sub-seconds to seconds.
  This is done by modifying the '@parm' part of VME_IO hardware input link
- of the record $(P):$(N):timestamp.
+ of the 
+\emph on
+$(P)Timestamp-SP
+\emph default
+ record.
  e.g.
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of microseconds do: caput $(P):$(N):timestamp.INP
+To enter timestamps in terms of microseconds do: caput $(P)Timestamp-SP.INP
  '#C2 S0 @1000000'
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of milliseconds do: caput $(P):$(N):timestamp.INP
+To enter timestamps in terms of milliseconds do: caput $(P)Timestamp-SP.INP
  '#C2 S0 @1000'
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of seconds do: caput $(P):$(N):timestamp.INP
- '#C2 S0 @1'
+To enter timestamps in terms of seconds do: caput $(P)Timestamp-SP.INP '#C2
+ S0 @1'
 \end_layout
 
 \begin_layout Quote
@@ -816,8 +864,8 @@ TICKS: Here user can provides timestamps in terms of Event Clock ticks.
 \end_layout
 
 \begin_layout Itemize
-All the timestamps are offset from the time at which the sequencer receives
- the trigger.
+All the timestamp values are offset from the time sequencer receives the
+ trigger.
  
 \end_layout
 
@@ -866,7 +914,11 @@ AC : Trigger from AC sync logic
 \end_layout
 
 \begin_layout Itemize
-Swt RAM : Trigger from RAM0/RAM1 software trigger.
+Software : Trigger from RAM0/RAM1 software trigger.
+\end_layout
+
+\begin_layout Itemize
+External : Trigger is received from any external input.
 \end_layout
 
 \end_deeper
@@ -901,7 +953,7 @@ Load
 \emph on
 Unload
 \emph default
- (bo): The unload caused the soft sequence to enter into UNLOADED state.
+ (bo): The unload causes the soft sequence to enter into UNLOADED state.
  This operation cannot fail.
  In unloaded state the assignment of a hard sequence to a soft sequence
  is released.
@@ -989,14 +1041,6 @@ Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end
  If user provides 0x7f with a timestamp then that would be used instead
  of the default one.
  
-\end_layout
-
-\begin_layout Itemize
-The current user interface for setting Event Code and Timestamp is not very
- sophasticated(Python scipt).
- e.g.
- It does not provide a readback of the event code/timestamp array when you
- close and open the panel again.
 \end_layout
 
 \begin_layout Itemize

@@ -2,17 +2,20 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <stdlib.h>
 
 #include <errlog.h>
 
 #include <mrfCommonIO.h>
 #include <mrfCommon.h>
 
+#include "evgMrm.h"
 #include "evgRegMap.h"
 
-evgSeqRam::evgSeqRam(const epicsUInt32 id, volatile epicsUInt8* const pReg):
+evgSeqRam::evgSeqRam(const epicsUInt32 id, evgMrm* const owner):
 m_id(id),
-m_pReg(pReg),
+m_owner(owner),
+m_pReg(owner->getRegAddr()),
 m_allocated(0),
 m_softSeq(0) {
 }
@@ -44,15 +47,91 @@ evgSeqRam::setSoftTrig() {
     return OK;
 }
 
+static void
+disableSeqTrig(evgInput* inp, epicsUInt32 seqId) {
+    epicsUInt32 map = inp->getInpSeqTrigMap();
+    map = map & ~(seqId+1);
+    inp->setInpSeqTrigMap(map);
+}
+
 epicsStatus
 evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
+    if(trigSrc == Software){
+        if(!m_id)
+            trigSrc = SoftRam0;
+        else
+            trigSrc = SoftRam1;
+    }
+
+    if(trigSrc >= FpInp0) {
+       /*
+        *First disable the triggering of this sequencer on all the external
+        *inputs of EVG.
+        */
+        for(int i = 0; i < evgNumFpInp; i++)
+            disableSeqTrig(m_owner->getInput(i, FP_Input), m_id);
+
+        for(int i = 0; i < evgNumUnivInp; i++)
+            disableSeqTrig(m_owner->getInput(i, Univ_Input), m_id);
+
+        for(int i = 0; i < evgNumTbInp; i++)
+            disableSeqTrig(m_owner->getInput(i, TB_Input), m_id);
+       /*
+        *Now enable the triggering only on the appropraite external input of EVG.
+        *Each external input is identified by its number and its type. The
+        *SeqTrigSrc value for each input is chosen in such a way that when you
+        *divide it by 4 the quotient will give you the input number and
+        *remainder will give you the input type.
+        */
+        div_t divResult = div((epicsUInt32)trigSrc-40, 4);
+        evgInput* inp = m_owner->getInput(divResult.quot, (InputType)divResult.rem);
+        inp->setInpSeqTrigMap(m_id+1);
+
+        if(!m_id)
+            trigSrc = ExtRam0;
+        else
+            trigSrc = ExtRam1;
+    }
+
     WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
     return OK;
 }
 
+static evgInput*
+findSeqTrig(evgInput* inp, epicsUInt32 seqId) {
+    epicsUInt32 map = inp->getInpSeqTrigMap();
+    if(map & (seqId+1))
+        return inp;
+    else
+        return 0;
+}
+
 SeqTrigSrc
 evgSeqRam::getTrigSrc() {
-    return (SeqTrigSrc)READ8(m_pReg, SeqTrigSrc(m_id));
+    SeqTrigSrc trigSrc = (SeqTrigSrc)READ8(m_pReg, SeqTrigSrc(m_id));
+
+    if(trigSrc == SoftRam0 || trigSrc == SoftRam1){
+        trigSrc = Software;
+    }
+
+
+    if(trigSrc == ExtRam0 || trigSrc == ExtRam1) {
+        evgInput* inp = 0;
+
+        for(int i = 0; i < evgNumFpInp && inp == 0; i++)
+            inp = findSeqTrig(m_owner->getInput(i, FP_Input), m_id);
+
+        for(int i = 0; i < evgNumUnivInp && inp == 0; i++)
+            inp = findSeqTrig(m_owner->getInput(i, Univ_Input), m_id);
+
+        for(int i = 0; i < evgNumTbInp && inp == 0; i++)
+            inp = findSeqTrig(m_owner->getInput(i, TB_Input), m_id);
+
+        if(inp != 0)
+            trigSrc = (SeqTrigSrc)
+                      ((inp->getNum()*4 + (epicsUInt32)inp->getType()) + 40);
+    }
+    return trigSrc;
 }
 
 epicsStatus

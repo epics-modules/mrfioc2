@@ -9,19 +9,19 @@
 
 #include "evgRegMap.h"
 
-evgOutput::evgOutput(const epicsUInt32 id, volatile epicsUInt8* const pReg,
-                                         const OutputType type):
-m_id(id),
-m_pReg(pReg),
-m_type(type) {
+evgOutput::evgOutput(const epicsUInt32 num, const OutputType type,
+                     volatile epicsUInt8* const pReg):
+m_num(num),
+m_type(type),
+m_pReg(pReg) {
     switch(m_type) {        
         case(FP_Output):
-            if(m_id >= evgNumFpOut)
+            if(m_num >= evgNumFpOut)
                 throw std::runtime_error("EVG Front panel output ID out of range");
             break;
 
         case(Univ_Output):
-            if(m_id >= evgNumUnivOut)
+            if(m_num >= evgNumUnivOut)
                 throw std::runtime_error("EVG Universal output ID out of range");
             break;
 
@@ -38,12 +38,12 @@ evgOutput::setOutMap(epicsUInt16 map) {
     epicsStatus ret = OK;
     switch(m_type) {
         case(FP_Output):
-            WRITE16(m_pReg, FPOutMap(m_id), map);
+            WRITE16(m_pReg, FPOutMap(m_num), map);
             ret = OK;
             break;
 
         case(Univ_Output):
-            WRITE16(m_pReg, UnivOutMap(m_id), map);
+            WRITE16(m_pReg, UnivOutMap(m_num), map);
             ret = OK;
             break;
 

@@ -34,7 +34,7 @@
  *the hardware Input link of the $(P):$(N):timestamp record using this extended
  *device support.
  */
-struct Pvt {
+struct PvtTs {
     evgMrm* evg;
     evgSoftSeq* seq;
     epicsFloat64 scaler;
@@ -63,7 +63,7 @@ add_record (dbCommon *pRec) {
         if(!seq)
             throw std::runtime_error("Failed to lookup EVG Sequence");
 
-        Pvt* pvt = new Pvt;
+        PvtTs* pvt = new PvtTs;
         pvt->evg = evg;
         pvt->seq = seq;
         
@@ -89,7 +89,7 @@ add_record (dbCommon *pRec) {
 
 static long
 del_record (dbCommon *pRec) {
-    Pvt* pvt = (Pvt*)pRec->dpvt;
+    PvtTs* pvt = (PvtTs*)pRec->dpvt;
     if (!pvt) return 0;
     delete pvt;
 
@@ -119,7 +119,7 @@ write_wf_timestamp(waveformRecord* pwf) {
     epicsStatus ret = 0;
 
     try {
-        Pvt* pvt = (Pvt*)pwf->dpvt;
+        PvtTs* pvt = (PvtTs*)pwf->dpvt;
         if(!pvt)
             throw std::runtime_error("Device pvt field not initialized");
 
@@ -174,23 +174,23 @@ epicsExportAddress(dset, devWfEvgTimestamp);
 /**    Regular Device Support    **/
 
 /**     Initialization    **/
-struct tsRbDpvt {
+struct Pvt {
     evgMrm* evg;
     evgSoftSeq* seq;
 };
 
 /*returns: (-1,0)=>(failure,success)*/
 static long
-init_wf_timestamp(waveformRecord* pwf) {
+init_record_pvt(dbCommon* pRec, DBLINK* lnk) {
     long ret = 0;
 
-    if(pwf->inp.type != VME_IO) {
-        errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pwf->name);
+    if(lnk->type != VME_IO) {
+        errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pRec->name);
         return S_db_badField;
     }
 
     try {
-        evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);
+        evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
 
@@ -198,21 +198,21 @@ init_wf_timestamp(waveformRecord* pwf) {
         if(!seqMgr)
             throw std::runtime_error("Failed to lookup EVG Seq Manager");
 
-        evgSoftSeq* seq = seqMgr->getSoftSeq(pwf->inp.value.vmeio.signal);
+        evgSoftSeq* seq = seqMgr->getSoftSeq(lnk->value.vmeio.signal);
         if(!seq)
             throw std::runtime_error("Failed to lookup EVG Sequence");
 
-        tsRbDpvt* dpvt = new tsRbDpvt;
+        Pvt* dpvt = new Pvt;
         dpvt->evg = evg;
         dpvt->seq = seq;
 
-        pwf->dpvt = dpvt;
+        pRec->dpvt = dpvt;
         ret = 0;
     } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
         ret = S_dev_noDevice;
     } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
         ret = S_db_noMemory;
     }
 
@@ -266,6 +266,12 @@ init_wf(waveformRecord* pwf) {
     return init_record((dbCommon*)pwf, &pwf->inp);
 }
 
+/*returns: (-1,0)=>(failure,success)*/
+static long
+init_wf_pvt(waveformRecord* pwf) {
+    return init_record_pvt((dbCommon*)pwf, &pwf->inp);
+}
+
 /*returns: (0,2)=>(success,success no convert)*/
 static long
 init_mbbo(mbboRecord* pmbbo) {
@@ -301,7 +307,7 @@ init_bi(biRecord* pbi) {
 
 static long
 get_ioint_info_tsRB(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
-    tsRbDpvt* dpvt = (tsRbDpvt*)pRec->dpvt;
+    Pvt* dpvt = (Pvt*)pRec->dpvt;
     if(!dpvt) {
         errlogPrintf("Device pvt field not initialized\n");
         return -1;
@@ -397,7 +403,7 @@ read_wf_timestamp(waveformRecord* pwf) {
     long ret = 0;
 
     try {
-        tsRbDpvt* dpvt = (tsRbDpvt*)pwf->dpvt;
+        Pvt* dpvt = (Pvt*)pwf->dpvt;
         if(!dpvt)
             throw std::runtime_error("Initialization failed");
 
@@ -536,7 +542,7 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 }
 
 /*returns: (0,2)=>(success,success no convert)*/
-static long 
+static long
 write_mbbo_trigSrc(mbboRecord* pmbbo) {
     long ret = 0;
 
@@ -1012,7 +1018,7 @@ common_dset devWfEvgTimestampRB = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_wf_timestamp,
+    (DEVSUPFUN)init_wf_pvt,
     (DEVSUPFUN)get_ioint_info_tsRB,
     (DEVSUPFUN)read_wf_timestamp,
 };

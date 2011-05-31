@@ -11,16 +11,15 @@ enum OutputType {
 
 class evgOutput {
 public:
-    evgOutput(const epicsUInt32, volatile epicsUInt8* const, const OutputType);
+    evgOutput(const epicsUInt32, const OutputType, volatile epicsUInt8* const);
     ~evgOutput();
     
     epicsStatus setOutMap(epicsUInt16);
 
 private:
-    const epicsUInt32          m_id;
-    volatile epicsUInt8* const m_pReg;
+    const epicsUInt32          m_num;
     const OutputType           m_type;
-    
+    volatile epicsUInt8* const m_pReg;
 };
 
 #endif //EVG_OUTPUT_H

@@ -33,6 +33,7 @@ enum SeqRunMode {
 };
 
 enum SeqTrigSrc {
+    None = 31,
     Mxc0 = 0,
     Mxc1 = 1,
     Mxc2 = 2,
@@ -42,8 +43,22 @@ enum SeqTrigSrc {
     Mxc6 = 6,
     Mxc7 = 7,
     AC = 16,
-    SW_Ram0 = 17,
-    SW_Ram1 = 18
+
+    SoftRam0 = 17,
+    SoftRam1 = 18,
+    Software = 19,
+
+    ExtRam0 = 24,
+    ExtRam1 = 25,
+    External = 26,
+    FpInp0 = 41,
+    FpInp1 = 45,
+    UnivInp0 = 42,
+    UnivInp1 = 46,
+    UnivInp2 = 50,
+    UnivInp3 = 54,
+    TbInp0 = 43,
+    TbInp1 = 47
 };
 
 #define IrqStop(id) irqStop##id

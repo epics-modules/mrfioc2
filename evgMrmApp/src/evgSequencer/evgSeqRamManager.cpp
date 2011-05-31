@@ -14,7 +14,7 @@
 evgSeqRamMgr::evgSeqRamMgr(evgMrm* owner):
 m_owner(owner) {
     for(int i = 0; i < evgNumSeqRam; i++) {
-        m_seqRam.push_back(new evgSeqRam(i, owner->getRegAddr()));
+        m_seqRam.push_back(new evgSeqRam(i, owner));
     }
 }
 

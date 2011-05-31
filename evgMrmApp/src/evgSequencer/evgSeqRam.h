@@ -7,11 +7,11 @@
 #include <dbCommon.h>
 
 #include "evgSoftSeq.h"
-
+class evgMrm;
 class evgSeqRam {
 
 public:
-    evgSeqRam(const epicsUInt32, volatile epicsUInt8* const);
+    evgSeqRam(const epicsUInt32, evgMrm* const);
     ~evgSeqRam();
 
     const epicsUInt32 getId();
@@ -40,6 +40,7 @@ public:
 
 private:
     const epicsUInt32          m_id;
+    evgMrm*                    m_owner;
     volatile epicsUInt8* const m_pReg;
     bool                       m_allocated;
     evgSoftSeq*                m_softSeq;

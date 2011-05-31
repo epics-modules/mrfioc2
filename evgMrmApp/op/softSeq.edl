@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 805
-y 643
-w 303
-h 281
+x 520
+y 727
+w 261
+h 340
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -23,64 +23,19 @@ showGrid
 snapToGrid
 endScreenProperties
 
-# (Menu Button)
-object activeMenuButtonClass
+# (Rectangle)
+object activeRectangleClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 170
-y 120
-w 100
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}TrigSrc-Sel"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 30
-y 120
-w 100
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}RunMode-Sel"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Shell Command)
-object shellCmdClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 70
-y 40
-w 160
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Event Code / Timestamp"
-numCmds 1
-command {
-  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(S) $(D) $(SS)"
-}
+x 0
+y 0
+w 260
+h 30
+lineColor index 14
+fill
+fillColor index 54
 endObjectProperties
 
 # (Static Text)
@@ -89,12 +44,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 40
-y 10
-w 240
-h 20
+x 10
+y 0
+w 250
+h 30
 font "helvetica-bold-r-12.0"
-fontAlign "center"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -103,25 +57,66 @@ value {
 }
 endObjectProperties
 
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 10
+y 310
+w 240
+h 20
+controlPv "$(S)\{$(D)-$(SS)\}Error-RB"
+fgColor index 21
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 10
+y 210
+w 120
+h 20
+controlPv "$(S)\{$(D)-$(SS)\}Load-RB"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
 # (Message Button)
 object activeMessageButtonClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 30
-y 220
-w 70
+x 10
+y 230
+w 60
 h 20
 fgColor index 14
 onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}Commit-Cmd"
+controlPv "$(S)\{$(D)-$(SS)\}Load-Cmd"
 releaseValue "1"
-onLabel "Commit"
-offLabel "Commit"
+onLabel "Load"
+offLabel "Load"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -132,9 +127,32 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 150
-y 170
-w 70
+x 70
+y 230
+w 60
+h 20
+fgColor index 14
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(S)\{$(D)-$(SS)\}Unload-Cmd"
+releaseValue "1"
+onLabel "Unload"
+offLabel "Unload"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 130
+y 280
+w 60
 h 20
 fgColor index 14
 onColor index 3
@@ -155,9 +173,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 80
-y 170
-w 70
+x 70
+y 280
+w 60
 h 20
 fgColor index 14
 onColor index 3
@@ -179,8 +197,8 @@ major 4
 minor 0
 release 0
 x 10
-y 170
-w 70
+y 280
+w 60
 h 20
 fgColor index 14
 onColor index 3
@@ -195,47 +213,6 @@ offLabel "Enable"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 30
-y 250
-w 240
-h 20
-controlPv "$(S)\{$(D)-$(SS)\}Error-RB"
-fgColor index 21
-fgAlarm
-bgColor index 3
-fill
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 30
-y 200
-w 70
-h 15
-controlPv "$(S)\{$(D)-$(SS)\}Commit-RB"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 5
-autoHeight
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -243,9 +220,9 @@ major 4
 minor 5
 release 0
 x 10
-y 150
-w 280
-h 15
+y 260
+w 240
+h 20
 controlPv "$(S)\{$(D)-$(SS)\}Enable-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -259,27 +236,96 @@ newPos
 objType "monitors"
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
+# (Message Button)
+object activeMessageButtonClass
 beginObjectProperties
 major 4
-minor 5
+minor 0
 release 0
-x 130
-y 200
-w 140
-h 15
-controlPv "$(S)\{$(D)-$(SS)\}Load-RB"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
+x 190
+y 280
+w 60
+h 20
 fgColor index 14
-bgColor index 5
-autoHeight
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "monitors"
+onColor index 3
+offColor index 21
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(S)\{$(D)-$(SS)\}Abort-Cmd"
+releaseValue "1"
+onLabel "Abort"
+offLabel "Abort"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 40
+w 240
+h 160
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 40
+w 240
+h 160
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 50
+y 50
+w 160
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Event Code / Timestamp"
+numCmds 1
+command {
+  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(S) $(D) $(SS)"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 120
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(S)\{$(D)-$(SS)\}RunMode-Sel"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -288,7 +334,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 30
+x 20
 y 80
 w 57
 h 15
@@ -302,13 +348,55 @@ value {
 autoSize
 endObjectProperties
 
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 20
+y 100
+w 80
+h 20
+controlPv "$(S)\{$(D)-$(SS)\}RunMode-RB"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 160
+y 120
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(S)\{$(D)-$(SS)\}TrigSrc-Sel"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 170
+x 160
 y 80
 w 82
 h 15
@@ -328,33 +416,10 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 30
+x 160
 y 100
-w 100
-h 15
-controlPv "$(S)\{$(D)-$(SS)\}RunMode-RB"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 5
-autoHeight
-limitsFromDb
-nullColor index 14
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 170
-y 100
-w 100
-h 15
+w 80
+h 20
 controlPv "$(S)\{$(D)-$(SS)\}TrigSrc-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -374,21 +439,48 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 220
+x 100
 y 170
 w 70
 h 20
 fgColor index 14
 onColor index 3
-offColor index 21
+offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}Abort-Cmd"
+controlPv "$(S)\{$(D)-$(SS)\}Commit-Cmd"
 releaseValue "1"
-onLabel "Abort"
-offLabel "Abort"
+onLabel "Commit"
+offLabel "Commit"
 3d
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 100
+y 150
+w 70
+h 15
+controlPv "$(S)\{$(D)-$(SS)\}Commit-RB"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 5
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 
 # (Message Button)
@@ -397,43 +489,39 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 130
-y 220
-w 70
+x 150
+y 230
+w 100
 h 20
 fgColor index 14
 onColor index 3
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}Load-Cmd"
+controlPv "$(S)\{$(D)-$(SS)\}SoftTrig-Cmd"
 releaseValue "1"
-onLabel "Load"
-offLabel "Load"
+onLabel "Trigger"
+offLabel "Trigger"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Message Button)
-object activeMessageButtonClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
-x 200
-y 220
-w 70
+x 150
+y 210
+w 100
 h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(S)\{$(D)-$(SS)\}Unload-Cmd"
-releaseValue "1"
-onLabel "Unload"
-offLabel "Unload"
-3d
 font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Software Trigger"
+}
 endObjectProperties
 

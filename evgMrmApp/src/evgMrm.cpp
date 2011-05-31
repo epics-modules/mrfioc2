@@ -72,12 +72,12 @@ m_softSeqMgr(this) {
 
         for(int i = 0; i < evgNumFpOut; i++) {
             m_output[std::pair<epicsUInt32, OutputType>(i, FP_Output)] = 
-                new evgOutput(i, pReg, FP_Output);
+                new evgOutput(i, FP_Output, pReg);
         }
 
         for(int i = 0; i < evgNumUnivOut; i++) {
             m_output[std::pair<epicsUInt32, OutputType>(i, Univ_Output)] = 
-                new evgOutput(i, pReg, Univ_Output);
+                new evgOutput(i, Univ_Output, pReg);
         }
     
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
