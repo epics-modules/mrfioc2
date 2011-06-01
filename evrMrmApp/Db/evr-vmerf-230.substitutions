@@ -73,6 +73,22 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:FP4}", "EVR$(C):FrontOut4", "OUT4 (CML)"}
 {"$(SYS){$(D)-Out:FP5}", "EVR$(C):FrontOut5", "OUT5 (CML)"}
 {"$(SYS){$(D)-Out:FP6}", "EVR$(C):FrontOut6", "OUT6 (CML)"}
+{"$(SYS){$(D)-Out:RB00}","EVR$(C):RearUniv0", "Rear 0"}
+{"$(SYS){$(D)-Out:RB01}","EVR$(C):RearUniv1", "Rear 1"}
+{"$(SYS){$(D)-Out:RB02}","EVR$(C):RearUniv2", "Rear 2"}
+{"$(SYS){$(D)-Out:RB03}","EVR$(C):RearUniv3", "Rear 3"}
+{"$(SYS){$(D)-Out:RB04}","EVR$(C):RearUniv4", "Rear 4"}
+{"$(SYS){$(D)-Out:RB05}","EVR$(C):RearUniv5", "Rear 5"}
+{"$(SYS){$(D)-Out:RB06}","EVR$(C):RearUniv6", "Rear 6"}
+{"$(SYS){$(D)-Out:RB07}","EVR$(C):RearUniv7", "Rear 7"}
+{"$(SYS){$(D)-Out:RB08}","EVR$(C):RearUniv8", "Rear 8"}
+{"$(SYS){$(D)-Out:RB09}","EVR$(C):RearUniv9", "Rear 9"}
+{"$(SYS){$(D)-Out:RB10}","EVR$(C):RearUniv10","Rear 10"}
+{"$(SYS){$(D)-Out:RB11}","EVR$(C):RearUniv11","Rear 11"}
+{"$(SYS){$(D)-Out:RB12}","EVR$(C):RearUniv12","Rear 12"}
+{"$(SYS){$(D)-Out:RB13}","EVR$(C):RearUniv13","Rear 13"}
+{"$(SYS){$(D)-Out:RB14}","EVR$(C):RearUniv14","Rear 14"}
+{"$(SYS){$(D)-Out:RB15}","EVR$(C):RearUniv15","Rear 15"}
 }
 
 file "evrcml.db"
