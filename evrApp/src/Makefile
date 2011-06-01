@@ -21,7 +21,6 @@ INC += evr/cml.h
 
 evr_SRCS += evr.cpp
 
-INC += evrmap.h
 evr_SRCS += evrGTIF.cpp
 
 evr_SRCS += devEvrStringIO.cpp

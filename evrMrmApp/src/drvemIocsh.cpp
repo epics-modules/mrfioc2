@@ -35,8 +35,6 @@
 #include "plx9030.h"
 #include "plx9056.h"
 
-#include <evrmap.h>
-
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
@@ -144,16 +142,21 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
 }
 
 static
-bool reportCard(int level,short id,EVRMRM& evr)
+bool reportCard(mrf::Object* obj, void* raw)
 {
-    printf("--- EVR %d ---\n",id);
+    int *level=(int*)raw;
+    EVRMRM *evr=dynamic_cast<EVRMRM*>(obj);
+    if(!evr)
+        return true;
 
-    printf("Model: %08x  Version: %08x\n",evr.model(),evr.version());
+    printf("--- EVR %s ---\n",obj->name().c_str());
 
-    printf("Clock: %.6f MHz\n",evr.clock()*1e-6);
+    printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
 
-    if(level>=2){
-        printregisters(evr.base, evr.baselen);
+    printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
+
+    if(*level>=2){
+        printregisters(evr->base, evr->baselen);
     }
 
     return true;
@@ -163,7 +166,7 @@ static
 long report(int level)
 {
     printf("=== Begin MRF EVR support ===\n");
-    evrmap.visit(level,&reportCard);
+    mrf::Object::visitObjects(&reportCard, (void*)&level);
     printf("=== End MRF EVR support ===\n");
     return 0;
 }
@@ -171,11 +174,11 @@ long report(int level)
 
 extern "C"
 void
-mrmEvrSetupPCI(int id,int b,int d,int f)
+mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
-    if(cardIdInUse(id)){
-        printf("ID %d already in use\n",id);
+    if(mrf::Object::getObject(id)){
+        printf("ID %s already in use\n",id);
         return;
     }
 
@@ -185,7 +188,7 @@ try {
         return;
     }
 
-    printf("Device %u  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
+    printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
     printf("Using IRQ %u\n",cur->irq);
 
     volatile epicsUInt8 *plx, *evr;
@@ -257,9 +260,7 @@ try {
 
     // Install ISR
 
-    std::ostringstream nstr;
-    nstr<<"EVR"<<id;
-    EVRMRM *receiver=new EVRMRM(nstr.str(),evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,evr,evrlen);
 
     void *arg=receiver;
 
@@ -268,10 +269,6 @@ try {
         delete receiver;
     }else{
         // Interrupts will be enabled during iocInit()
-
-        evrmap.store(id,*receiver);
-        datatxmap.append(id,receiver->buftx);
-        datarxmap.append(id,receiver->bufrx);
     }
 } catch(std::exception& e) {
     printf("Error: %s\n",e.what());
@@ -300,18 +297,26 @@ printRamEvt(EVRMRM *evr,int evt,int ram)
 
 static
 bool
-enableIRQ(int,short,EVRMRM& mrm)
+enableIRQ(mrf::Object* obj, void*)
 {
-    mrm.enableIRQ();
+    EVRMRM *mrm=dynamic_cast<EVRMRM*>(obj);
+    if(!mrm)
+        return true;
+
+    mrm->enableIRQ();
 
     return true;
 }
 
 static
 bool
-disableIRQ(int,short,EVRMRM& mrm)
+disableIRQ(mrf::Object* obj, void*)
 {
-    WRITE32(mrm.base, IRQEnable, 0);
+    EVRMRM *mrm=dynamic_cast<EVRMRM*>(obj);
+    if(!mrm)
+        return true;
+
+    WRITE32(mrm->base, IRQEnable, 0);
     return true;
 }
 
@@ -319,7 +324,7 @@ static
 void
 evrShutdown(void*)
 {
-    evrmap.visit(0, &disableIRQ);
+    mrf::Object::visitObjects(&disableIRQ,0);
 }
 
 static
@@ -332,7 +337,7 @@ void inithooks(initHookState state)
         // Register hook to disable interrupts on IOC shutdown
         epicsAtExit(&evrShutdown, NULL);
         // First enable interrupts for each EVR
-        evrmap.visit(0, &enableIRQ);
+        mrf::Object::visitObjects(&enableIRQ,0);
         // Then enable all used levels
         for(lvl=1; lvl<=7; ++lvl)
         {
@@ -352,7 +357,7 @@ void inithooks(initHookState state)
     }
 }
 
-static const iocshArg mrmEvrSetupPCIArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg3 = { "Function number",iocshArgInt};
@@ -362,16 +367,16 @@ static const iocshFuncDef mrmEvrSetupPCIFuncDef =
     {"mrmEvrSetupPCI",4,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].ival,args[1].ival,args[2].ival,args[3].ival);
+    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival);
 }
 
 extern "C"
 void
-mrmEvrSetupVME(int id,int slot,int base,int level, int vector)
+mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
-    if(cardIdInUse(id)){
-        printf("ID %d already in use\n",id);
+    if(mrf::Object::getObject(id)){
+        printf("ID %s already in use\n",id);
         return;
     }
 
@@ -419,9 +424,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    std::ostringstream nstr;
-    nstr<<"EVR"<<id;
-    EVRMRM *receiver=new EVRMRM(nstr.str(),evr,0x20000);
+    EVRMRM *receiver=new EVRMRM(id,evr,0x20000);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);
@@ -450,16 +453,12 @@ try {
         // Interrupts will be enabled during iocInit()
     }
 
-    evrmap.store(id,*receiver);
-    datatxmap.append(id,receiver->buftx);
-    datarxmap.append(id,receiver->bufrx);
-
 } catch(std::exception& e) {
     printf("Error: %s\n",e.what());
 }
 }
 
-static const iocshArg mrmEvrSetupVMEArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrSetupVMEArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupVMEArg1 = { "Bus number",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg2 = { "A32 base address",iocshArgInt};
 static const iocshArg mrmEvrSetupVMEArg3 = { "IRQ Level 1-7 (0 - disable)",iocshArgInt};
@@ -470,15 +469,21 @@ static const iocshFuncDef mrmEvrSetupVMEFuncDef =
     {"mrmEvrSetupVME",5,mrmEvrSetupVMEArgs};
 static void mrmEvrSetupVMECallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupVME(args[0].ival,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
+    mrmEvrSetupVME(args[0].sval,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
 }
 
 extern "C"
 void
-mrmEvrDumpMap(int id,int evt,int ram)
+mrmEvrDumpMap(const char* id,int evt,int ram)
 {
 try {
-    EVRMRM *card=&evrmap.get<EVRMRM>(id);
+    mrf::Object *obj=mrf::Object::getObject(id);
+    if(!obj)
+        throw std::runtime_error("Object not found");
+    EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
+    if(!card)
+        throw std::runtime_error("Not a MRM EVR");
+
     /* CardMap::get() throws if 'id' is invalid */
     printf("Print ram #%d\n",ram);
     if(evt>=0){
@@ -494,7 +499,7 @@ try {
 }
 }
 
-static const iocshArg mrmEvrDumpMapArg0 = { "ID number",iocshArgInt};
+static const iocshArg mrmEvrDumpMapArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrDumpMapArg1 = { "Event code",iocshArgInt};
 static const iocshArg mrmEvrDumpMapArg2 = { "Mapping select 0 or 1",iocshArgInt};
 static const iocshArg * const mrmEvrDumpMapArgs[3] =
@@ -503,7 +508,7 @@ static const iocshFuncDef mrmEvrDumpMapFuncDef =
     {"mrmEvrDumpMap",3,mrmEvrDumpMapArgs};
 static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
 {
-    mrmEvrDumpMap(args[0].ival,args[1].ival,args[2].ival);
+    mrmEvrDumpMap(args[0].sval,args[1].ival,args[2].ival);
 }
 
 static

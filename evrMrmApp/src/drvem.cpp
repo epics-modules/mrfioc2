@@ -70,8 +70,6 @@ extern "C" {
 static
 const double fracref=24.0; // MHz
 
-CardMap<dataBufRx> datarxmap;
-
 EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   :EVR(n)
   ,evrLock()

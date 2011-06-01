@@ -43,8 +43,6 @@ public:
 
 };
 
-extern CardMap<dataBufTx> datatxmap;
-
 class dataBufRx : public mrf::ObjectInst<dataBufRx> {
 public:
     dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
@@ -83,7 +81,5 @@ public:
      */
     virtual void dataRxDeleteReceive(epicsUInt16 id, dataBufComplete fptr, void* arg=0)=0;
 };
-
-extern CardMap<dataBufRx> datarxmap;
 
 #endif // DATABUF_H_INC

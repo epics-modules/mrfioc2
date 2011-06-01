@@ -4,18 +4,21 @@
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
-/*
+/* EVR GeneralTime InterFace
+ *
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
-#include "evrmap.h"
+#include "mrf/object.h"
 #include "evr/evr.h"
 
 #include <stdexcept>
 #include <errlog.h>
+#include <epicsMutex.h>
+#include <epicsGuard.h>
 #include <epicsTime.h>
 #include <epicsVersion.h>
 
@@ -29,11 +32,21 @@ struct priv {
     priv(epicsTimeStamp *t, int e) : ok(epicsTimeERROR), ts(t), event(e) {}
 };
 
+static EVR* lastSrc = 0;
+
+static epicsMutex lastLock;
+
 static
-bool visitTime(priv* p,short,EVR& evr)
+bool visitTime(mrf::Object* obj, void* raw)
 {
-    bool tsok=evr.getTimeStamp(p->ts, p->event);
+    EVR *evr = dynamic_cast<EVR*>(obj);
+    if(!evr)
+        return true;
+
+    priv *p = (priv*)raw;
+    bool tsok=evr->getTimeStamp(p->ts, p->event);
     if (tsok) {
+        lastSrc = evr;
         p->ok=epicsTimeOK;
         return false;
     } else
@@ -45,8 +58,14 @@ epicsShareFunc
 int EVREventTime(epicsTimeStamp *pDest, int event)
 {
 try {
+    epicsGuard<epicsMutex> guard(lastLock);
+
+    if(lastSrc) {
+        if(lastSrc->getTimeStamp(pDest, event))
+            return epicsTimeOK;
+    }
     priv p(pDest, event);
-    evrmap.visit(&p, &visitTime);
+    mrf::Object::visitObjects(&visitTime, (void*)&p);
     return p.ok;
 } catch (std::exception& e) {
     epicsPrintf("EVREventTime failed: %s\n", e.what());
@@ -61,7 +80,7 @@ int EVRCurrentTime(epicsTimeStamp *pDest)
     return EVREventTime(pDest, epicsTimeEventCurrentTime);
 }
 
-#if EPICS_VERSION==3 && EPICS_REVISION==14 && EPICS_MODIFICATION>=9
+#if EPICS_VERSION==3 && ( EPICS_REVISION>14 || (EPICS_REVISION==14 && EPICS_MODIFICATION>=9) )
 
 #include <generalTimeSup.h>
 

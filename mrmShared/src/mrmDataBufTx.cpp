@@ -27,8 +27,6 @@
 
 #define DataTxCtrl_len_max DataTxCtrl_len_mask
 
-CardMap<dataBufTx> datatxmap;
-
 dataBufTx::~dataBufTx() {}
 dataBufRx::~dataBufRx() {}
 

@@ -24,7 +24,6 @@
 
 #include <mrfCommon.h> // for mrfDisableRecord
 
-#include "evrmap.h"
 #include "evr/evr.h"
 
 #include <stdexcept>

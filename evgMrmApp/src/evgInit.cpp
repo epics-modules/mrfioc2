@@ -146,8 +146,7 @@ mrmEvgSetupVME (
                 return -1;
             }    
         }
-        evgmap.store(cardNum, *evg);        
-        datatxmap.append(cardNum, evg->m_buftx);
+        evgmap.store(cardNum, *evg);
 
         return 0;
     } catch(std::exception& e) {
