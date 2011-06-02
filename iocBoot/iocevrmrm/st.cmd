@@ -12,16 +12,19 @@ epicsEnvSet("LOCATION","Blg 902 Rm 28")
 
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","1000000")
 
-mrmEvrSetupPCI(0,1,2,0)
+mrmEvrSetupPCI("PMCEVR",1,2,0)
 
 bspExtVerbosity=0
-mrmEvrSetupVME(1,5,0x20000000,3,0x26)
-mrmEvrSetupVME(2,8,0x21000000,4,0x24)
+mrmEvrSetupVME("EVR1",5,0x20000000,3,0x26)
+mrmEvrSetupVME("EVR2",8,0x21000000,4,0x24)
 
-dbLoadRecords("db/evr-pmc-230.db","SYS=TST, D=evr:1, C=0")
+dbLoadRecords("db/evr-pmc-230.db","SYS=TST, D=evr:1, EVR=PMCEVR")
 
-dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:2, C=1")
-dbLoadRecords("db/evr-vmerf-230.db","PSYS=TST, D=evr:3, C=2")
+dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:2, EVR=EVR1")
+dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:3, EVR=EVR2")
+
+mrmEvgSetupVME(2, 3, 0x100000, 3, 0xC0)
+dbLoadRecords("db/vme-evg230.db", "S=TST, D=evg:2, cardNum=2")
 
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
