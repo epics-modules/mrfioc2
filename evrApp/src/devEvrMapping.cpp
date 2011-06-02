@@ -50,9 +50,8 @@
 struct map_priv {
     EVR* card;
     epicsUInt32 last_code;
-    epicsUInt32 last_func;
     char obj[30];
-    int next_func;
+    int func;
 };
 
 static const
@@ -76,14 +75,14 @@ static const
 linkOptionDef eventdef[] = 
 {
     linkString  (map_priv, obj , "OBJ"  , 1, 0),
-    linkEnum    (map_priv, next_func, "Func"  , 1, 0, funcEnum),
+    linkEnum    (map_priv, func, "Func"  , 1, 0, funcEnum),
     linkOptionEnd
 };
 
 static long add_lo(dbCommon* praw)
 {
     longoutRecord *prec=(longoutRecord*)praw;
-    long ret=0;
+    epicsUInt32  dummy;  // Dummy status variable
 try {
     assert(prec->out.type==INST_IO);
 
@@ -92,8 +91,7 @@ try {
     if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
         throw std::runtime_error("Couldn't parse link string");
 
-    priv->last_code=0;
-    priv->last_func=priv->next_func;
+    priv->last_code=prec->val;
 
     mrf::Object *O=mrf::Object::getObject(priv->obj);
     if(!O) {
@@ -106,25 +104,36 @@ try {
         return S_db_errArg;
     }
 
+    if(priv->last_code>0 && priv->last_code<=255)
+        priv->card->specialSetMap(priv->last_code,priv->func,true);
+
     praw->dpvt = (void*)priv.release();
 
     return 0;
 
-} catch(std::runtime_error& e) {
-    recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-    ret=S_dev_noDevice;
 } catch(std::exception& e) {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    ret=S_db_noMemory;
+    dummy = recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    return S_db_noMemory;
 }
-    return ret;
 }
 
 static inline
-long del_lo(dbCommon* raw)
+long del_lo(dbCommon* praw)
 {
-    delete (map_priv*)raw->dpvt;
+    epicsUInt32  dummy;  // Dummy status variable
+try {
+    std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+
+    if(priv->last_code>0 && priv->last_code<=255)
+        priv->card->specialSetMap(priv->last_code,priv->func,false);
+
     return 0;
+} catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)praw, e.what());
+}
+    dummy = recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    return S_db_noMemory;
 }
 
 static long write_lo(longoutRecord* prec)
@@ -136,46 +145,32 @@ try {
     if (!priv)
         return -2;
 
-    epicsUInt32 func=priv->next_func;
+    epicsUInt32 func=priv->func;
 
     epicsUInt32 code=prec->val;
 
-    if( func==priv->last_func && code==priv->last_code )
+    if(code<0 && code>255) {
+        dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+        return 0;
+    }
+
+    if( code==priv->last_code )
         return 0;
 
-    priv->card->specialSetMap(priv->last_code,priv->last_func,false);
+    if(priv->last_code>0 && priv->last_code<=255)
+        priv->card->specialSetMap(priv->last_code,func,false);
 
-    bool restore=false;
-    try {
-        priv->card->specialSetMap(code,func,true);
-    } catch (std::runtime_error& e){
-        restore=true;
-    }
+    priv->card->specialSetMap(code,func,true);
 
-    if (restore && func==priv->last_func) {
-        // Can  (try) to recover previous setting unless
-        // function (OUT link) changed.
-        priv->card->specialSetMap(priv->last_code,priv->last_func,true);
-
-        prec->val = priv->last_code;
-        dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, MAJOR_ALARM);
-
-        return -5;
-    } else if (restore) {
-        // Can't recover
-        prec->val = 0;
-        dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
-        return -5;
-    }
 
     priv->last_code=code;
-    priv->last_func=func;
 
     return 0;
 
 } catch(std::exception& e) {
     prec->val=0;
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 }
@@ -184,7 +179,7 @@ try {
 
 extern "C" {
 
-dsxt dxtLOEVRMap={&add_lo,&del_record_delete<map_priv>};
+dsxt dxtLOEVRMap={&add_lo,&del_lo};
 static
 common_dset devLOEVRMap = {
     5,
