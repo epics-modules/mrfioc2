@@ -89,7 +89,7 @@ struct property<P[]> : public propertyBase
      @param L   Number of element in @var arr
      */
     virtual void set(const P* arr, size_t L)=0;
-    /** @brief The setter for this property
+    /** @brief The getter for this property
      *
      @param arr Array to copy to
      @param L   Max number of element to write to @var arr

@@ -104,7 +104,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-Out-$(O)\}Map-Sel"
+controlPv "$(SYS)\{$(D)-Out-$(O)\}Map-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -244,7 +244,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-AcTrig\}Bypass-Sel"
+controlPv "$(SYS)\{$(D)-AcTrig\}Bypass-Sel"
 onLabel "ON"
 offLabel "OFF"
 3d
@@ -340,7 +340,7 @@ x 80
 y 110
 w 70
 h 19
-controlPv "$(S)\{$(D)-AcTrig\}Divider-SP"
+controlPv "$(SYS)\{$(D)-AcTrig\}Divider-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -366,7 +366,7 @@ x 220
 y 110
 w 80
 h 19
-controlPv "$(S)\{$(D)-AcTrig\}Phase-SP"
+controlPv "$(SYS)\{$(D)-AcTrig\}Phase-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -400,7 +400,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(S)\{$(D)-AcTrig\}Sync-Sel"
+controlPv "$(SYS)\{$(D)-AcTrig\}Sync-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

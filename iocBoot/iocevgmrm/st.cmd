@@ -22,7 +22,7 @@ mrmEvgSetupVME(1, 3, 0x100000, 4, 0xC0)
 
 ## Load record instances
 
-dbLoadRecords("db/vme-evg230.db",   "S=TST,   D=evg:1, cardNum=1")
+dbLoadRecords("db/vme-evg230.db", "SYS=TST,   D=evg:1, cardNum=1")
 
 set_savefile_path("{mnt}/as","/save")
 set_requestfile_path("{mnt}/as","/req")
