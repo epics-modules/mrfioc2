@@ -91,6 +91,7 @@ EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
                    epicsThreadPriorityHigh )
+  // 3 because 2 IRQ events, and 1 shutdown event
   ,drain_fifo_wakeup(3,sizeof(int))
   ,count_FIFO_sw_overrate(0)
   ,stampClock(0.0)
@@ -483,6 +484,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
+        errlogPrintf("EVR %s code %02x func %3d out of range\n",
+            id.c_str(), code, func);
         throw std::out_of_range("Special function code is out of range");
     }
 
@@ -516,9 +519,6 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
         _unmap(code,func-96);
         WRITE32(base, MappingRam(0, code, Internal), val&~mask);
     }
-
-//    errlogPrintf("EVR #%d code %02x func %3d %s\n",
-//        id, code, func, v?"Set":"Clear");
 }
 
 void
@@ -527,6 +527,7 @@ EVRMRM::clockSet(double freq)
     double err;
     // Set both the fractional synthesiser and microsecond
     // divider.
+    printf("Set EVR clock %f\n",freq);
 
     freq/=1e6;
 
@@ -862,7 +863,7 @@ EVRMRM::eventNotityDel(epicsUInt32 event, eventCallback cb, void* arg)
 epicsUInt16
 EVRMRM::dbus() const
 {
-    return (READ32(base, Status) & Status_dbus_mask) << Status_dbus_shift;
+    return (READ32(base, Status) & Status_dbus_mask) >> Status_dbus_shift;
 }
 
 void

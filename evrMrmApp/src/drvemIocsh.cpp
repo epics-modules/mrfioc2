@@ -103,7 +103,7 @@ REGINFO("CML4Ena",OutputCMLEna(0),32),
 REGINFO("CML4Cnt",OutputCMLCount(0),32),
 REGINFO("CML4Len",OutputCMLPatLength(0),32),
 REGINFO("CML4Pat0",OutputCMLPat(0,0),32),
-REGINFO("CML4Pat1",OutputCMLPat(0,1),32)
+REGINFO("CML4Pat1",OutputCMLPat(0,1),32),
 REGINFO("TXBuf0-3",DataTx(0),32),
 REGINFO("RXBuf0-3",DataRx(0),32)
 #undef REGINFO

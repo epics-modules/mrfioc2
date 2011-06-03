@@ -98,6 +98,8 @@ mrfCommon_SRCS += devObjMBBDirect.cpp
 mrfCommon_SRCS += devObjWf.cpp
 mrfCommon_SRCS += databuf.cpp
 
+mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
+
 #OBJS_IOC += $(mrfCommon_SRCS)
 mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 

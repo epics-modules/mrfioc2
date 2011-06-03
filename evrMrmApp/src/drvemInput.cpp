@@ -119,7 +119,7 @@ void
 MRMInput::extEvtSet(epicsUInt32 e)
 {
     if(e>255)
-        std::out_of_range("Event code # out of range");
+        throw std::out_of_range("Event code # out of range");
 
     epicsUInt32 val;
 
@@ -183,7 +183,7 @@ void
 MRMInput::backEvtSet(epicsUInt32 e)
 {
     if(e>255)
-        std::out_of_range("Event code # out of range");
+        throw std::out_of_range("Event code # out of range");
 
     epicsUInt32 val;
 
