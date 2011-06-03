@@ -20,8 +20,6 @@
 
 #include <longoutRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "devObj.h"
 #include "evr/evr.h"
 

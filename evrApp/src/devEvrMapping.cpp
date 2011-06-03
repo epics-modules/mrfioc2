@@ -22,8 +22,6 @@
 #include <longoutRecord.h>
 #include <stringinRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "devObj.h"
 #include "evr/evr.h"
 #include "linkoptions.h"

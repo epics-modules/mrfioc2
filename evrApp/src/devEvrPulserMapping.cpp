@@ -22,8 +22,6 @@
 #include <longoutRecord.h>
 #include <stringinRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "devObj.h"
 #include "evr/pulser.h"
 #include "linkoptions.h"
@@ -103,7 +101,6 @@ try {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
     ret=S_db_noMemory;
 }
-    mrfDisableRecord((dbCommon*)prec);
     return ret;
 }
 

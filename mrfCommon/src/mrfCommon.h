@@ -61,8 +61,6 @@
 #include  <devSup.h>            /* EPICS Device support messages and definitions                  */
 #include  <menuYesNo.h>         /* EPICS Yes/No record-support menu                               */
 
-#include  <debugPrint.h>        /* SLAC Debug print utility                                       */
-
 
 /**************************************************************************************************/
 /*  MRF Event System Constants                                                                    */
@@ -167,105 +165,7 @@ public:
 #define SCOPED_LOCK2(m, name) scopedLock<epicsMutex> name(m)
 #define SCOPED_LOCK(m) SCOPED_LOCK2(m, m##_guard)
 
-/***************************************************************************************************
- * mrfDisableRecord () -- Disable a Record From Ever Being Processed
- **************************************************************************************************/
- /**
- * @par Description:
- *   Renders an EPICS record incapable of ever being processed.
- *
- * @par Function:
- * - Set the "Processing Active" (PACT) field to "true"
- * - Set the "Disable putFields" (DISP) field to "true"
- * - Set the "Disable Value" (DISV) equal to the "Disable Link Value" (DISA)
- * - Set the record status field (STAT) to "DISABLE_ALARM"
- * - Set the record severity field (SEVR) to "INVALID_ALARM"
- *
- * @param   pRec = (input) Pointer to the record to be disabled.
- *
- **************************************************************************************************/
-inline void mrfDisableRecord (dbCommon *pRec)
-{
-    pRec->pact = pRec->disp = 1;
-    pRec->disv = pRec->disa;
-    pRec->stat = DISABLE_ALARM;
-    pRec->sevr = pRec->diss = INVALID_ALARM;
-
-}
-
 #endif /* __cplusplus */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*---------------------
- * Define the prototype for an EPICS Interrupt Service Routine
- * (for some reason, devLib.h neglects to define this for us).
- */
-typedef void (*EPICS_ISR_FUNC) (void *);
-
-#ifdef __cplusplus
-}
-#endif
-
-/**************************************************************************************************/
-/*  Device Support Entry Table Type Definitions                                                   */
-/**************************************************************************************************/
-
-/*=====================
- * Device Support Entry Table (DSET) for analog input and analog output records
- */
-#define DSET_ANALOG_NUM   6      /* Number of entries in an analog I/O DSET                       */
-struct AnalogDSET {
-    long	number;	         /* Number of support routines                                    */
-    DEVSUPFUN	report;		 /* Report routine                                                */
-    DEVSUPFUN	init;	         /* Device suppport initialization routine                        */
-    DEVSUPFUN	init_record;     /* Record initialization routine                                 */
-    DEVSUPFUN	get_ioint_info;  /* Get io interrupt information                                  */
-    DEVSUPFUN   perform_io;      /* Read or Write routine                                         */
-    DEVSUPFUN   special_linconv; /* Special linear-conversion routine                             */
-};/*end AnalogDSET*/
-
-/*=====================
- * Device Support Entry Table (DSET) for binary input and binary output records
- */
-#define DSET_BINARY_NUM   5      /* Number of entries in a binary I/O DSET                        */
-struct BinaryDSET {
-    long	number;	         /* Number of support routines                                    */
-    DEVSUPFUN	report;		 /* Report routine                                                */
-    DEVSUPFUN	init;	         /* Device suppport initialization routine                        */
-    DEVSUPFUN	init_record;     /* Record initialization routine                                 */
-    DEVSUPFUN	get_ioint_info;  /* Get io interrupt information                                  */
-    DEVSUPFUN   perform_io;      /* Read or Write routine                                         */
-};/*end BinaryDSET*/
-
-/*=====================
- * Device Support Entry Table (DSET) for long input and long output records
- */
-#define DSET_LONG_NUM     5      /* Number of entries in a loing I/O DSET                         */
-struct LongDSET {
-    long	number;	         /* Number of support routines                                    */
-    DEVSUPFUN	report;		 /* Report routine                                                */
-    DEVSUPFUN	init;	         /* Device suppport initialization routine                        */
-    DEVSUPFUN	init_record;     /* Record initialization routine                                 */
-    DEVSUPFUN	get_ioint_info;  /* Get io interrupt information                                  */
-    DEVSUPFUN   perform_io;      /* Read or Write routine                                         */
-};/*end LongDSET*/
-
-/*=====================
- * Device Support Entry Table (DSET) for multi-bit binary input and output records
- */
-#define DSET_MBB_NUM      5      /* Number of entries in a multi-bit binary I/O DSET              */
-struct MbbDSET {
-    long	number;	         /* Number of support routines                                    */
-    DEVSUPFUN	report;		 /* Report routine                                                */
-    DEVSUPFUN	init;	         /* Device suppport initialization routine                        */
-    DEVSUPFUN	init_record;     /* Record initialization routine                                 */
-    DEVSUPFUN	get_ioint_info;  /* Get io interrupt information                                  */
-    DEVSUPFUN   perform_io;      /* Read or Write routine                                         */
-};/*end MbbDSET*/
-
 
 /**************************************************************************************************/
 /*  Special Macros to Define Commonly Used Symbols                                                */
@@ -293,13 +193,6 @@ struct MbbDSET {
 #ifndef NO_CONVERT
 #define NO_CONVERT (2)
 #endif
-
-/**************************************************************************************************/
-/*  Special Macros to Make the EPICS "menuYesNo" symbols easier to read                           */
-/**************************************************************************************************/
-
-#define menuNO    menuYesNoNO
-#define menuYES   menuYesNoYES
 
 /**************************************************************************************************/
 /*  Definitions for Compatibiliby with Older Versions of EPICS                                    */

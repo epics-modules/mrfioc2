@@ -22,8 +22,6 @@
 
 #include <stringinRecord.h>
 
-#include <mrfCommon.h> // for mrfDisableRecord
-
 #include "evr/evr.h"
 
 #include <stdexcept>
@@ -80,7 +78,6 @@ try {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
     ret=S_db_noMemory;
 }
-    mrfDisableRecord((dbCommon*)prec);
     return ret;
 }
 
@@ -91,6 +88,8 @@ static long read_si(stringinRecord* prec)
         return S_db_errArg;
 try {
     ts_priv *priv=static_cast<ts_priv*>(prec->dpvt);
+    if(!priv)
+        return -2;
 
     epicsTimeStamp ts;
 

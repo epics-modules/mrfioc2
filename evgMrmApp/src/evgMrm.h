@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 
+#include <stdio.h>
 #include <epicsTypes.h>
 #include <dbScan.h>
 #include <callback.h>

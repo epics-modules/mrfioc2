@@ -1,5 +1,6 @@
 #include "evgEvtClk.h"
 
+#include <stdio.h>
 #include <errlog.h> 
 #include <stdexcept>
 

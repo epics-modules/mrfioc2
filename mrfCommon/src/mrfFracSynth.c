@@ -100,6 +100,7 @@
 #include <registryFunction.h>             /* EPICS Registry support library                       */
 
 #include <mrfCommon.h>                    /* MRF event system constants and definitions           */
+#include <debugPrint.h>                   /* SLAC Debug print utility                             */
 #include <mrfFracSynth.h>                 /* MRF Fractional Synthesizer routines                  */
 
 #include <epicsExport.h>                  /* EPICS Symbol exporting macro definitions             */

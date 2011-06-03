@@ -45,7 +45,6 @@ INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfCommonIO.h      # Common I/O access macros
 INC += mrfFracSynth.h     # Fractional Synthesizer routines
-INC += debugPrint.h       # SLAC debug print utility
 INC += linkoptions.h
 INC += mrfcsr.h
 
