@@ -191,7 +191,7 @@ menuLabel {
   0 "VME EVG"
 }
 symbols {
-  0 "P=evg2:"
+  0 "SYS=TST, D=evg:2"
 }
 endObjectProperties
 
