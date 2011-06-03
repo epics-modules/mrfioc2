@@ -261,7 +261,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename images/mrf-overview.png
+	filename images/mrf-overview.svg
 	width 50col%
 
 \end_inset
@@ -337,7 +337,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename images/mrf-frames.png
+	filename images/mrf-frames.svg
 	width 50col%
 
 \end_inset
@@ -924,7 +924,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename images/mrf-evr-blocks.png
+	filename images/mrf-evr-blocks.svg
 	width 50col%
 
 \end_inset
@@ -1552,7 +1552,6 @@ Name
 
 \begin_layout Plain Layout
 # FP
-
 \begin_inset Foot
 status collapsed
 
