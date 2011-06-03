@@ -34,6 +34,7 @@
 #include <typeinfo>
 
 #include <epicsThread.h>
+#include <epicsTypes.h>
 
 namespace mrf {
 
@@ -88,14 +89,14 @@ struct property<P[]> : public propertyBase
      @param arr Array to copy from
      @param L   Number of element in @var arr
      */
-    virtual void set(const P* arr, size_t L)=0;
+    virtual void set(const P* arr, epicsUInt32 L)=0;
     /** @brief The getter for this property
      *
      @param arr Array to copy to
      @param L   Max number of element to write to @var arr
      @returns The number of elements actual written
      */
-    virtual size_t get(P*, size_t) const=0;
+    virtual epicsUInt32 get(P*, epicsUInt32) const=0;
 };
 
 namespace detail {
@@ -147,8 +148,8 @@ template<class C, typename P>
 class unboundProperty<C,P[]> : public unboundPropertyBase<C>
 {
 public:
-    typedef void   (C::*setter_t)(const P*, size_t);
-    typedef size_t (C::*getter_t)(P*, size_t) const;
+    typedef void   (C::*setter_t)(const P*, epicsUInt32);
+    typedef epicsUInt32 (C::*getter_t)(P*, epicsUInt32) const;
 
     const char * const name;
     getter_t const getter;
@@ -165,8 +166,8 @@ template<class C, typename P>
 static inline
 unboundProperty<C,P[]>*
 makeUnboundProperty(const char* n,
-                    size_t (C::*g)(P*, size_t) const,
-                    void (C::*s)(const P*, size_t)=0)
+                    epicsUInt32 (C::*g)(P*, epicsUInt32) const,
+                    void (C::*s)(const P*, epicsUInt32)=0)
 {
     return new unboundProperty<C,P[]>(n,g,s);
 }
@@ -226,9 +227,9 @@ public:
 
   virtual const char* name() const{return prop.name;}
   virtual const std::type_info& type() const{return typeid(P[]);}
-  virtual void   set(const P* a, size_t l)
+  virtual void   set(const P* a, epicsUInt32 l)
     { (inst->*(prop.setter))(a,l); }
-  virtual size_t get(P* a, size_t l) const
+  virtual epicsUInt32 get(P* a, epicsUInt32 l) const
     { return (inst->*(prop.getter))(a,l); }
 };
 
