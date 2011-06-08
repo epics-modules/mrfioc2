@@ -18,6 +18,7 @@
 
 #include <epicsMath.h>
 #include <errlog.h>
+#include <epicsMath.h>
 
 #include <mrfCommon.h>
 #include <mrfCommonIO.h>
@@ -666,7 +667,7 @@ EVRMRM::clockTSSet(double clk)
     SCOPED_LOCK(evrLock);
 
     if(src==TSSourceInternal){
-        epicsUInt16 div=(epicsUInt16)(eclk/clk);
+        epicsUInt16 div=lround(eclk/clk);
         WRITE32(base, CounterPS, div);
 
         shadowCounterPS=div;

@@ -13,6 +13,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include <epicsMath.h>
+
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
@@ -282,7 +284,7 @@ MRMCML::setTimeHigh(double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountHigh((epicsUInt32)(v/period));
+    setCountHigh(lround(v/period));
 }
 
 void
@@ -290,7 +292,7 @@ MRMCML::setTimeLow (double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountLow((epicsUInt32)(v/period));
+    setCountLow(lround(v/period));
 }
 
 void
@@ -298,7 +300,7 @@ MRMCML::setTimeInit (double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountInit((epicsUInt32)(v/period));
+    setCountInit(lround(v/period));
 }
 
   // For Pattern mode

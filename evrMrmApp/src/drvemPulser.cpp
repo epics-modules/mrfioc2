@@ -17,6 +17,7 @@
 
 #include <errlog.h>
 #include <dbDefs.h>
+#include <epicsMath.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -63,7 +64,7 @@ MRMPulser::setDelay(double v)
     if (scal<=0) scal=1;
     double clk=owner.clock(); // in MHz.  MTicks/second
 
-    epicsUInt32 ticks=(epicsUInt32)((v*clk)/scal);
+    epicsUInt32 ticks=lround((v*clk)/scal);
 
     setDelayRaw(ticks);
 }
@@ -98,7 +99,7 @@ MRMPulser::setWidth(double v)
     double clk=owner.clock(); // in MHz.  MTicks/second
     if (scal<=0) scal=1;
 
-    epicsUInt32 ticks=(epicsUInt32)((v*clk)/scal);
+    epicsUInt32 ticks=lround((v*clk)/scal);
 
     setWidthRaw(ticks);
 }
