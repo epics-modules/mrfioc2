@@ -56,8 +56,12 @@ extern "C" {
      * This would cause the CA server to be starved
      * preventing remote correction of the problem.
      *
-     * This should be the highest event rate which
-     * needs to be timestamped.
+     * This should be less than the time between
+     * the highest frequency event needed for
+     * database processing.
+     *
+     * Note that the actual rate will be limited by the
+     * time needed for database processing.
      *
      * Set to 0.0 to disable
      */
@@ -984,23 +988,7 @@ EVRMRM::drain_fifo()
             break;
         }
 
-        epicsTime now;
-        now=epicsTime::getCurrent();
-
         guard.lock();
-
-        double since=now-lastFifoRun;
-
-        if (since<mrmEvrFIFOPeriod && since>0) {
-            /* To prevent from completely overwelming lower priority tasks
-             * (ie channel access) ensure FIFO callback waits for
-             * mrmEvrFIFOPeriod seconds between runs.
-             */
-            guard.unlock();
-            epicsThreadSleep(mrmEvrFIFOPeriod-since);
-            guard.lock();
-        }
-        lastFifoRun=now;
 
         epicsUInt32 status;
 
@@ -1068,6 +1056,16 @@ EVRMRM::drain_fifo()
         WRITE32(base, IRQEnable, shadowIRQEna);
 
         epicsInterruptUnlock(iflags);
+
+        // wait a fixed interval before checking again
+        // Prevents this thread from starving others
+        // if a high frequency event is accidentally
+        // mapped into the FIFO.
+        if(mrmEvrFIFOPeriod>0.0) {
+            guard.unlock();
+            epicsThreadSleep(mrmEvrFIFOPeriod);
+            guard.lock();
+        }
     }
 
     printf("FIFO task exiting\n");

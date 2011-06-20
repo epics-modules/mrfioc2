@@ -232,7 +232,6 @@ private:
     static void sentinel_done(CALLBACK*);
 
     epicsUInt32 count_FIFO_sw_overrate;
-    epicsTime lastFifoRun;
 
     eventCode events[256];
 
