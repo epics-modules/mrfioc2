@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1348
-y 128
+x 1327
+y 117
 w 170
 h 363
 font "helvetica-medium-r-18.0"
@@ -50,7 +50,7 @@ menuLabel {
   0 "PMC EVR"
 }
 symbols {
-  0 "SYS=TST,D=evr:0"
+  0 "SYS=TST,D=evr:pmc1"
 }
 endObjectProperties
 
@@ -82,7 +82,7 @@ setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "SYS=TST, D=evr:1"
+  0 "SYS=TST, D=evr:wiener"
 }
 endObjectProperties
 
@@ -113,7 +113,7 @@ minor 2
 release 0
 x 10
 y 275
-w 140
+w 70
 h 35
 fgColor index 14
 bgColor index 0
@@ -132,7 +132,7 @@ menuLabel {
   1 "autosave"
 }
 symbols {
-  0 "ioc=mrftest,HOME=teststand.edl"
+  0 "ioc=mrftest1,HOME=teststand.edl"
   1 "P=mrftest:"
 }
 endObjectProperties
@@ -162,7 +162,7 @@ menuLabel {
   0 "VME EVR"
 }
 symbols {
-  0 "SYS=TST, D=evr:3"
+  0 "SYS=TST, D=evr:nova"
 }
 endObjectProperties
 
@@ -191,7 +191,7 @@ menuLabel {
   0 "VME EVG"
 }
 symbols {
-  0 "SYS=TST, D=evg:2"
+  0 "SYS=TST, D=evg:nova"
 }
 endObjectProperties
 
@@ -232,7 +232,7 @@ minor 2
 release 0
 x 10
 y 320
-w 140
+w 70
 h 35
 fgColor index 14
 bgColor index 0
@@ -249,7 +249,68 @@ menuLabel {
   0 "Demo"
 }
 symbols {
-  0 "P=evr2:"
+  0 "SYS=TST, D=evr:3"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 85
+y 320
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Demo"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "sequencedemo.edl"
+}
+menuLabel {
+  0 "Demo"
+}
+symbols {
+  0 "SYS=TST, D=evr:wiener"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 85
+y 275
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Status"
+numPvs 4
+numDsps 2
+displayFileName {
+  0 "ioc_stats.edl"
+  1 "save_restoreStatus_more"
+}
+menuLabel {
+  0 "Stats"
+  1 "autosave"
+}
+symbols {
+  0 "ioc=mrftest2,HOME=teststand.edl"
+  1 "P=mrftest:"
 }
 endObjectProperties
 
