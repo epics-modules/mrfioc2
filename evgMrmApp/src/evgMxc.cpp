@@ -11,7 +11,9 @@
 #include "evgMrm.h"
 #include "evgRegMap.h"
 
-evgMxc::evgMxc(const epicsUInt32 id, evgMrm* const owner):
+evgMxc::evgMxc(const std::string& name, const epicsUInt32 id,
+               evgMrm* const owner):
+mrf::ObjectInst<evgMxc>(name),
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()) {    
@@ -21,64 +23,56 @@ evgMxc::~evgMxc() {
 }
 
 bool 
-evgMxc::getMxcOutStatus() {
+evgMxc::getStatus() const {
     return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS;
 }
 
-bool 
-evgMxc::getMxcOutPolarity() {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
-}
-
-epicsStatus 
-evgMxc::setMxcOutPolarity(bool polarity) {
+void
+evgMxc::setPolarity(bool polarity) {
     if(polarity)
         BITSET32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
     else
         BITCLR32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
-
-    return OK;
 }
 
-epicsUInt32
-evgMxc::getMxcPrescaler() {
-    return READ32(m_pReg, MuxPrescaler(m_id));
+bool
+evgMxc::getPolarity() const {
+    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
 }
 
-epicsStatus 
-evgMxc::setMxcPrescaler(epicsUInt32 preScaler) {
+void
+evgMxc::setPrescaler(epicsUInt32 preScaler) {
     if(preScaler == 0 || preScaler == 1)
         throw std::runtime_error("Invalid preScaler value in Multiplexed Counter");
 
     WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
-    return OK;
 }
 
-epicsStatus 
-evgMxc::setMxcFreq(epicsFloat64 freq) {
-    epicsUInt32 clkSpeed = (epicsUInt32)(m_owner->getEvtClk()->getEvtClkSpeed() *
+epicsUInt32
+evgMxc::getPrescaler() const {
+    return READ32(m_pReg, MuxPrescaler(m_id));
+}
+
+
+void
+evgMxc::setFrequency(epicsFloat64 freq) {
+    epicsUInt32 clkSpeed = (epicsUInt32)(m_owner->getEvtClk()->getFrequency() *
                             pow(10, 6));
     epicsUInt32 preScaler = (epicsUInt32)((epicsFloat64)clkSpeed / freq);
     
-    setMxcPrescaler(preScaler);
-    return OK;
+    setPrescaler(preScaler);
 }
 
 epicsFloat64 
-evgMxc::getMxcFreq() {
-    epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getEvtClkSpeed()
+evgMxc::getFrequency() const {
+    epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getFrequency()
                              * pow(10, 6);
-    epicsFloat64 preScaler = (epicsFloat64)getMxcPrescaler();
+    epicsFloat64 preScaler = (epicsFloat64)getPrescaler();
     return clkSpeed/preScaler;    
 }
 
-epicsUInt8
-evgMxc::getMxcTrigEvtMap() {
-    return READ8(m_pReg, MuxTrigMap(m_id));
-}
-
-epicsStatus
-evgMxc::setMxcTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
+void
+evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
         throw std::runtime_error("EVG Mxc Trig Event ID too large.");
 
@@ -92,7 +86,15 @@ evgMxc::setMxcTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
         map = map & ~mask;
 
     WRITE8(m_pReg, MuxTrigMap(m_id), map);
+}
 
-    return OK;
+bool
+evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
+    if(trigEvt > 7)
+        throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+
+    epicsUInt8 mask = 1 << trigEvt;
+    epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
+    return mask & map;
 }
 

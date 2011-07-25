@@ -6,33 +6,39 @@
 #include <map>
 
 #include <epicsTypes.h>
+#include "mrf/object.h"
 
 enum InputType {
-    None_Input = 0,
-    FP_Input,
-    Univ_Input,
-    TB_Input
+    NoneInp = 0,
+    FrontInp,
+    UnivInp,
+    RearInp
 };
 
-extern std::map<std::string, epicsUInt32> InpStrToEnum;
-
-class evgInput {
+class evgInput : public mrf::ObjectInst<evgInput> {
 public:
-    evgInput(const epicsUInt32, const InputType, volatile epicsUInt8* const);
+    evgInput(const std::string&, const epicsUInt32, const InputType,
+             volatile epicsUInt8* const);
     ~evgInput();
 
-    epicsUInt32 getNum();
-    InputType getType();
+    epicsUInt32 getNum() const;
+    InputType getType() const;
 
-    epicsStatus enaExtIrq(bool);
-    epicsStatus setInpDbusMap(epicsUInt16, bool);
-    epicsStatus setInpSeqTrigMap(epicsUInt32);
-    epicsUInt32 getInpSeqTrigMap();
-    epicsStatus setInpTrigEvtMap(epicsUInt16, bool);
+    void setExtIrq(bool);
+    bool getExtIrq() const;
+
+    void setDbusMap(epicsUInt16, bool);
+    bool getDbusMap(epicsUInt16) const;
+
+    void setSeqTrigMap(epicsUInt32);
+    epicsUInt32 getSeqTrigMap() const;
+
+    void setTrigEvtMap(epicsUInt16, bool);
+    bool getTrigEvtMap(epicsUInt16) const;
 
 private:
     const epicsUInt32          m_num;
     const InputType            m_type;
-    volatile epicsUInt8* const m_pInMap;
+    volatile epicsUInt8* const m_pInReg;
 };
 #endif //EVG_INPUT_H

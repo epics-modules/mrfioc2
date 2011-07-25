@@ -1,18 +1,19 @@
 #ifndef EVG_TRIGEVT_H
 #define EVG_TRIGEVT_H
 
-#include <epicsTypes.h>     
+#include <epicsTypes.h>
+#include "mrf/object.h"
 
-class evgTrigEvt{
+class evgTrigEvt : public mrf::ObjectInst<evgTrigEvt> {
 public:
-    evgTrigEvt(const epicsUInt32, volatile epicsUInt8* const);
+    evgTrigEvt(const std::string&, const epicsUInt32, volatile epicsUInt8* const);
     ~evgTrigEvt();
 
-    bool enabled();
-    epicsStatus enable(bool);
+    void enable(bool);
+    bool enabled() const;
 
-    epicsStatus setEvtCode(epicsUInt32);
-    epicsUInt8 getEvtCode();
+    void setEvtCode(epicsUInt32);
+    epicsUInt32 getEvtCode() const;
 
 private:
     const epicsUInt32          m_id;

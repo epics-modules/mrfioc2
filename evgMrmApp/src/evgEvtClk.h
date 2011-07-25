@@ -2,31 +2,33 @@
 #define EVG_EVTCLK_H
 
 #include <epicsTypes.h>
+#include "mrf/object.h"
 
-const epicsUInt16 ClkSrcInternal = 0;    // Event clock is generated internally
-const epicsUInt16 ClkSrcRF                = 1;        // Event clock is derived from the RF input
+const epicsUInt16 ClkSrcInternal = 0; // Event clock is generated internally
+const epicsUInt16 ClkSrcRF = 1;  // Event clock is derived from the RF input
 
-class evgEvtClk {
+class evgEvtClk : public mrf::ObjectInst<evgEvtClk> {
 public:
-    evgEvtClk(volatile epicsUInt8* const);
+    evgEvtClk(const std::string&, volatile epicsUInt8* const);
+    ~evgEvtClk();
     
-    epicsStatus setRFref (epicsFloat64 RFref);
-    epicsFloat64 getRFref();
+    epicsFloat64 getFrequency() const;
 
-    epicsStatus setRFdiv(epicsUInt32);
-    epicsUInt32 getRFdiv();
+    void setRFFreq(epicsFloat64);
+    epicsFloat64 getRFFreq() const;
 
-    epicsStatus setFracSynFreq(epicsFloat64);
+    void setRFDiv(epicsUInt32);
+    epicsUInt32 getRFDiv() const;
 
-    epicsFloat64 getEvtClkSpeed();
+    void setFracSynFreq(epicsFloat64);
+    epicsFloat64 getFracSynFreq() const;
 
-    /**    Event Clock Source    **/
-    epicsStatus setEvtClkSrc(bool);
-    bool getEvtClkSrc();    
+    void setSource(bool);
+    bool getSource() const;
 
 private:
     volatile epicsUInt8* const m_pReg;
-    epicsFloat64               m_RFref;             //In MHz
+    epicsFloat64               m_RFref;       // In MHz
     epicsFloat64               m_fracSynFreq; // In MHz
 };
 

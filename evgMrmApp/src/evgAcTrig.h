@@ -2,17 +2,27 @@
 #define EVG_AC_TRIG_H
 
 #include <epicsTypes.h>
+#include "mrf/object.h"
 
-class evgAcTrig {
+class evgAcTrig : public mrf::ObjectInst<evgAcTrig> {
 public:
-    evgAcTrig(volatile epicsUInt8* const);
+    evgAcTrig(const std::string&, volatile epicsUInt8* const);
     ~evgAcTrig();
 
-    epicsStatus setDivider(epicsUInt32);
-    epicsStatus setPhase(epicsFloat64);
-    epicsStatus bypass(bool);
-    epicsStatus setSyncSrc(bool);
-    epicsStatus setTrigEvtMap(epicsUInt16, bool);
+    void setDivider(epicsUInt32);
+    epicsUInt32 getDivider() const;
+
+    void setPhase(epicsFloat64);
+    epicsFloat64 getPhase() const;
+
+    void setBypass(bool);
+    bool getBypass() const;
+
+    void setSyncSrc(bool);
+    bool getSyncSrc() const;
+
+    void setTrigEvtMap(epicsUInt16, bool);
+    epicsUInt32 getTrigEvtMap() const;
 
 private:
     volatile epicsUInt8* const m_pReg;

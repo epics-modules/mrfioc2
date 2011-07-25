@@ -3,14 +3,20 @@
 
 #include <epicsTypes.h>
 #include <epicsMutex.h>
+#include "mrf/object.h"
 
-class evgSoftEvt {
+class evgSoftEvt : public mrf::ObjectInst<evgSoftEvt> {
 
 public:
-    evgSoftEvt(volatile epicsUInt8* const);
+    evgSoftEvt(const std::string&, volatile epicsUInt8* const);
 
-    bool pend();
-    epicsStatus setEvtCode(epicsUInt32);
+    void enable(bool);
+    bool enabled() const;
+
+    bool pend() const;
+
+    void setEvtCode(epicsUInt32);
+    epicsUInt32 getEvtCode() const;
 
 private:
     volatile epicsUInt8* const m_pReg;

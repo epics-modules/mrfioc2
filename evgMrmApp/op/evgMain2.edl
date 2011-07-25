@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1141
-y 443
+x 1066
+y 491
 w 316
 h 223
 font "helvetica-medium-r-12.0"
@@ -104,7 +104,8 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Out-$(O)\}Map-Sel"
+controlPv "$(SYS)\{$(D)-Out:$(O)\}Source-Sel"
+indicatorPv "$(SYS)\{$(D)-Out:$(O)\}Source-RB"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -175,10 +176,10 @@ symbol0 {
   3 "O"
 }
 value0 {
-  0 "FP:0"
-  1 "FP:1"
-  2 "FP:2"
-  3 "FP:3"
+  0 "Front0"
+  1 "Front1"
+  2 "Front2"
+  3 "Front3"
 }
 endObjectProperties
 
@@ -400,7 +401,8 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-AcTrig\}Sync-Sel"
+controlPv "$(SYS)\{$(D)-AcTrig\}SyncSrc-Sel"
+indicatorPv "$(SYS)\{$(D)-AcTrig\}SyncSrc-RB"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

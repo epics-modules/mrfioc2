@@ -2,13 +2,15 @@
 #define EVG_DBUS_H
 
 #include <epicsTypes.h>
+#include "mrf/object.h"
 
-class evgDbus {
+class evgDbus : public mrf::ObjectInst<evgDbus> {
 public:
-    evgDbus(const epicsUInt32, volatile epicsUInt8* const);
+    evgDbus(const std::string&, const epicsUInt32,  volatile epicsUInt8* const);
     ~evgDbus();
     
-    epicsStatus setDbusMap(epicsUInt16);
+    void setSource(epicsUInt16);
+    epicsUInt16 getSource() const;
 
 private:
     const epicsUInt32          m_id;

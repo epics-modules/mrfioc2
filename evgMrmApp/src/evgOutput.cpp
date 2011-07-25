@@ -9,18 +9,19 @@
 
 #include "evgRegMap.h"
 
-evgOutput::evgOutput(const epicsUInt32 num, const OutputType type,
-                     volatile epicsUInt8* const pReg):
+evgOutput::evgOutput(const std::string& name, const epicsUInt32 num,
+                     const OutputType type, volatile epicsUInt8* const pOutReg):
+mrf::ObjectInst<evgOutput>(name),
 m_num(num),
 m_type(type),
-m_pReg(pReg) {
+m_pOutReg(pOutReg) {
     switch(m_type) {        
-        case(FP_Output):
-            if(m_num >= evgNumFpOut)
+        case(FrontOut):
+            if(m_num >= evgNumFrontOut)
                 throw std::runtime_error("EVG Front panel output ID out of range");
             break;
 
-        case(Univ_Output):
+        case(UnivOut):
             if(m_num >= evgNumUnivOut)
                 throw std::runtime_error("EVG Universal output ID out of range");
             break;
@@ -33,23 +34,12 @@ m_pReg(pReg) {
 evgOutput::~evgOutput() {
 }
 
-epicsStatus
-evgOutput::setOutMap(epicsUInt16 map) {
-    epicsStatus ret = OK;
-    switch(m_type) {
-        case(FP_Output):
-            WRITE16(m_pReg, FPOutMap(m_num), map);
-            ret = OK;
-            break;
+void
+evgOutput::setSource(epicsUInt16 map) {
+    nat_iowrite16(m_pOutReg, map);
+}
 
-        case(Univ_Output):
-            WRITE16(m_pReg, UnivOutMap(m_num), map);
-            ret = OK;
-            break;
-
-        default:
-            throw std::runtime_error("Wrong EVG Ouput type");
-    }
-    
-    return ret;
+epicsUInt16
+evgOutput::getSource() const {
+    return nat_ioread16(m_pOutReg);
 }

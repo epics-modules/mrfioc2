@@ -37,7 +37,7 @@
 struct PvtTs {
     evgMrm* evg;
     evgSoftSeq* seq;
-    epicsFloat64 scaler;
+    epicsUInt32 scaler;
 };
 
 static long 
@@ -51,7 +51,8 @@ add_record (dbCommon *pRec) {
     }
     
     try {
-        evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);        
+        std::string parm(pwf->inp.value.vmeio.parm);
+        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(parm));
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
 
@@ -67,9 +68,8 @@ add_record (dbCommon *pRec) {
         pvt->evg = evg;
         pvt->seq = seq;
         
-        std::string parm(pwf->inp.value.vmeio.parm);
-        std::istringstream i(parm);
-        if (!(i >> pvt->scaler)) {
+        pvt->scaler = pwf->inp.value.vmeio.card;
+        if (!pvt->scaler) {
             delete pvt;
             throw std::runtime_error("Failed to read time scaler");
         }
@@ -116,7 +116,7 @@ init_wf_empty() {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_wf_timestamp(waveformRecord* pwf) {
-    epicsStatus ret = 0;
+    epicsStatus ret = OK;
 
     try {
         PvtTs* pvt = (PvtTs*)pwf->dpvt;
@@ -141,13 +141,13 @@ write_wf_timestamp(waveformRecord* pwf) {
              */
             epicsFloat64 seconds;
             for(unsigned int i = 0; i < size; i++) {
-               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pvt->scaler;
+               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10, pvt->scaler);
                ts[i] = (epicsUInt64)floor(seconds *
-                       evg->getEvtClk()->getEvtClkSpeed() * pow(10,6) + 0.5);
+                       evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
             }
         }
 
-        ret = seq->setTimestamp(ts, size);
+        seq->setTimestamp(ts, size);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
         ret = S_dev_noDevice;
@@ -190,7 +190,8 @@ init_record_pvt(dbCommon* pRec, DBLINK* lnk) {
     }
 
     try {
-        evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);
+        std::string parm(lnk->value.vmeio.parm);
+        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(parm));
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
 
@@ -229,7 +230,8 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
     }
     
     try {
-        evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);        
+        std::string parm(lnk->value.vmeio.parm);
+        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(parm));
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
 
@@ -352,7 +354,7 @@ get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_bo_timestampInpMode(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     evgSoftSeq* seq = 0;
 
     try {
@@ -361,7 +363,7 @@ write_bo_timestampInpMode(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->setTimestampInpMode((TimestampInpMode)pbo->val);
+        seq->setTimestampInpMode((TimestampInpMode)pbo->val);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -414,12 +416,9 @@ read_wf_timestamp(waveformRecord* pwf) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         std::vector<uint64_t> timestamp = seq->getTimestampCt();
-        epicsFloat64 evtClk = evg->getEvtClk()->getEvtClkSpeed() * pow(10,6);
-        epicsFloat64 timeScaler = 0.0f;
-
-        std::string parm(pwf->inp.value.vmeio.parm);
-        std::istringstream i(parm);
-        if (!(i >> timeScaler))
+        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10,6);
+        epicsUInt32 timeScaler = pwf->inp.value.vmeio.card;
+        if (!timeScaler)
             throw std::runtime_error("Failed to read scaler");
 
         epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
@@ -427,7 +426,7 @@ read_wf_timestamp(waveformRecord* pwf) {
             if(seq->getTimestampInpMode() == TICKS)
                  bptr[i] = (epicsFloat64)timestamp[i];
             else
-                bptr[i] = timestamp[i] * timeScaler / evtClk;
+                bptr[i] = timestamp[i] * pow(10, timeScaler) / evtClk;
         }
 
         pwf->nord = timestamp.size();
@@ -446,7 +445,7 @@ read_wf_timestamp(waveformRecord* pwf) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_wf_eventCode(waveformRecord* pwf) {
-    long ret = 0;
+    long ret = OK;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
@@ -454,7 +453,7 @@ write_wf_eventCode(waveformRecord* pwf) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nord);
+        seq->setEventCode((epicsUInt8*)pwf->bptr, pwf->nord);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
         ret = S_dev_noDevice;
@@ -479,9 +478,9 @@ read_wf_eventCode(waveformRecord* pwf) {
         SCOPED_LOCK2(seq->m_lock, guard);
         std::vector<epicsUInt8> eventCode = seq->getEventCodeCt();
         epicsUInt8* bptr = (epicsUInt8*)pwf->bptr;
-        for(unsigned int i = 0; i < eventCode.size(); i++) {
+        for(unsigned int i = 0; i < eventCode.size(); i++)
             bptr[i] = eventCode[i];
-        }
+
         pwf->nord = eventCode.size();
 
     } catch(std::runtime_error& e) {
@@ -506,7 +505,7 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->setRunMode((SeqRunMode)pmbbo->val);
+        seq->setRunMode((SeqRunMode)pmbbo->val);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
         ret = S_dev_noDevice;
@@ -544,7 +543,7 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long
 write_mbbo_trigSrc(mbboRecord* pmbbo) {
-    long ret = 0;
+    long ret = OK;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbo->dpvt;
@@ -552,7 +551,7 @@ write_mbbo_trigSrc(mbboRecord* pmbbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->setTrigSrc((SeqTrigSrc)pmbbo->rval);
+        seq->setTrigSrc((SeqTrigSrc)pmbbo->rval);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
         ret = S_dev_noDevice;
@@ -590,7 +589,7 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_loadSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -603,7 +602,7 @@ write_bo_loadSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->load();
+        seq->load();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -621,7 +620,7 @@ write_bo_loadSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_unloadSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -634,7 +633,7 @@ write_bo_unloadSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->unload();
+        seq->unload();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -652,7 +651,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_commitSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -665,7 +664,7 @@ write_bo_commitSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->commit();
+        seq->commit();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -683,7 +682,7 @@ write_bo_commitSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enableSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -696,7 +695,7 @@ write_bo_enableSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->enable();
+        seq->enable();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -714,7 +713,7 @@ write_bo_enableSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_disableSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -727,7 +726,7 @@ write_bo_disableSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->disable();
+        seq->disable();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
@@ -745,7 +744,7 @@ write_bo_disableSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_abortSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     evgSoftSeq* seq = 0;
 
     try {
@@ -757,7 +756,7 @@ write_bo_abortSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->abort(pbo->val);
+        seq->abort(pbo->val);
         seq->setErr("");
     } catch(std::runtime_error& e) {
         seq->setErr(e.what());
@@ -774,7 +773,7 @@ write_bo_abortSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_pauseSeq(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
     evgSoftSeq* seq = 0;
 
     try {
@@ -786,7 +785,7 @@ write_bo_pauseSeq(boRecord* pbo) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seq->pause();
+        seq->pause();
         seq->setErr("");
     } catch(std::runtime_error& e) {
         seq->setErr(e.what());
@@ -803,7 +802,7 @@ write_bo_pauseSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_softTrig(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
 
     try {
         if(!pbo->val)
@@ -818,7 +817,7 @@ write_bo_softTrig(boRecord* pbo) {
             throw std::runtime_error("Failed to lookup EVG Seq RAM");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        ret = seqRam->setSoftTrig();
+        seqRam->softTrig();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -911,7 +910,8 @@ init_wf_loadedSeq(waveformRecord* pwf) {
     }
     
     try {
-        evgMrm* evg = &evgmap.get(pwf->inp.value.vmeio.card);        
+        std::string parm(pwf->inp.value.vmeio.parm);
+        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(parm));
         if(!evg)
             throw std::runtime_error("Failed to lookup EVG");
 

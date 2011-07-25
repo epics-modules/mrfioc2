@@ -17,32 +17,28 @@ SRC_DIRS += ../evgSequencer ../devSupport
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
 
+evgmrm_SRCS += evg.cpp
+
 evgmrm_SRCS += evgMrm.cpp
 evgmrm_SRCS += devEvgMrm.cpp
 
 evgmrm_SRCS += evgAcTrig.cpp
-evgmrm_SRCS += devEvgAcTrig.cpp
 
 evgmrm_SRCS += evgEvtClk.cpp
-evgmrm_SRCS += devEvgEvtClk.cpp
 
 evgmrm_SRCS += evgSoftEvt.cpp
-evgmrm_SRCS += devEvgSoftEvt.cpp
 
 evgmrm_SRCS += evgTrigEvt.cpp
 evgmrm_SRCS += devEvgTrigEvt.cpp
 
 evgmrm_SRCS += evgMxc.cpp
-evgmrm_SRCS += devEvgMxc.cpp
 
 evgmrm_SRCS += evgDbus.cpp
 evgmrm_SRCS += devEvgDbus.cpp
 
 evgmrm_SRCS += evgInput.cpp
-evgmrm_SRCS += devEvgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
-evgmrm_SRCS += devEvgOutput.cpp
 
 evgmrm_SRCS += evgSoftSeq.cpp
 evgmrm_SRCS += evgSoftSeqManager.cpp

@@ -40,10 +40,9 @@ evgSoftSeq::getId() const {
     return m_id;
 }
 
-epicsStatus 
+void
 evgSoftSeq::setDescription(const char* desc) {
     m_desc.assign(desc);
-    return OK; 
 }
 
 const char* 
@@ -51,11 +50,10 @@ evgSoftSeq::getDescription() {
     return m_desc.c_str();
 }
 
-epicsStatus 
+void
 evgSoftSeq::setErr(std::string err) {
     m_err = err;
     scanIoRequest(ioScanPvtErr);
-    return OK;
 }
 
 std::string
@@ -63,15 +61,13 @@ evgSoftSeq::getErr() {
     return m_err;	
 }
 
-epicsStatus
+void
 evgSoftSeq::setTimestampInpMode(TimestampInpMode mode) {
     if(m_timestampInpMode != mode) {
         m_timestampInpMode = mode;
         m_isCommited = false;
         scanIoRequest(ioscanpvt);
     }
-
-    return OK;
 }
 
 TimestampInpMode
@@ -79,7 +75,7 @@ evgSoftSeq::getTimestampInpMode() {
     return m_timestampInpMode;
 }
 
-epicsStatus
+void
 evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
     if(size > 2047)
         throw std::runtime_error("Too many Timestamps.");
@@ -89,11 +85,9 @@ evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
 
     m_isCommited = false;
     scanIoRequest(ioscanpvt);
-
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
     if(size > 2047)
         throw std::runtime_error("Too many EventCodes.");
@@ -103,30 +97,24 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
 
     m_isCommited = false;
     scanIoRequest(ioscanpvt);
-
-    return OK;
 }
 
-epicsStatus 
+void
 evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
     if(trigSrc != m_trigSrc) {
         m_trigSrc = trigSrc;
         m_isCommited = false;
         scanIoRequest(ioscanpvt);
     }
-
-    return OK;
 }
 
-epicsStatus 
+void
 evgSoftSeq::setRunMode(SeqRunMode runMode) {
     if(runMode != m_runMode) {
         m_runMode = runMode;
         m_isCommited = false;
         scanIoRequest(ioscanpvt);
     }
-
-    return OK;
 }
 
 /*
@@ -153,10 +141,9 @@ evgSoftSeq::getRunModeCt() {
     return m_runModeCt;
 }
 
-epicsStatus 
+void
 evgSoftSeq::setSeqRam(evgSeqRam* seqRam) {
     m_seqRam = seqRam;
-    return OK;
 }
 
 evgSeqRam* 
@@ -182,7 +169,7 @@ evgSoftSeq::isCommited() {
     return m_isCommited;
 }
 
-epicsStatus
+void
 evgSoftSeq::load() {
     evgSeqRam* seqRam = 0;
     evgSeqRam* seqRamIter = 0;
@@ -211,7 +198,6 @@ evgSoftSeq::load() {
         seqRam->alloc(this);
         scanIoRequest(ioscanpvt);
         sync(); 
-        return OK;	
     } else {
         char err[80];
         sprintf(err, "No SeqRam to load SoftSeq %d", getId());
@@ -220,7 +206,7 @@ evgSoftSeq::load() {
     }
 }
 	
-epicsStatus
+void
 evgSoftSeq::unload() {
     if(m_seqRam) {
         m_seqRam->setRunMode(Single);
@@ -228,12 +214,10 @@ evgSoftSeq::unload() {
         setSeqRam(0);
         scanIoRequest(ioscanpvt);
     }
-
-    return OK;
 }
 
 
-epicsStatus
+void
 evgSoftSeq::commit() {	
     commitSoftSeq();
 
@@ -241,10 +225,9 @@ evgSoftSeq::commit() {
 
     m_isCommited = true;
     scanIoRequest(ioscanpvt);
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::enable() {
     if(m_seqRam) {
         /*
@@ -258,20 +241,18 @@ evgSoftSeq::enable() {
 
     m_isEnabled = true;
     scanIoRequest(ioscanpvt);
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::disable() {
     if(m_seqRam)
         m_seqRam->setRunMode(Single);
 
     m_isEnabled = false;
     scanIoRequest(ioscanpvt);
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::abort(bool callBack) {
     if( m_seqRam && m_seqRam->isEnabled() ) {
         m_seqRam->reset();
@@ -289,22 +270,18 @@ evgSoftSeq::abort(bool callBack) {
                 callbackRequest(&m_owner->irqStop1_cb);
         }
     }
-
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::pause() {
     if( m_seqRam && m_seqRam->isEnabled() ) {
         m_seqRam->disable();
         m_isEnabled = false;
         scanIoRequest(ioscanpvt);
     }
-
-    return OK;
 }
 
-epicsStatus
+void
 evgSoftSeq::sync() {
     if(!m_seqRam) {
         char err[80];
@@ -314,7 +291,7 @@ evgSoftSeq::sync() {
     }
 
     if(isRunning())
-        return OK;
+        return;
 
     m_seqRam->setEventCode(getEventCodeCt());
     m_seqRam->setTimestamp(getTimestampCt());
@@ -323,13 +300,12 @@ evgSoftSeq::sync() {
     if(m_isEnabled) m_seqRam->enable();
 
     scanIoRequest(ioscanpvt);
-    return OK;
 }
 
 /**
  * Make sure that this soft sequence does not re-run.
  */
-epicsStatus
+bool
 evgSoftSeq::isRunning() {
     m_seqRam->setRunMode(Single);
     m_seqRam->setTrigSrc(None);
@@ -351,7 +327,7 @@ evgSoftSeq::isRunning() {
     }		
 }
 
-epicsStatus
+void
 evgSoftSeq::commitSoftSeq() {
     int64_t tsUInt64;
     epicsUInt8 ecUInt8;
@@ -415,7 +391,5 @@ evgSoftSeq::commitSoftSeq() {
     m_eventCodeCt = eventCode;
     m_trigSrcCt = m_trigSrc;
     m_runModeCt = m_runMode;
-
-    return OK;
 }
 

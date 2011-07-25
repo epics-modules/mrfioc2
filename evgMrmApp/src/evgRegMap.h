@@ -50,7 +50,7 @@
 // Data Buffer and Distributed Data Bus Control
 //
 #define  U32_DataBufferControl  0x0020  // Data Buffer Control Register
-#define  U32_DBusMap            0x0024  // Distributed Data Bus Mapping Register
+#define  U32_DBusSrc            0x0024  // Distributed Data Bus Mapping Register
 
 //=====================
 // FPGA Firmware Version
@@ -119,33 +119,33 @@
 //=====================
 // Front Panel Output Mapping Register Array
 //
-#define  U16_FPOutMap_base      0x0400  // FP Output Port Mapping Register Offset
-#define  U16_FPOutMap(n)        (U16_FPOutMap_base + (2*(n)))
+#define  U16_FrontOutMap_base      0x0400  // Front Output Port Mapping Register Offset
+#define  U16_FrontOutMap(n)        (U16_FrontOutMap_base + (2*(n)))
 
 //=====================
 // Front Panel Universal Output Mapping Register Array
 //
-#define  U16_UnivOutMap_base    0x0440  // FP Univ Output Mapping Register
+#define  U16_UnivOutMap_base    0x0440  // Front Univ Output Mapping Register
 #define  U16_UnivOutMap(n)      (U16_UnivOutMap_base + (2*(n)))
 
 //=====================
 // Front Panel Input Mapping Registers 
 //
-#define  U32_FPInMap_base       0x0500  // FP Input Port Mapping Register
-#define  U32_FPInMap(n)         (U32_FPInMap_base + (4*(n)))
+#define  U32_FrontInMap_base       0x0500  // Front Input Port Mapping Register
+#define  U32_FrontInMap(n)         (U32_FrontInMap_base + (4*(n)))
 
 //=====================
 // Front Panel Universal Input Mapping Registers
 //
-#define  U32_UnivInMap_base     0x0540  // FP Univ Input Port Mapping Register
+#define  U32_UnivInMap_base     0x0540  // Front Univ Input Port Mapping Register
 #define  U32_UnivInMap(n)       (U32_UnivInMap_base + (4*(n)))
 
 
 //=====================
-// Transition Board (TB) Input Mapping Registers
+// Rear Universal Input Mapping Registers
 //
-#define  U32_TBInMap_base       0x0600  // TB Input Port Mapping Register
-#define  U32_TBInMap(n)         (U32_TBInMap_base + (4*(n)))
+#define  U32_RearInMap_base       0x0600  // Rear Univ Input Port Mapping Register
+#define  U32_RearInMap(n)         (U32_RearInMap_base + (4*(n)))
 
 //=====================
 // Data Buffer Area
@@ -242,15 +242,15 @@
 #ifndef  EVG_CONSTANTS
 #define  EVG_CONSTANTS
 
-const epicsUInt16 evgNumMxc     = 8;
+const epicsUInt16 evgNumMxc = 8;
 const epicsUInt16 evgNumEvtTrig = 8;
 const epicsUInt16 evgNumDbusBit = 8;
-const epicsUInt16 evgNumFpOut   = 4;
+const epicsUInt16 evgNumFrontOut = 4;
 const epicsUInt16 evgNumUnivOut = 4;
-const epicsUInt16 evgNumFpInp   = 2;
+const epicsUInt16 evgNumFrontInp = 2;
 const epicsUInt16 evgNumUnivInp = 4;
-const epicsUInt16 evgNumTbInp   = 16;
-const epicsUInt16 evgNumSeqRam  = 2;
+const epicsUInt16 evgNumRearInp = 16;
+const epicsUInt16 evgNumSeqRam = 2;
 const epicsFloat32 evgAllowedTsGitter = 0.5f;
 const epicsUInt16 evgEndOfSeqBuf = 5;
 

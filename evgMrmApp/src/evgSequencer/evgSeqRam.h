@@ -14,23 +14,28 @@ public:
     evgSeqRam(const epicsUInt32, evgMrm* const);
     ~evgSeqRam();
 
-    const epicsUInt32 getId();
+    const epicsUInt32 getId() const;
 
-    epicsStatus setEventCode(std::vector<epicsUInt8>);
-    epicsStatus setTimestamp(std::vector<epicsUInt64>);
+    void setEventCode(std::vector<epicsUInt8>);
+    std::vector<epicsUInt8> getEventCode();
 
-    epicsStatus setSoftTrig();
-    epicsStatus setTrigSrc(SeqTrigSrc);
-    SeqTrigSrc getTrigSrc();
-    epicsStatus setRunMode(SeqRunMode);
-    SeqRunMode getRunMode();
+    void setTimestamp(std::vector<epicsUInt64>);
+    std::vector<epicsUInt64> getTimestamp();
 
-    epicsStatus enable();
-    epicsStatus disable();
-    epicsStatus reset();
+    void setTrigSrc(SeqTrigSrc);
+    SeqTrigSrc getTrigSrc() const;
 
-    epicsStatus alloc(evgSoftSeq* seq);
-    epicsStatus dealloc();
+    void setRunMode(SeqRunMode);
+    SeqRunMode getRunMode() const;
+
+    void alloc(evgSoftSeq* seq);
+    void dealloc();
+
+    void softTrig();
+
+    void enable();
+    void disable();
+    void reset();
 
     bool isEnabled() const;
     bool isRunning() const;

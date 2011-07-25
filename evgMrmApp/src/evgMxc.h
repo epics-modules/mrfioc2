@@ -1,27 +1,29 @@
 #ifndef EVG_MXC_H
 #define EVG_MXC_H
 
-#include <epicsTypes.h>     
+#include <epicsTypes.h>
+#include "mrf/object.h"
 
 class evgMrm;
 
-class evgMxc {
+class evgMxc : public mrf::ObjectInst<evgMxc> {
 public:
-    evgMxc(const epicsUInt32, evgMrm* const);
+    evgMxc(const std::string&, const epicsUInt32, evgMrm* const);
     ~evgMxc();
 
-    bool getMxcOutStatus();
+    bool getStatus() const;
 
-    bool getMxcOutPolarity();
-    epicsStatus setMxcOutPolarity(bool);
+    void setPolarity(bool);
+    bool getPolarity() const;
 
-    epicsUInt32 getMxcPrescaler();
-    epicsStatus setMxcPrescaler(epicsUInt32);
-    epicsFloat64 getMxcFreq();
-    epicsStatus setMxcFreq(epicsFloat64);
+    void setPrescaler(epicsUInt32);
+    epicsUInt32 getPrescaler() const;
 
-    epicsUInt8 getMxcTrigEvtMap();
-    epicsStatus setMxcTrigEvtMap(epicsUInt16, bool);
+    void setFrequency(epicsFloat64);
+    epicsFloat64 getFrequency() const;
+
+    void setTrigEvtMap(epicsUInt16, bool);
+    bool getTrigEvtMap(epicsUInt16) const;
 
 private:
     const epicsUInt32          m_id;

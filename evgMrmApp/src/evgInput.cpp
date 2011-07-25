@@ -10,30 +10,26 @@
 #include "evgRegMap.h"
 std::map<std::string, epicsUInt32> InpStrToEnum;
 
-evgInput::evgInput(const epicsUInt32 num, const InputType type,
-volatile epicsUInt8* const pInMap):
+evgInput::evgInput(const std::string& name, const epicsUInt32 num,
+                   const InputType type, volatile epicsUInt8* const pInReg):
+mrf::ObjectInst<evgInput>(name),
 m_num(num),
 m_type(type),
-m_pInMap(pInMap) {    
-    InpStrToEnum["None"] = None_Input;
-    InpStrToEnum["FP_Input"] = FP_Input;
-    InpStrToEnum["Univ_Input"] = Univ_Input;
-    InpStrToEnum["TB_Input"] = TB_Input;
-
+m_pInReg(pInReg) {
     switch(type) {
-        case(FP_Input):
-            if(num >= evgNumFpInp)
-                throw std::runtime_error("Front panel input num out of range");
+        case(FrontInp):
+            if(num >= evgNumFrontInp)
+                throw std::runtime_error("Front Panel Input num out of range");
             break;
 
-        case(Univ_Input):
+        case(UnivInp):
             if(num >= evgNumUnivInp)
-                throw std::runtime_error("EVG Universal input num out of range");
+                throw std::runtime_error("EVG Front Univ Input num out of range");
             break;
 
-        case(TB_Input):
-            if(num >= evgNumTbInp)
-                throw std::runtime_error("EVG TB input num out of range");
+        case(RearInp):
+            if(num >= evgNumRearInp)
+                throw std::runtime_error("EVG Rear Univ Input num out of range");
             break;
 
         default:
@@ -45,86 +41,104 @@ evgInput::~evgInput() {
 }
 
 epicsUInt32
-evgInput::getNum() {
+evgInput::getNum() const {
     return m_num;
 }
 
 InputType
-evgInput::getType() {
+evgInput::getType() const {
     return m_type;
 }
 
-epicsStatus
-evgInput::enaExtIrq(bool ena) {
+void
+evgInput::setExtIrq(bool ena) {
     if(ena)
-        nat_iowrite32(m_pInMap, nat_ioread32(m_pInMap) |
+        nat_iowrite32(m_pInReg, nat_ioread32(m_pInReg) |
                                  (epicsUInt32)EVG_EXT_INP_IRQ_ENA);
     else
-        nat_iowrite32(m_pInMap, nat_ioread32(m_pInMap) &
+        nat_iowrite32(m_pInReg, nat_ioread32(m_pInReg) &
                                  (epicsUInt32)~(EVG_EXT_INP_IRQ_ENA));
-
-    return OK;
 }
 
-epicsStatus
-evgInput::setInpDbusMap(epicsUInt16 dbus, bool ena) {
+bool
+evgInput::getExtIrq() const {
+    return  nat_ioread32(m_pInReg) & (epicsUInt32)EVG_EXT_INP_IRQ_ENA;
+}
+
+void
+evgInput::setDbusMap(epicsUInt16 dbus, bool ena) {
     if(dbus > 7)
         throw std::runtime_error("EVG DBUS num out of range.");
 
     epicsUInt32    mask = 0x10000 << dbus;
 
     //Read-Modify-Write
-    epicsUInt32 map = nat_ioread32(m_pInMap);
+    epicsUInt32 map = nat_ioread32(m_pInReg);
 
     if(ena)
         map = map | mask;
     else
         map = map & ~mask;
 
-    nat_iowrite32(m_pInMap, map);
-    
-    return OK;
+    nat_iowrite32(m_pInReg, map);
 }
 
-epicsStatus
-evgInput::setInpSeqTrigMap(epicsUInt32 seqTrigMap) {
+bool
+evgInput::getDbusMap(epicsUInt16 dbus) const {
+    if(dbus > 7)
+        throw std::runtime_error("EVG DBUS num out of range.");
+
+    epicsUInt32 mask = 0x10000 << dbus;
+    epicsUInt32 map = nat_ioread32(m_pInReg);
+    return map & mask;
+}
+
+void
+evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
     if(seqTrigMap > 3)
         throw std::runtime_error("Seq Trig Map out of range.");
 
     //Read-Modify-Write
-    epicsUInt32 map = nat_ioread32(m_pInMap);
+    epicsUInt32 map = nat_ioread32(m_pInReg);
 
     map = map & 0xffff00ff;
     map = map | (seqTrigMap << 8);
 
-    nat_iowrite32(m_pInMap, map);
-    return OK;
+    nat_iowrite32(m_pInReg, map);
 }
 
 epicsUInt32
-evgInput::getInpSeqTrigMap() {
-    epicsUInt32 map = nat_ioread32(m_pInMap);
+evgInput::getSeqTrigMap() const {
+    epicsUInt32 map = nat_ioread32(m_pInReg);
     map = map & 0x0000ff00;
     map = map >> 8;
     return map;
 }
 
-epicsStatus
-evgInput::setInpTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
+void
+evgInput::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
         throw std::runtime_error("Trig Event num out of range.");
 
     epicsUInt32    mask = 1 << trigEvt;
     //Read-Modify-Write
-    epicsUInt32 map = nat_ioread32(m_pInMap);
+    epicsUInt32 map = nat_ioread32(m_pInReg);
 
     if(ena)
         map = map | mask;
     else
         map = map & ~mask;
 
-    nat_iowrite32(m_pInMap, map);
-    
-    return OK;
+    nat_iowrite32(m_pInReg, map);
+}
+
+bool
+evgInput::getTrigEvtMap(epicsUInt16 trigEvt) const {
+    if(trigEvt > 7)
+        throw std::runtime_error("EVG Trig Event num out of range.");
+
+    epicsUInt32 mask = 0x1 << trigEvt;
+    epicsUInt32 map = nat_ioread32(m_pInReg);
+    return map & mask;
 }
 
