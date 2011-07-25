@@ -2,24 +2,27 @@
 #define EVG_OUTPUT_H
 
 #include <epicsTypes.h>
+#include "mrf/object.h"
 
 enum OutputType {
-    None_Output = 0,
-    FP_Output,
-    Univ_Output
+    NoneOut = 0,
+    FrontOut,
+    UnivOut
 };
 
-class evgOutput {
+class evgOutput : public mrf::ObjectInst<evgOutput> {
 public:
-    evgOutput(const epicsUInt32, const OutputType, volatile epicsUInt8* const);
+    evgOutput(const std::string&, const epicsUInt32, const OutputType,
+              volatile epicsUInt8* const);
     ~evgOutput();
     
-    epicsStatus setOutMap(epicsUInt16);
+    void setSource(epicsUInt16);
+    epicsUInt16 getSource() const;
 
 private:
     const epicsUInt32          m_num;
     const OutputType           m_type;
-    volatile epicsUInt8* const m_pReg;
+    volatile epicsUInt8* const m_pOutReg;
 };
 
 #endif //EVG_OUTPUT_H

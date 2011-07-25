@@ -10,15 +10,26 @@
 
 #include "evgRegMap.h"
 
-evgEvtClk::evgEvtClk(volatile epicsUInt8* const pReg):
+evgEvtClk::evgEvtClk(const std::string& name, volatile epicsUInt8* const pReg):
+mrf::ObjectInst<evgEvtClk>(name),
 m_pReg(pReg),
 m_RFref(0.0f),
 m_fracSynFreq(0.0f) {
 }
 
-/**        RF Input Frequency    **/
-epicsStatus
-evgEvtClk::setRFref (epicsFloat64 RFref) {    
+evgEvtClk::~evgEvtClk() {
+}
+
+epicsFloat64
+evgEvtClk::getFrequency() const {
+    if(getSource() == ClkSrcInternal)
+        return m_fracSynFreq;
+    else
+        return getRFFreq()/getRFDiv();
+}
+
+void
+evgEvtClk::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
         char err[80];
         sprintf(err, "Cannot set RF frequency to %f MHz.", RFref);
@@ -27,16 +38,15 @@ evgEvtClk::setRFref (epicsFloat64 RFref) {
     }
 
     m_RFref = RFref;
-    return OK;
 }
 
 epicsFloat64
-evgEvtClk::getRFref() {
+evgEvtClk::getRFFreq() const {
     return m_RFref;    
 }
 
-epicsStatus 
-evgEvtClk::setRFdiv(epicsUInt32 rfDiv) {
+void
+evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
     if(rfDiv < 1    || rfDiv > 32) {
         char err[80];
         sprintf(err, "Invalid RF Divider %d.", rfDiv);
@@ -45,19 +55,17 @@ evgEvtClk::setRFdiv(epicsUInt32 rfDiv) {
     }
     
     WRITE8(m_pReg, RfDiv, rfDiv-1);
-    return OK;
 }
 
 epicsUInt32
-evgEvtClk::getRFdiv() {
+evgEvtClk::getRFDiv() const {
     return READ8(m_pReg, RfDiv) + 1;
 }
 
-/**    Fractional Synthesizer Frequency    **/
-epicsStatus
+void
 evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
-    epicsUInt32        controlWord, oldControlWord;
-    epicsFloat64     error;
+    epicsUInt32 controlWord, oldControlWord;
+    epicsFloat64 error;
 
     controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
     if ((!controlWord) || (error > 100.0)) {
@@ -78,29 +86,23 @@ evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
     }
 
     m_fracSynFreq = FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
-    return OK;
 }
 
 epicsFloat64
-evgEvtClk::getEvtClkSpeed() {
-    if(getEvtClkSrc() == ClkSrcInternal)
-        return m_fracSynFreq;
-    else
-        return getRFref()/getRFdiv();
+evgEvtClk::getFracSynFreq() const {
+    return FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
 }
 
-epicsStatus
-evgEvtClk::setEvtClkSrc (bool clkSrc) {
+void
+evgEvtClk::setSource (bool clkSrc) {
     if(clkSrc)
         BITSET8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
     else 
         BITCLR8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
-
-    return OK;
 }
 
 bool
-evgEvtClk::getEvtClkSrc() {
+evgEvtClk::getSource() const {
     epicsUInt8 clkReg = READ8(m_pReg, ClockSource);
     return clkReg & EVG_CLK_SRC_EXTRF;
 }

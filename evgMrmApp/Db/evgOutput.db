@@ -1,6 +1,6 @@
-record(mbbo, "$(P)Map-Sel") {
-    field( DTYP, "EVG Output")
-    field( OUT , "#C$(cardNum) S$(outNum) @$(outType)")
+record(mbbo, "$(P)Source-Sel") {
+    field(DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(OBJ), PROP=Source")
     field( ZRST, "Off")
     field( ONST, "Dbus0")
     field( TWST, "Dbus1")
@@ -33,5 +33,33 @@ record(mbbo, "$(P)Map-Sel") {
     field( PINI, "YES")
     field( UDF,  "0")
     field( VAL,  "0")
+    field( FLNK, "$(P)Source-RB")
     info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(P)Source-RB") {
+    field( DTYP, "Obj Prop uint16")
+    field( INP , "@OBJ=$(OBJ), PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
 }

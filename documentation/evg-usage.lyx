@@ -252,9 +252,9 @@ Global EVG Options:
 \begin_layout Itemize
 
 \emph on
-Enable/Disable
+Enable 
 \emph default
- (bo): EVG enable and disable.
+(bo/bi): EVG enable and disable.
 \end_layout
 
 \begin_layout Subsubsection
@@ -389,9 +389,9 @@ Synchronize Timestamp
 \begin_layout Itemize
 
 \emph on
-Timestamp Input Type
+Timestamp Input
 \emph default
- (mbbo/mbbi): Types of input could be
+ (mbbo/mbbi): 
 \end_layout
 
 \begin_deeper
@@ -400,7 +400,7 @@ None : Stop timestamping
 \end_layout
 
 \begin_layout Itemize
-FP : Front Panel Input 
+Front : Front Panel Input 
 \end_layout
 
 \begin_layout Itemize
@@ -408,19 +408,10 @@ Univ : Universal Input
 \end_layout
 
 \begin_layout Itemize
-TB : Transitional Input
+Rear : Rear Transitional Input
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-
-\emph on
-Timestamp Input Number
-\emph default
- (mbbo/mbbi): Input number identifies a particular instance of the selected
- input type.
-\end_layout
-
 \end_deeper
 \begin_layout Subsection
 Event Clock
@@ -437,8 +428,8 @@ All the operations on EVG are synchronized to the event clock.
 \emph on
 Source
 \emph default
- (bo): The event clock may be derived from external RF clock signal or from
- an on-board fractional synthesizer.
+ (bo/bi): The event clock may be derived from external RF clock signal or
+ from an on-board fractional synthesizer.
 \end_layout
 
 \begin_layout Itemize
@@ -446,7 +437,7 @@ Source
 \emph on
 RF reference frequency
 \emph default
- (ao): Set the RF Input frequency in MHz.
+ (ao/ai): Set the RF Input frequency in MHz.
  Frequency can range from 50 to 1600.
  
 \end_layout
@@ -456,7 +447,8 @@ RF reference frequency
 \emph on
 RF Divider
 \emph default
- (longout): Divider to derive desired event clock from RF reference frequency.
+ (longout/longin): Divider to derive desired event clock from RF reference
+ frequency.
 \end_layout
 
 \begin_layout Itemize
@@ -464,13 +456,13 @@ RF Divider
 \emph on
 Fractional Synthesizer frequency
 \emph default
- (ao): This frequency could be used to derive event clock.
+ (ao/ai): This frequency could be used to derive event clock.
 \end_layout
 
 \begin_layout Itemize
 
 \emph on
-Event Clock Readback
+Event Clock Frequency Readback
 \emph default
  (ai): Gets the current event clock frequency in MHz.
  
@@ -488,9 +480,17 @@ Software event is used to send out an event code by writing that event to
 \begin_layout Itemize
 
 \emph on
-Send Event Code
+Enable
 \emph default
- (longout): Sends out the event code onto the event stream.
+ (bo/bi): Enable/Disable the transmission of Software Events.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Event Code
+\emph default
+ (longout/longin): Sends out the event code onto the event stream.
  Event code can range form 0 to 255.
 \end_layout
 
@@ -509,17 +509,18 @@ d counter output or the ac signal.
 \begin_layout Itemize
 
 \emph on
-Enable/Disable
+Enable
 \emph default
- (bo): Enable/Disable the transmission of Trigger Events.
+ (bo/bi): Enable/Disable the transmission of Trigger Events.
 \end_layout
 
 \begin_layout Itemize
 
 \emph on
-Event code to be sent
+Event Code
 \emph default
- (longout): Sets the event code to be sent out, whenever a trigger is received.
+ (longout/longin): Sets the event code to be sent out, whenever a trigger
+ is received.
  Event Code can range form 0 to 255.
 \end_layout
 
@@ -528,7 +529,7 @@ Event code to be sent
 \emph on
 Trigger
 \emph default
- (bo): The trigger could come from one or multiple sources.
+ Source (mbbo): The trigger could come from one or multiple sources.
  It could come from any of the external inputs and/or any multiplexed counter
  output and/or from ac signal.
  If multiple trigger sources are selected then those signal are OR'ed together
@@ -580,7 +581,7 @@ Selecting the input
  signal, we need to specify which input signal needs to be mapped onto the
  distributed bus.
  If multiple inputs are mapped onto a single distributed bus bit then those
- signals are logicallu OR'ed together and the resulting signal is used to
+ signals are logically OR'ed together and the resulting signal is used to
  drive the distributed bus bit.
  
 \end_layout
@@ -602,7 +603,7 @@ There are 8 32-bit multiplexed counters that generate clock signals with
 \emph on
 Polarity
 \emph default
- (bo): Set the Multiplex Counter(Mxc) output polarity.
+ (bo/bi): Set the Multiplex Counter(Mxc) output polarity.
 \end_layout
 
 \begin_layout Itemize
@@ -614,8 +615,8 @@ Frequency
 \end_layout
 
 \begin_layout Itemize
-Prescaler (longout): Used as counter to produce a signal with a particular
- frequency.
+Prescaler (longout/longin): Used as counter to produce a signal with a particula
+r frequency.
 \end_layout
 
 \begin_layout Itemize
@@ -652,9 +653,9 @@ It is used to configure the 4 front panel outputs and 4 four front panel
 \begin_layout Itemize
 
 \emph on
-Map
+Source
 \emph default
- (mbbo): The output could be mapped to 
+ (mbbo/mbbi): The output could be mapped to 
 \end_layout
 
 \begin_deeper
@@ -685,8 +686,8 @@ EVG provides synchronization to the mains voltage frequency or another external
 \emph on
 Divider
 \emph default
- (longout): The mains voltage frequency can be divided by an eight bit programma
-ble divider.
+ (longout/longin): The mains voltage frequency can be divided by an eight
+ bit programmable divider.
 \end_layout
 
 \begin_layout Itemize
@@ -694,7 +695,7 @@ ble divider.
 \emph on
 Phase
 \emph default
- (ao): The output of the divider may be delayed by 0 to 25.5 ms by a phase
+ (ao/ai): The output of the divider may be delayed by 0 to 25.5 ms by a phase
  shifter in 0.1ms steps to adjust the triggering position relative to mains
  voltage phase.
 \end_layout
@@ -704,7 +705,7 @@ Phase
 \emph on
 AC Bypass
 \emph default
- (bo): It is set to bypass the AC divider and phase shifter circuitry.
+ (bo/bi): It is set to bypass the AC divider and phase shifter circuitry.
 \end_layout
 
 \begin_layout Itemize
@@ -712,8 +713,8 @@ AC Bypass
 \emph on
 Sync
 \emph default
- (bo): The AC Trigger could be synchronized either with event clock or the
- output of multiplexed counter 7.
+ (bo/bi): The AC Trigger could be synchronized either with event clock or
+ the output of multiplexed counter 7.
  
 \end_layout
 
@@ -821,11 +822,11 @@ Timestamp Input Mode
 
 \begin_deeper
 \begin_layout Itemize
-EGU: In EGU mode user can enter the timestamps in terms of sub-seconds,
+EGU: In EGU mode user can enter the timestamps in units of sub-seconds,
  he/she has an option of choosing the units of sub-seconds by provding an
  interger divider that is used to convert the sub-seconds to seconds.
- This is done by modifying the '@parm' part of VME_IO hardware input link
- of the 
+ This is done by modifying the card part of VME_IO hardware input link of
+ the 
 \emph on
 $(P)Timestamp-SP
 \emph default
@@ -834,18 +835,43 @@ $(P)Timestamp-SP
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of microseconds do: caput $(P)Timestamp-SP.INP
- '#C2 S0 @1000000'
+To enter timestamps in terms of 
+\shape italic
+microseconds 
+\shape default
+(Interger Divider: 10^
+\shape italic
+6
+\shape default
+) do: 
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of milliseconds do: caput $(P)Timestamp-SP.INP
- '#C2 S0 @1000'
+caput $(P)Timestamp-SP.INP '#C6 S0 @$(EVG)'
 \end_layout
 
 \begin_layout Quote
-To enter timestamps in terms of seconds do: caput $(P)Timestamp-SP.INP '#C2
- S0 @1'
+To enter timestamps in terms of 
+\shape italic
+milliseconds
+\shape default
+(Interger Divider: 10^3) do:
+\end_layout
+
+\begin_layout Quote
+caput $(P)Timestamp-SP.INP '#C3 S0 @$(EVG)'
+\end_layout
+
+\begin_layout Quote
+To enter timestamps in terms of 
+\shape italic
+seconds
+\shape default
+(Interger Divider: 10^0) do:
+\end_layout
+
+\begin_layout Quote
+caput $(P)Timestamp-SP.INP '#C0 S0 @$(EVG)'
 \end_layout
 
 \begin_layout Quote

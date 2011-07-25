@@ -29,11 +29,8 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
     }
     
     try {
-        evgMrm* evg = &evgmap.get(lnk->value.vmeio.card);    
-        if(!evg)
-            throw std::runtime_error("Failed to lookup EVG");
-    
-        pRec->dpvt = evg;
+        std::string parm(lnk->value.vmeio.parm);
+        pRec->dpvt = mrf::Object::getObject(parm);
         ret = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pRec->name);
@@ -63,67 +60,17 @@ init_si(stringinRecord* psi) {
     return init_record((dbCommon*)psi, &psi->inp);
 }
 
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-init_mbbo(mbboRecord* pmbbo) {
-    epicsStatus ret = init_record((dbCommon*)pmbbo, &pmbbo->out);
-    if(ret == 0)
-        ret = 2;
-
-    return ret;
-}
-
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-init_mbbi(mbbiRecord* pmbbi) {
-    epicsStatus ret = init_record((dbCommon*)pmbbi, &pmbbi->inp);
-    if(ret == 0)
-        ret = 2;
-
-    return ret;
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long
-init_li(longinRecord* pli) {
-    return init_record((dbCommon*)pli, &pli->inp);
-}
-
-/**        bo - Enable EVG    **/
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_bo_enable(boRecord* pbo) {
-    long ret = 0;
-    
-    try {
-        evgMrm* evg = (evgMrm*)pbo->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        ret = evg->enable(pbo->val);
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
-/**        bo - Reset Multilpled Counters    **/
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_bo_resetMxc(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
 
     try {
         evgMrm* evg = (evgMrm*)pbo->dpvt;
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        ret = evg->resetMxc(pbo->val);
+        evg->resetMxc(pbo->val);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -135,7 +82,6 @@ write_bo_resetMxc(boRecord* pbo) {
     return ret;
 }
 
-/**    stringin - TimeStamp    **/
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 read_si_ts(stringinRecord* psi) {
@@ -147,11 +93,11 @@ read_si_ts(stringinRecord* psi) {
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        epicsTime ts = evg->getTS();
+        epicsTime ts = evg->getTimestamp();
         ts.strftime(psi->val, sizeof(psi->val), 
                                                  "%a, %d %b %Y %H:%M:%S");
 
-        switch(evg->m_alarmTS) {
+        switch(evg->m_alarmTimestamp) {
             case TS_ALARM_NONE:
                 break;
             case TS_ALARM_MINOR:
@@ -184,7 +130,7 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
         return -1;
     }
 
-    *ppvt = evg->ioScanTS;
+    *ppvt = evg->ioScanTimestamp;
 
     return 0;
 }
@@ -192,14 +138,14 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_syncTS(boRecord* pbo) {
-    long ret = 0;
+    long ret = OK;
 
     try {
         evgMrm* evg = (evgMrm*)pbo->dpvt;
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        ret = evg->syncTsRequest();
+        evg->syncTsRequest();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -211,129 +157,9 @@ write_bo_syncTS(boRecord* pbo) {
     return ret;
 }
 
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-write_mbbo_tsInpType(mbboRecord* pmbbo) {
-    long ret = 2;
-
-    try {
-        evgMrm* evg = (evgMrm*)pmbbo->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        ret = evg->setTsInpType((InputType)pmbbo->val);
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-write_mbbo_tsInpNum(mbboRecord* pmbbo) {
-    long ret = 2;
-
-    try {
-        evgMrm* evg = (evgMrm*)pmbbo->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        ret = evg->setTsInpNum(pmbbo->val);
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbo->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-read_mbbi_tsInpType(mbbiRecord* pmbbi) {
-    long ret = 2;
-
-    try {
-        evgMrm* evg = (evgMrm*)pmbbi->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        pmbbi->val = evg->getTsInpType();
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
-/*returns: (0,2)=>(success,success no convert)*/
-static long 
-read_mbbi_tsInpNum(mbbiRecord* pmbbi) {
-    long ret = 2;
-
-    try {
-        evgMrm* evg = (evgMrm*)pmbbi->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        pmbbi->val = evg->getTsInpNum();
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-read_li_dbusStatus(longinRecord* pli) {
-    long ret = 0;
-    
-    try {
-        evgMrm* evg = (evgMrm*)pli->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        pli->val = evg->getDbusStatus();
-        ret = 0;
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
 
 /**     device support entry table     **/
 extern "C" {
-
-common_dset devBoEvgEnable = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_enable,
-};
-epicsExportAddress(dset, devBoEvgEnable);
 
 common_dset devBoEvgResetMxc = {
     5,
@@ -365,57 +191,5 @@ common_dset devBoEvgSyncTS = {
 };
 epicsExportAddress(dset, devBoEvgSyncTS);
 
-common_dset devMbboEvgTsInpType = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbbo,
-    NULL,
-    (DEVSUPFUN)write_mbbo_tsInpType,
-};
-epicsExportAddress(dset, devMbboEvgTsInpType);
-
-common_dset devMbboEvgTsInpNum = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbbo,
-    NULL,
-    (DEVSUPFUN)write_mbbo_tsInpNum,
-};
-epicsExportAddress(dset, devMbboEvgTsInpNum);
-
-common_dset devMbbiEvgTsInpType = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbbi,
-    NULL,
-    (DEVSUPFUN)read_mbbi_tsInpType,
-};
-epicsExportAddress(dset, devMbbiEvgTsInpType);
-
-common_dset devMbbiEvgTsInpNum = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_mbbi,
-    NULL,
-    (DEVSUPFUN)read_mbbi_tsInpNum,
-};
-epicsExportAddress(dset, devMbbiEvgTsInpNum);
-
-common_dset devLiEvgDbusStatus = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_li,
-    NULL,
-    (DEVSUPFUN)read_li_dbusStatus,
-};
-epicsExportAddress(dset, devLiEvgDbusStatus);
-
 };
 
-
-// 

@@ -16,18 +16,22 @@
 
 #include "evgRegMap.h"
 
-CardMap<evgMrm> evgmap;
-
 std::string Description("EVG");
 static const
 struct VMECSRID vmeEvgIDs[] = {
-    {MRF_VME_IEEE_OUI, MRF_VME_EVG_BID|MRF_SERIES_230, VMECSRANY},
+    {MRF_VME_IEEE_OUI,
+     MRF_VME_EVG_BID|MRF_SERIES_230,
+     VMECSRANY},
     VMECSR_END
 };
 
 static bool
-enableIRQ(int, short, evgMrm& evg) {
-    BITSET32(evg.getRegAddr(), IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
+enableIRQ(mrf::Object* obj, void*) {
+    evgMrm *evg=dynamic_cast<evgMrm*>(obj);
+    if(!evg)
+        return true;
+
+    BITSET32(evg->getRegAddr(), IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
 //     WRITE32(pReg, IrqEnable,
 //         EVG_IRQ_ENABLE        |
 //         EVG_IRQ_STOP_RAM1     |
@@ -47,7 +51,7 @@ static void
 inithooks(initHookState state) {
     switch(state) {
         case initHookAfterInterruptAccept:
-            evgmap.visit(0, &enableIRQ);
+            mrf::Object::visitObjects(&enableIRQ, 0);
             break;
         default:
             break;
@@ -57,7 +61,7 @@ inithooks(initHookState state) {
 extern "C"
 epicsStatus
 mrmEvgSetupVME (
-    epicsInt32  cardNum,    // Logical card number
+    const char* id,         // Card Identifier
     epicsInt32  slot,       // VME slot
     epicsUInt32 vmeAddress, // Desired VME address in A24 space
     epicsInt32  irqLevel,   // Desired interrupt level
@@ -67,8 +71,8 @@ mrmEvgSetupVME (
     struct VMECSRID info;
 
     try {
-        if(cardIdInUse(cardNum)) {
-            errlogPrintf("EVG Identifier %d already used", cardNum);
+        if(mrf::Object::getObject(id)){
+            errlogPrintf("ID %s already in use\n",id);
             return -1;
         }
 
@@ -91,14 +95,10 @@ mrmEvgSetupVME (
             /*Setting the base address of Register Map on VME Board (EVG)*/
             CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
         }
-            
-        std::ostringstream oss;
-        oss<<cardNum;
-        Description += oss.str();
 
         /*Register VME address and get corresponding CPU address */
         int status = devRegisterAddress (
-            Description.c_str(),                   // Event Generator Card name
+            id,                                    // Event Generator Card name
             atVMEA24,                              // A24 Address space
             vmeAddress,                            // Physical address of register space
             EVG_REGMAP_SIZE,                       // Size of card's register space
@@ -112,7 +112,7 @@ mrmEvgSetupVME (
 
         printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
 
-        evgMrm* evg = new evgMrm(cardNum, regCpuAddr);
+        evgMrm* evg = new evgMrm(id, regCpuAddr);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -146,7 +146,6 @@ mrmEvgSetupVME (
                 return -1;
             }    
         }
-        evgmap.store(cardNum, *evg);
 
         return 0;
     } catch(std::exception& e) {
@@ -159,7 +158,7 @@ mrmEvgSetupVME (
  *    EPICS Registrar Function for this Module
  */
 
-static const iocshArg mrmEvgSetupVMEArg0 = { "Card number",iocshArgInt};
+static const iocshArg mrmEvgSetupVMEArg0 = { "Card ID",iocshArgString};
 static const iocshArg mrmEvgSetupVMEArg1 = { "Slot number",iocshArgInt};
 static const iocshArg mrmEvgSetupVMEArg2 = { "A24 base address",iocshArgInt};
 static const iocshArg mrmEvgSetupVMEArg3 = { "IRQ Level 1-7 (0 - disable)"
@@ -177,7 +176,7 @@ static const iocshFuncDef mrmEvgSetupVMEFuncDef = { "mrmEvgSetupVME",
 
 static void 
 mrmEvgSetupVMECallFunc(const iocshArgBuf *args) {
-    mrmEvgSetupVME(args[0].ival,
+    mrmEvgSetupVME(args[0].sval,
                    args[1].ival,
                    args[2].ival,
                    args[3].ival,
@@ -212,7 +211,7 @@ REGINFO("AcTrigEvtMap",     AcTrigEvtMap,      8),
 REGINFO("SwEventControl",   SwEventControl,    8),
 REGINFO("SwEventCode",      SwEventCode,       8),
 REGINFO("DataBufferControl",DataBufferControl,32),
-REGINFO("DBusMap",          DBusMap,          32),
+REGINFO("DBusSrc",          DBusSrc,          32),
 REGINFO("FPGAVersion",      FPGAVersion,      32),
 REGINFO("uSecDiv",          uSecDiv,          16),
 REGINFO("ClockSource",      ClockSource,       8),
@@ -224,15 +223,15 @@ REGINFO("FracSynthWord",    FracSynthWord,    32),
 REGINFO("TrigEventCtrl(0)", TrigEventCtrl(0), 32),
 REGINFO("MuxControl(0)",    MuxControl(0),    32),
 REGINFO("MuxPrescaler(0)",  MuxPrescaler(0),  32),
-REGINFO("FPOutMap(0)",      FPOutMap(0),      16),
-REGINFO("FPInMap(0)",       FPInMap(0),       32),
-REGINFO("FPInMap(1)",       FPInMap(1),       32),
-REGINFO("UnivInMap(0)",     UnivInMap(0),     32),
-REGINFO("UnivInMap(1)",     UnivInMap(1),     32),
-REGINFO("TBInMap(12)",      TBInMap(12),      32),
-REGINFO("TBInMap(13)",      TBInMap(13),      32),
-REGINFO("TBInMap(14)",      TBInMap(14),      32),
-REGINFO("TBInMap(15)",      TBInMap(15),      32),
+REGINFO("FrontOutMap(0)",   FrontOutMap(0),   16),
+REGINFO("FrontInMap(0)",    FrontInMap(0),    32),
+REGINFO("FrontInMap(1)",    FrontInMap(1),    32),
+REGINFO("UnivInMap(0)",     UnivInMap(0), 32),
+REGINFO("UnivInMap(1)",     UnivInMap(1), 32),
+REGINFO("RearInMap(12)",    RearInMap(12), 32),
+REGINFO("RearInMap(13)",    RearInMap(13), 32),
+REGINFO("RearInMap(14)",    RearInMap(14), 32),
+REGINFO("RearInMap(15)",    RearInMap(15), 32),
 REGINFO("DataBuffer(0)",    DataBuffer(0),     8),
 REGINFO("DataBuffer(1)",    DataBuffer(1),     8),
 REGINFO("DataBuffer(2)",    DataBuffer(2),     8),
@@ -286,15 +285,20 @@ printregisters(volatile epicsUInt8 *evg) {
     }
 }
 
-static bool 
-reportCard(int level, short id, evgMrm& evg) {
-    printf("\n===            MRF EVG %d     ===\n", evg.getId());
+static bool
+reportCard(mrf::Object* obj, void* arg) {
+    int *level=(int*)arg;
+    evgMrm *evg=dynamic_cast<evgMrm*>(obj);
+    if(!evg)
+        return true;
+
+    printf("    ID: %s     \n", evg->getId().c_str());
     
-    if(level >= 1)
-        printf("    FPGA verion: %08x\n", evg.getFwVersion());
+    if(*level >= 1)
+        printf("    FPGA verion: %08x\n", evg->getFwVersion());
     
-    if(level >= 2) 
-        printregisters(evg.getRegAddr());
+    if(*level >= 2)
+        printregisters(evg->getRegAddr());
         
     printf("\n");
     return true;
@@ -302,7 +306,9 @@ reportCard(int level, short id, evgMrm& evg) {
 
 static long 
 report(int level) {
-    evgmap.visit(level, &reportCard);
+    printf("===  Begin MRF EVG support   ===\n");
+    mrf::Object::visitObjects(&reportCard, (void*)&level);
+    printf("===   End MRF EVG support    ===\n");
     return 0;
 }
 

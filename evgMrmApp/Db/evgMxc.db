@@ -1,41 +1,50 @@
-record(bo, "$(P)OutPolarity-Sel") {
-    field( DTYP, "EVG Mxc")
+record(bi, "$(P)Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(P)Polarity-Sel") {
     field( DESC, "EVG Mux Output Polarity")
-    field( OUT , "#C$(cardNum) S$(mxcNum) @")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=Polarity")
     field( PINI, "YES")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "Orginal")
     field( ONAM, "Inverted")
+    field( FLNK, "$(P)Polarity-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)OutStatus-RB") {
-    field( DTYP, "EVG Mxc")
-    field( DESC, "EVG Mux Output Status")
-    field( INP , "#C$(cardNum) S$(mxcNum) @")
-    field( ZNAM, "0")
-    field( ONAM, "1")
+record(bi, "$(P)Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
 }
 
-record(ao, "$(P)Freq-SP") {
-    field( DTYP, "EVG Mxc")
+record(ao, "$(P)Frequency-SP") {
     field( DESC, "EVG Mux Frequency")
-    field( OUT,  "#C$(cardNum) S$(mxcNum) @")
-    field( EGU,  "Hz")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(OBJ), PROP=Frequency")
+    field( EGU , "Hz")
     field( HOPR, "62500000")
     field( LOPR, "0.029")
     field( DRVH, "62500000")
     field( DRVL, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)Freq-RB")
+    field( FLNK, "$(P)Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P)Freq-RB") {
-    field( DTYP, "EVG Mxc")
+record(ai, "$(P)Frequency-RB") {
     field( DESC, "EVG Mux Frequency")
-    field( INP,  "#C$(cardNum) S$(mxcNum) @")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=Frequency")
     field( EGU,  "Hz")
     field( HOPR, "62500000")
     field( LOPR, "0.029")
@@ -44,21 +53,21 @@ record(ai, "$(P)Freq-RB") {
 }
 
 record(longout, "$(P)Prescaler-SP") {
-    field( DTYP, "EVG Mxc")
     field( DESC, "EVG Mux Prescaler")
-    field( OUT,  "#C$(cardNum) S$(mxcNum) @")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(OBJ), PROP=Prescaler")
     field( PINI, "YES")
     field( VAL,  "2")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
-    field( FLNK, "$(P)Freq-RB")
+    field( FLNK, "$(P)Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
 record(longin , "$(P)Prescaler-RB") {
-    field( DTYP, "EVG Mxc")
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
-    field( INP,  "#C$(cardNum) S$(mxcNum) @")
 }
 
 #
@@ -66,5 +75,5 @@ record(longin , "$(P)Prescaler-RB") {
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
     field( INP,  "$(P)EvtClkFreq-RB CP")
-    field( FLNK, "$(P)Freq-RB")
+    field( FLNK, "$(P)Frequency-RB")
 }

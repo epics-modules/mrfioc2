@@ -11,18 +11,18 @@ epicsEnvSet("LOCATION","Blg 902 Rm 28")
 bspExtVerbosity=0
 
 #mrmEvgSetupVME (
-#    epicsInt32    cardNum,           // Logical card number
+#    const char*   id,           // Logical card number
 #    epicsInt32    slot,              // VME slot
 #    epicsUInt32   vmeAddress,        // Desired VME address in A24 space
 #    epicsInt32    irqLevel           // IRQ Level
 #    epicsInt32    irqVector,         // Desired interrupt vector number
 #)
 
-mrmEvgSetupVME(1, 3, 0x100000, 4, 0xC0)
+mrmEvgSetupVME(EVG1, 3, 0x100000, 4, 0xC0)
 
 ## Load record instances
 
-dbLoadRecords("db/vme-evg230.db", "SYS=TST,   D=evg:1, cardNum=1")
+dbLoadRecords("db/vme-evg230.db", "SYS=TST, D=evg:1, EVG=EVG1")
 
 set_savefile_path("{mnt}/as","/save")
 set_requestfile_path("{mnt}/as","/req")

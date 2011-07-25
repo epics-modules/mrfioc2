@@ -8,7 +8,9 @@
 
 #include "evgRegMap.h"
 
-evgDbus::evgDbus(const epicsUInt32 id, volatile epicsUInt8* const pReg):
+evgDbus::evgDbus(const std::string& name, const epicsUInt32 id,
+                 volatile epicsUInt8* const pReg):
+mrf::ObjectInst<evgDbus>(name),
 m_id(id),
 m_pReg(pReg) {
 }
@@ -16,20 +18,23 @@ m_pReg(pReg) {
 evgDbus::~evgDbus() {
 }
 
-epicsStatus
-evgDbus::setDbusMap(epicsUInt16 map) {
-    epicsUInt32 mask = map << (4 * m_id);
+void
+evgDbus::setSource(epicsUInt16 src) {
+    epicsUInt32 mask = src << (4 * m_id);
 
     //Read-Modify-Write
-    epicsUInt32 dbusMap = READ32(m_pReg, DBusMap);
+    epicsUInt32 dbusSrc = READ32(m_pReg, DBusSrc);
 
     //Zeroing out the bits that belong to this Dbus
-    dbusMap = dbusMap & ~(0xf << (4 * m_id));
+    dbusSrc = dbusSrc & ~(0xf << (4 * m_id));
 
-    dbusMap = dbusMap | mask;
+    dbusSrc = dbusSrc | mask;
+    WRITE32(m_pReg, DBusSrc, dbusSrc);
+}
 
-    WRITE32(m_pReg, DBusMap, dbusMap);
-
-    return OK;
+epicsUInt16
+evgDbus::getSource() const {
+    epicsUInt32 dbusSrc = READ32(m_pReg, DBusSrc);
+    return dbusSrc & (0xf << (4 * m_id));
 }
  

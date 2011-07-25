@@ -1,7 +1,28 @@
+record(bo, "$(P)Enable-Sel") {
+    field( DESC, "EVG Soft Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(OBJ), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( FLNK, "$(P)Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Enable-RB") {
+    field( DESC, "EVG Soft Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(OBJ), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
 record(longout, "$(P)EvtCode-SP") {
-    field( DTYP, "EVG Soft Evt")
     field( DESC, "EVG Software Event Code")
-    field( OUT,  "#C$(cardNum) S @")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(OBJ), PROP=EvtCode")
     field( UDF,  "0")
     field( PINI, "YES")
     field( VAL,  "0")
@@ -9,5 +30,16 @@ record(longout, "$(P)EvtCode-SP") {
     field( LOLO, "-1")
     field( HHSV, "MAJOR")
     field( LLSV, "MAJOR")
+    field( FLNK, "$(P)EvtCode-RB")
     info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)EvtCode-RB") {
+    field( DESC, "EVG Software Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(OBJ), PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
 }

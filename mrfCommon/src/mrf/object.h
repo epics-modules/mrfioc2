@@ -278,7 +278,7 @@ public:
         if(!b)
             return std::auto_ptr<property<P> >();
         property<P> *p=dynamic_cast<property<P> *>(b);
-        if(!b)
+        if(!p)
             return std::auto_ptr<property<P> >();
         return std::auto_ptr<property<P> >(p);
     }

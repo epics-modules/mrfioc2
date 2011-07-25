@@ -8,52 +8,68 @@
 
 #include "evgRegMap.h"
 
-evgAcTrig::evgAcTrig(volatile epicsUInt8* const pReg):
+evgAcTrig::evgAcTrig(const std::string& name, volatile epicsUInt8* const pReg):
+mrf::ObjectInst<evgAcTrig>(name),
 m_pReg(pReg) {
 }
 
 evgAcTrig::~evgAcTrig() {
 }
 
-epicsStatus
+void
 evgAcTrig::setDivider(epicsUInt32 divider) {
     if(divider > 255)
         throw std::runtime_error("EVG AC Trigger divider out of range.");
 
     WRITE8(m_pReg, AcTrigDivider, divider);
-    return OK;
 }
 
-epicsStatus
+epicsUInt32
+evgAcTrig::getDivider() const {
+    return READ8(m_pReg, AcTrigDivider);
+}
+
+void
 evgAcTrig::setPhase(epicsFloat64 phase) {
     if(phase < 0 || phase > 25.5)
         throw std::runtime_error("EVG AC Trigger phase out of range.");
 
     WRITE8(m_pReg, AcTrigPhase, phase);
-    return OK;
 }
 
-epicsStatus
-evgAcTrig::bypass(bool byp) {
+epicsFloat64
+evgAcTrig::getPhase() const {
+    return READ8(m_pReg, AcTrigPhase);
+}
+
+void
+evgAcTrig::setBypass(bool byp) {
     if(byp)
         BITSET8(m_pReg, AcTrigControl, EVG_AC_TRIG_BYP);
     else
         BITCLR8(m_pReg, AcTrigControl, EVG_AC_TRIG_BYP);
-
-    return OK;
 }
 
-epicsStatus
+bool
+evgAcTrig::getBypass() const {
+    return READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_BYP;
+}
+
+
+void
 evgAcTrig::setSyncSrc(bool syncSrc) {
     if(syncSrc)
         BITSET8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
     else
-         BITCLR8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
-
-    return OK;
+        BITCLR8(m_pReg, AcTrigControl, EVG_AC_TRIG_SYNC);
 }
 
-epicsStatus
+bool
+evgAcTrig::getSyncSrc() const {
+    return READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_SYNC;
+}
+
+void
 evgAcTrig::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
         throw std::runtime_error("EVG Trig Event ID too large.");
@@ -68,7 +84,9 @@ evgAcTrig::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
         map = map & ~mask;
 
     WRITE8(m_pReg, AcTrigEvtMap, map);
-
-    return OK;
 }
 
+epicsUInt32
+evgAcTrig::getTrigEvtMap() const {
+    return READ8(m_pReg, AcTrigEvtMap);
+}

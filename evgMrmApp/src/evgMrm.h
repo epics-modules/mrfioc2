@@ -42,18 +42,21 @@ class wdTimer1;
 
 enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
-class evgMrm {
+class evgMrm : public mrf::ObjectInst<evgMrm> {
 public:
-    evgMrm(const epicsUInt32 CardNum, volatile epicsUInt8* const pReg);
+    evgMrm(const std::string& id, volatile epicsUInt8* const);
     ~evgMrm();
 
     /** EVG    **/
-    const epicsUInt32 getId();    
-    volatile epicsUInt8* getRegAddr(); 
-    epicsUInt32 getFwVersion();
-    epicsStatus enable(bool ena);
-    epicsStatus resetMxc(bool reset);
-    epicsUInt32 getDbusStatus();
+    const std::string getId() const;
+    volatile epicsUInt8* getRegAddr() const;
+    epicsUInt32 getFwVersion() const;
+
+    void enable(bool);
+    bool enabled() const;
+
+    void resetMxc(bool reset);
+    epicsUInt32 getDbusStatus() const;
 
     /**    Interrupt and Callback    **/
     static void isr(void*);
@@ -62,17 +65,11 @@ public:
     static void process_inp_cb(CALLBACK*);
 
     /** TimeStamp    **/
-    epicsUInt32 sendTS();
-    epicsTimeStamp getTS();
-    epicsStatus syncTS();
-    epicsStatus syncTsRequest();
-    epicsStatus setTsInpType(InputType);
-    epicsStatus setTsInpNum(epicsUInt32);
-    InputType getTsInpType();
-    epicsUInt32 getTsInpNum();
-    epicsStatus setupTsIrq(bool);
-    epicsStatus incrementTSsec();
-    epicsUInt32 getTSsec();
+    epicsUInt32 sendTimestamp();
+    epicsTimeStamp getTimestamp() const;
+    void syncTimestamp();
+    void syncTsRequest();
+    void incrTimestamp();
     
     /**    Access    functions     **/
     evgAcTrig* getAcTrig();
@@ -83,27 +80,22 @@ public:
     evgDbus* getDbus(epicsUInt32);
     evgInput* getInput(epicsUInt32, InputType);
     evgOutput* getOutput(epicsUInt32, OutputType);
-    evgSeqRamMgr* getSeqRamMgr();    
+    evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();
-
-    struct ppsSrc{
-        InputType type;
-        epicsUInt32 num;    
-    };
 
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
     CALLBACK                      irqExtInp_cb;
 
-    IOSCANPVT                     ioScanTS;
-    bool                          m_syncTS;
-    ALARM_TS                      m_alarmTS;
+    IOSCANPVT                     ioScanTimestamp;
+    bool                          m_syncTimestamp;
+    ALARM_TS                      m_alarmTimestamp;
 
     mrmDataBufTx                  m_buftx;
 
 private:
-    const epicsUInt32             m_id;             
+    const std::string             m_id;
     volatile epicsUInt8* const    m_pReg;
 
     evgAcTrig                     m_acTrig;
@@ -128,8 +120,7 @@ private:
     evgSeqRamMgr                  m_seqRamMgr;
     evgSoftSeqMgr                 m_softSeqMgr;
 
-    epicsTimeStamp                m_ts;
-    struct ppsSrc                 m_ppsSrc; 
+    epicsTimeStamp                m_timestamp;
 
     wdTimer*                      m_wdTimer;
     epicsEvent*                   m_timerEvent;
@@ -168,8 +159,8 @@ public:
                  ((epicsTime)ts).show(1);
              }
 
-             m_evg->m_alarmTS = TS_ALARM_MAJOR;
-             scanIoRequest(m_evg->ioScanTS);
+             m_evg->m_alarmTimestamp = TS_ALARM_MAJOR;
+             scanIoRequest(m_evg->ioScanTimestamp);
          }     
     }
 

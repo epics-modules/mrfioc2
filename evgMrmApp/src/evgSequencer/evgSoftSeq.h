@@ -11,6 +11,8 @@
 #include <dbScan.h>
 #include <stdint.h>
 
+#include "mrf/object.h"
+
 class evgMrm;
 class evgSeqRam;
 class evgSeqRamMgr;
@@ -51,14 +53,14 @@ enum SeqTrigSrc {
     ExtRam0 = 24,
     ExtRam1 = 25,
     External = 26,
-    FpInp0 = 41,
-    FpInp1 = 45,
+    FrontInp0 = 41,
+    FrontInp1 = 45,
     UnivInp0 = 42,
     UnivInp1 = 46,
     UnivInp2 = 50,
     UnivInp3 = 54,
-    TbInp0 = 43,
-    TbInp1 = 47
+    RearInp0 = 43,
+    RearInp1 = 47
 };
 
 #define IrqStop(id) irqStop##id
@@ -70,42 +72,44 @@ public:
 
     const epicsUInt32 getId() const;	
 
-    epicsStatus setDescription(const char*);
+    void setDescription(const char*);
     const char* getDescription();
 
-    epicsStatus setErr(std::string);
+    void setErr(std::string);
     std::string getErr();
 
-    epicsStatus setTimestampInpMode(TimestampInpMode);
+    void setTimestampInpMode(TimestampInpMode);
     TimestampInpMode getTimestampInpMode();
 
-    epicsStatus setTimestamp(epicsUInt64*, epicsUInt32);
-    epicsStatus setEventCode(epicsUInt8*, epicsUInt32);
-    epicsStatus setTrigSrc(SeqTrigSrc);
-    epicsStatus setRunMode(SeqRunMode);    
-
+    void setTimestamp(epicsUInt64*, epicsUInt32);
     std::vector<epicsUInt64> getTimestampCt();
-    std::vector<epicsUInt8> getEventCodeCt();
+
+    void setEventCode(epicsUInt8*, epicsUInt32);
+     std::vector<epicsUInt8> getEventCodeCt();
+
+    void setTrigSrc(SeqTrigSrc);
     SeqTrigSrc getTrigSrcCt();
+
+    void setRunMode(SeqRunMode);
     SeqRunMode getRunModeCt();
 
-    epicsStatus setSeqRam(evgSeqRam*);
+    void setSeqRam(evgSeqRam*);
     evgSeqRam* getSeqRam();
 
     bool isLoaded();
     bool isEnabled();
     bool isCommited();
+    bool isRunning();
 
-    epicsStatus load();
-    epicsStatus unload();
-    epicsStatus commit();
-    epicsStatus enable();
-    epicsStatus disable();
-    epicsStatus abort(bool);
-    epicsStatus pause();
-    epicsStatus sync();
-    epicsStatus isRunning();
-    epicsStatus commitSoftSeq();
+    void load();
+    void unload();
+    void commit();
+    void enable();
+    void disable();
+    void abort(bool);
+    void pause();
+    void sync();
+    void commitSoftSeq();
 
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
