@@ -38,12 +38,12 @@ class evgSoftSeq(gui.QMainWindow):
         self.connect(self.ui.pb_setSequence, SIGNAL("clicked()"), self.setSequence)
         self.connect(self.ui.rb_TsInpModeEGU, SIGNAL("clicked()"), self.setTsInpModeEGU)
         self.connect(self.ui.rb_TsInpModeTicks, SIGNAL("clicked()"), self.setTsInpModeTicks)
-	
-        pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}Timestamp-SP.INP"
-        camonitor(pv, self.cb_TimestampInp)
 
         pv = self.arg1 + "{" + self.arg2  + "-EvtClk}Frequency-RB"
         camonitor(pv, self.cb_EvtClkFreq)
+
+        pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsResolution-RB"
+        camonitor(pv, self.cb_TsResolution)
 
         pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsInpMode-RB"
         if(caget(pv)):
@@ -82,14 +82,12 @@ class evgSoftSeq(gui.QMainWindow):
         self.sequenceRB()
 
 
-    def cb_TimestampInp(self, value):
-        value = value[value.find('C')+1:value.find(' ')]
+    def cb_TsResolution(self, value):
         self.EGU_Resolution = 1.0/pow(10, int(value))
         if self.ui.rb_TsInpModeEGU.isChecked():
             self.setTsInpModeEGU()
 
     def cb_EvtClkFreq(self, value):
-        print value
         self.Ticks_Resolution = 1.0/(value*1000000)
         if self.ui.rb_TsInpModeTicks.isChecked():
             self.setTsInpModeTicks()

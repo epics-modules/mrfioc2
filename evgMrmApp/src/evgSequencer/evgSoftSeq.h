@@ -28,6 +28,13 @@ enum TimestampInpMode {
     TICKS
 };
 
+enum TimestampResolution {
+    Seconds = 0,
+    MilliSeconds,
+    MicroSeconds,
+    NanoSeconds
+};
+
 enum SeqRunMode {
     Normal = 0,
     Auto,
@@ -81,6 +88,9 @@ public:
     void setTimestampInpMode(TimestampInpMode);
     TimestampInpMode getTimestampInpMode();
 
+    void setTimestampResolution(TimestampResolution);
+    TimestampResolution getTimestampResolution();
+
     void setTimestamp(epicsUInt64*, epicsUInt32);
     std::vector<epicsUInt64> getTimestampCt();
 
@@ -123,6 +133,7 @@ private:
     std::string                m_err;
 
     TimestampInpMode           m_timestampInpMode;
+    TimestampResolution        m_timestampResolution;
 
     std::vector<epicsUInt64>   m_timestamp;
     std::vector<epicsUInt8>    m_eventCode;

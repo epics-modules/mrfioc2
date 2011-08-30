@@ -1074,6 +1074,11 @@ PyQt script.
 \end_layout
 
 \begin_layout Itemize
+You need to install PyQt4 to run this python script.
+ Debian package is pyqt4-dev-tools.
+\end_layout
+
+\begin_layout Itemize
 You can have timestamp as 'zero' for the first event code in the sequencer.
  So this will allow the first event code in the sequencer to be sent out
  immediately after sequencer receives the trigger.

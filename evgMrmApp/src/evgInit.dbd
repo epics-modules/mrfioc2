@@ -40,6 +40,8 @@ device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus UnivInp3")
 #evgSoftSeq.db
 device( bo,       VME_IO, devBoEvgTimestampInpMode, "EVG SEQ INPUT MODE")
 device( bi,       VME_IO, devBiEvgTimestampInpMode, "EVG SEQ INPUT MODE")
+device( mbbo,     VME_IO, devMbboEvgTimestampResolution, "EVG SEQ TS RES")
+device( mbbi,     VME_IO, devMbbiEvgTimestampResolution, "EVG SEQ TS RES")
 device( waveform, VME_IO, devWfEvgTimestamp,        "EVG SEQ TIMESTAMP")
 device( waveform, VME_IO, devWfEvgTimestampRB,      "EVG SEQ TIMESTAMP RB")
 device( waveform, VME_IO, devWfEvgEventCode,        "EVG SEQ EVENT CODE")

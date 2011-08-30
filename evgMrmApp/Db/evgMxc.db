@@ -57,7 +57,7 @@ record(longout, "$(P)Prescaler-SP") {
     field( DTYP, "Obj Prop uint32")
     field( OUT , "@OBJ=$(OBJ), PROP=Prescaler")
     field( PINI, "YES")
-    field( VAL,  "2")
+    field( VAL,  "124920")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
     field( FLNK, "$(P)Frequency-RB")

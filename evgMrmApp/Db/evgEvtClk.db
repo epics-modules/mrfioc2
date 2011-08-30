@@ -88,7 +88,7 @@ record(ao, "$(P)FracSynFreq-SP") {
     field( OUT,  "@OBJ=$(OBJ), PROP=FracSynFreq")
     field( EGU,  "MHz")
     field( PINI, "YES")
-    field( VAL,  "124.907")
+    field( VAL,  "124.920")
     field( UDF,  "0")
     field( HIHI, "125.5")
     field( LOLO, "49.5")
