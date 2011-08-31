@@ -269,7 +269,7 @@ write_mbbo_timestampResolution(mbboRecord* pmbbo) {
 /*(0,2)=>(success, success no convert)*/
 static long
 read_mbbi_timestampResolution(mbbiRecord* pmbbi) {
-    long ret = 2;
+    long ret = OK;
     evgSoftSeq* seq = 0;
 
     try {
@@ -278,7 +278,7 @@ read_mbbi_timestampResolution(mbbiRecord* pmbbi) {
             throw std::runtime_error("Device pvt field not initialized");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        pmbbi->val = seq->getTimestampResolution();
+        pmbbi->rval = seq->getTimestampResolution();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
         ret = S_dev_noDevice;
@@ -289,8 +289,6 @@ read_mbbi_timestampResolution(mbbiRecord* pmbbi) {
 
     return ret;
 }
-
-
 
 /*returns: (-1,0)=>(failure,success)*/
 static long
@@ -310,6 +308,7 @@ write_wf_timestamp(waveformRecord* pwf) {
         epicsUInt32 size = pwf->nord;
         epicsUInt64 ts[size];
 
+        SCOPED_LOCK2(seq->m_lock, guard);
         if(seq->getTimestampInpMode() == TICKS) {
             for(unsigned int i = 0; i < size; i++)
                 ts[i] = (epicsUInt64)floor(((epicsFloat64*)pwf->bptr)[i] + 0.5);

@@ -58,7 +58,6 @@ record(mbbi, "$(P)TsResolution-RB") {
     field( ONVL, "3")
     field( TWVL, "6")
     field( THVL, "9")
-    field( THSV, "INVALID")
     field( FRSV, "INVALID")
     field( FVSV, "INVALID")
     field( SXSV, "INVALID")
@@ -407,19 +406,20 @@ record(fanout, "$(P)InitSeq-FOut_") {
     field( SELM, "All")
     field( PINI, "RUNNING")
     field( LNK1, "$(P)TsInpMode-Sel")
-    field( LNK2, "$(P)EvtCode-SP")
-    field( LNK3, "$(P)Timestamp-SP")
-    field( LNK4, "$(P)RunMode-Sel")
-    field( LNK5, "$(P)TrigSrc-Sel")
+    field( LNK2, "$(P)TsResolution-Sel")
+    field( LNK3, "$(P)EvtCode-SP")
+    field( LNK4, "$(P)Timestamp-SP")
+    field( LNK5, "$(P)RunMode-Sel")
     field( LNK6, "$(P)InitSeq:Cont-FOut_")
 }
 
 record(fanout, "$(P)InitSeq:Cont-FOut_") {
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
-    field( LNK1, "$(P)Load-Calc_")
-    field( LNK2, "$(P)Commit-Calc_")
-    field( LNK3, "$(P)Enable-Calc_")
+    field( LNK1, "$(P)TrigSrc-Sel")
+    field( LNK2, "$(P)Load-Calc_")
+    field( LNK3, "$(P)Commit-Calc_")
+    field( LNK4, "$(P)Enable-Calc_")
 }
 
 record(ai, "$(P)EvtClkFreq-RB_") {

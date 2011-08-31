@@ -36,25 +36,17 @@ class evgSoftSeq(gui.QMainWindow):
         self.ui.label_Heading.setText(heading)
 
         self.connect(self.ui.pb_setSequence, SIGNAL("clicked()"), self.setSequence)
-        self.connect(self.ui.rb_TsInpModeEGU, SIGNAL("clicked()"), self.setTsInpModeEGU)
-        self.connect(self.ui.rb_TsInpModeTicks, SIGNAL("clicked()"), self.setTsInpModeTicks)
-
-        pv = self.arg1 + "{" + self.arg2  + "-EvtClk}Frequency-RB"
-        camonitor(pv, self.cb_EvtClkFreq)
 
         pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsResolution-RB"
-        camonitor(pv, self.cb_TsResolution)
+        camonitor(pv, self.sequenceRB)
 
         pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsInpMode-RB"
-        if(caget(pv)):
-            self.ui.rb_TsInpModeTicks.setChecked(1);
-        else:
-            self.ui.rb_TsInpModeEGU.setChecked(1);
+        camonitor(pv, self.sequenceRB)
 
-        self.sequenceRB()
+        self.sequenceRB(0)
 	
 
-    def sequenceRB(self):
+    def sequenceRB(self, value):
         pvEC = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "EvtCode-RB"
         valueEC = caget(pvEC)
 
@@ -69,42 +61,10 @@ class evgSoftSeq(gui.QMainWindow):
                 self.ui.tableWidget.setItem(x, 0, item)
                 item = QTableWidgetItem(QString.number(valueTS[x], "G", 14))
                 self.ui.tableWidget.setItem(x, 1, item)
-
-
-    def setTsInpModeEGU(self):
-        self.setTsInpMode()
-        self.ui.label_tsResolution.setText( '%e Seconds'%(self.EGU_Resolution) )
-        self.sequenceRB()
-
-    def setTsInpModeTicks(self):
-        self.setTsInpMode()
-        self.ui.label_tsResolution.setText( '%e Seconds'%(self.Ticks_Resolution) )
-        self.sequenceRB()
-
-
-    def cb_TsResolution(self, value):
-        self.EGU_Resolution = 1.0/pow(10, int(value))
-        if self.ui.rb_TsInpModeEGU.isChecked():
-            self.setTsInpModeEGU()
-
-    def cb_EvtClkFreq(self, value):
-        self.Ticks_Resolution = 1.0/(value*1000000)
-        if self.ui.rb_TsInpModeTicks.isChecked():
-            self.setTsInpModeTicks()
-
-  		
+	
     def setSequence(self):
         self.setEvtCode()
         self.setTimestamp()
-
-
-    def setTsInpMode(self):
-        pv =  self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsInpMode-Sel"
-        if self.ui.rb_TsInpModeEGU.isChecked():
-            caput(pv, "EGU")
-        else:
-            caput(pv, "TICKS")
-	
 
     def setEvtCode(self):
         args = []

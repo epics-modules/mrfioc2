@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'evgsoftseq.ui'
 #
-# Created: Wed May 18 09:41:53 2011
+# Created: Wed Aug 31 00:25:57 2011
 #      by: PyQt4 UI code generator 4.7.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_EvgSoftSeq(object):
     def setupUi(self, EvgSoftSeq):
         EvgSoftSeq.setObjectName("EvgSoftSeq")
-        EvgSoftSeq.resize(304, 392)
+        EvgSoftSeq.resize(304, 332)
         self.centralWidget = QtGui.QWidget(EvgSoftSeq)
         self.centralWidget.setObjectName("centralWidget")
         self.label_Heading = QtGui.QLabel(self.centralWidget)
@@ -31,37 +31,8 @@ class Ui_EvgSoftSeq(object):
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(2047)
         self.pb_setSequence = QtGui.QPushButton(self.centralWidget)
-        self.pb_setSequence.setGeometry(QtCore.QRect(10, 310, 85, 27))
+        self.pb_setSequence.setGeometry(QtCore.QRect(10, 230, 85, 27))
         self.pb_setSequence.setObjectName("pb_setSequence")
-        self.rb_TsInpModeEGU = QtGui.QRadioButton(self.centralWidget)
-        self.rb_TsInpModeEGU.setGeometry(QtCore.QRect(10, 250, 141, 19))
-        self.rb_TsInpModeEGU.setChecked(True)
-        self.rb_TsInpModeEGU.setObjectName("rb_TsInpModeEGU")
-        self.rb_TsInpModeTicks = QtGui.QRadioButton(self.centralWidget)
-        self.rb_TsInpModeTicks.setGeometry(QtCore.QRect(150, 250, 151, 19))
-        self.rb_TsInpModeTicks.setObjectName("rb_TsInpModeTicks")
-        self.Label_timestampUnit = QtGui.QLabel(self.centralWidget)
-        self.Label_timestampUnit.setGeometry(QtCore.QRect(10, 230, 171, 16))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setWeight(75)
-        font.setBold(True)
-        self.Label_timestampUnit.setFont(font)
-        self.Label_timestampUnit.setObjectName("Label_timestampUnit")
-        self.label_tsResolution = QtGui.QLabel(self.centralWidget)
-        self.label_tsResolution.setGeometry(QtCore.QRect(80, 280, 171, 16))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.label_tsResolution.setFont(font)
-        self.label_tsResolution.setObjectName("label_tsResolution")
-        self.Label_tsRes = QtGui.QLabel(self.centralWidget)
-        self.Label_tsRes.setGeometry(QtCore.QRect(20, 280, 61, 16))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setWeight(75)
-        font.setBold(True)
-        self.Label_tsRes.setFont(font)
-        self.Label_tsRes.setObjectName("Label_tsRes")
         EvgSoftSeq.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(EvgSoftSeq)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 304, 21))
@@ -84,10 +55,5 @@ class Ui_EvgSoftSeq(object):
         EvgSoftSeq.setWindowTitle(QtGui.QApplication.translate("EvgSoftSeq", "EvgSoftSeq", None, QtGui.QApplication.UnicodeUTF8))
         self.label_Heading.setText(QtGui.QApplication.translate("EvgSoftSeq", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.pb_setSequence.setText(QtGui.QApplication.translate("EvgSoftSeq", "Set", None, QtGui.QApplication.UnicodeUTF8))
-        self.rb_TsInpModeEGU.setText(QtGui.QApplication.translate("EvgSoftSeq", "Sub-Second (EGU)", None, QtGui.QApplication.UnicodeUTF8))
-        self.rb_TsInpModeTicks.setText(QtGui.QApplication.translate("EvgSoftSeq", "Event Clock Ticks (TICKS)", None, QtGui.QApplication.UnicodeUTF8))
-        self.Label_timestampUnit.setText(QtGui.QApplication.translate("EvgSoftSeq", "Timestamp Input Mode", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_tsResolution.setText(QtGui.QApplication.translate("EvgSoftSeq", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
-        self.Label_tsRes.setText(QtGui.QApplication.translate("EvgSoftSeq", "1 Unit = ", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("EvgSoftSeq", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
 

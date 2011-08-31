@@ -64,6 +64,7 @@ evgSoftSeq::getErr() {
 void
 evgSoftSeq::setTimestampInpMode(TimestampInpMode mode) {
         m_timestampInpMode = mode;
+        scanIoRequest(ioscanpvt);
 }
 
 TimestampInpMode
@@ -74,7 +75,7 @@ evgSoftSeq::getTimestampInpMode() {
 void
 evgSoftSeq::setTimestampResolution(TimestampResolution res) {
         m_timestampResolution = res;
-        printf("timestampResolution : %d\n", res);
+        scanIoRequest(ioscanpvt);
 }
 
 TimestampResolution

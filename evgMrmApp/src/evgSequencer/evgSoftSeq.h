@@ -30,9 +30,9 @@ enum TimestampInpMode {
 
 enum TimestampResolution {
     Seconds = 0,
-    MilliSeconds,
-    MicroSeconds,
-    NanoSeconds
+    MilliSeconds = 3,
+    MicroSeconds = 6,
+    NanoSeconds = 9
 };
 
 enum SeqRunMode {
@@ -135,7 +135,7 @@ private:
     TimestampInpMode           m_timestampInpMode;
     TimestampResolution        m_timestampResolution;
 
-    std::vector<epicsUInt64>   m_timestamp;
+    std::vector<epicsUInt64>   m_timestamp; //In Event Clock Ticks
     std::vector<epicsUInt8>    m_eventCode;
     SeqTrigSrc                 m_trigSrc;
     SeqRunMode                 m_runMode;   

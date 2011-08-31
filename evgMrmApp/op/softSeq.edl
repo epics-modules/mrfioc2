@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 185
-y 527
-w 261
-h 340
+x 213
+y 516
+w 262
+h 384
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -22,6 +22,21 @@ botShadowColor index 11
 showGrid
 snapToGrid
 endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 40
+w 240
+h 200
+lineColor index 14
+fill
+fillColor index 3
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -64,7 +79,7 @@ major 10
 minor 0
 release 0
 x 10
-y 310
+y 350
 w 240
 h 20
 controlPv "$(SYS)\{$(D)-$(SS)\}Error-RB"
@@ -82,7 +97,7 @@ major 4
 minor 0
 release 0
 x 150
-y 210
+y 250
 w 100
 h 40
 
@@ -95,7 +110,7 @@ major 4
 minor 0
 release 0
 x 150
-y 230
+y 270
 w 100
 h 20
 fgColor index 14
@@ -118,7 +133,7 @@ major 4
 minor 1
 release 0
 x 150
-y 210
+y 250
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -141,7 +156,7 @@ major 4
 minor 0
 release 0
 x 10
-y 210
+y 250
 w 120
 h 40
 
@@ -154,7 +169,7 @@ major 4
 minor 5
 release 0
 x 10
-y 210
+y 250
 w 120
 h 15
 controlPv "$(SYS)\{$(D)-$(SS)\}Load-RB"
@@ -177,7 +192,7 @@ major 4
 minor 0
 release 0
 x 10
-y 230
+y 270
 w 60
 h 20
 fgColor index 14
@@ -200,7 +215,7 @@ major 4
 minor 0
 release 0
 x 70
-y 230
+y 270
 w 60
 h 20
 fgColor index 14
@@ -227,7 +242,7 @@ major 4
 minor 0
 release 0
 x 10
-y 260
+y 300
 w 240
 h 40
 
@@ -240,7 +255,7 @@ major 4
 minor 0
 release 0
 x 130
-y 280
+y 320
 w 60
 h 20
 fgColor index 14
@@ -263,7 +278,7 @@ major 4
 minor 0
 release 0
 x 70
-y 280
+y 320
 w 60
 h 20
 fgColor index 14
@@ -286,7 +301,7 @@ major 4
 minor 0
 release 0
 x 10
-y 280
+y 320
 w 60
 h 20
 fgColor index 14
@@ -309,7 +324,7 @@ major 4
 minor 5
 release 0
 x 10
-y 260
+y 300
 w 240
 h 15
 controlPv "$(SYS)\{$(D)-$(SS)\}Enable-RB"
@@ -332,7 +347,7 @@ major 4
 minor 0
 release 0
 x 190
-y 280
+y 320
 w 60
 h 20
 fgColor index 14
@@ -352,29 +367,14 @@ endGroup
 
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 40
-w 240
-h 160
-lineColor index 14
-fill
-fillColor index 3
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
 minor 5
 release 0
-x 160
-y 100
+x 20
+y 180
 w 80
 h 15
 controlPv "$(SYS)\{$(D)-$(SS)\}TrigSrc-RB"
@@ -480,8 +480,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 160
-y 120
+x 20
+y 200
 w 80
 h 20
 fgColor index 14
@@ -499,8 +499,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 160
-y 80
+x 20
+y 160
 w 82
 h 15
 font "helvetica-medium-r-12.0"
@@ -519,9 +519,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 100
-y 170
-w 70
+x 160
+y 200
+w 80
 h 20
 fgColor index 14
 onColor index 3
@@ -542,10 +542,10 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 100
-y 150
-w 70
-h 15
+x 160
+y 180
+w 80
+h 20
 controlPv "$(SYS)\{$(D)-$(SS)\}Commit-RB"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -557,5 +557,68 @@ nullColor index 14
 useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 160
+y 100
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(SYS)\{$(D)-$(SS)\}TsInpMode-Sel"
+indicatorPv "$(SYS)\{$(D)-$(SS)\}TsInpMode-RB"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 160
+y 120
+w 80
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(SYS)\{$(D)-$(SS)\}TsResolution-Sel"
+indicatorPv "$(SYS)\{$(D)-$(SS)\}TsResolution-RB"
+font "helvetica-medium-r-12.0"
+visPv "$(SYS)\{$(D)-$(SS)\}TsInpMode-RB"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 160
+y 80
+w 91
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Timestamp Input"
+}
+autoSize
 endObjectProperties
 
