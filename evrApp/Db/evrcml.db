@@ -494,3 +494,32 @@ record(aSub, "$(ON)WfCalc-ASub_") {
   field(NOVA, "$(MAX=40940)") # 20*2047
 }
 
+# CML waveform for Gun (Bunches Per Train)
+
+record(bo, "$(ON)BunchTrain:Ena-SP") {
+  field(DESC, "Disable calculator")
+  field(ONAM, "Enabled")
+  field(ZNAM, "Disabled")
+  field(UDF , "0")
+  field(FLNK, "$(ON)BunchTrain:Size-SP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(ON)BunchTrain:Size-SP") {
+  field(PINI, "YES")
+  field(OUT , "$(ON)BunchTrain:ASub_.A PP")
+  field(UDF , "0")
+  field(VAL , "1")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)BunchTrain:ASub_") {
+  field(SDIS, "$(ON)BunchTrain:Ena-SP")
+  field(DISV, "0")
+  field(SNAM, "Bunch Train")
+  field(BRSV, "INVALID")
+  field( FTA, "ULONG")
+  field(OUTA, "$(ON)Pat:Wf-SP PP")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
