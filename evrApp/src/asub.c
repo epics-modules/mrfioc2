@@ -197,7 +197,7 @@ long gen_bitarraygen(aSubRecord *prec)
     if(outlen%16)
         numinputs++;
     if(numinputs>NINPUTS)
-        numinputs=numinputs;
+        numinputs=NINPUTS;
 
     for(curlen=0; curlen<numinputs; curlen++) {
         if(intype[curlen]!=menuFtypeUSHORT) {
