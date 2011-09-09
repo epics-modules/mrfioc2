@@ -24,6 +24,13 @@ mrmEvgSetupVME(EVG1, 3, 0x100000, 4, 0xC0)
 
 dbLoadRecords("db/vme-evg230.db", "SYS=TST, D=evg:1, EVG=EVG1")
 
+dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
+
+# Auto save/restore
+save_restoreDebug(2)
+dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:")
+save_restoreSet_status_prefix("mrftest:")
+
 set_savefile_path("{mnt}/as","/save")
 set_requestfile_path("{mnt}/as","/req")
 
