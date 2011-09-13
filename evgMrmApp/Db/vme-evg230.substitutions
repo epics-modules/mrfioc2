@@ -52,15 +52,15 @@ pattern { P, OBJ,  EVG }
 }
 
 file evgMxc.db {
-pattern { P, OBJ }
-{ "$(SYS){$(D)-Mxc:0}", "$(EVG):Mxc0" }
-{ "$(SYS){$(D)-Mxc:1}", "$(EVG):Mxc1" }
-{ "$(SYS){$(D)-Mxc:2}", "$(EVG):Mxc2" }
-{ "$(SYS){$(D)-Mxc:3}", "$(EVG):Mxc3" }
-{ "$(SYS){$(D)-Mxc:4}", "$(EVG):Mxc4" }
-{ "$(SYS){$(D)-Mxc:5}", "$(EVG):Mxc5" }
-{ "$(SYS){$(D)-Mxc:6}", "$(EVG):Mxc6" }
-{ "$(SYS){$(D)-Mxc:7}", "$(EVG):Mxc7" }
+pattern { P, OBJ, SYS, D }
+{ "$(SYS){$(D)-Mxc:0}", "$(EVG):Mxc0", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:1}", "$(EVG):Mxc1", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:2}", "$(EVG):Mxc2", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:3}", "$(EVG):Mxc3", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:4}", "$(EVG):Mxc4", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:5}", "$(EVG):Mxc5", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:6}", "$(EVG):Mxc6", $(SYS), $(D) }
+{ "$(SYS){$(D)-Mxc:7}", "$(EVG):Mxc7", $(SYS), $(D) }
 }
 
 file evgOutput.db {

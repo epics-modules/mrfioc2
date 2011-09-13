@@ -91,10 +91,6 @@ record(waveform, "$(P)EvtCode-RB") {
     field( FTVL, "UCHAR")
 }
 
-#
-# The card number in INP link is used to give the units of seconds if Timestamp
-# Input Mode is EGU. C6 => microseconds, C9 => nanoseconds, C3 => milliseconds.
-#
 record(waveform, "$(P)Timestamp-SP") {
     field( DTYP, "EVG SEQ TIMESTAMP")
     field( DESC, "Sequence timestamp array")
@@ -422,13 +418,23 @@ record(fanout, "$(P)InitSeq:Cont-FOut_") {
     field( LNK4, "$(P)Enable-Calc_")
 }
 
+#
+# When Evt Clock Frequency changes, Sequencer Timestamp changes
+#(only if TsInpMode = EGU).
+#
 record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(P)EvtClkFreq-RB CP")
-    field( FLNK, "$(P)Commit-Calc_")
+    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
 }
 
+record(ao, "$(P)EvtClkFreq:Cont-RB_") {
+    field( OUT,  "$(P)Timestamp-RB.PROC")
+    field( VAL,  "1")
+}
 
+#
 #Controlling frequency of bunch trains coming out of Linac
+#
 record(bo, "$(P)BunchTrigger:Ena-SP") {
   field( ONAM, "Enabled")
   field( ZNAM, "Disabled")

@@ -28,9 +28,6 @@ class evgSoftSeq(gui.QMainWindow):
         self.arg1 = argv[1]
         self.arg2 = argv[2]
         self.arg3 = argv[3]
-
-        self.EGU_Resolution = 0
-        self.Ticks_Resolution = 0
 	
         heading = self.arg2 + " " + self.arg3
         self.ui.label_Heading.setText(heading)

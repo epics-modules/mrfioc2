@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 659
-y 53
+x 34
+y 156
 w 566
 h 608
 font "helvetica-medium-r-12.0"
@@ -1620,6 +1620,203 @@ beginObjectProperties
 major 4
 minor 0
 release 0
+x 400
+y 410
+w 150
+h 60
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 420
+w 150
+h 50
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 400
+y 410
+w 79
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Sequencer"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 450
+y 440
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Soft Sequence"
+numPvs 4
+numDsps 3
+displayFileName {
+  0 "softSeq"
+  1 "softSeq"
+  2 "softSeq"
+}
+menuLabel {
+  0 "Seq0"
+  1 "Seq1"
+  2 "Seq2"
+}
+symbols {
+  0 "SS=SoftSeq:0"
+  1 "SS=SoftSeq:1"
+  2 "SS=SoftSeq:2"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 480
+w 150
+h 80
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 400
+y 490
+w 150
+h 70
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 400
+y 500
+w 39
+h 15
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Enable"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 400
+y 480
+w 45
+h 15
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Control"
+}
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 450
+y 500
+w 90
+h 20
+fgColor index 14
+onColor index 8
+offColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(SYS)\{$(D)\}Enable-Sel"
+indicatorPv "$(SYS)\{$(D)\}Enable-RB"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 450
+y 530
+w 90
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(SYS)\{$(D)\}Link:TxMode-Sel"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
 x 220
 y 50
 w 330
@@ -2284,7 +2481,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:1\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2303,7 +2500,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:2\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2322,7 +2519,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:3\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2341,7 +2538,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:4\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2360,7 +2557,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:5\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2379,7 +2576,7 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:6\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2398,205 +2595,8 @@ bgColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(SYS)\{$(D)-Mxc:0\}Polarity-Sel"
+controlPv "$(SYS)\{$(D)-Mxc:7\}Polarity-Sel"
 font "helvetica-medium-r-12.0"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 410
-w 150
-h 60
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 420
-w 150
-h 50
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 400
-y 410
-w 79
-h 20
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Sequencer"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 450
-y 440
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Soft Sequence"
-numPvs 4
-numDsps 3
-displayFileName {
-  0 "softSeq"
-  1 "softSeq"
-  2 "softSeq"
-}
-menuLabel {
-  0 "Seq0"
-  1 "Seq1"
-  2 "Seq2"
-}
-symbols {
-  0 "SS=SoftSeq:0"
-  1 "SS=SoftSeq:1"
-  2 "SS=SoftSeq:2"
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 480
-w 150
-h 80
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 400
-y 490
-w 150
-h 70
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 400
-y 500
-w 39
-h 15
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Enable"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 400
-y 480
-w 45
-h 15
-font "helvetica-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Control"
-}
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 450
-y 500
-w 90
-h 20
-fgColor index 14
-onColor index 8
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(SYS)\{$(D)\}Enable-Sel"
-indicatorPv "$(SYS)\{$(D)\}Enable-RB"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 450
-y 530
-w 90
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(SYS)\{$(D)\}Link:TxMode-Sel"
-font "helvetica-medium-r-10.0"
 endObjectProperties
 
 endGroup
