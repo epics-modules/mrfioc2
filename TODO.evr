@@ -1,18 +1,8 @@
 Things left to be done
 
-= Link status/violation and heartbeat IRQs =
+= FIFO =
 
-HW changes need to be tested.
-
-= Timestamp =
-
-Testing and integration w/ EVG.
-
-== Configure TS source ==
-
-Needs testing.
-
-How to deal with rate changes if event clock changes?
+Add per event count over-rate counters (Currently on global counter)
 
 = Data Buffer =
 
@@ -20,9 +10,9 @@ Configure (Rx queue size)
 
 API to send/receive
 
-dset to send/receive (besides waveform) (ENDIANNESS?)
+dset to send/receive (besides waveform)
 
-Timestamp on Rx
+Timestamp on Rx?
 
 = Event Log =
 
@@ -30,10 +20,6 @@ Use waveforms
 
 Detect when stopped?
 
-= Support EVRTG =
-
-add fine delay registers
-
-Add 40 bit GTX patterns
-
 = SFP info =
+
+Report testing results

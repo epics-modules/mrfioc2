@@ -12,6 +12,8 @@
 A driver for VME and PCI cards from Micro Research Finland for implementing a distributed
 timing system.
 
+@url http://www.mrf.fi/
+
 @section whereis Source
 
 Releases can be found at @url http://sourceforge.net/projects/epics/files/mrfioc2/
@@ -49,7 +51,7 @@ Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300
 
 @section doc Documentation
 
-User documentation can be found in in for form of usage manuals for both the
+User documentation can be found in the form of usage manuals for both the
 <a href="evr-usage.pdf">Receiver</a>
 and
 <a href="evg-usage.pdf">Generator</a>
