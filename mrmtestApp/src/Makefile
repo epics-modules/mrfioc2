@@ -14,6 +14,7 @@ DBD += mrf.dbd
 
 # mrf.dbd will be made up from these files:
 mrf_DBD += base.dbd
+mrf_DBD += system.dbd
 
 mrf_DBD += evgInit.dbd
 
