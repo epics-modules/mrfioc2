@@ -61,6 +61,12 @@ and mrmEvrSetupVME() or the ::EVRMRM class.
 
 For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
+@section changelog Changelog
+
+@subsection ver20 2.0 (Sept. 2011)
+
+@li Initial release.
+
 @author Michael Davidsaver <mdavidsaver@bnl.gov>
 
 @author Jayesh Shah <jshah@bnl.gov>
