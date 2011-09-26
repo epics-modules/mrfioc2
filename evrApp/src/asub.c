@@ -127,6 +127,9 @@ long gen_delaygen(aSubRecord *prec)
     result=prec->vala;
     count=prec->nova;
 
+    if(mult==0)
+        mult=1;
+
     idelay=delay/egupertick;
     iwidth=width/egupertick;
 
