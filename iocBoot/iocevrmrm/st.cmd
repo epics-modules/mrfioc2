@@ -24,7 +24,7 @@ dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:2, EVR=EVR1")
 dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:3, EVR=EVR2")
 
 mrmEvgSetupVME(2, 3, 0x100000, 3, 0xC0)
-dbLoadRecords("db/vme-evg230.db", "S=TST, D=evg:2, cardNum=2")
+dbLoadRecords("db/vme-evg230.db", "SYS=TST, D=evg:2, cardNum=2")
 
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
