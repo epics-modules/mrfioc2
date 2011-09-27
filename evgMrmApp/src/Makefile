@@ -40,8 +40,6 @@ evgmrm_SRCS += evgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
 
-evgmrm_SRCS += evgBunchTrigger.c
-
 evgmrm_SRCS += evgSoftSeq.cpp
 evgmrm_SRCS += evgSoftSeqManager.cpp
 evgmrm_SRCS += devEvgSoftSeq.cpp

@@ -1,5 +1,4 @@
 registrar(evgMrmRegistrar)
-registrar(asub_evg)
 driver(drvEvgMrm)
 include "mrmShared.dbd"
 
