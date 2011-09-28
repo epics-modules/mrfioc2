@@ -24,7 +24,11 @@ class evgSoftSeq(gui.QMainWindow):
 
         labels = ["Event Code", "Timestamp"]
         self.ui.tableWidget.setHorizontalHeaderLabels(labels)
-	
+
+        if(len(argv) != 4):
+            print "Invalid number of arguments"
+	    exit(0)
+
         self.arg1 = argv[1]
         self.arg2 = argv[2]
         self.arg3 = argv[3]

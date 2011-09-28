@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 221
-y 556
+x 229
+y 596
 w 263
 h 381
 font "helvetica-medium-r-12.0"
@@ -22,47 +22,6 @@ botShadowColor index 11
 showGrid
 snapToGrid
 endScreenProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 130
-y 60
-w 60
-h 20
-fgColor index 14
-bgColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(SYS)\{$(D)-$(SS)\}BunchTrigger-SP"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 60
-y 60
-w 70
-h 20
-fgColor index 14
-onColor index 3
-offColor index 3
-inconsistentColor index 5
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(SYS)\{$(D)-$(SS)\}BunchTrigger:Ena-SP"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
-endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -449,7 +408,7 @@ font "helvetica-medium-r-12.0"
 buttonLabel "Event Code / Timestamp"
 numCmds 1
 command {
-  0 "python /home/jshah/workspace/mrfioc2-git/evgMrmApp/op/evgSoftSeq.py $(SYS) $(D) $(SS)"
+  0 "evgSoftSeq.py $(SYS) $(D) $(SS)"
 }
 endObjectProperties
 
