@@ -11,7 +11,7 @@ epicsEnvSet("LOCATION","Blg 902 Rm 28")
 bspExtVerbosity=0
 
 #mrmEvgSetupVME (
-#    const char*   id,           // Logical card number
+#    const char*   id,                // EVG card ID
 #    epicsInt32    slot,              // VME slot
 #    epicsUInt32   vmeAddress,        // Desired VME address in A24 space
 #    epicsInt32    irqLevel           // IRQ Level

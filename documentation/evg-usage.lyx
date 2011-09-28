@@ -52,7 +52,7 @@ Jayesh Shah, NSLS2, BNL jshah@bnl.gov
 
 \begin_layout Date
 \noindent
-Last Updated: June 03, 2011
+Last Updated: September 28, 2011
 \end_layout
 
 \begin_layout Section
@@ -117,7 +117,7 @@ mrmEvgSetupVME (
 \end_layout
 
 \begin_layout Quote
-epicsInt32 cardNum, // Logical card number 
+const char* id, // EVG card ID
 \end_layout
 
 \begin_layout Quote
@@ -148,7 +148,7 @@ status open
 
 \begin_layout Plain Layout
 
-mrmEvgSetupVME(1,5,0x20000000,3,0x26)
+mrmEvgSetupVME(EVG1,5,0x20000000,3,0x26)
 \end_layout
 
 \end_inset
@@ -157,14 +157,14 @@ mrmEvgSetupVME(1,5,0x20000000,3,0x26)
 \end_layout
 
 \begin_layout Standard
-In this example EVG #1 is defined to be the VME card in slot 5.
+In this example EVG1 is defined to be the VME card in slot 5 on VME crate.
  It is given the A32 base address of 0x20000000 and configured to interrupt
  on level 3 with vector 0x26.
 \end_layout
 
 \begin_layout Standard
-You can look at example startup script(st.cmd file) for EVG and EVG in ./mrfioc2/i
-ocBoot/iocevgmrm and iocevrmrm directory respectively.
+You can look at example startup script(st.cmd file) for EVG in ./mrfioc2/iocBoot/i
+ocevgmrm directory.
 \end_layout
 
 \begin_layout Standard
@@ -822,60 +822,9 @@ Timestamp Input Mode
 
 \begin_deeper
 \begin_layout Itemize
-EGU: In EGU mode user can enter the timestamps in units of sub-seconds,
- he/she has an option of choosing the units of sub-seconds by provding an
- interger divider that is used to convert the sub-seconds to seconds.
- This is done by modifying the card part of VME_IO hardware input link of
- the 
-\emph on
-$(P)Timestamp-SP
-\emph default
- record.
- e.g.
-\end_layout
-
-\begin_layout Quote
-To enter timestamps in terms of 
-\shape italic
-microseconds 
-\shape default
-(Interger Divider: 10^
-\shape italic
-6
-\shape default
-) do: 
-\end_layout
-
-\begin_layout Quote
-caput $(P)Timestamp-SP.INP '#C6 S0 @$(EVG)'
-\end_layout
-
-\begin_layout Quote
-To enter timestamps in terms of 
-\shape italic
-milliseconds
-\shape default
-(Interger Divider: 10^3) do:
-\end_layout
-
-\begin_layout Quote
-caput $(P)Timestamp-SP.INP '#C3 S0 @$(EVG)'
-\end_layout
-
-\begin_layout Quote
-To enter timestamps in terms of 
-\shape italic
-seconds
-\shape default
-(Interger Divider: 10^0) do:
-\end_layout
-
-\begin_layout Quote
-caput $(P)Timestamp-SP.INP '#C0 S0 @$(EVG)'
-\end_layout
-
-\begin_layout Quote
-Default unit is in microseconds.
+EGU: In EGU mode user can enter the timestamps in units of seconds, milli-second
+s, micro-seconds or nano-seconds.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -886,6 +835,29 @@ TICKS: Here user can provides timestamps in terms of Event Clock ticks.
 All the timestamp values are offset from the time sequencer receives the
  trigger.
  
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Timestamp Resolution(mbbo) : If the timestamp input mode is EGU user can
+ use this record to give the units to time.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sec - Input/Output sequencer timstamps in seconds
+\end_layout
+
+\begin_layout Itemize
+mSec - Input/Output sequencer timstamps in micro-seconds
+\end_layout
+
+\begin_layout Itemize
+uSec - Input/Output sequencer timstamps in milli-seconds
+\end_layout
+
+\begin_layout Itemize
+nSec - Input/Output sequencer timstamps in nano-seconds
 \end_layout
 
 \end_deeper

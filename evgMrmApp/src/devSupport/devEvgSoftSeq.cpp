@@ -22,13 +22,6 @@
 #include "evgInit.h"
 #include "evgRegMap.h"
 
-
-/*
- *There are two modes to enter the timestamps in sequencer. EGU and TICKS.
- *In EGU mode user can enter the time in units of sub-seconds (i.e. 1, 0.1,
- *0.001, 0.0001, ... seconds). This units of sub-seconds can be selected by
- *providing an interger divider to convert sub-seconds to seconds.
- */
 struct Pvt {
     evgMrm* evg;
     evgSoftSeq* seq;
