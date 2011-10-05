@@ -55,6 +55,9 @@ Object::Object(const std::string& n, const Object *par)
     initObjectsOnce();
     epicsGuard<epicsMutex> g(*objectsLock);
 
+    if(n.size()==0)
+        throw std::invalid_argument("Object name can not be empty string");
+
     objects_t::const_iterator it=objects->find(n);
     if(it!=objects->end()) {
         std::ostringstream strm;
