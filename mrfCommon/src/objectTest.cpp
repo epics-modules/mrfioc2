@@ -88,7 +88,7 @@ MAIN(objectTest)
     if(I2.get())
         testOk1(I2->get()==42);
 
-    std::auto_ptr<property<double[]> > A=o->getProperty<double[]>("darr");
+    std::auto_ptr<property<double[1]> > A=o->getProperty<double[1]>("darr");
     testOk1(A.get()!=NULL);
 
     const double tst[] = {1.0, 2.0, 3.0};

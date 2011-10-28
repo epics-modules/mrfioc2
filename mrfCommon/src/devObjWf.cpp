@@ -23,21 +23,21 @@ long add_record_waveform(dbCommon *pcom)
     waveformRecord *prec=(waveformRecord*)pcom;
     switch(prec->ftvl) {
     case menuFtypeCHAR:
-        return add_record_property<epicsInt8[]>(pcom, &prec->inp);
+        return add_record_property<epicsInt8[1]>(pcom, &prec->inp);
     case menuFtypeUCHAR:
-        return add_record_property<epicsUInt8[]>(pcom, &prec->inp);
+        return add_record_property<epicsUInt8[1]>(pcom, &prec->inp);
     case menuFtypeSHORT:
-        return add_record_property<epicsInt16[]>(pcom, &prec->inp);
+        return add_record_property<epicsInt16[1]>(pcom, &prec->inp);
     case menuFtypeUSHORT:
-        return add_record_property<epicsUInt16[]>(pcom, &prec->inp);
+        return add_record_property<epicsUInt16[1]>(pcom, &prec->inp);
     case menuFtypeLONG:
-        return add_record_property<epicsInt32[]>(pcom, &prec->inp);
+        return add_record_property<epicsInt32[1]>(pcom, &prec->inp);
     case menuFtypeULONG:
-        return add_record_property<epicsUInt32[]>(pcom, &prec->inp);
+        return add_record_property<epicsUInt32[1]>(pcom, &prec->inp);
     case menuFtypeFLOAT:
-        return add_record_property<float[]>(pcom, &prec->inp);
+        return add_record_property<float[1]>(pcom, &prec->inp);
     case menuFtypeDOUBLE:
-        return add_record_property<double[]>(pcom, &prec->inp);
+        return add_record_property<double[1]>(pcom, &prec->inp);
     case menuFtypeSTRING:
     default:
         printf("%s: Ftype not supported\n", prec->name);
@@ -49,7 +49,7 @@ template<typename T>
 static void
 readop(waveformRecord* prec)
 {
-    addr<T[]> *priv=(addr<T[]>*)prec->dpvt;
+    addr<T[1]> *priv=(addr<T[1]>*)prec->dpvt;
     prec->nord = priv->P->get((T*)prec->bptr, prec->nelm);
 }
 
@@ -98,7 +98,7 @@ template<typename T>
 static void
 writeop(waveformRecord* prec)
 {
-    addr<T[]> *priv=(addr<T[]>*)prec->dpvt;
+    addr<T[1]> *priv=(addr<T[1]>*)prec->dpvt;
     priv->P->set((const T*)prec->bptr, prec->nord);
 }
 

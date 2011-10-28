@@ -81,7 +81,7 @@ struct property : public propertyBase
 
 //! @brief A bound, typed array property
 template<typename P>
-struct property<P[]> : public propertyBase
+struct property<P[1]> : public propertyBase
 {
     virtual ~property(){}
     /** @brief The setter for this property
@@ -145,7 +145,7 @@ makeUnboundProperty(const char* n, P (C::*g)() const, void (C::*s)(P)=0)
 
 //! @brief An un-bound, typed array property
 template<class C, typename P>
-class unboundProperty<C,P[]> : public unboundPropertyBase<C>
+class unboundProperty<C,P[1]> : public unboundPropertyBase<C>
 {
 public:
     typedef void   (C::*setter_t)(const P*, epicsUInt32);
@@ -158,18 +158,18 @@ public:
     unboundProperty(const char* n, getter_t g, setter_t s)
         :name(n), getter(g), setter(s) {}
 
-    virtual const std::type_info& type() const{return typeid(P[]);}
-    inline virtual property<P[]>* bind(C*);
+    virtual const std::type_info& type() const{return typeid(P[1]);}
+    inline virtual property<P[1]>* bind(C*);
 };
 
 template<class C, typename P>
 static inline
-unboundProperty<C,P[]>*
+unboundProperty<C,P[1]>*
 makeUnboundProperty(const char* n,
                     epicsUInt32 (C::*g)(P*, epicsUInt32) const,
                     void (C::*s)(const P*, epicsUInt32)=0)
 {
-    return new unboundProperty<C,P[]>(n,g,s);
+    return new unboundProperty<C,P[1]>(n,g,s);
 }
 
 //! @brief final scalar implementation
@@ -214,19 +214,19 @@ unboundProperty<C,P>::bind(C* inst)
 
 //! @brief final array implementation
 template<class C, typename P>
-class propertyInstance<C,P[]> : public property<P[]>
+class propertyInstance<C,P[1]> : public property<P[1]>
 {
   C *inst;
-  unboundProperty<C,P[]> prop;
+  unboundProperty<C,P[1]> prop;
 public:
 
-  propertyInstance(C* c, const unboundProperty<C,P[]>& p)
+  propertyInstance(C* c, const unboundProperty<C,P[1]>& p)
     :inst(c)
     ,prop(p)
   {}
 
   virtual const char* name() const{return prop.name;}
-  virtual const std::type_info& type() const{return typeid(P[]);}
+  virtual const std::type_info& type() const{return typeid(P[1]);}
   virtual void   set(const P* a, epicsUInt32 l)
     { (inst->*(prop.setter))(a,l); }
   virtual epicsUInt32 get(P* a, epicsUInt32 l) const
@@ -235,10 +235,10 @@ public:
 
 //! Binder for scalar instances
 template<class C, typename P>
-property<P[]>*
-unboundProperty<C,P[]>::bind(C* inst)
+property<P[1]>*
+unboundProperty<C,P[1]>::bind(C* inst)
 {
-    return new propertyInstance<C,P[]>(inst,*this);
+    return new propertyInstance<C,P[1]>(inst,*this);
 }
 
 } // namespace detail
