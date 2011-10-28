@@ -101,7 +101,7 @@ record(mbboDirect, "$(ON)Pat:Rise00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Rise16_31-SP") {
@@ -110,7 +110,7 @@ record(mbboDirect, "$(ON)Pat:Rise16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Rise32_39-SP") {
@@ -120,7 +120,7 @@ record(mbboDirect, "$(ON)Pat:Rise32_39-SP") {
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Rise-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(aSub, "$(ON)Pat:Rise-ASub_") {
@@ -153,7 +153,7 @@ record(mbboDirect, "$(ON)Pat:High00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:High-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:High16_31-SP") {
@@ -162,7 +162,7 @@ record(mbboDirect, "$(ON)Pat:High16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:High-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:High32_39-SP") {
@@ -172,7 +172,7 @@ record(mbboDirect, "$(ON)Pat:High32_39-SP") {
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:High-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(aSub, "$(ON)Pat:High-ASub_") {
@@ -205,7 +205,7 @@ record(mbboDirect, "$(ON)Pat:Fall00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Fall16_31-SP") {
@@ -214,7 +214,7 @@ record(mbboDirect, "$(ON)Pat:Fall16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Fall32_39-SP") {
@@ -224,7 +224,7 @@ record(mbboDirect, "$(ON)Pat:Fall32_39-SP") {
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Fall-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(aSub, "$(ON)Pat:Fall-ASub_") {
@@ -257,7 +257,7 @@ record(mbboDirect, "$(ON)Pat:Low00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Low-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Low16_31-SP") {
@@ -266,7 +266,7 @@ record(mbboDirect, "$(ON)Pat:Low16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Low-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Low32_39-SP") {
@@ -276,7 +276,7 @@ record(mbboDirect, "$(ON)Pat:Low32_39-SP") {
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Low-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(aSub, "$(ON)Pat:Low-ASub_") {
