@@ -23,6 +23,7 @@
 
 #include "mrf/object.h"
 #include "linkoptions.h"
+#include "mrfCommon.h"
 
 #include <stdexcept>
 #include <string>
