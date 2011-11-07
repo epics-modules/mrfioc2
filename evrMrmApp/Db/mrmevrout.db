@@ -97,7 +97,7 @@ record(mbbo, "$(ON)Src:Scale-SP") {
   field( FRST, "Force High")
   field( THVL, "63")
   field( FRVL, "62")
-  field( VAL , "63")
+  field( VAL , "3")
   field( FVSV, "INVALID")
   field( SXSV, "INVALID")
   field( SVSV, "INVALID")
