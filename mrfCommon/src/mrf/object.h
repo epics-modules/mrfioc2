@@ -252,7 +252,7 @@ class Object
 {
 public:
     struct _compName {
-        bool operator()(const Object* a, const Object* b){return a->name()<b->name();}
+        bool operator()(const Object* a, const Object* b) const{return a->name()<b->name();}
     };
 private:
     const std::string m_obj_name;
