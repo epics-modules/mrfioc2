@@ -26,14 +26,14 @@ public:
     double val() const{return dval;}
     void setVal(double v){dval=v;}
 
-    size_t getdarr(double* v, size_t l) const
+    epicsUInt32 getdarr(double* v, epicsUInt32 l) const
     {
         if(!v) return darr.size();
-        l=std::min(l,darr.size());
+        l=std::min((size_t)l,darr.size());
         std::copy(darr.begin(), darr.begin()+l, v);
         return l;
     }
-    void setdarr(const double* v, size_t l)
+    void setdarr(const double* v, epicsUInt32 l)
     {
         darr.resize(l);
         std::copy(v, v+l, darr.begin());
