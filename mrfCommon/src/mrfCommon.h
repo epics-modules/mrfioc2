@@ -227,5 +227,12 @@ public:
 #  define isfinite finite
 #endif
 
+#ifdef vxWorks
+/* Round towards zero */
+#  define lround(X) ((long)round(X))
+
+/*#  define lround(X) ({ double m=fabs(X); long v=(long)(m+0.5); (X)==m ? v : -v; })
+*/
+#endif
 
 #endif
