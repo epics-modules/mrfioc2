@@ -19,7 +19,7 @@ endif
 endif
 
 ifneq ($(AUTOSAVE),)
-DB_INSTALLS += $(wildcard $(AUTOSAVE)/asApp/Db/save_restoreStatus.db $(AUTOSAVE)/db/save_restoreStatus.db)
+DB_INSTALLS += $(firstword $(wildcard $(AUTOSAVE)/asApp/Db/save_restoreStatus.db $(AUTOSAVE)/db/save_restoreStatus.db))
 endif
 
 #----------------------------------------------------
