@@ -14,12 +14,12 @@ include $(TOP)/configure/CONFIG
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS),RTEMS)
-DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 endif
 endif
 
 ifneq ($(AUTOSAVE),)
-DB_INSTALLS += $(EPICS_BASE)/db/save_restoreStatus.db
+DB_INSTALLS += $(wildcard $(AUTOSAVE)/asApp/Db/save_restoreStatus.db $(AUTOSAVE)/db/save_restoreStatus.db)
 endif
 
 #----------------------------------------------------
