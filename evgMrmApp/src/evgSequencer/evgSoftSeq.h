@@ -4,24 +4,17 @@
 #include <vector>
 #include <string>
 
-#include <inttypes.h>
 #include <epicsTypes.h>
 #include <epicsMutex.h>
 #include <dbAccess.h>
 #include <dbScan.h>
-#include <stdint.h>
 
+#include <mrfCommon.h>
 #include "mrf/object.h"
 
 class evgMrm;
 class evgSeqRam;
 class evgSeqRamMgr;
-
-#if __STDC_VERSION__ < 199901L
-#include <inttypes.h>
-typedef int64_t         epicsInt64;
-typedef uint64_t        epicsUInt64;
-#endif
 
 enum TimestampInpMode {
     EGU = 0,

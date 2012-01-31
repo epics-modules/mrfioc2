@@ -41,6 +41,7 @@ try {
         prec->val+=prec->eoff;
     }
 
+    prec->udf = 0;
     return 2;
 } catch(std::exception& e) {
     epicsPrintf("%s: read error: %s\n", prec->name, e.what());
@@ -79,7 +80,7 @@ OBJECT_DSET(AIFromUINT32,
             (&add_record_inp<aiRecord,epicsUInt32>),
             &del_record_property,
             &init_record_empty,
-            &read_ai_from_real<epicsUInt32>,
+            &read_ai_from_integer<epicsUInt32>,
             NULL);
 
 // ai uint16
@@ -88,7 +89,7 @@ OBJECT_DSET(AIFromUINT16,
             (&add_record_inp<aiRecord,epicsUInt16>),
             &del_record_property,
             &init_record_empty,
-            &read_ai_from_real<epicsUInt16>,
+            &read_ai_from_integer<epicsUInt16>,
             NULL);
 
 

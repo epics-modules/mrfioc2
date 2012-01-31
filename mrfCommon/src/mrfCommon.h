@@ -61,6 +61,7 @@
 #include  <devSup.h>            /* EPICS Device support messages and definitions                  */
 #include  <menuYesNo.h>         /* EPICS Yes/No record-support menu                               */
 
+#include  <limits.h>            /* Standard C numeric limits                                      */
 
 /**************************************************************************************************/
 /*  MRF Event System Constants                                                                    */
@@ -198,10 +199,19 @@ public:
 /*  Definitions for Compatibiliby with Older Versions of EPICS                                    */
 /**************************************************************************************************/
 
+
+/*---------------------
+ * Macros for version comparison
+ */
+#ifndef VERSION_INT
+#  define VERSION_INT(V,R,M,P) ( ((V)<<24) | ((R)<<16) | ((M)<<8) | (P))
+#  define EPICS_VERSION_INT  VERSION_INT(EPICS_VERSION, EPICS_REVISION, EPICS_MODIFICATION, EPICS_PATCH_LEVEL)
+#endif
+
 /*---------------------
  * Older versions (< 3.14.9) of recGblRecordError took a non-const string
  */
-#if EPICS_VERSION==3 && EPICS_REVISION==14 && EPICS_MODIFICATION<9
+#if EPICS_VERSION_INT < VERSION_INT(3,14,9,0)
 #  define recGblRecordError(ERR, REC, STR) recGblRecordError(ERR, REC, (char*)(STR))
 #endif
 
@@ -226,6 +236,48 @@ public:
 #ifndef isfinite
 #  define isfinite finite
 #endif
+
+#ifdef vxWorks
+/* Round towards zero */
+#  define lround(X) ((long)round(X))
+
+/*#  define lround(X) ({ double m=fabs(X); long v=(long)(m+0.5); (X)==m ? v : -v; })
+*/
+#endif
+
+/**************************************************************************************************/
+/*  Make Sure That EPICS 64-Bit Integer Types Are Defined                                         */
+/**************************************************************************************************/
+
+/*---------------------
+ * If we are using an ISO C99 compliant compiler and the EPICS version is 3.14.9 or above,
+ * then EPICS 64-bit integer types have already been defined by the epicsTypes.h file.
+ * We can quit now.
+ */
+#if (__STDC_VERSION__ < 19990L) || (EPICS_VERSION_INT < VERSION_INT(3,14,9,0))
+
+  /*---------------------
+   * If are using an ISO C99 compliant compiler, then we can get to the int64_t and uint64_t
+   * definitions through inttypes.h
+   */
+#  if __STDC_VERSION__ >= 1990L
+#    include  <inttypes.h>
+     typedef int64_t   epicsInt64;
+     typedef uint64_t  epicsUInt64;
+
+  /*---------------------
+   * If we are not using an ISO C99 compliant compiler, define the 64 bit integer types
+   * based on whether this is a 32-bit or 64-bit architecture.
+   */
+#  elif  LONG_MAX > 0x7fffffffL
+     typedef long                epicsInt64;
+     typedef unsigned long       epicsUInt64;
+#  else
+     typedef long long           epicsInt64;
+     typedef unsigned long long  epicsUInt64;
+#  endif
+
+#endif /*EPICS 64-bit integer types need defining*/
 
 
 #endif

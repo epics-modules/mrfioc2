@@ -2,10 +2,10 @@
 #define EVGSEQRAM_H
 
 #include <vector>
-#include <stdint.h>
 #include <epicsTypes.h>
 #include <dbCommon.h>
 
+#include <mrfCommon.h>
 #include "evgSoftSeq.h"
 class evgMrm;
 class evgSeqRam {
