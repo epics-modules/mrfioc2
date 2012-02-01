@@ -96,31 +96,31 @@ record(fanout, "$(ON)Res-FO_") {
 # Rising pattern
 
 record(mbboDirect, "$(ON)Pat:Rise00_15-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Rise16_31-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Rise32_39-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Rise-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(aSub, "$(ON)Pat:Rise-ASub_") {
@@ -148,31 +148,31 @@ record(waveform, "$(ON)Pat:Rise-SP") {
 # High pattern
 
 record(mbboDirect, "$(ON)Pat:High00_15-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:High-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:High16_31-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:High-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:High32_39-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:High-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(aSub, "$(ON)Pat:High-ASub_") {
@@ -200,31 +200,31 @@ record(waveform, "$(ON)Pat:High-SP") {
 # Falling pattern
 
 record(mbboDirect, "$(ON)Pat:Fall00_15-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Fall16_31-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Fall32_39-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Fall-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(aSub, "$(ON)Pat:Fall-ASub_") {
@@ -252,31 +252,31 @@ record(waveform, "$(ON)Pat:Fall-SP") {
 # Low pattern
 
 record(mbboDirect, "$(ON)Pat:Low00_15-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Low-ASub_.A PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Low16_31-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
   field(OUT , "$(ON)Pat:Low-ASub_.B PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(mbboDirect, "$(ON)Pat:Low32_39-SP") {
-  field(DTYP, "Raw Soft Channel")
+  field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
   field(SHFT, "8")
   field(OUT , "$(ON)Pat:Low-ASub_.C PP")
   field(PINI, "YES")
-  info(autosaveFields_pass0, "RVAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(aSub, "$(ON)Pat:Low-ASub_") {
