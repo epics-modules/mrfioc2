@@ -11,7 +11,7 @@ record(bo, "$(P)Polarity-Sel") {
     field( DTYP, "Obj Prop bool")
     field( OUT , "@OBJ=$(OBJ), PROP=Polarity")
     field( PINI, "YES")
-    field( VAL,  "0")
+    field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "Orginal")
     field( ONAM, "Inverted")
@@ -68,6 +68,7 @@ record(longin , "$(P)Prescaler-RB") {
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
+    field( FLNK, "$(SYS){$(D)}ResetMxc-Cmd")
 }
 
 #
