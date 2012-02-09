@@ -60,7 +60,7 @@ public:
     /**    Interrupt and Callback    **/
     static void isr(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
-    static void process_cb(CALLBACK*);
+    static void process_eos_cb(CALLBACK*);
     static void process_inp_cb(CALLBACK*);
 
     /** TimeStamp    **/

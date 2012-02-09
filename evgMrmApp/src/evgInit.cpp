@@ -31,7 +31,8 @@ enableIRQ(mrf::Object* obj, void*) {
     if(!evg)
         return true;
 
-    BITSET32(evg->getRegAddr(), IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP);
+    WRITE32(evg->getRegAddr(), IrqEnable, EVG_IRQ_ENABLE|EVG_IRQ_EXT_INP|
+                                     EVG_IRQ_STOP_RAM(0)|EVG_IRQ_STOP_RAM(1));
 //     WRITE32(pReg, IrqEnable,
 //         EVG_IRQ_ENABLE        |
 //         EVG_IRQ_STOP_RAM1     |

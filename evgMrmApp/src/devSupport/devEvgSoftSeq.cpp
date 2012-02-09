@@ -10,6 +10,7 @@
 #include <mbbiRecord.h>
 #include <boRecord.h>
 #include <biRecord.h>
+#include <longinRecord.h>
 
 #include <devSup.h>
 #include <dbAccess.h>
@@ -147,6 +148,11 @@ init_bi(biRecord* pbi) {
     return init_record((dbCommon*)pbi, &pbi->inp);
 }
 
+static long
+init_li(longinRecord* pli) {
+    return init_record((dbCommon*)pli, &pli->inp);
+}
+
 /**        Read/Write Function        **/
 static long
 get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
@@ -186,7 +192,6 @@ get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     *ppvt = seq->ioScanPvtErr;
     return 0;
 }
-
 
 /*returns: (-1,0)=>(failure,success)*/
 static long
@@ -918,6 +923,27 @@ read_si_err(stringinRecord* psi) {
     return ret;
 }
 
+/*returns: (-1,0)=>(failure,success)*/
+static long
+read_li_numOfRuns(longinRecord* pli) {
+    long ret = 0;
+
+    try {
+        evgSoftSeq* seq = (evgSoftSeq*)pli->dpvt;
+        if(!seq)
+            throw std::runtime_error("Device pvt field not initialized");
+
+        pli->val = seq->getNumOfRuns();
+    } catch(std::runtime_error& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
+        ret = S_dev_noDevice;
+    } catch(std::exception& e) {
+        errlogPrintf("ERROR: %s : %s\n", e.what(), pli->name);
+        ret = S_db_noMemory;
+    }
+
+    return ret;
+}
 
 /**     device support entry table         **/
 extern "C" {
@@ -1161,6 +1187,16 @@ common_dset devSiErr = {
     (DEVSUPFUN)read_si_err,
 };
 epicsExportAddress(dset, devSiErr);
+
+common_dset devLiNumOfRuns = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_li,
+    NULL,
+    (DEVSUPFUN)read_li_numOfRuns,
+};
+epicsExportAddress(dset, devLiNumOfRuns);
 
 common_dset devWfEvgLoadedSeq = {
     5,

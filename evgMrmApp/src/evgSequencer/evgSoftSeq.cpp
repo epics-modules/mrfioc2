@@ -27,7 +27,8 @@ m_runModeCt(Normal),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_isEnabled(0),
-m_isCommited(0) {
+m_isCommited(0),
+m_numOfRuns(0) {
     m_eventCodeCt.push_back(0x7f);
     m_timestampCt.push_back(evgEndOfSeqBuf);
 
@@ -175,6 +176,21 @@ evgSoftSeq::isEnabled() {
 bool
 evgSoftSeq::isCommited() {
     return m_isCommited;
+}
+
+void
+evgSoftSeq::incNumOfRuns() {
+    m_numOfRuns++;
+}
+
+void
+evgSoftSeq::resetNumOfRuns() {
+    m_numOfRuns = 0;
+}
+
+epicsUInt32
+evgSoftSeq::getNumOfRuns() const {
+    return m_numOfRuns;
 }
 
 void

@@ -95,10 +95,10 @@ m_softSeqMgr(this) {
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
         m_timerEvent = new epicsEvent();
 
-        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_cb, 
-                                                        m_seqRamMgr.getSeqRam(0));
-        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_cb, 
-                                                        m_seqRamMgr.getSeqRam(1));
+        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos_cb,
+                                            m_seqRamMgr.getSeqRam(0));
+        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos_cb,
+                                            m_seqRamMgr.getSeqRam(1));
         init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
     
         scanIoInit(&ioScanTimestamp);
@@ -195,38 +195,35 @@ evgMrm::isr(void* arg) {
     if(!active)
         return;
     
-    if(active & EVG_IRQ_STOP_RAM(0)) {
+    if(active & EVG_IRQ_STOP_RAM(0))
         callbackRequest(&evg->irqStop0_cb);
-        BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
-    }
 
-    if(active & EVG_IRQ_STOP_RAM(1)) {
+    if(active & EVG_IRQ_STOP_RAM(1))
         callbackRequest(&evg->irqStop1_cb);
-        BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
-    }
 
-    if(active & EVG_IRQ_EXT_INP) {
+    if(active & EVG_IRQ_EXT_INP)
         callbackRequest(&evg->irqExtInp_cb);
-    }
 
     WRITE32(evg->m_pReg, IrqFlag, flags);
     return;
 }
 
 void
-evgMrm::process_cb(CALLBACK *pCallback) {
+evgMrm::process_eos_cb(CALLBACK *pCallback) {
     void* pVoid;
     evgSeqRam* seqRam;
     
     callbackGetUser(pVoid, pCallback);
     seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
     evgSoftSeq* softSeq = seqRam->getSoftSeq();
     if(!softSeq)
         return;
- 
-    softSeq->sync();
-}
 
+    softSeq->incNumOfRuns();
+}
 
 void
 evgMrm::process_inp_cb(CALLBACK *pCallback) {
@@ -287,7 +284,7 @@ evgMrm::sendTimestamp() {
             m_alarmTimestamp = TS_ALARM_MINOR;
             printf("NTP time:\n");
             ntpTime.show(1);
-            printf("Expected time:\n");
+            printf("EVG time:\n");
             storedTime.show(1);
             printf("----Timestamping Error of %f Secs----\n", errorTime);
         } 
@@ -320,7 +317,6 @@ evgMrm::syncTimestamp() {
         incrTimestamp();
     
     m_timestamp.nsec = 0;
-    //Clear alarm
 }
 
 void

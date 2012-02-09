@@ -115,6 +115,10 @@ public:
     void sync();
     void commitSoftSeq();
 
+    void incNumOfRuns();
+    void resetNumOfRuns();
+    epicsUInt32 getNumOfRuns() const;
+
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
     epicsMutex                 m_lock;
@@ -144,6 +148,8 @@ private:
 
     bool                       m_isEnabled;
     bool                       m_isCommited;
+
+    epicsUInt32                m_numOfRuns;
 };
 
 #endif //EVG_SEQUENCE_H
