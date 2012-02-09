@@ -52,7 +52,8 @@ enum SeqTrigSrc {
 
     ExtRam0 = 24,
     ExtRam1 = 25,
-    External = 26,
+    External = 40,
+
     FrontInp0 = 41,
     FrontInp1 = 45,
     UnivInp0 = 42,

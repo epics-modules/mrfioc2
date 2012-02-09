@@ -7,6 +7,9 @@
 
 #include <mrfCommon.h>
 #include "evgSoftSeq.h"
+
+#include <evgInput.h>
+
 class evgMrm;
 class evgSeqRam {
 
@@ -27,6 +30,9 @@ public:
 
     void setRunMode(SeqRunMode);
     SeqRunMode getRunMode() const;
+
+    void disableSeqExtTrig(evgInput*);
+    evgInput* findSeqExtTrig(evgInput*) const;
 
     void alloc(evgSoftSeq* seq);
     void dealloc();

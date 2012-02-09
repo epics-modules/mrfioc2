@@ -425,7 +425,7 @@ read_wf_eventCode(waveformRecord* pwf) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long
 write_mbbo_runMode(mbboRecord* pmbbo) {
-    long ret = OK;
+    long ret = 2;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbo->dpvt;
@@ -448,7 +448,7 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long
 read_mbbi_runMode(mbbiRecord* pmbbi) {
-    long ret = OK;
+    long ret = 2;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;

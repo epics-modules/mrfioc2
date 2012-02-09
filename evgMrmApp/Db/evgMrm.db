@@ -3,7 +3,7 @@ record(bo, "$(P)Enable-Sel") {
     field( DTYP, "Obj Prop bool")
     field( OUT , "@OBJ=$(OBJ), PROP=Enable")
     field( UDF,  "0")
-    field( PINI, "YES")
+    field( PINI, "RUNNING")
     field( VAL,  "1")
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")

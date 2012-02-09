@@ -62,10 +62,10 @@ evgSeqRam::softTrig() {
     BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
 }
 
-static void
-disableSeqTrig(evgInput* inp, epicsUInt32 seqId) {
+void
+evgSeqRam::disableSeqExtTrig(evgInput* inp) {
     epicsUInt32 map = inp->getSeqTrigMap();
-    map = map & ~(seqId+1);
+    map = map & ~(m_id+1);
     inp->setSeqTrigMap(map);
 }
 
@@ -78,19 +78,25 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
             trigSrc = SoftRam1;
     }
 
-    if(trigSrc >= FrontInp0) {
+    /*Here we allow only one external input at a time to act as a trigger source
+     *for the Sequencer. In theory mutliple external input can act as a trigger
+     *source simultaneously
+     */
+    if(trigSrc > External) {
        /*
-        *First disable the triggering of this sequencer on all the external
-        *inputs of EVG.
+        *When we set the trigger source to a new external input we should disable
+        *the previous external input trigger. Since we dont keep track of the
+        *previous trigger source we disable the trigger from all the
+        *external inputs.
         */
         for(int i = 0; i < evgNumFrontInp; i++)
-            disableSeqTrig(m_owner->getInput(i, FrontInp), m_id);
+            disableSeqExtTrig(m_owner->getInput(i, FrontInp));
 
         for(int i = 0; i < evgNumUnivInp; i++)
-            disableSeqTrig(m_owner->getInput(i, UnivInp), m_id);
+            disableSeqExtTrig(m_owner->getInput(i, UnivInp));
 
         for(int i = 0; i < evgNumRearInp; i++)
-            disableSeqTrig(m_owner->getInput(i, RearInp), m_id);
+            disableSeqExtTrig(m_owner->getInput(i, RearInp));
        /*
         *Now enable the triggering only on the appropraite external input of EVG.
         *Each external input is identified by its number and its type. The
@@ -100,7 +106,10 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
         */
         div_t divResult = div((epicsUInt32)trigSrc-40, 4);
         evgInput* inp = m_owner->getInput(divResult.quot, (InputType)divResult.rem);
-        inp->setSeqTrigMap(m_id+1);
+
+        epicsUInt32 map = inp->getSeqTrigMap();
+        map = map | (m_id+1);
+        inp->setSeqTrigMap(map);
 
         if(!m_id)
             trigSrc = ExtRam0;
@@ -111,10 +120,10 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
     WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
 }
 
-static evgInput*
-findSeqTrig(evgInput* inp, epicsUInt32 seqId) {
+evgInput*
+evgSeqRam::findSeqExtTrig(evgInput* inp) const {
     epicsUInt32 map = inp->getSeqTrigMap();
-    if(map & (seqId+1))
+    if(map & (m_id+1))
         return inp;
     else
         return 0;
@@ -133,13 +142,13 @@ evgSeqRam::getTrigSrc() const {
         evgInput* inp = 0;
 
         for(int i = 0; i < evgNumFrontInp && inp == 0; i++)
-            inp = findSeqTrig(m_owner->getInput(i, FrontInp), m_id);
+            inp = findSeqExtTrig(m_owner->getInput(i, FrontInp));
 
         for(int i = 0; i < evgNumUnivInp && inp == 0; i++)
-            inp = findSeqTrig(m_owner->getInput(i, UnivInp), m_id);
+            inp = findSeqExtTrig(m_owner->getInput(i, UnivInp));
 
         for(int i = 0; i < evgNumRearInp && inp == 0; i++)
-            inp = findSeqTrig(m_owner->getInput(i, RearInp), m_id);
+            inp = findSeqExtTrig(m_owner->getInput(i, RearInp));
 
         if(inp != 0)
             trigSrc = (SeqTrigSrc)
