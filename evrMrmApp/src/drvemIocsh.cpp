@@ -39,7 +39,7 @@
 #include <mrfBitOps.h>
 
 /* Bit mask used to communicate which VME interrupt levels
- * are used.  Bits are set by mrmEvrSetupEVR().  Levels are
+ * are used.  Bits are set by mrmEvrSetupVME().  Levels are
  * enabled later during iocInit.
  */
 static epicsUInt8 vme_level_mask = 0;
@@ -440,7 +440,7 @@ try {
         NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
         level&=0x7;
-        // Level with be enabled later during iocInit()
+        // VME IRQ level will be enabled later during iocInit()
         vme_level_mask|=1<<(level-1);
 
         if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
