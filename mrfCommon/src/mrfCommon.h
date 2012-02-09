@@ -237,13 +237,12 @@ public:
 #  define isfinite finite
 #endif
 
-#ifdef vxWorks
-/* Round towards zero */
-#  define lround(X) ((long)round(X))
+/*---------------------
+ * Platform independent version of lround() that returns
+ * unsigned integers rounded away from 0 in the half-way case
+ */
+#define mrfUlong(X) ((epicsUInt32)(0.5+fabs(X)))
 
-/*#  define lround(X) ({ double m=fabs(X); long v=(long)(m+0.5); (X)==m ? v : -v; })
-*/
-#endif
 
 /**************************************************************************************************/
 /*  Make Sure That EPICS 64-Bit Integer Types Are Defined                                         */

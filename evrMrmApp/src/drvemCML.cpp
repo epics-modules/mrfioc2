@@ -176,7 +176,7 @@ MRMCML::setFineDelay(double v)
 {
     if(v>1024.0)
         v=1024.0;
-    WRITE32(base, GTXDelay(N), lround(v*1024.0));
+    WRITE32(base, GTXDelay(N), mrfUlong(v*1024.0));
 }
 
 void
@@ -284,7 +284,7 @@ MRMCML::setTimeHigh(double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountHigh(lround(v/period));
+    setCountHigh(mrfUlong(v/period));
 }
 
 void
@@ -292,7 +292,7 @@ MRMCML::setTimeLow (double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountLow(lround(v/period));
+    setCountLow(mrfUlong(v/period));
 }
 
 void
@@ -300,7 +300,7 @@ MRMCML::setTimeInit (double v)
 {
     double period=1.0/(mult*owner.clock());
 
-    setCountInit(lround(v/period));
+    setCountInit(mrfUlong(v/period));
 }
 
   // For Pattern mode

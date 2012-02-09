@@ -671,7 +671,7 @@ EVRMRM::clockTSSet(double clk)
     SCOPED_LOCK(evrLock);
 
     if(src==TSSourceInternal){
-        epicsUInt16 div=lround(eclk/clk);
+        epicsUInt32 div=mrfUlong(eclk/clk);
         WRITE32(base, CounterPS, div);
 
         shadowCounterPS=div;
