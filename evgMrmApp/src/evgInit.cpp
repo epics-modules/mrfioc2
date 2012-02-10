@@ -124,14 +124,9 @@ mrmEvgSetupVME (
         printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
                 info.vendor, info.board, info.revision);
         
-        epicsUInt32 xxx;
-        if((xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1)))) 
-            errlogPrintf("Warning: EVG did not reboot properly %08x\n", xxx);
-        else {
-            /*Setting the base address of Register Map on VME Board (EVG)*/
-            CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
-        }
-
+        /*Set the base address of the EVG's Register Map in A24 space*/
+        CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
+      
         /*Register VME address and get corresponding CPU address */
         int status = devRegisterAddress (
             id,                                    // Event Generator Card name
