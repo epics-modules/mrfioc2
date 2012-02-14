@@ -37,8 +37,13 @@ evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
         throw std::runtime_error("Event Code out of range.");
     
+    int count = 0;
     SCOPED_LOCK(m_lock);
-    while(pend() == 1);
+    while(pend() == 1) {
+        count++;
+        if(count == 50)
+            throw std::runtime_error("Software Event Discarded.");
+    }
     WRITE8(m_pReg, SwEventCode, evtCode);
 }
 

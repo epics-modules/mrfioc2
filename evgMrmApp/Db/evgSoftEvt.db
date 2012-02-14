@@ -31,7 +31,6 @@ record(longout, "$(P)EvtCode-SP") {
     field( HHSV, "MAJOR")
     field( LLSV, "MAJOR")
     field( FLNK, "$(P)EvtCode-RB")
-    info( autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)EvtCode-RB") {
