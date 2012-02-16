@@ -97,6 +97,7 @@ mrfCommon_SRCS += devObjMBB.cpp
 mrfCommon_SRCS += devObjMBBDirect.cpp
 mrfCommon_SRCS += devObjWf.cpp
 mrfCommon_SRCS += databuf.cpp
+mrfCommon_SRCS += mrfCommon.cpp
 
 mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 

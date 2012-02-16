@@ -237,12 +237,11 @@ public:
 #  define isfinite finite
 #endif
 
-#ifdef vxWorks
-/* Round towards zero */
-#  define lround(X) ((long)round(X))
-
-/*#  define lround(X) ({ double m=fabs(X); long v=(long)(m+0.5); (X)==m ? v : -v; })
-*/
+#ifdef __cplusplus
+/* Round down and convert float to unsigned int
+ * throws std::range_error for NaN and out of range inputs
+ */
+epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
 #endif
 
 /**************************************************************************************************/
