@@ -171,6 +171,34 @@ long report(int level)
     return 0;
 }
 
+static
+void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int recommended)
+{
+    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
+
+    errlogPrintf("FWVersion 0x%08x\n", v);
+    if(v&FWVersion_zero_mask)
+        throw std::runtime_error("Invalid firmware version (HW or bus error)");
+
+    evr=v&FWVersion_type_mask;
+    evr>>=FWVersion_type_shift;
+
+    if(evr!=0x1)
+        throw std::runtime_error("Address does not correspond to an EVR");
+
+    ver=v&FWVersion_ver_mask;
+    ver>>=FWVersion_ver_shift;
+
+    errlogPrintf("Found version %u\n", ver);
+
+    if(ver<required) {
+        errlogPrintf("Firmware version >=%u is required\n", required);
+        throw std::runtime_error("Firmware version not supported");
+
+    } else if(ver<recommended) {
+        errlogPrintf("Firmware version >=%u is recommended, please consider upgrading\n", required);
+    }
+}
 
 extern "C"
 void
@@ -253,6 +281,8 @@ try {
         printf("Unknown PCI bridge %04x\n", cur->id.device);
         return;
     }
+
+    checkVersion(evr, 3, 3);
 
     // Acknowledge missed interrupts
     //TODO: This avoids a spurious FIFO Full
@@ -404,6 +434,15 @@ try {
    */
 
     CSRSetBase(csr, 2, base, VME_AM_EXT_SUP_DATA);
+    
+    {
+        epicsUInt32 temp=CSRRead32((csr) + CSR_FN_ADER(2));
+
+        if(temp != CSRADER((epicsUInt32)base,VME_AM_EXT_SUP_DATA)) {
+            printf("Failed to set CSR Base address in ADER2.  Check VME bus and card firmware version.\n");
+            return;
+        }
+    }
 
     volatile unsigned char* evr;
 
@@ -412,6 +451,14 @@ try {
         printf("Failed to map address %08x\n",base);
         return;
     }
+
+    epicsUInt32 junk;
+    if(devReadProbe(sizeof(junk), (volatile void*)(evr+U32_FWVersion), (void*)&junk)) {
+        printf("Failed to read from MRM registers (but could read CSR registers)\n");
+        return;
+    }
+
+    checkVersion(evr, 4, 5);
 
     // Read offset from start of CSR to start of user (card specific) CSR.
     size_t user_offset=CSRRead24(csr+CR_BEG_UCSR);

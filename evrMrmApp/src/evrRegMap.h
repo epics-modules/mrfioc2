@@ -115,6 +115,7 @@
 #  define FWVersion_form_shift 24
 #  define FWVersion_ver_mask  0x000000ff
 #  define FWVersion_ver_shift  0
+#  define FWVersion_zero_mask 0x00ffff00
 
 enum evrForm {
   evrFormCPCI=0, // 3U
