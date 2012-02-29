@@ -83,12 +83,13 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field( FFVL, "16384")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)TrigSrc-MbbiDir_")
     info( autosaveFields_pass0, "VAL")
 }
 
 record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
     field( DESC, "EVG Trig Evt Trig")
-    field( INP,  "$(P)TrigSrc-Sel.RVAL CP")
+    field( INP,  "$(P)TrigSrc-Sel.RVAL")
 }
 
 record(bo, "$(P)TrigSrc:Mxc0-Sel") {

@@ -59,6 +59,37 @@ inithooks(initHookState state) {
     }
 }
 
+void
+checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int recommended) {
+    epicsUInt32 junk;
+    if(devReadProbe(sizeof(junk), (volatile void*)(base+U32_FPGAVersion), (void*)&junk)) {
+        printf("Failed to read from MRM registers (but could read CSR registers)\n");
+        return;
+    }
+    epicsUInt32 type, ver;
+    epicsUInt32 v = READ32(base, FPGAVersion);
+    printf("FPGAVersion 0x%08x\n", v);
+
+    if(v & FPGAVersion_ZERO_MASK)
+        throw std::runtime_error("Invalid firmware version (HW or bus error)");
+
+    type = v & FPGAVersion_TYPE_MASK;
+    type = v >> FPGAVersion_TYPE_SHIFT;
+
+    if(type != 0x2)
+        throw std::runtime_error("Address does not correspond to an EVG");
+
+    ver = v & FPGAVersion_VER_MASK;
+
+    if(ver < required) {
+        printf("Firmware version >= %u is required\n", required);
+        throw std::runtime_error("Firmware version not supported");
+
+    } else if(ver < recommended) {
+        printf("Firmware version >= %u is recommended, please consider upgrading\n", required);
+    }
+}
+
 extern "C"
 epicsStatus
 mrmEvgSetupVME (
@@ -97,6 +128,15 @@ mrmEvgSetupVME (
             CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
         }
 
+        {
+            epicsUInt32 temp=CSRRead32((csrCpuAddr) + CSR_FN_ADER(1));
+
+            if(temp != CSRADER((epicsUInt32)vmeAddress,VME_AM_STD_SUP_DATA)) {
+                printf("Failed to set CSR Base address in ADER1.  Check VME bus and card firmware version.\n");
+                return -1;
+            }
+        }
+
         /*Register VME address and get corresponding CPU address */
         int status = devRegisterAddress (
             id,                                    // Event Generator Card name
@@ -111,7 +151,7 @@ mrmEvgSetupVME (
             return -1;
         }
 
-        printf("FPGA verion: %08x\n", READ32(regCpuAddr, FPGAVersion));
+        checkVersion(regCpuAddr, 3, 3);
 
         evgMrm* evg = new evgMrm(id, regCpuAddr);
 
