@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 
+#include <epicsExit.h>
 #include <epicsExport.h>
 #include <iocsh.h>
 #include <drvSup.h>
@@ -15,6 +16,12 @@
 #include <mrfCommonIO.h>
 
 #include "evgRegMap.h"
+
+/* Bit mask used to communicate which VME interrupt levels
+ * are used.  Bits are set by mrmEvgSetupVME().  Levels are
+ * enabled later during iocInit.
+ */
+static epicsUInt8 vme_level_mask = 0;
 
 std::string Description("EVG");
 static const
@@ -48,11 +55,39 @@ enableIRQ(mrf::Object* obj, void*) {
     return true;
 }
 
+static bool
+disableIRQ(mrf::Object* obj, void*)
+{
+    evgMrm *evg=dynamic_cast<evgMrm*>(obj);
+    if(!evg)
+        return true;
+
+    BITCLR32(evg->getRegAddr(), IrqEnable, EVG_IRQ_ENABLE);
+    return true;
+}
+
+static void
+evgShutdown(void*)
+{
+    mrf::Object::visitObjects(&disableIRQ,0);
+}
+
 static void 
 inithooks(initHookState state) {
+    epicsUInt8 lvl;
     switch(state) {
         case initHookAfterInterruptAccept:
+            epicsAtExit(&evgShutdown, NULL);
             mrf::Object::visitObjects(&enableIRQ, 0);
+            for(lvl=1; lvl<=7; ++lvl) {
+                if (vme_level_mask&(1<<(lvl-1))) {
+                    if(devEnableInterruptLevelVME(lvl)) {
+                        printf("Failed to enable interrupt level %d\n",lvl);
+                        return;
+                    }
+                }
+            }
+
             break;
         default:
             break;
@@ -121,8 +156,9 @@ mrmEvgSetupVME (
         printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
                 info.vendor, info.board, info.revision);
         
-        if(CSRRead32(csrCpuAddr + CSR_FN_ADER(1))) 
-            errlogPrintf("Warning: EVG did not reboot properly\n");
+        epicsUInt32 xxx;
+        if((xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1)))) 
+            errlogPrintf("Warning: EVG did not reboot properly %08x\n", xxx);
         else {
             /*Setting the base address of Register Map on VME Board (EVG)*/
             CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
@@ -151,6 +187,7 @@ mrmEvgSetupVME (
             return -1;
         }
 
+        printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
         evgMrm* evg = new evgMrm(id, regCpuAddr);
@@ -171,13 +208,8 @@ mrmEvgSetupVME (
             WRITE32(regCpuAddr, IrqFlag, READ32(regCpuAddr, IrqFlag));
             WRITE32(regCpuAddr, IrqEnable, 0);
 
-            /*Enable interrupt from VME to CPU*/
-            if(devEnableInterruptLevelVME(irqLevel&0x7)) {
-                errlogPrintf("ERROR:Failed to enable VME interrupt level%d\n"
-                                                        ,irqLevel&0x7);
-                delete evg;
-                return -1;
-            }
+            // VME IRQ level will be enabled later during iocInit()
+            vme_level_mask |= 1 << ((irqLevel&0x7)-1);
     
             /*Connect Interrupt handler to vector*/
             if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
@@ -357,7 +389,7 @@ reportCard(mrf::Object* obj, void* arg) {
     printf("    ID: %s     \n", evg->getId().c_str());
     
     if(*level >= 1)
-        printf("    FPGA verion: %08x\n", evg->getFwVersion());
+        printf("    FPGA version: %08x\n", evg->getFwVersion());
     
     if(*level >= 2)
         printregisters(evg->getRegAddr());

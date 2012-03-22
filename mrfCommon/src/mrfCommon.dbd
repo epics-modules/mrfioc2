@@ -48,3 +48,7 @@ device(ao , INST_IO, devAOFromUINT16, "Obj Prop uint16")
 # from devObjWf.cpp
 device(waveform , INST_IO, devWFIn, "Obj Prop waveform in")
 device(waveform , INST_IO, devWFOut, "Obj Prop waveform out")
+
+
+# Special version of normal mbboDirect soft dset which restores bit fields from VAL
+device(mbboDirect, CONSTANT, devMbboDirectRestore, "Soft and restore")
