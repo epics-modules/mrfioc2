@@ -28,22 +28,6 @@ pattern { P, OBJ, , SYS, D, Num }
 { "$(SYS){$(D)-Inp:Univ1}",  "$(EVG):UnivInp1",  $(SYS), $(D), 3 }
 { "$(SYS){$(D)-Inp:Univ2}",  "$(EVG):UnivInp2",  $(SYS), $(D), 4 }
 { "$(SYS){$(D)-Inp:Univ3}",  "$(EVG):UnivInp3",  $(SYS), $(D), 5 }
-{ "$(SYS){$(D)-Inp:Rear0}",  "$(EVG):RearInp0",  $(SYS), $(D), 6 }
-{ "$(SYS){$(D)-Inp:Rear1}",  "$(EVG):RearInp1",  $(SYS), $(D), 7 }
-{ "$(SYS){$(D)-Inp:Rear2}",  "$(EVG):RearInp2",  $(SYS), $(D), 8 }
-{ "$(SYS){$(D)-Inp:Rear3}",  "$(EVG):RearInp3",  $(SYS), $(D), 9 }
-{ "$(SYS){$(D)-Inp:Rear4}",  "$(EVG):RearInp4",  $(SYS), $(D), 10 }
-{ "$(SYS){$(D)-Inp:Rear5}",  "$(EVG):RearInp5",  $(SYS), $(D), 11 }
-{ "$(SYS){$(D)-Inp:Rear6}",  "$(EVG):RearInp6",  $(SYS), $(D), 12 }
-{ "$(SYS){$(D)-Inp:Rear7}",  "$(EVG):RearInp7",  $(SYS), $(D), 13 }
-{ "$(SYS){$(D)-Inp:Rear8}",  "$(EVG):RearInp8",  $(SYS), $(D), 14 }
-{ "$(SYS){$(D)-Inp:Rear9}",  "$(EVG):RearInp9",  $(SYS), $(D), 15 }
-{ "$(SYS){$(D)-Inp:Rear10}", "$(EVG):RearInp10", $(SYS), $(D), 16 }
-{ "$(SYS){$(D)-Inp:Rear11}", "$(EVG):RearInp11", $(SYS), $(D), 17 }
-{ "$(SYS){$(D)-Inp:Rear12}", "$(EVG):RearInp12", $(SYS), $(D), 18 }
-{ "$(SYS){$(D)-Inp:Rear13}", "$(EVG):RearInp13", $(SYS), $(D), 19 }
-{ "$(SYS){$(D)-Inp:Rear14}", "$(EVG):RearInp14", $(SYS), $(D), 20 }
-{ "$(SYS){$(D)-Inp:Rear15}", "$(EVG):RearInp15", $(SYS), $(D), 21 }
 }
 
 file evgMrm.db {
