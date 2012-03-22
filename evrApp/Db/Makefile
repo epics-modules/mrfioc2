@@ -14,6 +14,7 @@ DB += evrcml.db
 DB += evrcmlgun.db
 DB += evrcmlextra.db
 DB += evrevent.db
+DB += evralias.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

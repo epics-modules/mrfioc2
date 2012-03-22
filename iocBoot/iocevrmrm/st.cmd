@@ -23,7 +23,30 @@ dbLoadRecords("db/evr-pmc-230.db","SYS=TST, D=evr:1, EVR=PMCEVR")
 dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:2, EVR=EVR1")
 dbLoadRecords("db/evr-vmerf-230.db","SYS=TST, D=evr:3, EVR=EVR2")
 
-mrmEvgSetupVME(2, 3, 0x100000, 3, 0xC0)
+## EVR Pulser Alias
+dbLoadRecords("db/evralias.db", "PID=0,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=1,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=2,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=3,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=4,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=5,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=6,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=7,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=8,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=9,SYS=TST, D=evr:2,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+
+ Pulser Alias
+dbLoadRecords("db/evralias.db", "PID=0,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=1,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=2,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=3,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=4,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=5,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=6,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=7,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=8,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+dbLoadRecords("db/evralias.db", "PID=9,SYS=TST, D=evr:3,PN=$(SYS){$(D)-DlyGen:$(PID)},PNA=$(SYS){$(D)-Alias:$(PID)}")
+
 dbLoadRecords("db/vme-evg230.db", "SYS=TST, D=evg:2, cardNum=2")
 
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
