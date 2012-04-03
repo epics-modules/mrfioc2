@@ -76,7 +76,7 @@ bufRxManager::~bufRxManager()
 {
     ELLNODE *node, *next;
 
-    guard.lock();
+    SCOPED_LOCK(guard);
 
     for(node=ellFirst(&freebufs), next=node ? ellNext(node):NULL;
         node;
@@ -85,16 +85,16 @@ bufRxManager::~bufRxManager()
         buffer *b=CONTAINER(node, buffer, node);
         free(b);
     }
-
-    guard.unlock();
 }
 
 epicsUInt8*
 bufRxManager::getFree(unsigned int* blen)
 {
-    guard.lock();
-    ELLNODE *node=ellGet(&freebufs);
-    guard.unlock();
+    ELLNODE *node;
+    {
+        SCOPED_LOCK(guard);
+        node=ellGet(&freebufs);
+    }
 
     if (!node)
         return NULL;
@@ -122,15 +122,17 @@ bufRxManager::receive(epicsUInt8* raw,unsigned int usedlen)
 
     if (usedlen==0) {
         // buffer returned w/o being used
-        guard.lock();
-        ellAdd(&freebufs, &buf->node);
-        guard.unlock();
+        {
+            SCOPED_LOCK(guard);
+            ellAdd(&freebufs, &buf->node);
+        }
         return;
     }
 
-    guard.lock();
-    ellAdd(&usedbufs, &buf->node);
-    guard.unlock();
+    {
+        SCOPED_LOCK(guard);
+        ellAdd(&usedbufs, &buf->node);
+    }
 
     callbackRequest(&received_cb);
 }
@@ -142,7 +144,7 @@ bufRxManager::received(CALLBACK* cb)
     callbackGetUser(vptr,cb);
     bufRxManager &self=*static_cast<bufRxManager*>(vptr);
 
-    self.guard.lock();
+    SCOPED_LOCK2(self.guard, G);
 
     while(true) {
         ELLNODE *node=ellGet(&self.usedbufs);
@@ -154,29 +156,25 @@ bufRxManager::received(CALLBACK* cb)
         epicsUInt8 proto=buf->data[0];
         ELLLIST *actions=&self.dispatch[proto];
 
-        self.guard.unlock();
+        G.unlock();
 
         for(ELLNODE *cur=ellFirst(actions); cur; cur=ellNext(cur)) {
             listener *action=CONTAINER(cur, listener, node);
             (action->fn)(action->fnarg, 0, proto, buf->used-1, &buf->data[1]);
         }
 
-        self.guard.lock();
+        G.lock();
 
         ellAdd(&self.freebufs, &buf->node);
     };
-
-    self.guard.unlock();
-
 }
 
 void
 bufRxManager::dataRxError(dataBufComplete fn, void* arg)
 {
-    guard.lock();
+    SCOPED_LOCK(guard);
     onerror=fn;
     onerror_arg=arg;
-    guard.unlock();
 }
 
 void
@@ -191,7 +189,7 @@ bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
     } else if(p>255)
         throw std::invalid_argument("protocol id out of range");
 
-    guard.lock();
+    SCOPED_LOCK(guard);
     ELLLIST *actions=&dispatch[p&0xff];
 
     for(ELLNODE *node=ellFirst(actions); node; node=ellNext(node))
@@ -209,8 +207,6 @@ bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
     l->fnarg=arg;
 
     ellAdd(actions, &l->node);
-
-    guard.unlock();
 }
 
 void
@@ -224,7 +220,7 @@ bufRxManager::dataRxDeleteReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
         return;
     }
 
-    guard.lock();
+    SCOPED_LOCK(guard);
 
     ELLLIST *actions=&dispatch[p&0xff];
 
@@ -238,6 +234,4 @@ bufRxManager::dataRxDeleteReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
             return;
         }
     }
-
-    guard.unlock();
 }

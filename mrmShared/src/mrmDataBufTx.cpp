@@ -54,7 +54,7 @@ mrmDataBufTx::dataTxEnabled() const
 void
 mrmDataBufTx::dataTxEnable(bool v)
 {
-    dataGuard.lock();
+    SCOPED_LOCK(dataGuard);
 
     epicsUInt32 reg=nat_ioread32(dataCtrl);
     epicsUInt32 mask=DataTxCtrl_ena|DataTxCtrl_mode;
@@ -63,8 +63,6 @@ mrmDataBufTx::dataTxEnable(bool v)
     else
         reg &= ~mask;
     nat_iowrite32(dataCtrl, reg);
-
-    dataGuard.unlock();
 }
 
 bool
@@ -102,7 +100,7 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
 
     STATIC_ASSERT(DataTxCtrl_len_max%4==0);
 
-    dataGuard.lock();
+    SCOPED_LOCK(dataGuard);
 
     // TODO: Timeout needed?
     while(!dataRTS()) epicsThreadSleep(quantum);
@@ -146,6 +144,4 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     nat_iowrite32(dataCtrl, reg);
 
     while(!dataRTS()) epicsThreadSleep(quantum);
-
-    dataGuard.unlock();
 }
