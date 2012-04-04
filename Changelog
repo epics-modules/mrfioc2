@@ -1,3 +1,23 @@
+Version 2.0.1
+
+ * Fix several vxWorks build issues
+ * Correct initial mapping for EVR output channels to Force Low (aka. Off)
+ * Always reset all EVG multiplexed counters when a divider value is changed.
+ * Fix readback of EVG sequencer run mode.
+ * Add EVG sequencer run counter
+ * Limit number of soft event send retries
+ * More check for EVG and EVR during initialization.
+    Should now catch old firmware versions and CSR address mapping problems.
+ * Delay enabling VME interrupts for EVG until later during IOC startup.
+ * Fix autosave/restore of CML output bit patterns.
+ * Remove rear transition module definitions from default EVG db template
+ * Added evralias.db to facilitate creation of PV name aliases for EVR
+   delay generator channels.
+ * Fix locking issue in data buffer tx/rx.
+    A deadlock would occur when trying to send a buffer with the link mode
+    set to dbus only.
+    
+ -- Michael Davidsaver<mdavidsaver@bnl.gov> Wed, 04 Apr 2012 11:25:04 -0400
 
 Version 2.0
 
