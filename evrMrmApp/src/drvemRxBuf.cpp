@@ -57,6 +57,7 @@ mrmBufRx::dataRxEnable(bool v)
 void
 mrmBufRx::drainbuf(CALLBACK* cb)
 {
+try {
     void *vptr;
     callbackGetUser(vptr,cb);
     mrmBufRx& self=*static_cast<mrmBufRx*>(vptr);
@@ -125,4 +126,7 @@ mrmBufRx::drainbuf(CALLBACK* cb)
     }
 
     WRITE32(self.base, DataBufCtrl, sts|DataBufCtrl_rx);
+} catch(std::exception& e) {
+    epicsPrintf("exception in mrmBufRx::drainbuf callback: %s\n", e.what());
+}
 }

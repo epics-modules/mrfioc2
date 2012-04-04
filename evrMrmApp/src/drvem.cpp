@@ -1074,6 +1074,7 @@ EVRMRM::drain_fifo()
 void
 EVRMRM::sentinel_done(CALLBACK* cb)
 {
+try {
     void *vptr;
     callbackGetUser(vptr,cb);
     eventCode *sent=static_cast<eventCode*>(vptr);
@@ -1091,6 +1092,9 @@ EVRMRM::sentinel_done(CALLBACK* cb)
     if (run && sent->interested) {
         sent->owner->specialSetMap(sent->code, ActionFIFOSave, true);
     }
+} catch(std::exception& e) {
+    epicsPrintf("exception in sentinel_done callback: %s\n", e.what());
+}
 }
 
 
@@ -1102,6 +1106,7 @@ EVRMRM::drain_log(CALLBACK*)
 void
 EVRMRM::poll_link(CALLBACK* cb)
 {
+try {
     void *vptr;
     callbackGetUser(vptr,cb);
     EVRMRM *evr=static_cast<EVRMRM*>(vptr);
@@ -1125,6 +1130,9 @@ EVRMRM::poll_link(CALLBACK* cb)
         WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
         epicsInterruptUnlock(iflags);
     }
+} catch(std::exception& e) {
+    epicsPrintf("exception in poll_link callback: %s\n", e.what());
+}
 }
 
 void
