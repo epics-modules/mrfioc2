@@ -469,14 +469,9 @@ EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
     if(code==0)
         return false;
 
-    epicsUInt32 bit  =func%32;
-    epicsUInt32 mask=1<<bit;
+    SCOPED_LOCK(evrLock);
 
-    epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
-
-    val&=mask;
-
-    return !!val;
+    return _ismap(code,func-96);
 }
 
 void
@@ -513,9 +508,8 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 
     epicsUInt32 val=READ32(base, MappingRam(0, code, Internal));
 
-    if (v && _ismap(code,func-96)) {
-        // already set
-        throw std::runtime_error("Ignore duplicate mapping");
+    if (v == _ismap(code,func-96)) {
+        // mapping already set defined
 
     } else if(v) {
         _map(code,func-96);
