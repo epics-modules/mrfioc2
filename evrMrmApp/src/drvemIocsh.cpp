@@ -610,6 +610,7 @@ try {
             }
         }
         printf("\n");
+        free(events);
         return;
     }
 
