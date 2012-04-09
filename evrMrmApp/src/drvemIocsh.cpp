@@ -17,6 +17,7 @@
 #include <sstream>
 #include <map>
 
+#include <epicsString.h>
 #include <drvSup.h>
 #include <iocsh.h>
 #include <initHooks.h>
@@ -558,6 +559,113 @@ static void mrmEvrDumpMapCallFunc(const iocshArgBuf *args)
     mrmEvrDumpMap(args[0].sval,args[1].ival,args[2].ival);
 }
 
+/** @brief Setup Event forwarding to downstream link
+ *
+ * Control which events will be forwarded to the downstream event link
+ * when they are received on the upstream link.
+ * Useful when daisy chaining EVRs.
+ *
+ * When invoked with the second argument as NULL or "" the current
+ * forward mapping is printed.
+ *
+ * The second argument to this function is a comma seperated list of
+ * event numbers and/or the special token 'all'.  If a token is prefixed
+ * with '-' then the mapping is cleared, otherwise it is set.
+ *
+ * After a cold boot, no events are forwarded until/unless mrmrEvrForward
+ * is called.
+ *
+ @code
+   > mrmEvrForward("EVR1") # Prints current mappings
+   Events forwarded: ...
+   > mrmEvrForward("EVR1", "-all") # Clear all forward mappings
+   # Clear all forward mappings except timestamp transmission
+   > mrmEvrForward("EVR1", "-all, 0x70, 0x71, 0x7A, 0x7D")
+   # Forward all except 42
+   > mrmEvrForward("EVR1", "all, -42")
+ @endcode
+ *
+ @param id EVR identifier
+ @param events A string with a comma seperated list of event specifiers
+ */
+extern "C"
+void
+mrmEvrForward(const char* id, const char* events_iocsh)
+{
+    char *events=events_iocsh ? epicsStrDup(events_iocsh) : 0;
+try {
+    mrf::Object *obj=mrf::Object::getObject(id);
+    if(!obj)
+        throw std::runtime_error("Object not found");
+    EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
+    if(!card)
+        throw std::runtime_error("Not a MRM EVR");
+
+    if(!events || strlen(events)==0) {
+        // Just print current mappings
+        printf("Events forwarded: ");
+        for(unsigned int i=1; i<256; i++) {
+            if(card->specialMapped(i, ActionEvtFwd)) {
+                printf("%d ", i);
+            }
+        }
+        printf("\n");
+        return;
+    }
+
+    // update mappings
+
+    const char sep[]=", ";
+    char *save=0;
+
+    for(char *tok=strtok_r(events, sep, &save);
+        tok!=NULL;
+        tok = strtok_r(0, sep, &save)
+        )
+    {
+        if(strcmp(tok, "-all")==0) {
+            for(unsigned int i=1; i<256; i++)
+                card->specialSetMap(i, ActionEvtFwd, false);
+
+        } else if(strcmp(tok, "all")==0) {
+            for(unsigned int i=1; i<256; i++)
+                card->specialSetMap(i, ActionEvtFwd, true);
+
+        } else {
+            char *end=0;
+            long e=strtol(tok, &end, 0);
+            if(*end || e==LONG_MAX || e==LONG_MIN) {
+                printf("Unable to parse event spec '%s'\n", tok);
+            } else if(e>255 || e<-255 || e==0) {
+                printf("Invalid event %ld\n", e);
+            } else if(e>0) {
+                card->specialSetMap(e, ActionEvtFwd, true);
+            } else if(e<0) {
+                card->specialSetMap(-e, ActionEvtFwd, false);
+            }
+
+        }
+    }
+
+
+    free(events);
+} catch(std::exception& e) {
+    printf("Error: %s\n",e.what());
+    free(events);
+}
+}
+
+static const iocshArg mrmEvrForwardArg0 = { "name",iocshArgString};
+static const iocshArg mrmEvrForwardArg1 = { "Event spec string",iocshArgString};
+static const iocshArg * const mrmEvrForwardArgs[2] =
+{&mrmEvrForwardArg0,&mrmEvrForwardArg1};
+static const iocshFuncDef mrmEvrForwardFuncDef =
+    {"mrmEvrForward",2,mrmEvrForwardArgs};
+static void mrmEvrForwardCallFunc(const iocshArgBuf *args)
+{
+    mrmEvrForward(args[0].sval,args[1].sval);
+}
+
 static
 void mrmsetupreg()
 {
@@ -565,6 +673,7 @@ void mrmsetupreg()
     iocshRegister(&mrmEvrSetupPCIFuncDef,mrmEvrSetupPCICallFunc);
     iocshRegister(&mrmEvrSetupVMEFuncDef,mrmEvrSetupVMECallFunc);
     iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
+    iocshRegister(&mrmEvrForwardFuncDef,mrmEvrForwardCallFunc);
 }
 
 epicsExportRegistrar(mrmsetupreg);
