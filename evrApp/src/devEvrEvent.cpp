@@ -120,10 +120,7 @@ try {
 
     if(!p) return 1;
 
-    if(!dir)
-        *io=p->evr->eventOccurred(p->event);
-    else
-        *io=NULL;
+    *io=p->evr->eventOccurred(p->event);
 
     return 0;
 } catch(std::runtime_error& e) {
