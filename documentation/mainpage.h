@@ -67,22 +67,28 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsection v201 2.0.1 (Apr. 2012)
 
+@subsubsection v201bug Bug fixes
+
 @li Fix several vxWorks build issues
 @li Correct initial mapping for EVR output channels to Force Low (aka. Off)
-@li Always reset all EVG multiplexed counters when a divider value is changed.
 @li Fix readback of EVG sequencer run mode.
-@li Add EVG sequencer run counter
 @li Limit number of soft event send retries
 @li More check for EVG and EVR during initialization.
      Should now catch old firmware versions and CSR address mapping problems.
 @li Delay enabling VME interrupts for EVG until later during IOC startup.
 @li Fix autosave/restore of CML output bit patterns.
 @li Remove rear transition module definitions from default EVG db template
-@li Added evralias.db to facilitate creation of PV name aliases for EVR
-    delay generator channels.
 @li Fix locking issue in data buffer tx/rx.
     A deadlock would occur when trying to send a buffer with the link mode
     set to dbus only.
+
+@subsubsection v201feat Features
+
+@li Added evralias.db to facilitate creation of PV name aliases for EVR
+    delay generator channels.
+@li Always reset all EVG multiplexed counters when a divider value is changed.
+@li Add counter to track number of times each EVG sequencer is run.
+@li Add mrmEvrForward() shell function to configure EVR event forwarding to downstream EVRs.
 
 @subsection ver20 2.0 (Sept. 2011)
 
