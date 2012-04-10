@@ -366,9 +366,9 @@ EVRMRM::enable(bool v)
 {
     SCOPED_LOCK(evrLock);
     if(v)
-        BITSET(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena);
+        BITSET(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena|Control_evtfwd);
     else
-        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena);
+        BITCLR(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena|Control_evtfwd);
 }
 
 MRMPulser*
