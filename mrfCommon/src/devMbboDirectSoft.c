@@ -65,7 +65,9 @@ static long init_record(mbboDirectRecord *prec)
 static long write_mbbo(mbboDirectRecord	*prec)
 {
     long status;
+    prec->rval=prec->val;
+    prec->rval <<= prec->shft;
 
-    status = dbPutLink(&prec->out,DBR_USHORT,&prec->val,1);
+    status = dbPutLink(&prec->out,DBR_USHORT,&prec->rval,1);
     return(0);
 }
