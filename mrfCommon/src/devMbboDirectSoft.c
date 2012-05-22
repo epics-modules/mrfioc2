@@ -68,6 +68,9 @@ static long write_mbbo(mbboDirectRecord	*prec)
     prec->rval=prec->val;
     prec->rval <<= prec->shft;
 
-    status = dbPutLink(&prec->out,DBR_USHORT,&prec->rval,1);
+    status = dbPutLink(&prec->out,DBR_ULONG,&prec->rval,1);
+    if(status) {
+        recGblSetSevr(prec, WRITE_ALARM, INVALID_ALARM);
+    }
     return(0);
 }
