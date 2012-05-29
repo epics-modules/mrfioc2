@@ -35,6 +35,7 @@
 #include "drvemRxBuf.h"
 
 #include "mrmDataBufTx.h"
+#include "sfp.h"
 
 //! @brief Helper to allow one class to have several runable methods
 template<class C,void (C::*Method)()>
@@ -185,6 +186,7 @@ public:
     epicsUInt32 baselen;
     mrmDataBufTx buftx;
     mrmBufRx bufrx;
+    std::auto_ptr<SFP> sfp;
 private:
 
     // Set by ISR

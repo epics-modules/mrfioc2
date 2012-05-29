@@ -118,7 +118,7 @@ try{
     ver=v&FWVersion_ver_mask;
     ver>>=FWVersion_ver_shift;
     if(ver<3)
-        throw std::runtime_error("Firmware version not supported");
+        throw std::runtime_error("Firmware versions < 3 not supported");
 
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQbufferReady);
@@ -130,6 +130,12 @@ try{
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
+
+    if(ver>=5) {
+        std::ostringstream name;
+        name<<id<<":SFP";
+        sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
+    }
 
     /*
      * Create subunit instances

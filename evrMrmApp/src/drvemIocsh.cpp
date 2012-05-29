@@ -159,6 +159,10 @@ bool reportCard(mrf::Object* obj, void* raw)
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
     }
+    if(*level>=1 && evr->sfp.get()){
+        evr->sfp->updateNow();
+        evr->sfp->report();
+    }
 
     return true;
 }
