@@ -155,7 +155,7 @@ try {
 
     std::auto_ptr<property<P> > prop = o->getProperty<P>(a->prop);
     if(!prop.get()) {
-        errlogPrintf("%s: '%s' lacks property '%s'\n", prec->name, o->name().c_str(), a->prop);
+        errlogPrintf("%s: '%s' lacks property '%s' of required type\n", prec->name, o->name().c_str(), a->prop);
         return S_db_errArg;
     }
 

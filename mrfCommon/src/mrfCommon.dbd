@@ -45,6 +45,10 @@ device(ao , INST_IO, devAOFromDouble, "Obj Prop double")
 device(ao , INST_IO, devAOFromUINT32, "Obj Prop uint32")
 device(ao , INST_IO, devAOFromUINT16, "Obj Prop uint16")
 
+# from devObjString.cpp
+device(stringin, INST_IO, devSIFromString, "Obj Prop string")
+device(stringout, INST_IO, devSOFromString, "Obj Prop string")
+
 # from devObjWf.cpp
 device(waveform , INST_IO, devWFIn, "Obj Prop waveform in")
 device(waveform , INST_IO, devWFOut, "Obj Prop waveform out")
