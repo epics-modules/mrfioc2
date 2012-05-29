@@ -1,0 +1,8 @@
+udev rules to automatically set permissions for approprieate /dev/uio*
+
+Leaves ownership with the root user, but sets the group permissions to
+allow IOC running from accounts in the softioc group R/W access.
+
+cat << EOF > /etc/udev/rules.d/99-mrfioc2.rules
+KERNEL=="uio*", ATTR{name}=="mrf-pci", GROUP="softioc", MODE="0660"
+EOF
