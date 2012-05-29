@@ -33,6 +33,11 @@ file "mrmevrbufrx.db"
 {"$(SYS){$(D)}", $(EVR):BUFRX, 0xff00}
 }
 
+file "sfp.db"
+{
+{P="$(SYS){$(D)-SFP}", OBJ="$(EVR):SFP"}
+}
+
 file "evrmap.db"
 {pattern
 {NAME, OBJ, func, EVT}

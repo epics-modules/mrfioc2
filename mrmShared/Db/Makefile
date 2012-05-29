@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 
 DB += databuftx.db
 DB += databuftxCtrl.db
+DB += sfp.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------
