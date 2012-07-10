@@ -18,17 +18,14 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-# PCI and VME64x support library
-DEVLIB2=$(TOP)/../devlib2
-
 ## Optional Modules ##
 # Comment out if not present
 
 # IOC statistics (cpu and mem usage, ...)
-DEVIOCSTATS=$(EPICS_BASE)
+#DEVIOCSTATS=$(EPICS_BASE)
 
 # automatic save with restore on boot
-AUTOSAVE=$(EPICS_BASE)
+#AUTOSAVE=$(EPICS_BASE)
 
 ## Required Modules ##
 
