@@ -63,7 +63,7 @@ init_si(stringinRecord* psi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_bo_resetMxc(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgMrm* evg = (evgMrm*)pbo->dpvt;
@@ -138,7 +138,7 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_syncTS(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgMrm* evg = (evgMrm*)pbo->dpvt;

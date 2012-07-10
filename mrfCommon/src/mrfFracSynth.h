@@ -67,6 +67,33 @@ epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epi
 
 epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
 
+/**************************************************************************************************/
+/*  Special Macros to Define Commonly Used Symbols                                                */
+/*  (note that these values can be overridden in the invoking module)                             */
+/**************************************************************************************************/
+
+
+/*---------------------
+ * Success return code
+ */
+#ifndef OK
+#define OK     (0)
+#endif
+
+/*---------------------
+ * Failure return code
+ */
+#ifndef ERROR
+#define ERROR  (-1)
+#endif
+
+/*---------------------
+ * Success, but do not perform linear conversions (ai & ao record device support routines)
+ */
+#ifndef NO_CONVERT
+#define NO_CONVERT (2)
+#endif
+
 #ifdef __cplusplus
 }
 #endif

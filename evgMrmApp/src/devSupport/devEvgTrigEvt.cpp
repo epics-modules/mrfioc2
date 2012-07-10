@@ -43,7 +43,7 @@ init_bo_trigSrc(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_trigSrc_mxc(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgMxc* mxc = (evgMxc*)pbo->dpvt;
@@ -80,14 +80,14 @@ write_bo_trigSrc_ac(boRecord* pbo) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_db_noMemory;
     }
-    ret = OK;
+    ret = 0;
     return ret;
 }
 
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_trigSrc_inp(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgInput* inp = (evgInput*)pbo->dpvt;

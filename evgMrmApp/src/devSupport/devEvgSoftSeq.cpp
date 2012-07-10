@@ -196,7 +196,7 @@ get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_bo_timestampInpMode(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     evgSoftSeq* seq = 0;
 
     try {
@@ -243,7 +243,7 @@ read_bi_timestampInpMode(biRecord* pbi) {
 
 static long
 write_mbbo_timestampResolution(mbboRecord* pmbbo) {
-    long ret = OK;
+    long ret = 0;
     evgSoftSeq* seq = 0;
 
     try {
@@ -267,7 +267,7 @@ write_mbbo_timestampResolution(mbboRecord* pmbbo) {
 /*(0,2)=>(success, success no convert)*/
 static long
 read_mbbi_timestampResolution(mbbiRecord* pmbbi) {
-    long ret = OK;
+    long ret = 0;
     evgSoftSeq* seq = 0;
 
     try {
@@ -291,7 +291,7 @@ read_mbbi_timestampResolution(mbbiRecord* pmbbi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_wf_timestamp(waveformRecord* pwf) {
-    epicsStatus ret = OK;
+    epicsStatus ret = 0;
 
     try {
         Pvt* pvt = (Pvt*)pwf->dpvt;
@@ -338,7 +338,7 @@ write_wf_timestamp(waveformRecord* pwf) {
 /*returns: (-1,0)=>(failure,success)*/
 static long
 read_wf_timestamp(waveformRecord* pwf) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         Pvt* dpvt = (Pvt*)pwf->dpvt;
@@ -378,7 +378,7 @@ read_wf_timestamp(waveformRecord* pwf) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_wf_eventCode(waveformRecord* pwf) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pwf->dpvt;
@@ -476,7 +476,7 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long
 write_mbbo_trigSrc(mbboRecord* pmbbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbo->dpvt;
@@ -499,7 +499,7 @@ write_mbbo_trigSrc(mbboRecord* pmbbo) {
 /*returns: (0,2)=>(success,success no convert)*/
 static long 
 read_mbbi_trigSrc(mbbiRecord* pmbbi) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
@@ -522,7 +522,7 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_loadSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -553,7 +553,7 @@ write_bo_loadSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_unloadSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -584,7 +584,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_commitSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -615,7 +615,7 @@ write_bo_commitSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_enableSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -646,7 +646,7 @@ write_bo_enableSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_disableSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     unsigned long dummy;
     evgSoftSeq* seq = 0;
 
@@ -677,7 +677,7 @@ write_bo_disableSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_abortSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     evgSoftSeq* seq = 0;
 
     try {
@@ -706,7 +706,7 @@ write_bo_abortSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_pauseSeq(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
     evgSoftSeq* seq = 0;
 
     try {
@@ -735,7 +735,7 @@ write_bo_pauseSeq(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_softTrig(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         if(!pbo->val)

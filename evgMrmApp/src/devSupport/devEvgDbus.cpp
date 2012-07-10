@@ -42,7 +42,7 @@ init_bo_src_inp(boRecord* pbo) {
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 write_bo_src_inp(boRecord* pbo) {
-    long ret = OK;
+    long ret = 0;
 
     try {
         evgInput* inp = (evgInput*)pbo->dpvt;
