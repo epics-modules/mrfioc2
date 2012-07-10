@@ -745,11 +745,12 @@ write_bo_softTrig(boRecord* pbo) {
         if(!seq)
             throw std::runtime_error("Device pvt field not initialized");
 
+        SCOPED_LOCK2(seq->m_lock, guard);
+
         evgSeqRam* seqRam = seq->getSeqRam();
         if(!seqRam)
             throw std::runtime_error("Failed to lookup EVG Seq RAM");
 
-        SCOPED_LOCK2(seq->m_lock, guard);
         seqRam->softTrig();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
