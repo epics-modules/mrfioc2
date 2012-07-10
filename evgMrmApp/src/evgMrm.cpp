@@ -305,7 +305,8 @@ evgMrm::incrTimestamp() {
 
 void
 evgMrm::syncTimestamp() {
-    while(epicsTimeOK != generalTimeGetExceptPriority(&m_timestamp, 0, 50));
+    if(epicsTimeOK != generalTimeGetExceptPriority(&m_timestamp, 0, 50))
+        return;
     /*
      * Generally nano seconds should be close to zero.
      *  So the seconds value should be rounded to the nearest interger
