@@ -85,6 +85,7 @@ MRMCML::setMode(cmlMode m)
     default:
         throw std::out_of_range("Invalid CML Mode");
     }
+    bool wasenabled = enabled();
     shadowEnable &= ~OutputCMLEna_ena; // disable while syncing
     shadowEnable &= ~OutputCMLEna_mode_mask;
     shadowEnable |= mask;
@@ -109,7 +110,8 @@ MRMCML::setMode(cmlMode m)
         break;
     }
 
-    shadowEnable |= OutputCMLEna_ena; // enable after syncing
+    if(wasenabled)
+        shadowEnable |= OutputCMLEna_ena; // enable after syncing
     WRITE32(base, OutputCMLEna(N), shadowEnable);
 }
 

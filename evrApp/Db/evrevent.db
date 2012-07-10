@@ -13,7 +13,7 @@ record(longout, "$(EN)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
-  field(VAL , "$(EVNT)")
+  field(VAL , "$(EVNT=-1)")
   field(TSE , "-2") # from device support
   field(FLNK, "$(EN)Cnt-I")
   info(autosaveFields_pass0, "OUT VAL")
