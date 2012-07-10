@@ -36,6 +36,8 @@
 #include <epicsThread.h>
 #include <epicsTypes.h>
 
+#include "mrfCommon.h"
+
 namespace mrf {
 
 //! @brief Requested operation is not implemented by the property
@@ -265,6 +267,9 @@ protected:
 public:
     const std::string& name() const{return m_obj_name;}
     const Object* parent() const{return m_obj_parent;}
+
+    virtual void lock() const =0;
+    virtual void unlock() const =0;
 
     typedef m_obj_children_t::const_iterator child_iterator;
     child_iterator beginChild() const{return m_obj_children.begin();}

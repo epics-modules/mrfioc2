@@ -20,6 +20,10 @@ public:
     mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0)
     {}
 
+    /* no locking needed */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     int getI() const{return ival;}
     void setI(int i){ival=i;}
 
