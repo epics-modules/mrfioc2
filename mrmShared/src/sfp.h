@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <epicsMutex.h>
+
 #include "mrf/object.h"
 
 class SFP : public mrf::ObjectInst<SFP> {
@@ -11,11 +13,15 @@ class SFP : public mrf::ObjectInst<SFP> {
     typedef std::vector<epicsUInt8> buffer_t;
     buffer_t buffer;
     bool valid;
+    mutable epicsMutex guard;
 
     epicsInt16 read16(unsigned int) const;
 public:
     SFP(const std::string& n, volatile unsigned char* reg);
     virtual ~SFP();
+
+    virtual void lock() const{guard.lock();};
+    virtual void unlock() const{guard.unlock();};
 
     bool junk() const{return 0;}
     void updateNow(bool=true);

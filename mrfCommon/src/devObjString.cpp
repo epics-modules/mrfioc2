@@ -23,7 +23,11 @@ if (!prec->dpvt) return -1;
 try {
     addr<std::string> *priv=(addr<std::string>*)prec->dpvt;
 
-    std::string s = priv->P->get();
+    std::string s;
+    {
+        scopedLock<mrf::Object> g(*priv->O);
+        s = priv->P->get();
+    }
 
     size_t len = std::min(NELEMENTS(prec->val)-1, s.size());
 
@@ -51,7 +55,10 @@ if (!prec->dpvt) return -1;
 try {
     addr<std::string> *priv=(addr<std::string>*)prec->dpvt;
 
-    priv->P->set(prec->val);
+    {
+        scopedLock<mrf::Object> g(*priv->O);
+        priv->P->set(prec->val);
+    }
 
     return 0;
 } catch(std::exception& e) {
