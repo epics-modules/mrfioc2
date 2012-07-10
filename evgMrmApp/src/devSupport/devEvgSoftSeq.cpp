@@ -304,7 +304,7 @@ write_wf_timestamp(waveformRecord* pwf) {
             throw std::runtime_error("Device pvt field not initialized correctly");
 
         epicsUInt32 size = pwf->nord;
-        epicsUInt64 ts[size];
+        std::vector<epicsUInt64> ts(size);
 
         SCOPED_LOCK2(seq->m_lock, guard);
         if(seq->getTimestampInpMode() == TICKS) {
@@ -323,7 +323,7 @@ write_wf_timestamp(waveformRecord* pwf) {
                        evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
             }
         }
-        seq->setTimestamp(ts, size);
+        seq->setTimestamp(&ts[0], size);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
         ret = S_dev_noDevice;
