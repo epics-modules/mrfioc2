@@ -17,6 +17,8 @@
 
 #include "evrRegMap.h"
 
+#include <epicsInterrupt.h>
+
 #ifndef bswap32
 #define bswap32(value) (  \
         (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
@@ -45,6 +47,7 @@ mrmBufRx::dataRxEnabled() const
 void
 mrmBufRx::dataRxEnable(bool v)
 {
+    int key=epicsInterruptLock();
     if (v) {
         // start reception and switch to DBus+data
         BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_mode|DataBufCtrl_rx);
@@ -52,8 +55,18 @@ mrmBufRx::dataRxEnable(bool v)
         BITSET(NAT,32,base, DataBufCtrl, DataBufCtrl_stop); // stop reception
         BITCLR(NAT,32,base, DataBufCtrl, DataBufCtrl_mode); // switch to DBus only
     }
+    epicsInterruptUnlock(key);
 }
 
+/* This callback is required from the ISR.
+ * The RX interrupt is not diabled, but since reception is complete
+ * the RX enable bit in the data buffer RX control register is cleared.
+ * The no additional data will be received, or interrupt generated, until
+ * we re-enable it.
+ *
+ * Further, since the DataBufCtrl and DataRx(i) registers are not used anywhere else
+ * we can safely avoid locking while accessing them.
+ */
 void
 mrmBufRx::drainbuf(CALLBACK* cb)
 {

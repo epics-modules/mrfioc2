@@ -17,6 +17,8 @@
 
 #include <stdexcept>
 
+#include <epicsInterrupt.h>
+
 MRMInput::MRMInput(const std::string& n, volatile unsigned char *b, size_t i)
   :Input(n)
   ,base(b)
@@ -121,12 +123,16 @@ MRMInput::extEvtSet(epicsUInt32 e)
     if(e>255)
         throw std::out_of_range("Event code # out of range");
 
+    int key=epicsInterruptLock();
+
     epicsUInt32 val;
 
     val = READ32(base, InputMapFP(idx) );
     val &= ~InputMapFP_ext_mask;
     val |= e << InputMapFP_ext_shft;
     WRITE32(base, InputMapFP(idx), val);
+
+    epicsInterruptUnlock(key);
 }
 
 epicsUInt32
@@ -185,12 +191,16 @@ MRMInput::backEvtSet(epicsUInt32 e)
     if(e>255)
         throw std::out_of_range("Event code # out of range");
 
+    int key=epicsInterruptLock();
+
     epicsUInt32 val;
 
     val = READ32(base, InputMapFP(idx) );
     val &= ~InputMapFP_back_mask;
     val |= e << InputMapFP_back_shft;
     WRITE32(base, InputMapFP(idx), val);
+
+    epicsInterruptUnlock(key);
 }
 
 epicsUInt32
