@@ -9,6 +9,10 @@ public:
     evgAcTrig(const std::string&, volatile epicsUInt8* const);
     ~evgAcTrig();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     void setDivider(epicsUInt32);
     epicsUInt32 getDivider() const;
 

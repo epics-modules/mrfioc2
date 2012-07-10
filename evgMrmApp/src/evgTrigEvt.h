@@ -9,6 +9,10 @@ public:
     evgTrigEvt(const std::string&, const epicsUInt32, volatile epicsUInt8* const);
     ~evgTrigEvt();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     void enable(bool);
     bool enabled() const;
 

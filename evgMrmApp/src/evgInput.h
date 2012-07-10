@@ -21,6 +21,10 @@ public:
              volatile epicsUInt8* const);
     ~evgInput();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     epicsUInt32 getNum() const;
     InputType getType() const;
 

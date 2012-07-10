@@ -46,6 +46,10 @@ public:
     evgMrm(const std::string& id, volatile epicsUInt8* const);
     ~evgMrm();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     /** EVG    **/
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;

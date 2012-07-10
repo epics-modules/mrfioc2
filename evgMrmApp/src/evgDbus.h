@@ -8,6 +8,10 @@ class evgDbus : public mrf::ObjectInst<evgDbus> {
 public:
     evgDbus(const std::string&, const epicsUInt32,  volatile epicsUInt8* const);
     ~evgDbus();
+
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
     
     void setSource(epicsUInt16);
     epicsUInt16 getSource() const;

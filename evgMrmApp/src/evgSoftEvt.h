@@ -10,6 +10,10 @@ class evgSoftEvt : public mrf::ObjectInst<evgSoftEvt> {
 public:
     evgSoftEvt(const std::string&, volatile epicsUInt8* const);
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     void enable(bool);
     bool enabled() const;
 

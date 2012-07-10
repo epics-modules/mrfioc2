@@ -11,6 +11,10 @@ class evgEvtClk : public mrf::ObjectInst<evgEvtClk> {
 public:
     evgEvtClk(const std::string&, volatile epicsUInt8* const);
     ~evgEvtClk();
+
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
     
     epicsFloat64 getFrequency() const;
 

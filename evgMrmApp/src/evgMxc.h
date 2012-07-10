@@ -11,6 +11,10 @@ public:
     evgMxc(const std::string&, const epicsUInt32, evgMrm* const);
     ~evgMxc();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     bool getStatus() const;
 
     void setPolarity(bool);
