@@ -18,6 +18,10 @@ public:
                  volatile epicsUInt8* buffer);
     virtual ~mrmDataBufTx();
 
+    /* locking done internally */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     virtual bool dataTxEnabled() const;
     virtual void dataTxEnable(bool);
 
