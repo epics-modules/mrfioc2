@@ -22,6 +22,10 @@ public:
             PreScaler(n,o),base(b) {};
     virtual ~MRMPreScaler(){};
 
+    /* no locking needed */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     virtual epicsUInt32 prescaler() const;
     virtual void setPrescaler(epicsUInt32);
 };

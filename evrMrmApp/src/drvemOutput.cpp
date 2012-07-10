@@ -32,6 +32,9 @@ MRMOutput::~MRMOutput()
 {
 }
 
+void MRMOutput::lock() const{owner->lock();};
+void MRMOutput::unlock() const{owner->unlock();};
+
 epicsUInt32
 MRMOutput::source() const
 {

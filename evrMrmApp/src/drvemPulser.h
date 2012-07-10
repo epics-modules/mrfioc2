@@ -26,6 +26,9 @@ public:
     MRMPulser(const std::string& n, epicsUInt32,EVRMRM&);
     virtual ~MRMPulser(){};
 
+    virtual void lock() const;
+    virtual void unlock() const;
+
     virtual bool enabled() const;
     virtual void enable(bool);
 
@@ -52,8 +55,6 @@ private:
     // bit map of which event #'s are mapped
     // used as a safty check to avoid overloaded mappings
     unsigned char mapped[256/8];
-
-    epicsMutex mapLock;
 
     void _map(epicsUInt8 evt)   {        mapped[evt/8] |=    1<<(evt%8);  }
     void _unmap(epicsUInt8 evt) {        mapped[evt/8] &= ~( 1<<(evt%8) );}

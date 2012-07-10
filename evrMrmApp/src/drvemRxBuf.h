@@ -21,6 +21,10 @@ public:
     mrmBufRx(const std::string&, volatile void *base,unsigned int qdepth, unsigned int bsize=0);
     virtual ~mrmBufRx();
 
+    /* no locking needed */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     virtual bool dataRxEnabled() const;
     virtual void dataRxEnable(bool);
 

@@ -105,6 +105,9 @@ private:
     void cleanup();
 public:
 
+    virtual void lock() const{evrLock.lock();};
+    virtual void unlock() const{evrLock.unlock();};
+
     virtual epicsUInt32 model() const;
 
     virtual epicsUInt32 version() const;

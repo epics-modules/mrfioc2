@@ -29,15 +29,18 @@ public:
   MRMOutput(const std::string& n, EVRMRM* owner, OutputType t, unsigned int idx);
   virtual ~MRMOutput();
 
+  virtual void lock() const;
+  virtual void unlock() const;
+
   virtual epicsUInt32 source() const;
   virtual void setSource(epicsUInt32);
 
   virtual const char*sourceName(epicsUInt32) const;
 
 private:
-  EVRMRM *owner;
-  OutputType type;
-  unsigned int N;
+  EVRMRM * const owner;
+  const OutputType type;
+  const unsigned int N;
 };
 
 

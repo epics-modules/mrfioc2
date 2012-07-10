@@ -25,6 +25,9 @@ public:
     MRMCML(const std::string&, unsigned char, EVRMRM&, outkind, evrForm);
     virtual ~MRMCML();
 
+    virtual void lock() const;
+    virtual void unlock() const;
+
     virtual cmlMode mode() const;
     virtual void setMode(cmlMode);
 

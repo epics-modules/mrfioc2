@@ -27,6 +27,10 @@ public:
     MRMInput(const std::string& n, volatile unsigned char *, size_t);
     virtual ~MRMInput(){};
 
+    /* no locking needed */
+    virtual void lock() const{};
+    virtual void unlock() const{};
+
     virtual void dbusSet(epicsUInt16);
     virtual epicsUInt16 dbus() const;
 
@@ -49,8 +53,8 @@ public:
     virtual epicsUInt32 backEvt() const;
 
 private:
-    volatile unsigned char *base;
-    size_t idx;
+    volatile unsigned char * const base;
+    const size_t idx;
 };
 
 

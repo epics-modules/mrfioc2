@@ -59,6 +59,9 @@ MRMCML::~MRMCML()
         delete[] shadowPattern[i];
 }
 
+void MRMCML::lock() const{owner.lock();};
+void MRMCML::unlock() const{owner.unlock();};
+
 cmlMode
 MRMCML::mode() const
 {
