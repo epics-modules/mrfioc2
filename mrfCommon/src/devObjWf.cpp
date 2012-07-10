@@ -50,6 +50,7 @@ static void
 readop(waveformRecord* prec)
 {
     addr<T[1]> *priv=(addr<T[1]>*)prec->dpvt;
+    scopedLock<mrf::Object> g(*priv->O);
     prec->nord = priv->P->get((T*)prec->bptr, prec->nelm);
 }
 
@@ -99,6 +100,7 @@ static void
 writeop(waveformRecord* prec)
 {
     addr<T[1]> *priv=(addr<T[1]>*)prec->dpvt;
+    scopedLock<mrf::Object> g(*priv->O);
     priv->P->set((const T*)prec->bptr, prec->nord);
 }
 

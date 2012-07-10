@@ -24,7 +24,10 @@ if (!prec->dpvt) return -1;
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
-    prec->rval = priv->P->get();
+    {
+        scopedLock<mrf::Object> g(*priv->O);
+        prec->rval = priv->P->get();
+    }
 
     return 0;
 } catch(std::exception& e) {
@@ -61,9 +64,12 @@ if (!prec->dpvt) return -1;
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 
-    priv->P->set(prec->rval);
+    {
+        scopedLock<mrf::Object> g(*priv->O);
+        priv->P->set(prec->rval);
 
-    prec->rbv = priv->P->get();
+        prec->rbv = priv->P->get();
+    }
 
     return 0;
 } catch(std::exception& e) {
