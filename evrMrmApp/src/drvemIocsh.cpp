@@ -536,7 +536,6 @@ try {
     if(!card)
         throw std::runtime_error("Not a MRM EVR");
 
-    /* CardMap::get() throws if 'id' is invalid */
     printf("Print ram #%d\n",ram);
     if(evt>=0){
         // Print a single event

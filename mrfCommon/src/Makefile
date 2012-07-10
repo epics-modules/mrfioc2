@@ -48,7 +48,6 @@ INC += mrfFracSynth.h     # Fractional Synthesizer routines
 INC += linkoptions.h
 INC += mrfcsr.h
 
-INC += cardmap.h
 INC += mrf/databuf.h
 INC += mrf/object.h
 
@@ -88,7 +87,6 @@ DBD += mrfCommon.dbd
 LIBRARY_IOC += mrfCommon
 mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += linkoptions.c
-mrfCommon_SRCS += cardmap.cpp
 mrfCommon_SRCS += object.cpp
 mrfCommon_SRCS += devObjAnalog.cpp
 mrfCommon_SRCS += devObjLong.cpp

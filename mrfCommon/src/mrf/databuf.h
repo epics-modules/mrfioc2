@@ -6,7 +6,6 @@
 #include <epicsTime.h>
 
 #include "mrf/object.h"
-#include "cardmap.h"
 
 /**
  *@param arg[in] Arbitrary pointer passed by user
