@@ -86,10 +86,10 @@ public:
     TimestampResolution getTimestampResolution();
 
     void setTimestamp(epicsUInt64*, epicsUInt32);
-    std::vector<epicsUInt64> getTimestampCt();
+    const std::vector<epicsUInt64>& getTimestampCt();
 
     void setEventCode(epicsUInt8*, epicsUInt32);
-     std::vector<epicsUInt8> getEventCodeCt();
+    const std::vector<epicsUInt8>& getEventCodeCt();
 
     void setTrigSrc(SeqTrigSrc);
     SeqTrigSrc getTrigSrcCt();

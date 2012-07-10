@@ -130,12 +130,12 @@ evgSoftSeq::setRunMode(SeqRunMode runMode) {
  * Retrive commited(Ct) data.
  */
 
-std::vector<epicsUInt8>
+const std::vector<epicsUInt8>&
 evgSoftSeq::getEventCodeCt() {
     return m_eventCodeCt;
 }
 
-std::vector<epicsUInt64>
+const std::vector<epicsUInt64>&
 evgSoftSeq::getTimestampCt() {
     return m_timestampCt;
 }
