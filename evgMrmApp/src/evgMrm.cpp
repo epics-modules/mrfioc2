@@ -237,9 +237,9 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
 
     for(int i = 0; i < 32; data <<= 1, i++) {
         if( data & 0x80000000 )
-            evg->getSoftEvt()->setEvtCode(0x71);
+            evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_1);
         else
-            evg->getSoftEvt()->setEvtCode(0x70);
+            evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_0);
     }
 }
 
