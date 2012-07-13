@@ -188,8 +188,8 @@ void
 evgMrm::isr(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
 
-    epicsUInt32 flags = READ32(evg->getRegAddr(), IrqFlag);
-    epicsUInt32 enable = READ32(evg->getRegAddr(), IrqEnable);
+    epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
+    epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
     
     if(!active)
@@ -204,7 +204,8 @@ evgMrm::isr(void* arg) {
     if(active & EVG_IRQ_EXT_INP)
         callbackRequest(&evg->irqExtInp_cb);
 
-    WRITE32(evg->m_pReg, IrqFlag, flags);
+    WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
+    READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
     return;
 }
 
