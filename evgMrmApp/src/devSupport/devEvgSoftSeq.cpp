@@ -158,13 +158,14 @@ static long
 get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
     Pvt* dpvt = (Pvt*)pwf->dpvt;
     if(!dpvt)
-        throw std::runtime_error("Initialization failed");
+        return S_dev_noDevice;
 
-    evgMrm* evg = (evgMrm*)dpvt->evg;
     evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
-    if(! (evg || seq))
-        throw std::runtime_error("Device pvt field not initialized correctly");
-    *ppvt = seq->ioscanpvt;
+    if(!seq) {
+        errlogPrintf("Device pvt field not initialized correctly");
+        return S_dev_noDevice;
+    } else
+        *ppvt = seq->ioscanpvt;
 
     return 0;
 }
@@ -504,7 +505,7 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         pmbbi->rval = seq->getTrigSrcCt();
@@ -532,7 +533,7 @@ write_bo_loadSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->load();
@@ -563,7 +564,7 @@ write_bo_unloadSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->unload();
@@ -594,7 +595,7 @@ write_bo_commitSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->commit();
@@ -625,7 +626,7 @@ write_bo_enableSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->enable();
@@ -656,7 +657,7 @@ write_bo_disableSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->disable();
@@ -686,7 +687,7 @@ write_bo_abortSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->abort(pbo->val);
@@ -715,7 +716,7 @@ write_bo_pauseSeq(boRecord* pbo) {
 
         seq = (evgSoftSeq*)pbo->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
         seq->pause();
@@ -909,7 +910,7 @@ read_si_err(stringinRecord* psi) {
     try {
         evgSoftSeq* seq = (evgSoftSeq*)psi->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         strcpy(psi->val, seq->getErr().c_str());
         ret = 0;
@@ -932,7 +933,7 @@ read_li_numOfRuns(longinRecord* pli) {
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pli->dpvt;
         if(!seq)
-            throw std::runtime_error("Device pvt field not initialized");
+            return S_dev_noDevice;
 
         pli->val = seq->getNumOfRuns();
     } catch(std::runtime_error& e) {
