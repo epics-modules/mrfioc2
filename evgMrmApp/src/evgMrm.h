@@ -54,6 +54,7 @@ public:
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;
     epicsUInt32 getFwVersion() const;
+    std::string getSwVersion() const;
 
     void enable(bool);
     bool enabled() const;

@@ -8,6 +8,8 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
+#include "mrf/version.h"
+
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
@@ -29,6 +31,11 @@
 
 EVR::~EVR()
 {
+}
+
+std::string EVR::versionSw() const
+{
+    return MRF_VERSION;
 }
 
 Pulser::~Pulser()
@@ -67,6 +74,7 @@ OBJECT_BEGIN(EVR) {
     OBJECT_PROP1("Model", &EVR::model);
 
     OBJECT_PROP1("Version", &EVR::version);
+    OBJECT_PROP1("Sw Version", &EVR::versionSw);
 
     OBJECT_PROP1("Event Clock TS Div", &EVR::uSecDiv);
 

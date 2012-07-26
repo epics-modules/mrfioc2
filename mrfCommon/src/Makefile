@@ -1,37 +1,3 @@
-#------------------------------------------------------------------------------
-# $(TIMING)/mrfCommon/src/Makefile
-#
-#------------------------------------------------------------------------------
-# Author:  Eric Bjorklund
-# Date:    19 October 2009
-#
-#------------------------------------------------------------------------------
-# Modification History:
-# 19 Oct 2008  E.Bjorklund      Original Release
-#
-#------------------------------------------------------------------------------
-# FILE DESCRIPTION:
-#   This file contains the EPICS make rules and definitions for making and
-#   installing common utilities and definitions for the Micro-Research Finland
-#   event system.
-#
-#------------------------------------------------------------------------------
-# Hardware Supported:
-#   Series 2xx Event Generator and Event Receiver Cards
-#     APS Register Mask
-#     Modular Register Mask
-#
-#------------------------------------------------------------------------------
-# Operating Systems Supported:
-#   vxWorks
-#   RTEMS
-#   Build Host
-#
-#------------------------------------------------------------------------------
-
-#---------------------
-# Set up the Environment
-#
 TOP=../..
 include $(TOP)/configure/CONFIG
 
@@ -50,6 +16,10 @@ INC += mrfcsr.h
 
 INC += mrf/databuf.h
 INC += mrf/object.h
+
+INC += mrf/version.h
+INC += mrf/version-hg.h
+INC += mrf/version-git.h
 
 INC += devObj.h
 
@@ -120,3 +90,21 @@ PROD_LIBS += Com
 # Generic EPICS build rules
 #
 include $(TOP)/configure/RULES
+
+$(COMMON_DIR)/mrf/version-git.h::
+	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
+ifneq ($(wildcard $(TOP)/.git),)
+	printf '#define GIT_VERSION "%s"\n' `git describe --tags` > $@
+else
+	touch $@
+endif
+
+$(COMMON_DIR)/mrf/version-hg.h::
+	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
+ifneq ($(wildcard $(TOP)/.hg),)
+	printf '#define HG_VERSION "%s"\n' `hg tip|sed -n -e '/changeset/ s/changeset:\W*//p'` > $@
+else
+	touch $@
+endif
+
+../mrf/version.h: $(COMMON_DIR)/mrf/version-git.h $(COMMON_DIR)/mrf/version-hg.h

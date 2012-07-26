@@ -161,6 +161,13 @@ record(longin, "$(P)FwVer-I") {
   field(DESC, "Firmware version")
 }
 
+record(stringin, "$(P)SwVer-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
+  field(PINI, "YES")
+  field(DESC, "Software version")
+}
+
 record(fanout, "$(P)Time:Init-FO_") {
   field(PINI, "YES")
   field(LNK1, "$(P)Time:Clock-SP")

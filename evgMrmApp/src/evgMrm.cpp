@@ -17,6 +17,7 @@
 
 #include <longoutRecord.h>
 
+#include "mrf/version.h"
 #include <mrfCommonIO.h> 
 #include <mrfCommon.h> 
 
@@ -154,6 +155,11 @@ evgMrm::getRegAddr() const {
 epicsUInt32 
 evgMrm::getFwVersion() const {
     return READ32(m_pReg, FPGAVersion);
+}
+
+std::string
+evgMrm::getSwVersion() const {
+    return MRF_VERSION;
 }
 
 epicsUInt32

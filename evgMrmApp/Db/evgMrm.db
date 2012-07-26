@@ -18,6 +18,20 @@ record(bi, "$(P)Enable-RB") {
     field( ONAM, "Enabled")
 }
 
+record(longin, "$(P)FwVer-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Version")
+  field(PINI, "YES")
+  field(DESC, "Firmware version")
+}
+
+record(stringin, "$(P)SwVer-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
+  field(PINI, "YES")
+  field(DESC, "Software version")
+}
+
 record(bo, "$(P)ResetMxc-Cmd") {
     field( DTYP, "EVG")
     field( DESC, "EVG Reset MXC")

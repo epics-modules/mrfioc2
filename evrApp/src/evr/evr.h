@@ -51,6 +51,8 @@ public:
 
   //! Firmware Version
   virtual epicsUInt32 version() const=0;
+  //! Software Version
+  virtual std::string versionSw() const;
 
   /**\defgroup ena Enable/disable pulser output.
    */
