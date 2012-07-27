@@ -281,8 +281,10 @@ try{
     specialSetMap(MRF_EVENT_TS_SHIFT_1,     97, true);
     specialSetMap(MRF_EVENT_TS_COUNTER_INC, 98, true);
     specialSetMap(MRF_EVENT_TS_COUNTER_RST, 99, true);
-    specialSetMap(MRF_EVENT_RST_PRESCALERS, 100, true);
     specialSetMap(MRF_EVENT_HEARTBEAT,      101, true);
+
+    // Except for Prescaler reset, which is set with a record
+    specialSetMap(MRF_EVENT_RST_PRESCALERS, 100, false);
 
     eventClock=FracSynthAnalyze(READ32(base, FracDiv),
                                 fracref,0)*1e6;

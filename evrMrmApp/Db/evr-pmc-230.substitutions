@@ -43,6 +43,7 @@ file "evrmap.db"
 {NAME, OBJ, func, EVT}
 {"$(SYS){$(D)}Evt:Blink0-SP", "$(EVR)", Blink, 15}
 {"$(SYS){$(D)}Evt:Blink1-SP", "$(EVR)", Blink, 0}
+{"$(SYS){$(D)}Evt:ResetPS-SP","$(EVR)", "Reset PS", 123}
 }
 
 file "evrevent.db"
