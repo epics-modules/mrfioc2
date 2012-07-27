@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 397
-y 119
+x 25
+y 348
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -1353,7 +1353,7 @@ major 4
 minor 0
 release 0
 x 70
-y 80
+y 75
 w 40
 h 20
 fgColor index 14
@@ -1378,7 +1378,7 @@ major 4
 minor 1
 release 0
 x 20
-y 80
+y 75
 w 42
 h 15
 font "helvetica-medium-r-12.0"
@@ -2140,16 +2140,16 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 20
-y 150
-w 110
+x 16
+y 143
+w 27
 h 20
-font "helvetica-medium-r-12.0"
+font "helvetica-medium-r-10.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Blink on event Rx"
+  "Blink"
 }
 endObjectProperties
 
@@ -2159,37 +2159,11 @@ beginObjectProperties
 major 4
 minor 5
 release 0
-x 40
-y 170
-w 30
+x 65
+y 143
+w 36
 h 19
 controlPv "$(SYS)\{$(D)\}Evt:Blink0-SP"
-font "helvetica-medium-r-12.0"
-fgColor index 14
-fgAlarm
-bgColor index 0
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 14
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 80
-y 170
-w 30
-h 19
-controlPv "$(SYS)\{$(D)\}Evt:Blink1-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
@@ -2209,7 +2183,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 100
 y 290
@@ -2516,7 +2490,7 @@ major 4
 minor 1
 release 0
 x 30
-y 110
+y 100
 w 82
 h 20
 font "helvetica-medium-r-8.0"
@@ -2562,7 +2536,7 @@ major 4
 minor 0
 release 0
 x 22
-y 130
+y 120
 w 97
 h 20
 fgColor index 14
@@ -2690,5 +2664,79 @@ nullColor index 14
 smartRefresh
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 65
+y 167
+w 36
+h 19
+controlPv "$(SYS)\{$(D)\}Evt:Blink0-SP"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 0
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 16
+y 167
+w 53
+h 20
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Reset PS"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 105
+y 146
+w 21
+h 38
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-8.0"
+buttonLabel "SFP"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "sfp"
+}
+symbols {
+  0 "SYS=$(SYS), D=$(D)-SFP"
+}
+replaceSymbols {
+  0 1
+}
 endObjectProperties
 
