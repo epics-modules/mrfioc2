@@ -723,7 +723,7 @@ Event Sequencer
 \end_layout
 
 \begin_layout Standard
-Event Sequencer provids a method of transmitting or playing back sequences
+Event Sequencer provides a method of transmitting or playing back sequences
  of events stored in random access memory with defined timing.
  MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
  The sequencer can hold up to 2048 <event code, timeStamp> pair.
@@ -753,7 +753,7 @@ Device support for sequencer introduces a concept of software sequence(a.k.a.
  The existence of the software and hardware sequences is an abstraction
  made to separate the process of assembling a sequence from the process
  of placing it into hardware.
- Software seqeunce maintains a complete ready to run copy of all sequences
+ Software sequence maintains a complete ready to run copy of all sequences
  in the IOC at all times.
  The IOC is then free to choose which sequence to place into hardware.
  Since this is a local operation it can be done quickly and efficiently.
@@ -828,12 +828,12 @@ s, micro-seconds or nano-seconds.
 \end_layout
 
 \begin_layout Itemize
-TICKS: Here user can provides timestamps in terms of Event Clock ticks.
+TICKS: Here user can provide timestamps in terms of Event Clock ticks.
 \end_layout
 
 \begin_layout Itemize
-All the timestamp values are offset from the time sequencer receives the
- trigger.
+All the timestamp values are offset from the time the sequencer receives
+ the trigger.
  
 \end_layout
 
@@ -845,19 +845,19 @@ Timestamp Resolution(mbbo) : If the timestamp input mode is EGU user can
 
 \begin_deeper
 \begin_layout Itemize
-Sec - Input/Output sequencer timstamps in seconds
+Sec - Input/Output sequencer timestamps in seconds
 \end_layout
 
 \begin_layout Itemize
-mSec - Input/Output sequencer timstamps in micro-seconds
+mSec - Input/Output sequencer timestamps in micro-seconds
 \end_layout
 
 \begin_layout Itemize
-uSec - Input/Output sequencer timstamps in milli-seconds
+uSec - Input/Output sequencer timestamps in milli-seconds
 \end_layout
 
 \begin_layout Itemize
-nSec - Input/Output sequencer timstamps in nano-seconds
+nSec - Input/Output sequencer timestamps in nano-seconds
 \end_layout
 
 \end_deeper
@@ -1035,8 +1035,8 @@ Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end
 \end_layout
 
 \begin_layout Itemize
-If a soft sequence is uncommited and running then when the IOC restarts
- the sequence would be in uncomitted state but wont be running i.e.
+If a soft sequence is uncommitted and running then when the IOC restarts
+ the sequence would be in uncommitted state but wont be running i.e.
  last committed sequence is lost.
 \end_layout
 

@@ -412,7 +412,7 @@ Event Codes
 \begin_layout Standard
 An event is momentary.
  Typically an event causes something to happen (a trigger).
- The 255 usable event codes available in the MRF system can be though of
+ The 255 usable event codes available in the MRF system can be thought of
  as 255 seperate physical wires.
  On every tick of the Event Clock a pulse is sent on one (and only one)
  of the ``wires''.
@@ -1117,7 +1117,7 @@ As four 20 bit sub-patterns (rising, high, falling, and low).
 \begin_layout Standard
 In the sub-pattern mode.
  The rising and falling patterns are transmitted when the output level changes,
- while the high and low patterns are repeated inbetween level changes.
+ while the high and low patterns are repeated in between level changes.
 \end_layout
 
 \begin_layout Standard
@@ -1465,7 +1465,7 @@ evrApp
 The MRF IOC has a strong seperation between device and driver support.
  The device support and interface definition are in this module.
  The interface is defined by the C++ abstract base classes in 'evrApp/src/evr/'.
- A set of device support routines using is found in 'evrApp/src/dev*.cpp'.
+ A set of device support routines is found in 'evrApp/src/dev*.cpp'.
  Some generic database files are found in 'evrApp/Db/'.
 \end_layout
 
@@ -1474,7 +1474,7 @@ evrMrmApp
 \end_layout
 
 \begin_layout Standard
-The is the driver for the Modular Register Map (MRM
+This is the driver for the Modular Register Map (MRM
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "MRM"
@@ -1483,9 +1483,9 @@ description "Modular Register Map.  Name for the common register map for all 230
 \end_inset
 
 ) firmware version for the Event Receiver.
- It provides a concrete implimentation of the abstract classes defined in
+ It provides a concrete implementation of the abstract classes defined in
  'evrApp'.
- It also provided IOC shell functions to instantiate a device in 'evrMrmApp/src/
+ It also provides IOC shell functions to instantiate a device in 'evrMrmApp/src/
 drvemIocsh.cpp'.
  'evrMrmApp/Db/evr-*.substitutions' will create a complete example database.
  An example IOC using the database is in 'iocBoot/iocevrmrm/'.
@@ -1634,7 +1634,7 @@ VME-EVR-230
 status collapsed
 
 \begin_layout Plain Layout
-This device has not been test
+This device has not been tested
 \end_layout
 
 \end_inset
@@ -2379,7 +2379,7 @@ reference "sec:supported"
 \end_layout
 
 \begin_layout Standard
-The authors would like to encouraged users to send their customized databases
+The authors would like to encourage users to send their customized databases
  back so that they may be included as examples in future releases of MRFIOC2.
 \end_layout
 
@@ -2694,7 +2694,7 @@ TST{evr}Link:Clk-SP
 
 \begin_layout Plain Layout
 
-TST{evg}FracSynFreq-SP
+TST{evg-EvtClk}FracSynFreq-SP
 \end_layout
 
 \end_inset
@@ -2730,12 +2730,12 @@ status open
 
 \begin_layout Plain Layout
 
->dbpf("TST{evg}EvtClkSrc-Sel","FracSyn")
+>dbpf("TST{evg-EvtClk}Source-Sel","FracSyn")
 \end_layout
 
 \begin_layout Plain Layout
 
->dbpf("TST{evg}FracSynFreq-SP","125.0")
+>dbpf("TST{evg-EvtClk}FracSynFreq-SP","125.0")
 \end_layout
 
 \begin_layout Plain Layout
@@ -2877,7 +2877,7 @@ status open
 
 \begin_layout Plain Layout
 
->dbpr("TST{evg:2-Mxc:0}Freq-RB",1)
+>dbpr("TST{evg-Mxc:0}Frequency-RB",1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3071,7 +3071,7 @@ Timestamp Test
 \end_layout
 
 \begin_layout Standard
-An external 1Hz pulse generater is required for this test.
+An external 1Hz pulse generator is required for this test.
  It should be connected to front panel input 0 on the EVG.
  This is LEMO connector expecting a TTL signal.
 \end_layout
@@ -3196,7 +3196,7 @@ status open
 
 \begin_layout Plain Layout
 
->dbpf("TST{evg-TrigEvt:1}TrigSrc-Sel", "Fp0")
+>dbpf("TST{evg-TrigEvt:1}TrigSrc-Sel", "Front0")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3354,7 +3354,7 @@ TST{evr:3}Time-I               2011-06-02 10:32:14.999993 Thu, 02 Jun 2011
 \end_layout
 
 \begin_layout Standard
-The timestamp indictor record takes its record timestamp from the arrival
+The timestamp indicator record takes its record timestamp from the arrival
  of the 125 event code.
  As can be seen, this time is stored immediately before the sub-seconds
  is zeroed.
@@ -3547,7 +3547,7 @@ Data Buffer reception
 
 \begin_layout Standard
 Each EVR can receive a single data buffer.
- Once a data message has been received, the reception engine is disable
+ Once a data message has been received, the reception engine is disabled
  to allow time to download the buffer.
  Then the engine can be re-enabled in preparation for the next message.
  An interrupt is generated when the message has been fully received, and
@@ -3559,7 +3559,7 @@ Instead of a separate thread, buffer reception is implemented as a two stage
  callback run by the High (first) and Medium (second) priority scan tasks.
  The first callback copies the buffer into memory and immediately re-enables
  buffer reception, it then passes the data to the second callback.
- This callback passes the buffer to a list of user callback function which
+ This callback passes the buffer to a list of user callback functions which
  have registered interest in the Protocol ID found in the message header.
 \end_layout
 
@@ -3574,7 +3574,7 @@ It is impossible to verify a time without a second trusted reference.
 \end_layout
 
 \begin_layout Standard
-The seconds part of the timestamp should only change when when the 1Hz reset
+The seconds part of the timestamp should only change when the 1Hz reset
  event (125) is received from the EVG.
  Therefore a callback is attached to that event code.
  When a new seconds value arrives it is compared to the previous stored
@@ -3608,7 +3608,7 @@ In this example the properties 'Delay' and 'Width' should be settable in
  exact integer as well as the more useful, but imprecise, floating point
  units (eg.
  seconds).
- This needs to be accomplish by two different device supports (longout,
+ This needs to be accomplished by two different device supports (longout,
  and ao).
  Of course it is also useful to have some confirmation that settings have
  been applied so read-backs are desireable (longin, ai).
@@ -4791,7 +4791,7 @@ Except for immediately (
 ) after a change to the fractional synthesizer this property should always
  read as true (locked).
  Reading false for longer then one second is likely an indication that the
- fractional synthesize is misconfigure, or that a hardware fault has occured.
+ fractional synthesize is misconfigured, or that a hardware fault has occured.
 \end_layout
 
 \begin_layout Subsubsection
@@ -7204,7 +7204,7 @@ Stores a value which is the number of counts (uint32) or time (double) of
 \end_layout
 
 \begin_layout Standard
-The number of ticks must be >20 or 40, whichever is the time or one period
+The number of ticks must be >20 or 40, whichever is the time of one period
  of the event clock.
 \end_layout
 
@@ -7995,7 +7995,7 @@ Database Events
 \end_layout
 
 \begin_layout Standard
-Special device supportacting on global EVR objects.
+Special device support acting on global EVR objects.
 \end_layout
 
 \begin_layout Standard
@@ -8169,7 +8169,7 @@ See: evrMrmApp/Db/mrmevrbufrx.db
 \end_layout
 
 \begin_layout Standard
-Implimented for: waveform
+Implemented for: waveform
 \end_layout
 
 \begin_layout Standard
