@@ -1,3 +1,23 @@
+Version 2.0.2-dev
+
+ Bug fixes
+
+ * wrong width for RVAL causes endianness issue
+ * re-enable of CML output during setMode not conditional
+ * Fix EVG driver init w/o hardware.  This was crashing.
+ * Update locking for EVR.  Take lock for all device support actions.
+
+ Features
+
+ * Compile in VCS version or release number.  Add a PV which reads this.
+ * Read SFP EEPROM information (eg. module serial#, temperature, and
+   incoming optical power).  Requires firmware >=5.  For version 5
+   must be from 25 May 2012 or later.
+ * Add mapping record for Prescaler reset action to the example EVR databases.
+   Note: The default mapping for prescaler reset is now disabled.
+         Anyone using this feature should update their databases
+         to include this mapping record!
+
 Version 2.0.1
 
  Bug fixes

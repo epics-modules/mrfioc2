@@ -65,6 +65,28 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
+@subsection v202 2.0.2 (XXXX)
+
+@subsubsection v202bug Bug fixes
+
+
+@li wrong width for RVAL causes endianness issue
+@li re-enable of CML output during setMode not conditional
+@li Fix EVG driver init w/o hardware.  This was crashing.
+@li Update locking for EVR.  Take lock for all device support actions.
+
+@subsubsection v202feat Features
+
+@li Compile in VCS version or release number.  Add a PV which reads this.
+@li Read SFP EEPROM information (eg. module serial#, temperature, and incoming optical power).
+    Requires firmware >=5.  For version 5 must be from 25 May 2012 or later.
+@li Add mapping record for Prescaler reset action to the example EVR databases.
+
+@warning The default mapping for prescaler reset is now disabled.
+         This is an imcompatible change.  Anyone using this feature
+         with a customized database should update their database
+         to include this mapping record!
+
 @subsection v201 2.0.1 (Apr. 2012)
 
 @subsubsection v201bug Bug fixes
