@@ -75,8 +75,11 @@ extern "C" {
 static
 const double fracref=24.0; // MHz
 
-EVRMRM::EVRMRM(const std::string& n,volatile unsigned char* b,epicsUInt32 bl)
-  :EVR(n)
+EVRMRM::EVRMRM(const std::string& n,
+               const std::string& p,
+               volatile unsigned char* b,
+               epicsUInt32 bl)
+  :EVR(n,p)
   ,evrLock()
   ,id(n)
   ,base(b)
