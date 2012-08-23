@@ -197,7 +197,6 @@ bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
         l=CONTAINER(node, listener, node);
         // Don't add duplicates
         if (l->fn==fn && l->fnarg==arg) {
-            guard.unlock();
             return;
         }
     }
@@ -230,7 +229,6 @@ bufRxManager::dataRxDeleteReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
         if (l->fn==fn && l->fnarg==arg) {
             ellDelete(actions, node);
             delete l;
-            guard.unlock();
             return;
         }
     }

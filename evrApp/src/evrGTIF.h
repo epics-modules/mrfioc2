@@ -29,6 +29,9 @@ extern "C" {
  */
 #define ER_PROVIDER_PRIORITY 50
 
+/* Must be called before other functions.  Returns non-zero on error */
+epicsShareFunc
+int EVRInitTime();
 
 epicsShareFunc
 int EVRCurrentTime(epicsTimeStamp *pDest);

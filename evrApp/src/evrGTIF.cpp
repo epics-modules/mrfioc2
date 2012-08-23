@@ -34,7 +34,17 @@ struct priv {
 
 static EVR* lastSrc = 0;
 
-static epicsMutex lastLock;
+static epicsMutexId lastLock;
+
+epicsShareFunc
+int EVRInitTime()
+{
+    if(lastLock)
+        return 0;
+
+    lastLock = epicsMutexMustCreate();
+    return 0;
+}
 
 static
 bool visitTime(mrf::Object* obj, void* raw)
@@ -58,16 +68,20 @@ epicsShareFunc
 int EVREventTime(epicsTimeStamp *pDest, int event)
 {
 try {
-    epicsGuard<epicsMutex> guard(lastLock);
+    epicsMutexMustLock(lastLock);
 
     if(lastSrc) {
-        if(lastSrc->getTimeStamp(pDest, event))
+        if(lastSrc->getTimeStamp(pDest, event)) {
+            epicsMutexUnlock(lastLock);
             return epicsTimeOK;
+        }
     }
     priv p(pDest, event);
     mrf::Object::visitObjects(&visitTime, (void*)&p);
+    epicsMutexUnlock(lastLock);
     return p.ok;
 } catch (std::exception& e) {
+    epicsMutexUnlock(lastLock);
     epicsPrintf("EVREventTime failed: %s\n", e.what());
     return epicsTimeERROR;
 }
@@ -88,6 +102,7 @@ extern "C"
 void EVRTime_Registrar()
 {
     int ret=0;
+    ret|=EVRInitTime();
     ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
     ret|=generalTimeEventTpRegister  ("EVR", ER_PROVIDER_PRIORITY, &EVREventTime);
     if (ret)
