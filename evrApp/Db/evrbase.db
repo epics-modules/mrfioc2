@@ -168,6 +168,13 @@ record(stringin, "$(P)SwVer-I") {
   field(DESC, "Software version")
 }
 
+record(stringin, "$(P)Pos-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Position")
+  field(PINI, "YES")
+  field(DESC, "Card position in system")
+}
+
 record(fanout, "$(P)Time:Init-FO_") {
   field(PINI, "YES")
   field(LNK1, "$(P)Time:Clock-SP")

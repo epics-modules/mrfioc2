@@ -42,7 +42,7 @@ enum TSSource {
 class EVR : public mrf::ObjectInst<EVR>
 {
 public:
-  EVR(const std::string& n) : mrf::ObjectInst<EVR>(n) {}
+  EVR(const std::string& n, const std::string& p) : mrf::ObjectInst<EVR>(n), pos(p) {}
 
   virtual ~EVR()=0;
 
@@ -53,6 +53,9 @@ public:
   virtual epicsUInt32 version() const=0;
   //! Software Version
   virtual std::string versionSw() const;
+
+  //! Position of EVR device in enclosure.
+  virtual std::string position() const;
 
   /**\defgroup ena Enable/disable pulser output.
    */
@@ -196,6 +199,8 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
+private:
+  const std::string pos;
 }; // class EVR
 
 #endif // EVR_HPP_INC

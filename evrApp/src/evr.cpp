@@ -38,6 +38,11 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
+std::string EVR::position() const
+{
+    return pos;
+}
+
 Pulser::~Pulser()
 {
 }
@@ -75,6 +80,8 @@ OBJECT_BEGIN(EVR) {
 
     OBJECT_PROP1("Version", &EVR::version);
     OBJECT_PROP1("Sw Version", &EVR::versionSw);
+
+    OBJECT_PROP1("Position", &EVR::position);
 
     OBJECT_PROP1("Event Clock TS Div", &EVR::uSecDiv);
 

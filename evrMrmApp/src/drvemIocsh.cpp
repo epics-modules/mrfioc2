@@ -210,6 +210,7 @@ void
 mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
+    std::ostringstream position;
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
         return;
@@ -222,6 +223,7 @@ try {
     }
 
     printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
+    position<<cur->bus<<":"<<cur->device<<"."<<cur->function;
     printf("Using IRQ %u\n",cur->irq);
 
     volatile epicsUInt8 *plx, *evr;
@@ -295,7 +297,7 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,evrlen);
 
     void *arg=receiver;
 
@@ -410,6 +412,7 @@ void
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
+    std::ostringstream position;
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
         return;
@@ -424,6 +427,7 @@ try {
     }
 
     printf("Setting up EVR in VME Slot %d\n",slot);
+    position<<"Slot #"<<slot;
 
     printf("Found vendor: %08x board: %08x rev.: %08x\n",
            info.vendor, info.board, info.revision);
@@ -476,7 +480,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,evr,0x20000);
+    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,0x20000);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

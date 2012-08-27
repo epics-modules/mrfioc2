@@ -11,6 +11,10 @@
 #include <linux/io.h>
 #include <linux/interrupt.h>
 #include <linux/pci.h>
+#include <linux/delay.h>
+#ifdef CONFIG_GENERIC_GPIO
+#  include <linux/gpio.h>
+#endif
 
 #define DRV_NAME "mrf-pci"
 #define DRV_VERSION "0"
@@ -18,6 +22,10 @@
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
 MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
+
+static int modparam_gpiobase = -1;
+module_param_named(gpiobase, modparam_gpiobase, int, 0440);
+MODULE_PARM_DESC(gpiobase, "The GPIO number base. -1 means dynamic, which is the default.");
 
 /************************ Register definitions ****************************/
 
@@ -43,6 +51,16 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 #  define INTCSR_INT2_Status   0x20
 #  define INTCSR_PCI_Enable    0x40
 #  define INTCSR_SW_INTR       0x80
+
+#define GPIOC   0x54
+#  define GPIOC_pin0_fn   1
+#  define GPIOC_pin0_dir  2
+#  define GPIOC_pin0_data 4
+#  define GPIOC_pin_fn(N)   (GPIOC_pin0_fn<<(3*(N)))
+#  define GPIOC_pin_dir(N)  (GPIOC_pin0_dir<<(3*(N)))
+#  define GPIOC_pin_data(N) (GPIOC_pin0_data<<(3*(N)))
+/* 8 are supported, but only 4 are used */
+#  define GPIOC_num_pins 4
 
 /*
  * A selection of registers for the PLX PCI9056
@@ -108,6 +126,129 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 /**************************** PCI Driver *************************/
 
+
+struct mrf_priv {
+    struct uio_info uio;
+#ifdef CONFIG_GENERIC_GPIO
+    struct gpio_chip gpio;
+    struct spinlock lock;
+    int gpio_cleanup;
+#endif
+    struct pci_dev *pdev;
+};
+
+#ifdef CONFIG_GENERIC_GPIO
+/************************* GPIO for JTAG **************************/
+
+static const char * const GPIOC_names[GPIOC_num_pins] = {
+    "TCK",
+    "TMS",
+    "TDO", /* output from device, input to computer */
+    "TDI", /* input to device, output from computer */
+};
+
+static
+int mrf_gpio_request(struct gpio_chip *chip, unsigned offset)
+{
+    u32 val;
+    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
+    void __iomem *plx = priv->uio.mem[2].internal_addr;
+
+    if(offset>=GPIOC_num_pins)
+        return -EINVAL;
+    if(offset==2)
+        return 0;
+
+    spin_lock(&priv->lock);
+
+    val = ioread32(plx + GPIOC) & GPIOC_pin_dir(offset);
+    iowrite32(val, plx + GPIOC);
+
+    spin_unlock(&priv->lock);
+
+    dev_info(&priv->pdev->dev, "GPIO%u active\n", offset);
+    return 0;
+}
+
+static
+void mrf_gpio_free(struct gpio_chip *chip, unsigned offset)
+{
+    u32 val;
+    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
+    void __iomem *plx = priv->uio.mem[2].internal_addr;
+
+    if(offset>=GPIOC_num_pins)
+        return;
+
+    spin_lock(&priv->lock);
+
+    /* When not in use turn off driver */
+    val = ioread32(plx + GPIOC) & ~GPIOC_pin_dir(offset);
+    iowrite32(val, plx + GPIOC);
+
+    spin_unlock(&priv->lock);
+
+    dev_info(&priv->pdev->dev, "GPIO%u inactive\n", offset);
+}
+
+static
+int mrf_gpio_get(struct gpio_chip *chip, unsigned offset)
+{
+    int ret;
+    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
+    void __iomem *plx = priv->uio.mem[2].internal_addr;
+
+    if(offset>=GPIOC_num_pins)
+        return 0;
+
+    ret = ioread32(plx + GPIOC) & GPIOC_pin_data(offset);
+
+    return !!ret;
+}
+
+static
+void mrf_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+{
+    u32 val;
+    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
+    void __iomem *plx = priv->uio.mem[2].internal_addr;
+
+    if(offset==2 || offset>=GPIOC_num_pins)
+        return;
+
+    spin_lock(&priv->lock);
+
+    val = ioread32(plx + GPIOC);
+    if(value)
+        val |= GPIOC_pin_data(offset);
+    else
+        val &= ~GPIOC_pin_data(offset);
+
+    iowrite32(val, plx + GPIOC);
+
+    spin_unlock(&priv->lock);
+}
+
+static
+int mrf_gpio_dir_in(struct gpio_chip *chip, unsigned offset)
+{
+    if(offset!=2) /* Only TDO may be input */
+        return -EINVAL;
+    return 0;
+}
+
+static
+int mrf_gpio_dir_out(struct gpio_chip *chip, unsigned offset, int value)
+{
+    if(offset==2) /* All but TDO are output */
+        return -EINVAL;
+    mrf_gpio_set(chip, offset, value);
+    return 0;
+}
+#endif
+
+/******************** PCI interrupt handler ***********************/
+
 static
 irqreturn_t
 mrf_handler(int irq, struct uio_info *info)
@@ -168,16 +309,21 @@ mrf_handler(int irq, struct uio_info *info)
     return IRQ_HANDLED;
 }
 
+/************************* Initialization ***************************/
+
 static
 int __devinit
 mrf_probe(struct pci_dev *dev,
           const struct pci_device_id *id)
 {
         int ret = -ENODEV;
+        struct mrf_priv *priv;
         struct uio_info *info;
 
-        info = kzalloc(sizeof(struct uio_info), GFP_KERNEL);
-        if (!info) return -ENOMEM;
+        priv = kzalloc(sizeof(struct mrf_priv), GFP_KERNEL);
+        if (!priv) return -ENOMEM;
+        info = &priv->uio;
+        priv->pdev = dev;
 
         ret = pci_enable_device(dev);
         if (ret) {
@@ -232,8 +378,72 @@ mrf_probe(struct pci_dev *dev,
         if (ret)
                 goto err_unmap;
 
-        return 0;
+#ifdef CONFIG_GENERIC_GPIO
+        spin_lock_init(&priv->lock);
+        if (dev->device==PCI_DEVICE_ID_PLX_9030) {
+            u32 val;
+            void __iomem *plx = info->mem[2].internal_addr;
 
+            /* GPIO Bits 0-3 are used as GPIO for JTAG.
+             * Bits 4-7 must be left to their normal functions.
+             * The device is expected to configure bits 4-7
+             * itself when initialized, and not change them
+             * afterward.  So we just avoid changes.
+             *
+             * Power up value observed in a PMC-EVR-230
+             * GPIOC = 0x00249924
+             * is consistent with the default given in the
+             * PLX 9030 data book.
+             */
+
+            val = ioread32(plx + GPIOC);
+
+            /* clear everything for GPIO 0-3 (aka first 12 bits).
+             * Preserve current settings for GPIO 4-7.
+             * This will setup these as inputs (which float high)
+             */
+            val &= 0xfffff000;
+
+            iowrite32(val, plx + GPIOC);
+
+            /* Setup GPIO config */
+            priv->gpio.label = dev_name(&dev->dev);
+            priv->gpio.owner = THIS_MODULE;
+            priv->gpio.base = modparam_gpiobase;
+            priv->gpio.ngpio = GPIOC_num_pins;
+            priv->gpio.names = GPIOC_names;
+            priv->gpio.can_sleep = 0;
+            priv->gpio.request = &mrf_gpio_request;
+            priv->gpio.free = &mrf_gpio_free;
+            priv->gpio.direction_input = &mrf_gpio_dir_in;
+            priv->gpio.direction_output = &mrf_gpio_dir_out;
+            priv->gpio.set = &mrf_gpio_set;
+            priv->gpio.get = &mrf_gpio_get;
+
+            /* gpiochip register fail is not fatal.  Likely due
+             * to collision of gpiobase numbers.  Must use dynamic
+             * numbers when multiple MRF cards w/ PLX 9030 are present.
+             */
+            ret = gpiochip_add(&priv->gpio);
+            if (ret) {
+                dev_warn(&dev->dev, "GPIO setup error, JTAG unavailable\n");
+            } else {
+                priv->gpio_cleanup = 1;
+                dev_info(&dev->dev, "GPIO setup ok, JTAG available at bit %d\n",
+                         priv->gpio.base);
+            }
+        }
+#else
+        if (dev->device==PCI_DEVICE_ID_PLX_9030)
+            dev_info(&dev->dev, "GPIO support not built, JTAG unavailable\n");
+#endif
+
+        dev_info(&dev->dev, "MRF Setup complete\n");
+
+        return 0;
+//err_unreg:
+//        uio_unregister_device(info);
+//        pci_set_drvdata(dev, NULL);
 err_unmap:
         iounmap(info->mem[0].internal_addr);
         iounmap(info->mem[2].internal_addr);
@@ -242,7 +452,7 @@ err_release:
 err_disable:
         pci_disable_device(dev);
 err_free:
-        kfree(info);
+        kfree(priv);
         return ret;
 }
 
@@ -284,15 +494,29 @@ void __devexit
 mrf_remove(struct pci_dev *dev)
 {
         struct uio_info *info = pci_get_drvdata(dev);
+        struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
+#ifdef CONFIG_GENERIC_GPIO
+        if (priv->gpio_cleanup) {
+            int status = gpiochip_remove(&priv->gpio);
+            while (status==-EBUSY) {
+                msleep(10); /* operation in progress... zzzzz */
+                status = gpiochip_remove(&priv->gpio);
+            }
+            BUG_ON(status && status!=-EBUSY);
+            dev_info(&dev->dev, "GPIO Cleaned up\n");
+        }
+#endif
         uio_unregister_device(info);
-        platform_set_drvdata(dev, NULL);
+        pci_set_drvdata(dev, NULL);
         iounmap(info->mem[0].internal_addr);
         iounmap(info->mem[2].internal_addr);
         pci_release_regions(dev);
         pci_disable_device(dev);
 
-        kfree(info);
+        kfree(priv);
+
+        dev_info(&dev->dev, "MRF Cleaned up\n");
 }
 
 
