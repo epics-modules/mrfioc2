@@ -77,13 +77,15 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsubsection v202feat Features
 
+@li Updated recommended firmware version for PCI EVRs to 6.
 @li Compile in VCS version or release number.  Add a PV which reads this.
 @li Read SFP EEPROM information (eg. module serial#, temperature, and incoming optical power).
     Requires firmware >=5.  For version 5 must be from 25 May 2012 or later.
 @li Add mapping record for Prescaler reset action to the example EVR databases.
+@li Support and documentation for firmware update of PMC-EVR-230 devices on Linux.
 
 @warning The default mapping for prescaler reset is now disabled.
-         This is an imcompatible change.  Anyone using this feature
+         This is an incompatible change.  Anyone using this feature
          with a customized database should update their database
          to include this mapping record!
 

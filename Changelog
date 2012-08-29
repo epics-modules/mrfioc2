@@ -9,6 +9,7 @@ Version 2.0.2-dev
 
  Features
 
+ * Updated recommended firmware version for PCI EVRs to 6.
  * Compile in VCS version or release number.  Add a PV which reads this.
  * Read SFP EEPROM information (eg. module serial#, temperature, and
    incoming optical power).  Requires firmware >=5.  For version 5
@@ -17,6 +18,7 @@ Version 2.0.2-dev
    Note: The default mapping for prescaler reset is now disabled.
          Anyone using this feature should update their databases
          to include this mapping record!
+ * Support and documentation for firmware update of PMC-EVR-230 devices on Linux
 
 Version 2.0.1
 
