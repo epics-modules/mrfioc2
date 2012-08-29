@@ -61,7 +61,7 @@ Michael Davidsaver <mdavidsaver@bnl.gov>
 \end_layout
 
 \begin_layout Date
-July.
+August.
  2012, Rev.
  6
 \end_layout
@@ -3441,6 +3441,506 @@ TST{evr:3}Time-I               2011-06-02 10:35:34.005655 Thu, 02 Jun 2011
 \begin_layout Standard
 Now a time latched by software when this record is processed.
  For real-time system this time should be stable.
+\end_layout
+
+\begin_layout Section
+Firmware Update
+\end_layout
+
+\begin_layout Subsection
+VME EVRs and EVGs
+\end_layout
+
+\begin_layout Standard
+Update for VME cards is accomplished through the ethernet jack label 
+\begin_inset Quotes eld
+\end_inset
+
+10 BaseT
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The procedure covered in the MRF manual.
+\end_layout
+
+\begin_layout Subsection
+cPCI-EVRTG-300
+\end_layout
+
+\begin_layout Standard
+Undocumented.
+\end_layout
+
+\begin_layout Subsection
+PMC-EVR-230
+\end_layout
+
+\begin_layout Standard
+FIrmware update for the PMC module EVR is accomplish through a JTAG interface
+ as with the cPCI-EVRTG-300.
+ For reasons of physical space the JTAG wires are not brought to a connector,
+ but connected to 4 I/O pins of the PLX 9030 PCI bridge chip.
+ In order to control these pins and update the firmware some additional
+ software is needed.
+ Also the running Kernel must be built with the CONFIG_GENERIC_GPIO and
+ CONFIG_GPIO_SYSFS options.
+\end_layout
+
+\begin_layout Standard
+The Linux kernel module provided with mrfioc2 exposes the 4 I/O pins via
+ the Linux GPIO API.
+ The 4 pins are numbered in the order: TCK, TMS, TDO, and TDI.
+ The number of the first pin is printed to the kernel log when the MRF kernel
+ module is loaded.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+GPIO setup ok, JTAG available at bit 252
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example the 4 pins would be TCK=252, TMS=253, TDO=254, and TDI=255.
+\end_layout
+
+\begin_layout Subsubsection
+Creating an SVF file from a BIT file
+\end_layout
+
+\begin_layout Standard
+The firmware file will likely be supplied in one of two formats having the
+ extensions .bit or .svf.
+ If the provided file has the extension .svf then proceed to section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:pmc:prog"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To convert a .bit file to a .svf file it is necessary to get the iMPACT programmin
+g tool from Xilinx.
+ The easiest way to do this is with the 
+\begin_inset Quotes eld
+\end_inset
+
+Lab Tools
+\begin_inset Quotes erd
+\end_inset
+
+ bundle.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.xilinx.com/support/download/index.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following instructions are for iMPACT version 14.2.
+\end_layout
+
+\begin_layout Enumerate
+Install and run the iMPACT program.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to create a project click cancel
+\end_layout
+
+\begin_layout Enumerate
+On the left side of the main window is a pane titled 
+\begin_inset Quotes eld
+\end_inset
+
+iMPACT FLows
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Double click on 
+\begin_inset Quotes eld
+\end_inset
+
+Create PROM File
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+Xilinx Flash/PROM
+\begin_inset Quotes erd
+\end_inset
+
+ and click the first green arrow.
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+Platform Flash
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+xcf08p
+\begin_inset Quotes erd
+\end_inset
+
+ and click 
+\begin_inset Quotes eld
+\end_inset
+
+Add Storage Device
+\begin_inset Quotes erd
+\end_inset
+
+ then the second green arrow.
+\end_layout
+
+\begin_layout Enumerate
+Select an output file name and path.
+ Ensure that the file format is MCS.
+ Click OK
+\end_layout
+
+\begin_layout Enumerate
+Several small dialogs will appear.
+ When prompted to 
+\begin_inset Quotes eld
+\end_inset
+
+Add device
+\begin_inset Quotes erd
+\end_inset
+
+ select the .bit file provided by MRF.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to add another device click No.
+\end_layout
+
+\begin_layout Enumerate
+On the left side of the main window is a pane titled 
+\begin_inset Quotes eld
+\end_inset
+
+iMPACT Processes
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Double click on 
+\begin_inset Quotes eld
+\end_inset
+
+Generate File
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+The .mcs file should now be written.
+\end_layout
+
+\begin_layout Enumerate
+Exit and restart iMPACT.
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.xilinx.com/support/documentation/user_guides/ug161.pdf
+\end_layout
+
+\end_inset
+
+ starting on page 67 for more detailed instructions.
+\end_layout
+
+\begin_layout Enumerate
+Create a new iMPACT project.
+ Select 
+\begin_inset Quotes eld
+\end_inset
+
+Prepare a Boundary-Scan File
+\begin_inset Quotes erd
+\end_inset
+
+ and the SVF format.
+\end_layout
+
+\begin_layout Enumerate
+When prompted, select a name for the resulting .svf file
+\end_layout
+
+\begin_layout Enumerate
+When prompted to 
+\begin_inset Quotes eld
+\end_inset
+
+Assign New Configuration File
+\begin_inset Quotes erd
+\end_inset
+
+ select the .mcs file just created.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to select a PROM type choose 
+\begin_inset Quotes eld
+\end_inset
+
+xcf08p
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+An icon representing the PROM should now appear as the only entry in the
+ JTAG chain.
+\end_layout
+
+\begin_layout Enumerate
+Right click on this icon and select Program.
+\end_layout
+
+\begin_layout Enumerate
+In the dialog which appears check Verify and click OK.
+\end_layout
+
+\begin_layout Enumerate
+The .svf file should now be written.
+\end_layout
+
+\begin_layout Enumerate
+Exit iMPACT
+\end_layout
+
+\begin_layout Subsubsection
+Programming with UrJTAG
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:pmc:prog"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://urjtag.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As of August 2012 support to the Linux GPIO 
+\begin_inset Quotes eld
+\end_inset
+
+cable
+\begin_inset Quotes erd
+\end_inset
+
+ was not included in any UrJTAG release.
+ It is necessary to checkout and build the development version (commit id
+ b6945fc65 from 9 Aug.
+ 2012 works).
+ This requires the Git version control tool.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ git clone git://urjtag.git.sourceforge.net/gitroot/urjtag/urjtag
+\end_layout
+
+\begin_layout Plain Layout
+
+$ cd urjtag/urjtags
+\end_layout
+
+\begin_layout Plain Layout
+
+$ ./autogen.sh --disable-nls --prefix=$PWD/usr
+\end_layout
+
+\begin_layout Plain Layout
+
+$ make && make install
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On the target system run UrJTAG as root (or a use which can export and use
+ GPIO pins).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ./usr/bin/jtag
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> cable gpio tck=252 tms=253 tdo=254 tdi=255
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> detect
+\end_layout
+
+\begin_layout Plain Layout
+
+IR length: 26
+\end_layout
+
+\begin_layout Plain Layout
+
+Chain length: 2
+\end_layout
+
+\begin_layout Plain Layout
+
+Device Id: 00100001001000111110000010010011 (0x2123E093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Manufacturer: Xilinx (0x093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Part(0):      xc2vp4 (0x123E)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Stepping:     2
+\end_layout
+
+\begin_layout Plain Layout
+
+  Filename:     /epics/urjtag/share/urjtag/xilinx/xc2vp4/xc2vp4
+\end_layout
+
+\begin_layout Plain Layout
+
+Device Id: 11100101000001010111000010010011 (0xE5057093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Manufacturer: Xilinx (0x093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Part(1):      xcf08p (0x5057)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Stepping:     14
+\end_layout
+
+\begin_layout Plain Layout
+
+  Filename:     /epics/urjtag/share/urjtag/xilinx/xcf08p/xcf08p
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> part 1
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> svf /location/of/pmc-prom.svf stop progress
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the device IDs may not be correctly recognized.
+ This will not effect the programming process.
+\end_layout
+
+\begin_layout Standard
+If no errors are printed then the update process was successful.
+ The new firmware will not be loaded until the PMC module is reset (power
+ cycle system).
 \end_layout
 
 \begin_layout Section
