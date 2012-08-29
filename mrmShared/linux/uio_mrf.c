@@ -140,19 +140,12 @@ struct mrf_priv {
 #ifdef CONFIG_GENERIC_GPIO
 /************************* GPIO for JTAG **************************/
 
-static const char * const GPIOC_names[GPIOC_num_pins] = {
-    "TCK",
-    "TMS",
-    "TDO", /* output from device, input to computer */
-    "TDI", /* input to device, output from computer */
-};
-
 static
 int mrf_gpio_request(struct gpio_chip *chip, unsigned offset)
 {
     u32 val;
     struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[2].internal_addr;
+    void __iomem *plx = priv->uio.mem[0].internal_addr;
 
     if(offset>=GPIOC_num_pins)
         return -EINVAL;
@@ -161,12 +154,12 @@ int mrf_gpio_request(struct gpio_chip *chip, unsigned offset)
 
     spin_lock(&priv->lock);
 
-    val = ioread32(plx + GPIOC) & GPIOC_pin_dir(offset);
+    val = ioread32(plx + GPIOC) | GPIOC_pin_dir(offset);
     iowrite32(val, plx + GPIOC);
 
     spin_unlock(&priv->lock);
 
-    dev_info(&priv->pdev->dev, "GPIO%u active\n", offset);
+    dev_info(&priv->pdev->dev, "GPIO%u active. %08x\n", offset, val);
     return 0;
 }
 
@@ -175,7 +168,7 @@ void mrf_gpio_free(struct gpio_chip *chip, unsigned offset)
 {
     u32 val;
     struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[2].internal_addr;
+    void __iomem *plx = priv->uio.mem[0].internal_addr;
 
     if(offset>=GPIOC_num_pins)
         return;
@@ -188,7 +181,7 @@ void mrf_gpio_free(struct gpio_chip *chip, unsigned offset)
 
     spin_unlock(&priv->lock);
 
-    dev_info(&priv->pdev->dev, "GPIO%u inactive\n", offset);
+    dev_info(&priv->pdev->dev, "GPIO%u inactive. %08x\n", offset, val);
 }
 
 static
@@ -196,7 +189,7 @@ int mrf_gpio_get(struct gpio_chip *chip, unsigned offset)
 {
     int ret;
     struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[2].internal_addr;
+    void __iomem *plx = priv->uio.mem[0].internal_addr;
 
     if(offset>=GPIOC_num_pins)
         return 0;
@@ -211,7 +204,7 @@ void mrf_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 {
     u32 val;
     struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[2].internal_addr;
+    void __iomem *plx = priv->uio.mem[0].internal_addr;
 
     if(offset==2 || offset>=GPIOC_num_pins)
         return;
@@ -382,7 +375,7 @@ mrf_probe(struct pci_dev *dev,
         spin_lock_init(&priv->lock);
         if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             u32 val;
-            void __iomem *plx = info->mem[2].internal_addr;
+            void __iomem *plx = info->mem[0].internal_addr;
 
             /* GPIO Bits 0-3 are used as GPIO for JTAG.
              * Bits 4-7 must be left to their normal functions.
@@ -404,6 +397,7 @@ mrf_probe(struct pci_dev *dev,
              */
             val &= 0xfffff000;
 
+            dev_info(&dev->dev, "GPIOC %08x\n", val);
             iowrite32(val, plx + GPIOC);
 
             /* Setup GPIO config */
@@ -411,7 +405,6 @@ mrf_probe(struct pci_dev *dev,
             priv->gpio.owner = THIS_MODULE;
             priv->gpio.base = modparam_gpiobase;
             priv->gpio.ngpio = GPIOC_num_pins;
-            priv->gpio.names = GPIOC_names;
             priv->gpio.can_sleep = 0;
             priv->gpio.request = &mrf_gpio_request;
             priv->gpio.free = &mrf_gpio_free;
