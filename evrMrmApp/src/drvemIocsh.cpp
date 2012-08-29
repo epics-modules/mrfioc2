@@ -289,7 +289,7 @@ try {
         return;
     }
 
-    checkVersion(evr, 3, 3);
+    checkVersion(evr, 3, 6);
 
     // Acknowledge missed interrupts
     //TODO: This avoids a spurious FIFO Full
