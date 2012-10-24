@@ -47,6 +47,8 @@ evgmrm_SRCS += devEvgSoftSeq.cpp
 evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
 
+evgmrm_SRCS += seqconst.c
+
 DBD += evgInit.dbd
 #=============================
 # Build the IOC application
