@@ -1,0 +1,37 @@
+
+#  LN - Linac PV prefix
+#  BR - Booster PV prefix
+#  INJ- Injector (global) PV prefix
+#  NELM - Element count of input
+#  NREP - Number of repetitions
+#  CYCLELEN - Number of ticks of the total cycle length.
+#  FLNK
+
+file "nsls2-inj-modes.db"
+{
+{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)"}
+}
+
+file "nsls2-inj-calc.db"
+{
+{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)"}
+}
+
+file "seq-repeater.db"
+{
+{P="\$(LN){Seq}", NELM="2048", NREP="10", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(BR){Seq:1Hz}", NELM="2048", NREP="1", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(BR){Seq:2Hz}", NELM="2048", NREP="2", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+}
+
+file "seq-merger.db"
+{
+{P="\$(P)", N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
+ TIMEA="\$(LN){Seq}Rep-Calc_.VALB MS PP",
+ CODEA="\$(LN){Seq}Rep-Calc_.VALC MS PP",
+ TIMEB="\$(BR){Seq:1Hz}Rep-Calc_.VALB MS PP",
+ CODEB="\$(BR){Seq:1Hz}Rep-Calc_.VALC MS PP",
+ TIMEC="\$(BR){Seq:2Hz}Rep-Calc_.VALB MS PP",
+ CODEC="\$(BR){Seq:2Hz}Rep-Calc_.VALC MS PP",
+}
+}

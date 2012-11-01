@@ -1,0 +1,51 @@
+# Soft sequence merger
+#
+# Macros
+#  P - PV prefix
+#  NELM
+#  TIMEA
+#  CODEA
+#  TIMEB
+#  CODEB
+#  ...
+#  OUTTIME
+#  OUTCODE
+#
+
+record(aSub, "$(N)") {
+    field(SNAM, "Seq Merge")
+    field(PINI, "RUNNING")
+
+    field(FTA, "DOUBLE")
+    field(FTB, "UCHAR")
+    field(FTC, "DOUBLE")
+    field(FTD, "UCHAR")
+    field(FTE, "DOUBLE")
+    field(FTF, "UCHAR")
+
+    field(NOA, "$(NELM)")
+    field(NOB, "$(NELM)")
+    field(NOC, "$(NELM)")
+    field(NOD, "$(NELM)")
+    field(NOE, "$(NELM)")
+    field(NOF, "$(NELM)")
+
+    field(INPA, "$(TIMEA)")
+    field(INPB, "$(CODEA)")
+    field(INPC, "$(TIMEB=)")
+    field(INPD, "$(CODEB=)")
+    field(INPE, "$(TIMEC=)")
+    field(INPF, "$(CODEC=)")
+
+    field(FTVA, "DOUBLE")
+    field(FTVB, "UCHAR")
+
+    field(NOVA, "$(NELM)")
+    field(NOVB, "$(NELM)")
+
+    field(OUTA, "$(OUTTIME=)")
+    field(OUTB, "$(OUTCODE=)")
+
+    field( EFLG, "ALWAYS")
+}
+
