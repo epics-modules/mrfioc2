@@ -24,6 +24,9 @@ mrmEvgSetupVME(EVG1, 3, 0x100000, 4, 0xC0)
 
 dbLoadRecords("db/vme-evg230.db", "SYS=TST, D=evg:1, EVG=EVG1")
 
+# BNL specific timing sequence constructor
+#dbLoadRecords("db/nsls2-inj-seqs.db","LN=LN-TS, BR=BR-TS, INJ=TST, EVG=evg:1, SEQ=SoftSeq:0")
+
 dbLoadRecords("db/iocAdminRTEMS.db", "IOC=mrftest")
 
 # Auto save/restore

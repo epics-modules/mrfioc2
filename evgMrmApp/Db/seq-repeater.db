@@ -15,6 +15,8 @@ record(waveform, "$(P)EvtCode-SP") {
     field( FTVL, "UCHAR")
     field( FLNK, "$(P)Rep-Calc_")
     info( autosaveFields_pass1, "VAL")
+
+    alias("$(P)EvtCode-RB")
 }
 
 record(waveform, "$(P)Timestamp-SP") {
@@ -23,6 +25,8 @@ record(waveform, "$(P)Timestamp-SP") {
     field( FTVL, "DOUBLE")
     field( FLNK, "$(P)Rep-Calc_")
     info( autosaveFields_pass1, "VAL")
+
+    alias("$(P)Timestamp-RB")
 }
 
 record(longout, "$(P)Mask:Rep-SP") {

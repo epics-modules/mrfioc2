@@ -9,19 +9,24 @@
 
 file "nsls2-inj-modes.db"
 {
-{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)"}
+{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)", EVG="\$(EVG)"}
 }
 
 file "nsls2-inj-calc.db"
 {
-{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)"}
+{LN="\$(LN)", BR="\$(BR)", INJ="\$(INJ)", EVG="\$(EVG)"}
 }
 
 file "seq-repeater.db"
 {
-{P="\$(LN){Seq}", NELM="2048", NREP="10", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
-{P="\$(BR){Seq:1Hz}", NELM="2048", NREP="1", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
-{P="\$(BR){Seq:2Hz}", NELM="2048", NREP="2", CYCLELEN="1000", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(LN){Seq}", NELM="2048", NREP="10",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(BR){Seq:1Hz}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(BR){Seq:Stk}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+{P="\$(BR){Seq:2Hz}", NELM="2048", NREP="2",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
 }
 
 file "seq-merger.db"
@@ -31,7 +36,11 @@ file "seq-merger.db"
  CODEA="\$(LN){Seq}Rep-Calc_.VALC MS PP",
  TIMEB="\$(BR){Seq:1Hz}Rep-Calc_.VALB MS PP",
  CODEB="\$(BR){Seq:1Hz}Rep-Calc_.VALC MS PP",
- TIMEC="\$(BR){Seq:2Hz}Rep-Calc_.VALB MS PP",
- CODEC="\$(BR){Seq:2Hz}Rep-Calc_.VALC MS PP",
+ TIMEC="\$(BR){Seq:Stk}Rep-Calc_.VALB MS PP",
+ CODEC="\$(BR){Seq:Stk}Rep-Calc_.VALC MS PP",
+ TIMED="\$(BR){Seq:2Hz}Rep-Calc_.VALB MS PP",
+ CODED="\$(BR){Seq:2Hz}Rep-Calc_.VALC MS PP",
+ OUTTIME="\$(INJ){\$(EVG)-\$(SEQ)}Timestamp-SP PP",
+ OUTCODE="\$(INJ){\$(EVG)-\$(SEQ)}EvtCode-SP PP",
 }
 }

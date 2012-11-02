@@ -1,19 +1,22 @@
 
+alias("$(INJ){$(EVG)-Mxc:2}Prescaler-RB","$(INJ){$(EVG)}Div:10K-RB")
+alias("$(INJ){$(EVG)-Mxc:6}Prescaler-RB","$(INJ){$(EVG)}Div:1-RB")
+
 record(calc, "$(BR){}Ratio:10kto1-I") {
-    field(INPA, "$(INJ){EVG-Mxc:2}Prescaler-SP") # 10 KHz divider
-    field(INPB, "$(INJ){EVG-Mxc:6}Prescaler-SP") # 1 Hz divider
-    field(CALC, "A/B")
+    field(INPA, "$(INJ){$(EVG)}Div:10K-RB CP MS") # 10 KHz divider
+    field(INPB, "$(INJ){$(EVG)}Div:1-RB CP MS") # 1 Hz divider
+    field(CALC, "B/A")
     field(HIGH, "11000")
     field(LOW , "9000")
     field(HSV , "INVALID")
     field(LSV , "INVALID")
-    field(FLNK, "$(BR){}Ratio:10kto1-I")
+    field(FLNK, "$(BR){}Ratio:10kto2-I")
 }
 
 record(calc, "$(BR){}Ratio:10kto2-I") {
     field(INPA, "$(BR){}Ratio:10kto1-I NPP MS")
     field(CALC, "A/2")
-    field(FLNK, "")
+    field(FLNK, "$(BR){}Ratio:10k-I")
 }
 
 record(calc, "$(BR){}Ratio:10k-I") {
@@ -21,5 +24,5 @@ record(calc, "$(BR){}Ratio:10k-I") {
     field(INPA, "$(BR){}Ratio:10kto1-I NPP MS")
     field(INPB, "$(BR){}Ratio:10kto2-I NPP MS")
     field(INPC, "$(BR){}Mode-Sel CP MS")
-    field(CALC, "C==2?B:A")
+    field(CALC, "C==3?B:A")
 }

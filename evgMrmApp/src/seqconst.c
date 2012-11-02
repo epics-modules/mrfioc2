@@ -92,8 +92,8 @@ long seq_repeat(aSubRecord *prec)
             epicsPrintf("%s: Invalid type for FTV%c\n", prec->name, 'A'+i);
             goto fail;
         }
-        if((&prec->neva)[i]<=0) {
-            epicsPrintf("%s: Too few values NEV%c\n", prec->name, 'A'+i);
+        if((&prec->nova)[i]<=0) {
+            epicsPrintf("%s: Too few values NOV%c\n", prec->name, 'A'+i);
             goto fail;
         }
     }
@@ -110,13 +110,15 @@ long seq_repeat(aSubRecord *prec)
     if(len_out > prec->novc)
         len_out = prec->novc;
 
-    /* amount to add per cycle */
-    add = period/num_cycles;
-
-    if(num_cycles<1 || num_cycles>32) {
+    if(num_cycles==0) {
+        goto fail;
+    } else if(num_cycles>32) {
         epicsPrintf("%s: Num cycles is out of range", prec->name);
         goto fail;
     }
+
+    /* amount to add per cycle */
+    add = period/num_cycles;
 
     if(len_in * num_cycles > len_out) {
         epicsPrintf("%s: Not enough elements for result.  Have %u, need %u\n",
@@ -252,10 +254,16 @@ long seq_merge(aSubRecord *prec)
 
             } else if(T[in_pos[N]]==last_time && found_element!=-1) {
                 /* Duplicate timestamp! */
-                epicsPrintf("%s: Dup timestamp.  %c[%u] and %c[%u]\n",
-                            prec->name,
-                            'A'+(2*found_element), in_pos[found_element]-1,
-                            'A'+(2*N), in_pos[N]);
+                printf("%s: Dup timestamp.  %c[%u] and %c[%u]\n",
+                       prec->name,
+                       'A'+(2*found_element), in_pos[found_element]-1,
+                       'A'+(2*N), in_pos[N]);
+                printf(" Found element: %u\n", found_element);
+                printf(" i=%u, N=%u, ninputs=%u\n", i, N, ninputs);
+                printf(" Out %u C=%u T=%f  [", i, out_C[i], out_T[i]);
+                for(N=0; N<ninputs; N++)
+                    printf("%u, ", in_pos[N/2]);
+                printf("]\n");
                 goto fail;
             }
         }
