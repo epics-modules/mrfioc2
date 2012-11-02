@@ -62,29 +62,12 @@ pattern { P, OBJ }
 
 file evgSoftSeq.db {
 pattern { P, EVG, seqNum, NELM }
-{ "$(SYS){$(D)-SoftSeq:1Norm}",  $(EVG), 0, 2047 }
-{ "$(SYS){$(D)-SoftSeq:1Burst}", $(EVG), 1, 2047 }
-{ "$(SYS){$(D)-SoftSeq:2Norm}",  $(EVG), 2, 2047 }
-{ "$(SYS){$(D)-SoftSeq:2Burst}", $(EVG), 3, 2047 }
-{ "$(SYS){$(D)-SoftSeq:5Norm}",  $(EVG), 4, 2047 }
+{ "$(SYS){$(D)-SoftSeq:0}",  $(EVG), 0, 2047 }
+{ "$(SYS){$(D)-SoftSeq:1}", $(EVG), 1, 2047 }
+{ "$(SYS){$(D)-SoftSeq:2}",  $(EVG), 2, 2047 }
+{ "$(SYS){$(D)-SoftSeq:3}", $(EVG), 3, 2047 }
+{ "$(SYS){$(D)-SoftSeq:Inj}",  $(EVG), 4, 2047 }
 }
-
-file "seq-switch.db"
-{{
-P="INJ-TS{EVG}",
-EVG="INJ-TS{EVG",
- NAME1="1Hz Normal",
-  S1="1Norm",
- NAME2="1Hz Burst",
-  S2="1Burst",
- NAME3="2Hz Normal",
-  S3="2Norm",
- NAME4="2Hz Burst",
-  S4="2Burst",
- NAME5="5Hz Normal",
-  S5="5Norm"
-}}
-
 
 file evgTrigEvt.db {
 pattern { P, OBJ, EVG, trigEvtNum }
