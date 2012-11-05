@@ -25,43 +25,40 @@ class evgSoftSeq(gui.QMainWindow):
         labels = ["Event Code", "Timestamp"]
         self.ui.tableWidget.setHorizontalHeaderLabels(labels)
 
-        if(len(argv) != 4):
+        if len(argv)==4:
+            self.prefix='%s{%s-%s}' % tuple(argv[1:])
+        elif len(argv)==2:
+            self.prefix=argv[1]
+        else:
             print "Invalid number of arguments"
-	    exit(0)
+            exit(0)
 
-        self.arg1 = argv[1]
-        self.arg2 = argv[2]
-        self.arg3 = argv[3]
-	
-        heading = self.arg2 + " " + self.arg3
-        self.ui.label_Heading.setText(heading)
+        self.ui.label_Heading.setText(self.prefix)
 
         self.connect(self.ui.pb_setSequence, SIGNAL("clicked()"), self.setSequence)
 
-        pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsResolution-RB"
+        pv = self.prefix + "TsResolution-RB"
         camonitor(pv, self.sequenceRB)
 
-        pv = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "TsInpMode-RB"
+        pv = self.prefix + "TsInpMode-RB"
         camonitor(pv, self.sequenceRB)
 
         self.sequenceRB(0)
 	
 
     def sequenceRB(self, value):
-        pvEC = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "EvtCode-RB"
-        valueEC = caget(pvEC)
+        pvEC = self.prefix + "EvtCode-RB"
+        pvTS = self.prefix + "Timestamp-RB"
+        valueEC, valueTS = caget([pvEC, pvTS])
 
-        pvTS = self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "Timestamp-RB"
-        valueTS = caget(pvTS)
-
-        if valueEC.ok == True & valueTS.ok == True:
-            for x in range(self.ui.tableWidget.rowCount()):
-                if(valueEC[x]==127):
-                    break
-                item = QTableWidgetItem(QString.number(valueEC[x]))
-                self.ui.tableWidget.setItem(x, 0, item)
-                item = QTableWidgetItem(QString.number(valueTS[x], "G", 14))
-                self.ui.tableWidget.setItem(x, 1, item)
+        for x in range(self.ui.tableWidget.rowCount()):
+            EC, TS = valueEC[x], valueTS[x]
+            if EC==127 or (EC==0 and TS==0):
+                break
+            item = QTableWidgetItem(QString.number(EC))
+            self.ui.tableWidget.setItem(x, 0, item)
+            item = QTableWidgetItem(QString.number(TS, "G", 14))
+            self.ui.tableWidget.setItem(x, 1, item)
 	
     def setSequence(self):
         self.setEvtCode()
@@ -80,7 +77,7 @@ class evgSoftSeq(gui.QMainWindow):
                 break
             args.append(val)
 	  
-        pv =  self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "EvtCode-SP"
+        pv =  self.prefix + "EvtCode-SP"
         caput(pv, args)
 
       	
@@ -97,10 +94,9 @@ class evgSoftSeq(gui.QMainWindow):
                 break
             args.append(val)
 	  
-        pv =  self.arg1 + "{" + self.arg2 + "-" + self.arg3 + "}" + "Timestamp-SP"
+        pv =  self.prefix + "Timestamp-SP"
         caput(pv, args)
 
-	
 if __name__ == '__main__':
     app = cothread.iqt(argv = sys.argv)
     softSeq = evgSoftSeq(sys.argv)
