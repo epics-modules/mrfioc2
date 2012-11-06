@@ -1,20 +1,20 @@
 #! /usr/bin/env python
 
 from PyQt4 import QtCore as core
-from PyQt4.QtCore import *
 from PyQt4 import QtGui as gui
-from PyQt4.QtGui import *
 import sys
-import os
-from subprocess import *
 from PyQt4.QtCore import SIGNAL
 
 import cothread
-from cothread.catools import *
+from cothread import catools, cadef
+from cothread.catools import camonitor, caput
 
 from ui_evgsoftseq import Ui_EvgSoftSeq
 
-class evgSoftSeq(gui.QMainWindow):	
+class evgSoftSeq(gui.QMainWindow):
+
+    enableAll = core.pyqtSignal(bool)
+
     def __init__(self, argv, parent=None):
         gui.QMainWindow.__init__(self, parent)
     
@@ -37,65 +37,128 @@ class evgSoftSeq(gui.QMainWindow):
 
         self.connect(self.ui.pb_setSequence, SIGNAL("clicked()"), self.setSequence)
 
+        self.updated = False
+        self.enableAll.connect(self.ui.tableWidget.setEnabled)
+        self.enableAll.connect(self.ui.pb_setSequence.setEnabled)
+        
+        self.enableAll.emit(False)
+
+        self.codes, self.times = [], []
+
         pv = self.prefix + "TsResolution-RB"
-        camonitor(pv, self.sequenceRB)
+        camonitor(pv, self.sequenceRB, notify_disconnect=True)
 
         pv = self.prefix + "TsInpMode-RB"
-        camonitor(pv, self.sequenceRB)
+        camonitor(pv, self.sequenceRB, notify_disconnect=True)
 
-        self.sequenceRB(0)
-	
+        pv = self.prefix + "EvtCode-RB"
+        camonitor(pv, self.newCodes, notify_disconnect=True)
+
+        pv = self.prefix + "Timestamp-RB"
+        camonitor(pv, self.newTimes, notify_disconnect=True)
+
+    def msg(self, msg, delay=0):
+        self.ui.statusBar.showMessage(msg,delay)
+
+    def newCodes(self, codes):
+        if codes.ok:
+            self.codes = list(codes)
+        self.sequenceRB(codes)
+
+    def newTimes(self, times):
+        if times.ok:
+            self.times = list(times)
+        self.sequenceRB(times)
 
     def sequenceRB(self, value):
-        pvEC = self.prefix + "EvtCode-RB"
-        pvTS = self.prefix + "Timestamp-RB"
-        valueEC, valueTS = caget([pvEC, pvTS])
+        if not value.ok:
+            self.enableAll.emit(False)
+            self.msg("Connection lost")
+            return
+        elif len(self.codes)!=len(self.times) or len(self.codes)==0:
+            self.enableAll.emit(False)
+            return
+        elif self.updated:
+            return
+
+        valueEC, valueTS = self.codes, self.times
 
         for x in range(self.ui.tableWidget.rowCount()):
-            EC, TS = valueEC[x], valueTS[x]
+            try:
+                EC, TS = valueEC[x], valueTS[x]
+            except IndexError:
+                break
             if EC==127 or (EC==0 and TS==0):
                 break
-            item = QTableWidgetItem(QString.number(EC))
+            item = gui.QTableWidgetItem(core.QString.number(EC))
             self.ui.tableWidget.setItem(x, 0, item)
-            item = QTableWidgetItem(QString.number(TS, "G", 14))
+            item = gui.QTableWidgetItem(core.QString.number(TS, "G", 14))
             self.ui.tableWidget.setItem(x, 1, item)
-	
-    def setSequence(self):
-        self.setEvtCode()
-        self.setTimestamp()
 
-    def setEvtCode(self):
-        args = []
+        self.enableAll.emit(True)
+        self.msg("Updated",1000)
+
+    def setSequence(self):        
+        T, C = [], []
         for x in range(self.ui.tableWidget.rowCount()): 
-            item = self.ui.tableWidget.item(x,0)
-            if item == None:
-                break
-            else:
-                (val, OK) = item.text().toInt()
- 
-            if val <= 0 or val > 255:
-                break
-            args.append(val)
-	  
-        pv =  self.prefix + "EvtCode-SP"
-        caput(pv, args)
+            nextC = self.ui.tableWidget.item(x,0)
+            nextT = self.ui.tableWidget.item(x,1)
 
-      	
-    def setTimestamp(self):
-        args = []
-        for x in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(x,1)
-            if item == None:
-                break
+            if nextC is None and nextT is None:
+                break # Done
+            elif nextC is None or nextT is None:
+                self.msg("Incomplete sequence.")
+                return
+
+            nextC, nextT = str(nextC.text()), str(nextT.text())
+
+            if not nextC and not nextT:
+                break # Done
+            elif not nextC or not nextT:
+                self.msg("Incomplete sequence.")
+                return
+
+            try:
+                nextC = int(nextC,0)
+                if nextC <= 0 or nextC > 255:
+                    self.msg("Code %d must be in range [0,255]"%nextC)
+                    return
+            except ValueError:
+                self.msg("Code '%s' must be an integer"%nextC)
+                return
+            try:
+                nextT = float(nextT)
+                if nextT <= 0:
+                    self.msg("Time %d must be >0"%nextT)
+                    return
+            except ValueError:
+                self.msg("Time '%s' must be a positive number"%nextT)
+                return
+
+            T.append(nextT)
+            C.append(nextC)
+
+        self.codes, self.times = [], []
+
+        self.msg('Sending...', 4000)
+        cothread.Spawn(self._setpvs, T, C)
+
+    def _setpvs(self, T, C):
+
+        pvs =  [self.prefix + "EvtCode-SP", self.prefix + "Timestamp-SP"]
+        try:
+            self.enableAll.emit(False)
+            caput(pvs, [C,T], timeout=2.0, wait=True)
+            self.msg("Sent", 2000)
+        except catools.ca_nothing,E:
+            if E.errorcode==cadef.ECA_TIMEOUT:
+                M='Timeout'
             else:
-                (val, OK) = item.text().toDouble()
-		
-            if val == 0 and x > 0:
-                break
-            args.append(val)
-	  
-        pv =  self.prefix + "Timestamp-SP"
-        caput(pv, args)
+                M=cadef.ca_message(E.errorcode)
+            self.msg("Sent failed: "+M, 4000)
+            return
+        finally:
+            self.enableAll.emit(True)
 
 if __name__ == '__main__':
     app = cothread.iqt(argv = sys.argv)
