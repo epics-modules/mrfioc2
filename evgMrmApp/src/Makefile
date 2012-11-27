@@ -85,6 +85,11 @@ evgMrm_DBD  += generalTime.dbd
 evgMrm_LIBS += generalTime
 endif
 
+ifneq ($(CAPUTLOG),)
+mrf_DBD += caPutLog.dbd
+mrf_LIBS += caPutLog
+endif
+
 # Finally link to the EPICS Base libraries
 evgMrm_LIBS += $(EPICS_BASE_IOC_LIBS)
 

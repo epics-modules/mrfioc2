@@ -47,6 +47,11 @@ mrf_DBD  += generalTime.dbd
 mrf_LIBS += generalTime
 endif
 
+ifneq ($(CAPUTLOG),)
+mrf_DBD += caPutLog.dbd
+mrf_LIBS += caPutLog
+endif
+
 # Finally link to the EPICS Base libraries
 mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
 

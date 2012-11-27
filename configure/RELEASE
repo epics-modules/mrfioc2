@@ -27,6 +27,9 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 # automatic save with restore on boot
 #AUTOSAVE=$(EPICS_BASE)
 
+# logging of remote settings changes
+#CAPUTLOG=$(EPICS_BASE)
+
 ## Required Modules ##
 
 # PCI and VME64x support library
