@@ -196,7 +196,8 @@ record(bi, "$(INJ){}Mode:Allw-Sts") {
 }
 
 record(fanout, "$(INJ){}Mode:Init-FO_") {
-  field(PINI, "YES")
+  field(PINI, "RUNNING")
+  field(PHAS, "1")
   field(LNK1, "$(LN){}Mode:Prmt-Sel")
   field(LNK2, "$(BR){}Mode:Prmt-Sel")
   field(LNK3, "$(LN){}Mode-Sel")
