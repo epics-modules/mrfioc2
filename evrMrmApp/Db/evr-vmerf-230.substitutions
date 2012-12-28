@@ -79,6 +79,10 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:FP4}", "$(EVR):FrontOut4", "OUT4 (CML)"}
 {"$(SYS){$(D)-Out:FP5}", "$(EVR):FrontOut5", "OUT5 (CML)"}
 {"$(SYS){$(D)-Out:FP6}", "$(EVR):FrontOut6", "OUT6 (CML)"}
+{"$(SYS){$(D)-Out:FPUV0}", "$(EVR):FrontUnivOut0", "UNIV0"}
+{"$(SYS){$(D)-Out:FPUV1}", "$(EVR):FrontUnivOut1", "UNIV1"}
+{"$(SYS){$(D)-Out:FPUV2}", "$(EVR):FrontUnivOut2", "UNIV2"}
+{"$(SYS){$(D)-Out:FPUV3}", "$(EVR):FrontUnivOut3", "UNIV3"}
 {"$(SYS){$(D)-Out:RB00}","$(EVR):RearUniv0", "Rear 0"}
 {"$(SYS){$(D)-Out:RB01}","$(EVR):RearUniv1", "Rear 1"}
 {"$(SYS){$(D)-Out:RB02}","$(EVR):RearUniv2", "Rear 2"}
