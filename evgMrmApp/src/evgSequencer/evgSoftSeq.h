@@ -103,7 +103,7 @@ public:
     bool isLoaded();
     bool isEnabled();
     bool isCommited();
-    bool isRunning();
+    bool stopRunning();
 
     void load();
     void unload();
@@ -113,7 +113,10 @@ public:
     void abort(bool);
     void pause();
     void sync();
+    void finishSync();
     void commitSoftSeq();
+
+    void process_eos();
 
     void incNumOfRuns();
     void resetNumOfRuns();
@@ -125,7 +128,7 @@ public:
 
 private:
     const epicsUInt32          m_id;
-    evgMrm*                    m_owner;
+    evgMrm* const              m_owner;
     volatile epicsUInt8* const m_pReg;
     std::string                m_desc;
     std::string                m_err;
@@ -133,11 +136,13 @@ private:
     TimestampInpMode           m_timestampInpMode;
     TimestampResolution        m_timestampResolution;
 
+    // scratch copy
     std::vector<epicsUInt64>   m_timestamp; //In Event Clock Ticks
     std::vector<epicsUInt8>    m_eventCode;
     SeqTrigSrc                 m_trigSrc;
     SeqRunMode                 m_runMode;   
 
+    // commited copy
     std::vector<epicsUInt64>   m_timestampCt;
     std::vector<epicsUInt8>    m_eventCodeCt;
     SeqTrigSrc                 m_trigSrcCt;
@@ -148,9 +153,12 @@ private:
 
     bool                       m_isEnabled;
     bool                       m_isCommited;
+    bool                       m_isSynced;
 
     epicsUInt32                m_numOfRuns;
 };
+
+extern int mrmEVGSeqDebug;
 
 #endif //EVG_SEQUENCE_H
 

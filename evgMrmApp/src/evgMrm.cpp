@@ -29,6 +29,9 @@
 
 evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
 mrf::ObjectInst<evgMrm>(id),
+irqStop0_queued(0),
+irqStop1_queued(0),
+irqExtInp_queued(0),
 m_syncTimestamp(false),
 m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
@@ -96,9 +99,9 @@ m_softSeqMgr(this) {
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
         m_timerEvent = new epicsEvent();
 
-        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos_cb,
+        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
                                             m_seqRamMgr.getSeqRam(0));
-        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos_cb,
+        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
                                             m_seqRamMgr.getSeqRam(1));
         init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
     
@@ -201,21 +204,42 @@ evgMrm::isr(void* arg) {
     if(!active)
         return;
     
-    if(active & EVG_IRQ_STOP_RAM(0))
-        callbackRequest(&evg->irqStop0_cb);
+    if(active & EVG_IRQ_STOP_RAM(0)) {
+        if(evg->irqStop0_queued==0) {
+            callbackRequest(&evg->irqStop0_cb);
+            evg->irqStop0_queued=1;
+        } else if(evg->irqStop0_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
+            evg->irqStop0_queued=2;
+        }
+    }
 
-    if(active & EVG_IRQ_STOP_RAM(1))
-        callbackRequest(&evg->irqStop1_cb);
+    if(active & EVG_IRQ_STOP_RAM(1)) {
+        if(evg->irqStop1_queued==0) {
+            callbackRequest(&evg->irqStop1_cb);
+            evg->irqStop1_queued=1;
+        } else if(evg->irqStop1_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
+            evg->irqStop1_queued=2;
+        }
+    }
 
-    if(active & EVG_IRQ_EXT_INP)
-        callbackRequest(&evg->irqExtInp_cb);
+    if(active & EVG_IRQ_EXT_INP) {
+        if(evg->irqExtInp_queued==0) {
+            callbackRequest(&evg->irqExtInp_cb);
+            evg->irqExtInp_queued=1;
+        } else if(evg->irqExtInp_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
+            evg->irqExtInp_queued=2;
+        }
+    }
 
     WRITE32(evg->m_pReg, IrqFlag, flags);
     return;
 }
 
 void
-evgMrm::process_eos_cb(CALLBACK *pCallback) {
+evgMrm::process_eos0_cb(CALLBACK *pCallback) {
     void* pVoid;
     evgSeqRam* seqRam;
     
@@ -224,11 +248,34 @@ evgMrm::process_eos_cb(CALLBACK *pCallback) {
     if(!seqRam)
         return;
 
-    evgSoftSeq* softSeq = seqRam->getSoftSeq();
-    if(!softSeq)
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStop0_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
+        seqRam->m_owner->irqStop0_queued=0;
+    }
+
+    seqRam->process_eos();
+}
+
+void
+evgMrm::process_eos1_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
         return;
 
-    softSeq->incNumOfRuns();
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStop1_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
+        seqRam->m_owner->irqStop1_queued=0;
+    }
+
+    seqRam->process_eos();
 }
 
 void
@@ -236,6 +283,13 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
     void* pVoid;
     callbackGetUser(pVoid, pCallback);
     evgMrm* evg = (evgMrm*)pVoid;
+
+    {
+        interruptLock ig;
+        if(evg->irqExtInp_queued==2)
+            BITSET32(evg->getRegAddr(), IrqEnable, EVG_IRQ_EXT_INP);
+        evg->irqExtInp_queued=0;
+    }
      
     epicsUInt32 data = evg->sendTimestamp();
     if(!data)

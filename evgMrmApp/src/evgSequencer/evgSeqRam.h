@@ -17,7 +17,7 @@ public:
     evgSeqRam(const epicsUInt32, evgMrm* const);
     ~evgSeqRam();
 
-    const epicsUInt32 getId() const;
+    const epicsUInt32 getId() const{return m_id;}
 
     void setEventCode(std::vector<epicsUInt8>);
     std::vector<epicsUInt8> getEventCode();
@@ -34,7 +34,7 @@ public:
     void disableSeqExtTrig(evgInput*);
     evgInput* findSeqExtTrig(evgInput*) const;
 
-    void alloc(evgSoftSeq* seq);
+    bool alloc(evgSoftSeq* seq);
     void dealloc();
 
     void softTrig();
@@ -47,13 +47,16 @@ public:
     bool isRunning() const;
     bool isAllocated() const;
 
+    void process_eos();
+
     evgSoftSeq* getSoftSeq();
 
-private:
     const epicsUInt32          m_id;
-    evgMrm*                    m_owner;
+    evgMrm* const              m_owner;
+private:
     volatile epicsUInt8* const m_pReg;
-    bool                       m_allocated;
+
+    // Guarded with epicsInterruptLock
     evgSoftSeq*                m_softSeq;
 };
 

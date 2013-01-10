@@ -5,9 +5,11 @@
 #include <stdlib.h>
 
 #include <errlog.h>
+#include <epicsInterrupt.h>
 
 #include <mrfCommonIO.h>
 #include <mrfCommon.h>
+#include <epicsGuard.h>
 
 #include "evgMrm.h"
 #include "evgRegMap.h"
@@ -16,13 +18,7 @@ evgSeqRam::evgSeqRam(const epicsUInt32 id, evgMrm* const owner):
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
-m_allocated(0),
 m_softSeq(0) {
-}
-
-const epicsUInt32 
-evgSeqRam::getId() const {
-    return m_id;
 }
 
 void
@@ -204,16 +200,22 @@ evgSeqRam::reset() {
     BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RESET);	
 }
 
-void
+bool
 evgSeqRam::alloc(evgSoftSeq* softSeq) {
-    m_softSeq = softSeq;
-    m_allocated = true;
+    assert(softSeq);
+    interruptLock ig;
+    if(!isAllocated()) {
+        softSeq->setSeqRam(this);
+        m_softSeq = softSeq;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void
 evgSeqRam::dealloc() {
     m_softSeq = 0;
-    m_allocated = false;
 
     //clear interrupt flags
     BITSET32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_id));	
@@ -232,10 +234,23 @@ evgSeqRam::isRunning() const {
 
 bool
 evgSeqRam::isAllocated() const {
-    return m_allocated && m_softSeq;
+    return m_softSeq;
 }
 
-evgSoftSeq* 
+void
+evgSeqRam::process_eos() {
+    evgSoftSeq* softSeq = getSoftSeq();
+    if(!softSeq)
+        return;
+    epicsGuard<epicsMutex> g(softSeq->m_lock);
+    if(softSeq->getSeqRam()!=this)
+        return;
+
+    softSeq->process_eos();
+}
+
+evgSoftSeq*
 evgSeqRam::getSoftSeq() {
+    interruptLock ig;
     return m_softSeq;
 }

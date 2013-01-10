@@ -1,6 +1,7 @@
 #include "evgSoftSeq.h"
 
 #include <math.h>
+#include <stdio.h>
 #include <stdexcept>
 #include <string>
 #include <iostream>
@@ -14,20 +15,23 @@
 
 #include "evgMrm.h"
 
+int mrmEVGSeqDebug = 2;
+
 evgSoftSeq::evgSoftSeq(const epicsUInt32 id, evgMrm* const owner):
 m_lock(),
 m_id(id),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
 m_timestampInpMode(EGU),
-m_trigSrc(Mxc0),
-m_runMode(Normal),
-m_trigSrcCt(Mxc0),
-m_runModeCt(Normal),
+m_trigSrc(None),
+m_runMode(Single),
+m_trigSrcCt(None),
+m_runModeCt(Single),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
 m_isEnabled(0),
 m_isCommited(0),
+m_isSynced(0),
 m_numOfRuns(0) {
     m_eventCodeCt.push_back(0x7f);
     m_timestampCt.push_back(evgEndOfSeqBuf);
@@ -93,6 +97,8 @@ evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
     m_timestamp.assign(timestamp, timestamp + size);
 
     m_isCommited = false;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Update TS\n",m_id);
     scanIoRequest(ioscanpvt);
 }
 
@@ -105,6 +111,8 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
     m_eventCode.assign(eventCode, eventCode + size);
 
     m_isCommited = false;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Update Evt\n",m_id);
     scanIoRequest(ioscanpvt);
 }
 
@@ -113,6 +121,8 @@ evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
     if(trigSrc != m_trigSrc) {
         m_trigSrc = trigSrc;
         m_isCommited = false;
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Update Trig\n",m_id);
         scanIoRequest(ioscanpvt);
     }
 }
@@ -122,6 +132,8 @@ evgSoftSeq::setRunMode(SeqRunMode runMode) {
     if(runMode != m_runMode) {
         m_runMode = runMode;
         m_isCommited = false;
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Update Mode\n",m_id);
         scanIoRequest(ioscanpvt);
     }
 }
@@ -152,20 +164,19 @@ evgSoftSeq::getRunModeCt() {
 
 void
 evgSoftSeq::setSeqRam(evgSeqRam* seqRam) {
+    interruptLock ig;
     m_seqRam = seqRam;
 }
 
 evgSeqRam* 
 evgSoftSeq::getSeqRam() {
+    interruptLock ig;
     return m_seqRam;
 }
 
 bool
 evgSoftSeq::isLoaded() {
-    if(m_seqRam)
-        return true;
-    else
-        return false;
+    return m_seqRam;
 }
 
 bool
@@ -195,33 +206,25 @@ evgSoftSeq::getNumOfRuns() const {
 
 void
 evgSoftSeq::load() {
-    evgSeqRam* seqRam = 0;
-    evgSeqRam* seqRamIter = 0;
+    if(isLoaded())
+        return;
 
     /* 
      * Assign the first avialable(unallocated) hardware sequenceRam to this soft
      * sequence if none is currently assingned.
      */
     for(unsigned int i = 0; i < m_seqRamMgr->numOfRams(); i++) {
-        seqRamIter = m_seqRamMgr->getSeqRam(i);
-        if( seqRamIter->isAllocated() ) {
-            if(this == seqRamIter->getSoftSeq()) {
-                char err[80];
-                sprintf(err, "SoftSeq %d is already loaded", getId());
-                std::string strErr(err);
-                throw std::runtime_error(strErr);
-            }
-        } else {
-            if( !seqRam )
-                seqRam = seqRamIter;
-        }
+        evgSeqRam* seqRamIter = m_seqRamMgr->getSeqRam(i);
+        if( seqRamIter->alloc(this) )
+            break;
     }
 
-    if(seqRam != 0) {
-        setSeqRam(seqRam);
-        seqRam->alloc(this);
-        scanIoRequest(ioscanpvt);
+    if(isLoaded()) {
+        m_isSynced = false;
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Load\n",m_id);
         sync(); 
+        scanIoRequest(ioscanpvt);
     } else {
         char err[80];
         sprintf(err, "No SeqRam to load SoftSeq %d", getId());
@@ -232,28 +235,44 @@ evgSoftSeq::load() {
 	
 void
 evgSoftSeq::unload() {
-    if(m_seqRam) {
-        m_seqRam->setRunMode(Single);
-        m_seqRam->dealloc();
-        setSeqRam(0);
-        scanIoRequest(ioscanpvt);
-    }
+    if(isLoaded())
+        return;
+
+    m_seqRam->setRunMode(Single);
+    m_seqRam->setTrigSrc(None);
+    m_seqRam->dealloc();
+    setSeqRam(0);
+    m_isSynced = false;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Unload\n",m_id);
+    scanIoRequest(ioscanpvt);
 }
 
 
 void
-evgSoftSeq::commit() {	
+evgSoftSeq::commit() {
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Request Commit\n",m_id);
     commitSoftSeq();
 
-    if(m_seqRam) sync();
+    if(isLoaded()) {
+        sync();
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Committed\n",m_id);
+    } else {
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Committed (Not loaded)\n",m_id);
+    }
 
-    m_isCommited = true;
     scanIoRequest(ioscanpvt);
 }
 
 void
 evgSoftSeq::enable() {
-    if(m_seqRam) {
+    if(isEnabled())
+        return;
+
+    if(isLoaded()) {
         /*
          * RunMode and TrigSrc could be modified in the hardware. So it is 
          * necessary to sync them before enabling the sequence.
@@ -264,15 +283,24 @@ evgSoftSeq::enable() {
     }
 
     m_isEnabled = true;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Enable\n",m_id);
     scanIoRequest(ioscanpvt);
 }
 
 void
 evgSoftSeq::disable() {
-    if(m_seqRam)
+    if(!isEnabled())
+        return;
+
+    if(m_seqRam) {
         m_seqRam->setRunMode(Single);
+        m_seqRam->setTrigSrc(None);
+    }
 
     m_isEnabled = false;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Disable\n",m_id);
     scanIoRequest(ioscanpvt);
 }
 
@@ -281,6 +309,8 @@ evgSoftSeq::abort(bool callBack) {
     if( m_seqRam && m_seqRam->isEnabled() ) {
         m_seqRam->reset();
         m_isEnabled = false;
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Abort!\n",m_id);
         scanIoRequest(ioscanpvt);
 
         if(callBack) {
@@ -301,36 +331,56 @@ evgSoftSeq::pause() {
     if( m_seqRam && m_seqRam->isEnabled() ) {
         m_seqRam->disable();
         m_isEnabled = false;
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Pause\n",m_id);
         scanIoRequest(ioscanpvt);
     }
 }
 
 void
 evgSoftSeq::sync() {
-    if(!m_seqRam) {
-        char err[80];
-        sprintf(err, "SeqRam is not allocated for SoftSeq %d", getId());
-        std::string strErr(err);
-        throw std::runtime_error(strErr);
-    }
-
-    if(isRunning())
+    if(!isLoaded() || isCommited())
         return;
 
+    if(stopRunning()) {
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Start sync\n",m_id);
+        return; // wait for EOS
+    }
+    finishSync(); // or finish immediately
+}
+
+void
+evgSoftSeq::finishSync()
+{
+    if(mrmEVGSeqDebug>=2) {
+        fprintf(stderr, "Syncing...\n Src: %d\n Mode: %d\n",
+                (int)getTrigSrcCt(), (int)getRunModeCt());
+    }
     m_seqRam->setEventCode(getEventCodeCt());
     m_seqRam->setTimestamp(getTimestampCt());
     m_seqRam->setTrigSrc(getTrigSrcCt());
     m_seqRam->setRunMode(getRunModeCt());
-    if(m_isEnabled) m_seqRam->enable();
+    if(m_isEnabled) {
+        m_seqRam->enable();
+        if(mrmEVGSeqDebug)
+            fprintf(stderr, "SS%u: Enabling...\n",m_id);
+    }
 
+    m_isSynced = true;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Finish sync\n",m_id);
     scanIoRequest(ioscanpvt);
 }
 
 /**
  * Make sure that this soft sequence does not re-run.
+ *
+ * Returns true if it the sequence is not running
+ * at the time.
  */
 bool
-evgSoftSeq::isRunning() {
+evgSoftSeq::stopRunning() {
     m_seqRam->setRunMode(Single);
     m_seqRam->setTrigSrc(None);
 	
@@ -415,5 +465,20 @@ evgSoftSeq::commitSoftSeq() {
     m_eventCodeCt = eventCode;
     m_trigSrcCt = m_trigSrc;
     m_runModeCt = m_runMode;
+
+    m_isCommited = true;
+    m_isSynced = false;
+
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Commit complete, need sync\n",m_id);
 }
 
+
+void
+evgSoftSeq::process_eos()
+{
+    incNumOfRuns();
+
+    if(isLoaded() && !m_isSynced)
+        finishSync();
+}

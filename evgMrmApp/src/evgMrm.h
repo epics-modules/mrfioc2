@@ -65,7 +65,8 @@ public:
     /**    Interrupt and Callback    **/
     static void isr(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
-    static void process_eos_cb(CALLBACK*);
+    static void process_eos0_cb(CALLBACK*);
+    static void process_eos1_cb(CALLBACK*);
     static void process_inp_cb(CALLBACK*);
 
     /** TimeStamp    **/
@@ -91,6 +92,11 @@ public:
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
     CALLBACK                      irqExtInp_cb;
+
+    // flags for CB rate limiting
+    unsigned char irqStop0_queued;
+    unsigned char irqStop1_queued;
+    unsigned char irqExtInp_queued;
 
     IOSCANPVT                     ioScanTimestamp;
     bool                          m_syncTimestamp;
