@@ -54,6 +54,7 @@
 #include  <epicsTypes.h>        /* EPICS Architecture-independent type definitions                */
 #include  <epicsTime.h>         /* EPICS Time definitions                                         */
 #include  <epicsMath.h>         /* EPICS Common math functions & definitions                      */
+#include  <epicsInterrupt.h>
 
 #include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
 #include  <dbAccess.h>          /* EPICS Database Access definitions                              */
@@ -165,6 +166,17 @@ public:
 };
 #define SCOPED_LOCK2(m, name) scopedLock<epicsMutex> name(m)
 #define SCOPED_LOCK(m) SCOPED_LOCK2(m, m##_guard)
+
+class interruptLock
+{
+    int key;
+public:
+    interruptLock()
+        :key(epicsInterruptLock())
+    {}
+    ~interruptLock()
+    { epicsInterruptUnlock(key); }
+};
 
 #endif /* __cplusplus */
 
