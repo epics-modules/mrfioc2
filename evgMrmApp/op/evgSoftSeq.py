@@ -128,8 +128,8 @@ class evgSoftSeq(gui.QMainWindow):
                 return
             try:
                 nextT = float(nextT)
-                if nextT <= 0:
-                    self.msg("Time %d must be >0"%nextT)
+                if nextT < 0:
+                    self.msg("Time %d must be >=0"%nextT)
                     return
             except ValueError:
                 self.msg("Time '%s' must be a positive number"%nextT)
