@@ -235,13 +235,16 @@ evgSoftSeq::load() {
 	
 void
 evgSoftSeq::unload() {
-    if(isLoaded())
+    if(!isLoaded())
         return;
 
     m_seqRam->setRunMode(Single);
     m_seqRam->setTrigSrc(None);
-    m_seqRam->dealloc();
-    setSeqRam(0);
+    {
+        interruptLock ig;
+        m_seqRam->dealloc();
+        setSeqRam(0);
+    }
     m_isSynced = false;
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Unload\n",m_id);
@@ -251,6 +254,8 @@ evgSoftSeq::unload() {
 
 void
 evgSoftSeq::commit() {
+    if(isCommited())
+        return;
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Request Commit\n",m_id);
     commitSoftSeq();
@@ -306,23 +311,28 @@ evgSoftSeq::disable() {
 
 void
 evgSoftSeq::abort(bool callBack) {
-    if( m_seqRam && m_seqRam->isEnabled() ) {
-        m_seqRam->reset();
-        m_isEnabled = false;
-        if(mrmEVGSeqDebug)
-            fprintf(stderr, "SS%u: Abort!\n",m_id);
-        scanIoRequest(ioscanpvt);
+    if(!isLoaded() && !isEnabled())
+        return;
 
-        if(callBack) {
-            /*
+    // Prevent re-trigger
+    m_seqRam->setRunMode(Single);
+    m_seqRam->setTrigSrc(None);
+
+    m_seqRam->reset();
+    m_isEnabled = false;
+    if(mrmEVGSeqDebug)
+        fprintf(stderr, "SS%u: Abort!\n",m_id);
+    scanIoRequest(ioscanpvt);
+
+    if(callBack) {
+        /*
              * Satisfy any callback request pending on irqStop0 or irqStop1
              * recList. As no 'End of sequence' Intrrupt will be generated. 
              */
-            if(m_seqRam->getId() == 0)
-                callbackRequest(&m_owner->irqStop0_cb);
-            else 
-                callbackRequest(&m_owner->irqStop1_cb);
-        }
+        if(m_seqRam->getId() == 0)
+            callbackRequest(&m_owner->irqStop0_cb);
+        else
+            callbackRequest(&m_owner->irqStop1_cb);
     }
 }
 
@@ -339,7 +349,7 @@ evgSoftSeq::pause() {
 
 void
 evgSoftSeq::sync() {
-    if(!isLoaded() || isCommited())
+    if(!isLoaded() || m_isSynced)
         return;
 
     if(stopRunning()) {
