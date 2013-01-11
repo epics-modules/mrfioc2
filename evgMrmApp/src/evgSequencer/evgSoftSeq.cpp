@@ -15,7 +15,7 @@
 
 #include "evgMrm.h"
 
-int mrmEVGSeqDebug = 2;
+int mrmEVGSeqDebug = 0;
 
 evgSoftSeq::evgSoftSeq(const epicsUInt32 id, evgMrm* const owner):
 m_lock(),
@@ -97,7 +97,7 @@ evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
     m_timestamp.assign(timestamp, timestamp + size);
 
     m_isCommited = false;
-    if(mrmEVGSeqDebug)
+    if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Update TS\n",m_id);
     scanIoRequest(ioscanpvt);
 }
@@ -111,7 +111,7 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
     m_eventCode.assign(eventCode, eventCode + size);
 
     m_isCommited = false;
-    if(mrmEVGSeqDebug)
+    if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Update Evt\n",m_id);
     scanIoRequest(ioscanpvt);
 }
@@ -121,7 +121,7 @@ evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
     if(trigSrc != m_trigSrc) {
         m_trigSrc = trigSrc;
         m_isCommited = false;
-        if(mrmEVGSeqDebug)
+        if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Update Trig\n",m_id);
         scanIoRequest(ioscanpvt);
     }
@@ -132,7 +132,7 @@ evgSoftSeq::setRunMode(SeqRunMode runMode) {
     if(runMode != m_runMode) {
         m_runMode = runMode;
         m_isCommited = false;
-        if(mrmEVGSeqDebug)
+        if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Update Mode\n",m_id);
         scanIoRequest(ioscanpvt);
     }
@@ -256,7 +256,7 @@ void
 evgSoftSeq::commit() {
     if(isCommited())
         return;
-    if(mrmEVGSeqDebug)
+    if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Request Commit\n",m_id);
     commitSoftSeq();
 
@@ -353,7 +353,7 @@ evgSoftSeq::sync() {
         return;
 
     if(stopRunning()) {
-        if(mrmEVGSeqDebug)
+        if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Start sync\n",m_id);
         return; // wait for EOS
     }
@@ -363,7 +363,7 @@ evgSoftSeq::sync() {
 void
 evgSoftSeq::finishSync()
 {
-    if(mrmEVGSeqDebug>=2) {
+    if(mrmEVGSeqDebug>1) {
         fprintf(stderr, "Syncing...\n Src: %d\n Mode: %d\n",
                 (int)getTrigSrcCt(), (int)getRunModeCt());
     }
@@ -373,12 +373,12 @@ evgSoftSeq::finishSync()
     m_seqRam->setRunMode(getRunModeCt());
     if(m_isEnabled) {
         m_seqRam->enable();
-        if(mrmEVGSeqDebug)
+        if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Enabling...\n",m_id);
     }
 
     m_isSynced = true;
-    if(mrmEVGSeqDebug)
+    if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Finish sync\n",m_id);
     scanIoRequest(ioscanpvt);
 }
@@ -479,7 +479,7 @@ evgSoftSeq::commitSoftSeq() {
     m_isCommited = true;
     m_isSynced = false;
 
-    if(mrmEVGSeqDebug)
+    if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Commit complete, need sync\n",m_id);
 }
 
@@ -511,3 +511,7 @@ void evgSoftSeq::show(int lvl)
     fprintf(stderr, " Enabled: %d\n Committed: %d\n Synced: %d\n",
             isEnabled(), isCommited(), m_isSynced);
 }
+
+#include <epicsExport.h>
+
+epicsExportAddress(int,mrmEVGSeqDebug);
