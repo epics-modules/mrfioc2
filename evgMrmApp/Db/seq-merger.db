@@ -14,7 +14,6 @@
 
 record(aSub, "$(N)") {
     field(SNAM, "Seq Merge")
-    field(PINI, "RUNNING")
 
     field(FTA, "DOUBLE")
     field(FTB, "UCHAR")

@@ -74,6 +74,9 @@ long seq_repeat(aSubRecord *prec)
     double *period_D = prec->valb;
     epicsUInt8 *period_C = prec->valc;
 
+    if(prec->nsev>=INVALID_ALARM) /* Invalid inputs */
+        return -1;
+
     /* Check type and length of inputs and outputs */
 
     for(i=0; i<NELEMENTS(seq_repeat_ft); i++) {
@@ -194,6 +197,9 @@ long seq_merge(aSubRecord *prec)
     epicsUInt32 maxout = prec->nova;
     double *out_T = prec->vala;
     epicsUInt8 *out_C = prec->valb;
+
+    if(prec->nsev>=INVALID_ALARM) /* Invalid inputs */
+        return -1;
 
     memset(in_pos, 0, sizeof(in_pos));
 
