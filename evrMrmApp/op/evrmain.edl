@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 25
-y 348
+x 573
+y 102
 w 643
 h 654
 font "helvetica-medium-r-12.0"
@@ -2676,7 +2676,7 @@ x 65
 y 167
 w 36
 h 19
-controlPv "$(SYS)\{$(D)\}Evt:Blink0-SP"
+controlPv "$(SYS)\{$(D)\}Evt:ResetPS-SP"
 font "helvetica-medium-r-12.0"
 fgColor index 14
 fgAlarm
