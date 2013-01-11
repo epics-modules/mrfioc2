@@ -104,6 +104,8 @@ public:
 
     mrmDataBufTx                  m_buftx;
 
+    void show(int lvl);
+
 private:
     const std::string             m_id;
     volatile epicsUInt8* const    m_pReg;

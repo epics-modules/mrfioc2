@@ -482,3 +482,22 @@ evgSoftSeq::process_eos()
     if(isLoaded() && !m_isSynced)
         finishSync();
 }
+
+void evgSoftSeq::show(int lvl)
+{
+    if(lvl<1)
+        return;
+
+    fprintf(stderr, "SoftSeq %d\n", m_id);
+    epicsUInt32 rid = (epicsUInt32)-1;
+    evgSeqRam *ram;
+    {
+        interruptLock ig;
+        ram=getSeqRam();
+        if(ram)
+            rid = ram->getId();
+    }
+    fprintf(stderr, " Loaded: %s (%u)\n", ram ? "Yes": "No", rid);
+    fprintf(stderr, " Enabled: %d\n Committed: %d\n Synced: %d\n",
+            isEnabled(), isCommited(), m_isSynced);
+}

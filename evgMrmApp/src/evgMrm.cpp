@@ -462,4 +462,13 @@ evgMrm::getTimerEvent() {
     return m_timerEvent;
 }
 
+namespace {
+    struct showSoftSeq {int lvl; void operator()(evgSoftSeq* seq){seq->show(lvl);}};
+}
 
+void evgMrm::show(int lvl)
+{
+    showSoftSeq ss;
+    ss.lvl = lvl;
+    m_softSeqMgr.visit(ss);
+}

@@ -122,6 +122,8 @@ public:
     void resetNumOfRuns();
     epicsUInt32 getNumOfRuns() const;
 
+    void show(int);
+
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
     epicsMutex                 m_lock;

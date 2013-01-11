@@ -388,8 +388,9 @@ reportCard(mrf::Object* obj, void* arg) {
 
     printf("    ID: %s     \n", evg->getId().c_str());
     
-    if(*level >= 1)
-        printf("    FPGA version: %08x\n", evg->getFwVersion());
+    printf("    FPGA version: %08x\n", evg->getFwVersion());
+
+    evg->show(*level);
     
     if(*level >= 2)
         printregisters(evg->getRegAddr());
