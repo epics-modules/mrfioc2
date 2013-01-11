@@ -22,7 +22,7 @@ m_softSeq(0) {
 }
 
 void
-evgSeqRam::setEventCode(std::vector<epicsUInt8> eventCode) {
+evgSeqRam::setEventCode(const std::vector<epicsUInt8>& eventCode) {
     for(unsigned int i = 0; i < eventCode.size(); i++)
         WRITE8(m_pReg, SeqRamEvent(m_id,i), eventCode[i]);
 }
@@ -38,7 +38,7 @@ evgSeqRam::getEventCode() {
 }
 
 void
-evgSeqRam::setTimestamp(std::vector<epicsUInt64> timestamp){
+evgSeqRam::setTimestamp(const std::vector<epicsUInt64>& timestamp){
     for(unsigned int i = 0; i < timestamp.size(); i++)
         WRITE32(m_pReg, SeqRamTS(m_id,i), (epicsUInt32)timestamp[i]);
 }

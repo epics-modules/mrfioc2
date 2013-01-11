@@ -19,10 +19,10 @@ public:
 
     const epicsUInt32 getId() const{return m_id;}
 
-    void setEventCode(std::vector<epicsUInt8>);
+    void setEventCode(const std::vector<epicsUInt8>&);
     std::vector<epicsUInt8> getEventCode();
 
-    void setTimestamp(std::vector<epicsUInt64>);
+    void setTimestamp(const std::vector<epicsUInt64>&);
     std::vector<epicsUInt64> getTimestamp();
 
     void setTrigSrc(SeqTrigSrc);

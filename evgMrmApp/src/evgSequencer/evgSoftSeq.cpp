@@ -421,6 +421,10 @@ evgSoftSeq::commitSoftSeq() {
     std::vector<epicsUInt64> timestamp;
     std::vector<epicsUInt8> eventCode;
 
+    // reserve (allocate) for worst case
+    timestamp.reserve(2048);
+    eventCode.reserve(2048);
+
     /*
      * Make EventCode and Timestamp vector of same size
      *(Smaller of the two vectors sizes).
@@ -470,6 +474,11 @@ evgSoftSeq::commitSoftSeq() {
         else
             timestamp.push_back(timestamp[timestamp.size()-1] + evgEndOfSeqBuf);
     }
+
+    if(timestamp.size()!=eventCode.size())
+        throw std::logic_error("SoftSeq, length of timestamp and eventCode doesn't match");
+    else if(timestamp.size()>2047)
+        throw std::runtime_error("Sequence too long");
 
     m_timestampCt = timestamp;
     m_eventCodeCt = eventCode;
