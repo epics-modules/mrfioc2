@@ -154,10 +154,10 @@ static void ntpshmupdate(void*, epicsUInt32 event)
     seg->valid = 0;
     SYNC();
     int c1 = seg->count++;
-    seg->rxSec = evrts_posix.tv_sec;
-    seg->rxUsec = evrts_posix.tv_usec;
-    seg->stampSec = cputs.tv_sec;
-    seg->stampUsec = cputs.tv_usec;
+    seg->stampSec = evrts_posix.tv_sec;
+    seg->stampUsec = evrts_posix.tv_usec;
+    seg->rxSec = cputs.tv_sec;
+    seg->rxUsec = cputs.tv_usec;
     int c2 = seg->count++;
     if(c1+1!=c2) {
         fprintf(stderr, "ntpshmupdate: possible collision with another writer!\n");
