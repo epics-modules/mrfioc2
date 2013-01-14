@@ -36,6 +36,9 @@ evr_SRCS += devWfMailbox.c
 
 evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
 
+evr_SRCS_Linux += ntpShm.cpp
+evr_SRCS_DEFAULT += ntpShmNull.cpp
+
 # Note: evrtest is NOT a working ioc.
 #       it exists to ensure that libevr
 #       will link correctly.
