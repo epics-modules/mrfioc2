@@ -69,7 +69,7 @@ struct eventCode {
 
     IOSCANPVT occured;
 
-    typedef std::set<std::pair<EVR::eventCallback,void*> > notifiees_t;
+    typedef std::list<std::pair<EVR::eventCallback,void*> > notifiees_t;
     notifiees_t notifiees;
 
     CALLBACK done;

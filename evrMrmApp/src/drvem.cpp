@@ -852,7 +852,7 @@ EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
 
     SCOPED_LOCK2(evrLock, guard);
 
-    events[event].notifiees.insert( std::make_pair(cb,arg));
+    events[event].notifiees.push_back( std::make_pair(cb,arg));
 
     interestedInEvent(event, true);
 }
@@ -865,7 +865,7 @@ EVRMRM::eventNotityDel(epicsUInt32 event, eventCallback cb, void* arg)
 
     SCOPED_LOCK2(evrLock, guard);
 
-    events[event].notifiees.erase(std::make_pair(cb,arg));
+    events[event].notifiees.remove(std::make_pair(cb,arg));
 
     interestedInEvent(event, false);
 }
