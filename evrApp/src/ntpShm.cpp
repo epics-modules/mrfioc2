@@ -40,6 +40,7 @@
 #include <epicsThread.h>
 #include <callback.h>
 #include <drvSup.h>
+#include <recGbl.h>
 #include <longinRecord.h>
 #include <aiRecord.h>
 #include <menuConvert.h>
@@ -341,7 +342,14 @@ static long read_fail(longinRecord* prec)
 static long read_delta(aiRecord* prec)
 {
     epicsMutexMustLock(ntpShm.ntplock);
-    double val = epicsTimeDiffInSeconds(&ntpShm.lastStamp, &ntpShm.lastRx);
+    double val = 0.0;
+    if(ntpShm.lastValid)
+        val = epicsTimeDiffInSeconds(&ntpShm.lastStamp, &ntpShm.lastRx);
+    else
+        recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+    if(prec->tse==epicsTimeEventDeviceTime) {
+        prec->time = ntpShm.lastStamp;
+    }
     epicsMutexUnlock(ntpShm.ntplock);
 
     if(prec->linr==menuConvertLINEAR){
@@ -354,6 +362,7 @@ static long read_delta(aiRecord* prec)
         val/=prec->aslo;
     prec->val = val;
     prec->udf = !isfinite(val);
+
     return 2;
 }
 
