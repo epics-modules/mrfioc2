@@ -34,6 +34,11 @@ device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
 
 device(waveform, CONSTANT, devWfMailbox, "Mailbox")
 
+#
+device(longin, CONSTANT, devNtpShmLiOk, "EVR NTP OK")
+device(longin, CONSTANT, devNtpShmLiFail, "EVR NTP Fail")
+device(ai, CONSTANT, devNtpShmAiDelta, "EVR NTP Delta")
+
 registrar(asub_evr)
 registrar(EVRTime_Registrar)
 registrar(ntpShmRegister)

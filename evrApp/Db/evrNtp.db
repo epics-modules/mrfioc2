@@ -1,0 +1,20 @@
+
+record(longin, "$(P)Cnt:OK-I") {
+  field(DTYP, "EVR NTP OK")
+  field(SCAN, "I/O Intr")
+  field(EGU , "Cnt")
+  field(FLNK, "$(P)Cnt:Fail-I")
+}
+
+record(longin, "$(P)Cnt:Fail-I") {
+  field(DTYP, "EVR NTP Fail")
+  field(EGU , "Cnt")
+  field(FLNK, "$(P)Diff:Err-I")
+}
+
+record(ai, "$(P)Diff:Err-I") {
+  field(DTYP, "EVR NTP Delta")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e-6")
+  field(EGU , "us")
+}

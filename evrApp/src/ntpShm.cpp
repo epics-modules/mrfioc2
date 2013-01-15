@@ -40,6 +40,10 @@
 #include <epicsThread.h>
 #include <callback.h>
 #include <drvSup.h>
+#include <longinRecord.h>
+#include <aiRecord.h>
+#include <menuConvert.h>
+#include <dbScan.h>
 #include <iocsh.h>
 #include <initHooks.h>
 
@@ -103,6 +107,12 @@ typedef struct {
     int notify_nomap;
     int notify_1strx;
 
+    IOSCANPVT lastUpdate;
+
+    bool lastValid;
+    epicsTimeStamp lastStamp;
+    epicsTimeStamp lastRx;
+
     unsigned int numOk;
     unsigned int numFail;
 } ntpShmPriv;
@@ -112,6 +122,7 @@ static ntpShmPriv ntpShm;
 static void incFail()
 {
     epicsMutexMustLock(ntpShm.ntplock);
+    ntpShm.lastValid = false;
     ntpShm.numFail++;
     epicsMutexUnlock(ntpShm.ntplock);
 }
@@ -167,8 +178,13 @@ static void ntpshmupdate(void*, epicsUInt32 event)
     SYNC();
 
     epicsMutexMustLock(ntpShm.ntplock);
+    ntpShm.lastValid = true;
     ntpShm.numOk++;
+    ntpShm.lastStamp = evrts;
+    ntpShm.lastRx = epicsTime(cputs);
     epicsMutexUnlock(ntpShm.ntplock);
+
+    scanIoRequest(ntpShm.lastUpdate);
 
     if(!ntpShm.notify_1strx) {
         fprintf(stderr, "First update ready for NTPD\n");
@@ -298,6 +314,49 @@ static void time2ntpCallFunc(const iocshArgBuf *args)
     time2ntp(args[0].sval,args[1].ival,args[2].ival);
 }
 
+static long init_record(dbCommon*) { return 0; }
+
+static long get_ioint_info(int /*cmd*/, dbCommon */*pRec*/, IOSCANPVT *ppvt)
+{
+    *ppvt = ntpShm.lastUpdate;
+    return 0;
+}
+
+static long read_ok(longinRecord* prec)
+{
+    epicsMutexMustLock(ntpShm.ntplock);
+    prec->val = ntpShm.numOk;
+    epicsMutexUnlock(ntpShm.ntplock);
+    return 0;
+}
+
+static long read_fail(longinRecord* prec)
+{
+    epicsMutexMustLock(ntpShm.ntplock);
+    prec->val = ntpShm.numFail;
+    epicsMutexUnlock(ntpShm.ntplock);
+    return 0;
+}
+
+static long read_delta(aiRecord* prec)
+{
+    epicsMutexMustLock(ntpShm.ntplock);
+    double val = epicsTimeDiffInSeconds(&ntpShm.lastStamp, &ntpShm.lastRx);
+    epicsMutexUnlock(ntpShm.ntplock);
+
+    if(prec->linr==menuConvertLINEAR){
+        val-=prec->eoff;
+        if(prec->eslo!=0)
+            val/=prec->eslo;
+    }
+    val-=prec->aoff;
+    if(prec->aslo!=0)
+        val/=prec->aslo;
+    prec->val = val;
+    prec->udf = !isfinite(val);
+    return 2;
+}
+
 static void ntpShmReport(int)
 {
     epicsMutexMustLock(ntpShm.ntplock);
@@ -313,19 +372,51 @@ static void ntpShmReport(int)
     }
 }
 
+static void ntpShmInit()
+{
+    scanIoInit(&ntpShm.lastUpdate);
+}
+
 static void ntpShmRegister()
 {
     initHookRegister(&ntpshmhooks);
     iocshRegister(&time2ntpFuncDef,&time2ntpCallFunc);
 }
 
+typedef struct {
+    dset common;
+    DEVSUPFUN read_fn;
+    DEVSUPFUN lin_convert;
+} commonset;
+
+static commonset devNtpShmLiOk = {
+    {6, NULL, NULL, (DEVSUPFUN)&init_record, (DEVSUPFUN)&get_ioint_info},
+    (DEVSUPFUN)&read_ok,
+    NULL
+};
+
+static commonset devNtpShmLiFail = {
+    {6, NULL, NULL, (DEVSUPFUN)&init_record, (DEVSUPFUN)&get_ioint_info},
+    (DEVSUPFUN)&read_fail,
+    NULL
+};
+
+static commonset devNtpShmAiDelta = {
+    {6, NULL, NULL, (DEVSUPFUN)&init_record, (DEVSUPFUN)&get_ioint_info},
+    (DEVSUPFUN)&read_delta,
+    NULL
+};
+
 static drvet ntpShared = {
     2,
     (DRVSUPFUN)&ntpShmReport,
-    0,
+    (DRVSUPFUN)&ntpShmInit,
 };
 
 #include <epicsExport.h>
 
 epicsExportAddress(drvet, ntpShared);
+epicsExportAddress(dset, devNtpShmLiOk);
+epicsExportAddress(dset, devNtpShmLiFail);
+epicsExportAddress(dset, devNtpShmAiDelta);
 epicsExportRegistrar(ntpShmRegister);
