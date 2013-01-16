@@ -103,7 +103,6 @@ public:
     bool isLoaded();
     bool isEnabled();
     bool isCommited();
-    bool stopRunning();
 
     void load();
     void unload();

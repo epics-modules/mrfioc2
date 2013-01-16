@@ -220,6 +220,7 @@ evgSoftSeq::load() {
     }
 
     if(isLoaded()) {
+        // always need sync after loading
         m_isSynced = false;
         if(mrmEVGSeqDebug)
             fprintf(stderr, "SS%u: Load\n",m_id);
@@ -238,6 +239,7 @@ evgSoftSeq::unload() {
     if(!isLoaded())
         return;
 
+    // ensure we will stop soon
     m_seqRam->setRunMode(Single);
     m_seqRam->setTrigSrc(None);
     {
@@ -245,6 +247,7 @@ evgSoftSeq::unload() {
         m_seqRam->dealloc();
         setSeqRam(0);
     }
+    // always out of sync when not loaded
     m_isSynced = false;
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Unload\n",m_id);
@@ -352,12 +355,29 @@ evgSoftSeq::sync() {
     if(!isLoaded() || m_isSynced)
         return;
 
-    if(stopRunning()) {
+    // Ensure the sequencer will stop at some point
+    m_seqRam->setRunMode(Single);
+    // Ensure the sequencer won't start if it hasn't already
+    m_seqRam->setTrigSrc(None);
+
+    // At this point, if the sequencer is not running
+    // then we know that it will never run.
+    // If it is running, then we must wait for the
+    // EOS interrupt.
+    // It is possible that the sequencer has stopped,
+    // but the callback for the EOS interrupt has not been
+    // delivered.  This would result in finishSync()
+    // being called twice, however this is prevented
+    // by the m_isSynced flag.
+
+    if(!m_seqRam->isRunning()) {
+        m_seqRam->disable();
+        finishSync(); // or finish immediately
+    } else {
         if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Start sync\n",m_id);
         return; // wait for EOS
     }
-    finishSync(); // or finish immediately
 }
 
 void
@@ -381,34 +401,6 @@ evgSoftSeq::finishSync()
     if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Finish sync\n",m_id);
     scanIoRequest(ioscanpvt);
-}
-
-/**
- * Make sure that this soft sequence does not re-run.
- *
- * Returns true if it the sequence is not running
- * at the time.
- */
-bool
-evgSoftSeq::stopRunning() {
-    m_seqRam->setRunMode(Single);
-    m_seqRam->setTrigSrc(None);
-	
-    /*
-     * Clear the sequencer stop interrupt flag
-     */
-    WRITE32(m_pReg, IrqFlag, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
-
-    if(!m_seqRam->isRunning()) {
-        m_seqRam->disable();
-        return 0;
-    } else {	
-        /*
-         * Enable the sequencer stop interrupt
-         */	
-        BITSET32(m_pReg, IrqEnable, EVG_IRQ_STOP_RAM(m_seqRam->getId()));
-        return 1;
-    }		
 }
 
 void
