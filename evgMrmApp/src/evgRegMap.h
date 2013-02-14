@@ -250,7 +250,7 @@
 const epicsUInt16 evgNumMxc = 8;
 const epicsUInt16 evgNumEvtTrig = 8;
 const epicsUInt16 evgNumDbusBit = 8;
-const epicsUInt16 evgNumFrontOut = 4;
+const epicsUInt16 evgNumFrontOut = 6;
 const epicsUInt16 evgNumUnivOut = 4;
 const epicsUInt16 evgNumFrontInp = 2;
 const epicsUInt16 evgNumUnivInp = 4;
