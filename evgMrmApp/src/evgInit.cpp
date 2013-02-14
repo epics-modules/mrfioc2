@@ -23,7 +23,6 @@
  */
 static epicsUInt8 vme_level_mask = 0;
 
-std::string Description("EVG");
 static const
 struct VMECSRID vmeEvgIDs[] = {
     {MRF_VME_IEEE_OUI,
@@ -173,9 +172,13 @@ mrmEvgSetupVME (
             }
         }
 
+        /* Create a static string for the card description (needed by vxWorks) */
+        char *Description = (char *) malloc(strlen(id) + 22);
+        sprintf (Description, "%s (MRF EVG-%d)", id, (info.board & 0xfff));
+
         /*Register VME address and get corresponding CPU address */
         int status = devRegisterAddress (
-            id,                                    // Event Generator Card name
+            Description,                           // Event Generator card description
             atVMEA24,                              // A24 Address space
             vmeAddress,                            // Physical address of register space
             EVG_REGMAP_SIZE,                       // Size of card's register space
