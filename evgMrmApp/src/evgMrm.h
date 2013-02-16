@@ -78,7 +78,7 @@ public:
     evgMxc* getMuxCounter(epicsUInt32);
     evgDbus* getDbus(epicsUInt32);
     evgInput* getInput(epicsUInt32, InputType);
-    evgOutput* getOutput(epicsUInt32, OutputType);
+    evgOutput* getOutput(epicsUInt32, evgOutputType);
     evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();
@@ -113,7 +113,7 @@ private:
     typedef std::map< std::pair<epicsUInt32, InputType>, evgInput*> Input_t;
     Input_t                       m_input;
 
-    typedef std::map< std::pair<epicsUInt32, OutputType>, evgOutput*> Output_t;
+    typedef std::map< std::pair<epicsUInt32, evgOutputType>, evgOutput*> Output_t;
     Output_t                      m_output;
 
     evgSeqRamMgr                  m_seqRamMgr;

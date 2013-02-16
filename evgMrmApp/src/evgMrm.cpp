@@ -81,14 +81,14 @@ m_softSeqMgr(this) {
         for(int i = 0; i < evgNumFrontOut; i++) {
             std::ostringstream name;
             name<<id<<":FrontOut"<<i;
-            m_output[std::pair<epicsUInt32, OutputType>(i, FrontOut)] =
+            m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)] =
                 new evgOutput(name.str(), i, FrontOut, pReg + U16_FrontOutMap(i));
         }
 
         for(int i = 0; i < evgNumUnivOut; i++) {
             std::ostringstream name;
             name<<id<<":UnivOut"<<i;
-            m_output[std::pair<epicsUInt32, OutputType>(i, UnivOut)] =
+            m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
         }
     
@@ -127,10 +127,10 @@ evgMrm::~evgMrm() {
         delete m_input[std::pair<epicsUInt32, InputType>(i, RearInp)];
 
     for(int i = 0; i < evgNumFrontOut; i++)
-        delete m_output[std::pair<epicsUInt32, OutputType>(i, FrontOut)];
+        delete m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)];
 
     for(int i = 0; i < evgNumUnivOut; i++)
-        delete m_output[std::pair<epicsUInt32, OutputType>(i, UnivOut)];
+        delete m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)];
 }
 
 void 
@@ -379,8 +379,8 @@ evgMrm::getInput(epicsUInt32 inpNum, InputType type) {
 }
 
 evgOutput*
-evgMrm::getOutput(epicsUInt32 outNum, OutputType type) {
-    evgOutput* out = m_output[ std::pair<epicsUInt32, OutputType>(outNum, type) ];
+evgMrm::getOutput(epicsUInt32 outNum, evgOutputType type) {
+    evgOutput* out = m_output[ std::pair<epicsUInt32, evgOutputType>(outNum, type) ];
     if(!out)
         throw std::runtime_error("Output not initialized");
 
