@@ -164,8 +164,8 @@ public:
   virtual IOSCANPVT eventOccurred(epicsUInt32 event) const=0;
 
   typedef void (*eventCallback)(void* userarg, epicsUInt32 event);
-  virtual void eventNotityAdd(epicsUInt32 event, eventCallback, void*)=0;
-  virtual void eventNotityDel(epicsUInt32 event, eventCallback, void*)=0;
+  virtual void eventNotifyAdd(epicsUInt32 event, eventCallback, void*)=0;
+  virtual void eventNotifyDel(epicsUInt32 event, eventCallback, void*)=0;
   /*@}*/
 
   /**\defgroup linksts Event Link Status

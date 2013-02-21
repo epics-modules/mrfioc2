@@ -294,7 +294,7 @@ try{
             shadowSourceTS=TSSourceEvent;
     }
 
-    eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick, (void*)this);
+    eventNotifyAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick, (void*)this);
 
     drain_fifo_task.start();
 
@@ -834,7 +834,7 @@ EVRMRM::eventOccurred(epicsUInt32 event) const
 }
 
 void
-EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
+EVRMRM::eventNotifyAdd(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
@@ -847,7 +847,7 @@ EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
 }
 
 void
-EVRMRM::eventNotityDel(epicsUInt32 event, eventCallback cb, void* arg)
+EVRMRM::eventNotifyDel(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
