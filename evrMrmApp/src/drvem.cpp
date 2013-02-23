@@ -139,7 +139,7 @@ try{
     v>>=FWVersion_form_shift;
     evrForm form=(evrForm)v;
 
-    size_t nPul=10; // number of pulsers
+    size_t nPul=16; // number of pulsers
     size_t nPS=3;   // number of prescalers
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
