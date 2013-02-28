@@ -227,6 +227,8 @@ public:
  * throws std::range_error for NaN and out of range inputs
  */
 epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
+
+char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_STYLE(2,3);
 #endif
 
 /**************************************************************************************************/

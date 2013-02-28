@@ -454,8 +454,9 @@ try {
     }
 
     volatile unsigned char* evr;
-    char *Description = (char *) malloc(strlen(id) + 22);
-    sprintf (Description, "%s (MRF EVR-%d)", id, (info.board & 0xff));
+    char *Description = allocSNPrintf(40, "EVR-%d '%s' slot %d",
+                                      info.board & MRF_BID_SERIES_MASK,
+                                      id, slot);
 
     if(devRegisterAddress(Description, atVMEA32, base, EVR_REGMAP_SIZE, (volatile void**)(void *)&evr))
     {

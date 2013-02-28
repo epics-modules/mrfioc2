@@ -173,8 +173,9 @@ mrmEvgSetupVME (
         }
 
         /* Create a static string for the card description (needed by vxWorks) */
-        char *Description = (char *) malloc(strlen(id) + 22);
-        sprintf (Description, "%s (MRF EVG-%d)", id, (info.board & 0xfff));
+        char *Description = allocSNPrintf(40, "EVG-%d '%s' slot %d",
+                                          info.board & MRF_BID_SERIES_MASK,
+                                          id, slot);
 
         /*Register VME address and get corresponding CPU address */
         int status = devRegisterAddress (
