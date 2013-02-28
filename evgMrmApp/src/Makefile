@@ -7,6 +7,17 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC += evgmrm
 
+INC += evgMrm.h
+INC += evgRegMap.h
+INC += evgAcTrig.h
+INC += evgEvtClk.h
+INC += evgSoftEvt.h
+INC += evgTrigEvt.h
+INC += evgMxc.h
+INC += evgDbus.h
+INC += evgInput.h
+INC += evgOutput.h
+
 INC += evgSequencer/evgSoftSeqManager.h
 INC += evgSequencer/evgSoftSeq.h
 INC += evgSequencer/evgSeqRamManager.h

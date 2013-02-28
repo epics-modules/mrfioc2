@@ -10,7 +10,7 @@
 #include "evgRegMap.h"
 
 evgOutput::evgOutput(const std::string& name, const epicsUInt32 num,
-                     const OutputType type, volatile epicsUInt8* const pOutReg):
+                     const evgOutputType type, volatile epicsUInt8* const pOutReg):
 mrf::ObjectInst<evgOutput>(name),
 m_num(num),
 m_type(type),

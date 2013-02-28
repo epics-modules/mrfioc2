@@ -434,9 +434,9 @@ try {
 
     // Set base address
 
-    /* Use function 0 for 16-bit addressing (length 0x00800 bytes)
+  /* Use function 0 for 16-bit addressing (length 0x00800 bytes)
    * and function 1 for 24-bit addressing (length 0x10000 bytes)
-   * and function 2 for 32-bit addressing (length 0x20000 bytes)
+   * and function 2 for 32-bit addressing (length 0x40000 bytes)
    *
    * All expose the same registers, but not all registers are
    * visible through functions 0 or 1.
@@ -454,8 +454,10 @@ try {
     }
 
     volatile unsigned char* evr;
+    char *Description = (char *) malloc(strlen(id) + 22);
+    sprintf (Description, "%s (MRF EVR-%d)", id, (info.board & 0xff));
 
-    if(devRegisterAddress("MRF EVR", atVMEA32, base, 0x20000, (volatile void**)(void *)&evr))
+    if(devRegisterAddress(Description, atVMEA32, base, EVR_REGMAP_SIZE, (volatile void**)(void *)&evr))
     {
         printf("Failed to map address %08x\n",base);
         return;
@@ -480,7 +482,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,0x20000);
+    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,EVR_REGMAP_SIZE);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

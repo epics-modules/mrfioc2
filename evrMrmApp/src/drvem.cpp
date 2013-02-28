@@ -148,7 +148,7 @@ try{
     v>>=FWVersion_form_shift;
     evrForm form=(evrForm)v;
 
-    size_t nPul=10; // number of pulsers
+    size_t nPul=16; // number of pulsers
     size_t nPS=3;   // number of prescalers
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
@@ -305,7 +305,7 @@ try{
             shadowSourceTS=TSSourceEvent;
     }
 
-    eventNotityAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick, (void*)this);
+    eventNotifyAdd(MRF_EVENT_TS_COUNTER_RST, &seconds_tick, (void*)this);
 
     drain_fifo_task.start();
 
@@ -845,7 +845,7 @@ EVRMRM::eventOccurred(epicsUInt32 event) const
 }
 
 void
-EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
+EVRMRM::eventNotifyAdd(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");
@@ -858,7 +858,7 @@ EVRMRM::eventNotityAdd(epicsUInt32 event, eventCallback cb, void* arg)
 }
 
 void
-EVRMRM::eventNotityDel(epicsUInt32 event, eventCallback cb, void* arg)
+EVRMRM::eventNotifyDel(epicsUInt32 event, eventCallback cb, void* arg)
 {
     if (event==0 || event>255)
         throw std::out_of_range("Invalid event number");

@@ -325,4 +325,6 @@ enum evrForm {
 #define U32_SFPDIAG_base 0x8300
 #define U32_SFPDIAG(N) (U32_SFPDIAG_base + (N))
 
+#define EVR_REGMAP_SIZE 0x40000 // Total register map size = 256K
+
 #endif /* EVRREGMAP_H */

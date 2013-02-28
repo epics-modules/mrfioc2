@@ -165,8 +165,8 @@ public:
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
     virtual bool getTicks(epicsUInt32 *tks);
     virtual IOSCANPVT eventOccurred(epicsUInt32 event) const;
-    virtual void eventNotityAdd(epicsUInt32, eventCallback, void*);
-    virtual void eventNotityDel(epicsUInt32, eventCallback, void*);
+    virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*);
+    virtual void eventNotifyDel(epicsUInt32, eventCallback, void*);
 
     bool convertTS(epicsTimeStamp* ts);
 

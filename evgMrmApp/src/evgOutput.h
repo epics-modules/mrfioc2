@@ -4,7 +4,7 @@
 #include <epicsTypes.h>
 #include "mrf/object.h"
 
-enum OutputType {
+enum evgOutputType {
     NoneOut = 0,
     FrontOut,
     UnivOut
@@ -12,7 +12,7 @@ enum OutputType {
 
 class evgOutput : public mrf::ObjectInst<evgOutput> {
 public:
-    evgOutput(const std::string&, const epicsUInt32, const OutputType,
+    evgOutput(const std::string&, const epicsUInt32, const evgOutputType,
               volatile epicsUInt8* const);
     ~evgOutput();
 
@@ -25,7 +25,7 @@ public:
 
 private:
     const epicsUInt32          m_num;
-    const OutputType           m_type;
+    const evgOutputType        m_type;
     volatile epicsUInt8* const m_pOutReg;
 };
 
