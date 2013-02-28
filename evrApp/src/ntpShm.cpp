@@ -232,7 +232,7 @@ static void ntpsetup(CALLBACK *)
     SYNC();
 
     try {
-        ntpShm.evr->eventNotityAdd(ntpShm.event, &ntpshmupdate, 0);
+        ntpShm.evr->eventNotifyAdd(ntpShm.event, &ntpshmupdate, 0);
     } catch(std::exception& e) {
         fprintf(stderr, "Error registering for 1Hz event: %s\n", e.what());
     }
