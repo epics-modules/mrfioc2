@@ -141,6 +141,8 @@ OBJECT_BEGIN(Output) {
 
     OBJECT_PROP2("Map", &Output::source, &Output::setSource);
 
+    OBJECT_PROP2("Enable", &Output::enabled, &Output::enable);
+
 } OBJECT_END(Output)
 
 

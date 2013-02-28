@@ -1,5 +1,5 @@
 /*************************************************************************\
-* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+* Copyright (c) 2013 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
@@ -33,11 +33,18 @@ public:
    *
    * Meaning of source id number is device specific.
    *
+   * When enabled()==true then the user mapping provided to setSource()
+   * is used.  When enabled()==false then a device specific special mapping
+   * is used (eg. Force Low).
+   *
    * Note: this is one place where Device Support will have some depth.
    */
   /*@{*/
   virtual epicsUInt32 source() const=0;
   virtual void setSource(epicsUInt32)=0;
+
+  virtual bool enabled() const=0;
+  virtual void enable(bool)=0;
   /*@}*/
 
   virtual const char*sourceName(epicsUInt32) const=0;

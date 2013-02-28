@@ -1,5 +1,5 @@
 /*************************************************************************\
-* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+* Copyright (c) 2013 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
@@ -35,12 +35,20 @@ public:
   virtual epicsUInt32 source() const;
   virtual void setSource(epicsUInt32);
 
+  virtual bool enabled() const;
+  virtual void enable(bool);
+
   virtual const char*sourceName(epicsUInt32) const;
 
 private:
   EVRMRM * const owner;
   const OutputType type;
   const unsigned int N;
+  bool isEnabled;
+  epicsUInt32 shadowSource;
+
+  virtual epicsUInt32 sourceInternal() const;
+  virtual void setSourceInternal(epicsUInt32);
 };
 
 

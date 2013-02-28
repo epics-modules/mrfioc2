@@ -1,5 +1,5 @@
 /*************************************************************************\
-* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+* Copyright (c) 2013 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
@@ -25,7 +25,9 @@ MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int
     ,owner(o)
     ,type(t)
     ,N(idx)
+    ,isEnabled(true)
 {
+    shadowSource = sourceInternal();
 }
 
 MRMOutput::~MRMOutput()
@@ -38,7 +40,53 @@ void MRMOutput::unlock() const{owner->unlock();};
 epicsUInt32
 MRMOutput::source() const
 {
-    epicsUInt32 val=64;
+    scopedLock<const MRMOutput> L(*this);
+    return shadowSource;
+}
+
+void
+MRMOutput::setSource(epicsUInt32 v)
+{
+    if( ! ( (v<=63 && v>=62) ||
+            (v<=42 && v>=32) ||
+            (v<=9) )
+    )
+        throw std::out_of_range("Mapping code is out of range");
+
+    scopedLock<MRMOutput> L(*this);
+
+    shadowSource = v;
+
+    if(isEnabled)
+        setSourceInternal(v);
+}
+
+bool
+MRMOutput::enabled() const
+{
+    scopedLock<const MRMOutput> L(*this);
+    return isEnabled;
+}
+
+void
+MRMOutput::enable(bool e)
+{
+    scopedLock<MRMOutput> L(*this);
+    if(e==isEnabled)
+        return;
+
+    isEnabled = e;
+
+    if(isEnabled)
+        setSourceInternal(shadowSource);
+    else
+        setSourceInternal(63); // Force Off
+}
+
+epicsUInt32
+MRMOutput::sourceInternal() const
+{
+    epicsUInt32 val=64; // an invalid value
     switch(type) {
     case OutputInt:
         return  READ32(owner->base, IRQPulseMap) & 0xffff;
@@ -55,15 +103,10 @@ MRMOutput::source() const
 }
 
 void
-MRMOutput::setSource(epicsUInt32 v)
+MRMOutput::setSourceInternal(epicsUInt32 v)
 {
-    if( ! ( (v<=63 && v>=62) ||
-            (v<=42 && v>=32) ||
-            (v<=9) )
-    )
-        throw std::out_of_range("Mapping code is out of range");
 
-    epicsUInt32 val=62;
+    epicsUInt32 val=63;
     switch(type) {
     case OutputInt:
         WRITE32(owner->base, IRQPulseMap, v); return;
@@ -94,8 +137,8 @@ const char*
 MRMOutput::sourceName(epicsUInt32 id) const
 {
     switch(id){
-    case 63: return "Force High";
-    case 62: return "Force Low";
+    case 63: return "Force Low";
+    case 62: return "Force High";
     // 43 -> 61 Reserved
     case 42: return "Prescaler (Divider) 2";
     case 41: return "Prescaler (Divider) 1";
