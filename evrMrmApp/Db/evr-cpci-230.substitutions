@@ -91,6 +91,12 @@ file "evrpulser.db"
 {7, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
 {8, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
 {9, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{10,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{11,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{12,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{13,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{14,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{15,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
 }
 
 # Default to 3 possible trigger mappings per pulser
@@ -127,6 +133,24 @@ file "evrpulsermap.db"
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
 }
 
 file "evrin.db"

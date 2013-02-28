@@ -109,6 +109,12 @@ file "evrpulser.db"
 {7, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 {8, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 {9, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{10,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{11,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{12,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{13,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{14,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
+{15,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 }
 
 # Default to 3 possible trigger mappings per pulser
@@ -145,4 +151,22 @@ file "evrpulsermap.db"
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
 }
