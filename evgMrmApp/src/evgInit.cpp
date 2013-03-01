@@ -155,13 +155,12 @@ mrmEvgSetupVME (
         printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
                 info.vendor, info.board, info.revision);
         
-        epicsUInt32 xxx;
-        if((xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1)))) 
-            errlogPrintf("Warning: EVG did not reboot properly %08x\n", xxx);
-        else {
-            /*Setting the base address of Register Map on VME Board (EVG)*/
-            CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
-        }
+        epicsUInt32 xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1));
+        if(xxx)
+            errlogPrintf("Warning: EVG not in power on state! (%08x)\n", xxx);
+
+        /*Setting the base address of Register Map on VME Board (EVG)*/
+        CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
 
         {
             epicsUInt32 temp=CSRRead32((csrCpuAddr) + CSR_FN_ADER(1));
