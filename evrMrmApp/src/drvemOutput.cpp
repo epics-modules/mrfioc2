@@ -40,7 +40,6 @@ void MRMOutput::unlock() const{owner->unlock();};
 epicsUInt32
 MRMOutput::source() const
 {
-    scopedLock<const MRMOutput> L(*this);
     return shadowSource;
 }
 
@@ -53,8 +52,6 @@ MRMOutput::setSource(epicsUInt32 v)
     )
         throw std::out_of_range("Mapping code is out of range");
 
-    scopedLock<MRMOutput> L(*this);
-
     shadowSource = v;
 
     if(isEnabled)
@@ -64,14 +61,12 @@ MRMOutput::setSource(epicsUInt32 v)
 bool
 MRMOutput::enabled() const
 {
-    scopedLock<const MRMOutput> L(*this);
     return isEnabled;
 }
 
 void
 MRMOutput::enable(bool e)
 {
-    scopedLock<MRMOutput> L(*this);
     if(e==isEnabled)
         return;
 
