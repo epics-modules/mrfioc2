@@ -1945,6 +1945,13 @@ iocBoot/iocevrmrm/st.cmd
 
 \begin_layout Subsection
 Device names
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:devnames"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3941,6 +3948,192 @@ Note that the device IDs may not be correctly recognized.
 If no errors are printed then the update process was successful.
  The new firmware will not be loaded until the PMC module is reset (power
  cycle system).
+\end_layout
+
+\begin_layout Section
+NTPD Time Source
+\end_layout
+
+\begin_layout Standard
+It is possible to use an EVR as a time source for the system NTP daemon
+ on Linux.
+ This is implemented using the shared memory clock driver (#28).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.eecis.udel.edu/~mills/ntp/html/drivers/driver28.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An IOC is configured to write data to a shared memory segment by adding
+ a line to its start script.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+time2ntp("evrname", N)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here 
+\begin_inset Quotes eld
+\end_inset
+
+evrname
+\begin_inset Quotes erd
+\end_inset
+
+ is the same name given when configuring the EVR (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:devnames"
+
+\end_inset
+
+).
+ The memory segment ID number N must be between 0 and 4 inclusive.
+ The NTP daemon enforces that segments 0 and 1 require root permissions
+ to use.
+ Segments 2, 3, and 4 can be accessed by an unprivileged user.
+\end_layout
+
+\begin_layout Standard
+It is suggested to use an unprivileged segment to avoid running the IOC
+ as root.
+ However, this would allow any user on the system to effectively control
+ NTPD.
+ So it is not recommended for systems with untrusted users.
+\end_layout
+
+\begin_layout Standard
+The NTP daemon is configured from the file 
+\shape italic
+/etc/ntp.conf
+\shape default
+.
+ On Debian Linux systems using DHCP it will be necessary to modify 
+\shape italic
+/etc/dhcp/dhclient-exit-hooks.d/ntp
+\shape default
+ instead.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+server 127.127.28.N minpoll 1 maxpoll 2 prefer
+\end_layout
+
+\begin_layout Plain Layout
+
+fudge 127.127.28.N refid EVR
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will configure NTPD to read time from segment N.
+ Here N must match what was specified for 
+\shape italic
+time2ntp()
+\shape default
+.
+\end_layout
+
+\begin_layout Standard
+When functioning correctly NTPD status should look like:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ntpq -p
+\end_layout
+
+\begin_layout Plain Layout
+
+remote           refid      st t when poll reach   delay   offset  jitter
+\end_layout
+
+\begin_layout Plain Layout
+
+=========================================================================
+\end_layout
+
+\begin_layout Plain Layout
+
++time.cs.nsls2.l .GPS.
+      1 u   29   64  377    2.684   -0.001   0.089
+\end_layout
+
+\begin_layout Plain Layout
+
+*SHM(3)          .EVR.
+      0 l    7    8  377    0.000    0.000   0.001
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The shared memory interface can only be used to provide time with microsecond
+ precision.
+ So this measurement, taken from a production NSLS2 server, showing a jitter
+ of 
+\begin_inset Formula $\pm1$
+\end_inset
+
+ microsecond is the best which can be obtained.
+\end_layout
+
+\begin_layout Standard
+If the propogation time from the time source to the EVR is known, then the
+ offset can be given by adding 
+\begin_inset Quotes eld
+\end_inset
+
+time1 0.XXX
+\begin_inset Quotes erd
+\end_inset
+
+ to the 'fudge' line in 
+\shape italic
+ntp.conf
+\shape default
+.
 \end_layout
 
 \begin_layout Section
@@ -6222,7 +6415,7 @@ Pulse Generator
 
 \begin_layout Standard
 Properties in this section apply to the Pulse Generator (Pulser) sub-unit
- named $(OBJ):Pul# where # is a number between 0 and 9.
+ named $(OBJ):Pul# where # is a number between 0 and 15.
 \end_layout
 
 \begin_layout Standard
@@ -6747,7 +6940,7 @@ For the MRM implimentation the following codes are valid.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="14" columns="4">
+<lyxtabular version="3" rows="17" columns="4">
 <features>
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -6814,7 +7007,7 @@ Force High
 \begin_inset Text
 
 \begin_layout Plain Layout
-9
+15
 \end_layout
 
 \end_inset
@@ -6823,7 +7016,7 @@ Force High
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 9
+Pulse generator 15
 \end_layout
 
 \end_inset
@@ -6852,7 +7045,7 @@ Force Low
 \begin_inset Text
 
 \begin_layout Plain Layout
-8
+14
 \end_layout
 
 \end_inset
@@ -6861,7 +7054,7 @@ Force Low
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 8
+Pulse generator 14
 \end_layout
 
 \end_inset
@@ -6890,7 +7083,7 @@ Prescaler (Divider) 2
 \begin_inset Text
 
 \begin_layout Plain Layout
-7
+13
 \end_layout
 
 \end_inset
@@ -6899,7 +7092,7 @@ Prescaler (Divider) 2
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 7
+Pulse generator 13
 \end_layout
 
 \end_inset
@@ -6928,7 +7121,7 @@ Prescaler (Divider) 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-6
+12
 \end_layout
 
 \end_inset
@@ -6937,7 +7130,7 @@ Prescaler (Divider) 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 6
+Pulse generator 12
 \end_layout
 
 \end_inset
@@ -6966,7 +7159,7 @@ Prescaler (Divider) 0
 \begin_inset Text
 
 \begin_layout Plain Layout
-5
+11
 \end_layout
 
 \end_inset
@@ -6975,7 +7168,7 @@ Prescaler (Divider) 0
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 5
+Pulse generator 11
 \end_layout
 
 \end_inset
@@ -7004,7 +7197,7 @@ Distributed Bus Bit 7
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+10
 \end_layout
 
 \end_inset
@@ -7013,7 +7206,7 @@ Distributed Bus Bit 7
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 4
+Pulse generator 10
 \end_layout
 
 \end_inset
@@ -7042,7 +7235,7 @@ Distributed Bus Bit 6
 \begin_inset Text
 
 \begin_layout Plain Layout
-3
+9
 \end_layout
 
 \end_inset
@@ -7051,7 +7244,7 @@ Distributed Bus Bit 6
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 3
+Pulse generator 9
 \end_layout
 
 \end_inset
@@ -7080,7 +7273,7 @@ Distributed Bus Bit 5
 \begin_inset Text
 
 \begin_layout Plain Layout
-2
+8
 \end_layout
 
 \end_inset
@@ -7089,7 +7282,7 @@ Distributed Bus Bit 5
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 2
+Pulse generator 8
 \end_layout
 
 \end_inset
@@ -7118,7 +7311,7 @@ Distributed Bus Bit 4
 \begin_inset Text
 
 \begin_layout Plain Layout
-1
+7
 \end_layout
 
 \end_inset
@@ -7127,7 +7320,7 @@ Distributed Bus Bit 4
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 1
+Pulse generator 7
 \end_layout
 
 \end_inset
@@ -7156,7 +7349,7 @@ Distributed Bus Bit 3
 \begin_inset Text
 
 \begin_layout Plain Layout
-0
+6
 \end_layout
 
 \end_inset
@@ -7165,7 +7358,7 @@ Distributed Bus Bit 3
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pulse generator 0
+Pulse generator 6
 \end_layout
 
 \end_inset
@@ -7194,7 +7387,7 @@ Distributed Bus Bit 2
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+5
 \end_layout
 
 \end_inset
@@ -7203,7 +7396,7 @@ Distributed Bus Bit 2
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Pulse generator 5
 \end_layout
 
 \end_inset
@@ -7232,6 +7425,64 @@ Distributed Bus Bit 1
 \begin_inset Text
 
 \begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -7246,13 +7497,69 @@ Distributed Bus Bit 1
 
 \end_inset
 </cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 1
+\end_layout
+
+\end_inset
+</cell>
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-32
+
 \end_layout
 
 \end_inset
@@ -7261,7 +7568,7 @@ Distributed Bus Bit 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 0
+
 \end_layout
 
 \end_inset
@@ -7270,7 +7577,7 @@ Distributed Bus Bit 0
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+0
 \end_layout
 
 \end_inset
@@ -7279,7 +7586,7 @@ Distributed Bus Bit 0
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Pulse generator 0
 \end_layout
 
 \end_inset
@@ -7290,6 +7597,23 @@ Distributed Bus Bit 0
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When set to True the mapping set with the 
+\series bold
+Map
+\series default
+ property is used.
+ When False a mapping of Force Low is used.
 \end_layout
 
 \begin_layout Subsection
