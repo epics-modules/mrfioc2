@@ -69,25 +69,44 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsubsection v202bug Bug fixes
 
-
-@li wrong width for RVAL causes endianness issue
-@li re-enable of CML output during setMode not conditional
-@li Fix EVG driver init w/o hardware.  This was crashing.
-@li Update locking for EVR.  Take lock for all device support actions.
+- Fixed issues with EVG sequencer which allowed some user inputs at inappropriate times.
+     This could cause the sequencer to stop.
+     Sequencer controls now validated against internal state.
+- wrong width for RVAL causes endianness issue
+- re-enable of CML output during setMode not conditional
+- Fix EVG driver init w/o hardware.  This was crashing.
+- Update locking for EVR.  Take lock for all device support actions.
+- Fix locking error causing EVR driver to hang during IOC shutdown.
 
 @subsubsection v202feat Features
 
-@li Updated recommended firmware version for PCI EVRs to 6.
-@li Compile in VCS version or release number.  Add a PV which reads this.
-@li Read SFP EEPROM information (eg. module serial#, temperature, and incoming optical power).
+- Corrected the number of pulsers (delay generators) in EVRs. This adds 6 for a total of 16.
+- Updated recommended firmware version for PCI EVRs to 6.
+- Compile in VCS version or release number.  Add a PV which reads this.
+- Read SFP EEPROM information (eg. module serial#, temperature, and incoming optical power).
     Requires firmware >=5.  For version 5 must be from 25 May 2012 or later.
-@li Add mapping record for Prescaler reset action to the example EVR databases.
-@li Support and documentation for firmware update of PMC-EVR-230 devices on Linux.
+- Add mapping record for Prescaler reset action to the example EVR databases.
+- Support and documentation for firmware update of PMC-EVR-230 devices on Linux.
+- PV with device position (VME slot or PCI BDF ids)
+- Add aSub functions to support NSLS2 injector timing sequence constructor
+    - Seq Repeat - Repeats a fixed sequence at specific intervals.  Includes
+                   a bit mask to mask out certain occurences.
+    - Seq Merge  - Merge two or more sorted sequences while maintaining sorting.
+- evgSoftSeq.py In addition to the previous form, the sequence editor GUI now
+                 accepts a single command line argument with the PV name prefix.
+- evgSoftSeq.py Improved connection handling.
+- configure/RELEASE Optionally include caputlog module
+- Added enable/disable control for individual EVR outputs.
+   Disabled output are mapped to Force Low.
+- On Linux, allow the EVR driver to provide time to the system NTPD.
+   Allows system clock to be synced to EVR with much lower jitter
+   then network NTP server.
+
 
 @warning The default mapping for prescaler reset is now disabled.
-         This is an incompatible change.  Anyone using this feature
-         with a customized database should update their database
-         to include this mapping record!
+         The included database files have been updated.
+         Anyone who has created a custom database should update their database
+         to include a "Reset PS" mapping record!
 
 @subsection v201 2.0.1 (Apr. 2012)
 
