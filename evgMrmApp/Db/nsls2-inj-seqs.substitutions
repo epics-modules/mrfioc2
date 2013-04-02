@@ -40,7 +40,14 @@ file "seq-merger.db"
  CODEC="\$(BR){Seq:Stk}Rep-Calc_.VALC MS PP",
  TIMED="\$(BR){Seq:2Hz}Rep-Calc_.VALB MS PP",
  CODED="\$(BR){Seq:2Hz}Rep-Calc_.VALC MS PP",
- OUTTIME="\$(INJ){\$(EVG)-\$(SEQ)}Timestamp-SP PP",
+ OUTTIME="\$(INJ){Seq:Out}Shift-Calc_.B PP",
  OUTCODE="\$(INJ){\$(EVG)-\$(SEQ)}EvtCode-SP PP",
+}
+}
+
+file "seq-shifter.db"
+{
+{P="\$(P)", N="\$(INJ){Seq:Out}Shift-Calc_", NELM="2048",
+ OUTTIME="\$(INJ){\$(EVG)-\$(SEQ)}Timestamp-SP PP",
 }
 }

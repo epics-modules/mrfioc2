@@ -325,10 +325,56 @@ alarm:
     return -1;
 }
 
+/**@brief Sequence shifter
+ *
+ *  Inputs
+ *@param A Delay
+ *@type  A DOUBLE
+ *@param B time waveform
+ *@type  B DOUBLE
+ *...
+ *
+ *  Outputs
+ *@param VALA Output time waveform
+ *@type  VALA DOUBLE
+ */
+static
+long seq_shift(aSubRecord *prec)
+{
+    double delay;
+    const double *input=(const double*)prec->b;
+    double *output=(double*)prec->vala;
+    epicsUInt32 i;
+
+    if(prec->fta!=menuFtypeDOUBLE
+       || prec->ftb!=menuFtypeDOUBLE
+       || prec->ftva!=menuFtypeDOUBLE)
+    {
+        epicsPrintf("%s: invalid types\n", prec->name);
+        goto fail;
+    } else if(prec->nea==0 || prec->neb > prec->nova) {
+        epicsPrintf("%s: incorrect sizes\n", prec->name);
+        goto fail;
+    }
+
+    delay = *(double*)prec->a;
+
+    for(i=0; i<prec->neb; i++)
+        output[i] = input[i]+delay;
+
+    prec->neva = prec->neb;
+
+    return 0;
+
+fail:
+    recGblSetSevr(prec, CALC_ALARM, INVALID_ALARM);
+    return -1;
+}
 
 static registryFunctionRef asub_seq[] = {
     {"Seq Repeat", (REGISTRYFUNCTION) seq_repeat},
     {"Seq Merge", (REGISTRYFUNCTION) seq_merge},
+    {"Seq Shift", (REGISTRYFUNCTION) seq_shift},
 };
 
 static

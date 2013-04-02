@@ -1,0 +1,32 @@
+# Time sequence shifter
+#
+# Add a constant delay to a waveform of times
+#
+# Macros
+#  P - PV prefix
+#  NELM
+#  DELAY - Scalar delay
+#  INTIME - Input time array
+#  OUTTIME - Output time array
+#
+
+
+record(aSub, "$(N)") {
+    field(SNAM, "Seq Shift")
+
+    field(FTA, "DOUBLE")
+    field(FTB, "DOUBLE")
+
+    field(NOB, "$(NELM)")
+
+    field(INPA, "$(DELAY=)")
+    field(INPB, "$(INTIME=)")
+
+    field(FTVA, "DOUBLE")
+
+    field(NOVA, "$(NELM)")
+
+    field(OUTA, "$(OUTTIME)")
+
+    field( EFLG, "ALWAYS")
+}

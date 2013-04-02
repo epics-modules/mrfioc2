@@ -121,6 +121,7 @@ record(calcout, "$(INJ){}Mode:Allw2-Calc_") {
   field(OUT, "$(INJ){}Mode:Prmt-RB.VAL PP MS")
   field(IVOA, "Set output to IVOV")
   field(IVOV, "0")
+  field(INPC, "$(INJ){}Bucket-SP NPP MS")
 }
 
 # User Control
@@ -148,6 +149,8 @@ record(fanout, "$(INJ){}Mode:Commit-FO_") {
   field(LNK3, "$(INJ){}Mode:Allw-Sts")
   field(LNK4, "$(BR){}Mode-Sts")
   field(LNK5, "$(LN){}Mode-Sts")
+  field(FLNK, "$(INJ){}Mode:Commit2-FO_")
+  field(LNK6, "$(INJ){}Bucket-I")
 }
 
 record(mbbiDirect, "$(INJ){}Mode-I") {
@@ -203,6 +206,7 @@ record(fanout, "$(INJ){}Mode:Init-FO_") {
   field(LNK3, "$(LN){}Mode-Sel")
   field(LNK4, "$(BR){}Mode-Sel")
   field(LNK6, "$(INJ){}Mode:Commit-Cmd")
+  field(LNK5, "$(INJ){}Bucket-SP PP")
 }
 
 record(fanout, "$(BR){}Mode:Prmt-FO_") {
@@ -236,8 +240,61 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
   field(INPC, "$(BR){}Mode-Sel.RVAL")
 }
 
+# User Control
+record(longout, "$(INJ){}Bucket-SP") {
+  field(DESC, "Injection bucket")
+  field(ASG, "OPERATOR")
+  field(OUT, "$(INJ){}Bucket-Calc_.A PP")
+  field(EGU, "Buckets")
+  field(HOPR, "1319")
+  field(LOPR, "0")
+  field(HIGH, "1320")
+  field(LOW, "-1")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(UDF, "0")
+  field(FLNK, "$(INJ){}Mode:Allw2-Calc_")
+  info(autosaveFields_pass0, "VAL")
+}
+
+
+record(calcout, "$(INJ){}Bucket-Calc_") {
+  field(FLNK, "$(INJ){}BucketMod-RB")
+  field(CALC, "B:=A&3;FLOOR(A/4)")
+  field(OUT, "$(INJ){Seq:Out}Shift-Calc_.A PP")
+}
+
+
+record(longin, "$(INJ){}Bucket-I") {
+  field(INP, "$(INJ){}Bucket-SP")
+  field(EGU, "Buckets")
+  field(HOPR, "1319")
+  field(LOPR, "0")
+}
+
+record(longin, "$(INJ){}BucketMod-RB") {
+  field(DESC, "Bkt mod evt period")
+  field(INP, "$(INJ){}Bucket-Calc_.B")
+  field(EGU, "Buckets")
+  field(HOPR, "3")
+  field(LOPR, "0")
+}
+
+record(fanout, "$(INJ){}Mode:Commit2-FO_") {
+  field(LNK1, "$(INJ){}BucketMod-I")
+}
+
+record(longin, "$(INJ){}BucketMod-I") {
+  field(DESC, "Bkt mod evt period")
+  field(INP, "$(INJ){}BucketMod-RB")
+  field(EGU, "Buckets")
+  field(HOPR, "3")
+  field(LOPR, "0")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(3076,2043,1.0)
+#! View(2500,3514,1.0)
 #! Record("$(LN){}Mode:Prmt-Sel",2620,1954,0,0,"$(LN){}Mode:Prmt-Sel")
 #! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,0,"$(LN){}Mode:Prmt-Sel.VAL")
 #! Field("$(LN){}Mode:Prmt-Sel.FLNK",16777215,1,"$(LN){}Mode:Prmt-Sel.FLNK")
@@ -303,12 +360,14 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Field("$(INJ){}Mode:Allw1-Calc_.A",16777215,0,"$(INJ){}Mode:Allw1-Calc_.A")
 #! Field("$(INJ){}Mode:Allw1-Calc_.OUT",16777215,1,"$(INJ){}Mode:Allw1-Calc_.OUT")
 #! Link("$(INJ){}Mode:Allw1-Calc_.OUT","$(INJ){}Mode:Allw2-Calc_.A")
-#! Record("$(INJ){}Mode:Allw2-Calc_",3740,2394,0,0,"$(INJ){}Mode:Allw2-Calc_")
+#! Record("$(INJ){}Mode:Allw2-Calc_",3740,2380,0,0,"$(INJ){}Mode:Allw2-Calc_")
 #! Field("$(INJ){}Mode:Allw2-Calc_.INPB",16777215,1,"$(INJ){}Mode:Allw2-Calc_.INPB")
 #! Link("$(INJ){}Mode:Allw2-Calc_.INPB","$(INJ){}Mode:Prmt-Sel.VAL")
 #! Field("$(INJ){}Mode:Allw2-Calc_.A",16777215,0,"$(INJ){}Mode:Allw2-Calc_.A")
 #! Field("$(INJ){}Mode:Allw2-Calc_.OUT",16777215,1,"$(INJ){}Mode:Allw2-Calc_.OUT")
 #! Link("$(INJ){}Mode:Allw2-Calc_.OUT","$(INJ){}Mode:Prmt-RB.VAL")
+#! Field("$(INJ){}Mode:Allw2-Calc_.INPC",16777215,0,"$(INJ){}Mode:Allw2-Calc_.INPC")
+#! Link("$(INJ){}Mode:Allw2-Calc_.INPC","$(INJ){}Bucket-SP.VAL")
 #! Record("$(INJ){}Mode:Commit-Cmd",3460,2768,0,0,"$(INJ){}Mode:Commit-Cmd")
 #! Field("$(INJ){}Mode:Commit-Cmd.FLNK",16777215,1,"$(INJ){}Mode:Commit-Cmd.FLNK")
 #! Link("$(INJ){}Mode:Commit-Cmd.FLNK","$(INJ){}Mode:Commit-Calc_")
@@ -317,7 +376,7 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Link("$(INJ){}Mode:Commit-Calc_.INPA","$(INJ){}Mode:Prmt-RB.VAL")
 #! Field("$(INJ){}Mode:Commit-Calc_.OUT",16777215,1,"$(INJ){}Mode:Commit-Calc_.OUT")
 #! Link("$(INJ){}Mode:Commit-Calc_.OUT","$(INJ){}Mode:Commit-FO_.PROC")
-#! Record("$(INJ){}Mode:Commit-FO_",4060,3074,0,1,"$(INJ){}Mode:Commit-FO_")
+#! Record("$(INJ){}Mode:Commit-FO_",4060,3046,0,1,"$(INJ){}Mode:Commit-FO_")
 #! Field("$(INJ){}Mode:Commit-FO_.PROC",16777215,0,"$(INJ){}Mode:Commit-FO_.PROC")
 #! Field("$(INJ){}Mode:Commit-FO_.LNK1",16777215,1,"$(INJ){}Mode:Commit-FO_.LNK1")
 #! Field("$(INJ){}Mode:Commit-FO_.LNK2",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK2")
@@ -328,10 +387,14 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Link("$(INJ){}Mode:Commit-FO_.LNK4","$(BR){}Mode-Sts")
 #! Field("$(INJ){}Mode:Commit-FO_.LNK5",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK5")
 #! Link("$(INJ){}Mode:Commit-FO_.LNK5","$(LN){}Mode-Sts")
+#! Field("$(INJ){}Mode:Commit-FO_.LNK6",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK6")
+#! Link("$(INJ){}Mode:Commit-FO_.LNK6","$(INJ){}Bucket-I")
+#! Field("$(INJ){}Mode:Commit-FO_.FLNK",16777215,0,"$(INJ){}Mode:Commit-FO_.FLNK")
+#! Link("$(INJ){}Mode:Commit-FO_.FLNK","$(INJ){}Mode:Commit2-FO_")
 #! Record("$(INJ){}Mode-I",3620,3156,0,1,"$(INJ){}Mode-I")
 #! Field("$(INJ){}Mode-I.INP",16777215,0,"$(INJ){}Mode-I.INP")
 #! Link("$(INJ){}Mode-I.INP","$(INJ){}Mode-RB.VAL")
-#! Record("$(INJ){}Mode:Prmt-RB",3780,2602,0,1,"$(INJ){}Mode:Prmt-RB")
+#! Record("$(INJ){}Mode:Prmt-RB",3780,2622,0,1,"$(INJ){}Mode:Prmt-RB")
 #! Field("$(INJ){}Mode:Prmt-RB.VAL",16777215,1,"$(INJ){}Mode:Prmt-RB.VAL")
 #! Record("$(BR){}Mode-Sts",2340,3054,0,1,"$(BR){}Mode-Sts")
 #! Field("$(BR){}Mode-Sts.INP",16777215,0,"$(BR){}Mode-Sts.INP")
@@ -347,7 +410,7 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Record("$(INJ){}Mode:Allw-Sts",3380,2994,0,1,"$(INJ){}Mode:Allw-Sts")
 #! Field("$(INJ){}Mode:Allw-Sts.INP",16777215,1,"$(INJ){}Mode:Allw-Sts.INP")
 #! Link("$(INJ){}Mode:Allw-Sts.INP","$(INJ){}Mode:Allw-RB.VAL")
-#! Record("$(INJ){}Mode:Init-FO_",1620,1940,0,1,"$(INJ){}Mode:Init-FO_")
+#! Record("$(INJ){}Mode:Init-FO_",1620,1932,0,1,"$(INJ){}Mode:Init-FO_")
 #! Field("$(INJ){}Mode:Init-FO_.LNK1",16777215,1,"$(INJ){}Mode:Init-FO_.LNK1")
 #! Link("$(INJ){}Mode:Init-FO_.LNK1","$(INJ){}Mode:Init-FO_/LNK1")
 #! Field("$(INJ){}Mode:Init-FO_.LNK2",16777215,1,"$(INJ){}Mode:Init-FO_.LNK2")
@@ -356,18 +419,21 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Link("$(INJ){}Mode:Init-FO_.LNK3","$(INJ){}Mode:Init-FO_/LNK31")
 #! Field("$(INJ){}Mode:Init-FO_.LNK4",16777215,1,"$(INJ){}Mode:Init-FO_.LNK4")
 #! Link("$(INJ){}Mode:Init-FO_.LNK4","$(INJ){}Mode:Init-FO_/LNK4")
+#! Field("$(INJ){}Mode:Init-FO_.LNK5",16777215,1,"$(INJ){}Mode:Init-FO_.LNK5")
+#! Link("$(INJ){}Mode:Init-FO_.LNK5","$(INJ){}Mode:Init-FO_/LNK5")
 #! Field("$(INJ){}Mode:Init-FO_.LNK6",16777215,1,"$(INJ){}Mode:Init-FO_.LNK6")
 #! Link("$(INJ){}Mode:Init-FO_.LNK6","$(INJ){}Mode:Init-FO_/LNK6")
 #! Connector("$(INJ){}Mode:Init-FO_/LNK22","$(INJ){}Mode:Init-FO_/LNK2",1960,2040,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK2","$(BR){}Mode:Prmt-Sel",2560,2540,16777215,"",0)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK1","$(INJ){}Mode:Init-FO_/LNK12",1920,2060,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK12","$(LN){}Mode:Prmt-Sel",2560,2020,16777215,"",0)
-#! Connector("$(INJ){}Mode:Init-FO_/LNK6","$(INJ){}Mode:Init-FO_/LNK61",1860,2220,16777215,"",1)
+#! Connector("$(INJ){}Mode:Init-FO_/LNK6","$(INJ){}Mode:Init-FO_/LNK61",1860,2240,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK61","$(INJ){}Mode:Commit-Cmd",3460,2700,16777215,"",0)
-#! Connector("$(INJ){}Mode:Init-FO_/LNK4","$(INJ){}Mode:Init-FO_/LNK41",1940,2260,16777215,"",1)
+#! Connector("$(INJ){}Mode:Init-FO_/LNK4","$(INJ){}Mode:Init-FO_/LNK41",1940,2280,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK41","$(BR){}Mode-Sel",2340,2580,16777215,"",0)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK31","$(INJ){}Mode:Init-FO_/LNK3",2000,2020,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK3","$(LN){}Mode-Sel",2240,2220,16777215,"",0)
+#! Connector("$(INJ){}Mode:Init-FO_/LNK5","$(INJ){}Bucket-SP",1900,2260,16777215,"",1)
 #! Record("$(BR){}Mode:Prmt-FO_",3080,3348,0,1,"$(BR){}Mode:Prmt-FO_")
 #! Field("$(BR){}Mode:Prmt-FO_.LNK1",16777215,1,"$(BR){}Mode:Prmt-FO_.LNK1")
 #! Field("$(BR){}Mode:Prmt-FO_.LNK2",16777215,1,"$(BR){}Mode:Prmt-FO_.LNK2")
@@ -394,9 +460,35 @@ record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
 #! Link("$(BR){}Mode:Prmt2-Calc_.INPC","$(BR){}Mode-Sel.RVAL")
 #! Field("$(BR){}Mode:Prmt2-Calc_.FLNK",16777215,1,"$(BR){}Mode:Prmt2-Calc_.FLNK")
 #! Link("$(BR){}Mode:Prmt2-Calc_.FLNK","$(BR){}Mode:Prmt-FO_")
+#! Record("$(INJ){}Bucket-SP",2760,3643,0,0,"$(INJ){}Bucket-SP")
+#! Field("$(INJ){}Bucket-SP.VAL",16777215,1,"$(INJ){}Bucket-SP.VAL")
+#! Field("$(INJ){}Bucket-SP.OUT",16777215,1,"$(INJ){}Bucket-SP.OUT")
+#! Link("$(INJ){}Bucket-SP.OUT","$(INJ){}Bucket-Calc_.A")
+#! Field("$(INJ){}Bucket-SP.FLNK",16777215,1,"$(INJ){}Bucket-SP.FLNK")
+#! Link("$(INJ){}Bucket-SP.FLNK","$(INJ){}Mode:Allw2-Calc_")
+#! Record("$(INJ){}Bucket-Calc_",3160,3842,0,1,"$(INJ){}Bucket-Calc_")
+#! Field("$(INJ){}Bucket-Calc_.A",16777215,0,"$(INJ){}Bucket-Calc_.A")
+#! Field("$(INJ){}Bucket-Calc_.FLNK",16777215,0,"$(INJ){}Bucket-Calc_.FLNK")
+#! Link("$(INJ){}Bucket-Calc_.FLNK","$(INJ){}BucketMod-RB")
+#! Field("$(INJ){}Bucket-Calc_.OUT",16777215,1,"$(INJ){}Bucket-Calc_.OUT")
+#! Field("$(INJ){}Bucket-Calc_.B",16777215,0,"$(INJ){}Bucket-Calc_.B")
 #! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB5,3760,2120,3940,2160,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB4,2620,2480,2800,2520,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB2,3460,2720,3640,2760,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
+#! Record("$(INJ){}Bucket-I",3180,3628,0,1,"$(INJ){}Bucket-I")
+#! Field("$(INJ){}Bucket-I.INP",16777215,0,"$(INJ){}Bucket-I.INP")
+#! Link("$(INJ){}Bucket-I.INP","$(INJ){}Bucket-SP.VAL")
+#! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
+#! Record("$(INJ){}BucketMod-RB",2820,4014,0,1,"$(INJ){}BucketMod-RB")
+#! Field("$(INJ){}BucketMod-RB.INP",16777215,1,"$(INJ){}BucketMod-RB.INP")
+#! Link("$(INJ){}BucketMod-RB.INP","$(INJ){}Bucket-Calc_.B")
+#! Field("$(INJ){}BucketMod-RB.VAL",16777215,1,"$(INJ){}BucketMod-RB.VAL")
+#! Record("$(INJ){}Mode:Commit2-FO_",4060,3450,0,0,"$(INJ){}Mode:Commit2-FO_")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK1",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK1")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK1","$(INJ){}BucketMod-I")
+#! Record("$(INJ){}BucketMod-I",3200,4034,0,1,"$(INJ){}BucketMod-I")
+#! Field("$(INJ){}BucketMod-I.INP",16777215,0,"$(INJ){}BucketMod-I.INP")
+#! Link("$(INJ){}BucketMod-I.INP","$(INJ){}BucketMod-RB.VAL")
