@@ -75,7 +75,7 @@ class evgSoftSeq(gui.QMainWindow):
             self.enableAll.emit(False)
             self.msg("Connection lost")
             return
-        elif len(self.codes)!=len(self.times) or len(self.codes)==0:
+        elif len(self.codes)!=len(self.times):
             self.enableAll.emit(False)
             return
         elif self.updated:
@@ -137,6 +137,10 @@ class evgSoftSeq(gui.QMainWindow):
 
             T.append(nextT)
             C.append(nextC)
+
+        if len(T)==0 or len(C)==0:
+            self.msg("No data to send...")
+            return
 
         self.codes, self.times = [], []
 
