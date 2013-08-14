@@ -492,6 +492,11 @@ evgSoftSeq::process_eos()
 
     if(isLoaded() && !m_isSynced)
         finishSync();
+
+    // In single shot mode, auto-disable after
+    // each run.
+    if(m_runModeCt==Single && m_isEnabled)
+        disable();
 }
 
 void evgSoftSeq::show(int lvl)
