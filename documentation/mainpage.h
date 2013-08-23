@@ -65,7 +65,15 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v202 2.0.2 (XXXX)
+@subsection v202 2.0.2 (Aug 2013)
+
+@subsubsection v202not Notices
+
+- I am considering removal of the EVR interface class.  This was originally
+  intended to allow "similar" hardware (pre-MRM cards from MRF).  However,
+  to my knowledge this has not been done.  If anyone is using this feature
+  please contact me (mdavidsaver@bnl.gov) or it will likely be removed
+  in the next (2.1) release.
 
 @subsubsection v202bug Bug fixes
 
@@ -77,6 +85,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 - Fix EVG driver init w/o hardware.  This was crashing.
 - Update locking for EVR.  Take lock for all device support actions.
 - Fix locking error causing EVR driver to hang during IOC shutdown.
+- evgSoftSeq.py handle readback of zero length sequences (the initial condition)
 
 @subsubsection v202feat Features
 
@@ -101,6 +110,10 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 - On Linux, allow the EVR driver to provide time to the system NTPD.
    Allows system clock to be synced to EVR with much lower jitter
    then network NTP server.
+- EVG sequencer in single shot mode now shows status disabled on completion.
+- Add evrsoftgate.db which uses a hardware event to enable/disable an
+  output using a software timer.
+- Add evgUserEvt.db which gives a "safe" software event send control.
 
 
 @warning The default mapping for prescaler reset is now disabled.
