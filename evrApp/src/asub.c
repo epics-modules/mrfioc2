@@ -130,8 +130,8 @@ long gen_delaygen(aSubRecord *prec)
     if(mult==0)
         mult=1;
 
-    idelay=delay/egupertick;
-    iwidth=width/egupertick;
+    idelay=0.5 + delay/egupertick;
+    iwidth=0.5 + width/egupertick;
 
     if(idelay<0 || idelay>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);
