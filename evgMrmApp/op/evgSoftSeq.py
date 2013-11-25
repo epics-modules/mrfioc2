@@ -62,12 +62,18 @@ class evgSoftSeq(gui.QMainWindow):
 
     def newCodes(self, codes):
         if codes.ok:
-            self.codes = list(codes)
+            try:
+                self.codes = list(codes)
+            except TypeError:
+                self.codes = [codes]
         self.sequenceRB(codes)
 
     def newTimes(self, times):
         if times.ok:
-            self.times = list(times)
+            try:
+                self.times = list(times)
+            except TypeError:
+                self.times = [times]
         self.sequenceRB(times)
 
     def sequenceRB(self, value):
