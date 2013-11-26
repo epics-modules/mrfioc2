@@ -472,6 +472,7 @@ read_mbbi_runMode(mbbiRecord* pmbbi) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         pmbbi->val = seq->getRunModeCt();
+        pmbbi->udf = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pmbbi->name);
         ret = S_dev_noDevice;
@@ -785,6 +786,7 @@ read_bi_loadStatus(biRecord* pbi) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         pbi->val = seq->isLoaded();
+        pbi->udf = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
         ret = S_dev_noDevice;
@@ -808,6 +810,7 @@ read_bi_enaStatus(biRecord* pbi) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         pbi->val = seq->isEnabled();
+        pbi->udf = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
         ret = S_dev_noDevice;
@@ -831,6 +834,7 @@ read_bi_commitStatus(biRecord* pbi) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         pbi->val = seq->isCommited();
+        pbi->udf = 0;
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbi->name);
         ret = S_dev_noDevice;
