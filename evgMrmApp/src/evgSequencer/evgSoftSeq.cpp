@@ -38,6 +38,7 @@ m_numOfRuns(0) {
 
     scanIoInit(&ioscanpvt);
     scanIoInit(&ioScanPvtErr);
+    scanIoInit(&iorunscan);
 }
 
 const epicsUInt32
@@ -497,6 +498,8 @@ evgSoftSeq::process_eos()
     // each run.
     if(m_runModeCt==Single && m_isEnabled)
         disable();
+
+    scanIoRequest(iorunscan);
 }
 
 void evgSoftSeq::show(int lvl)

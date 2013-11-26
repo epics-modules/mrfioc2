@@ -125,6 +125,7 @@ public:
 
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
+    IOSCANPVT                  iorunscan;
     epicsMutex                 m_lock;
 
 private:

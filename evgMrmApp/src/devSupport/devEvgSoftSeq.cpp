@@ -174,7 +174,6 @@ static long
 get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
         return -1;
     }
 
@@ -186,11 +185,21 @@ static long
 get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
         return -1;
     }
 
     *ppvt = seq->ioScanPvtErr;
+    return 0;
+}
+
+static long
+get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+    evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
+    if(!seq) {
+        return -1;
+    }
+
+    *ppvt = seq->iorunscan;
     return 0;
 }
 
@@ -1195,7 +1204,7 @@ common_dset devLiNumOfRuns = {
     NULL,
     NULL,
     (DEVSUPFUN)init_li,
-    NULL,
+    (DEVSUPFUN)get_ioint_info_run,
     (DEVSUPFUN)read_li_numOfRuns,
 };
 epicsExportAddress(dset, devLiNumOfRuns);

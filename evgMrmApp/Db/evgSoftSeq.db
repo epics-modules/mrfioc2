@@ -367,7 +367,7 @@ record(longin, "$(P)NumOfRuns-I") {
     field( DTYP, "EVG NUM OF RUNS")
     field( DESC, "# times soft sequence ran")
     field( INP,  "#C S$(seqNum) @$(EVG)")
-    field( SCAN, "1 second")
+    field( SCAN, "I/O Intr")
 }
 
 #
