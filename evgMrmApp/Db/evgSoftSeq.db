@@ -276,6 +276,7 @@ record(bo, "$(P)Enable-Cmd") {
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
+    field( FLNK, "$(P)Enable-RB")
 }
 
 record(bo, "$(P)Disable-Cmd") {
@@ -342,9 +343,20 @@ record(bi, "$(P)Enable-RB") {
     field( DTYP, "EVG ENA STATUS")
     field( DESC, "Soft Seq Ena status")
     field( INP,  "#C S$(seqNum) @$(EVG)")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(ENALNK=)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Enable-Sts") {
+    field( DTYP, "EVG ENA STATUS")
+    field( DESC, "Soft Seq Ena status")
+    field( INP,  "#C S$(seqNum) @$(EVG)")
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
+    field( FLNK, "$(P)Enable-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
