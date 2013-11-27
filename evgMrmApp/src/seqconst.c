@@ -151,7 +151,7 @@ long seq_repeat(aSubRecord *prec)
         num_out++;
     }
     
-    if(num_out==0) {
+    if(num_out==0 || len_in==0) {
         /* 0 length arrays aren't handled so well, so have 1 length w/ 0 value */
         *period_D++ = 0.0;
         *period_C++ = 0;
@@ -243,14 +243,15 @@ long seq_merge(aSubRecord *prec)
         for(N=0; N<ninputs; N++) {
             double *T;
             epicsUInt8 *C;
-            if(in_pos[N]==(&prec->nea)[2*N])
-                continue; /* This input completely consumed */
 	    
             T = (double*)(&prec->a)[2*N];
             C = (epicsUInt8*)(&prec->a)[2*N+1];
-	    
-	    if(C[in_pos[N]]==0)
-	      continue;
+
+            while(C[in_pos[N]]==0 && in_pos[N]<(&prec->nea)[2*N])
+                in_pos[N]++; /* skip entries with code 0 */
+
+            if(in_pos[N]==(&prec->nea)[2*N])
+                continue; /* This input completely consumed */
 
             if(found_element==-1 || T[in_pos[N]]<last_time) {
                 found_element = N;
@@ -307,6 +308,12 @@ long seq_merge(aSubRecord *prec)
     }
 
 done:
+    if(i==0) {
+        /* result is really empty */
+        out_T[0] = 0.0;
+        out_C[0] = 0;
+        i = 1;
+    }
     prec->neva = i;
     prec->nevb = i;
 
