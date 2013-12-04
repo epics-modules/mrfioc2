@@ -70,6 +70,7 @@ device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")
 
 
 registrar(asub_evg)
+registrar(asub_nsls2_evg)
 
 # Sequencer debug information
 # 0 - No info

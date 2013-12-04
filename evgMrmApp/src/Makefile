@@ -59,6 +59,7 @@ evgmrm_SRCS += evgSeqRam.cpp
 evgmrm_SRCS += evgSeqRamManager.cpp
 
 evgmrm_SRCS += seqconst.c
+evgmrm_SRCS += seqnsls2.c
 
 DBD += evgInit.dbd
 #=============================
