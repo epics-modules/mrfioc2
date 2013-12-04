@@ -9,7 +9,7 @@ record(mbboDirect, "$(LN){}Mode:Prmt-Sel") {
   field(DESC, "LN Permitted TS Modes")
   field(ASG, "OPERATOR")
   field(DTYP, "Soft and restore")
-  field(NOBT, "5")
+  field(NOBT, "10")
   field(FLNK, "$(INJ){}Mode-Calc_")
   info(autosaveFields_pass0, "VAL")
 }
@@ -232,7 +232,6 @@ record(dfanout, "$(BR){Seq:2Hz}Mask:Rep-FOut_") {
   field(OUTB, "$(BR){Seq:B2Hz}Mask:Rep-SP PP MS")
 }
 
-
 record(dfanout, "$(BR){Seq:Stk}Mask:Rep-FOut_") {
   field(OUTA, "$(BR){Seq:NStk}Mask:Rep-SP PP MS")
   field(OUTB, "$(BR){Seq:BStk}Mask:Rep-SP PP MS")
@@ -252,8 +251,9 @@ record(calcout, "$(INJ){}Bucket-Calc_") {
 }
 
 record(dfanout, "$(BR){Seq:Out}Mask:Rep-FOut_") {
+  field(OUTA, "$(INJ){Seq:Out}Shift-Calc_.A PP")
+  field(OUTB, "$(INJ){Seq:NOut}Shift-Calc_.A PP")
 }
-
 
 record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
   field(LNK1, "$(INJ){Seq:NOut}Rep-Calc_")
@@ -262,7 +262,7 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 }
 
 #! Further lines contain data used by VisualDCT
-#! View(3084,1655,1.0)
+#! View(2240,1900,1.0)
 #! Record("$(LN){}Mode:Prmt-Sel",2620,1954,0,0,"$(LN){}Mode:Prmt-Sel")
 #! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,1,"$(LN){}Mode:Prmt-Sel.VAL")
 #! Field("$(LN){}Mode:Prmt-Sel.FLNK",16777215,1,"$(LN){}Mode:Prmt-Sel.FLNK")
@@ -418,8 +418,15 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 #! Field("$(INJ){}Bucket-Calc_.B",16777215,0,"$(INJ){}Bucket-Calc_.B")
 #! Field("$(INJ){}Bucket-Calc_.OUT",16777215,1,"$(INJ){}Bucket-Calc_.OUT")
 #! Link("$(INJ){}Bucket-Calc_.OUT","$(BR){Seq:Out}Mask:Rep-FOut_.VAL")
-#! Record("$(BR){Seq:Out}Mask:Rep-FOut_",3460,3923,0,1,"$(BR){Seq:Out}Mask:Rep-FOut_")
+#! Record("$(BR){Seq:Out}Mask:Rep-FOut_",3460,3896,0,1,"$(BR){Seq:Out}Mask:Rep-FOut_")
 #! Field("$(BR){Seq:Out}Mask:Rep-FOut_.VAL",16777215,0,"$(BR){Seq:Out}Mask:Rep-FOut_.VAL")
+#! Field("$(BR){Seq:Out}Mask:Rep-FOut_.OUTA",16777215,1,"$(BR){Seq:Out}Mask:Rep-FOut_.OUTA")
+#! Field("$(BR){Seq:Out}Mask:Rep-FOut_.OUTB",16777215,1,"$(BR){Seq:Out}Mask:Rep-FOut_.OUTB")
+#! Record("INJ-TS{Seq}Mask:Rep-FOut_",3280,2862,0,1,"INJ-TS{Seq}Mask:Rep-FOut_")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK1",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK1")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK2",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK2")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK3",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK3")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.PROC",16777215,0,"INJ-TS{Seq}Mask:Rep-FOut_.PROC")
 #! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB5,3940,2080,4120,2120,0,"Dialog",24,1,16724787,"User Control",null)
@@ -427,8 +434,3 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 #! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB2,4220,2640,4400,2680,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
-#! Record("INJ-TS{Seq}Mask:Rep-FOut_",3280,2862,0,1,"INJ-TS{Seq}Mask:Rep-FOut_")
-#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK1",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK1")
-#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK2",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK2")
-#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK3",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK3")
-#! Field("INJ-TS{Seq}Mask:Rep-FOut_.PROC",16777215,0,"INJ-TS{Seq}Mask:Rep-FOut_.PROC")
