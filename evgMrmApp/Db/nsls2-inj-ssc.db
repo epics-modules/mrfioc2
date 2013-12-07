@@ -162,6 +162,7 @@ record(bo, "$(P)Ena:LR-Sel") {
   field(ONAM, "Enable")
   field(MASK, "1")
   field( UDF, "0")
+  field( ASG, "OPERATOR")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -172,6 +173,7 @@ record(longout, "$(P)Div:LR-Sel") {
   field(HOPR, "0xff")
   field( VAL, "3")
   field( UDF, "0")
+  field( ASG, "OPERATOR")
   info(autosaveFields_pass0, "VAL")
 }
 
