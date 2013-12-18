@@ -1,3 +1,79 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** drvMrfiocDBuff.cpp
+**
+** RegDev device support for Distributed Buffer on MRF EVR and EVG cards using
+** mrfioc2 driver.
+**
+** -- DOCS ----------------------------------------------------------------
+** Driver is registered via iocsh command:
+** 		mrfiocDBuffConfigure <regDevName> <mrfName> <protocol ID>
+**
+** 			-regDevName: name of device as seen from regDev. E.g. this
+** 						name must be the same as parameter 1 in record OUT/IN
+**
+** 			-mrfName: name of mrf device
+**
+** 			-protocol ID: protocol id (32 bit int). If set to 0, than receiver
+** 						will accept all buffers. This is useful for
+** 						debugging. If protocol !=0 then only received buffers
+** 						with same protocol id are accepted. If you need to work
+** 						with multiple protocols you can register multiple instances
+** 						of regDev using the same mrfName but different regDevNames and
+** 						protocols.
+**
+**
+** 		example:	mrfiocDBuffConfigure EVGDBUFF EVG1 42
+**
+**
+** EPICS use:
+**
+** 		- records behave the same as for any other regDev device with one exception:
+**
+** 		- offset 0x00-0x04 can not be written to, since it is occupied by protocolID
+** 		- writing to offset 0x00 will flush the buffer
+** 		- input records are automatically processed (if scan==IO) when a valid buffer
+** 			is received
+**
+**
+**
+** -- SUPPORTED DEVICES -----------------------------------------------------
+**
+** VME EVG-230 (tx only, EVG does not support databuffer rx)
+** VME EVR-230 (tx and rx)
+** PCI EVR-230 (rx only, firmware version 3 does not support databuffer tx)
+** PCIe EVR-300 (tx and rx)
+**
+**
+** -- IMPLEMENTATION ---------------------------------------------------------
+**
+** In order to sync endianess across different devices and buses a following
+** convention is followed.
+** 		- Data in distributed buffer is always BigEndian (4321). This also includes
+** 		data-types that are longer than 4bytes (e.g. doubles are 7654321)
+**
+** 		- Data in scratch buffers (device->txBuffer, device->rxBuffer) is in
+** 		the same format as in hw buffer (always BigEndian).
+**
+**
+** Device access routines mrfiocDBuff_flush, mrmEvrDataRxCB, implement
+** correct conversions and data reconstructions. E.g. data received over PCI/
+** PCIe will be in littleEndian, but the littleEndian conversion will be 4 bytes
+** wide (this means that if data in HW is 76543210 the result will be 45670123)
+**
+**
+** -- MISSING ---------------------------------------------------------------
+**
+** Explicit setting of DataBuffer MODE (whether DataBuffer is shared with DBUS)
+**
+**
+** Author: Tom Slejko
+** -------------------------------------------------------------------------*/
+
+
 #include <stdlib.h>
 
 /*
@@ -20,14 +96,26 @@ extern "C"{
 #include <regDev.h>
 }
 
+/*										*/
+/*		DEFINES				 			*/
+/*										*/
 
 #define DBUFF_LEN 2048
 #define PROTO_LEN 4
 
+#define DBCR				0x20	//Data Buffer Control Register
+#define TXDBCR				0x24	//Equivalent to DBCR on EVG
+#define DBCR_TXCPT_bit		(1<<20)	//tx complete (ro)
+#define DBCR_TXRUN_bit		(1<<19) //tx running (ro)
+#define DBCR_TRIG_bit		(1<<18) //trigger tx (rw)
+#define DBCR_ENA_bit		(1<<17) //enable data buff (rw)
+#define DBCR_MODE_bit		(1<<16) //DBUS shared mode
+
+
+
 /*
  * mrfDev reg driver private
  */
-
 struct mrfiocDBuffDevice{
 	char* 				name;			//regDevName of device
 	epicsBoolean 		isEVG;			//epicsTrue if card is EVG
@@ -42,22 +130,29 @@ struct mrfiocDBuffDevice{
 	mrfiocDBuffDevice*	next;			//null if this is the last device
 };
 
+
+/****************************************/
+/*		GLOBAL VARIABLES				*/
+/****************************************/
+
+/*
+ * Device linked list head pointer
+ */
 static mrfiocDBuffDevice* devices=0;
 
-void mrfiocDBuff_report(regDevice* pvt, int level){
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
-	printf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
-}
 
-//TODO: move this defines...
-#define DBCR				0x20	//Data Buffer Control Register
-#define TXDBCR				0x24	//Equivalent to DBCR on EVG
-#define DBCR_TXCPT_bit		(1<<20)	//tx complete (ro)
-#define DBCR_TXRUN_bit		(1<<19) //tx running (ro)
-#define DBCR_TRIG_bit		(1<<18) //trigger tx (rw)
-#define DBCR_ENA_bit		(1<<17) //enable data buff (rw)
-#define DBCR_MODE_bit		(1<<16) //DBUS shared mode
 
+/****************************************/
+/*		DEVICE ACCESS FUNCIONS 			*/
+/****************************************/
+
+
+
+/*
+ * Function will flush software scratch buffer.
+ * Buffer will be copied and (if needed) its contents
+ * will be converted into appropriate endiannes
+ */
 static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
 
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
@@ -91,6 +186,69 @@ static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
 
 }
 
+
+/*
+ *	This callback is attached to EVR rx buffer logic.
+ *	This function will reconstruct the rx buffer (from
+ *	*buf and proto) and convert its contents into correct
+ *	endianess. Callback than compares received protocol ID
+ *	with desired protocol. If there is a match then buffer
+ *	is copied into device private rxBuffer and scan IO
+ *	is requested.
+ */
+static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
+            epicsUInt32 len, const epicsUInt8* buf)
+{
+	mrfiocDBuffDevice* device = (mrfiocDBuffDevice *)pvt;
+
+	//Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
+	epicsUInt8 tmp[2048];
+	tmp[0]=proto;
+	memcpy(&(tmp[1]),buf,len);
+
+	// Extract protocol ID
+	epicsUInt32 receivedProtocolID = *(epicsUInt32*)(tmp);
+
+	//Another tiny hack, mrfioc2 automatically converts endianess so we have to convert it back
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+	receivedProtocolID = bswap32(receivedProtocolID);
+#endif
+
+	printf("Received DBUFF with protocol: %d\n",receivedProtocolID);
+
+	// Accept all protocols if devices was initialized with protocol == 0
+	// or if the set protocol matches the received one
+	if(!device->proto | (device->proto == receivedProtocolID));
+	else return;
+
+
+	printf("Received new DATA!!! len: %d\n",len);
+	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
+	// This is a hack so that mrfioc2 doesn't have to be modified...
+	// After this copy, the contents of the buffer are the same as in EVG
+	regDevCopy(4,len/4,tmp,device->rxBuffer,0,1); //TODO: length sanity check
+
+//		int i;
+//		for(i=0;i<20;i++){
+//			printf("0x%x ",device->rxBuffer[i]);
+//		}
+//		printf("\n");
+
+
+	scanIoRequest(device->ioscanpvt);
+
+
+}
+
+
+/****************************************/
+/*			REG DEV FUNCIONS  			*/
+/****************************************/
+
+void mrfiocDBuff_report(regDevice* pvt, int level){
+	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
+	printf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
+}
 
 /*
  * Read will make sure that the data is correctly copied into the records.
@@ -203,7 +361,6 @@ IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* pvt, size_t offset){
 }
 
 
-
 //RegDev device definition
 static const regDevSupport mrfiocDBuffSupport={
 		mrfiocDBuff_report,
@@ -212,6 +369,11 @@ static const regDevSupport mrfiocDBuffSupport={
 		mrfiocDBuff_read,
 		mrfiocDBuff_write
 };
+
+
+/****************************************/
+/*		Device linked list  			*/
+/****************************************/
 
 /**
  * Traverse list of devices and return first
@@ -240,58 +402,13 @@ static void addDevice(mrfiocDBuffDevice* deviceToAdd){
 	}
 
 	mrfiocDBuffDevice* device = devices;
-	//transvere to the end of list
+	//traverse to the end of list
 	while(1){
 		if(device->next) device=device->next;
 		else break;
 	}
 
 	device->next=deviceToAdd;
-}
-
-//callback
-static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
-            epicsUInt32 len, const epicsUInt8* buf)
-{
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice *)pvt;
-
-	//Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
-	epicsUInt8 tmp[2048];
-	tmp[0]=proto;
-	memcpy(&(tmp[1]),buf,len);
-
-	// Extract protocol ID
-	epicsUInt32 receivedProtocolID = *(epicsUInt32*)(tmp);
-
-	//Another tiny hack, mrfioc2 automatically converts endianess so we have to convert it back
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-	receivedProtocolID = bswap32(receivedProtocolID);
-#endif
-
-	printf("Received DBUFF with protocol: %d\n",receivedProtocolID);
-
-	// Accept all protocols if devices was initialized with protocol == 0
-	// or if the set protocol matches the received one
-	if(!device->proto | (device->proto == receivedProtocolID));
-	else return;
-
-
-	printf("Received new DATA!!! len: %d\n",len);
-	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
-	// This is a hack so that mrfioc2 doesn't have to be modified...
-	// After this copy, the contents of the buffer are the same as in EVG
-	regDevCopy(4,len/4,tmp,device->rxBuffer,0,1); //TODO: length sanity check
-
-		int i;
-		for(i=0;i<20;i++){
-			printf("0x%x ",device->rxBuffer[i]);
-		}
-		printf("\n");
-
-
-	scanIoRequest(device->ioscanpvt);
-
-
 }
 
 /*
@@ -393,9 +510,9 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt);
 }
 
-/*
- * EPICS IOCsh command registration
- */
+/****************************************/
+/*		EPICS IOCSH REGISTRATION		*/
+/****************************************/
 
 /* 		mrfiocDBuffConfigure   		*/
 static const iocshArg mrfiocDBuffConfigureDefArg0 = { "regDevName",iocshArgString};
