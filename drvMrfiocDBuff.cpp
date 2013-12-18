@@ -15,6 +15,7 @@
 #include <iocsh.h>
 #include <drvSup.h>
 #include <epicsExport.h>
+#include <epicsEndian.h>
 extern "C"{
 #include <regDev.h>
 }
@@ -30,7 +31,8 @@ extern "C"{
 struct mrfiocDBuffDevice{
 	char* 				name;			//regDevName of device
 	epicsBoolean 		isEVG;			//epicsTrue if card is EVG
-	epicsUInt8* 	    base; 			//pointer to card memory space, retrieved from mrfioc2
+	epicsUInt8* 	    txBufferBase;	//pointer to card memory space, retrieved from mrfioc2
+	epicsUInt8* 	    dbcr;			//pointer to DBCR (TXDBCR on EVR) register of mrfioc card
 	epicsUInt8			DBEN;			//set to 1 if DBus is shared with data transmission
 	epicsUInt32			proto;			//protocol ID (4 bytes)
 	epicsUInt8*			txBuffer; 		//pointer to 2k tx buffer
@@ -44,35 +46,45 @@ static mrfiocDBuffDevice* devices=0;
 
 void mrfiocDBuff_report(regDevice* pvt, int level){
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
-	printf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",device->txBufferLen);
+	printf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
 }
 
 //TODO: move this defines...
 #define DBCR				0x20	//Data Buffer Control Register
+#define TXDBCR				0x24	//Equivalent to DBCR on EVG
 #define DBCR_TXCPT_bit		(1<<20)	//tx complete (ro)
 #define DBCR_TXRUN_bit		(1<<19) //tx running (ro)
 #define DBCR_TRIG_bit		(1<<18) //trigger tx (rw)
 #define DBCR_ENA_bit		(1<<17) //enable data buff (rw)
-#define DBCR_MODE_bit		(1<<16) //DBEN
+#define DBCR_MODE_bit		(1<<16) //DBUS shared mode
 
 static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
+
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+	//Copy protocol ID
+	*((epicsUInt32*) device->txBuffer) = bswap32(device->proto); //Since everything in txBuffer is big endian we need to convert proto ID
+	//The data can now be copied onto cards memory, but we need to copy 4-bytes at the time and
+	//convert endianess again (since PCI converts BE-LE on per word (4b) basis)
+	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,0,1);
+#else
+	//Copy protocol ID
+	*((epicsUInt32*) device->txBuffer) = device->proto;
+	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,0,0);
+#endif
 
 	//Enable data buffer
 	epicsUInt32 dbcr = (DBCR_ENA_bit | DBCR_MODE_bit | DBCR_TRIG_bit);
 
 	//Set buffer size
+	device->txBufferLen = (device->txBufferLen%4)==0 ? device->txBufferLen : device->txBufferLen+4;
 	dbcr |= device->txBufferLen;
 
-	//Copy protocol ID
-	*((epicsUInt32*) device->txBuffer) = device->proto;
-
-	//Copy buffer to the device
-	memcpy(device->base+0x800,device->txBuffer,device->txBufferLen);
-
 	//Output to register and trigger tx
-	nat_iowrite32(device->base+DBCR,dbcr);
+	nat_iowrite32(device->dbcr,0);
+	nat_iowrite32(device->dbcr,dbcr);
 
-	dbcr = nat_ioread32(device->base+DBCR);
+	dbcr = nat_ioread32(device->dbcr);
+
 	printf("DBCR: 0x%x\n",dbcr);
 	printf("complete: %d\n",dbcr & DBCR_TXCPT_bit ? 1 : 0);
 	printf("running: %d\n",dbcr & DBCR_TXRUN_bit ? 1 : 0);
@@ -95,8 +107,13 @@ int mrfiocDBuff_read(
 		int priority)
 {
 
-	printf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",offset,datalength*nelem);
+	printf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
+
+	if(device->isEVG){
+		errlogPrintf("mrfiocDBuff_read: FATAL ERROR, EVG does not have RX capability!\n");
+		return -1;
+	}
 
 	if(offset+datalength*nelem > 2048){
 		errlogPrintf("mrfiocDBuff_read: READ ERROR, address out of range!\n");
@@ -108,11 +125,13 @@ int mrfiocDBuff_read(
 		return -1;
 	}
 
-#ifdef EPICS_ENDIAN_LITTLE
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+	printf("EPICS_ENDIAN_LITTLE: converting endianess!\n");
 	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,1);
 #else
 	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,0);
 #endif
+
 
 	return 0;
 }
@@ -160,7 +179,11 @@ int mrfiocDBuff_write(
 	size_t last_byte = size + offset;
 
 	//Copy into the scratch buffer
-	memcpy(device->txBuffer + offset,pdata,size);
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],0,1);
+#else
+	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],0,0);
+#endif
 	//Update buffer length
 	device->txBufferLen = last_byte;//(device->txBufferLen > last_byte) ? device->txBufferLen : last_byte;
 
@@ -171,7 +194,7 @@ int mrfiocDBuff_write(
 IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* pvt, size_t offset){
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
 
-	if(!device->base){
+	if(!device->txBufferBase){
 		errlogPrintf("mrfiocDBuff_getInIoscan: FATAL ERROR, device not initialized!\n");
 		return NULL;
 	}
@@ -227,11 +250,9 @@ static void addDevice(mrfiocDBuffDevice* deviceToAdd){
 }
 
 //callback
-static
-void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
+static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
             epicsUInt32 len, const epicsUInt8* buf)
 {
-	printf("Received new DATA!!! len: 0x%x\n",len);
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice *)pvt;
 
 	//Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
@@ -239,25 +260,34 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	tmp[0]=proto;
 	memcpy(&(tmp[1]),buf,len);
 
+	// Extract protocol ID
+	epicsUInt32 receivedProtocolID = *(epicsUInt32*)(tmp);
+
+	//Another tiny hack, mrfioc2 automatically converts endianess so we have to convert it back
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+	receivedProtocolID = bswap32(receivedProtocolID);
+#endif
+
+	printf("Received DBUFF with protocol: %d\n",receivedProtocolID);
+
+	// Accept all protocols if devices was initialized with protocol == 0
+	// or if the set protocol matches the received one
+	if(!device->proto | (device->proto == receivedProtocolID));
+	else return;
+
+
+	printf("Received new DATA!!! len: %d\n",len);
 	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
 	// This is a hack so that mrfioc2 doesn't have to be modified...
 	// After this copy, the contents of the buffer are the same as in EVG
 	regDevCopy(4,len/4,tmp,device->rxBuffer,0,1); //TODO: length sanity check
 
-	int i;
-	for(i=0;i<20;i++){
-		printf("0x%x ",device->rxBuffer[i]);
-	}
-	printf("\n");
+		int i;
+		for(i=0;i<20;i++){
+			printf("0x%x ",device->rxBuffer[i]);
+		}
+		printf("\n");
 
-	// Extract protocol ID
-	epicsUInt32 protoID = *(epicsUInt32*)(device->rxBuffer);
-
-#ifdef EPICS_ENDIAN_LITTLE
-	protoID = bswap32(protoID);
-#endif
-
-	printf("Received DBUFF with protocol: %d\n",protoID);
 
 	scanIoRequest(device->ioscanpvt);
 
@@ -277,7 +307,7 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
  */
 struct regDevice{};
 
-static void mrfiocDBuff_init(const char* regDevName, const char* mrfName){
+static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int protocol){
 	//Check if device already exists:
 	if(getDevice(regDevName)){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! device %s already exists!\n",regDevName);
@@ -335,12 +365,14 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName){
 	//Retrieve device info, base memory pointer, device type...
 	if(evr){
 		pvt->isEVG=epicsFalse;
-		pvt->base=(epicsUInt8*) evr->base;
+		pvt->txBufferBase=(epicsUInt8*) (evr->base + 0x1800);
+		pvt->dbcr=(epicsUInt8*) (evr->base + 0x24); //TXDBCR register
 		evr->bufrx.dataRxAddReceive(0xff00,mrmEvrDataRxCB, pvt);
 	}
 	if(evg){
 		pvt->isEVG=epicsTrue;
-		pvt->base=(epicsUInt8*)evg->getRegAddr();
+		pvt->txBufferBase=(epicsUInt8*)(evg->getRegAddr() + 0x800);
+		pvt->dbcr=(epicsUInt8*)(evg->getRegAddr()+ 0x20); //DBCR register
 	}
 
 	/*
@@ -349,12 +381,13 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName){
 	pvt->name=strdup(regDevName);
 
 
-	pvt->proto=42;
-	pvt->next=NULL;
+	pvt->proto=(epicsUInt32) protocol; //protocol ID
+	pvt->next=NULL; //terminate the list entry
 
 	//just a quick verification test...
-	epicsUInt32 versionReg = nat_ioread32(pvt->base+0x2c);
+	epicsUInt32 versionReg = nat_ioread32(pvt->txBufferBase+0x2c);
 	printf("\t%s device is %s. Version: 0x%x\n",mrfName,(pvt->isEVG?"EVG":"EVR"),versionReg);
+	printf("\t%s registered to protocol %d\n",regDevName,pvt->proto);
 
 	addDevice(pvt);
 	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt);
@@ -367,12 +400,13 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName){
 /* 		mrfiocDBuffConfigure   		*/
 static const iocshArg mrfiocDBuffConfigureDefArg0 = { "regDevName",iocshArgString};
 static const iocshArg mrfiocDBuffConfigureDefArg1 = { "mrfioc2 device name",iocshArgString};
-static const iocshArg *const mrfiocDBuffConfigureDefArgs[2] = {&mrfiocDBuffConfigureDefArg0,&mrfiocDBuffConfigureDefArg1};
+static const iocshArg mrfiocDBuffConfigureDefArg2 = { "protocol",iocshArgInt};
+static const iocshArg *const mrfiocDBuffConfigureDefArgs[3] = {&mrfiocDBuffConfigureDefArg0,&mrfiocDBuffConfigureDefArg1,&mrfiocDBuffConfigureDefArg2};
 
-static const iocshFuncDef mrfiocDBuffConfigureDef = {"mrfiocDBuffConfigure", 2, mrfiocDBuffConfigureDefArgs};
+static const iocshFuncDef mrfiocDBuffConfigureDef = {"mrfiocDBuffConfigure", 3, mrfiocDBuffConfigureDefArgs};
 
 static void mrfioDBuffConfigureFunc(const iocshArgBuf* args){
-	mrfiocDBuff_init(args[0].sval, args[1].sval);
+	mrfiocDBuff_init(args[0].sval, args[1].sval, args[2].ival);
 }
 
 
