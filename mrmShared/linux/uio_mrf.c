@@ -1,4 +1,4 @@
-/* Copyright (C) 2010 Brookhaven National Lab
+/* Copyright (C) 2014 Brookhaven National Lab
  * All rights reserved.
  * See file LICENSE for terms.
  */
@@ -15,17 +15,46 @@
 #ifdef CONFIG_GENERIC_GPIO
 #  include <linux/gpio.h>
 #endif
+#ifdef CONFIG_PARPORT_NOT_PC
+#  include <linux/parport.h>
+#endif
 
 #define DRV_NAME "mrf-pci"
-#define DRV_VERSION "0"
+#define DRV_VERSION "1"
 
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
 MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 
+#ifdef CONFIG_GENERIC_GPIO
 static int modparam_gpiobase = -1;
 module_param_named(gpiobase, modparam_gpiobase, int, 0440);
 MODULE_PARM_DESC(gpiobase, "The GPIO number base. -1 means dynamic, which is the default.");
+#endif
+
+
+#ifdef CONFIG_PARPORT_NOT_PC
+// parallel port programming cable description
+struct ppcable {
+    const char *name;
+    // bit masks for each JTAG signal
+
+    // output (host -> devices signals)
+    //  may be in data or control byte
+    unsigned char tms_data, tms_ctrl;
+    unsigned char tck_data, tck_ctrl;
+    unsigned char tdi_data, tdi_ctrl;
+
+    // input (device -> host)
+    // may be in status or control byte
+    unsigned char tdo_sts, tdo_ctrl;
+};
+
+static const struct ppcable cables[];
+static char *cablename = "Minimal";
+module_param_named(cable, cablename, charp, 0444);
+MODULE_PARM_DESC(cable, "Name of JTAG parallel port cable to emulate");
+#endif
 
 /************************ Register definitions ****************************/
 
@@ -59,7 +88,9 @@ MODULE_PARM_DESC(gpiobase, "The GPIO number base. -1 means dynamic, which is the
 #  define GPIOC_pin_fn(N)   (GPIOC_pin0_fn<<(3*(N)))
 #  define GPIOC_pin_dir(N)  (GPIOC_pin0_dir<<(3*(N)))
 #  define GPIOC_pin_data(N) (GPIOC_pin0_data<<(3*(N)))
-/* 8 are supported, but only 4 are used */
+/* 8 are supported, but only 4 are used.
+ * 0 - TCLK, 1 - TMS, 2 - TDO, 3 - TDI
+ */
 #  define GPIOC_num_pins 4
 
 /*
@@ -129,10 +160,17 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 struct mrf_priv {
     struct uio_info uio;
+#if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
+    struct spinlock lock;
+#endif
 #ifdef CONFIG_GENERIC_GPIO
     struct gpio_chip gpio;
-    struct spinlock lock;
     int gpio_cleanup;
+#endif
+#ifdef CONFIG_PARPORT_NOT_PC
+    unsigned int ppenable;
+    const struct ppcable *cable;
+    struct parport *port;
 #endif
     struct pci_dev *pdev;
 };
@@ -143,46 +181,14 @@ struct mrf_priv {
 static
 int mrf_gpio_request(struct gpio_chip *chip, unsigned offset)
 {
-    u32 val;
-    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[0].internal_addr;
-
     if(offset>=GPIOC_num_pins)
         return -EINVAL;
-    if(offset==2)
-        return 0;
-
-    spin_lock(&priv->lock);
-
-    val = ioread32(plx + GPIOC) | GPIOC_pin_dir(offset);
-    iowrite32(val, plx + GPIOC);
-
-    spin_unlock(&priv->lock);
-
-    dev_info(&priv->pdev->dev, "GPIO%u active. %08x\n", offset, val);
     return 0;
 }
 
 static
 void mrf_gpio_free(struct gpio_chip *chip, unsigned offset)
-{
-    u32 val;
-    struct mrf_priv *priv = container_of(chip, struct mrf_priv, gpio);
-    void __iomem *plx = priv->uio.mem[0].internal_addr;
-
-    if(offset>=GPIOC_num_pins)
-        return;
-
-    spin_lock(&priv->lock);
-
-    /* When not in use turn off driver */
-    val = ioread32(plx + GPIOC) & ~GPIOC_pin_dir(offset);
-    iowrite32(val, plx + GPIOC);
-
-    spin_unlock(&priv->lock);
-
-    dev_info(&priv->pdev->dev, "GPIO%u inactive. %08x\n", offset, val);
-}
+{}
 
 static
 int mrf_gpio_get(struct gpio_chip *chip, unsigned offset)
@@ -238,6 +244,265 @@ int mrf_gpio_dir_out(struct gpio_chip *chip, unsigned offset, int value)
     mrf_gpio_set(chip, offset, value);
     return 0;
 }
+
+static
+void mrf_gpio_setup(struct mrf_priv *priv)
+{
+    int ret;
+    /* Setup GPIO config */
+    priv->gpio.label = dev_name(&priv->pdev->dev);
+    priv->gpio.owner = THIS_MODULE;
+    priv->gpio.base = modparam_gpiobase;
+    priv->gpio.ngpio = GPIOC_num_pins;
+    priv->gpio.can_sleep = 0;
+    priv->gpio.request = &mrf_gpio_request;
+    priv->gpio.free = &mrf_gpio_free;
+    priv->gpio.direction_input = &mrf_gpio_dir_in;
+    priv->gpio.direction_output = &mrf_gpio_dir_out;
+    priv->gpio.set = &mrf_gpio_set;
+    priv->gpio.get = &mrf_gpio_get;
+
+    /* gpiochip register fail is not fatal.  Likely due
+     * to collision of gpiobase numbers.  Must use dynamic
+     * numbers when multiple MRF cards w/ PLX 9030 are present.
+     */
+    ret = gpiochip_add(&priv->gpio);
+    if (ret) {
+        dev_warn(&priv->pdev->dev, "GPIO setup error, JTAG unavailable\n");
+    } else {
+        priv->gpio_cleanup = 1;
+        dev_info(&priv->pdev->dev, "GPIO setup ok, JTAG available at bit %d\n",
+                 priv->gpio.base);
+    }
+}
+
+static
+void mrf_gpio_cleanup(struct mrf_priv *priv)
+{
+    if (priv->gpio_cleanup) {
+        int status = gpiochip_remove(&priv->gpio);
+        while (status==-EBUSY) {
+            msleep(10); /* operation in progress... zzzzz */
+            status = gpiochip_remove(&priv->gpio);
+        }
+        BUG_ON(status && status!=-EBUSY);
+        dev_info(&priv->pdev->dev, "GPIO Cleaned up\n");
+    }
+}
+#endif
+
+/******************** Parallel port for JTAG **********************/
+#ifdef CONFIG_PARPORT_NOT_PC
+
+/* if this signal SIG is included in register REG (non-zero mask)
+ * then set/clear the appropriate HW bit.
+ * Translation between cable bit mask and GPIO bit mask
+ */
+#define PPBITSET(REG, SIG, BIT) \
+  if(dev->cable->SIG ## _ ## REG)  {if(d & dev->cable->SIG ## _ ## REG) \
+    {val |= GPIOC_pin_data(BIT);} else {val &= ~GPIOC_pin_data(BIT);}}
+
+/* if this signal SIG is included in register REG (non-zero mask)
+ * and the GPIO bit is active, then set the appropriate cable bit
+ */
+#define PPBITGET(REG, SIG, BIT) \
+  if(dev->cable->SIG ## _ ## REG && val & GPIOC_pin_data(BIT)) \
+  {ret |= dev->cable->SIG ## _ ## REG;}
+
+static void mrfpp_write_data(struct parport *port, unsigned char d)
+{
+    struct mrf_priv *dev = port->private_data;
+    void __iomem *plx = dev->uio.mem[0].internal_addr;
+    u32 val;
+            
+    spin_lock(&dev->lock);
+    if(!dev->ppenable) {
+        spin_unlock(&dev->lock);
+        return;
+    }
+    val = ioread32(plx + GPIOC);
+
+    PPBITSET(data, tck, 0)
+    PPBITSET(data, tms, 1)
+    PPBITSET(data, tdi, 3)
+    // Don't write TDO
+
+    iowrite32(val, plx + GPIOC);
+    spin_unlock(&dev->lock);
+}
+
+static void mrfpp_write_control(struct parport *port, unsigned char d)
+{
+    struct mrf_priv *dev = port->private_data;
+    void __iomem *plx = dev->uio.mem[0].internal_addr;
+    u32 val;
+
+    d ^= 0x0b; // bits are hardware inverted
+
+    spin_lock(&dev->lock);
+    if(!dev->ppenable) {
+        spin_unlock(&dev->lock);
+        return;
+    }
+    val = ioread32(plx + GPIOC);
+
+    PPBITSET(ctrl, tck, 0)
+    PPBITSET(ctrl, tms, 1)
+    PPBITSET(ctrl, tdi, 3)
+    // Don't write TDO
+
+    iowrite32(val, plx + GPIOC);
+    spin_unlock(&dev->lock);
+}
+
+static unsigned char mrfpp_read_data(struct parport *port)
+{
+    unsigned char ret = 0;
+    struct mrf_priv *dev = port->private_data;
+    void __iomem *plx = dev->uio.mem[0].internal_addr;
+    u32 val;
+
+    val = ioread32(plx + GPIOC);
+    PPBITGET(data, tck, 0)
+    PPBITGET(data, tms, 1)
+    PPBITGET(data, tdi, 3)
+    
+    return ret;
+}
+
+static unsigned char mrfpp_read_control(struct parport *port)
+{
+    unsigned char ret = 0;
+    struct mrf_priv *dev = port->private_data;
+    void __iomem *plx = dev->uio.mem[0].internal_addr;
+    u32 val;
+
+    val = ioread32(plx + GPIOC);
+    PPBITGET(ctrl, tck, 0)
+    PPBITGET(ctrl, tms, 1)
+    PPBITGET(ctrl, tdo, 2)
+    PPBITGET(ctrl, tdi, 3)
+    ret ^= 0x0b; // bits are hardware inverted
+
+    return ret;
+}
+
+static unsigned char mrfpp_read_status(struct parport *port)
+{
+    unsigned char ret = 0;
+    struct mrf_priv *dev = port->private_data;
+    void __iomem *plx = dev->uio.mem[0].internal_addr;
+    u32 val;
+
+    val = ioread32(plx + GPIOC);
+    PPBITGET(ctrl, tdo, 2)
+    ret ^= 0x80; // BUSY line is hardware inverted
+
+    return ret;
+}
+
+static unsigned char mrfpp_frob_control(struct parport *dev, unsigned char mask,
+                                        unsigned char val)
+{
+    unsigned char ret;
+
+    // TODO, not atomic
+    ret = mrfpp_read_control(dev);
+    ret = (ret & ~mask) ^ val;
+    mrfpp_write_control(dev, ret);
+    return ret;
+}
+
+static void mrfpp_noop(struct parport *dev) {}
+
+static void mrfpp_initstate(struct pardevice *dev, struct parport_state *s)
+{
+    // New clients clear all JTAG bits
+    s->u.pc.ctr = 0x0b;
+    s->u.pc.ecr = 0;
+}
+
+static void mrfpp_savestate(struct parport *dev, struct parport_state *s)
+{
+    s->u.pc.ctr = mrfpp_read_control(dev);
+    s->u.pc.ecr = mrfpp_read_data(dev);
+}
+static void mrfpp_restorestate(struct parport *dev, struct parport_state *s)
+{
+    mrfpp_write_control(dev, s->u.pc.ctr);
+    mrfpp_write_data(dev, s->u.pc.ecr);
+}
+
+static struct parport_operations mrfppops = {
+    .owner = THIS_MODULE,
+
+    .write_data    = mrfpp_write_data,
+    .write_control = mrfpp_write_control,
+
+    .read_data     = mrfpp_read_data,
+    .read_status   = mrfpp_read_status,
+    .read_control  = mrfpp_read_control,
+
+    .frob_control  = mrfpp_frob_control,
+
+    .enable_irq    = mrfpp_noop,
+    .disable_irq   = mrfpp_noop,
+    .data_forward  = mrfpp_noop,
+    .data_reverse  = mrfpp_noop,
+
+    .init_state    = mrfpp_initstate,
+    .save_state    = mrfpp_savestate,
+    .restore_state = mrfpp_restorestate,
+};
+
+static
+void mrf_pp_setup(struct mrf_priv* dev)
+{
+    const struct ppcable *ccable = cables;
+
+    for(; ccable->name; ccable++) {
+        if(strcmp(ccable->name, cablename)==0)
+            break;
+    }
+    if(!ccable) {
+        dev_err(&dev->pdev->dev, "Cable '%s' is not defined\n", cablename);
+        return;
+    }
+
+    dev->port = parport_register_port(0, PARPORT_IRQ_NONE,
+                                      PARPORT_DMA_NONE,
+                                      &mrfppops);
+
+    if(!dev->port) {
+        dev_err(&dev->pdev->dev, "Failed to register parallel port\n");
+        return;
+    }
+
+    dev->cable = ccable;
+    dev->port->modes = PARPORT_MODE_PCSPP; /* support only basic PC port ops */
+    dev->port->private_data = dev;
+    dev->port->dev = &dev->pdev->dev;
+
+    parport_announce_port(dev->port);
+    /* Protection from whatever random drivers have just tried
+     * to print to us...
+     */
+    dev->ppenable = 1;
+
+    dev_info(&dev->pdev->dev, "Emulating cable: %s\n", ccable->name);
+    return;
+}
+
+static
+void mrf_pp_cleanup(struct mrf_priv* priv)
+{
+    if(priv->port)
+        parport_remove_port(priv->port);
+}
+
+#undef PPBITGET
+#undef PPBITSET
+
 #endif
 
 /******************** PCI interrupt handler ***********************/
@@ -371,7 +636,7 @@ mrf_probe(struct pci_dev *dev,
         if (ret)
                 goto err_unmap;
 
-#ifdef CONFIG_GENERIC_GPIO
+#if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         spin_lock_init(&priv->lock);
         if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             u32 val;
@@ -394,42 +659,30 @@ mrf_probe(struct pci_dev *dev,
             /* clear everything for GPIO 0-3 (aka first 12 bits).
              * Preserve current settings for GPIO 4-7.
              * This will setup these as inputs (which float high)
+             * 
+             * Each GPIO bit has 3 register bits (function, direction, and value)
              */
             val &= 0xfffff000;
+
+            // Enable output drivers for TCLK, TMS, and TDI
+            val |= GPIOC_pin_dir(0);
+            val |= GPIOC_pin_dir(1);
+            val |= GPIOC_pin_dir(3);
 
             dev_info(&dev->dev, "GPIOC %08x\n", val);
             iowrite32(val, plx + GPIOC);
 
-            /* Setup GPIO config */
-            priv->gpio.label = dev_name(&dev->dev);
-            priv->gpio.owner = THIS_MODULE;
-            priv->gpio.base = modparam_gpiobase;
-            priv->gpio.ngpio = GPIOC_num_pins;
-            priv->gpio.can_sleep = 0;
-            priv->gpio.request = &mrf_gpio_request;
-            priv->gpio.free = &mrf_gpio_free;
-            priv->gpio.direction_input = &mrf_gpio_dir_in;
-            priv->gpio.direction_output = &mrf_gpio_dir_out;
-            priv->gpio.set = &mrf_gpio_set;
-            priv->gpio.get = &mrf_gpio_get;
-
-            /* gpiochip register fail is not fatal.  Likely due
-             * to collision of gpiobase numbers.  Must use dynamic
-             * numbers when multiple MRF cards w/ PLX 9030 are present.
-             */
-            ret = gpiochip_add(&priv->gpio);
-            if (ret) {
-                dev_warn(&dev->dev, "GPIO setup error, JTAG unavailable\n");
-            } else {
-                priv->gpio_cleanup = 1;
-                dev_info(&dev->dev, "GPIO setup ok, JTAG available at bit %d\n",
-                         priv->gpio.base);
-            }
+#ifdef CONFIG_GENERIC_GPIO
+            mrf_gpio_setup(priv);
+#endif
+#ifdef CONFIG_PARPORT_NOT_PC
+            mrf_pp_setup(priv);
+#endif
         }
 #else
         if (dev->device==PCI_DEVICE_ID_PLX_9030)
             dev_info(&dev->dev, "GPIO support not built, JTAG unavailable\n");
-#endif
+#endif /* defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC) */
 
         dev_info(&dev->dev, "MRF Setup complete\n");
 
@@ -445,7 +698,7 @@ err_release:
 err_disable:
         pci_disable_device(dev);
 err_free:
-        kfree(priv);
+        kzfree(priv);
         return ret;
 }
 
@@ -489,15 +742,21 @@ mrf_remove(struct pci_dev *dev)
         struct uio_info *info = pci_get_drvdata(dev);
         struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
+#ifdef CONFIG_PARPORT_NOT_PC
+        mrf_pp_cleanup(priv);
+#endif
 #ifdef CONFIG_GENERIC_GPIO
-        if (priv->gpio_cleanup) {
-            int status = gpiochip_remove(&priv->gpio);
-            while (status==-EBUSY) {
-                msleep(10); /* operation in progress... zzzzz */
-                status = gpiochip_remove(&priv->gpio);
-            }
-            BUG_ON(status && status!=-EBUSY);
-            dev_info(&dev->dev, "GPIO Cleaned up\n");
+        mrf_gpio_cleanup(priv);
+#endif
+#if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
+        {
+            void __iomem *plx = info->mem[0].internal_addr;
+            u32 val = ioread32(plx + GPIOC);
+            // Disable output drivers for TCLK, TMS, and TDI
+            val &= ~GPIOC_pin_dir(0);
+            val &= ~GPIOC_pin_dir(1);
+            val &= ~GPIOC_pin_dir(3);
+            iowrite32(val, plx + GPIOC);
         }
 #endif
         uio_unregister_device(info);
@@ -507,7 +766,7 @@ mrf_remove(struct pci_dev *dev)
         pci_release_regions(dev);
         pci_disable_device(dev);
 
-        kfree(priv);
+        kzfree(priv);
 
         dev_info(&dev->dev, "MRF Cleaned up\n");
 }
@@ -531,3 +790,23 @@ static void __exit mrf_exit_module(void)
         pci_unregister_driver(&mrf_driver);
 }
 module_exit(mrf_exit_module);
+
+
+static const struct ppcable cables[] =
+{
+  { // Urjtag minimal
+    .name = "Minimal",
+    .tms_data = 1 << 1,
+    .tck_data = 1 << 2,
+    .tdi_data = 1 << 3,
+    .tdo_sts  = 1 << 7,
+  },
+  { // Altera ByteBlaster
+    .name = "ByteBlaster",
+    .tck_data = 1 << 0,
+    .tms_data = 1 << 1,
+    .tdi_data = 1 << 6,
+    .tdo_sts  = 1 << 7,
+  },
+  {NULL}
+};
