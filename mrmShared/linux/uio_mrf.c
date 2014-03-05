@@ -161,7 +161,7 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 struct mrf_priv {
     struct uio_info uio;
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
-    struct spinlock lock;
+    spinlock_t lock;
 #endif
 #ifdef CONFIG_GENERIC_GPIO
     struct gpio_chip gpio;
@@ -366,7 +366,7 @@ static unsigned char mrfpp_read_data(struct parport *port)
     PPBITGET(data, tck, 0)
     PPBITGET(data, tms, 1)
     PPBITGET(data, tdi, 3)
-    
+
     return ret;
 }
 
@@ -395,7 +395,7 @@ static unsigned char mrfpp_read_status(struct parport *port)
     u32 val;
 
     val = ioread32(plx + GPIOC);
-    PPBITGET(ctrl, tdo, 2)
+    PPBITGET(sts, tdo, 2)
     ret ^= 0x80; // BUSY line is hardware inverted
 
     return ret;
