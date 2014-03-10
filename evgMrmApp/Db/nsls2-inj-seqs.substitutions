@@ -39,12 +39,28 @@ file "seq-repeater.db"
     CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
 {P="\$(BR){Seq:B2Hz}", NELM="2048", NREP="2",
     CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+# Fine delay "sequences" (one event only)
+{P="\$(INJ){Seq:F0}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F2}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F4}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F6}", NELM="1", NREP="1", CYCLELEN="100" }
 }
 
 file "seq-merger.db"
 {
+# Pull together fine delays
+{N="\$(INJ){Seq:F}Rep-Calc_", NELM="1",
+ TIMEA="\$(INJ){Seq:F0}Rep-Calc_.VALB MS NPP",
+ CODEA="\$(INJ){Seq:F0}Rep-Calc_.VALC MS NPP",
+ TIMEB="\$(INJ){Seq:F2}Rep-Calc_.VALB MS NPP",
+ CODEB="\$(INJ){Seq:F2}Rep-Calc_.VALC MS NPP",
+ TIMEC="\$(INJ){Seq:F4}Rep-Calc_.VALB MS NPP",
+ CODEC="\$(INJ){Seq:F4}Rep-Calc_.VALC MS NPP",
+ TIMED="\$(INJ){Seq:F6}Rep-Calc_.VALB MS NPP",
+ CODED="\$(INJ){Seq:F6}Rep-Calc_.VALC MS NPP"
+}
 # W/O Beam events (prefix 'N' on Seq instance)
-{P="\$(P)", N="\$(INJ){Seq:NOut}Rep-Calc_", NELM="2048",
+{N="\$(INJ){Seq:NOut}Rep-Calc_", NELM="2048",
  TIMEA="\$(LN){Seq:N}Rep-Calc_.VALB MS NPP",
  CODEA="\$(LN){Seq:N}Rep-Calc_.VALC MS NPP",
  TIMEB="\$(BR){Seq:N1Hz}Rep-Calc_.VALB MS NPP",
@@ -53,11 +69,13 @@ file "seq-merger.db"
  CODEC="\$(BR){Seq:NStk}Rep-Calc_.VALC MS NPP",
  TIMED="\$(BR){Seq:N2Hz}Rep-Calc_.VALB MS NPP",
  CODED="\$(BR){Seq:N2Hz}Rep-Calc_.VALC MS NPP",
+ TIMEE="\$(INJ){Seq:F}Rep-Calc_.VALA MS NPP",
+ CODEE="\$(INJ){Seq:F}Rep-Calc_.VALB MS NPP",
  OUTTIME="\$(INJ){Seq:NOut}Shift-Calc_.B PP",
  OUTCODE="\$(INJ){\$(EVG)-\$(SEQN)}EvtCode-SP PP",
 }
 # Beam events only (prefix 'B' on Seq instance)
-{P="\$(P)", N="\$(INJ){Seq:BOut}Rep-Calc_", NELM="2048",
+{N="\$(INJ){Seq:BOut}Rep-Calc_", NELM="2048",
  TIMEA="\$(LN){Seq:B}Rep-Calc_.VALB MS NPP",
  CODEA="\$(LN){Seq:B}Rep-Calc_.VALC MS NPP",
  TIMEB="\$(BR){Seq:B1Hz}Rep-Calc_.VALB MS NPP",
@@ -69,7 +87,7 @@ file "seq-merger.db"
  # Results pulled by next
 }
 # All events
-{P="\$(P)", N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
+{N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
  TIMEA="\$(INJ){Seq:NOut}Rep-Calc_.VALA MS NPP",
  CODEA="\$(INJ){Seq:NOut}Rep-Calc_.VALB MS NPP",
  TIMEB="\$(INJ){Seq:BOut}Rep-Calc_.VALA MS NPP",

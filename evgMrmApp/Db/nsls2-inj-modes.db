@@ -244,25 +244,56 @@ record(calcout, "$(INJ){}Mode:Prmt-Calc_") {
   field(INPA, "$(INJ){}Mode:Prmt-Sel")
 }
 
-record(calcout, "$(INJ){}Bucket-Calc_") {
-  field(FLNK, "$(INJ){}BucketMod-RB")
-  field(CALC, "B:=A&3;FLOOR(A/4)")
-  field(OUT, "$(BR){Seq:Out}Mask:Rep-FOut_ PP")
-}
 
-record(dfanout, "$(BR){Seq:Out}Mask:Rep-FOut_") {
-  field(OUTA, "$(INJ){Seq:Out}Shift-Calc_.A PP")
-  field(OUTB, "$(INJ){Seq:NOut}Shift-Calc_.A PP")
+record(calcout, "$(INJ){}Bucket-Calc_") {
+  field(FLNK, "$(INJ){}Bucket-FOut_")
+  field(CALC, "B:=A&3;C:=B+1;FLOOR(A/4)")
+  field(OUT, "$(INJ){}Bucket:0-FOut_.VAL")
 }
 
 record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
-  field(LNK1, "$(INJ){Seq:NOut}Rep-Calc_")
-  field(LNK2, "$(INJ){Seq:BOut}Rep-Calc_")
-  field(LNK3, "$(INJ){Seq:Out}Rep-Calc_")
+  field(LNK1, "$(INJ){Seq:F}Rep-Calc_")
+  field(LNK2, "$(INJ){Seq:NOut}Rep-Calc_")
+  field(LNK3, "$(INJ){Seq:BOut}Rep-Calc_")
+  field(LNK4, "$(INJ){Seq:Out}Rep-Calc_")
+}
+
+record(fanout, "$(INJ){}Bucket-FOut_") {
+  field(LNK1, "$(INJ){}BucketMod-RB")
+  field(LNK2, "$(INJ){}Bucket:0-FOut_")
+  field(LNK3, "$(INJ){}Bucket:1-FOut_")
+  field(LNK4, "$(INJ){}Bucket:2-FOut_")
+  field(LNK5, "INJ-TS{Seq}Mask:Rep-FOut_")
+}
+
+record(dfanout, "$(INJ){}Bucket:1-FOut_") {
+  field(DESC, "Clear all four fine delays")
+  field(VAL, "0")
+  field(OUTA, "$(INJ){Seq:F0}Mask:Rep-SP PP MS")
+  field(OUTB, "$(INJ){Seq:F2}Mask:Rep-SP PP MS")
+  field(OUTC, "$(INJ){Seq:F4}Mask:Rep-SP PP MS")
+  field(OUTD, "$(INJ){Seq:F6}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(INJ){}Bucket:2-FOut_") {
+  field(DESC, "Set appropriate fine delay")
+  field(VAL, "1")
+  field(SELM, "Specified")
+  field(SELL, "$(INJ){}Bucket-Calc_.C")
+  field(OUTA, "$(INJ){Seq:F0}Mask:Rep-SP PP MS")
+  field(OUTB, "$(INJ){Seq:F2}Mask:Rep-SP PP MS")
+  field(OUTC, "$(INJ){Seq:F4}Mask:Rep-SP PP MS")
+  field(OUTD, "$(INJ){Seq:F6}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(INJ){}Bucket:0-FOut_") {
+  field(OUTA, "$(INJ){Seq:Out}Shift-Calc_.A")
+  field(OUTB, "$(INJ){Seq:NOut}Shift-Calc_.A")
+  field(DESC, "Apply coarse delay")
 }
 
 #! Further lines contain data used by VisualDCT
-#! View(2240,1900,1.0)
+#! View(2903,3773,1.0)
 #! Record("$(LN){}Mode:Prmt-Sel",2620,1954,0,0,"$(LN){}Mode:Prmt-Sel")
 #! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,1,"$(LN){}Mode:Prmt-Sel.VAL")
 #! Field("$(LN){}Mode:Prmt-Sel.FLNK",16777215,1,"$(LN){}Mode:Prmt-Sel.FLNK")
@@ -360,7 +391,7 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 #! Field("$(INJ){}BucketMod-RB.INP",16777215,1,"$(INJ){}BucketMod-RB.INP")
 #! Link("$(INJ){}BucketMod-RB.INP","$(INJ){}Bucket-Calc_.B")
 #! Field("$(INJ){}BucketMod-RB.VAL",16777215,1,"$(INJ){}BucketMod-RB.VAL")
-#! Record("$(INJ){}BucketMod-I",3200,4034,0,1,"$(INJ){}BucketMod-I")
+#! Record("$(INJ){}BucketMod-I",3180,4034,0,1,"$(INJ){}BucketMod-I")
 #! Field("$(INJ){}BucketMod-I.INP",16777215,0,"$(INJ){}BucketMod-I.INP")
 #! Link("$(INJ){}BucketMod-I.INP","$(INJ){}BucketMod-RB.VAL")
 #! Record("$(INJ){}Mode-Calc_",2940,2024,0,1,"$(INJ){}Mode-Calc_")
@@ -413,20 +444,18 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 #! Link("$(INJ){}Mode:Prmt-Calc_.OUT","$(INJ){}Mode:Prmt-RB.VAL")
 #! Record("$(INJ){}Bucket-Calc_",3120,3822,0,1,"$(INJ){}Bucket-Calc_")
 #! Field("$(INJ){}Bucket-Calc_.A",16777215,0,"$(INJ){}Bucket-Calc_.A")
-#! Field("$(INJ){}Bucket-Calc_.FLNK",16777215,0,"$(INJ){}Bucket-Calc_.FLNK")
-#! Link("$(INJ){}Bucket-Calc_.FLNK","$(INJ){}BucketMod-RB")
+#! Field("$(INJ){}Bucket-Calc_.FLNK",16777215,1,"$(INJ){}Bucket-Calc_.FLNK")
+#! Link("$(INJ){}Bucket-Calc_.FLNK","$(INJ){}Bucket-FOut_")
 #! Field("$(INJ){}Bucket-Calc_.B",16777215,0,"$(INJ){}Bucket-Calc_.B")
 #! Field("$(INJ){}Bucket-Calc_.OUT",16777215,1,"$(INJ){}Bucket-Calc_.OUT")
-#! Link("$(INJ){}Bucket-Calc_.OUT","$(BR){Seq:Out}Mask:Rep-FOut_.VAL")
-#! Record("$(BR){Seq:Out}Mask:Rep-FOut_",3460,3896,0,1,"$(BR){Seq:Out}Mask:Rep-FOut_")
-#! Field("$(BR){Seq:Out}Mask:Rep-FOut_.VAL",16777215,0,"$(BR){Seq:Out}Mask:Rep-FOut_.VAL")
-#! Field("$(BR){Seq:Out}Mask:Rep-FOut_.OUTA",16777215,1,"$(BR){Seq:Out}Mask:Rep-FOut_.OUTA")
-#! Field("$(BR){Seq:Out}Mask:Rep-FOut_.OUTB",16777215,1,"$(BR){Seq:Out}Mask:Rep-FOut_.OUTB")
-#! Record("INJ-TS{Seq}Mask:Rep-FOut_",3280,2862,0,1,"INJ-TS{Seq}Mask:Rep-FOut_")
+#! Link("$(INJ){}Bucket-Calc_.OUT","$(INJ){}Bucket:0-FOut_.VAL")
+#! Field("$(INJ){}Bucket-Calc_.C",16777215,1,"$(INJ){}Bucket-Calc_.C")
+#! Record("INJ-TS{Seq}Mask:Rep-FOut_",3280,2848,0,1,"INJ-TS{Seq}Mask:Rep-FOut_")
 #! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK1",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK1")
 #! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK2",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK2")
-#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK3",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK3")
 #! Field("INJ-TS{Seq}Mask:Rep-FOut_.PROC",16777215,0,"INJ-TS{Seq}Mask:Rep-FOut_.PROC")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK3",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK3")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK4",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK4")
 #! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB5,3940,2080,4120,2120,0,"Dialog",24,1,16724787,"User Control",null)
@@ -434,3 +463,34 @@ record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
 #! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB2,4220,2640,4400,2680,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
+#! Record("$(INJ){}Bucket-FOut_",3480,3754,0,0,"$(INJ){}Bucket-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK1",16777215,0,"$(INJ){}Bucket-FOut_.LNK1")
+#! Link("$(INJ){}Bucket-FOut_.LNK1","$(INJ){}Bucket-FOut_/LNK11")
+#! Field("$(INJ){}Bucket-FOut_.LNK2",16777215,1,"$(INJ){}Bucket-FOut_.LNK2")
+#! Link("$(INJ){}Bucket-FOut_.LNK2","$(INJ){}Bucket:0-FOut_")
+#! Connector("$(INJ){}Bucket-FOut_/LNK1","$(INJ){}BucketMod-RB",3237,4240,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK11","$(INJ){}Bucket-FOut_/LNK1",3460,4065,16777215,"",0)
+#! Field("$(INJ){}Bucket-FOut_.LNK3",16777215,1,"$(INJ){}Bucket-FOut_.LNK3")
+#! Link("$(INJ){}Bucket-FOut_.LNK3","$(INJ){}Bucket:1-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK4",16777215,1,"$(INJ){}Bucket-FOut_.LNK4")
+#! Link("$(INJ){}Bucket-FOut_.LNK4","$(INJ){}Bucket:2-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK5",16777215,1,"$(INJ){}Bucket-FOut_.LNK5")
+#! Link("$(INJ){}Bucket-FOut_.LNK5","$(INJ){}Bucket-FOut_/LNK51")
+#! Connector("$(INJ){}Bucket-FOut_/LNK5","INJ-TS{Seq}Mask:Rep-FOut_",3607,3440,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK51","$(INJ){}Bucket-FOut_/LNK5",3740,3705,16777215,"",0)
+#! Record("$(INJ){}Bucket:1-FOut_",3860,4040,0,0,"$(INJ){}Bucket:1-FOut_")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTB")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTC",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTC")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTD",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTD")
+#! Record("$(INJ){}Bucket:2-FOut_",3860,4272,0,0,"$(INJ){}Bucket:2-FOut_")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTB")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTC",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTC")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTD",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTD")
+#! Field("$(INJ){}Bucket:2-FOut_.SELL",16777215,0,"$(INJ){}Bucket:2-FOut_.SELL")
+#! Link("$(INJ){}Bucket:2-FOut_.SELL","$(INJ){}Bucket-Calc_.C")
+#! Record("$(INJ){}Bucket:0-FOut_",3860,3862,0,0,"$(INJ){}Bucket:0-FOut_")
+#! Field("$(INJ){}Bucket:0-FOut_.VAL",16777215,0,"$(INJ){}Bucket:0-FOut_.VAL")
+#! Field("$(INJ){}Bucket:0-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:0-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTB")
