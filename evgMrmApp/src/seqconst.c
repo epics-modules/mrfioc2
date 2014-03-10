@@ -85,7 +85,7 @@ long seq_repeat(aSubRecord *prec)
             goto fail;
         }
         if((&prec->nea)[i]<=0) {
-            epicsPrintf("%s: Too few values NE%c\n", prec->name, 'A'+i);
+            epicsPrintf("%s.NE%c empty\n", prec->name, 'A'+i);
             goto fail;
         }
     }
@@ -96,7 +96,7 @@ long seq_repeat(aSubRecord *prec)
             goto fail;
         }
         if((&prec->nova)[i]<=0) {
-            epicsPrintf("%s: Too few values NOV%c\n", prec->name, 'A'+i);
+            epicsPrintf("%s.NOV%c empty\n", prec->name, 'A'+i);
             goto fail;
         }
     }
@@ -190,8 +190,7 @@ static
 long seq_merge(aSubRecord *prec)
 {
     unsigned int i;
-    int found_element = -1;
-    epicsUInt32 in_pos[NINPUTS/2];
+    epicsUInt32 in_pos[NINPUTS/2]; // position in each pair of input times/codes
     unsigned int ninputs;
 
     epicsUInt32 maxout = prec->nova;
@@ -237,7 +236,7 @@ long seq_merge(aSubRecord *prec)
 
     for(i=0; i<maxout; i++) {
         unsigned int N;
-        found_element = -1;
+        int found_element = -1;
         double last_time = -1.0; /* Initial value not used, but silences warning */
 
         for(N=0; N<ninputs; N++) {
@@ -295,16 +294,16 @@ long seq_merge(aSubRecord *prec)
 
     {
         unsigned int N;
-	unsigned int nogood = 0;
-        for(N=0; N<NINPUTS/2; N++) {
+        unsigned int nogood = 0;
+        for(N=0; N<ninputs; N++) {
             if(in_pos[N]!=(&prec->nea)[2*N]) {
                 epicsPrintf("%s.%c: Not completely consumed!  %u of %u\n",
 			    prec->name, 'A'+(2*N), in_pos[N], (&prec->nea)[2*N]);
 		nogood = 1;
             }
-            if(nogood)
-	      goto fail;
         }
+        if(nogood)
+          goto fail;
     }
 
 done:
