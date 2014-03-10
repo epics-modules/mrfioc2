@@ -247,7 +247,7 @@ long seq_merge(aSubRecord *prec)
             T = (double*)(&prec->a)[2*N];
             C = (epicsUInt8*)(&prec->a)[2*N+1];
 
-            while(C[in_pos[N]]==0 && in_pos[N]<(&prec->nea)[2*N])
+            while(in_pos[N]<(&prec->nea)[2*N] && C[in_pos[N]]==0)
                 in_pos[N]++; /* skip entries with code 0 */
 
             if(in_pos[N]==(&prec->nea)[2*N])
