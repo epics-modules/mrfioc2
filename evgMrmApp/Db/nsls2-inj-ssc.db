@@ -197,6 +197,27 @@ record(calcout, "$(P)LR-Calc_") {
   field(OUT , "$(P)Request-Sel CA")
 }
 
+record(calc, "$(P)Cnt-I") {
+  field(DESC, "Sequence execution count")
+  field(INPA, "$(P)Cnt:N-I CPP MS")
+  field(INPB, "$(P)Cnt:B-I CPP MS")
+  field(INPC, "$(P)Cnt-I NPP")
+  field(CALC, "C+1")
+}
+
+record(calc, "$(P)Rate-I") {
+  field(DESC, "Sequence execution rate")
+  field(SCAN, "10 second")
+  field(INPA, "$(P)Cnt-I NPP MS")
+  field(CALC, "C:=A-B;B:=A;C/10")
+  field(HIGH, "1.5")
+  field(LOW , "0.5")
+  field(HSV , "MAJOR")
+  field(LSV , "MAJOR")
+  field(EGU , "Hz")
+  field(PREC, "1")
+}
+
 alias("$(SYS){$(D)-SoftSeq:$(SEQN)}NumOfRuns-I","$(P)Cnt:N-I")
 alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Enable-RB","$(P)Ena:N-RB")
 alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Load-RB","$(P)Load:N-RB")
