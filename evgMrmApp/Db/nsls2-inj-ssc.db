@@ -20,8 +20,15 @@ record(bo, "$(P)Init-Cmd") {
   field(PHAS, "2") # After INJ-TS{}Mode:Init-FO_
   field(ZNAM, "Bootstrap")
   field(ONAM, "Bootstrap")
-  field(FLNK, "$(P)Inject-Calc_")
+  field(FLNK, "$(P)Init-FOut_")
   field(ASG , "OPERATOR")
+}
+
+record(dfanout, "$(P)Init-FOut_") {
+  field(VAL , "1")
+  field(OUTA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Disable-Cmd PP")
+  field(OUTB, "$(SYS){$(D)-SoftSeq:$(SEQB)}Disable-Cmd PP")
+  field(FLNK, "$(P)Inject-Calc_")
 }
 
 record(bo, "$(P)Mode-Sel") {
