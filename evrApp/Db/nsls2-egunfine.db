@@ -1,0 +1,83 @@
+#
+# P - Record prefix
+# OBJ - EVR object name
+#
+# Provide a record "$(P)-I" which
+# holds the current electron source trigger
+# fine delay (0-3).
+#
+
+record(longout, "$(P):0-SP_") {
+  field(DTYP, "EVR Event")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(OBJ),Code=10")
+  field(VAL , "-1") # no DB event
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(P):0-Calc_")
+}
+
+record(longout, "$(P):2-SP_") {
+  field(DTYP, "EVR Event")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(OBJ),Code=11")
+  field(VAL , "-1") # no DB event
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(P):2-Calc_")
+}
+
+record(longout, "$(P):4-SP_") {
+  field(DTYP, "EVR Event")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(OBJ),Code=12")
+  field(VAL , "-1") # no DB event
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(P):4-Calc_")
+}
+
+record(longout, "$(P):6-SP_") {
+  field(DTYP, "EVR Event")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(OBJ),Code=13")
+  field(VAL , "-1") # no DB event
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(P):6-Calc_")
+}
+
+
+record(longout, "$(P):0-Calc_") {
+  field(DOL , "0")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)-I.A PP")
+  field(TSEL, "$(P):0-SP_")
+}
+
+record(longout, "$(P):2-Calc_") {
+  field(DOL , "1")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)-I.A PP")
+  field(TSEL, "$(P):2-SP_")
+}
+
+record(longout, "$(P):4-Calc_") {
+  field(DOL , "2")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)-I.A PP")
+  field(TSEL, "$(P):4-SP_")
+}
+
+record(longout, "$(P):6-Calc_") {
+  field(DOL , "3")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)-I.A PP")
+  field(TSEL, "$(P):6-SP_")
+}
+
+record(calcout, "$(P)-I") {
+  field(CALC, "A")
+  field(EGU , "Buckets")
+  field(LOPR, "0")
+  field(HOPR, "3")
+  field(OOPT, "On Change")
+  field(OUT , "$(OUT=)")  # Only when the bucket changes
+  field(FLNK, "$(FLNK=)") # Every cycle
+}
