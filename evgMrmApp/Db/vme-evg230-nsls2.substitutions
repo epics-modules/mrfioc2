@@ -61,11 +61,11 @@ pattern { P, OBJ }
 }
 
 file evgSoftSeq.db {
-pattern { P, EVG, seqNum, NELM }
-{ "$(SYS){$(D)-SoftSeq:0}",  $(EVG), 0, 2047 }
-{ "$(SYS){$(D)-SoftSeq:1}", $(EVG), 1, 2047 }
-{ "$(SYS){$(D)-SoftSeq:2}",  $(EVG), 2, 2047 }
-{ "$(SYS){$(D)-SoftSeq:3}", $(EVG), 3, 2047 }
+pattern { P, EVG, seqNum, NELM, ASGUSER }
+{ "$(SYS){$(D)-SoftSeq:0}",  $(EVG), 0, 2047, "OPERATOR" }
+{ "$(SYS){$(D)-SoftSeq:1}", $(EVG), 1, 2047, "OPERATOR" }
+{ "$(SYS){$(D)-SoftSeq:2}",  $(EVG), 2, 2047, "OPERATOR" }
+{ "$(SYS){$(D)-SoftSeq:3}", $(EVG), 3, 2047, "OPERATOR" }
 pattern { P, EVG, seqNum, NELM, ENALNK }
 { "$(SYS){$(D)-SoftSeq:Inj}",  $(EVG), 4, 2047, "$(SYS){$(D)-SSC}Inject:B-Calc_" }
 { "$(SYS){$(D)-SoftSeq:InjN}",  $(EVG), 5, 2047, "$(SYS){$(D)-SSC}Inject:N-Calc_" }
