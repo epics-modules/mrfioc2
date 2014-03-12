@@ -270,7 +270,7 @@ record(stringin, "$(P)Time-I") {
   field(INP , "@OBJ=$(OBJ)")
   field(SCAN, "Event")
   field(EVNT, "$(EVNT1HZ)")
-  field(TSE , "125")
+  field(TSE , "-2")
 }
 
 record(bo, "$(P)Link:RxMode-Sel") {

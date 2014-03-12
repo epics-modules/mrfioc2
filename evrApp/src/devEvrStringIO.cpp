@@ -112,6 +112,10 @@ try {
         return S_dev_badArgument;
     }
 
+    if(prec->tse==epicsTimeEventDeviceTime) {
+        prec->time = ts;
+    }
+
     return 0;
 } catch(std::exception& e) {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
