@@ -100,6 +100,12 @@ extern "C"{
 /*		DEFINES				 			*/
 /*										*/
 
+
+int drvMrfiocDBuffDebug = 1;
+epicsExportAddress(int, drvMrfiocDBuffDebug);
+#define dbgPrintf(...)  if(drvMrfiocDBuffDebug) printf(__VA_ARGS__);
+
+
 #define DBUFF_LEN 2048
 #define PROTO_LEN 4
 
@@ -180,9 +186,9 @@ static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
 
 	dbcr = nat_ioread32(device->dbcr);
 
-	printf("DBCR: 0x%x\n",dbcr);
-	printf("complete: %d\n",dbcr & DBCR_TXCPT_bit ? 1 : 0);
-	printf("running: %d\n",dbcr & DBCR_TXRUN_bit ? 1 : 0);
+//	printf("DBCR: 0x%x\n",dbcr);
+//	printf("complete: %d\n",dbcr & DBCR_TXCPT_bit ? 1 : 0);
+//	printf("running: %d\n",dbcr & DBCR_TXRUN_bit ? 1 : 0);
 
 }
 
@@ -214,7 +220,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	receivedProtocolID = bswap32(receivedProtocolID);
 #endif
 
-	printf("Received DBUFF with protocol: %d\n",receivedProtocolID);
+	dbgPrintf("Received DBUFF with protocol: %d\n",receivedProtocolID);
 
 	// Accept all protocols if devices was initialized with protocol == 0
 	// or if the set protocol matches the received one
@@ -222,7 +228,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	else return;
 
 
-	printf("Received new DATA!!! len: %d\n",len);
+	dbgPrintf("Received new DATA!!! len: %d\n",len);
 	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
 	// This is a hack so that mrfioc2 doesn't have to be modified...
 	// After this copy, the contents of the buffer are the same as in EVG
@@ -247,7 +253,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 
 void mrfiocDBuff_report(regDevice* pvt, int level){
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
-	printf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
+	dbgPrintf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
 }
 
 /*
@@ -265,7 +271,7 @@ int mrfiocDBuff_read(
 		int priority)
 {
 
-	printf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
+	dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
 
 	if(device->isEVG){
@@ -284,7 +290,7 @@ int mrfiocDBuff_read(
 	}
 
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-	printf("EPICS_ENDIAN_LITTLE: converting endianess!\n");
+	dbgPrintf("EPICS_ENDIAN_LITTLE: converting endianess!\n");
 	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,1);
 #else
 	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,0);
@@ -321,13 +327,13 @@ int mrfiocDBuff_write(
 	}
 
 	if (offset + datalength * nelem >= DBUFF_LEN) {
-		printf(
+		errlogPrintf(
 				"mrfDBuffWriteMaskedArray(): byte offset out of range for %s regDevDriver\n",
 				device->name);
 		return -1;
 	}
 	if (offset < PROTO_LEN) {
-		printf(
+		errlogPrintf(
 				"mrfDBuffWriteMaskedArray(): device %s : byte offset must be greater than %d\n",
 				device->name, PROTO_LEN);
 		return -1;
@@ -460,7 +466,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	/*
 	 * Query mrfioc2 device support for device
 	 */
-	printf("Looking for device %s\n", mrfName);
+	epicsPrintf("Looking for device %s\n", mrfName);
 	mrf::Object *obj = mrf::Object::getObject(mrfName);
 
 	if(!obj){
@@ -503,8 +509,8 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 
 	//just a quick verification test...
 	epicsUInt32 versionReg = nat_ioread32(pvt->txBufferBase+0x2c);
-	printf("\t%s device is %s. Version: 0x%x\n",mrfName,(pvt->isEVG?"EVG":"EVR"),versionReg);
-	printf("\t%s registered to protocol %d\n",regDevName,pvt->proto);
+	epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(pvt->isEVG?"EVG":"EVR"),versionReg);
+	epicsPrintf("\t%s registered to protocol %d\n",regDevName,pvt->proto);
 
 	addDevice(pvt);
 	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt);

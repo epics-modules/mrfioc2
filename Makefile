@@ -5,9 +5,10 @@ BUILDCLASSES = Linux
 EXCLUDE_ARCHS += ppc405 xscale_be T2 V6 SL5 syncTS 
 #EXCLUDE_ARCHS += SL6 
 
+
 USR_CPPFLAGS += -g \
-	-I/afs/psi.ch/user/s/slejko_t/workspace/mrfioc2202/mrfioc2202/mrfCommon/src \
-	-I/afs/psi.ch/user/s/slejko_t/public/CVS/F/TEST/SLEJKO/mrfioc2202/evgMrmApp/src \
-	-I/afs/psi.ch/user/s/slejko_t/public/CVS/F/TEST/SLEJKO/mrfioc2202/evrMrmApp/src  \
-	-I/afs/psi.ch/user/s/slejko_t/public/CVS/F/TEST/SLEJKO/mrfioc2202/mrmShared/src \
-	-I/afs/psi.ch/user/s/slejko_t/public/CVS/F/TEST/SLEJKO/mrfioc2202/evrApp/src
+	-I/afs/psi.ch/group/8431/slejko_t/CVS/F/TEST/SLEJKO/mrfioc2_PSI/mrfCommon/src \
+	-I/afs/psi.ch/group/8431/slejko_t/CVS/F/TEST/SLEJKO/mrfioc2_PSI/evgMrmApp/src \
+	-I/afs/psi.ch/group/8431/slejko_t/CVS/F/TEST/SLEJKO/mrfioc2_PSI/evrMrmApp/src  \
+	-I/afs/psi.ch/group/8431/slejko_t/CVS/F/TEST/SLEJKO/mrfioc2_PSI/mrmShared/src \
+	-I/afs/psi.ch/group/8431/slejko_t/CVS/F/TEST/SLEJKO/mrfioc2_PSI/evrApp/src
