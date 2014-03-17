@@ -25,6 +25,8 @@
 
 #define NINPUTS (aSubRecordU - aSubRecordA)
 
+int seqConstDebug = 0;
+
 static
 menuFtype seq_repeat_ft[] = {
     menuFtypeULONG, menuFtypeULONG, menuFtypeULONG, menuFtypeDOUBLE, menuFtypeUCHAR
@@ -222,8 +224,13 @@ long seq_merge(aSubRecord *prec)
                 break;
 
             /* Fail unless lengths match */
-            if((&prec->nea)[2*N]!=(&prec->nea)[2*N+1])
+            if((&prec->nea)[2*N]!=(&prec->nea)[2*N+1]) {
+                epicsPrintf("%s: NE%c (%d) != NE%c (%d)\n",
+                            prec->name,
+                            (char)('A'+2*N), (&prec->nea)[2*N],
+                            (char)('A'+2*N+1), (&prec->nea)[2*N+1]);
                 goto fail;
+            }
         }
 
         ninputs = N;
@@ -232,6 +239,10 @@ long seq_merge(aSubRecord *prec)
     if(ninputs==0) {
         epicsPrintf("%s: No inputs configured!\n", prec->name);
         goto fail;
+    }
+
+    if(seqConstDebug>1) {
+        printf("%s Merge\n", prec->name);
     }
 
     for(i=0; i<maxout; i++) {
@@ -284,12 +295,16 @@ long seq_merge(aSubRecord *prec)
             in_pos[found_element]++;
         }
 
-        /*
-        printf("Out %u C=%u T=%f  [", i, out_C[i], out_T[i]);
-        for(N=0; N<ninputs; N++)
-            printf("%u, ", in_pos[N/2]);
-        printf("\n");
-        */
+        if(seqConstDebug>1) {
+            printf("Out %u C=%u T=%f  [", i, out_C[i], out_T[i]);
+            for(N=0; N<ninputs; N++)
+                printf("%u, ", in_pos[N/2]);
+            printf("\n");
+        }
+    }
+
+    if(seqConstDebug>0) {
+        epicsPrintf("%s: merge result has %u element\n", prec->name, i);
     }
 
     {
@@ -308,6 +323,8 @@ long seq_merge(aSubRecord *prec)
 
 done:
     if(i==0) {
+        if(seqConstDebug>0)
+            epicsPrintf("%s: merged yields empty sequence\n", prec->name);
         /* result is really empty */
         out_T[0] = 0.0;
         out_C[0] = 0;
@@ -391,4 +408,4 @@ void asub_evg(void) {
 #include <epicsExport.h>
 
 epicsExportRegistrar(asub_evg);
-
+epicsExportAddress(int, seqConstDebug);

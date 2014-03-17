@@ -77,3 +77,4 @@ registrar(asub_nsls2_evg)
 # 1 - Print for each operation
 # 2 - More details
 variable(mrmEVGSeqDebug,int)
+variable(seqConstDebug,int)
