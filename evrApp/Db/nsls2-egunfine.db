@@ -48,28 +48,28 @@ record(longout, "$(P):0-Calc_") {
   field(DOL , "0")
   field(OMSL, "closed_loop")
   field(OUT , "$(P)-I.A PP")
-  field(TSEL, "$(P):0-SP_")
+  field(TSEL, "$(P):0-SP_.TIME")
 }
 
 record(longout, "$(P):2-Calc_") {
   field(DOL , "1")
   field(OMSL, "closed_loop")
   field(OUT , "$(P)-I.A PP")
-  field(TSEL, "$(P):2-SP_")
+  field(TSEL, "$(P):2-SP_.TIME")
 }
 
 record(longout, "$(P):4-Calc_") {
   field(DOL , "2")
   field(OMSL, "closed_loop")
   field(OUT , "$(P)-I.A PP")
-  field(TSEL, "$(P):4-SP_")
+  field(TSEL, "$(P):4-SP_.TIME")
 }
 
 record(longout, "$(P):6-Calc_") {
   field(DOL , "3")
   field(OMSL, "closed_loop")
   field(OUT , "$(P)-I.A PP")
-  field(TSEL, "$(P):6-SP_")
+  field(TSEL, "$(P):6-SP_.TIME")
 }
 
 record(calcout, "$(P)-I") {
