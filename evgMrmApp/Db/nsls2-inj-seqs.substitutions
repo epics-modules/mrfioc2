@@ -46,6 +46,12 @@ file "seq-repeater.db"
 {P="\$(INJ){Seq:F6}", NELM="1", NREP="1", CYCLELEN="100" }
 }
 
+file "seq-plain.db"
+{
+# First turn Beam events (only w/ beam, but not shifted)
+{P="\$(INJ){Seq:FT}", NELM="1"}
+}
+
 file "seq-merger.db"
 {
 # Pull together fine delays
@@ -86,24 +92,33 @@ file "seq-merger.db"
  CODED="\$(BR){Seq:B2Hz}Rep-Calc_.VALC MS NPP",
  # Results pulled by next
 }
-# All events
-{N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
+# All injector (shifted) events
+{N="\$(INJ){Seq:InjOut}Rep-Calc_", NELM="2048",
  TIMEA="\$(INJ){Seq:NOut}Rep-Calc_.VALA MS NPP",
  CODEA="\$(INJ){Seq:NOut}Rep-Calc_.VALB MS NPP",
  TIMEB="\$(INJ){Seq:BOut}Rep-Calc_.VALA MS NPP",
  CODEB="\$(INJ){Seq:BOut}Rep-Calc_.VALB MS NPP",
  OUTTIME="\$(INJ){Seq:Out}Shift-Calc_.B PP",
+ OUTCODE="\$(INJ){Seq:Out}Rep-Calc_.B PP"
+}
+# Merge injector and first turn events
+{N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
+ TIMEA="", # Pushed from Out shifter
+ CODEA="", # Pushed from previous
+ TIMEB="\$(INJ){Seq:FT}Timestamp-SP MS PP",
+ CODEB="\$(INJ){Seq:FT}EvtCode-SP MS PP",
+ OUTTIME="\$(INJ){\$(EVG)-\$(SEQB)}Timestamp-SP PP",
  OUTCODE="\$(INJ){\$(EVG)-\$(SEQB)}EvtCode-SP PP",
 }
 }
 
 file "seq-shifter.db"
 {
-# Shift w/o beam times
+# Shift injector times
 {P="\$(P)", N="\$(INJ){Seq:Out}Shift-Calc_", NELM="2048",
- OUTTIME="\$(INJ){\$(EVG)-\$(SEQB)}Timestamp-SP PP",
+ OUTTIME="\$(INJ){Seq:Out}Rep-Calc_.A NPP MS",
 }
-# Shift all times
+# Shift injector w/o beam times
 {P="\$(P)", N="\$(INJ){Seq:NOut}Shift-Calc_", NELM="2048",
  OUTTIME="\$(INJ){\$(EVG)-\$(SEQN)}Timestamp-SP PP",
 }
