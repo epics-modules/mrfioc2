@@ -196,6 +196,7 @@ record(bo, "$(P)TrigSrc:UnivInp0-Sel") {
     field( OUT , "#C S$(trigEvtNum) @$(EVG):UnivInp0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc-MbbiDir_.BB CP")
 }
 
 record(bo, "$(P)TrigSrc:UnivInp1-Sel") {
@@ -203,6 +204,7 @@ record(bo, "$(P)TrigSrc:UnivInp1-Sel") {
     field( OUT , "#C S$(trigEvtNum) @$(EVG):UnivInp1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc-MbbiDir_.BC CP")
 }
 
 record(bo, "$(P)TrigSrc:UnivInp2-Sel") {
@@ -210,6 +212,7 @@ record(bo, "$(P)TrigSrc:UnivInp2-Sel") {
     field( OUT , "#C S$(trigEvtNum) @$(EVG):UnivInp2")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc-MbbiDir_.BD CP")
 }
 
 record(bo, "$(P)TrigSrc:UnivInp3-Sel") {
@@ -217,6 +220,7 @@ record(bo, "$(P)TrigSrc:UnivInp3-Sel") {
     field( OUT , "#C S$(trigEvtNum) @$(EVG):UnivInp3")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc-MbbiDir_.BE CP")
 }
 
 #
