@@ -385,7 +385,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	regDevice* device;
 
 	/* Allocate all of the memory */
-	device = (regDevice*) cmalloc(1,sizeof(regDevice));
+	device = (regDevice*) calloc(1,sizeof(regDevice));
 	if(!device){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Out of memory!\n");
 		return;
