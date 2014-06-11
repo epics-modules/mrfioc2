@@ -122,7 +122,7 @@ epicsExportAddress(int, drvMrfiocDBuffDebug);
 /*
  * mrfDev reg driver private
  */
-struct mrfiocDBuffDevice{
+struct regDevice{
 	char* 				name;			//regDevName of device
 	epicsBoolean 		isEVG;			//epicsTrue if card is EVG
 	epicsUInt8* 	    txBufferBase;	//pointer to card memory space, retrieved from mrfioc2
@@ -133,7 +133,7 @@ struct mrfiocDBuffDevice{
 	size_t				txBufferLen; 	//amount of data written in buffer (last touched byte)
 	epicsUInt8*			rxBuffer; 		//pointer to 2k rx buffer
 	IOSCANPVT			ioscanpvt;
-	mrfiocDBuffDevice*	next;			//null if this is the last device
+	regDevice*	next;			//null if this is the last device
 };
 
 
@@ -144,7 +144,7 @@ struct mrfiocDBuffDevice{
 /*
  * Device linked list head pointer
  */
-static mrfiocDBuffDevice* devices=0;
+static regDevice* devices=0;
 
 
 
@@ -159,7 +159,7 @@ static mrfiocDBuffDevice* devices=0;
  * Buffer will be copied and (if needed) its contents
  * will be converted into appropriate endiannes
  */
-static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
+static void mrfiocDBuff_flush(regDevice* device){
 
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
 	//Copy protocol ID
@@ -205,7 +205,7 @@ static void mrfiocDBuff_flush(mrfiocDBuffDevice* device){
 static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
             epicsUInt32 len, const epicsUInt8* buf)
 {
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice *)pvt;
+	regDevice* device = (regDevice *)pvt;
 
 	//Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
 	epicsUInt8 tmp[2048];
@@ -251,8 +251,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 /*			REG DEV FUNCIONS  			*/
 /****************************************/
 
-void mrfiocDBuff_report(regDevice* pvt, int level){
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
+void mrfiocDBuff_report(regDevice* device, int level){
 	dbgPrintf("\t%s dataBuffer is %s. buffer len 0x%x\n",device->name,device->isEVG?"EVG":"EVR",(int)device->txBufferLen);
 }
 
@@ -263,7 +262,7 @@ void mrfiocDBuff_report(regDevice* pvt, int level){
  * always BE.
  */
 int mrfiocDBuff_read(
-		regDevice* pvt,
+		regDevice* device,
 		size_t offset,
 		unsigned int datalength,
 		size_t nelem,
@@ -272,9 +271,7 @@ int mrfiocDBuff_read(
                 regDevTransferComplete callback,
                 char* user)
 {
-
 	dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
 
 	if(device->isEVG){
 		errlogPrintf("mrfiocDBuff_read: FATAL ERROR, EVG does not have RX capability!\n");
@@ -303,7 +300,7 @@ int mrfiocDBuff_read(
 }
 
 int mrfiocDBuff_write(
-		regDevice* pvt,
+		regDevice* device,
 		size_t offset,
 		unsigned int datalength,
 		size_t nelem,
@@ -313,8 +310,6 @@ int mrfiocDBuff_write(
                 regDevTransferComplete callback,
                 char* user)
 {
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
-
 	if (!device->txBuffer) {
 		errlogPrintf(
 				"mrfiocDBuff_write: FATAL ERROR! txBuffer not allocated!\n");
@@ -359,9 +354,8 @@ int mrfiocDBuff_write(
 }
 
 
-IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* pvt, size_t offset){
-	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
-
+IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* device, size_t offset)
+{
 	if(!device->txBufferBase){
 		errlogPrintf("mrfiocDBuff_getInIoscan: FATAL ERROR, device not initialized!\n");
 		return NULL;
@@ -390,10 +384,10 @@ static const regDevSupport mrfiocDBuffSupport={
  * one that matches regDevName. Returns null
  * if no devices are found
  */
-static mrfiocDBuffDevice* getDevice(const char* regDevName){
+static regDevice* getDevice(const char* regDevName){
 	if(!devices) return 0;
 
-	mrfiocDBuffDevice* device=devices;
+	regDevice* device=devices;
 
 	while(1){
 		if(!strcmp(device->name,regDevName)) return device;
@@ -405,13 +399,13 @@ static mrfiocDBuffDevice* getDevice(const char* regDevName){
 /**
  * Appends device to end of the global device list
  */
-static void addDevice(mrfiocDBuffDevice* deviceToAdd){
+static void addDevice(regDevice* deviceToAdd){
 	if(!devices){
 		devices=deviceToAdd;
 		return;
 	}
 
-	mrfiocDBuffDevice* device = devices;
+	regDevice* device = devices;
 	//traverse to the end of list
 	while(1){
 		if(device->next) device=device->next;
@@ -432,7 +426,6 @@ static void addDevice(mrfiocDBuffDevice* deviceToAdd){
  * 		mrfName - name of mrfioc2 device (evg,evr,...)
  *
  */
-struct regDevice{};
 
 static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int protocol){
 	//Check if device already exists:
@@ -441,31 +434,31 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 		return;
 	}
 
-	mrfiocDBuffDevice* pvt;
+	regDevice* device;
 
 	/* Allocate all of the memory */
-	pvt = (mrfiocDBuffDevice*) malloc(sizeof(mrfiocDBuffDevice));
-	if(!pvt){
+	device = (regDevice*) malloc(sizeof(regDevice));
+	if(!device){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Out of memory!\n");
 		return;
 	}
 
-	pvt->txBufferLen = 0;
-	pvt->txBuffer = (epicsUInt8*) malloc(2048); //allocate 2k memory
+	device->txBufferLen = 0;
+	device->txBuffer = (epicsUInt8*) malloc(2048); //allocate 2k memory
 
-	if(!pvt->txBuffer){
+	if(!device->txBuffer){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate TX buffer!");
 		return;
 	}
 
-	pvt->rxBuffer = (epicsUInt8*) malloc(2048); //initialize to 0
+	device->rxBuffer = (epicsUInt8*) malloc(2048); //initialize to 0
 
-	if(!pvt->rxBuffer){
+	if(!device->rxBuffer){
 			errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate RX buffer!");
 			return;
 	}
 
-	scanIoInit(&pvt->ioscanpvt);
+	scanIoInit(&device->ioscanpvt);
 
 	/*
 	 * Query mrfioc2 device support for device
@@ -491,33 +484,33 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 
 	//Retrieve device info, base memory pointer, device type...
 	if(evr){
-		pvt->isEVG=epicsFalse;
-		pvt->txBufferBase=(epicsUInt8*) (evr->base + 0x1800);
-		pvt->dbcr=(epicsUInt8*) (evr->base + 0x24); //TXDBCR register
-		evr->bufrx.dataRxAddReceive(0xff00,mrmEvrDataRxCB, pvt);
+		device->isEVG=epicsFalse;
+		device->txBufferBase=(epicsUInt8*) (evr->base + 0x1800);
+		device->dbcr=(epicsUInt8*) (evr->base + 0x24); //TXDBCR register
+		evr->bufrx.dataRxAddReceive(0xff00,mrmEvrDataRxCB, device);
 	}
 	if(evg){
-		pvt->isEVG=epicsTrue;
-		pvt->txBufferBase=(epicsUInt8*)(evg->getRegAddr() + 0x800);
-		pvt->dbcr=(epicsUInt8*)(evg->getRegAddr()+ 0x20); //DBCR register
+		device->isEVG=epicsTrue;
+		device->txBufferBase=(epicsUInt8*)(evg->getRegAddr() + 0x800);
+		device->dbcr=(epicsUInt8*)(evg->getRegAddr()+ 0x20); //DBCR register
 	}
 
 	/*
 	 * Fill in rest of the device info
 	 */
-	pvt->name=strdup(regDevName);
+	device->name=strdup(regDevName);
 
 
-	pvt->proto=(epicsUInt32) protocol; //protocol ID
-	pvt->next=NULL; //terminate the list entry
+	device->proto=(epicsUInt32) protocol; //protocol ID
+	device->next=NULL; //terminate the list entry
 
 	//just a quick verification test...
-	epicsUInt32 versionReg = nat_ioread32(pvt->txBufferBase+0x2c);
-	epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(pvt->isEVG?"EVG":"EVR"),versionReg);
-	epicsPrintf("\t%s registered to protocol %d\n",regDevName,pvt->proto);
+	epicsUInt32 versionReg = nat_ioread32(device->txBufferBase+0x2c);
+	epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
+	epicsPrintf("\t%s registered to protocol %d\n",regDevName,device->proto);
 
-	addDevice(pvt);
-	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt,2048);
+	addDevice(device);
+	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,device,2048);
 }
 
 /****************************************/
@@ -544,7 +537,7 @@ static const iocshArg *const mrfiocDBuffFlushDefArgs[1] = {&mrfiocDBuffFlushDefA
 static const iocshFuncDef mrfiocDBuffFlushDef = {"mrfiocDBuffFlush", 1, mrfiocDBuffFlushDefArgs};
 
 static void mrfioDBuffFlushFunc(const iocshArgBuf* args){
-	mrfiocDBuffDevice* device = getDevice(args[0].sval);
+	regDevice* device = getDevice(args[0].sval);
 	if(!device){
 		errlogPrintf("Can not find device: %s\n",args[0].sval);
 		return;
