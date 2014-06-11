@@ -268,7 +268,9 @@ int mrfiocDBuff_read(
 		unsigned int datalength,
 		size_t nelem,
 		void* pdata,
-		int priority)
+		int priority,
+                regDevTransferComplete callback,
+                char* user)
 {
 
 	dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
@@ -307,7 +309,9 @@ int mrfiocDBuff_write(
 		size_t nelem,
 		void* pdata,
 		void* pmask,
-		int priority)
+		int priority,
+                regDevTransferComplete callback,
+                char* user)
 {
 	mrfiocDBuffDevice* device = (mrfiocDBuffDevice*) pvt;
 
@@ -513,7 +517,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	epicsPrintf("\t%s registered to protocol %d\n",regDevName,pvt->proto);
 
 	addDevice(pvt);
-	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt);
+	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,(regDevice*)pvt,2048);
 }
 
 /****************************************/
