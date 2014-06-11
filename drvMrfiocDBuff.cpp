@@ -133,19 +133,7 @@ struct regDevice{
 	size_t				txBufferLen; 	//amount of data written in buffer (last touched byte)
 	epicsUInt8*			rxBuffer; 		//pointer to 2k rx buffer
 	IOSCANPVT			ioscanpvt;
-	regDevice*	next;			//null if this is the last device
 };
-
-
-/****************************************/
-/*		GLOBAL VARIABLES				*/
-/****************************************/
-
-/*
- * Device linked list head pointer
- */
-static regDevice* devices=0;
-
 
 
 /****************************************/
@@ -375,46 +363,6 @@ static const regDevSupport mrfiocDBuffSupport={
 };
 
 
-/****************************************/
-/*		Device linked list  			*/
-/****************************************/
-
-/**
- * Traverse list of devices and return first
- * one that matches regDevName. Returns null
- * if no devices are found
- */
-static regDevice* getDevice(const char* regDevName){
-	if(!devices) return 0;
-
-	regDevice* device=devices;
-
-	while(1){
-		if(!strcmp(device->name,regDevName)) return device;
-		if(!device->next) return 0;
-		device=device->next;
-	}
-}
-
-/**
- * Appends device to end of the global device list
- */
-static void addDevice(regDevice* deviceToAdd){
-	if(!devices){
-		devices=deviceToAdd;
-		return;
-	}
-
-	regDevice* device = devices;
-	//traverse to the end of list
-	while(1){
-		if(device->next) device=device->next;
-		else break;
-	}
-
-	device->next=deviceToAdd;
-}
-
 /*
  * Initialization, this is the entry point.
  * Function is called from iocsh. Function will try
@@ -429,7 +377,7 @@ static void addDevice(regDevice* deviceToAdd){
 
 static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int protocol){
 	//Check if device already exists:
-	if(getDevice(regDevName)){
+	if(regDevFind(regDevName)){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! device %s already exists!\n",regDevName);
 		return;
 	}
@@ -502,14 +450,12 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 
 
 	device->proto=(epicsUInt32) protocol; //protocol ID
-	device->next=NULL; //terminate the list entry
 
 	//just a quick verification test...
 	epicsUInt32 versionReg = nat_ioread32(device->txBufferBase+0x2c);
 	epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
 	epicsPrintf("\t%s registered to protocol %d\n",regDevName,device->proto);
 
-	addDevice(device);
 	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,device,2048);
 }
 
@@ -537,7 +483,7 @@ static const iocshArg *const mrfiocDBuffFlushDefArgs[1] = {&mrfiocDBuffFlushDefA
 static const iocshFuncDef mrfiocDBuffFlushDef = {"mrfiocDBuffFlush", 1, mrfiocDBuffFlushDefArgs};
 
 static void mrfioDBuffFlushFunc(const iocshArgBuf* args){
-	regDevice* device = getDevice(args[0].sval);
+	regDevice* device = regDevFind(args[0].sval);
 	if(!device){
 		errlogPrintf("Can not find device: %s\n",args[0].sval);
 		return;
