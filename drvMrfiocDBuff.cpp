@@ -385,21 +385,21 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	regDevice* device;
 
 	/* Allocate all of the memory */
-	device = (regDevice*) malloc(sizeof(regDevice));
+	device = (regDevice*) cmalloc(1,sizeof(regDevice));
 	if(!device){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Out of memory!\n");
 		return;
 	}
 
 	device->txBufferLen = 0;
-	device->txBuffer = (epicsUInt8*) malloc(2048); //allocate 2k memory
+	device->txBuffer = (epicsUInt8*) calloc(1,2048); //allocate 2k memory
 
 	if(!device->txBuffer){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate TX buffer!");
 		return;
 	}
 
-	device->rxBuffer = (epicsUInt8*) malloc(2048); //initialize to 0
+	device->rxBuffer = (epicsUInt8*) calloc(1,2048); //initialize to 0
 
 	if(!device->rxBuffer){
 			errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate RX buffer!");
