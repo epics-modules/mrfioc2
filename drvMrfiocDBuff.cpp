@@ -266,11 +266,6 @@ int mrfiocDBuff_read(
 		return -1;
 	}
 
-	if(offset+datalength*nelem > DBUFF_LEN){
-		errlogPrintf("mrfiocDBuff_read: READ ERROR, address out of range!\n");
-		return -1;
-	}
-
 	if(offset < PROTO_LEN){
 		errlogPrintf("mrfiocDBuff_read: READ ERROR, address out of range!\n");
 		return -1;
@@ -313,12 +308,6 @@ int mrfiocDBuff_write(
 		return 0;
 	}
 
-	if (offset + datalength * nelem >= DBUFF_LEN) {
-		errlogPrintf(
-				"mrfDBuffWriteMaskedArray(): byte offset out of range for %s regDevDriver\n",
-				device->name);
-		return -1;
-	}
 	if (offset < PROTO_LEN) {
 		errlogPrintf(
 				"mrfDBuffWriteMaskedArray(): device %s : byte offset must be greater than %d\n",
