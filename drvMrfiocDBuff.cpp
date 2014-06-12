@@ -196,7 +196,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	regDevice* device = (regDevice *)pvt;
 
 	//Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
-	epicsUInt8 tmp[2048];
+	epicsUInt8 tmp[DBUFF_LEN];
 	tmp[0]=proto;
 	memcpy(&(tmp[1]),buf,len);
 
@@ -266,7 +266,7 @@ int mrfiocDBuff_read(
 		return -1;
 	}
 
-	if(offset+datalength*nelem > 2048){
+	if(offset+datalength*nelem > DBUFF_LEN){
 		errlogPrintf("mrfiocDBuff_read: READ ERROR, address out of range!\n");
 		return -1;
 	}
@@ -392,14 +392,14 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	}
 
 	device->txBufferLen = 0;
-	device->txBuffer = (epicsUInt8*) calloc(1,2048); //allocate 2k memory
+	device->txBuffer = (epicsUInt8*) calloc(1,DBUFF_LEN); //allocate 2k memory
 
 	if(!device->txBuffer){
 		errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate TX buffer!");
 		return;
 	}
 
-	device->rxBuffer = (epicsUInt8*) calloc(1,2048); //initialize to 0
+	device->rxBuffer = (epicsUInt8*) calloc(1,DBUFF_LEN); //initialize to 0
 
 	if(!device->rxBuffer){
 			errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate RX buffer!");
@@ -456,7 +456,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 	epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
 	epicsPrintf("\t%s registered to protocol %d\n",regDevName,device->proto);
 
-	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,device,2048);
+	regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,device,DBUFF_LEN);
 }
 
 /****************************************/
