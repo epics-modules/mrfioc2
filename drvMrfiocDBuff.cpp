@@ -236,8 +236,8 @@ int mrfiocDBuff_read(
         size_t nelem,
         void* pdata,
         int priority,
-                regDevTransferComplete callback,
-                char* user)
+        regDevTransferComplete callback,
+        char* user)
 {
     dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n",(int)offset,(int)(datalength*nelem));
 
@@ -265,12 +265,12 @@ int mrfiocDBuff_write(
         void* pdata,
         void* pmask,
         int priority,
-                regDevTransferComplete callback,
-                char* user)
+        regDevTransferComplete callback,
+        char* user)
 {
     if (!device->txBuffer) {
         errlogPrintf(
-                "mrfiocDBuff_write: FATAL ERROR! txBuffer not allocated!\n");
+                "mrfiocDBuff_write %s: FATAL ERROR! txBuffer not allocated!\n", user);
         return -1;
     }
 
@@ -285,8 +285,8 @@ int mrfiocDBuff_write(
 
     if (offset < PROTO_LEN) {
         errlogPrintf(
-                "mrfDBuffWriteMaskedArray(): device %s : byte offset must be greater than %d\n",
-                device->name, PROTO_LEN);
+                "mrfDBuffWriteMaskedArray %s: device %s: byte offset must be greater than %d\n",
+                user, device->name, PROTO_LEN);
         return -1;
     }
 
@@ -305,7 +305,7 @@ int mrfiocDBuff_write(
 IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* device, size_t offset)
 {
     if (!device->txBufferBase) {
-        errlogPrintf("mrfiocDBuff_getInIoscan: FATAL ERROR, device not initialized!\n");
+        errlogPrintf("mrfiocDBuff_getInIoscan: device %s: FATAL ERROR, device not initialized!\n", device->name);
         return NULL;
     }
 
@@ -348,7 +348,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     /* Allocate all of the memory */
     device = (regDevice*) calloc(1,sizeof(regDevice));
     if (!device) {
-        errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Out of memory!\n");
+        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Out of memory!\n",regDevName);
         return;
     }
 
@@ -356,15 +356,15 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     device->txBuffer = (epicsUInt8*) calloc(1,DBUFF_LEN); //allocate 2k memory
 
     if (!device->txBuffer) {
-        errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate TX buffer!");
+        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Could not allocate TX buffer!",regDevName);
         return;
     }
 
     device->rxBuffer = (epicsUInt8*) calloc(1,DBUFF_LEN); //initialize to 0
 
     if (!device->rxBuffer) {
-            errlogPrintf("mrfiocDBuff_init: FATAL ERROR! Could not allocate RX buffer!");
-            return;
+        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Could not allocate RX buffer!",regDevName);
+        return;
     }
 
     scanIoInit(&device->ioscanpvt);
@@ -376,7 +376,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     mrf::Object *obj = mrf::Object::getObject(mrfName);
 
     if (!obj) {
-        errlogPrintf("mrfiocDBuff_init: FAILED! Can not find mrf device: %s\n",mrfName);
+        errlogPrintf("mrfiocDBuff_init %s: FAILED! Can not find mrf device: %s\n",regDevName,mrfName);
         return;
     }
 
@@ -387,7 +387,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     if (evr) epicsPrintf("\t%s is EVR!\n",mrfName);
 
     if (!evg && !evr) {
-        errlogPrintf("mrfiocDBuff_init: FAILED! %s is neither EVR or EVG!\n",mrfName);
+        errlogPrintf("mrfiocDBuff_init %s: FAILED! %s is neither EVR or EVG!\n",regDevName,mrfName);
         return;
     }
 
@@ -414,7 +414,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
 
     //just a quick verification test...
     epicsUInt32 versionReg = *(epicsUInt32*)(device->txBufferBase+0x2c);
-    epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
+    epicsPrintf("\t%s device %s is %s. Version: 0x%x\n",regDevName,mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
     epicsPrintf("\t%s registered to protocol %d\n",regDevName,device->proto);
 
     regDevRegisterDevice(regDevName,&mrfiocDBuffSupport,device,DBUFF_LEN);
