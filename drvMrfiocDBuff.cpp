@@ -153,9 +153,9 @@ static void mrfiocDBuff_flush(regDevice* device){
 	//Copy protocol ID
 	*((epicsUInt32*) device->txBuffer) = htonl(device->proto);//Since everything in txBuffer is big endian
 
-	//The data can now be copied onto cards memory, but we need to copy 4-bytes at the time and
-	//convert endianess again (since PCI converts BE-LE on per word (4b) basis)
-	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,NULL,LE_SWAP);
+	//The data can now be copied onto card memory, but we need to copy 4-bytes at the time and
+	//convert endianess to BE on a 4 byte word baseis
+	regDevCopy(4,device->txBufferLen>>2,device->txBuffer,device->txBufferBase,NULL,LE_SWAP);
 
 	//Enable data buffer
 	epicsUInt32 dbcr = (DBCR_ENA_bit | DBCR_MODE_bit | DBCR_TRIG_bit);
@@ -163,6 +163,7 @@ static void mrfiocDBuff_flush(regDevice* device){
 	//Set buffer size
 	device->txBufferLen = (device->txBufferLen%4)==0 ? device->txBufferLen : device->txBufferLen+4;
 	dbcr |= device->txBufferLen;
+	device->txBufferLen = 0; // reset for next write cycle
 
 	//Output to register and trigger tx
 	nat_iowrite32(device->dbcr,0);
@@ -211,7 +212,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
 	// This is a hack so that mrfioc2 doesn't have to be modified...
 	// After this copy, the contents of the buffer are the same as in EVG
-	regDevCopy(4,len/4,tmp,device->rxBuffer,NULL,DO_SWAP); // length is always a multiple of 4s
+	regDevCopy(4,len>>2,tmp,device->rxBuffer,NULL,DO_SWAP); // length is always a multiple of 4s
 
 //		int i;
 //		for(i=0;i<20;i++){
@@ -301,15 +302,13 @@ int mrfiocDBuff_write(
 		return -1;
 	}
 
-	size_t size = datalength*nelem;
-	size_t last_byte = size + offset;
-
 	//Copy into the scratch buffer
         /* Data in buffer is in big endian byte order */
 	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],pmask,LE_SWAP);
 
-	//Update buffer length
-	device->txBufferLen = last_byte;//(device->txBufferLen > last_byte) ? device->txBufferLen : last_byte;
+	//Update buffer length (rounded up to multiple of 4)
+	size_t bufferLen = (datalength * nelem + offset + 3) & ~3;
+	if (bufferLen > device->txBufferLen) device->txBufferLen = bufferLen;
 
 	return 0;
 }
