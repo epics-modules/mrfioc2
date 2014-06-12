@@ -84,7 +84,6 @@
 #include <mrf/object.h> //mrm::Object
 #include <evgMrm.h> //evgMrm
 #include <drvem.h> //EVRMRM
-#include <os/default/mrfIoOpsDef.h>
 
 /*
  *  EPICS headers
@@ -100,7 +99,6 @@ extern "C"{
 /*                                        */
 /*        DEFINES                         */
 /*                                        */
-
 
 int drvMrfiocDBuffDebug = 1;
 epicsExportAddress(int, drvMrfiocDBuffDebug);
@@ -122,16 +120,16 @@ epicsExportAddress(int, drvMrfiocDBuffDebug);
  * mrfDev reg driver private
  */
 struct regDevice{
-    char*               name;            //regDevName of device
-    epicsBoolean        isEVG;           //epicsTrue if card is EVG
-    epicsUInt8*         txBufferBase;    //pointer to card memory space, retrieved from mrfioc2
-    epicsUInt8*         dbcr;            //pointer to DBCR (TXDBCR on EVR) register of mrfioc card
-    epicsUInt8          DBEN;            //set to 1 if DBus is shared with data transmission
-    epicsUInt32         proto;           //protocol ID (4 bytes)
-    epicsUInt8*         txBuffer;        //pointer to 2k tx buffer
-    size_t              txBufferLen;     //amount of data written in buffer (last touched byte)
-    epicsUInt8*         rxBuffer;        //pointer to 2k rx buffer
-    IOSCANPVT           ioscanpvt;
+    char*                   name;            //regDevName of device
+    epicsBoolean            isEVG;           //epicsTrue if card is EVG
+    epicsUInt8*             txBufferBase;    //pointer to card memory space, retrieved from mrfioc2
+    volatile epicsUInt32*   dbcr;            //pointer to DBCR (TXDBCR on EVR) register of mrfioc card
+    epicsUInt8              DBEN;            //set to 1 if DBus is shared with data transmission
+    epicsUInt32             proto;           //protocol ID (4 bytes)
+    epicsUInt8*             txBuffer;        //pointer to 2k tx buffer
+    size_t                  txBufferLen;     //amount of data written in buffer (last touched byte)
+    epicsUInt8*             rxBuffer;        //pointer to 2k rx buffer
+    IOSCANPVT               ioscanpvt;
 };
 
 
@@ -162,10 +160,8 @@ static void mrfiocDBuff_flush(regDevice* device)
     device->txBufferLen = 0; // reset for next write cycle
 
     //Output to register and trigger tx
-    nat_iowrite32(device->dbcr,0);
-    nat_iowrite32(device->dbcr,dbcr);
-
-    dbcr = nat_ioread32(device->dbcr);
+    *device->dbcr = 0;
+    *device->dbcr = dbcr;
 
 //    printf("DBCR: 0x%x\n",dbcr);
 //    printf("complete: %d\n",dbcr & DBCR_TXCPT_bit ? 1 : 0);
@@ -399,13 +395,13 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     if (evr) {
         device->isEVG=epicsFalse;
         device->txBufferBase=(epicsUInt8*) (evr->base + 0x1800);
-        device->dbcr=(epicsUInt8*) (evr->base + 0x24); //TXDBCR register
+        device->dbcr=(epicsUInt32*) (evr->base + 0x24); //TXDBCR register
         evr->bufrx.dataRxAddReceive(0xff00,mrmEvrDataRxCB, device);
     }
     if (evg) {
         device->isEVG=epicsTrue;
         device->txBufferBase=(epicsUInt8*)(evg->getRegAddr() + 0x800);
-        device->dbcr=(epicsUInt8*)(evg->getRegAddr()+ 0x20); //DBCR register
+        device->dbcr=(epicsUInt32*)(evg->getRegAddr()+ 0x20); //DBCR register
     }
 
     /*
@@ -417,7 +413,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     device->proto=(epicsUInt32) protocol; //protocol ID
 
     //just a quick verification test...
-    epicsUInt32 versionReg = nat_ioread32(device->txBufferBase+0x2c);
+    epicsUInt32 versionReg = *(epicsUInt32*)(device->txBufferBase+0x2c);
     epicsPrintf("\t%s device is %s. Version: 0x%x\n",mrfName,(device->isEVG?"EVG":"EVR"),versionReg);
     epicsPrintf("\t%s registered to protocol %d\n",regDevName,device->proto);
 
