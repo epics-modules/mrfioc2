@@ -75,6 +75,7 @@
 
 
 #include <stdlib.h>
+#include <arpa/inet.h> /* for htonl */
 
 /*
  * mrfIoc2 headers
@@ -149,13 +150,9 @@ struct regDevice{
  */
 static void mrfiocDBuff_flush(regDevice* device){
 
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
 	//Copy protocol ID
-	*((epicsUInt32*) device->txBuffer) = bswap32(device->proto); //Since everything in txBuffer is big endian we need to convert proto ID
-#else
-	//Copy protocol ID
-	*((epicsUInt32*) device->txBuffer) = device->proto;
-#endif
+	*((epicsUInt32*) device->txBuffer) = htonl(device->proto);//Since everything in txBuffer is big endian
+
 	//The data can now be copied onto cards memory, but we need to copy 4-bytes at the time and
 	//convert endianess again (since PCI converts BE-LE on per word (4b) basis)
 	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,NULL,LE_SWAP);
@@ -199,13 +196,8 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	tmp[0]=proto;
 	memcpy(&(tmp[1]),buf,len);
 
-	// Extract protocol ID
-	epicsUInt32 receivedProtocolID = *(epicsUInt32*)(tmp);
-
-	//Another tiny hack, mrfioc2 automatically converts endianess so we have to convert it back
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-	receivedProtocolID = bswap32(receivedProtocolID);
-#endif
+	// Extract protocol ID (big endian)
+	epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(tmp));
 
 	dbgPrintf("Received DBUFF with protocol: %d\n",receivedProtocolID);
 
