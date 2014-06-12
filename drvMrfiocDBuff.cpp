@@ -152,14 +152,13 @@ static void mrfiocDBuff_flush(regDevice* device){
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
 	//Copy protocol ID
 	*((epicsUInt32*) device->txBuffer) = bswap32(device->proto); //Since everything in txBuffer is big endian we need to convert proto ID
-	//The data can now be copied onto cards memory, but we need to copy 4-bytes at the time and
-	//convert endianess again (since PCI converts BE-LE on per word (4b) basis)
-	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,0,1);
 #else
 	//Copy protocol ID
 	*((epicsUInt32*) device->txBuffer) = device->proto;
-	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,0,0);
 #endif
+	//The data can now be copied onto cards memory, but we need to copy 4-bytes at the time and
+	//convert endianess again (since PCI converts BE-LE on per word (4b) basis)
+	regDevCopy(4,device->txBufferLen/4,device->txBuffer,device->txBufferBase,NULL,LE_SWAP);
 
 	//Enable data buffer
 	epicsUInt32 dbcr = (DBCR_ENA_bit | DBCR_MODE_bit | DBCR_TRIG_bit);
@@ -220,7 +219,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
 	// Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
 	// This is a hack so that mrfioc2 doesn't have to be modified...
 	// After this copy, the contents of the buffer are the same as in EVG
-	regDevCopy(4,len/4,tmp,device->rxBuffer,0,1); //TODO: length sanity check
+	regDevCopy(4,len/4,tmp,device->rxBuffer,NULL,DO_SWAP); // length is always a multiple of 4s
 
 //		int i;
 //		for(i=0;i<20;i++){
@@ -271,13 +270,8 @@ int mrfiocDBuff_read(
 		return -1;
 	}
 
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-	dbgPrintf("EPICS_ENDIAN_LITTLE: converting endianess!\n");
-	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,1);
-#else
-	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,0,0);
-#endif
-
+        /* Data in buffer is in big endian byte order */
+	regDevCopy(datalength,nelem,&device->rxBuffer[offset],pdata,NULL,LE_SWAP);
 
 	return 0;
 }
@@ -319,11 +313,9 @@ int mrfiocDBuff_write(
 	size_t last_byte = size + offset;
 
 	//Copy into the scratch buffer
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],0,1);
-#else
-	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],0,0);
-#endif
+        /* Data in buffer is in big endian byte order */
+	regDevCopy(datalength,nelem,pdata,&device->txBuffer[offset],pmask,LE_SWAP);
+
 	//Update buffer length
 	device->txBufferLen = last_byte;//(device->txBufferLen > last_byte) ? device->txBufferLen : last_byte;
 
