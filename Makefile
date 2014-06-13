@@ -7,6 +7,7 @@ EXCLUDE_ARCHS += ppc405 xscale_be V6 SL5 syncTS
 
 
 USR_CPPFLAGS += -g \
+        -I../../mrfioc2_PSI/mrfCommon/src \
 	-I../../mrfioc2_PSI/evgMrmApp/src \
 	-I../../mrfioc2_PSI/evrMrmApp/src  \
 	-I../../mrfioc2_PSI/mrmShared/src \
