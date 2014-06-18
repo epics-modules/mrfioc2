@@ -178,18 +178,13 @@ static void mrfiocDBuff_flush(regDevice* device)
  *    is copied into device private rxBuffer and scan IO
  *    is requested.
  */
-static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
+static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     regDevice* device = (regDevice *)pvt;
 
-    //Reconstruct the buffer, we will handle protocols separately since PSI legacy systems use 4bytes for proto id
-    epicsUInt8 tmp[DBUFF_LEN];
-    tmp[0] = proto;
-    memcpy(&(tmp[1]), buf, len);
-
     // Extract protocol ID (big endian)
-    epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(tmp));
+    epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(buf));
 
     dbgPrintf("Received DBUFF with protocol: %d\n", receivedProtocolID);
 
@@ -202,7 +197,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok, epicsUInt8 proto,
     // Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
     // This is a hack so that mrfioc2 doesn't have to be modified...
     // After this copy, the contents of the buffer are the same as in EVG
-    regDevCopy(4, len>>2, tmp, device->rxBuffer, NULL, DO_SWAP); // length is always a multiple of 4s
+    regDevCopy(4, len>>2, buf, device->rxBuffer, NULL, DO_SWAP); // length is always a multiple of 4s
 
 //        int i;
 //        for(i = 0;i<20;i++){
@@ -396,7 +391,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
         device->isEVG = epicsFalse;
         device->txBufferBase = (epicsUInt8*) (evr->base + 0x1800);
         device->dbcr = (epicsUInt32*) (evr->base + 0x24); //TXDBCR register
-        evr->bufrx.dataRxAddReceive(0xff00, mrmEvrDataRxCB, device);
+        evr->bufrx.dataRxAddReceive(mrmEvrDataRxCB, device);
     }
     if (evg) {
         device->isEVG = epicsTrue;
