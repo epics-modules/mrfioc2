@@ -72,11 +72,14 @@
 **
 ** Author: Tom Slejko
 ** -------------------------------------------------------------------------*/
-
+#pragma comment (lib, "Ws2_32.lib")
 
 #include <stdlib.h>
+#ifdef _WIN32
+ #include <Winsock2.h>
+#else
 #include <arpa/inet.h> /* for htonl */
-
+#endif
 /*
  * mrfIoc2 headers
  */
@@ -100,8 +103,10 @@ extern "C"{
 /*        DEFINES                         */
 /*                                        */
 
-int drvMrfiocDBuffDebug = 1;
-epicsExportAddress(int, drvMrfiocDBuffDebug);
+int drvMrfiocDBuffDebug = 0;
+extern "C" {
+ epicsExportAddress(int, drvMrfiocDBuffDebug);
+}
 #define dbgPrintf(...)  if(drvMrfiocDBuffDebug) printf(__VA_ARGS__);
 
 
@@ -393,12 +398,13 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
         device->dbcr = (epicsUInt32*) (evr->base + 0x24); //TXDBCR register
         evr->bufrx.dataRxAddReceive(mrmEvrDataRxCB, device);
     }
+#ifndef _WIN32
     if (evg) {
         device->isEVG = epicsTrue;
         device->txBufferBase = (epicsUInt8*)(evg->getRegAddr() + 0x800);
         device->dbcr = (epicsUInt32*)(evg->getRegAddr()+ 0x20); //DBCR register
     }
-
+#endif
     /*
      * Fill in rest of the device info
      */
@@ -459,6 +465,7 @@ static int mrfiocDBuffRegistrar(void) {
     return 1;
 }
 //Automatic registration
-epicsExportRegistrar(mrfiocDBuffRegistrar);
-
+extern "C" {
+ epicsExportRegistrar(mrfiocDBuffRegistrar);
+}
 static int done = mrfiocDBuffRegistrar();
