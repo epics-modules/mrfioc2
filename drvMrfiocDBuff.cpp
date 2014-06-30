@@ -72,14 +72,14 @@
 **
 ** Author: Tom Slejko
 ** -------------------------------------------------------------------------*/
-#pragma comment (lib, "Ws2_32.lib")
 
-#include <stdlib.h>
 #ifdef _WIN32
+ #pragma comment (lib, "Ws2_32.lib")
  #include <Winsock2.h>
 #else
 #include <arpa/inet.h> /* for htonl */
 #endif
+#include <stdlib.h>
 /*
  * mrfIoc2 headers
  */
