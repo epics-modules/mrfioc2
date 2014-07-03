@@ -187,6 +187,12 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     regDevice* device = (regDevice *)pvt;
+    dbgPrintf("RegDev got buffer %u bytes\n", len);
+    for (unsigned int i=0; i < len; i++)
+    {
+        dbgPrintf(" %02x", buf[i]);
+    }
+    dbgPrintf("\n");
 
     // Extract protocol ID (big endian)
     epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(buf));
@@ -199,10 +205,14 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
     else return;
 
     dbgPrintf("Received new DATA!!! len: %d\n", len);
+
+/*  mrfioc2 modified: Data buffer is always big endian, 4 byte wise.
     // Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
     // This is a hack so that mrfioc2 doesn't have to be modified...
     // After this copy, the contents of the buffer are the same as in EVG
     regDevCopy(4, len>>2, buf, device->rxBuffer, NULL, DO_SWAP); // length is always a multiple of 4s
+*/
+    regDevCopy(4, len>>2, buf, device->rxBuffer, NULL, NO_SWAP); // length is always a multiple of 4s
 
 //        int i;
 //        for(i = 0;i<20;i++){
