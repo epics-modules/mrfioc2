@@ -4,7 +4,7 @@ EXCLUDE_VERSIONS=3.13.2 3.13.9 3.13.10
 BUILDCLASSES = Linux
 EXCLUDE_ARCHS += ppc405 xscale_be V6 SL5 syncTS 
 #EXCLUDE_ARCHS += SL6 
-
+USE_LIBVERSION=YES
 
 USR_CPPFLAGS += -g \
         -I../../mrfioc2_PSI/mrfCommon/src \
