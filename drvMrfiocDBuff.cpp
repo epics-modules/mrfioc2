@@ -176,9 +176,8 @@ static void mrfiocDBuff_flush(regDevice* device)
 
 /*
  *    This callback is attached to EVR rx buffer logic.
- *    This function will reconstruct the rx buffer (from
- *    *buf and proto) and convert its contents into correct
- *    endianess. Callback than compares received protocol ID
+ *    Byte order is big endian as on network.
+ *    Callback then compares received protocol ID
  *    with desired protocol. If there is a match then buffer
  *    is copied into device private rxBuffer and scan IO
  *    is requested.
@@ -187,12 +186,15 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     regDevice* device = (regDevice *)pvt;
-    dbgPrintf("RegDev got buffer %u bytes\n", len);
-    for (unsigned int i=0; i < len; i++)
+    if (drvMrfiocDBuffDebug)
     {
-        dbgPrintf(" %02x", buf[i]);
+        printf("RegDev got buffer %u bytes\n", len);
+        for (unsigned int i=0; i < len; i++)
+        {
+            printf(" %02x", buf[i]);
+        }
+        printf("\n");
     }
-    dbgPrintf("\n");
 
     // Extract protocol ID (big endian)
     epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(buf));
@@ -205,20 +207,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
     else return;
 
     dbgPrintf("Received new DATA!!! len: %d\n", len);
-
-/*  mrfioc2 modified: Data buffer is always big endian, 4 byte wise.
-    // Do first copy swap. Since buffer is read 4 bytes at they have to be swapped.
-    // This is a hack so that mrfioc2 doesn't have to be modified...
-    // After this copy, the contents of the buffer are the same as in EVG
-    regDevCopy(4, len>>2, buf, device->rxBuffer, NULL, DO_SWAP); // length is always a multiple of 4s
-*/
-    regDevCopy(4, len>>2, buf, device->rxBuffer, NULL, NO_SWAP); // length is always a multiple of 4s
-
-//        int i;
-//        for(i = 0;i<20;i++){
-//            printf("0x%x ", device->rxBuffer[i]);
-//        }
-//        printf("\n");
+    memcpy(device->rxBuffer, buf, len);
 
     scanIoRequest(device->ioscanpvt);
 }
@@ -230,7 +219,7 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
 
 void mrfiocDBuff_report(regDevice* device, int level)
 {
-    dbgPrintf("\t%s dataBuffer is %s. buffer len 0x%x\n", device->name, device->isEVG?"EVG":"EVR", (int)device->txBufferLen);
+    printf("%s dataBuffer\n", device->isEVG?"EVG":"EVR");
 }
 
 /*
@@ -261,7 +250,7 @@ int mrfiocDBuff_read(
         return -1;
     }
 
-        /* Data in buffer is in big endian byte order */
+    /* Data in buffer is in big endian byte order */
     regDevCopy(datalength, nelem, &device->rxBuffer[offset], pdata, NULL, LE_SWAP);
 
     return 0;
