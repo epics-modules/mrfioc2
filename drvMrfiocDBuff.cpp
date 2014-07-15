@@ -73,13 +73,6 @@
 ** Author: Tom Slejko
 ** -------------------------------------------------------------------------*/
 
-#ifdef _WIN32
- #pragma comment (lib, "Ws2_32.lib")
- #include <Winsock2.h>
-#else
-#include <arpa/inet.h> /* for htonl */
-#endif
-#include <stdlib.h>
 /*
  * mrfIoc2 headers
  */
@@ -88,6 +81,13 @@
 #include <evgMrm.h> //evgMrm
 #include <drvem.h> //EVRMRM
 
+#ifdef _WIN32
+ #pragma comment (lib, "Ws2_32.lib")
+ #include <Winsock2.h>
+#else
+#include <netinet/in.h> /* for htonl */ 
+#endif
+#include <stdlib.h>
 /*
  *  EPICS headers
  */
@@ -95,9 +95,7 @@
 #include <drvSup.h>
 #include <epicsExport.h>
 #include <epicsEndian.h>
-extern "C"{
 #include <regDev.h>
-}
 
 /*                                        */
 /*        DEFINES                         */
@@ -107,7 +105,12 @@ int drvMrfiocDBuffDebug = 0;
 extern "C" {
  epicsExportAddress(int, drvMrfiocDBuffDebug);
 }
+
+#if defined __GNUC__ && __GNUC__ < 3
+#define dbgPrintf(args...)  if(drvMrfiocDBuffDebug) printf(args);
+#else
 #define dbgPrintf(...)  if(drvMrfiocDBuffDebug) printf(__VA_ARGS__);
+#endif
 
 
 #define DBUFF_LEN 2048
