@@ -337,11 +337,11 @@ static const regDevSupport mrfiocDBuffSupport = {
  *
  */
 
-static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int protocol)
+void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int protocol)
 {
     //Check if device already exists:
     if (regDevFind(regDevName)) {
-        errlogPrintf("mrfiocDBuff_init: FATAL ERROR! device %s already exists!\n", regDevName);
+        errlogPrintf("mrfiocDBuffConfigure: FATAL ERROR! device %s already exists!\n", regDevName);
         return;
     }
 
@@ -350,7 +350,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     /* Allocate all of the memory */
     device = (regDevice*) calloc(1, sizeof(regDevice));
     if (!device) {
-        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Out of memory!\n", regDevName);
+        errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Out of memory!\n", regDevName);
         return;
     }
 
@@ -358,14 +358,14 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     device->txBuffer = (epicsUInt8*) calloc(1, DBUFF_LEN); //allocate 2k memory
 
     if (!device->txBuffer) {
-        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Could not allocate TX buffer!", regDevName);
+        errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate TX buffer!", regDevName);
         return;
     }
 
     device->rxBuffer = (epicsUInt8*) calloc(1, DBUFF_LEN); //initialize to 0
 
     if (!device->rxBuffer) {
-        errlogPrintf("mrfiocDBuff_init %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
+        errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
         return;
     }
 
@@ -378,7 +378,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     mrf::Object *obj = mrf::Object::getObject(mrfName);
 
     if (!obj) {
-        errlogPrintf("mrfiocDBuff_init %s: FAILED! Can not find mrf device: %s\n", regDevName, mrfName);
+        errlogPrintf("mrfiocDBuffConfigure %s: FAILED! Can not find mrf device: %s\n", regDevName, mrfName);
         return;
     }
 
@@ -389,7 +389,7 @@ static void mrfiocDBuff_init(const char* regDevName, const char* mrfName, int pr
     if (evr) epicsPrintf("\t%s is EVR!\n", mrfName);
 
     if (!evg && !evr) {
-        errlogPrintf("mrfiocDBuff_init %s: FAILED! %s is neither EVR or EVG!\n", regDevName, mrfName);
+        errlogPrintf("mrfiocDBuffConfigure %s: FAILED! %s is neither EVR or EVG!\n", regDevName, mrfName);
         return;
     }
 
@@ -436,7 +436,7 @@ static const iocshArg *const mrfiocDBuffConfigureDefArgs[3] = {&mrfiocDBuffConfi
 static const iocshFuncDef mrfiocDBuffConfigureDef = {"mrfiocDBuffConfigure", 3, mrfiocDBuffConfigureDefArgs};
 
 static void mrfioDBuffConfigureFunc(const iocshArgBuf* args) {
-    mrfiocDBuff_init(args[0].sval, args[1].sval, args[2].ival);
+    mrfiocDBuffConfigure(args[0].sval, args[1].sval, args[2].ival);
 }
 
 
