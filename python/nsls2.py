@@ -9,11 +9,11 @@ from fractions import Fraction as F
 from mrfioc2 import EVG as evg
 
 # Simply print what would be sent
-from mrfioc2 import canull as ca
+#from mrfioc2 import canull as ca
 # Check with current settings
 #from mrfioc2 import cacheck as ca
 # Actually write
-#from cothread import catools as ca
+from cothread import catools as ca
 
 names = {'SYS':'ACC-TS', 'D':'EVG'}
 
@@ -96,6 +96,10 @@ BRXScharge2 = GEN.event(28, ref=BRext, delay=1*div10)
 BRISchargest = BRIScharge1
 BRXSchargest = GEN.event(28, ref=LNpre, delay=1)
 
+# ACMI 2Hz
+LNACMI1 = GEN.event(17, ref=LNpre, delay=4)
+LNACMI2 = GEN.event(17, ref=LNpre, delay=4+5*div10)
+
 # Sequences
 
 # Arbitrary delay from sequencer trigger to avoid perturbing
@@ -109,21 +113,21 @@ SeqBR1beam = GEN.seq(0, div1, name='BR-TS{Seq:B1Hz}', events=[(BRstartbeam,BRdel
                      include=[65,BRextbeam,20]
                      )
 SeqBR1 = GEN.seq(0, div1, name='BR-TS{Seq:N1Hz}', events=[(BRstartbeam,BRdelay)],
-                 include=[25,BRext,21,BRIScharge1,BRXScharge1]
+                 include=[25,BRext,21,BRIScharge1,BRXScharge1,LNACMI1,LNACMI2]
                  )
 
 SeqBR2beam = GEN.seq(0, div1, name='BR-TS{Seq:B2Hz}', events=[(BRstartbeam,BRdelay)],
                      include=[65,BRextbeam,20]
                      )
 SeqBR2 = GEN.seq(0, div1, name='BR-TS{Seq:N2Hz}', events=[(BRstartbeam,BRdelay)],
-                 include=[25,BRext,21,BRIScharge2,BRXScharge2]
+                 include=[25,BRext,21,BRIScharge2,BRXScharge2,LNACMI1]
                  )
 
 SeqBRstbeam = GEN.seq(0, div1, name='BR-TS{Seq:BStk}', events=[(BRstartbeam,BRdelay)],
                      include=[65,BRextbeamst,20]
                      )
 SeqBRst = GEN.seq(0, div1, name='BR-TS{Seq:NStk}', events=[(BRstartbeam,BRdelay)],
-                 include=[25,BRextst,21,BRinjst,BRISchargest,BRXSchargest]
+                 include=[25,BRextst,21,BRinjst,BRISchargest,BRXSchargest,LNACMI1,LNACMI2]
                  )
 
 for S in GEN.seqs:
