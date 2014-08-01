@@ -905,8 +905,13 @@ EVRMRM::isr(void *arg)
 
     epicsUInt32 active=flags&evr->shadowIRQEna;
 
+#ifndef __linux__
+    /* on RTEMS/vxWorks this skips extra work with a shared interrupt.
+     * on Linux this allows a race condtion which can leave interrupts disabled
+     */
     if(!active)
       return;
+#endif
 
     if(active&IRQ_RXErr){
         evr->count_recv_error++;
@@ -944,8 +949,8 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQfifofull);
     }
 
-    WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     WRITE32(evr->base, IRQFlag, flags);
+    WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
 }
