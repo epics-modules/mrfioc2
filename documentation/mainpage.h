@@ -65,6 +65,23 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
+@subsection v203 2.0.3 (Aug 2014)
+
+@subsubsection v203bug Bug fixes
+
+- Linux only.  Fix for ISR race condition which can leave interrupts disabled.
+   Anyone running mrfioc2 on Linux is encouraged to update.
+- fix rounding in CML/GTX WF calculator
+- evgSoftSeq.py: fix sequences of length 1
+- seqconst: avoid memory bounds violation
+- fix EVG Univ inputs (fixed by Jonah Weber of LBNL)
+
+@subsubsection v203feat Features
+
+- linux: emulate parallel port JTAG cable.
+   Allows firmware update w/o the Linux GPIO userspace interface (still not built on Debian stock kernels)
+- Python helper scripts with example for NSLS2 EVG magic numbers.
+
 @subsection v202 2.0.2 (Aug 2013)
 
 @subsubsection v202not Notices
