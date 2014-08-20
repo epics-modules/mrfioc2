@@ -394,10 +394,47 @@ fail:
     return -1;
 }
 
+/**@brief Sequence masker
+ *
+ *  Inputs
+ *@param A code waveform
+ *@type  A UCHAR
+ *@param B event selection mask
+ *@type  B ULONG
+ *...
+ *
+ *  Outputs
+ *@param VALA Output code waveform
+ *@type  VALA UCHAR
+ */
+static
+long seq_mask(aSubRecord *prec)
+{
+    const epicsUInt8 *inp = (const epicsUInt8*)prec->a;
+    const epicsUInt32 *mask = (const epicsUInt32*)prec->b;
+    epicsUInt8 *out = (epicsUInt8*)prec->vala;
+    epicsUInt32 i, num = prec->neb*32;
+
+    if(num>prec->nea)
+        num = prec->nea;
+    if(num>prec->nova)
+        num = prec->nova;
+
+    for(i=0; i<num; i++) {
+        epicsUInt8 M = (mask[i/32]>>(i%32))&0x1;
+        out[i] = M ? inp[i] : 0;
+    }
+    
+    prec->neva = num;
+
+    return 0;
+}
+
 static registryFunctionRef asub_seq[] = {
     {"Seq Repeat", (REGISTRYFUNCTION) seq_repeat},
     {"Seq Merge", (REGISTRYFUNCTION) seq_merge},
     {"Seq Shift", (REGISTRYFUNCTION) seq_shift},
+    {"Seq Mask", (REGISTRYFUNCTION) seq_mask},
 };
 
 static

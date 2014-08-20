@@ -1,0 +1,33 @@
+# Individually mask out (replace with code 0)
+# events in sequence
+#
+# Macros
+#  P - PV prefix
+#  NELM
+#  NWORD - Number of 32-bit mask words
+#  INCODE - Input code array
+#  INMASK - Input bit mask array
+#  OUTCODE - Output code array
+#
+
+
+record(aSub, "$(N)") {
+    field(SNAM, "Seq Mask")
+
+    field(FTA, "UCHAR")
+    field(FTB, "ULONG")
+
+    field(NOA, "$(NELM)")
+    field(NOB, "$(NWORD=1)")
+
+    field(INPA, "$(INCODE=)")
+    field(INPB, "$(INMASK=)")
+
+    field(FTVA, "UCHAR")
+
+    field(NOVA, "$(NELM)")
+
+    field(OUTA, "$(OUTCODE=)")
+
+    field( EFLG, "ALWAYS")
+}
