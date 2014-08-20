@@ -50,6 +50,16 @@ file "seq-plain.db"
 {
 # First turn Beam events (only w/ beam, but not shifted)
 {P="\$(INJ){Seq:FT}", NELM="1"}
+# ACMI trigger event sequence (masker allows timing testing modes)
+{P="\$(LN){Seq:ACMI}", NELM="10"}
+}
+
+file "seq-masker.db"
+{
+{N="\$(LN){Seq:ACMI}EvtCode-Calc_", NELM="10",
+ INCODE="\$(LN){Seq:ACMI}EvtCode-SP PP MS",
+ INMASK="\$(LN){ACMI}Mode-Sel.RVAL"
+}
 }
 
 file "seq-merger.db"
@@ -77,6 +87,8 @@ file "seq-merger.db"
  CODED="\$(BR){Seq:N2Hz}Rep-Calc_.VALC MS NPP",
  TIMEE="\$(INJ){Seq:F}Rep-Calc_.VALA MS NPP",
  CODEE="\$(INJ){Seq:F}Rep-Calc_.VALB MS NPP",
+ TIMEF="\$(LN){Seq:ACMI}Timestamp-SP PP MS",
+ CODEF="\$(LN){Seq:ACMI}EvtCode-Calc_.VALA MS PP",
  OUTTIME="\$(INJ){Seq:NOut}Shift-Calc_.B PP",
  OUTCODE="\$(INJ){\$(EVG)-\$(SEQN)}EvtCode-SP PP",
 }

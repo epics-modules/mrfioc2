@@ -25,6 +25,8 @@ record(aSub, "$(N)") {
     field(FTH, "UCHAR")
     field(FTI, "DOUBLE")
     field(FTJ, "UCHAR")
+    field(FTK, "DOUBLE")
+    field(FTL, "UCHAR")
 
     field(NOA, "$(NELM)")
     field(NOB, "$(NELM)")
@@ -36,6 +38,8 @@ record(aSub, "$(N)") {
     field(NOH, "$(NELM)")
     field(NOI, "$(NELM)")
     field(NOJ, "$(NELM)")
+    field(NOK, "$(NELM)")
+    field(NOL, "$(NELM)")
 
     field(INPA, "$(TIMEA)")
     field(INPB, "$(CODEA)")
@@ -47,6 +51,8 @@ record(aSub, "$(N)") {
     field(INPH, "$(CODED=)")
     field(INPI, "$(TIMEE=)")
     field(INPJ, "$(CODEE=)")
+    field(INPK, "$(TIMEF=)")
+    field(INPL, "$(CODEF=)")
 
     field(FTVA, "DOUBLE")
     field(FTVB, "UCHAR")

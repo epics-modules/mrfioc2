@@ -94,6 +94,7 @@ record(fanout, "$(INJ){}Mode:Commit2-FO_") {
   field(LNK4, "$(LN){}Mode-Sts")
   field(LNK5, "$(INJ){}BucketMod-I")
   field(LNK6, "$(INJ){}Bucket-I")
+  field(FLNK, "$(LN){ACMI}Mode-I")
 }
 
 record(mbbiDirect, "$(INJ){}Mode-I") {
@@ -291,8 +292,36 @@ record(dfanout, "$(INJ){}Bucket:0-FOut_") {
   field(DESC, "Apply coarse delay")
 }
 
+
+record(mbbo, "$(LN){ACMI}Mode-Sel") {
+  field(DESC, "ACMI Test Mode")
+  field(FLNK, "INJ-TS{Seq}Mask:Rep-FOut_")
+  field(ZRVL, "5")
+  field(ONVL, "7")
+  field(TWVL, "1")
+  field(THVL, "0")
+  field(ZRST, "Normal")
+  field(ONST, "Too High")
+  field(TWST, "Too Low")
+  field(THST, "Disable")
+  field(ASG, "OPERATOR")
+}
+
+record(mbbi, "$(LN){ACMI}Mode-I") {
+  field(DESC, "ACMI Test Mode")
+  field(INP, "$(LN){ACMI}Mode-Sel.VAL")
+  field(ZRVL, "5")
+  field(ONVL, "7")
+  field(TWVL, "1")
+  field(THVL, "0")
+  field(ZRST, "Normal")
+  field(ONST, "Too High")
+  field(TWST, "Too Low")
+  field(THST, "Disable")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(2888,2639,1.0)
+#! View(2460,3275,1.0)
 #! Record("$(LN){}Mode:Prmt-Sel",2620,1954,0,0,"$(LN){}Mode:Prmt-Sel")
 #! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,1,"$(LN){}Mode:Prmt-Sel.VAL")
 #! Field("$(LN){}Mode:Prmt-Sel.FLNK",16777215,1,"$(LN){}Mode:Prmt-Sel.FLNK")
@@ -325,7 +354,7 @@ record(dfanout, "$(INJ){}Bucket:0-FOut_") {
 #! Field("$(INJ){}Mode:Commit-FO_.LNK5",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK5")
 #! Field("$(INJ){}Mode:Commit-FO_.FLNK",16777215,0,"$(INJ){}Mode:Commit-FO_.FLNK")
 #! Link("$(INJ){}Mode:Commit-FO_.FLNK","$(INJ){}Mode:Commit2-FO_")
-#! Record("$(INJ){}Mode:Commit2-FO_",4060,3440,0,0,"$(INJ){}Mode:Commit2-FO_")
+#! Record("$(INJ){}Mode:Commit2-FO_",4060,3426,0,0,"$(INJ){}Mode:Commit2-FO_")
 #! Field("$(INJ){}Mode:Commit2-FO_.LNK1",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK1")
 #! Link("$(INJ){}Mode:Commit2-FO_.LNK1","$(INJ){}Mode-I")
 #! Field("$(INJ){}Mode:Commit2-FO_.LNK2",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK2")
@@ -338,6 +367,8 @@ record(dfanout, "$(INJ){}Bucket:0-FOut_") {
 #! Link("$(INJ){}Mode:Commit2-FO_.LNK5","$(INJ){}BucketMod-I")
 #! Field("$(INJ){}Mode:Commit2-FO_.LNK6",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK6")
 #! Link("$(INJ){}Mode:Commit2-FO_.LNK6","$(INJ){}Bucket-I")
+#! Field("$(INJ){}Mode:Commit2-FO_.FLNK",16777215,1,"$(INJ){}Mode:Commit2-FO_.FLNK")
+#! Link("$(INJ){}Mode:Commit2-FO_.FLNK","$(LN){ACMI}Mode-I")
 #! Record("$(INJ){}Mode-I",3760,2836,0,1,"$(INJ){}Mode-I")
 #! Field("$(INJ){}Mode-I.INP",16777215,0,"$(INJ){}Mode-I.INP")
 #! Link("$(INJ){}Mode-I.INP","$(INJ){}Mode-RB.VAL")
@@ -466,8 +497,8 @@ record(dfanout, "$(INJ){}Bucket:0-FOut_") {
 #! Link("$(INJ){}Bucket-FOut_.LNK4","$(INJ){}Bucket:2-FOut_")
 #! Field("$(INJ){}Bucket-FOut_.LNK5",16777215,1,"$(INJ){}Bucket-FOut_.LNK5")
 #! Link("$(INJ){}Bucket-FOut_.LNK5","$(INJ){}Bucket-FOut_/LNK51")
-#! Connector("$(INJ){}Bucket-FOut_/LNK51","$(INJ){}Bucket-FOut_/LNK5",3740,3705,16777215,"",0)
-#! Connector("$(INJ){}Bucket-FOut_/LNK5","INJ-TS{Seq}Mask:Rep-FOut_",3607,3440,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK51","$(INJ){}Bucket-FOut_/LNK5",3740,3845,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK5","INJ-TS{Seq}Mask:Rep-FOut_",3607,3720,16777215,"",0)
 #! Connector("$(INJ){}Bucket-FOut_/LNK11","$(INJ){}Bucket-FOut_/LNK1",3460,4065,16777215,"",0)
 #! Connector("$(INJ){}Bucket-FOut_/LNK1","$(INJ){}BucketMod-RB",3237,4240,16777215,"",0)
 #! Record("$(INJ){}Bucket:1-FOut_",3860,4040,0,0,"$(INJ){}Bucket:1-FOut_")
@@ -487,9 +518,19 @@ record(dfanout, "$(INJ){}Bucket:0-FOut_") {
 #! Field("$(INJ){}Bucket:0-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTA")
 #! Field("$(INJ){}Bucket:0-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTB")
 #! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB7,4240,4200,4420,4240,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB5,3940,2080,4120,2120,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB4,2620,2460,2800,2500,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB2,4220,2640,4400,2680,0,"Dialog",24,1,16724787,"User Control",null)
 #! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
+#! Record("$(LN){ACMI}Mode-Sel",4260,4211,0,1,"$(LN){ACMI}Mode-Sel")
+#! Field("$(LN){ACMI}Mode-Sel.FLNK",16777215,0,"$(LN){ACMI}Mode-Sel.FLNK")
+#! Link("$(LN){ACMI}Mode-Sel.FLNK","$(INJ){ACMI}Mode-Sel/FLNK")
+#! Connector("$(INJ){ACMI}Mode-Sel/FLNK","$(INJ){ACMI}Mode-Sel/FLNK1",4060,4075,16777215,"",0)
+#! Connector("$(INJ){ACMI}Mode-Sel/FLNK1","INJ-TS{Seq}Mask:Rep-FOut_",3767,3720,16777215,"",0)
+#! Field("$(LN){ACMI}Mode-Sel.VAL",16777215,0,"$(LN){ACMI}Mode-Sel.VAL")
+#! Record("$(LN){ACMI}Mode-I",4520,3872,0,0,"$(LN){ACMI}Mode-I")
+#! Field("$(LN){ACMI}Mode-I.INP",16777215,0,"$(LN){ACMI}Mode-I.INP")
+#! Link("$(LN){ACMI}Mode-I.INP","$(LN){ACMI}Mode-Sel.VAL")
