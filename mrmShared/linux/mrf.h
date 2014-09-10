@@ -110,6 +110,9 @@
 
 struct mrf_priv {
     struct uio_info uio;
+    struct pci_dev *pdev;
+    unsigned int irqmode;
+
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
     spinlock_t lock;
 #endif
@@ -122,7 +125,6 @@ struct mrf_priv {
     const struct ppcable *cable;
     struct parport *port;
 #endif
-    struct pci_dev *pdev;
 };
 
 #ifdef CONFIG_PARPORT_NOT_PC

@@ -12,6 +12,13 @@ MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
 MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 
+/* something that userspace can test to see if we
+ * are the kernel module its looking for.
+ */
+static int modparam_iversion = 1;
+module_param_named(interfaceversion, modparam_iversion, int, 0444);
+MODULE_PARM_DESC(gpiobase, "User space interface version");
+
 /************************ Compatability ****************************/
 
 
@@ -30,9 +37,12 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 
 /******************** PCI interrupt handler ***********************/
 
+/* original ISR behavior which manipulates the EVR's
+ * IRQFlag and IRQEnable.
+ */
 static
 irqreturn_t
-mrf_handler(int irq, struct uio_info *info)
+mrf_handler_evr(int irq, struct uio_info *info)
 {
     void __iomem *base = info->mem[2].internal_addr;
     void __iomem *plx = info->mem[0].internal_addr;
@@ -88,6 +98,100 @@ mrf_handler(int irq, struct uio_info *info)
 
 
     return IRQ_HANDLED;
+}
+
+/* new ISR behavior which manipulates
+ * the PLX bridge PCI interrupt enable bit.
+ */
+static
+irqreturn_t
+mrf_handler_plx(int irq, struct uio_info *info)
+{
+    struct pci_dev *dev = info->priv;
+    void __iomem *plx;
+    u32 val;
+    int oops;
+
+    switch(dev->device) {
+    case PCI_DEVICE_ID_PLX_9030:
+        plx = info->mem[0].internal_addr;
+        // clear INTCSR_PCI_Enable
+        iowrite32(INTCSR_INT1_Enable|INTCSR_INT1_Polarity, plx+INTCSR);
+        val = ioread32(plx+INTCSR);
+        oops = val&INTCSR_PCI_Enable;
+        break;
+
+    case PCI_DEVICE_ID_PLX_9056:
+        plx = info->mem[0].internal_addr;
+        // clear INTCSR9056_PCI_Enable
+        iowrite32(INTCSR9056_LCL_Enable, plx+INTCSR9056);
+        val = ioread32(plx+INTCSR9056);
+        oops = val&INTCSR9056_PCI_Enable;
+        break;
+
+    default:
+        return IRQ_NONE;
+    }
+
+    if(oops)
+        dev_info(&dev->dev, "Interrupt not disabled %08x", (unsigned)val);
+
+    return IRQ_HANDLED;
+}
+
+static
+irqreturn_t
+mrf_handler(int irq, struct uio_info *info)
+{
+    struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
+
+    rmb();
+    if(priv->irqmode)
+        return mrf_handler_plx(irq, info);
+    else
+        return mrf_handler_evr(irq, info);
+}
+
+static
+int mrf_irqcontrol(struct uio_info *info, s32 onoff)
+{
+    struct pci_dev *dev = info->priv;
+    struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
+    void __iomem *plx;
+    u32 val;
+
+    if(onoff<0)
+        return -EINVAL;
+    else if(onoff>1)
+        return 0;
+
+    switch(dev->device) {
+    case PCI_DEVICE_ID_PLX_9030:
+        plx = info->mem[0].internal_addr;
+
+        val = INTCSR_INT1_Enable|INTCSR_INT1_Polarity;
+        if(onoff==1)
+            val |= INTCSR_PCI_Enable;
+
+        iowrite32(val, plx+INTCSR);
+        break;
+
+    case PCI_DEVICE_ID_PLX_9056:
+        plx = info->mem[0].internal_addr;
+
+        val = INTCSR9056_LCL_Enable;
+        if(onoff==1)
+            val |= INTCSR9056_PCI_Enable;
+
+        iowrite32(val, plx+INTCSR9056);
+        break;
+    default:
+        return -EINVAL;
+    }
+    priv->irqmode = 1;
+    wmb();
+
+    return 0;
 }
 
 /************************* Initialization ***************************/
@@ -148,6 +252,7 @@ mrf_probe(struct pci_dev *dev,
         info->irq = dev->irq;
         info->irq_flags = IRQF_SHARED;
         info->handler = mrf_handler;
+        info->irqcontrol = mrf_irqcontrol;
 
         info->name = DRV_NAME;
         info->version = DRV_VERSION;
