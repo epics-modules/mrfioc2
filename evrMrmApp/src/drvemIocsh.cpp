@@ -201,7 +201,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
         throw std::runtime_error("Firmware version not supported");
 
     } else if(ver<recommended) {
-        errlogPrintf("Firmware version >=%u is recommended, please consider upgrading\n", required);
+        errlogPrintf("Firmware version >=%u is recommended, please consider upgrading\n", recommended);
     }
 }
 
