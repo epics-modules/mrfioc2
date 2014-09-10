@@ -3,7 +3,7 @@ ifneq ($(KERNELRELEASE),)
 
   obj-m := mrf.o
 
-  mrf-objs := uio_mrf.o
+  mrf-objs := uio_mrf.o jtag_mrf.o
 
 else
 
