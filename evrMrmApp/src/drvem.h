@@ -183,6 +183,9 @@ public:
     void enableIRQ(void);
 
     static void isr(void*);
+#ifdef __linux__
+    const void *isrLinuxPvt;
+#endif
 
     const std::string id;
     volatile unsigned char * const base;

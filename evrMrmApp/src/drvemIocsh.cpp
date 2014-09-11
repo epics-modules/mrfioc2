@@ -263,11 +263,19 @@ try {
 
         NAT_WRITE32(evr, IRQEnable, 0);
 
+#ifndef __linux__
         /* Enable active high interrupt1 through the PLX to the PCI bus.
          */
         LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
                    INTCSR_INT1_Polarity|
                    INTCSR_PCI_Enable);
+#else
+        /* ask the kernel module to enable interrupts through the PLX bridge */
+        if(devPCIEnableInterrupt(cur)) {
+            printf("Failed to enable interrupt\n");
+            return;
+        }
+#endif
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
@@ -281,7 +289,15 @@ try {
 
         NAT_WRITE32(evr, IRQEnable, 0);
 
+#ifndef __linux__
         BITSET(LE,32,plx, INTCSR9056, INTCSR9056_PCI_Enable|INTCSR9056_LCL_Enable);
+#else
+        /* ask the kernel module to enable interrupts through the PLX bridge */
+        if(devPCIEnableInterrupt(cur)) {
+            printf("Failed to enable interrupt\n");
+            return;
+        }
+#endif
         break;
 
     default:
@@ -300,6 +316,9 @@ try {
     EVRMRM *receiver=new EVRMRM(id,position.str(),evr,evrlen);
 
     void *arg=receiver;
+#ifdef __linux__
+    receiver->isrLinuxPvt = (void*)cur;
+#endif
 
     if(devPCIConnectInterrupt(cur, &EVRMRM::isr, arg, 0)){
         printf("Failed to install ISR\n");

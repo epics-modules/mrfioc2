@@ -24,6 +24,10 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
+#ifdef __linux__
+#  include "devLibPCI.h"
+#endif
+
 #include "evrRegMap.h"
 
 #include "mrfFracSynth.h"
@@ -953,6 +957,12 @@ EVRMRM::isr(void *arg)
     WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
+
+#ifdef __linux__
+    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
+        printf("Failed to re-enable interrupt.  Stuck...\n");
+    }
+#endif
 }
 
 
