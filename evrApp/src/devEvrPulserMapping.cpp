@@ -107,6 +107,8 @@ try {
 static inline
 long del_lo(dbCommon* praw)
 {
+    if(!praw->dpvt)
+        return 0;
     epicsUInt32  dummy;  // Dummy status variable
 try {
     std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
