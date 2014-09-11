@@ -37,7 +37,7 @@ MSI (Macro expension tool)
 
 @url http://www.aps.anl.gov/epics/extensions/msi/index.php
 
-devLib2
+devLib2 >= 2.6
 
 @url http://epics.sourceforge.net/devlib2/
 
@@ -64,6 +64,22 @@ and mrmEvrSetupVME() or the ::EVRMRM class.
 For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
+
+@subsection v204 2.0.4 (Xyz 2020)
+
+@subsubsection v204not Notices
+
+@li Requires devLib >= 2.6
+
+@subsubsection v204bug
+
+@li Fix incorrect firmware version warning message
+@li Linux only.  Rework interrupt handling to fully eliminate race in IRQ acknowledge.
+    Requires new kernel module.
+
+@subsubsection v204feat Features
+
+@li Add sequence masker aSub (bit mask to replace event codes with zero)
 
 @subsection v203 2.0.3 (Aug 2014)
 
