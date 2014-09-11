@@ -205,6 +205,33 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
     }
 }
 
+#ifdef __linux__
+static char ifaceversion[] = "/sys/module/mrf/parameters/interfaceversion";
+/* Check the interface version of the kernel module to ensure compatibility */
+static
+int checkUIOVersion(int expect)
+{
+    FILE *fd;
+    int version = -1;
+
+    fd = fopen(ifaceversion, "r");
+    if(!fd) {
+        errlogPrintf("Can't open %s\n", ifaceversion);
+        return 1;
+    }
+    if(fscanf(fd, "%d", &version)!=1) {
+        perror("checkUIOVersion fscanf");
+    }
+    fclose(fd);
+    if(version!=expect) {
+        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n",version,expect);
+    }
+    return version!=expect;
+}
+#else
+static int checkUIOVersion(int expect) {return 0;}
+#endif
+
 extern "C"
 void
 mrmEvrSetupPCI(const char* id,int b,int d,int f)
@@ -215,6 +242,9 @@ try {
         printf("ID %s already in use\n",id);
         return;
     }
+
+    if(checkUIOVersion(1))
+        return;
 
     const epicsPCIDevice *cur=0;
     if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
