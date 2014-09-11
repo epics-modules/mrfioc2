@@ -228,8 +228,8 @@ try {
 
     volatile epicsUInt8 *plx, *evr;
 
-    if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,0) ||
-        devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,0))
+    if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
+        devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
     {
         printf("Failed to map BARs 0 and 2\n");
         return;
