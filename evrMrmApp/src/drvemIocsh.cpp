@@ -329,6 +329,7 @@ try {
 } catch(std::exception& e) {
     printf("Error: %s\n",e.what());
 }
+    errlogFlush();
 }
 
 static
@@ -534,6 +535,7 @@ try {
 } catch(std::exception& e) {
     printf("Error: %s\n",e.what());
 }
+    errlogFlush();
 }
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "name",iocshArgString};

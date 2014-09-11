@@ -223,10 +223,12 @@ mrmEvgSetupVME (
             }    
         }
 
+        errlogFlush();
         return 0;
     } catch(std::exception& e) {
         errlogPrintf("Error: %s\n",e.what());
     }
+    errlogFlush();
     return -1;
 } //mrmEvgSetupVME
 
