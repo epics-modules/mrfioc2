@@ -1206,3 +1206,6 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 
 
 }
+
+#include <epicsExport.h>
+epicsExportAddress(double,mrmEvrFIFOPeriod);
