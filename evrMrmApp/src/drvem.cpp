@@ -128,7 +128,6 @@ try{
         throw std::runtime_error("Firmware versions < 3 not supported");
 
     scanIoInit(&IRQmappedEvent);
-    scanIoInit(&IRQbufferReady);
     scanIoInit(&IRQheartbeat);
     scanIoInit(&IRQrxError);
     scanIoInit(&IRQfifofull);
@@ -929,7 +928,6 @@ EVRMRM::isr(void *arg)
         BITSET(NAT,32,evr->base, DataBufCtrl, DataBufCtrl_stop);
 
         callbackRequest(&evr->data_rx_cb);
-        scanIoRequest(evr->IRQbufferReady);
     }
     if(active&IRQ_HWMapped){
         evr->shadowIRQEna &= ~IRQ_HWMapped;

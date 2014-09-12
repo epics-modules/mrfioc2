@@ -207,7 +207,6 @@ private:
 
     // scanIoRequest() from ISR or callback
     IOSCANPVT IRQmappedEvent; // Hardware mapped IRQ
-    IOSCANPVT IRQbufferReady; // Event log ready
     IOSCANPVT IRQheartbeat;   // Heartbeat timeout
     IOSCANPVT IRQrxError;     // Rx link state change
     IOSCANPVT IRQfifofull;    // Fifo overflow
