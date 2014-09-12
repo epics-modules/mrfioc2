@@ -173,6 +173,8 @@ public:
   virtual void eventNotifyDel(epicsUInt32 event, eventCallback, void*)=0;
   /*@}*/
 
+  virtual epicsUInt32 irqCount() const=0;
+
   /**\defgroup linksts Event Link Status
    */
   /*@{*/
@@ -188,6 +190,8 @@ public:
 
   virtual epicsUInt32 FIFOFullCount() const=0;
   virtual epicsUInt32 FIFOOverRate() const=0;
+  virtual epicsUInt32 FIFOEvtCount() const=0;
+  virtual epicsUInt32 FIFOLoopCount() const=0;
 
 
   /**\defgroup devhelp Device Support Helpers

@@ -91,6 +91,8 @@ OBJECT_BEGIN(EVR) {
     OBJECT_PROP1("FIFO Overflow Count", &EVR::FIFOFullCount);
 
     OBJECT_PROP1("FIFO Over rate", &EVR::FIFOOverRate);
+    OBJECT_PROP1("FIFO Event Count", &EVR::FIFOEvtCount);
+    OBJECT_PROP1("FIFO Loop Count", &EVR::FIFOLoopCount);
 
     OBJECT_PROP1("HB Timeout Count", &EVR::heartbeatTIMOCount);
     OBJECT_PROP1("HB Timeout Count", &EVR::heartbeatTIMOOccured);
@@ -108,6 +110,8 @@ OBJECT_BEGIN(EVR) {
     OBJECT_PROP2("External Inhibit", &EVR::extInhib, &EVR::setExtInhib);
 
     OBJECT_PROP1("PLL Lock Status", &EVR::pllLocked);
+
+    OBJECT_PROP1("Interrupt Count", &EVR::irqCount);
 
     OBJECT_PROP1("Link Status", &EVR::linkStatus);
     OBJECT_PROP1("Link Status", &EVR::linkChanged);

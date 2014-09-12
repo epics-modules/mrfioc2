@@ -136,6 +136,69 @@ record(calc, "$(P)Link:ClkPeriod-I") {
   field(TSEL, "$(P)Link:Clk-I.TIME")
 }
 
+record(longin, "$(P)Cnt:IRQ-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Interrupt Count")
+  field(SCAN, "1 second")
+  field(INP , "@OBJ=$(OBJ), PROP=Interrupt Count")
+  field(FLNK, "$(P)Rate:IRQ-I")
+}
+
+record(calc, "$(P)Rate:IRQ-I") {
+  field(DESC, "Interrupt rate")
+  field(INPA, "$(P)Cnt:IRQ-I")
+  field(CALC, "C:=A-B;B:=A;C")
+  field(EGU , "Hz")
+}
+
+record(longin, "$(P)Cnt:FIFOEvt-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "FIFO Event Count")
+  field(SCAN, "1 second")
+  field(INP , "@OBJ=$(OBJ), PROP=FIFO Event Count")
+  field(FLNK, "$(P)Rate:FIFOEvt-I")
+}
+
+record(calc, "$(P)Rate:FIFOEvt-I") {
+field(DESC, "FIFO reception rate")
+  field(INPA, "$(P)Cnt:FIFOEvt-I")
+  field(CALC, "C:=A-B;B:=A;C")
+  field(EGU , "evt/s")
+  field(FLNK, "$(P)Cnt:FIFOLoop-I")
+}
+
+record(longin, "$(P)Cnt:FIFOLoop-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "FIFO Loop Count")
+  field(INP , "@OBJ=$(OBJ), PROP=FIFO Loop Count")
+  field(FLNK, "$(P)Rate:FIFOLoop-I")
+}
+
+record(calc, "$(P)Rate:FIFOLoop-I") {
+  field(DESC, "FIFO service rate")
+  field(INPA, "$(P)Cnt:FIFOLoop-I")
+  field(CALC, "C:=A-B;B:=A;C")
+  field(EGU , "Hz")
+  field(FLNK, "$(P)FIFOCap-I")
+}
+
+# average number of events taken from the FIFO during each loop
+record(calc, "$(P)FIFOCap-I") {
+  field(DESC, "FIFO capacity utilization")
+  field(INPA, "$(P)Rate:FIFOEvt-I")
+  field(INPB, "$(P)Rate:FIFOLoop-I")
+  field(INPC, "5.11")
+  field(CALC, "A/B/C")
+  field(EGU , "%")
+  field(HIHI, "98")
+  field(HIGH, "80")
+  field(LOW , "-1")
+  field(HHSV, "MAJOR")
+  field(HSV , "MINOR")
+  field(LSV , "INVALID")
+  info(autosaveFields_pass0, "HIHI HIGH LOW")
+}
+
 record(bi, "$(P)Pll-Sts") {
   field(DTYP, "Obj Prop bool")
   field(INP , "@OBJ=$(OBJ), PROP=PLL Lock Status")

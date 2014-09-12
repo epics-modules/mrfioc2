@@ -139,6 +139,8 @@ public:
 
     virtual bool pllLocked() const;
 
+    virtual epicsUInt32 irqCount() const{return count_hardware_irq;}
+
     virtual bool linkStatus() const;
     virtual IOSCANPVT linkChanged() const{return IRQrxError;}
     virtual epicsUInt32 recvErrorCount() const{return count_recv_error;}
@@ -179,6 +181,8 @@ public:
     {SCOPED_LOCK(evrLock);return count_FIFO_overflow;}
     virtual epicsUInt32 FIFOOverRate() const
     {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
+    virtual epicsUInt32 FIFOEvtCount() const{return count_fifo_events;}
+    virtual epicsUInt32 FIFOLoopCount() const{return count_fifo_loops;}
 
     void enableIRQ(void);
 
@@ -199,6 +203,8 @@ private:
     volatile epicsUInt32 count_recv_error;
     volatile epicsUInt32 count_hardware_irq;
     volatile epicsUInt32 count_heartbeat;
+    volatile epicsUInt32 count_fifo_events;
+    volatile epicsUInt32 count_fifo_loops;
 
     epicsUInt32 shadowIRQEna;
 

@@ -950,6 +950,7 @@ EVRMRM::isr(void *arg)
 
         scanIoRequest(evr->IRQfifofull);
     }
+    evr->count_hardware_irq++;
 
     WRITE32(evr->base, IRQFlag, flags);
     WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
@@ -1008,6 +1009,8 @@ EVRMRM::drain_fifo()
 
         guard.lock();
 
+        count_fifo_loops++;
+
         epicsUInt32 status;
 
         // Bound the number of events taken from the FIFO
@@ -1035,6 +1038,8 @@ EVRMRM::drain_fifo()
                     evt=evt2;
             }
             evt &= 0xff; // (in)santity check
+
+            count_fifo_events++;
 
             events[evt].last_sec=READ32(base, EvtFIFOSec);
             events[evt].last_evt=READ32(base, EvtFIFOEvt);
