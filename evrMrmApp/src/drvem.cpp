@@ -68,8 +68,10 @@ extern "C" {
      * time needed for database processing.
      *
      * Set to 0.0 to disable
+     *
+     * No point in making this shorter than the system tick
      */
-    double mrmEvrFIFOPeriod = 1.0/ 2000.0; /* 1/rate in Hz */
+    double mrmEvrFIFOPeriod = 1.0/ 1000.0; /* 1/rate in Hz */
 }
 
 /* Number of good updates before the time is considered valid */
