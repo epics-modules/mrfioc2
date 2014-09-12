@@ -1248,7 +1248,15 @@ EPICS
 \begin_inset space ~
 \end_inset
 
-Base >= 3.14.8.2
+Base
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+3.14.8.2
 \begin_inset Newline newline
 \end_inset
 
@@ -1286,7 +1294,15 @@ http://www.aps.anl.gov/epics/extensions/msi/index.php
 \end_layout
 
 \begin_layout Description
-devLib2 PCI/VME64x Hardware access library
+devLib2
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+2.6 PCI/VME64x Hardware access library
 \begin_inset Newline newline
 \end_inset
 
