@@ -275,8 +275,6 @@ try {
         printf("Can't find BAR #2 length\n");
         return;
     }
-    
-    checkVersion(evr, 3, 6);
 
     // handle various PCI to local bus bridges
     switch(cur->id.device) {
@@ -336,6 +334,8 @@ try {
         printf("Unknown PCI bridge %04x\n", cur->id.device);
         return;
     }
+
+    checkVersion(evr, 3, 6);
 
     // Acknowledge missed interrupts
     //TODO: This avoids a spurious FIFO Full
