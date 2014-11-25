@@ -1,0 +1,4 @@
+file evgSoftSeq.db {
+pattern { P, EVG, seqNum, NELM }
+{ "$(SYS):$(EVG)-SoftSeq-$(SEQNUM)-", $(EVG), 0, 2047 }
+}

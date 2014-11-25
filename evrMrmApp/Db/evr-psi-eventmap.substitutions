@@ -1,0 +1,16 @@
+# Record set for a VME-EVRRF-230
+#
+# Macros:
+#  EVR = Card name (same as mrmEvrSetupVME())
+#  SYS = System name (ie SR-TM)
+#  EVT = Event number
+#  FUNC = Function
+#    Choices are: "FIFO", "Latch TS", "Blink", "Forward",
+#                 "Stop Log", "Log", "Heartbeat", "Reset PS",
+#                 "TS reset", "TS tick", "Shift 1", "Shift 0",
+
+file "evrmap.db"
+{pattern
+{NAME, OBJ, func, EVT}
+	{"$(SYS):$(EVR)-Evtmap-$(EVT)-DNC", "$(EVR)", $(FUNC), $(EVT)}
+}

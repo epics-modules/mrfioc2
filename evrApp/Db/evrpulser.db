@@ -54,10 +54,10 @@ record(ai, "$(PN)Delay-RB") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(PN)Delay:Raw-RB")
+  field(FLNK, "$(PN)Delay-Raw-RB")
 }
 
-record(longin, "$(PN)Delay:Raw-RB") {
+record(longin, "$(PN)Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(EGU , "cnts")
@@ -89,10 +89,10 @@ record(ai, "$(PN)Width-RB") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(PN)Width:Raw-RB")
+  field(FLNK, "$(PN)Width-Raw-RB")
 }
 
-record(longin, "$(PN)Width:Raw-RB") {
+record(longin, "$(PN)Width-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
@@ -131,7 +131,7 @@ record(longin, "$(PN)Prescaler-RB") {
 record(calc, "$(PN)Res-I") {
   field(DESC, "Resolution")
   field(INPA, "$(PN)Prescaler-RB MS")
-  field(INPB, "$(P)Link:ClkPeriod-I CP")
+  field(INPB, "$(P)Link-ClkPeriod-I CP")
   field(CALC, "1e9*(A?A:1)*B")
   field(EGU, "ns")
   field(FLNK, "$(PN)Res-FO_")

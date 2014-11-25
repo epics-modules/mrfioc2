@@ -19,8 +19,6 @@ DB += evrsoftgate.db
 DB += evralias.db
 DB += evrNtp.db
 
-DB += nsls2-egunfine.db
-
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE

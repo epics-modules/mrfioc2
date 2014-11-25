@@ -26,6 +26,10 @@ DB += evgSoftSeq.db
 DB += vme-evg230.db
 DB += vme-evg230-nsls2.db
 
+
+DB += vme-evg230-psi.db
+DB += evgSoftSeq-psi.db
+
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
 DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db

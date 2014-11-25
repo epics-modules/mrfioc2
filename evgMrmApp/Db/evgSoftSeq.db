@@ -426,10 +426,10 @@ record(fanout, "$(P)InitSeq-FOut_") {
     field( LNK3, "$(P)EvtCode-SP")
     field( LNK4, "$(P)Timestamp-SP")
     field( LNK5, "$(P)RunMode-Sel")
-    field( LNK6, "$(P)InitSeq:Cont-FOut_")
+    field( LNK6, "$(P)InitSeq-Cont-FOut_")
 }
 
-record(fanout, "$(P)InitSeq:Cont-FOut_") {
+record(fanout, "$(P)InitSeq-Cont-FOut_") {
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
     field( LNK1, "$(P)TrigSrc-Sel")
@@ -443,11 +443,11 @@ record(fanout, "$(P)InitSeq:Cont-FOut_") {
 #(only if TsInpMode = EGU).
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
+    field( INP,  "$(SYS):$(EVG)-EvtClk-Frequency-RB CP") 
+    field( FLNK, "$(P)EvtClkFreq-Cont-RB_")
 }
 
-record(ao, "$(P)EvtClkFreq:Cont-RB_") {
+record(ao, "$(P)EvtClkFreq-Cont-RB_") {
     field( OUT,  "$(P)Timestamp-RB.PROC")
     field( VAL,  "1")
 }

@@ -15,14 +15,14 @@ record(longout, "$(EN)-SP") {
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
   field(VAL , "$(EVNT=-1)")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(EN)Cnt-I")
+  field(FLNK, "$(EN)-Cnt-I")
   info(autosaveFields_pass0, "OUT VAL")
 }
 
-record(calc, "$(EN)Cnt-I") {
+record(calc, "$(EN)-Cnt-I") {
   field(SDIS, "$(EN)-SP")
   field(DISV, "0")
   field(CALC, "A+1")
-  field(INPA, "$(EN)Cnt-I NPP")
+  field(INPA, "$(EN)-Cnt-I NPP")
   field(TSEL, "$(EN)-SP.TIME")
 }

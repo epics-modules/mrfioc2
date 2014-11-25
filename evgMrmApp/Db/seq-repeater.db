@@ -32,7 +32,7 @@ record(waveform, "$(P)Timestamp-SP") {
 record(longout, "$(P)Mask:Rep-SP") {
     field( DESC, "Mask selecting repeated slots")
     field( FLNK, "$(P)Rep-Calc_")
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pass1, "VAL")
 }
 
 # Calculation
@@ -68,6 +68,6 @@ record(aSub, "$(P)Rep-Calc_") {
 
     field( EFLG, "ALWAYS")
 
-    field( FLNK, "$(FLNK=)")
+    field( FLNK, "$(FLNK)")
 }
 

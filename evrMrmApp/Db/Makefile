@@ -11,6 +11,12 @@ DB += evr-pmc-230.db
 DB += evr-vmerf-230.db
 DB += evr-tg-300.db
 
+DB += evrscale-psi.db
+DB += evr-vmerf-230-psi.db
+DB += evr-psi-eventmap.db
+DB += evr-psi-softevent.db
+
+
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 endif

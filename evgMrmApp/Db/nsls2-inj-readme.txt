@@ -13,10 +13,6 @@ Bit # - Slot
 2,3 - Slots in 2Hz BR.  Bit 2 is earlier (0x000C)
 4-13 - Linac slots.  Bist 4 is earliest  (0x3FF0)
 
-Two software sequences are constructed.  One without "beam" events, and one with "beam" events.  The "beam" events being those associated with the electron source, and the beam diagnostics.  The other non-beam events are everything else, including ramping power supplies and RF systems which should always run to maintain equilibrium.
-
-The Single Shot Controller (SSC) is the logic which selects which sequence to run next.  Both sequencers should be configured with Run Mode as Single.
-
 Files:
 
 nsls2-inj-seqs.substitutions  = Brings together the following pieces
@@ -25,8 +21,6 @@ nsls2-inj-calc.db  = Calculates some relative ratios
 
 nsls2-inj-modes.db  = Logic to translate (and validate) operator sequence selections into bit masks for the sequence repeater
 
-nsls2-inj-ssc.db = Single shot controller
-
 seq-repeater.db  = An aSub record which takes short sequence and repeats it with time delay(s).
 
 seq-merger.db  = An aSub record which takes number of sequences and merges them into single sequences.  Inputs must be sorted.  Sorting is preserved in the output.
@@ -34,8 +28,8 @@ seq-merger.db  = An aSub record which takes number of sequences and merges them 
 
 Usage example.
 
- dbLoadRecords("db/vme-evg230-nsls2.db", "SYS=INJ-TS, D=evg:0, EVG=EVG1")
+dbLoadRecords("db/vme-evg230.db", "SYS=INJ-TS, D=evg:0, EVG=EVG1")
 
- dbLoadRecords("db/nsls2-inj-seqs.db","LN=LN-TS, BR=BR-TS, INJ=INJ-TS, EVG=evg:0, SEQN=SoftSeq:InjN, SEQB=SoftSeq:Inj")
+dbLoadRecords("db/nsls2-inj-seqs.db","LN=LN-TS, BR=BR-TS, INJ=INJ-TS, EVG=evg:0, SEQ=SoftSeq:0")
 
-The NSLS2 EVG database provides soft sequences named "SoftSeq:InjN" (w/o beam) and "SoftSeq:1" (all events).
+The EVG main database is expected to provide a soft sequence named "SoftSeq:0".

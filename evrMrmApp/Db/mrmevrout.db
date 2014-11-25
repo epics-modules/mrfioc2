@@ -1,6 +1,6 @@
 # Record set for an EVR's physical output
 #
-# Macros:
+# Macros-
 #  ON = record name prefix
 #  OBJ = devObj name
 #  DESC = Physical label found on output jack
@@ -30,7 +30,7 @@ record(longout, "$(ON)Src-SP") {
 # Settings
 # Users use will set one of these at a time.
 
-record(mbbo, "$(ON)Src:Pulse-SP") {
+record(mbbo, "$(ON)Src-Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Pulser 0")
@@ -70,7 +70,7 @@ record(mbbo, "$(ON)Src:Pulse-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src:DBus-SP") {
+record(mbbo, "$(ON)Src-DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "DBus 0")
@@ -102,7 +102,7 @@ record(mbbo, "$(ON)Src:DBus-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src:Scale-SP") {
+record(mbbo, "$(ON)Src-Scale-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Prescaler 0")
@@ -138,10 +138,10 @@ record(longin, "$(ON)Src-RB") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( INP , "@OBJ=$(OBJ), PROP=Map")
-  field( FLNK, "$(ON)Src:Pulse-RB")
+  field( FLNK, "$(ON)Src-Pulse-RB")
 }
 
-record(mbbi, "$(ON)Src:Pulse-RB") {
+record(mbbi, "$(ON)Src-Pulse-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB")
   field( ZRST, "Pulser 0")
@@ -177,10 +177,10 @@ record(mbbi, "$(ON)Src:Pulse-RB") {
   field( FTVL, "14")
   field( FFVL, "15")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(ON)Src:DBus-RB")
+  field( FLNK, "$(ON)Src-DBus-RB")
 }
 
-record(mbbi, "$(ON)Src:DBus-RB") {
+record(mbbi, "$(ON)Src-DBus-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB")
   field( ZRST, "DBus 0")
@@ -208,10 +208,10 @@ record(mbbi, "$(ON)Src:DBus-RB") {
   field( FTSV, "MAJOR")
   field( FFSV, "MAJOR")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(ON)Src:Scale-RB")
+  field( FLNK, "$(ON)Src-Scale-RB")
 }
 
-record(mbbi, "$(ON)Src:Scale-RB") {
+record(mbbi, "$(ON)Src-Scale-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB")
   field( ZRST, "Prescaler 0")
