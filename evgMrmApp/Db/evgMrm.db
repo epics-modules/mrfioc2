@@ -1,0 +1,104 @@
+record(bo, "$(P)Enable-Sel") {
+    field( DESC, "EVG Master Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=Enable")
+    field( UDF,  "0")
+    field( PINI, "RUNNING")
+    field( VAL,  "1")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Enable-RB") {
+    field( DESC, "EVG Master Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longin, "$(P)FwVer-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Version")
+  field(PINI, "YES")
+  field(DESC, "Firmware version")
+}
+
+record(stringin, "$(P)SwVer-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
+  field(PINI, "YES")
+  field(DESC, "Software version")
+}
+
+record(bo, "$(P)ResetMxc-Cmd") {
+    field( DTYP, "EVG")
+    field( DESC, "EVG Reset MXC")
+    field( OUT,  "#C S @$(EVG)")
+    field( PINI, "YES")
+    field( VAL, "1")
+    field( UDF, "0")
+}
+
+record(stringin, "$(P)Timestamp-RB") {
+    field( DTYP, "EVG TIMESTAMP")
+    field( DESC, "EVG TimeStamp")
+    field( INP , "#C S @$(EVG)")
+    field( SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)SyncTimestamp-Cmd" ) {
+    field( DTYP, "EVG TIMESTAMP")
+    field( DESC, "EVG Sync TimeStamp")
+    field( OUT,  "#C S @$(EVG)")
+}
+
+record(mbbo, "$(P)1ppsInp-Sel") {
+    field( DESC, "EVG 1PPS Input")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "0")
+    field( ZRST, "None")
+    field( ONST, "Front0")
+    field( TWST, "Front1")
+    field( THST, "Univ0")
+    field( FRST, "Univ1")
+    field( FVST, "Univ2")
+    field( SXST, "Univ3")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 4)
+    field( FRVL, 8)
+    field( FVVL, 16)
+    field( SXVL, 32)
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+#
+# Each bit of the 1ppsInp-MbbiDir record is used to toggle the external input
+# interrupt of the corresponding external input.
+#
+record(mbbiDirect, "$(P)1ppsInp-MbbiDir_") {
+    field( DESC, "EVG 1PPS Input")
+    field( INP,  "$(P)1ppsInp-Sel.RVAL CP")
+}
+
+record(longin, "$(P)DbusStatus-RB" ) {
+    field( DESC, "EVG Dbus Status")
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(OBJ), PROP=DbusStatus")
+}
+

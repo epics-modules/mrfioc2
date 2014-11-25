@@ -1,0 +1,1083 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle headings
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Epics device driver for MRF VME-EVG-230
+\end_layout
+
+\begin_layout Author
+Jayesh Shah, NSLS2, BNL jshah@bnl.gov
+\end_layout
+
+\begin_layout Date
+\noindent
+Last Updated: September 28, 2011
+\end_layout
+
+\begin_layout Section
+The Source
+\end_layout
+
+\begin_layout Standard
+The Mercurial VCS tool is needed to checkout the development repository.
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://mercurial.selenic.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+VCS Checkout
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\scriptsize},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hg checkout http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+Currently the driver only supports VME-EVG-230.
+\end_layout
+
+\begin_layout Section
+IOC Deployment
+\end_layout
+
+\begin_layout Standard
+This section outlines a general strategy for adding an VME-EVG to an IOC.
+\end_layout
+
+\begin_layout Standard
+The VME bus based EVGs are configured using the mrmEvgSetupVME() IOC shell
+ function.
+\end_layout
+
+\begin_layout Standard
+mrmEvgSetupVME ( 
+\end_layout
+
+\begin_layout Quote
+const char* id, // EVG card ID
+\end_layout
+
+\begin_layout Quote
+epicsInt32 slot, // VME slot 
+\end_layout
+
+\begin_layout Quote
+epicsUInt32 vmeAddress, // Desired VME address in A24 space 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 irqLevel // IRQ Level 
+\end_layout
+
+\begin_layout Quote
+epicsInt32 irqVector, // Desired interrupt vector number 
+\end_layout
+
+\begin_layout Standard
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mrmEvgSetupVME(EVG1,5,0x20000000,3,0x26)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example EVG1 is defined to be the VME card in slot 5 on VME crate.
+ It is given the A32 base address of 0x20000000 and configured to interrupt
+ on level 3 with vector 0x26.
+\end_layout
+
+\begin_layout Standard
+You can look at example startup script(st.cmd file) for EVG in ./mrfioc2/iocBoot/i
+ocevgmrm directory.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ VME64x allows for jumpless configuration of the card, but not automatically
+ assignment of resources.
+ Selection of an unused address range and IRQ level/vector is necessarily
+ left to the user.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ Before setup is done the VME64 identifer fields are verified so that specifying
+ an incorrect slot number is detected and setup will safely abort.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Classes/Sub-Component
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename EVG_Block_Daigram.JPG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+EVG
+\end_layout
+
+\begin_layout Subsubsection
+Global EVG Options:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable 
+\emph default
+(bo/bi): EVG enable and disable.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamping 
+\end_layout
+
+\begin_layout Standard
+The Event System provides a global timebase to attach timestamps to all
+ collected data and performed actions at EVR.
+ The time stamping system consists of 32-bit timestamp event counter and
+ a 32-bit seconds counter.
+ 
+\end_layout
+
+\begin_layout Standard
+This driver provides you an option of doing timestamping calculations in
+ software as compared to the dedicated hardware as used at few places.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename EVG_Timestamping.JPG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Following are the EVR requirements for accurate timestamping: 
+\end_layout
+
+\begin_layout Itemize
+At the start of every second, receive the event code 0x7D which would load
+ the 32-bit seconds count from shift register into the seconds register
+ of EVR and reset the timestamp event counter.
+\end_layout
+
+\begin_layout Itemize
+Have the next 32-bit seconds count shifted in the shift register of EVR
+ before the end of the current second.
+ The shift register is updated serially by loading zeros and ones on receipt
+ of event code 0x70 and 0x71 respectively.
+\end_layout
+
+\begin_layout Standard
+Timestamping at EVG:
+\end_layout
+
+\begin_layout Standard
+For timestamp EVG needs a pulse from the time source at the start of every
+ second.
+ EVG used this 1 pulse per second input to address both requirements of
+ EVR timestamping.
+\end_layout
+
+\begin_layout Itemize
+The first requirement is addressed by using Trigger Events of EVG.
+ We can configure one of the trigger events to send out event code 0x7D
+ when it receives a pulse from the 1PPS source.
+\end_layout
+
+\begin_layout Itemize
+For addressing second requirement EVG uses software events.
+ When timestamping starts the EVG driver obtains the current time from epicsGene
+ralTime interface(which inturn is synced to a accurate time source) and
+ stores it locally.
+ Now the driver uses the 1 pulse per second output from the time source
+ to update the seconds count of the locally stored time and then sends out
+ next second using event codes 0x70 and 0x71 via software events.
+\end_layout
+
+\begin_layout Standard
+Driver handles different error scenarios:
+\end_layout
+
+\begin_layout Itemize
+EVG uses timer with 1PPS input signal.
+ If it does not detect the signal in some '1 + delta' second the timer goes
+ off and it raises an major alarm and timestamping stops.
+ Once EVG receives the pulse from the 1PPS source it starts the timer again
+ and if the timer does not go off for 5 consecutive pulses then the EVG
+ starts sending timestamps again.
+\end_layout
+
+\begin_layout Itemize
+Before sending out the timestamps to EVR (i.e.
+ the 32-bit seconds count), EVG compares the 
+\emph on
+stored time
+\emph default
+(updated by 1 PPS) with the 
+\emph on
+current time(
+\emph default
+obtained from epicsGeneralTime).
+ If they do not match an minor alarm is raised but the stored time is sent
+ as the current time to EVR.
+\end_layout
+
+\begin_layout Standard
+Advantages:
+\end_layout
+
+\begin_layout Itemize
+Using minimum number of EVG inputs for the timestamping purpose.
+\end_layout
+
+\begin_layout Standard
+Records associated with EVG time stamping:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Synchronize Timestamp
+\emph default
+ (bo): Sync the current time with the NTP server.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+1PPS source
+\emph default
+ for Timestamping: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+Timestamp Input
+\emph default
+ (mbbo/mbbi): 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+None : Stop timestamping
+\end_layout
+
+\begin_layout Itemize
+Front : Front Panel Input 
+\end_layout
+
+\begin_layout Itemize
+Univ : Universal Input 
+\end_layout
+
+\begin_layout Itemize
+Rear : Rear Transitional Input
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection
+Event Clock
+\end_layout
+
+\begin_layout Standard
+All the operations on EVG are synchronized to the event clock.
+ Which is derived from either externally provided RF clock or from an on-board
+ fractional synthesizer.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Source
+\emph default
+ (bo/bi): The event clock may be derived from external RF clock signal or
+ from an on-board fractional synthesizer.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+RF reference frequency
+\emph default
+ (ao/ai): Set the RF Input frequency in MHz.
+ Frequency can range from 50 to 1600.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+RF Divider
+\emph default
+ (longout/longin): Divider to derive desired event clock from RF reference
+ frequency.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Fractional Synthesizer frequency
+\emph default
+ (ao/ai): This frequency could be used to derive event clock.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Event Clock Frequency Readback
+\emph default
+ (ai): Gets the current event clock frequency in MHz.
+ 
+\end_layout
+
+\begin_layout Subsection
+Software Events
+\end_layout
+
+\begin_layout Standard
+Software event is used to send out an event code by writing that event to
+ a particular register in EVG.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable
+\emph default
+ (bo/bi): Enable/Disable the transmission of Software Events.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Event Code
+\emph default
+ (longout/longin): Sends out the event code onto the event stream.
+ Event code can range form 0 to 255.
+\end_layout
+
+\begin_layout Subsection
+Trigger Events
+\end_layout
+
+\begin_layout Standard
+There are currently 8 trigger event sources.
+ Trigger events are used to send out event code into the event streams,
+ every time a trigger is received.
+ The stimulus could be a rising edge on an external input signal or a multiplexe
+d counter output or the ac signal.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable
+\emph default
+ (bo/bi): Enable/Disable the transmission of Trigger Events.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Event Code
+\emph default
+ (longout/longin): Sets the event code to be sent out, whenever a trigger
+ is received.
+ Event Code can range form 0 to 255.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Trigger
+\emph default
+ Source (mbbo): The trigger could come from one or multiple sources.
+ It could come from any of the external inputs and/or any multiplexed counter
+ output and/or from ac signal.
+ If multiple trigger sources are selected then those signal are OR'ed together
+ and the resulting signal works as the trigger.
+\end_layout
+
+\begin_layout Subsection
+Distributed bus
+\end_layout
+
+\begin_layout Standard
+The distributed bus allows transmission of eight simultaneous signals with
+ the event clock rate.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Signal Source/Map
+\emph default
+ (mbbo): The bits of the distributed bus can be driven by selecting one
+ of the following sources.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ext Inp : Sampling of the external input signals at event rate.
+\end_layout
+
+\begin_layout Itemize
+MXC : Sampling of the corresponding multiplexed counter output at event
+ rate.
+\end_layout
+
+\begin_layout Itemize
+Upstream EVG : Forwarding the state of distributed bus bit of upstream EVG.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\emph on
+Selecting the input
+\emph default
+ (bo): When the source for the distributed bus signals is external input
+ signal, we need to specify which input signal needs to be mapped onto the
+ distributed bus.
+ If multiple inputs are mapped onto a single distributed bus bit then those
+ signals are logically OR'ed together and the resulting signal is used to
+ drive the distributed bus bit.
+ 
+\end_layout
+
+\begin_layout Subsection
+Multiplexed Counter
+\end_layout
+
+\begin_layout Standard
+There are 8 32-bit multiplexed counters that generate clock signals with
+ programmable frequencies from event clock/2^32-1 to event clock/2.
+ The counter outputs may be programmed to trigger events, drive distributed
+ bus signals and trigger sequence RAMs.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Polarity
+\emph default
+ (bo/bi): Set the Multiplex Counter(Mxc) output polarity.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Frequency
+\emph default
+ (ao/ai): Request a signal with a particular frequency.
+\end_layout
+
+\begin_layout Itemize
+Prescaler (longout/longin): Used as counter to produce a signal with a particula
+r frequency.
+\end_layout
+
+\begin_layout Itemize
+Reset: Reset all the multiplexed counters.
+ After reset all the counters are in phase/sync with each other.
+\end_layout
+
+\begin_layout Subsection
+Input
+\end_layout
+
+\begin_layout Standard
+VME-EVG-230 has 2 Front panel, 4 Universal and 16 Transitional Inputs.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+External Input Interrupt
+\emph default
+ (bo): Enable or Disable the External Interrupt.
+ When enabled, an interrupt is received on every rising edge the input signal.
+\end_layout
+
+\begin_layout Subsection
+Output
+\end_layout
+
+\begin_layout Standard
+It is used to configure the 4 front panel outputs and 4 four front panel
+ universal outputs.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Source
+\emph default
+ (mbbo/mbbi): The output could be mapped to 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Any of the eight distributed bus bits
+\end_layout
+
+\begin_layout Itemize
+Forced logic 1
+\end_layout
+
+\begin_layout Itemize
+Forced logic 0.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+AC Trigger
+\end_layout
+
+\begin_layout Standard
+EVG provides synchronization to the mains voltage frequency or another external
+ clock.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Divider
+\emph default
+ (longout/longin): The mains voltage frequency can be divided by an eight
+ bit programmable divider.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Phase
+\emph default
+ (ao/ai): The output of the divider may be delayed by 0 to 25.5 ms by a phase
+ shifter in 0.1ms steps to adjust the triggering position relative to mains
+ voltage phase.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+AC Bypass
+\emph default
+ (bo/bi): It is set to bypass the AC divider and phase shifter circuitry.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Sync
+\emph default
+ (bo/bi): The AC Trigger could be synchronized either with event clock or
+ the output of multiplexed counter 7.
+ 
+\end_layout
+
+\begin_layout Subsection
+Event Sequencer
+\end_layout
+
+\begin_layout Standard
+Event Sequencer provides a method of transmitting or playing back sequences
+ of events stored in random access memory with defined timing.
+ MRF VME-EVG-230 has 2 sequenceRams (sequencers or hard sequence).
+ The sequencer can hold up to 2048 <event code, timeStamp> pair.
+ When the sequencer is triggered, an internal counter starts counting.
+ When the counter value matches the timeStamp of the next event, the attached
+ event code is transmitted.
+ 
+\end_layout
+
+\begin_layout Section*
+Functional block diagram of device support for event sequencer
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename evg-seq.jpeg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Device support for sequencer introduces a concept of software sequence(a.k.a.
+ soft sequence).
+ The existence of the software and hardware sequences is an abstraction
+ made to separate the process of assembling a sequence from the process
+ of placing it into hardware.
+ Software sequence maintains a complete ready to run copy of all sequences
+ in the IOC at all times.
+ The IOC is then free to choose which sequence to place into hardware.
+ Since this is a local operation it can be done quickly and efficiently.
+ The IOC can have any number of these soft sequences but at a time the number
+ of these soft sequences that can be loaded into the EVG hardware is restricted
+ by the number of hardware sequences.
+ 
+\end_layout
+
+\begin_layout Standard
+As shown in the picture above IOC maintains 2 copies of sequencer data (i.e.
+ Event Code's, Timestamps, Trigger Source and Run Mode).
+ Scratch sequence and complete sequence.
+ Users are allowed to make changes to the scratch sequence directly.
+ Scratch sequence is like the working copy.
+ When user are satisfied with the changes made to the working copy then
+ they can 
+\emph on
+'commit'
+\emph default
+ the soft sequence which will update the complete sequence with the scratch
+ sequence.
+ If the software sequence has an assocaited hardware sequence with it then
+ the complete sequence is copied to the hardware on 
+\emph on
+commit
+\emph default
+.
+ This is the Sync operation of sequencer.
+ 
+\end_layout
+
+\begin_layout Standard
+Parts of the sequence:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Event Code List
+\emph default
+ (waveform): It is used to set the list of the eventCodes of the soft sequence.
+ These eventCodes are transmitted whenever the timeStamp associated with
+ eventCode matches the counter value of sequencer.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Timestamp List
+\emph default
+ (waveform): It is used to set the timeStamps for the events in the soft
+ sequence.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Timestamp Input Mode
+\emph default
+(bo): There are two mode to enter the timestamping data in the sequencer
+ i.e.
+ EGU and TICKS.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+EGU: In EGU mode user can enter the timestamps in units of seconds, milli-second
+s, micro-seconds or nano-seconds.
+ 
+\end_layout
+
+\begin_layout Itemize
+TICKS: Here user can provide timestamps in terms of Event Clock ticks.
+\end_layout
+
+\begin_layout Itemize
+All the timestamp values are offset from the time the sequencer receives
+ the trigger.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Timestamp Resolution(mbbo) : If the timestamp input mode is EGU user can
+ use this record to give the units to time.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sec - Input/Output sequencer timestamps in seconds
+\end_layout
+
+\begin_layout Itemize
+mSec - Input/Output sequencer timestamps in micro-seconds
+\end_layout
+
+\begin_layout Itemize
+uSec - Input/Output sequencer timestamps in milli-seconds
+\end_layout
+
+\begin_layout Itemize
+nSec - Input/Output sequencer timestamps in nano-seconds
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\emph on
+Run Mode
+\emph default
+ (mbbo/mbbi): Run mode is used determine what will the sequencer do at the
+ end of the sequence.
+ where mode could be any of the following:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Single : Disarms the sequencer at the end of the sequence.
+\end_layout
+
+\begin_layout Itemize
+Automatic : Restarts the sequence immediately after the end of the sequence.
+\end_layout
+
+\begin_layout Itemize
+Normal : At the end of the sequence, the sequencer rearms and waits for
+ the trigger to restart the sequence.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\emph on
+Trigger Source
+\emph default
+ (mbbo/mbbi): Trigger Src is used to select the source of the trigger, which
+ starts the sequencer.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Mxc : Trigger from MXC0 - MXC7 
+\end_layout
+
+\begin_layout Itemize
+AC : Trigger from AC sync logic 
+\end_layout
+
+\begin_layout Itemize
+Software : Trigger from RAM0/RAM1 software trigger.
+\end_layout
+
+\begin_layout Itemize
+External : Trigger is received from any external input.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Above records only deal with the scratch copy of the soft sequence.
+ They do not directly interact with the hardware sequence.
+\end_layout
+
+\begin_layout Standard
+A soft sequence could be in different states like LOADED or UNLOADED, COMMITTED
+ or DIRTY, ENABLED or DISABLED.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Load
+\emph default
+ (bo): If successful, load causes a soft sequence to move from UNLOADED
+ state to LOADED state.
+ In the LOADED state, an hard sequence is assigned to a soft sequence.
+ If the soft sequence is already in LOADED state then load will return with
+ an error message.
+ The operation will fail if all the hard sequences are already assigned.
+ An allocation scheme ensures that at any given time, each hard sequence
+ is connected to only one soft sequence.
+ Load also copies the last committed data to the hardware.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Unload
+\emph default
+ (bo): The unload causes the soft sequence to enter into UNLOADED state.
+ This operation cannot fail.
+ In unloaded state the assignment of a hard sequence to a soft sequence
+ is released.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Commit
+\emph default
+ (bo): Whenever you modify a soft sequence, the scratch copy in the soft
+ sequence is modified (Refer to evg-seq diagram).
+ Commit causes the changes from the 'scratch sequence' to be copied to the
+ 'complete sequence'.
+ If the soft sequence is loaded, commit also initiates sync operation and
+ copies the changes from complete sequence to the hardware.
+ Modifying the sequenceRam while it is running gives undefined behavior
+ hence 'commit' makes sure that the changes are not written to the hardware
+ while it is running.
+ Hence it waits for the current sequence to finish before writing to the
+ hardware sequence.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable
+\emph default
+ (bo): It puts the soft sequence in the ENABLED state.
+ In enabled state, a loaded sequence is armed and waits for the trigger.
+ If is already in ENABLED state the record does nothing.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Disable
+\emph default
+ (bo): In DISABLED state the armed sequence is disarmed, so even if the
+ sequencer receives the trigger the sequence is does not run again.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Pause
+\emph default
+ (bo): This stops the currently running sequence(if any) and then disarms
+ it.
+ Pause leaves the sequence in DISABLED state.
+ When the sequence starts running again(Arm + Trigger), it continues the
+ from where it was stopped.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Abort
+\emph default
+ (bo): This causes the currently running sequence(if any) to stop and then
+ disarmed.
+ Abort leaves the sequence in DISABLED state.
+ After disarming it also resets the timestamp and eventCode registers.
+ So when the sequence starts running again(Arm + Trigger), it continues
+ the from the start.
+\end_layout
+
+\begin_layout Standard
+Caveats for sequencer
+\end_layout
+
+\begin_layout Itemize
+In the Event Code and Timestamp arrays provided by user are of different
+ lengths then the length of the sequence would be the length of the smaller
+ of the two arrays.
+ The remaining extra elements of the longer array would be ignored.
+\end_layout
+
+\begin_layout Itemize
+Driver by defaults puts the 'End of Sequence (0x7f)' event code at the end
+ of the sequence and it will be sent 'evgEndOfSeqBuf' event clock tick after
+ the last event in the sequence has been sent out.
+ Which currently defaults to five event clock ticks.
+ If user provides 0x7f with a timestamp then that would be used instead
+ of the default one.
+ 
+\end_layout
+
+\begin_layout Itemize
+If a soft sequence is uncommitted and running then when the IOC restarts
+ the sequence would be in uncommitted state but wont be running i.e.
+ last committed sequence is lost.
+\end_layout
+
+\begin_layout Standard
+PyQt script.
+ (Front end for Event Code and Timestamp arrays)
+\end_layout
+
+\begin_layout Itemize
+You need to install PyQt4 to run this python script.
+ Debian package is pyqt4-dev-tools.
+\end_layout
+
+\begin_layout Itemize
+You can have timestamp as 'zero' for the first event code in the sequencer.
+ So this will allow the first event code in the sequencer to be sent out
+ immediately after sequencer receives the trigger.
+ But adding 'zero' as timestamp anywhere else(other than for first event
+ code) is an error and the sequence would be truncated as soon as a zero
+ is encountered.
+ e.g.
+ timestamp array: 0x20, 0x30, 0, 0x40 would be truncated to 0x20, 0x30.
+ (Just first two elements before zero.)
+\end_layout
+
+\begin_layout Section
+Acknowledgment
+\end_layout
+
+\begin_layout Standard
+Thanks for all the help and support 
+\end_layout
+
+\begin_layout Itemize
+Micheal Davidsaver, NSLS2, BNL.
+ 
+\end_layout
+
+\begin_layout Itemize
+Eric Bjorklund, LANSCE, LANL.
+\end_layout
+
+\end_body
+\end_document

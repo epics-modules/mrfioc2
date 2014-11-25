@@ -1,0 +1,10 @@
+record(bo, "$(P)Link:TxMode-Sel") {
+  field(DESC, "Data mode")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
+}

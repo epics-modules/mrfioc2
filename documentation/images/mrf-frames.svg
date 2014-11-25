@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="480.89761"
+   height="143.89369"
+   id="svg6853"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="mrf-frames.svg">
+  <defs
+     id="defs6855" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="245.79841"
+     inkscape:cy="69.110461"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="934"
+     inkscape:window-height="625"
+     inkscape:window-x="305"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     units="mm" />
+  <metadata
+     id="metadata6858">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(118.25282,-885.61131)">
+    <g
+       id="g7445"
+       transform="translate(8.5714286,-5)">
+      <rect
+         y="916.64789"
+         x="12.857142"
+         height="22.142857"
+         width="147.14285"
+         id="rect6863"
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         id="path7375"
+         d="m 86.428572,915.93361 0,22.14286"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <text
+         id="text7404"
+         y="935.5188"
+         x="14.218135"
+         style="font-size:18.85489082px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="935.5188"
+           x="14.218135"
+           id="tspan7406"
+           sodipodi:role="line">Event#</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:20.86631584px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="103.30644"
+       y="931.20453"
+       id="text7408"><tspan
+         sodipodi:role="line"
+         id="tspan7410"
+         x="103.30644"
+         y="931.20453">DBus</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:15.41695786px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="282.41269"
+       y="966.28162"
+       id="text7412"><tspan
+         sodipodi:role="line"
+         id="tspan7414"
+         x="282.41269"
+         y="966.28162">Data Buf</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.15772915px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="40.325375"
+       y="901.29956"
+       id="text7416"><tspan
+         sodipodi:role="line"
+         id="tspan7418"
+         x="40.325375"
+         y="901.29956">8-bits</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.15772915px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="111.30497"
+       y="901.29956"
+       id="text7416-9"><tspan
+         sodipodi:role="line"
+         id="tspan7418-0"
+         x="111.30497"
+         y="901.29956">8-bits</tspan></text>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#g7445"
+       id="use7451"
+       transform="translate(-7.9684157e-8,38.571429)"
+       width="744.09448"
+       height="1052.3622" />
+    <g
+       id="g7453"
+       transform="translate(193.57143,-5.7142857)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7455"
+         width="147.14285"
+         height="22.142857"
+         x="12.857142"
+         y="916.64789" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 86.428572,915.93361 0,22.14286"
+         id="path7457" />
+      <text
+         xml:space="preserve"
+         style="font-size:18.85489082px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         x="14.218135"
+         y="935.5188"
+         id="text7459"><tspan
+           sodipodi:role="line"
+           id="tspan7461"
+           x="14.218135"
+           y="935.5188">Event#</tspan></text>
+    </g>
+    <g
+       id="g7463"
+       transform="translate(193.57143,32.857143)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7465"
+         width="147.14285"
+         height="22.142857"
+         x="12.857142"
+         y="916.64789" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 86.428572,915.93361 0,22.14286"
+         id="path7467" />
+      <text
+         xml:space="preserve"
+         style="font-size:18.85489082px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         x="14.218135"
+         y="935.5188"
+         id="text7469"><tspan
+           sodipodi:role="line"
+           id="tspan7471"
+           x="14.218135"
+           y="935.5188">Event#</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:14.15772915px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="221.52945"
+       y="901.21161"
+       id="text7416-91"><tspan
+         sodipodi:role="line"
+         id="tspan7418-7"
+         x="221.52945"
+         y="901.21161">8-bits</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.15772915px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="292.50909"
+       y="901.21161"
+       id="text7416-9-7"><tspan
+         sodipodi:role="line"
+         id="tspan7418-0-1"
+         x="292.50909"
+         y="901.21161">8-bits</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20.86631584px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="101.53188"
+       y="968.39172"
+       id="text7408-1"><tspan
+         sodipodi:role="line"
+         id="tspan7410-5"
+         x="101.53188"
+         y="968.39172">DBus</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20.86631584px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="288.67474"
+       y="929.10596"
+       id="text7408-7"><tspan
+         sodipodi:role="line"
+         id="tspan7410-7"
+         x="288.67474"
+         y="929.10596">DBus</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="80.714287"
+       y="1027.3622"
+       id="text7540"><tspan
+         sodipodi:role="line"
+         id="tspan7542"
+         x="80.714287"
+         y="1027.3622">A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="266.85715"
+       y="1026.6479"
+       id="text7544"><tspan
+         sodipodi:role="line"
+         id="tspan7546"
+         x="266.85715"
+         y="1026.6479">B</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20.00355339px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-114.50177"
+       y="932.64526"
+       id="text7548"><tspan
+         sodipodi:role="line"
+         id="tspan7550"
+         x="-114.50177"
+         y="932.64526">Frame N</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20.34864426px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-114.53564"
+       y="967.64038"
+       id="text7552"><tspan
+         sodipodi:role="line"
+         id="tspan7554"
+         x="-114.53564"
+         y="967.64038">Frame N+1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 1;stroke-dashoffset:0"
+       d="M 305,8.1794062 305,133.17941"
+       id="path7556"
+       transform="translate(-118.25282,885.61132)" />
+  </g>
+</svg>

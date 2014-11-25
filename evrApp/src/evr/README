@@ -1,0 +1,5 @@
+
+Generic MRF EVR interface
+
+The headers in the evr/ subdirectory are the "interface" definition classes
+for all MRF EVRs.

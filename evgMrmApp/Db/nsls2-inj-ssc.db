@@ -1,0 +1,231 @@
+# Single Shot Controller
+#
+# Macros
+#  EVROBJ - EVR instance name to provide tick event
+#  CODE - Event code which is our cycle tick
+#  SEQN - Sequencer for w/o beam sequence
+#  SEQB - Sequencer for all events sequence
+
+record(bo, "$(P)Bypass-Sel") {
+  field(ZNAM, "Operate")
+  field(ONAM, "Shutdown")
+  field(MASK, "1")
+  field(PINI, "YES")
+  field(ASG , "OPERATOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)Init-Cmd") {
+  field(PINI, "RUNNING")
+  field(PHAS, "2") # After INJ-TS{}Mode:Init-FO_
+  field(ZNAM, "Bootstrap")
+  field(ONAM, "Bootstrap")
+  field(FLNK, "$(P)Init-FOut_")
+  field(ASG , "OPERATOR")
+}
+
+record(dfanout, "$(P)Init-FOut_") {
+  field(VAL , "1")
+  field(OUTA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Disable-Cmd PP")
+  field(OUTB, "$(SYS){$(D)-SoftSeq:$(SEQB)}Disable-Cmd PP")
+  field(FLNK, "$(P)Inject-Calc_")
+}
+
+record(bo, "$(P)Mode-Sel") {
+  field(ZNAM, "CW")
+  field(ONAM, "Single")
+  field(PINI, "YES")
+  field(ASG , "OPERATOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)Request-Sel") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Request")
+  field(OUT , "$(P)Request-RB_ PP")
+  field(ASG , "OPERATOR")
+}
+
+# A "buffer" which we can disable to prevent
+# the readback from "blinking" Request-Sel
+# is updated
+record(bo, "$(P)Request-RB_") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Inject")
+  field(OUT , "$(P)Request-RB PP")
+}
+
+record(bi, "$(P)Request-RB") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Request")
+}
+
+record(bi, "$(P)Inject-Sts") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Inject")
+}
+
+# FLNK'd from InjN SoftSeq's Enable-RB (w/o beam)
+record(calcout, "$(P)Inject:N-Calc_") {
+  field(SDIS, "$(P)Bypass-Sel.RVAL")
+  field(INPA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Enable-RB")
+  field(CALC, "A")
+  # When becomes disabled
+  field(OOPT, "Transition To Zero")
+  # A CA link here to break the loop so we can re-enable
+  field(OUT, "$(P)Inject-Calc_.PROC CA")
+}
+
+# FLNK'd from Inj SoftSeq's Enable-RB (w/ beam)
+record(calcout, "$(P)Inject:B-Calc_") {
+  field(SDIS, "$(P)Bypass-Sel.RVAL")
+  field(INPA, "$(SYS){$(D)-SoftSeq:$(SEQB)}Enable-RB")
+  field(CALC, "A")
+  # When becomes disabled
+  field(OOPT, "Transition To Zero")
+  # A CA link here to break the loop so we can re-enable
+  field(OUT, "$(P)Inject-Calc_.PROC CA")
+}
+
+record(calcout, "$(P)Inject-Calc_") {
+  field(INPA, "$(P)Mode-Sel")
+  field(INPB, "$(P)Request-RB")
+  field(CALC, "E:=A?B:1;D:=E+1;F:=!E+1;E")
+  field(OUT , "$(P)Inject-Sts PP")
+  field(FLNK, "$(P)Rst:Inj-FOut_")
+}
+
+record(fanout, "$(P)Rst:Inj-FOut_") {
+  field(LNK1, "$(P)Rst:Inj1-Out_")
+  field(LNK2, "$(P)Rst:Inj2-Out_")
+  field(LNK3, "$(P)Rst:Inj3-Out_")
+  field(LNK4, "$(P)Rst:Inj4-Out_")
+  field(LNK5, "$(P)Act:Inj1-FOut_")
+  field(LNK6, "$(P)Act:Inj2-FOut_")
+  field(FLNK, "$(P)Act:Inj3-FOut_")
+}
+
+record(longout, "$(P)Rst:Inj1-Out_") {
+  # Indicate the request has been latched
+  # and allow for a new request to be issued
+  field(DOL , "0")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)Request-RB PP")
+}
+
+record(longout, "$(P)Rst:Inj2-Out_") {
+  # Prevent next step from causing Request-RB to "blink"
+  field(DOL , "1")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)Request-RB_.DISA")
+}
+
+record(longout, "$(P)Rst:Inj3-Out_") {
+  # "Update" Request (clears if next cycle has no beam)
+  field(DOL , "$(P)Inject-Sts")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)Request-Sel PP")
+}
+
+record(longout, "$(P)Rst:Inj4-Out_") {
+  # re-enable Request-RB
+  field(DOL , "0")
+  field(OMSL, "closed_loop")
+  field(OUT , "$(P)Request-RB_.DISA")
+}
+
+# Unload inactive sequence
+record(dfanout, "$(P)Act:Inj1-FOut_") {
+  field(SELM, "Specified")
+  field(SELL, "$(P)Inject-Calc_.F")
+  field(VAL , "1")
+  field(OUTA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Unload-Cmd PP")
+  field(OUTB, "$(SYS){$(D)-SoftSeq:$(SEQB)}Unload-Cmd PP")
+}
+
+# Load active sequence
+record(dfanout, "$(P)Act:Inj2-FOut_") {
+  field(SELM, "Specified")
+  field(SELL, "$(P)Inject-Calc_.D")
+  field(VAL , "1")
+  field(OUTA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Load-Cmd PP")
+  field(OUTB, "$(SYS){$(D)-SoftSeq:$(SEQB)}Load-Cmd PP")
+}
+
+# Enable active sequence
+record(dfanout, "$(P)Act:Inj3-FOut_") {
+  field(SELM, "Specified")
+  field(SELL, "$(P)Inject-Calc_.D")
+  field(VAL , "1")
+  field(OUTA, "$(SYS){$(D)-SoftSeq:$(SEQN)}Enable-Cmd PP")
+  field(OUTB, "$(SYS){$(D)-SoftSeq:$(SEQB)}Enable-Cmd PP")
+}
+
+
+# Simple lower CW rate controller
+
+record(bo, "$(P)Ena:LR-Sel") {
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+  field(MASK, "1")
+  field( UDF, "0")
+  field( ASG, "OPERATOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(P)Div:LR-Sel") {
+  field(DRVL, "3")
+  field(DRVH, "0xffff")
+  field(LOPR, "3")
+  field(HOPR, "0xff")
+  field( VAL, "3")
+  field( UDF, "0")
+  field( ASG, "OPERATOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(calcout, "$(P)LR-Calc_") {
+  field(SDIS, "$(P)Ena:LR-Sel")
+  field(DISV, "0")
+
+  field(INPA, "$(P)Cnt:N-I CP")
+  field(INPB, "$(P)Div:LR-Sel")
+
+  field(CALC, "A%(B-1)==0")
+
+  field(OOPT, "When Non-zero")
+  field(OUT , "$(P)Request-Sel CA")
+}
+
+record(calc, "$(P)Cnt-I") {
+  field(DESC, "Sequence execution count")
+  field(INPA, "$(P)Cnt:N-I CPP MS")
+  field(INPB, "$(P)Cnt:B-I CPP MS")
+  field(INPC, "$(P)Cnt-I NPP")
+  field(CALC, "C+1")
+}
+
+record(calc, "$(P)Rate-I") {
+  field(DESC, "Sequence execution rate")
+  field(SCAN, "10 second")
+  field(INPA, "$(P)Cnt-I NPP MS")
+  field(CALC, "C:=A-B;B:=A;C/10")
+  field(HIGH, "1.5")
+  field(LOW , "0.5")
+  field(HSV , "MAJOR")
+  field(LSV , "MAJOR")
+  field(EGU , "Hz")
+  field(PREC, "1")
+}
+
+alias("$(SYS){$(D)-SoftSeq:$(SEQN)}NumOfRuns-I","$(P)Cnt:N-I")
+alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Enable-RB","$(P)Ena:N-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Load-RB","$(P)Load:N-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Commit-RB","$(P)Commit:N-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQN)}Error-RB","$(P)Err:N-I")
+
+alias("$(SYS){$(D)-SoftSeq:$(SEQB)}NumOfRuns-I","$(P)Cnt:B-I")
+alias("$(SYS){$(D)-SoftSeq:$(SEQB)}Enable-RB","$(P)Ena:B-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQB)}Load-RB","$(P)Load:B-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQB)}Commit-RB","$(P)Commit:B-RB")
+alias("$(SYS){$(D)-SoftSeq:$(SEQB)}Error-RB","$(P)Err:B-I")

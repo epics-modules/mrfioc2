@@ -1,0 +1,39 @@
+
+Notes on the document cPCI-EVR-2x0_3.doc
+
+= Interrupts =
+
+The Event link RX error interrupt occurs whenever any momentary glitch occurs.
+If the link goes completely down (unplugged) this interrupt will occur continously.
+Therefore, if it does occur it must be disabled.  Its status bit will continue
+to indicate if the interrupt was asserted.  It must be polled periodically by attempting
+to clear it (write 1 and then read 0).  If it is cleared, then then interrupt can be
+re-enabled.
+
+This is not an entirely satisfactory approach since polling depends on the interrupt
+reoccuring between a write and subsequent read of the interrupt status register.
+More importantly there is not distinction between momentary error (CRC, ?) and carrier
+(laser) loss.
+
+= Registers =
+
+== Status Register (Page 13-14) ==
+
+Bit 16 is named LEGVIO or "Legacy VIO".  This is actually the link RX violation flag.
+
+== Interrupt Flag/Enable Registers (Page 14-15) ==
+
+The 'Event interrupt' would be better named 'Event FIFO not empty interrupt'.
+
+== Event Counter Clock Prescaler Register (Page 16-17) ==
+
+This field is an integer divider going from the event link rate to the timestamp rate.
+
+Setting to 0 sets the TS source to either DBus bit 4 or TS Event code (see Control Register).
+
+A setting of >0 sets the TS source to the divided event link.  Realistically this will
+be 1 unless the event link rate is high enough to overflow the 32 bit TS counter.
+
+== Microsecond Divider Register ==
+TODO:
+

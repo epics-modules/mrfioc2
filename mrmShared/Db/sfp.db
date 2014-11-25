@@ -1,0 +1,112 @@
+
+record(bo, "$(P)Update-Cmd") {
+  field(DTYP, "Obj Prop bool")
+  field(SCAN, "10 second")
+  field(OUT , "@OBJ=$(OBJ), PROP=Update")
+  field(ZNAM, "Update")
+  field(ONAM, "Update")
+  field(FLNK, "$(P)T-I")
+}
+
+record(ai, "$(P)T-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Temperature")
+  field(DESC, "Tranceiver Temperature")
+  field(ADEL, "0.5")
+  field(HIGH, "40")
+  field(HSV , "MINOR")
+  field(HIHI, "50")
+  field(HHSV, "MAJOR")
+  field(LOW , "0")
+  field(LSV , "INVALID")
+  field(EGU , "C")
+  field(PREC, "1")
+  field(FLNK, "$(P)Pwr:TX-I")
+}
+
+record(ai, "$(P)Pwr:TX-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Power TX")
+  field(DESC, "Tranceiver Output Power")
+  field(ADEL, "5")
+  field(HIGH, "400")
+  field(HSV , "MINOR")
+  field(LOW , "200")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "1")
+  field(FLNK, "$(P)Pwr:RX-I")
+  info(autosaveFields_pass0, "LOW")
+}
+
+record(ai, "$(P)Pwr:RX-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Power RX")
+  field(DESC, "Tranceiver Input Power")
+  field(ADEL, "5")
+  field(HIGH, "600")
+  field(HSV , "MINOR")
+  field(LOW , "100")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "1")
+  field(FLNK, "$(P)Speed:Link-I")
+  info(autosaveFields_pass0, "LOW")
+}
+
+record(ai, "$(P)Speed:Link-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Link Speed")
+  field(DESC, "Tranceiver Line Rate")
+  field(HIGH, "5000")
+  field(HSV , "MAJOR")
+  field(LOW , "3000")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1")
+  field(LLSV, "INVALID")
+  field(EGU , "Mb/s")
+  field(PREC, "0")
+  field(FLNK, "$(P)Vendor-I")
+}
+
+record(stringin, "$(P)Vendor-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor name")
+  field(INP , "@OBJ=$(OBJ), PROP=Vendor")
+  field(FLNK, "$(P)Part-I")
+}
+
+record(stringin, "$(P)Part-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor part number")
+  field(INP , "@OBJ=$(OBJ), PROP=Part")
+  field(FLNK, "$(P)Rev-I")
+}
+
+record(stringin, "$(P)Rev-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor part revision")
+  field(INP , "@OBJ=$(OBJ), PROP=Rev")
+  field(FLNK, "$(P)Serial-I")
+}
+
+record(stringin, "$(P)Serial-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "SFP serial number")
+  field(INP , "@OBJ=$(OBJ), PROP=Serial")
+  field(FLNK, "$(P)Date:Manu-I")
+}
+
+record(stringin, "$(P)Date:Manu-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Manufactored date")
+  field(INP , "@OBJ=$(OBJ), PROP=Date")
+}

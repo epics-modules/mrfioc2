@@ -1,0 +1,45 @@
+# INST_IO link strings
+#
+# Format is macLib style (Key=Value, Key=Value2)
+#
+# Common keys
+#
+# C - Card index number (int)
+# T - subunit type (only Output subunit) (string)
+# I - subunit instance number (int)
+# P - Property name (string)
+#
+# Special keys
+#
+# Code - Timing system event code (not db event #) (int)
+# Func - Mapping function (string)
+#
+
+include "mrmShared.dbd"
+
+# '@C=$(C), I=$(PULIDX), Func=FUNCTIONNAME'
+device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
+
+# '@C=$(C)'
+# or
+# '@C=$(C), Code=hweventnum'
+# If omitted then the current wallclock time is given
+device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
+
+# '@C=$(C), Code=hweventnum'
+device(longout,    INST_IO, devEventEVR, "EVR Event")
+
+# '@C=$(C), Func=FUNCTIONNAME'
+device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
+
+device(waveform, CONSTANT, devWfMailbox, "Mailbox")
+
+#
+device(longin, CONSTANT, devNtpShmLiOk, "EVR NTP OK")
+device(longin, CONSTANT, devNtpShmLiFail, "EVR NTP Fail")
+device(ai, CONSTANT, devNtpShmAiDelta, "EVR NTP Delta")
+
+registrar(asub_evr)
+registrar(EVRTime_Registrar)
+registrar(ntpShmRegister)
+driver(ntpShared)

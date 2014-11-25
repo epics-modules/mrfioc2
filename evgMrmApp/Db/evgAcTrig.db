@@ -1,0 +1,99 @@
+record(longout, "$(P)Divider-SP") {
+    field( DESC, "EVG AC Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(OBJ), PROP=Divider")
+    field( PINI, "YES")
+    field( VAL,  "0")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(P)Divider-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)Divider-RB") {
+    field( DESC, "EVG AC Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(OBJ), PROP=Divider")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+
+record(ao, "$(P)Phase-SP") {
+    field( DESC, "EVG AC Phase Shifter")
+    field( DTYP, "Obj Prop double")
+    field( OUT,  "@OBJ=$(OBJ), PROP=Phase")
+    field( PINI, "YES")
+    field( VAL,  "0.0")
+    field( UDF,  "0")
+    field( HIHI, "25.6")
+    field( LOLO, "-0.1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "msec")
+    field( HOPR, "25.5")
+    field( LOPR, "0")
+    field( DRVH, "25.5")
+    field( DRVL, "0")
+    field( PREC, "1")
+    field( FLNK, "$(P)Phase-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(P)Phase-RB") {
+    field( DESC, "EVG AC Phase Shifter")
+    field( DTYP, "Obj Prop double")
+    field( INP,  "@OBJ=$(OBJ), PROP=Phase")
+    field( HIHI, "25.6")
+    field( LOLO, "-0.1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "msec")
+    field( PREC, "1")
+}
+
+record(bo, "$(P)Bypass-Sel") {
+    field( DESC, "Bypass AC divider and Phase shifter")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(OBJ), PROP=Bypass")
+    field( PINI, "YES")
+    field( VAL , "1")
+    field( UDF,  "0")
+    field( ZNAM, "Off")
+    field( ONAM, "On")
+    field( FLNK, "$(P)Bypass-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Bypass-RB") {
+    field( DESC, "Bypass AC divider and Phase shifter")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(OBJ), PROP=Bypass")
+    field( ZNAM, "Off")
+    field( ONAM, "On")
+}
+
+record(bo, "$(P)SyncSrc-Sel") {
+    field( DESC, "Sync to Event Clock or Mxc7")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(OBJ), PROP=SyncSrc")
+    field( PINI, "YES")
+    field( VAL , "0")
+    field( UDF,  "0")
+    field( ZNAM, "Event Clk")
+    field( ONAM, "Mxc7")
+    field( FLNK, "$(P)SyncSrc-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)SyncSrc-RB") {
+    field( DESC, "Sync to Event Clock or Mxc7")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(OBJ), PROP=SyncSrc")
+    field( ZNAM, "Event Clk")
+    field( ONAM, "Mxc7")
+}

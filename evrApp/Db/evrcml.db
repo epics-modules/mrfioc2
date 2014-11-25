@@ -1,0 +1,527 @@
+# Extra controls for CML/GTX outputs
+#
+# Macros:
+#  ON = output record name prefix
+#  P  = base record name prefix
+#  OBJ = devObj name
+
+record(bo, "$(ON)Ena-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Enable")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(ON)Pwr-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Power")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(ON)Rst-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Reset")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Normal")
+  field(ONAM, "Reset")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(ON)Mode-Sel") {
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Mode")
+  field( PINI, "YES")
+  field( ZRST, "4x Pattern")
+  field( ONST, "Frequency")
+  field( TWST, "Waveform")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( THSV, "INVALID")
+  field( FRSV, "INVALID")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Mult-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Freq Mult")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+record(calcout, "$(ON)Res-I") {
+  field(INPA, "$(P)Link:ClkPeriod-I CP")
+  field(INPB, "$(ON)Mult-I PP")
+  field(CALC, "1e9*A/B")
+  field(EGU , "ns")
+  field(TSEL, "$(P)Link:ClkPeriod-I.TIME CA")
+  field(FLNK, "$(ON)Res-FO_")
+}
+
+record(fanout, "$(ON)Res-FO_") {
+  field(DESC, "Clock change resync")
+  field(TSEL, "$(ON)Res-I.TIME")
+  field(LNK1, "$(ON)Freq:High-SP")
+  field(LNK2, "$(ON)Freq:Low-SP")
+  field(LNK3, "$(ON)Pat:WfX-ASub_")
+  field(LNK4, "$(ON)WfCalc-ASub_")
+}
+
+# Rising pattern
+
+record(mbboDirect, "$(ON)Pat:Rise00_15-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Rise-ASub_.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Rise16_31-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Rise-ASub_.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Rise32_39-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(ON)Pat:Rise-ASub_.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)Pat:Rise-ASub_") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(NBIT=20)")
+  field(OUTA, "$(ON)Pat:Rise-SP PP")
+}
+
+record(waveform, "$(ON)Pat:Rise-SP") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Rise")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(NBIT=20)")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# High pattern
+
+record(mbboDirect, "$(ON)Pat:High00_15-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:High-ASub_.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:High16_31-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:High-ASub_.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:High32_39-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(ON)Pat:High-ASub_.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)Pat:High-ASub_") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(NBIT=20)")
+  field(OUTA, "$(ON)Pat:High-SP PP")
+}
+
+record(waveform, "$(ON)Pat:High-SP") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat High")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(NBIT=20)")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# Falling pattern
+
+record(mbboDirect, "$(ON)Pat:Fall00_15-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Fall-ASub_.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Fall16_31-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Fall-ASub_.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Fall32_39-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(ON)Pat:Fall-ASub_.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)Pat:Fall-ASub_") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(NBIT=20)")
+  field(OUTA, "$(ON)Pat:Fall-SP PP")
+}
+
+record(waveform, "$(ON)Pat:Fall-SP") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Fall")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(NBIT=20)")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# Low pattern
+
+record(mbboDirect, "$(ON)Pat:Low00_15-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 0-15")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Low-ASub_.A PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Low16_31-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 16-31")
+  field(NOBT, "16")
+  field(OUT , "$(ON)Pat:Low-ASub_.B PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(ON)Pat:Low32_39-SP") {
+  field(DTYP, "Soft and restore")
+  field(DESC, "Bits 32-39")
+  field(NOBT, "16")
+  field(SHFT, "8")
+  field(OUT , "$(ON)Pat:Low-ASub_.C PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)Pat:Low-ASub_") {
+  field(SNAM, "Bit Array Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "USHORT")
+  field( FTB, "USHORT")
+  field( FTC, "USHORT")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(NBIT=20)")
+  field(OUTA, "$(ON)Pat:Low-SP PP")
+}
+
+record(waveform, "$(ON)Pat:Low-SP") {
+  field(DESC, "Rising edge pattern")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Pat Low")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(NBIT=20)")
+  field(HOPR, "1")
+  field(LOPR, "0")
+}
+
+# frequency mode
+
+record(bo, "$(ON)Freq:Lvl-SP") {
+  field(DTYP, "Obj Prop bool")
+  field(DESC, "Trigger level")
+  field(OUT, "@OBJ=$(OBJ), PROP=Freq Trig Lvl")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Active high")
+  field(ONAM, "Active low")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(ao, "$(ON)Freq:Init-SP") {
+  field(DESC, "Trigger point")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts Init")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(VAL , "0")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(ON)Freq:High-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Freq:Init-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Initial counter val.")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts Init")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+record(ao, "$(ON)Freq:High-SP") {
+  field(DESC, "Time active")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts High")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(ON)Freq:High-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Freq:High-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts High")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+record(ao, "$(ON)Freq:Low-SP") {
+  field(DESC, "Time inactive")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=Counts Low")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(VAL , "10")
+  field(EGU , "ns")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e9")
+  field(PREC, "3")
+  field(FLNK, "$(ON)Freq:Low-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Freq:Low-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP, "@OBJ=$(OBJ), PROP=Counts Low")
+  field(HIGH, "65535")
+  field(LOW, "20")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+}
+
+# waveform mode
+
+
+record(bo, "$(ON)Pat:WfCycle-SP") {
+  field(DESC, "Waveform cycle mode")
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=Pat Recycle")
+  field(PINI, "YES")
+  field(UDF, "0")
+  field(VAL, "0")
+  field(ZNAM, "Single shot")
+  field(ONAM, "Loop")
+  info(autosaveFields_pass0, "VAL")
+}
+
+
+record(waveform, "$(ON)Pat:Wf-SP") {
+  field(DESC, "Pattern setting")
+  field(DTYP, "Obj Prop waveform out")
+  field(INP, "@OBJ=$(OBJ), PROP=Waveform")
+  field(PINI, "YES")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(MAX=40940)") # 20*2047
+  field(HOPR, "1")
+  field(LOPR, "0")
+  field(FLNK, "$(ON)Pat:Wf-RB")
+  info(autosaveFields_pass1, "VAL")
+}
+
+record(waveform, "$(ON)Pat:Wf-RB") {
+  field(DESC, "Pattern readback")
+  field(DTYP, "Obj Prop waveform in")
+  field(PINI, "YES")
+  field(INP, "@OBJ=$(OBJ), PROP=Waveform")
+  field(FTVL, "UCHAR")
+  field(NELM, "$(MAX=40940)") # 20*2047
+  field(HOPR, "1")
+  field(LOPR, "0")
+  field(FLNK, "$(ON)Pat:WfX-ASub_")
+}
+
+record(aSub, "$(ON)Pat:WfX-ASub_") {
+  field(SNAM, "Timeline")
+  field(BRSV, "INVALID")
+  field(INPA, "0")
+  field( FTA, "DOUBLE")
+  field(INPB, "$(ON)Res-I NPP")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(ON)Pat:Wf-SP.NORD NPP")
+  field( FTC, "LONG")
+  field(OUTA, "$(ON)Pat:WfX-I PP")
+  field(FTVA, "DOUBLE")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+  field(TSEL, "$(ON)Pat:Wf-RB.TIME")
+}
+
+record(waveform, "$(ON)Pat:WfX-I") {
+  field(FTVL, "DOUBLE")
+  field(NELM, "$(MAX=40940)")
+  field(EGU , "ns")
+}
+
+# Delay gen calculator for CML waveform
+
+record(bo, "$(ON)WfCalc:Ena-SP") {
+  field(DESC, "Disable calculator")
+  field(ONAM, "Enabled")
+  field(ZNAM, "Disabled")
+  field(UDF , "0")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(ao, "$(ON)WfCalc:Delay-SP") {
+  field(PINI, "YES")
+  field(OUT , "$(ON)WfCalc-ASub_.A PP")
+  field(EGU , "ns")
+  field(PREC, "1")
+  field(UDF , "0")
+  field(VAL , "16")
+  info(autosaveFields_pass0, "VAL EGU")
+}
+
+record(ao, "$(ON)WfCalc:Width-SP") {
+  field(PINI, "YES")
+  field(OUT , "$(ON)WfCalc-ASub_.B PP")
+  field(EGU , "ns")
+  field(PREC, "1")
+  field(UDF , "0")
+  field(VAL , "50")
+  info(autosaveFields_pass0, "VAL EGU")
+}
+
+record(aSub, "$(ON)WfCalc-ASub_") {
+  field(SDIS, "$(ON)WfCalc:Ena-SP")
+  field(DISV, "0")
+  field(SNAM, "Delay Gen")
+  field(BRSV, "INVALID")
+  field( FTA, "DOUBLE")
+  field( FTB, "DOUBLE")
+  field(INPC, "$(ON)Res-I NPP")
+  field( FTC, "DOUBLE")
+  field(INPD, "$(ON)Mult-I NPP")
+  field( FTD, "LONG")
+  field(OUTA, "$(ON)Pat:Wf-SP PP")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}
+
+# CML waveform for Gun (Bunches Per Train)
+
+record(bo, "$(ON)BunchTrain:Ena-SP") {
+  field(DESC, "Disable calculator")
+  field(ONAM, "Enabled")
+  field(ZNAM, "Disabled")
+  field(UDF , "0")
+  field(FLNK, "$(ON)BunchTrain:Size-SP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(ON)BunchTrain:Size-SP") {
+  field(PINI, "YES")
+  field(OUT , "$(ON)BunchTrain:ASub_.A PP")
+  field(UDF , "0")
+  field(VAL , "1")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(aSub, "$(ON)BunchTrain:ASub_") {
+  field(SDIS, "$(ON)BunchTrain:Ena-SP")
+  field(DISV, "0")
+  field(SNAM, "Bunch Train")
+  field(BRSV, "INVALID")
+  field( FTA, "ULONG")
+  field(OUTA, "$(ON)Pat:Wf-SP PP")
+  field(FTVA, "UCHAR")
+  field(NOVA, "$(MAX=40940)") # 20*2047
+}

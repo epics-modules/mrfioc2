@@ -1,0 +1,9764 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 2
+\pdf_breaklinks true
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=blue, urlcolor=blue, citecolor=blue"
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+EVR Usage Guide
+\end_layout
+
+\begin_layout Author
+Michael Davidsaver <mdavidsaver@bnl.gov>
+\end_layout
+
+\begin_layout Date
+August.
+ 2012, Rev.
+ 6
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+% Syntax for dbd files
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstdefinelanguage{dbd}
+\end_layout
+
+\begin_layout Plain Layout
+
+ {morekeywords={record,field},
+\end_layout
+
+\begin_layout Plain Layout
+
+  sensitive,
+\end_layout
+
+\begin_layout Plain Layout
+
+  morecomment=[l]{
+\backslash
+#},
+\end_layout
+
+\begin_layout Plain Layout
+
+  morecomment=[s]{
+\backslash
+$(}{)},
+\end_layout
+
+\begin_layout Plain Layout
+
+  morestring=[b]{"}
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\begin_layout Plain Layout
+
+% Listing environment defaults
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{stringstyle={
+\backslash
+textbf},
+\end_layout
+
+\begin_layout Plain Layout
+
+  basicstyle={
+\backslash
+footnotesize},
+\end_layout
+
+\begin_layout Plain Layout
+
+  commentstyle={
+\backslash
+emph},
+\end_layout
+
+\begin_layout Plain Layout
+
+  tabsize=4
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+System Overview
+\end_layout
+
+\begin_layout Standard
+The purpose of this document is to act as a guide and reference when using
+ the 'mrfioc2' EPICS support module for the Micro Research Finland (MRF
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "MRF"
+description "Micro Research Finland.  The company which makes these products."
+
+\end_inset
+
+) timing system
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+List of supported hardware given in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:supported"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+ It describes software for using the Event Generator (EVG
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "EVG"
+description "Event Generator.  Source of timing events"
+
+\end_inset
+
+) and Event Receiver (EVR
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "EVR"
+description "Event Receiver.  Endpoints for timing events"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The MRF Event Timing System can be deployed in two configurations (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:sys:confs"
+
+\end_inset
+
+).
+ The first is a unidirectional broadcast from a single source (EVG) to multiple
+ destinations (EVRs).
+ The Repeater
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Repeater"
+description "\"Dumb\" hub.  Has one input and many outputs."
+
+\end_inset
+
+ devices simply retransmit its single input to all outputs (one to many).
+ In the second configuration a return path from many EVRs back up to single
+ central (master) EVR is added.
+\end_layout
+
+\begin_layout Standard
+An EVR will act in one of two roles: either Leaf or Master.
+ The Master EVR is necessary because, while the generator (EVG) is capable
+ of receiving an event stream, it does not impliment the features of the
+ receiver (EVR).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement bh
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/mrf-overview.svg
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Two system configurations for the MRF Timing System
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "img:sys:confs"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What is transmitted over the event link is a combination of 8-bit event
+ codes and data.
+ Data can take the form of a single 8-bit byte which is simply copied from
+ sender to receiver (the Distributed Bus or DBus), and optionally a variable
+ length byte array (Data Buffer).
+\end_layout
+
+\begin_layout Standard
+These two types of data can be combined in two ways (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:wire:frames"
+
+\end_inset
+
+) depending on whether or not the Data Buffer feature is used.
+ In configuration A every 16-bit frame is split between an 8-bit event and
+ the 8-bit Distributed Bus.
+ In configuration B every frame carries an 8-bit event with the Distributed
+ Bus or a Data Buffer byte sent in alternating frames.
+\end_layout
+
+\begin_layout Standard
+In addition to data, the use of 8b10b encoding on the event link allows
+ the local oscillator of each EVR to be phase locked to a reference sent
+ by the EVG.
+ The EVG itself is typically driven from an external oscillator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/mrf-frames.svg
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Two supported link allocation schemes
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "img:wire:frames"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When discussing the MRF timing system there are three clocks.
+ The external reference clock for the EVG, the bit clock for transceivers,
+ and the Event Clock.
+ The relation between the reference and the Event clocks is determined by
+ a programmable divider in the EVG and is usually a small integer number
+ (eg.
+ 4).
+ The Event clock must be in the range between 50MHz and 125MHz.
+ The relation between the Event clock and the bit clock is a fixed factor
+ of 20 which is determined by the frame size described above.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+F_{bit}/20=F_{Event}=F_{Ext}/N_{Divide}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Event Link Data
+\end_layout
+
+\begin_layout Standard
+Data which is transferred over the event link is interpreted in four ways:
+ Event Codes, DBus bits, Data Buffers, and Clock Phase.
+ Each carries a different meaning, and is used in different ways.
+\end_layout
+
+\begin_layout Subsubsection
+Event Codes
+\end_layout
+
+\begin_layout Standard
+An event is momentary.
+ Typically an event causes something to happen (a trigger).
+ The 255 usable event codes available in the MRF system can be thought of
+ as 255 seperate physical wires.
+ On every tick of the Event Clock a pulse is sent on one (and only one)
+ of the ``wires''.
+ Zero is the ``idle'' event which is sent when no other event is queued.
+\end_layout
+
+\begin_layout Standard
+Event Codes will most often be used as triggers for external delay channels.
+ However, there are a number of event codes which have special meaning in
+ the MRF system.
+ The meaning of all other codes is left to the system operator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Code
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x00
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Idle, or null, event.
+ Send when nothing happens.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x70
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift 0 into EVR timestamp shift register
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x71
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shift 1 into EVR timestamp shift register
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7A
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset EVR heartbeat timeout counter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7B
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset all EVR dividers.
+ Synchronize global phase
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7C
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Increment EVR timestamp counter (depending on mode)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7D
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset timestamp counter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0x7F
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+End of sequence (not transmitted).
+ 
+\size footnotesize
+Use in other contexts is discouraged.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Special Event codes
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tbl:spec:codes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Distributed Bus (DBus) bits
+\end_layout
+
+\begin_layout Standard
+The Distributed Bus (DBus
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "DBus"
+description "Distributed Bus.  Special state stored on EVR and periodically updated from EVG."
+
+\end_inset
+
+) consists of 8 bits of data which are stored on every EVR.
+ This data is initialized to zero when the EVR starts, and overwritten whenever
+ the EVR receives an event frame with DBus data.
+ Depending on configuration this is either every frame, or every second
+ frame (See fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:wire:frames"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The DBus can thus be used to distribute either periodic, or non-periodic,
+ signals with bandwidth up to 
+\begin_inset Formula $\frac{1}{2}$
+\end_inset
+
+ (or 
+\begin_inset Formula $\frac{1}{4}$
+\end_inset
+
+) of the Event clock.
+\end_layout
+
+\begin_layout Standard
+The bits of the DBus can be routed to physical output.
+ A special feature of DBus bit 4 allows its rising edge to increment the
+ timestamp counter (depending on mode).
+\end_layout
+
+\begin_layout Subsubsection
+Data Buffers
+\end_layout
+
+\begin_layout Standard
+When enabled, a protocol is used to broadcast arbitrary byte arrays from
+ the EVG to all EVRs.
+ Bytes are sent one at a time in the data part of every second frame.
+ Special 8b10b codes are used to mark the beginning and end for each transfer.
+ A simple checksum is also sent.
+ The 230 series hardware allows buffers up to 2047 bytes in length.
+\end_layout
+
+\begin_layout Standard
+In keeping with the convention of the original MRF EPICS Support package
+ the first byte of a buffer is used as a header (Protocol ID) to identify
+ it.
+ No restrictions are placed on the body of buffer.
+\end_layout
+
+\begin_layout Subsubsection
+Event Clock Phase
+\end_layout
+
+\begin_layout Standard
+The use of 8b10b encoding allows each EVR's local oscillator to lock to
+ the EVG's reference clock.
+ This allows operation at speeds higher then the event clock rate.
+ This is used by the CML outputs described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:evr:cml"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Global Time Distribution
+\end_layout
+
+\begin_layout Standard
+The model of time implemented by the MRF hardware is two 32-bit unsigned
+ integers: counter, and 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The counter is maintained by each EVR and incremented quickly.
+ The value of the 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ is sent periodically from the EVG at a lower rate.
+ 
+\end_layout
+
+\begin_layout Standard
+During each 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+ 33 special codes (see sec.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tbl:spec:codes"
+
+\end_inset
+
+) must be sent.
+ The first 32 are the shift 0/1 codes which contain the value of the next
+ 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The last is the timestamp reset event.
+ When received this code transfers the new 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+ value out of the shift register, and resets the counter to zero.
+ These actions start the next 
+\begin_inset Quotes eld
+\end_inset
+
+second
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Note that while it is referred to as 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ this value is an arbitrary integer which can have other meanings.
+ Currently only one time model is implemented, but implementing others is
+ possible.
+\end_layout
+
+\begin_layout Subsubsection
+Light Source Time Model
+\end_layout
+
+\begin_layout Standard
+In this model the 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is an actual 1Hz counter.
+ The software default is the POSIX time of seconds since 1 Jan.
+ 1970 UTC.
+ Each new second is started with a trigger from an external 1Hz oscillator,
+ usually a GPS receiver.
+ Most GPS receivers have a one pulse per second (PPS
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "PPS"
+description "Pulse Per Second. 1Hz clock"
+
+\end_inset
+
+) output.
+ Time is converted to the EPICS epoch (1 Jan.
+ 1990) for use in the IOC.
+\end_layout
+
+\begin_layout Standard
+Several methods of sending the seconds value to the EVG are possible:
+\end_layout
+
+\begin_layout Paragraph
+External hardware
+\end_layout
+
+\begin_layout Standard
+has been created by Diamond light source which communicates with a GPS receiver
+ over a serial (RS232) link to receive the timestamp and connects to two
+ external inputs on the EVG.
+ These inputs must be programmed to send the shift 0/1 codes.
+\end_layout
+
+\begin_layout Paragraph
+Time from an NTP server
+\end_layout
+
+\begin_layout Standard
+can be used without special hardware.
+ This requires only a 1Hz (PPS) signal coming from the same source as the
+ NTP time.
+ Several commerial vendors supply dedicated NTP servers with builtin GPS
+ receivers and 1Hz outputs.
+ A software function is provided on the EVG which is triggered by the 1Hz
+ signal.
+ At the start of each second it sends the next second (current+1), which
+ will be latched after the following 1Hz tick.
+\end_layout
+
+\begin_layout Section
+Receiver Functions
+\end_layout
+
+\begin_layout Standard
+Internally an EVR can be thought of as a number of logical sub-units (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:evr:blocks"
+
+\end_inset
+
+) connecting the upstream and downstream event links to the local inputs
+ and outputs.
+ These sub-units include: the Event Mapping Ram, Pulse Generators, Prescalers
+ (clock dividers), and the logical controls for the physical inputs and
+ outputs.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/mrf-evr-blocks.svg
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Logical connections inside an EVR
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "img:evr:blocks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Pulse Generators
+\end_layout
+
+\begin_layout Standard
+Each pulse generator has a an associated Delay, Width, Polarity (active
+ low/high), and (sometimes) a Prescaler (clock divider).
+ When triggered by the Mapping Ram it will wait for the Delay time in its
+ inactive state.
+ Then it will transition to its active state, wait for the Width time before
+ transitioning back to its inactive state.
+\end_layout
+
+\begin_layout Standard
+Resolution of the delay and width is determined by the prescaler.
+ A setting of 1 gives the best resolution.
+\end_layout
+
+\begin_layout Standard
+In addition, the Mapping Ram can force a Pulse Generator into either state
+ (Active/Inactive).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ Some Pulse Generators do not have a prescaler.
+ In this case the prescaler property will always read 0 instead of >=1.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Event Mapping Ram
+\end_layout
+
+\begin_layout Standard
+The Event Mapping Ram is a table used to define the actions to be taken
+ by an EVR when it receives a particular event code number.
+ The mapping it defines is a many-to-many relations.
+ One event can cause several actions, and one action can be caused by several
+ events.
+\end_layout
+
+\begin_layout Standard
+The actions which can be taken can be grouped into two catagories: Special
+ actions, and Pulse Generator actions.
+ Special actions include those related to timestamp distribution, and the
+ system heartbeat tick (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:spec:mappings"
+
+\end_inset
+
+ for a complete list).
+ Each Pulse Generater has three mapable actions: Set (force active), Reset
+ (force inactive), and Trigger (start delay program).
+ Most applications will use Trigger mappings.
+\end_layout
+
+\begin_layout Subsection
+Prescalers (Clock Divider)
+\end_layout
+
+\begin_layout Standard
+Prescaler sub-units take the EVR's local oscillator and output a lower frequency
+ clock which is phased locked to the local clock, which is in sync with
+ the global master clock.
+ The lower frequency must be an integer divisor of the Event clock.
+\end_layout
+
+\begin_layout Subsection
+Outputs (TTL)
+\end_layout
+
+\begin_layout Standard
+This sub-unit represents a local physical output on the EVR.
+ Each output may be connected to one source: a Distributed Bus bit, a Prescaler,
+ or a Pulse Generator (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:out:mappings"
+
+\end_inset
+
+ for a complete list).
+\end_layout
+
+\begin_layout Subsection
+Outputs (CML and GTX)
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:cml"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Current Mode Logic outputs can send a bit pattern at the bit rate of the
+ event link bit clock (20x the Event Clock).
+ This pattern may be specified in one of three possible ways.
+\end_layout
+
+\begin_layout Standard
+As four 20 bit sub-patterns (rising, high, falling, and low).
+ As two periods (high and low).
+ These specify a square wave with variable frequency and duty factor.
+ As an arbitrary bit pattern (<= 40940 bits) which begins when the output
+ goes [TODO: high or low?].
+\end_layout
+
+\begin_layout Standard
+In the sub-pattern mode.
+ The rising and falling patterns are transmitted when the output level changes,
+ while the high and low patterns are repeated in between level changes.
+\end_layout
+
+\begin_layout Standard
+The GTX outputs found only on the EVRTG (
+\begin_inset Formula $e^{-}$
+\end_inset
+
+gun) receiver function similarly to the CML outputs at twice the frequency.
+ Thus for this device patterns are 40 bits.
+\end_layout
+
+\begin_layout Subsection
+Inputs
+\end_layout
+
+\begin_layout Standard
+An EVR's local TTL input can cause several actions when triggered.
+ It may be directly connected to one of the upstream Distributed Bus bits,
+ it may cause an event to be sent on the upstream links, or applied to the
+ local Mapping Ram.
+\end_layout
+
+\begin_layout Standard
+The rising edge of a local input can be timestamped.
+\end_layout
+
+\begin_layout Subsection
+Global Timestamp Reception
+\end_layout
+
+\begin_layout Standard
+Each EVR receives synchronous time broadcasts from an EVG.
+ Software may query the current time at any point.
+ The arrival time of certain event codes can be saved as well.
+ This can be accomplished with the 'event' record device support.
+\end_layout
+
+\begin_layout Standard
+Each EVR may be configured with a different method of incrementing the timestamp
+ counter.
+ See section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:evr:ts:src"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Tx/Rx
+\end_layout
+
+\begin_layout Standard
+A recipient can register callback functions for each Protocol ID.
+ It will then be shown the body of every buffer arriving with this ID.
+\end_layout
+
+\begin_layout Standard
+A default recipient is provided which stores data in a waveform record.
+\end_layout
+
+\begin_layout Section
+What is Available?
+\end_layout
+
+\begin_layout Standard
+More infomation on the Micro Research hardware can be found on their website
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.mrf.fi/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The software discussed below can be found on the EPICS application project
+ on SourceForge 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://sourceforge.net/projects/epics/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The latest developments can be found in the 'mrfioc2' Mercuial VCS repository.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Prerequisites
+\end_layout
+
+\begin_layout Standard
+Build system required modules
+\end_layout
+
+\begin_layout Description
+EPICS
+\begin_inset space ~
+\end_inset
+
+Base
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+3.14.8.2
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/epics/base/R3-14/index.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+MSI Macro expansion tool
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/epics/extensions/msi/index.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+devLib2
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+2.6 PCI/VME64x Hardware access library
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://epics.hg.sourceforge.net/hgweb/epics/devlib2/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Build system optional modules.
+ Not required, but highly recommended.
+\end_layout
+
+\begin_layout Description
+autosave Automatic save and restore on boot 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/bcda/synApps/autosave/autosave.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+iocstats Runtime IOC statistics (CPU load, \SpecialChar \ldots{}
+)
+\begin_inset Newline newline
+\end_inset
+
+
+\size footnotesize
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.slac.stanford.edu/comp/unix/package/epics/site/devIocStats/
+\end_layout
+
+\end_inset
+
+
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://sourceforge.net/projects/epics/files/devIocStats/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Target operating system requirements
+\end_layout
+
+\begin_layout Description
+RTEMS >= 4.9.x
+\end_layout
+
+\begin_layout Description
+vxWorks >=6.7
+\end_layout
+
+\begin_layout Description
+Linux >= 2.6.26.
+\end_layout
+
+\begin_layout Subsection
+Source
+\end_layout
+
+\begin_layout Standard
+The Mercurial VCS tool is needed to checkout the development repository.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://mercurial.selenic.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+VCS Checkout
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\scriptsize},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hg checkout http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Edit 'configure/CONFIG_SITE' and 'configure/RELEASE' then run "make".
+\end_layout
+
+\begin_layout Standard
+The following is a brief tour of the important locations in the source tree
+ relating to the EVR.
+\end_layout
+
+\begin_layout Subsubsection
+mrfCommon
+\end_layout
+
+\begin_layout Standard
+Some support functions.
+ Contains 'mrfCommonIO.h' which devices macros for access to memory mapped
+ IO.
+ Also the support a library and CLI utilities for en/decoding the control
+ word for the fractional synthesizer used on EVRs and EVGs.
+\end_layout
+
+\begin_layout Subsubsection
+mrmShared
+\end_layout
+
+\begin_layout Standard
+Contains code shared between the EVR and EVG.
+ This includes data buffer transmission.
+\end_layout
+
+\begin_layout Standard
+Also contains the Linux kernel driver stub to allow userspace PCI operations.
+\end_layout
+
+\begin_layout Subsubsection
+evrApp
+\end_layout
+
+\begin_layout Standard
+The MRF IOC has a strong seperation between device and driver support.
+ The device support and interface definition are in this module.
+ The interface is defined by the C++ abstract base classes in 'evrApp/src/evr/'.
+ A set of device support routines is found in 'evrApp/src/dev*.cpp'.
+ Some generic database files are found in 'evrApp/Db/'.
+\end_layout
+
+\begin_layout Subsubsection
+evrMrmApp
+\end_layout
+
+\begin_layout Standard
+This is the driver for the Modular Register Map (MRM
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "MRM"
+description "Modular Register Map.  Name for the common register map for all 230 and 300 series EVRs or EVGs"
+
+\end_inset
+
+) firmware version for the Event Receiver.
+ It provides a concrete implementation of the abstract classes defined in
+ 'evrApp'.
+ It also provides IOC shell functions to instantiate a device in 'evrMrmApp/src/
+drvemIocsh.cpp'.
+ 'evrMrmApp/Db/evr-*.substitutions' will create a complete example database.
+ An example IOC using the database is in 'iocBoot/iocevrmrm/'.
+\end_layout
+
+\begin_layout Subsubsection
+evgMrmApp
+\end_layout
+
+\begin_layout Standard
+Driver for the MRM version of the Event Generator.
+ Sequencer management code can be found in the evgSequencer sub-directory.
+\end_layout
+
+\begin_layout Section
+Supported Hardware
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:supported"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following devices are supported.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel outputs (TTL)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP UNIV
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel universal output sockets
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP Inputs
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel inputs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RTM
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Supports Rear Transition Module
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+VME-EVR-230
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This device has not been tested
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+VME-EVR-230RF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Outputs 4,5,6 are CML
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PMC-EVR-230
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPCI-EVR-230
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Supports PCI side-by-side module
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPCI-EVRTG-300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+GTX outputs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Special GTX interlock
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+IOC Deployment
+\end_layout
+
+\begin_layout Standard
+This section outlines a general strategy for adding an EVR to an IOC.
+ First general information is presented, followed by a section describing
+ the extra steps needed to use mrfioc2 under Linux.
+\end_layout
+
+\begin_layout Standard
+An example IOC shell script is included as 
+\begin_inset Quotes eld
+\end_inset
+
+iocBoot/iocevrmrm/st.cmd
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Device names
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:devnames"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All EVGs and EVRs in an IOC are identified by an unique name.
+ This is first given in the IOC shell functions described below, and repeated
+ in the INP or OUT field of all database records which reference it.
+ Both EVGs, and EVRs share the same namespace.
+ This restriction is needed since some code is shared between these two
+ devices.
+\end_layout
+
+\begin_layout Subsection
+VME64x Device Configuration
+\end_layout
+
+\begin_layout Standard
+The VME bus based EVRs and EVGs are configured using one of the following
+ IOC shell functions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Receiver
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME("anEVR", 3, 0x30000000, 4, 0x28)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example EVR 
+\begin_inset Quotes eld
+\end_inset
+
+anEVR
+\begin_inset Quotes erd
+\end_inset
+
+ is defined to be the VME card in slot 3.
+ It is given the A32 base address of 0x30000000 and configured to interrupt
+ on level 4 with vector 0x28.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ VME64x allows for jumpless configuration of the card, but not automatically
+ assignment of resources.
+ Selection of an unused address range and IRQ level/vector is necessarily
+ left to the user.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ Before setup is done the VME64 identifer fields are verified so that specifying
+ an incorrect slot number is detected and setup will safely abort.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+PCI Device Configuration
+\end_layout
+
+\begin_layout Standard
+PCI bus cards are identified with the mrmEvrSetupPCI() IOC shell function.
+\end_layout
+
+\begin_layout Standard
+Since PCI devices are automatically configured only the geographic address
+ (bus:device.function) needs to be provided.
+ This information can usually be found at boot time (RTEMS) or in /proc/bus/pci/
+devices (Linux).
+\end_layout
+
+\begin_layout Standard
+The IOC shell function devPCIShow() is also provided to list PCI devices
+ in the system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Receiver
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupPCI("PMC", 1, 2, 0)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This example defines EVR 
+\begin_inset Quotes eld
+\end_inset
+
+PMC
+\begin_inset Quotes erd
+\end_inset
+
+ to be bus 1 device 2 function 0.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ Before setup is done the PCI identifer fields are verified so that specifying
+ an incorrect location is detected and setup will safely abort.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+PCI Setup in Linux
+\end_layout
+
+\begin_layout Standard
+In order to use PCI EVRs in the Linux operating system a small kernel driver
+ must be built and loaded.
+ The source for this driver is found in 'mrmShared/linux/'.
+ This directory contains a Makefile for use by the Linux kernel build system
+ (not EPICS).
+\end_layout
+
+\begin_layout Standard
+To build the driver you must have access to a configured copy of the kernel
+ source used to build the target system's kernel.
+ If the build and target systems use the same kernel, then the location
+ will likely be '/lib/modules/`uname -r`/build'.
+ In case of a cross-built kernel the location will be elsewhere.
+\end_layout
+
+\begin_layout Standard
+To build the module for use on the host system:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ make -C /location/of/mrmShared/linux 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+KERNELDIR=/lib/modules/`uname -r`/build modules_install
+\end_layout
+
+\begin_layout Plain Layout
+
+$ sudo depmod -a
+\end_layout
+
+\begin_layout Plain Layout
+
+$ sudo modprobe mrf
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Building for a cross-target might look like:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ make -C /location/of/mrmShared/linux 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+KERNELDIR=/location/of/kernel/src 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ARCH=arm CROSS_COMPILE=/usr/local/bin/arm- 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+INSTALL_MOD_PATH=/location/of/target/root 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+modules_install
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the module is installed on the running target the special device file
+ associated with each EVR must be created.
+ If your target system is running UDEV this will happen automatically, if
+ not then you must do the following.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# grep mrf /proc/devices
+\end_layout
+
+\begin_layout Plain Layout
+
+254 mrf
+\end_layout
+
+\begin_layout Plain Layout
+
+# mknod -m 666 /dev/uio0 c 254 0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If may be necessary to change the file permission to allow the IOC process
+ to open it.
+ UDEV users may find one of the following commands useful for constructing
+ a rules file.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# udevinfo -a -p $(udevinfo -q path -n /dev/uio0 )
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# udevadm info -a -p $(udevadm info -q path -n /dev/uio0 )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each additional device adds one to the number (uio1, uio2, ...).
+\end_layout
+
+\begin_layout Standard
+Once the device file exists with the correct permissions the IOC will be
+ able to location it based on the bus:device.function given an to mrmEvrSetupPCI(
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ UIO numbers are not considered during setup since these may change after
+ a reboot.
+ To ensure repeatability only PCI immutable ID fields and the address triplet
+ (bus:device.function) are used.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Example Databases
+\end_layout
+
+\begin_layout Standard
+The MRFIOC2 module includes example database templates for all supported
+ devices (see 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsection
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:supported"
+
+\end_inset
+
+).
+ While each is fully functional, it is expected that most sites will make
+ modifications.
+ It is suggested that the original be left unchanged and a copy be made
+ with the institute name and other information as a suffix.
+ (evr-pmc-230.substitutions becomes evr-pmc-230-nsls2.substitutions).
+\end_layout
+
+\begin_layout Standard
+The authors would like to encourage users to send their customized databases
+ back so that they may be included as examples in future releases of MRFIOC2.
+\end_layout
+
+\begin_layout Standard
+The templates consist of a substitutions file for each model (PMC, cPCI,
+ VME-RF).
+ This template instanciates the correct number of records for the inputs/outputs
+ found on each device.
+ It also includes entries for event mappings and database events which will
+ be frequent targets for customization.
+\end_layout
+
+\begin_layout Standard
+Each substitutions file will be expanded during the build process with the
+ MSI utility to create a database file with two undefined macros (P and
+ C).
+ 'SYS' and 'D' define a common prefix shared by all PVs and must be unique
+ in the system.
+ 'EVR' is a card name also given as the first argument of one of the mrmEvrSetup
+*() IOC shell functions (unique in each IOC).
+\end_layout
+
+\begin_layout Standard
+Thus an IOC with two identical VME cards could use a configuration like:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME("evr1",5,0x20000000,3,0x26)
+\end_layout
+
+\begin_layout Plain Layout
+
+mrmEvrSetupVME("evr2",6,0x21000000,3,0x28)
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("evr-vmerf-230.db", "SYS=test, D=evr:a, EVR=evr1")
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("evr-vmerf-230.db", "SYS=test, D=evr:b, EVR=evr2")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+autosave
+\end_layout
+
+\begin_layout Standard
+All example database files include 
+\begin_inset Quotes eld
+\end_inset
+
+info()
+\begin_inset Quotes erd
+\end_inset
+
+ entries to generate autosave request files.
+ The example IOC shell script 
+\begin_inset Quotes eld
+\end_inset
+
+iocBoot/iocevrmrm/st.cmd
+\begin_inset Quotes erd
+\end_inset
+
+ includes the following to configure autosave.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+save_restoreDebug(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:") 
+\end_layout
+
+\begin_layout Plain Layout
+
+save_restoreSet_status_prefix("mrftest:")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+set_savefile_path("${mnt}/as","/save")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_requestfile_path("${mnt}/as","/req")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This enables some extra debug information which is useful for testing, and
+ loads the autosave on-line status database.
+ It also sets the locations where .sav and .req files will be searched for.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+set_pass0_restoreFile("mrf_settings.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass0_restoreFile("mrf_values.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass1_restoreFile("mrf_values.sav")
+\end_layout
+
+\begin_layout Plain Layout
+
+set_pass1_restoreFile("mrf_waveforms.sav")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sets three files which will be loaded.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+values
+\begin_inset Quotes erd
+\end_inset
+
+ are loaded twices as is the autosave convention.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+iocInit()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields") 
+\end_layout
+
+\begin_layout Plain Layout
+
+makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After the IOC has started the request files are generated.
+ This is where the 
+\begin_inset Quotes eld
+\end_inset
+
+info()
+\begin_inset Quotes erd
+\end_inset
+
+ entries in the database files are used.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_settings.req", 5 , "")
+\end_layout
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_values.req", 5 , "")
+\end_layout
+
+\begin_layout Plain Layout
+
+create_monitor_set("mrf_waveforms.req", 30 , "") 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally the request files are re-read and monitor sets are created.
+\end_layout
+
+\begin_layout Section
+Testing Procedures
+\end_layout
+
+\begin_layout Standard
+This section presents several step by step procedures which may be useful
+ when testing the function of hardware and software.
+\end_layout
+
+\begin_layout Standard
+In the 
+\begin_inset Quotes eld
+\end_inset
+
+documentation/demo/
+\begin_inset Quotes erd
+\end_inset
+
+ directory several IOC shell script files with the commands given in this
+ section as well as other examples.
+\end_layout
+
+\begin_layout Subsection
+EVG and EVR Checkout
+\end_layout
+
+\begin_layout Standard
+This procedure requires both a generator, receiver, and a fiber jumper cable
+ to connect them.
+\end_layout
+
+\begin_layout Standard
+It is assumed that no cables are connected to the front panel of either
+ EVG or EVR.
+ The example 
+\begin_inset Quotes eld
+\end_inset
+
+iocBoot/iocevrmrm/st.cmd
+\begin_inset Quotes erd
+\end_inset
+
+ script is used with 
+\family typewriter
+SYS=TST
+\family default
+ and 
+\family typewriter
+D=evr
+\family default
+ for the receiver and 
+\family typewriter
+D=evg
+\family default
+ for the generator.
+ Verify this with the following commands at the IOC shell.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbgrep("*Link:Clk-SP")
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr}Link:Clk-SP
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbgrep("*FracSynFreq-SP")
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evg-EvtClk}FracSynFreq-SP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following examples use the IOC shell commands 
+\family typewriter
+dbpr()
+\family default
+ and 
+\family typewriter
+dbpf()
+\family default
+.
+ Remote use of 
+\family typewriter
+caput
+\family default
+ and 
+\family typewriter
+caget
+\family default
+ is also possible.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-EvtClk}Source-Sel","FracSyn")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-EvtClk}FracSynFreq-SP","125.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evr}Link:Clk-SP","125.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evr}Ena-Sel","Enabled")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Link-Sts")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This sets the event link speed on both the EVR and EVG.
+ The EVG is commanded to use its internal synthesizer instead of an external
+ clock.
+\end_layout
+
+\begin_layout Standard
+Now use the fiber jumper cable to connect the TX port of the generator to
+ the RX port of the receiver.
+ (The Tx port will have a faint red light coming from it).
+\end_layout
+
+\begin_layout Standard
+Once connected the red link fail LED should go off and the link status PV
+ should read OK (1).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Link-Sts")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+At this point the receivier has locked to the generator signal, but no data
+ is being sent.
+ This includes the heartbeat event.
+ Thus the heartbeat timeout counter should be increasing.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Cnt:LinkTimo-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 45
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Cnt:LinkTimo-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 47
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we will set up the generator to send a periodic event code.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-Mxc:0}Prescaler-SP", "125000000")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evg-Mxc:0}Frequency-RB",1)
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+EGU: Hz ...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 1
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:0}EvtCode-SP", "122")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:0}TrigSrc-Sel", "Mxc0")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:1}EvtCode-SP", "125")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:1}TrigSrc-Sel", "Mxc0")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evr}Evt:Blink0-SP", "125")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This configures multiplexed counter 0 (Mxc #0) to trigger on the event clock
+ frequency divided by 125000000.
+ In this case this gives 1Hz.
+ Trigger event #0 is then configured to send event code 122, and trigger
+ event #1 to send code 125, when Mxc #0 triggers.
+\end_layout
+
+\begin_layout Standard
+At this point both the EVG's amber EVENT OUT led and the EVR's EVENT IN
+ led should flash at 1Hz.
+\end_layout
+
+\begin_layout Standard
+For diagnostics the EVR's Blink0 mapping is configured to blink the EVR's
+ EVENT OUT led when event code 125 is received.
+ Setting to 0 will cause it to stop blinking.
+\end_layout
+
+\begin_layout Standard
+Event code 122 is the heartbeat reset event.
+ Since it is being sent the link timeout counter should no longer be increasing.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Cnt:LinkTimo-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 120
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Cnt:LinkTimo-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 120
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+At this point, if the system is given an NTP server the EVG will get a correct
+ (but unsynchronized) time and messages similar to the following will be
+ printed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Starting timestamping
+\end_layout
+
+\begin_layout Plain Layout
+
+epicsTime: Wed Jun 01 2011 17:54:53.000000000
+\end_layout
+
+\begin_layout Plain Layout
+
+TS becomes valid after fault 4de6b533
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first two lines come from the EVG and indicate that it is sending a
+ timestamp.
+ The third line comes from the EVR and indicates that it is receiving a
+ correct timestamp.
+\end_layout
+
+\begin_layout Standard
+The counter for the 1Hz event should now be increasing.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}1hzCnt-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 5
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}1hzCnt-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 6
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Timestamp Test
+\end_layout
+
+\begin_layout Standard
+An external 1Hz pulse generator is required for this test.
+ It should be connected to front panel input 0 on the EVG.
+ This is LEMO connector expecting a TTL signal.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpr("TST{evr}Link-Sts")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the event link status is not OK then perform setup as described in the
+ previous test.
+\end_layout
+
+\begin_layout Standard
+Check the current time source status
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>generalTimeReport(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+Backwards time errors prevented 0 times.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Current Time Providers:     "EVR", priority = 50
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time not available
+\end_layout
+
+\begin_layout Plain Layout
+
+    "NTP", priority = 100
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time is 2011-06-02 10:23:26.058125.
+\end_layout
+
+\begin_layout Plain Layout
+
+    "OS Clock", priority = 999
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time is 2011-06-02 10:23:26.057101.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Event Time Providers:
+\end_layout
+
+\begin_layout Plain Layout
+
+    "EVR", priority = 50
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This shows that the NTP time source is functioning.
+ This is required for this test.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:1}EvtCode-SP", "125")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evg-TrigEvt:1}TrigSrc-Sel", "Front0")
+\end_layout
+
+\begin_layout Plain Layout
+
+>dbpf("TST{evr}Evt:Blink0-SP", "125")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sends event code 125 on the rising edge for front panel input 0.
+ For diagnostics sets the blink mapping.
+ If the led is not blinking then check the 1Hz pulse generator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dbpr("TST{evr}Time:Valid-Sts")
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+ VAL: 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Indicates that the EVR has received a valid time
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+>generalTimeReport(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+Backwards time errors prevented 0 times.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Current Time Providers:     "EVR", priority = 50
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time is 2011-06-02 10:26:50.683808.
+\end_layout
+
+\begin_layout Plain Layout
+
+    "NTP", priority = 100
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time is 2011-06-02 10:26:50.681220.
+\end_layout
+
+\begin_layout Plain Layout
+
+    "OS Clock", priority = 999
+\end_layout
+
+\begin_layout Plain Layout
+
+        Current Time is 2011-06-02 10:26:50.683854.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Event Time Providers:
+\end_layout
+
+\begin_layout Plain Layout
+
+    "EVR", priority = 50
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Shows that a valid time is now being reported.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ camonitor TST{evr:3}Time-I 
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:32:11.999993 Thu, 02 Jun 2011
+ 10:32:12 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:32:12.999993 Thu, 02 Jun 2011
+ 10:32:13 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:32:13.999993 Thu, 02 Jun 2011
+ 10:32:14 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:32:14.999993 Thu, 02 Jun 2011
+ 10:32:15 -0400
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The timestamp indicator record takes its record timestamp from the arrival
+ of the 125 event code.
+ As can be seen, this time is stored immediately before the sub-seconds
+ is zeroed.
+ This can be verified by switching this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ caget TST{evr:3}Time-I.TSE
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I.TSE           125
+\end_layout
+
+\begin_layout Plain Layout
+
+$ caput TST{evr:3}Time-I.TSE 0
+\end_layout
+
+\begin_layout Plain Layout
+
+Old : TST{evr:3}Time-I.TSE           125 
+\end_layout
+
+\begin_layout Plain Layout
+
+New : TST{evr:3}Time-I.TSE           0 
+\end_layout
+
+\begin_layout Plain Layout
+
+$ camonitor TST{evr:3}Time-I 
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:35:31.005655 Thu, 02 Jun 2011
+ 10:35:31 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:35:32.005655 Thu, 02 Jun 2011
+ 10:35:32 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:35:33.005655 Thu, 02 Jun 2011
+ 10:35:33 -0400   
+\end_layout
+
+\begin_layout Plain Layout
+
+TST{evr:3}Time-I               2011-06-02 10:35:34.005655 Thu, 02 Jun 2011
+ 10:35:34 -0400
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now a time latched by software when this record is processed.
+ For real-time system this time should be stable.
+\end_layout
+
+\begin_layout Section
+Firmware Update
+\end_layout
+
+\begin_layout Subsection
+VME EVRs and EVGs
+\end_layout
+
+\begin_layout Standard
+Update for VME cards is accomplished through the ethernet jack label 
+\begin_inset Quotes eld
+\end_inset
+
+10 BaseT
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The procedure covered in the MRF manual.
+\end_layout
+
+\begin_layout Subsection
+cPCI-EVRTG-300
+\end_layout
+
+\begin_layout Standard
+Undocumented.
+\end_layout
+
+\begin_layout Subsection
+PMC-EVR-230
+\end_layout
+
+\begin_layout Standard
+FIrmware update for the PMC module EVR is accomplish through a JTAG interface
+ as with the cPCI-EVRTG-300.
+ For reasons of physical space the JTAG wires are not brought to a connector,
+ but connected to 4 I/O pins of the PLX 9030 PCI bridge chip.
+ In order to control these pins and update the firmware some additional
+ software is needed.
+ Also the running Kernel must be built with the CONFIG_GENERIC_GPIO and
+ CONFIG_GPIO_SYSFS options.
+\end_layout
+
+\begin_layout Standard
+The Linux kernel module provided with mrfioc2 exposes the 4 I/O pins via
+ the Linux GPIO API.
+ The 4 pins are numbered in the order: TCK, TMS, TDO, and TDI.
+ The number of the first pin is printed to the kernel log when the MRF kernel
+ module is loaded.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+GPIO setup ok, JTAG available at bit 252
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example the 4 pins would be TCK=252, TMS=253, TDO=254, and TDI=255.
+\end_layout
+
+\begin_layout Subsubsection
+Creating an SVF file from a BIT file
+\end_layout
+
+\begin_layout Standard
+The firmware file will likely be supplied in one of two formats having the
+ extensions .bit or .svf.
+ If the provided file has the extension .svf then proceed to section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:pmc:prog"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To convert a .bit file to a .svf file it is necessary to get the iMPACT programmin
+g tool from Xilinx.
+ The easiest way to do this is with the 
+\begin_inset Quotes eld
+\end_inset
+
+Lab Tools
+\begin_inset Quotes erd
+\end_inset
+
+ bundle.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.xilinx.com/support/download/index.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following instructions are for iMPACT version 14.2.
+\end_layout
+
+\begin_layout Enumerate
+Install and run the iMPACT program.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to create a project click cancel
+\end_layout
+
+\begin_layout Enumerate
+On the left side of the main window is a pane titled 
+\begin_inset Quotes eld
+\end_inset
+
+iMPACT FLows
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Double click on 
+\begin_inset Quotes eld
+\end_inset
+
+Create PROM File
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+Xilinx Flash/PROM
+\begin_inset Quotes erd
+\end_inset
+
+ and click the first green arrow.
+\end_layout
+
+\begin_layout Enumerate
+Select 
+\begin_inset Quotes eld
+\end_inset
+
+Platform Flash
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+xcf08p
+\begin_inset Quotes erd
+\end_inset
+
+ and click 
+\begin_inset Quotes eld
+\end_inset
+
+Add Storage Device
+\begin_inset Quotes erd
+\end_inset
+
+ then the second green arrow.
+\end_layout
+
+\begin_layout Enumerate
+Select an output file name and path.
+ Ensure that the file format is MCS.
+ Click OK
+\end_layout
+
+\begin_layout Enumerate
+Several small dialogs will appear.
+ When prompted to 
+\begin_inset Quotes eld
+\end_inset
+
+Add device
+\begin_inset Quotes erd
+\end_inset
+
+ select the .bit file provided by MRF.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to add another device click No.
+\end_layout
+
+\begin_layout Enumerate
+On the left side of the main window is a pane titled 
+\begin_inset Quotes eld
+\end_inset
+
+iMPACT Processes
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Double click on 
+\begin_inset Quotes eld
+\end_inset
+
+Generate File
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+The .mcs file should now be written.
+\end_layout
+
+\begin_layout Enumerate
+Exit and restart iMPACT.
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.xilinx.com/support/documentation/user_guides/ug161.pdf
+\end_layout
+
+\end_inset
+
+ starting on page 67 for more detailed instructions.
+\end_layout
+
+\begin_layout Enumerate
+Create a new iMPACT project.
+ Select 
+\begin_inset Quotes eld
+\end_inset
+
+Prepare a Boundary-Scan File
+\begin_inset Quotes erd
+\end_inset
+
+ and the SVF format.
+\end_layout
+
+\begin_layout Enumerate
+When prompted, select a name for the resulting .svf file
+\end_layout
+
+\begin_layout Enumerate
+When prompted to 
+\begin_inset Quotes eld
+\end_inset
+
+Assign New Configuration File
+\begin_inset Quotes erd
+\end_inset
+
+ select the .mcs file just created.
+\end_layout
+
+\begin_layout Enumerate
+When prompted to select a PROM type choose 
+\begin_inset Quotes eld
+\end_inset
+
+xcf08p
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+An icon representing the PROM should now appear as the only entry in the
+ JTAG chain.
+\end_layout
+
+\begin_layout Enumerate
+Right click on this icon and select Program.
+\end_layout
+
+\begin_layout Enumerate
+In the dialog which appears check Verify and click OK.
+\end_layout
+
+\begin_layout Enumerate
+The .svf file should now be written.
+\end_layout
+
+\begin_layout Enumerate
+Exit iMPACT
+\end_layout
+
+\begin_layout Subsubsection
+Programming with UrJTAG
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:pmc:prog"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://urjtag.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As of August 2012 support to the Linux GPIO 
+\begin_inset Quotes eld
+\end_inset
+
+cable
+\begin_inset Quotes erd
+\end_inset
+
+ was not included in any UrJTAG release.
+ It is necessary to checkout and build the development version (commit id
+ b6945fc65 from 9 Aug.
+ 2012 works).
+ This requires the Git version control tool.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ git clone git://urjtag.git.sourceforge.net/gitroot/urjtag/urjtag
+\end_layout
+
+\begin_layout Plain Layout
+
+$ cd urjtag/urjtags
+\end_layout
+
+\begin_layout Plain Layout
+
+$ ./autogen.sh --disable-nls --prefix=$PWD/usr
+\end_layout
+
+\begin_layout Plain Layout
+
+$ make && make install
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On the target system run UrJTAG as root (or a use which can export and use
+ GPIO pins).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ./usr/bin/jtag
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> cable gpio tck=252 tms=253 tdo=254 tdi=255
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> detect
+\end_layout
+
+\begin_layout Plain Layout
+
+IR length: 26
+\end_layout
+
+\begin_layout Plain Layout
+
+Chain length: 2
+\end_layout
+
+\begin_layout Plain Layout
+
+Device Id: 00100001001000111110000010010011 (0x2123E093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Manufacturer: Xilinx (0x093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Part(0):      xc2vp4 (0x123E)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Stepping:     2
+\end_layout
+
+\begin_layout Plain Layout
+
+  Filename:     /epics/urjtag/share/urjtag/xilinx/xc2vp4/xc2vp4
+\end_layout
+
+\begin_layout Plain Layout
+
+Device Id: 11100101000001010111000010010011 (0xE5057093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Manufacturer: Xilinx (0x093)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Part(1):      xcf08p (0x5057)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Stepping:     14
+\end_layout
+
+\begin_layout Plain Layout
+
+  Filename:     /epics/urjtag/share/urjtag/xilinx/xcf08p/xcf08p
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> part 1
+\end_layout
+
+\begin_layout Plain Layout
+
+jtag> svf /location/of/pmc-prom.svf stop progress
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the device IDs may not be correctly recognized.
+ This will not effect the programming process.
+\end_layout
+
+\begin_layout Standard
+If no errors are printed then the update process was successful.
+ The new firmware will not be loaded until the PMC module is reset (power
+ cycle system).
+\end_layout
+
+\begin_layout Section
+NTPD Time Source
+\end_layout
+
+\begin_layout Standard
+It is possible to use an EVR as a time source for the system NTP daemon
+ on Linux.
+ This is implemented using the shared memory clock driver (#28).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.eecis.udel.edu/~mills/ntp/html/drivers/driver28.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An IOC is configured to write data to a shared memory segment by adding
+ a line to its start script.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+time2ntp("evrname", N)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here 
+\begin_inset Quotes eld
+\end_inset
+
+evrname
+\begin_inset Quotes erd
+\end_inset
+
+ is the same name given when configuring the EVR (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:devnames"
+
+\end_inset
+
+).
+ The memory segment ID number N must be between 0 and 4 inclusive.
+ The NTP daemon enforces that segments 0 and 1 require root permissions
+ to use.
+ Segments 2, 3, and 4 can be accessed by an unprivileged user.
+\end_layout
+
+\begin_layout Standard
+It is suggested to use an unprivileged segment to avoid running the IOC
+ as root.
+ However, this would allow any user on the system to effectively control
+ NTPD.
+ So it is not recommended for systems with untrusted users.
+\end_layout
+
+\begin_layout Standard
+The NTP daemon is configured from the file 
+\shape italic
+/etc/ntp.conf
+\shape default
+.
+ On Debian Linux systems using DHCP it will be necessary to modify 
+\shape italic
+/etc/dhcp/dhclient-exit-hooks.d/ntp
+\shape default
+ instead.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+server 127.127.28.N minpoll 1 maxpoll 2 prefer
+\end_layout
+
+\begin_layout Plain Layout
+
+fudge 127.127.28.N refid EVR
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will configure NTPD to read time from segment N.
+ Here N must match what was specified for 
+\shape italic
+time2ntp()
+\shape default
+.
+\end_layout
+
+\begin_layout Standard
+When functioning correctly NTPD status should look like:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ntpq -p
+\end_layout
+
+\begin_layout Plain Layout
+
+remote           refid      st t when poll reach   delay   offset  jitter
+\end_layout
+
+\begin_layout Plain Layout
+
+=========================================================================
+\end_layout
+
+\begin_layout Plain Layout
+
++time.cs.nsls2.l .GPS.
+      1 u   29   64  377    2.684   -0.001   0.089
+\end_layout
+
+\begin_layout Plain Layout
+
+*SHM(3)          .EVR.
+      0 l    7    8  377    0.000    0.000   0.001
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The shared memory interface can only be used to provide time with microsecond
+ precision.
+ So this measurement, taken from a production NSLS2 server, showing a jitter
+ of 
+\begin_inset Formula $\pm1$
+\end_inset
+
+ microsecond is the best which can be obtained.
+\end_layout
+
+\begin_layout Standard
+If the propogation time from the time source to the EVR is known, then the
+ offset can be given by adding 
+\begin_inset Quotes eld
+\end_inset
+
+time1 0.XXX
+\begin_inset Quotes erd
+\end_inset
+
+ to the 'fudge' line in 
+\shape italic
+ntp.conf
+\shape default
+.
+\end_layout
+
+\begin_layout Section
+Implementation Details
+\end_layout
+
+\begin_layout Standard
+Details of some parts of the driver which may be useful in understanding
+ (and trouble shooting) the behavior of the driver.
+\end_layout
+
+\begin_layout Subsection
+Event code FIFO Buffer
+\end_layout
+
+\begin_layout Standard
+Each EVR implements a hardware First In First Out buffer for event codes.
+ All occurrences of certain 
+\begin_inset Quotes eld
+\end_inset
+
+interesting
+\begin_inset Quotes erd
+\end_inset
+
+ event code number, along with individual arrival times, are placed in this
+ buffer.
+ Two interrupt condition are generated by the FIFO: not empty, and full.
+ The first is asserted when the first event added, and cleared when the
+ last event is removed.
+ The second occurs when last free entry in the buffer is consumed.
+ Further event occurrences are lost.
+\end_layout
+
+\begin_layout Standard
+When the not empty interrupt occurs the fifo drain task (named EVRFIFO in
+ epicsThreadShowAll()) is woken up by a message queue.
+ This task runs at scan high priority (90).
+ Once awakened it will remove at most 512 event codes from the buffer before
+ sleeping again.
+ The number 512 is an arbitrary number chosen to prevent the starvation
+ of lower priority tasks if a high frequency event code is accidentally
+ mapped into the FIFO.
+ A minimum sleep time is enforced by the 
+\series bold
+mrmEvrFIFOPeriod
+\series default
+ variable.
+ This governs the maximum rate that events can be reported through the FIFO.
+ Setting to 0 will disable it.
+\end_layout
+
+\begin_layout Standard
+Each of the event codes 1-255 has an IOSCANPVT and a list of callback functions
+ (type EVR::eventCallback) which will be invoked when the event occurs.
+\end_layout
+
+\begin_layout Standard
+An invocation of an IOSCANPVT list may place an arbitrary number of CALLBACKs
+ into the message queue of the three EPICS callback scan tasks (High, Medium,
+ and Low).
+ If these message queues are overflowed then CALLBACK in other drivers my
+ be lost.
+ The scanIoRequest() function does not report this error.
+\end_layout
+
+\begin_layout Standard
+To avoid this rather disastrous occurrence the EVR driver will not re-run
+ the scan list for an event, until all actions 
+\series bold
+at all priorities
+\series default
+ from the previous run have finished.
+ This is implemented by placing a special sentinel CALLBACK in all three
+ queues.
+ An event will not be re-run until all three of the CALLBACK have run.
+ 
+\end_layout
+
+\begin_layout Standard
+The FIFO servicing code can indicate two error conditions.
+ Occurrences of these errors are recorded in the 
+\family typewriter
+FIFO Overflow Count
+\family default
+ and 
+\family typewriter
+FIFO Over rate
+\family default
+ counters.
+ 
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+FIFO Overflow Count
+\family default
+ gives the number of times the hardware FIFO buffer has overflowed.
+ This is a serious error since arbitrary event code (including the timestamping
+ codes) will be lost.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+FIFO Over rate
+\family default
+ counter counts the number of times any event reoccurred before the actions
+ of the last occurrence were finished processing.
+ This is less serious since other event codes are not effected.
+\end_layout
+
+\begin_layout Subsection
+Data Buffer reception
+\end_layout
+
+\begin_layout Standard
+Each EVR can receive a single data buffer.
+ Once a data message has been received, the reception engine is disabled
+ to allow time to download the buffer.
+ Then the engine can be re-enabled in preparation for the next message.
+ An interrupt is generated when the message has been fully received, and
+ the engine disabled.
+\end_layout
+
+\begin_layout Standard
+Instead of a separate thread, buffer reception is implemented as a two stage
+ callback run by the High (first) and Medium (second) priority scan tasks.
+ The first callback copies the buffer into memory and immediately re-enables
+ buffer reception, it then passes the data to the second callback.
+ This callback passes the buffer to a list of user callback functions which
+ have registered interest in the Protocol ID found in the message header.
+\end_layout
+
+\begin_layout Subsection
+Timestamp validation
+\end_layout
+
+\begin_layout Standard
+It is impossible to verify a time without a second trusted reference.
+ Since such a reference is not generally available, the driver can only
+ make some checks against corruption.
+\end_layout
+
+\begin_layout Standard
+The seconds part of the timestamp should only change when the 1Hz reset
+ event (125) is received from the EVG.
+ Therefore a callback is attached to that event code.
+ When a new seconds value arrives it is compared to the previous stored
+ value.
+ If it is exactly 1 greater then it is taken to be the new seconds value.
+ If it is not then the EVR time is declared invalid.
+\end_layout
+
+\begin_layout Standard
+When the time is invalid, it can only become valid after five sequential
+ seconds values are received.
+ Any out of sequence value resets the count.
+\end_layout
+
+\begin_layout Section
+EVR Device Support Reference
+\end_layout
+
+\begin_layout Standard
+The EPICS support module for MRF devices consists of a number of supports
+ which are generally tied to a specific logical sub-unit.
+ Each sub-unit may be thought of as an object having a number of properties.
+ For example, each Delay Generator has properties 'Delay' and 'Width'.
+ These properties can be read or modified in several ways.
+ A delay can specified as an integer number of ticks of its reference clock
+ (hardware view), or in seconds as a floating point number (user view).
+\end_layout
+
+\begin_layout Standard
+In this example the properties 'Delay' and 'Width' should be settable in
+ exact integer as well as the more useful, but imprecise, floating point
+ units (eg.
+ seconds).
+ This needs to be accomplished by two different device supports (longout,
+ and ao).
+ Of course it is also useful to have some confirmation that settings have
+ been applied so read-backs are desireable (longin, ai).
+\end_layout
+
+\begin_layout Standard
+Some of the device supports defined are as follows.
+ The full list is given in 
+\family typewriter
+\series bold
+mrfCommon/src/mrfCommon.dbd
+\series default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+device(longin , INST_IO, devLIFromUINT32, "Obj Prop uint32")
+\end_layout
+
+\begin_layout Plain Layout
+
+device(longin , INST_IO, devLIFromUINT16, "Obj Prop uint16")
+\end_layout
+
+\begin_layout Plain Layout
+
+device(longin , INST_IO, devLIFromBool,   "Obj Prop bool")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+device(ai , INST_IO, devAOFromDouble, "Obj Prop double")
+\end_layout
+
+\begin_layout Plain Layout
+
+device(ai , INST_IO, devAOFromUINT32, "Obj Prop uint32")
+\end_layout
+
+\begin_layout Plain Layout
+
+device(ai , INST_IO, devAOFromUINT16, "Obj Prop uint16")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Unless otherwise noted, all device support use 
+\series bold
+INST_IO
+\series default
+ input/output links with the format:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@OBJ=$(OBJECTNAME), PROP=Property Name
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the Pulser sub-unit has the property 'Delay' which supports both integer
+ and float settings, the following database can be constructed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(ao, "$(PN)Delay-SP")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop double")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(OUT , "@OBJ=$(OBJ), PROP=Delay")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(PINI, "YES")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DESC, "Pulse Generator $(PID)")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FLNK, "$(PN)Delay-RB")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+record(ai, "$(PN)Delay-RB")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop double")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@OBJ=$(OBJ), PROP=Delay")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FLNK, "$(PN)Delay:Raw-RB")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+record(longin, "$(PN)Delay:Raw-RB")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop uint32")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@OBJ=$(OBJ), PROP=Delay")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This provides setting in engineering units and readbacks in both EGU and
+ raw for the delay property.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ In is inadvisible to have to more then one output record pointing to the
+ same property of the same device.
+ However, it is allowed since there are cases where this is desireable.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following sections list the properties for all sub-units with functional
+ descriptions.
+\end_layout
+
+\begin_layout Subsection
+Global
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the EVR as a whole.
+ The object Name is given as the first argument of 
+\series bold
+mrmEvrSetupPCI()
+\series default
+ or 
+\series bold
+mrmEvrSetupVME()
+\series default
+.
+ This name will be refered to afterwards as $(OBJ).
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrbase.db
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="18" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Property Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Writeable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I/O Intr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Notes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PLL Lock Status
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Link Status
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Timestamp Valid
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Sw Version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FIFO Overflow Count
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FIFO Over rate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HB Timeout Count
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Clock
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Timestamp Source
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Timestamp Clock
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Timestamp Prescaler
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Timestamp
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Event Clock TS Div
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Receive Error Count
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For example, the 
+\series bold
+bool
+\series default
+ean property 
+\series bold
+Enable
+\series default
+ could be written by the following record.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(bo, "$(P)ena") {
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop bool") 
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(OUT , "@OBJ=$(OBJ), PROP=Enable")
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Master enable for the EVR.
+ If not set then very little will happen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+If disabled, an EVR will automatically enable when the event link becomes
+ active.
+ This allows for bumpless cold starts.
+ For this reason the enable property should be included in any autosave
+ request files.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Waiting on update to PMC firmware to enable this feature
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+PLL Lock Status
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+This indicates whether the phase locked loop which synchronizes an EVR's
+ local oscilator with the phase of the EVG's oscilator.
+ Outputs will not be stable unless the PLL is locked.
+\end_layout
+
+\begin_layout Standard
+Except for immediately (
+\begin_inset Formula $\ll1sec$
+\end_inset
+
+) after a change to the fractional synthesizer this property should always
+ read as true (locked).
+ Reading false for longer then one second is likely an indication that the
+ fractional synthesize is misconfigured, or that a hardware fault has occured.
+\end_layout
+
+\begin_layout Subsubsection
+Link Status
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Indicates when the event link is active.
+ This means that the receiver sees light, and that valid data is being decoded.
+\end_layout
+
+\begin_layout Standard
+A reading of false may be caused by a number of conditions including: EVG
+ down, fiber unplugged or broken, and/or incorrent fractional synthesizer
+ frequency.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Valid
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Indicates if the EVR has a current, valid timestamp.
+ Condition under which the timestamp is declared invalid include:
+\end_layout
+
+\begin_layout Itemize
+TS counter reset event received, but 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value not updated.
+\end_layout
+
+\begin_layout Itemize
+Found timestamp with previous invalid value.
+ Catches old timestamp in buffers.
+\end_layout
+
+\begin_layout Itemize
+TS counter exceeded limit (eg.
+ missed reset event)
+\end_layout
+
+\begin_layout Itemize
+New 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is less then the last valid values, or more then two greater then
+ the last valid value.
+ (Light Source time model only).
+ This will reject single 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ values sent by the EVG.
+\end_layout
+
+\begin_layout Itemize
+Event Link error (Status is error).
+\end_layout
+
+\begin_layout Standard
+The timestamp will become valid when a new 
+\begin_inset Quotes eld
+\end_inset
+
+seconds
+\begin_inset Quotes erd
+\end_inset
+
+ value is received from the EVG.
+\end_layout
+
+\begin_layout Subsubsection
+Model
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+The hardware model number.
+\end_layout
+
+\begin_layout Subsubsection
+Version
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+The firmware version number.
+\end_layout
+
+\begin_layout Subsubsection
+Sw Version
+\end_layout
+
+\begin_layout Standard
+Types(s): string
+\end_layout
+
+\begin_layout Standard
+A string describing the version of the driver software.
+ This is captured when the driver is compiled.
+\end_layout
+
+\begin_layout Subsubsection
+FIFO Overflow Count
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Counter the number of hardware event buffer overflows.
+ There is a single hardware buffer for all event codes.
+ When it overflows arbitrary events will fail to be delivered to software.
+ This can cause the timestamp to falsely be invalidated, and can disrupt
+ database processing which depends on event reception.
+\end_layout
+
+\begin_layout Standard
+This is a serious error which should be corrected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ An overflow does 
+\series bold
+not
+\series default
+ effect physical outputs.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+FIFO Over rate
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Counts overflows in all of the per event software buffers.
+\end_layout
+
+\begin_layout Standard
+This indicates that the period between successive events is shorter then
+ the runtime of the code (callbacks, and database processing) that is causes.
+ Extra events are being dropped and cause no action.
+\end_layout
+
+\begin_layout Standard
+Actions of other event codes are not effected.
+\end_layout
+
+\begin_layout Subsubsection
+HB Timeout Count
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+The number of times the hardware heartbeat timer has expired.
+ This indicates that the EVG is not sending event code 122 which may mean
+ that it is misconfigured or hung.
+\end_layout
+
+\begin_layout Subsubsection
+Clock
+\end_layout
+
+\begin_layout Standard
+Type(s): double
+\end_layout
+
+\begin_layout Standard
+Frequency of an EVR's local oscilator.
+ This must be close enough to the EVG master oscilator to allow the phase
+ locked loop in the EVR to lock.
+\end_layout
+
+\begin_layout Standard
+The native analog units are Hertz (Hz).
+ This can be changed with the LINR and ESLO fields.
+ Use ESLO of 1e-6 to allow user setting/reading in MHz.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Source
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:ts:src"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Determines what causes the timestamp event counter to tick.
+ There are three possible values.
+\end_layout
+
+\begin_layout Description
+Event
+\begin_inset space ~
+\end_inset
+
+clock Use an integer divisor of the EVR's local oscilator.
+\end_layout
+
+\begin_layout Description
+Mapped
+\begin_inset space ~
+\end_inset
+
+code(s) Increments the counter whenever certain events arrive.
+ These codes can be defined using special mapping records.
+\end_layout
+
+\begin_layout Description
+DBus
+\begin_inset space ~
+\end_inset
+
+4 Increments on the 0->1 transition of DBus bit #4.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Clock
+\end_layout
+
+\begin_layout Standard
+Type(s): double
+\end_layout
+
+\begin_layout Standard
+Specifies the rate at which the timestamp event counter will be incremented.
+ This determines the resolution of all timestamps.
+\end_layout
+
+\begin_layout Standard
+This setting is used in conjunction with the 'Timestamp Source'.
+\end_layout
+
+\begin_layout Standard
+When the timestamp source is set to "Event clock" this property is used
+ to compute an integer divider from the EVR's local oscilator frequency
+ to the given frequency.
+ Since this may not be exact it is recommended to read back the actual divider
+ setting via the "Timestamp Prescaler" property.
+\end_layout
+
+\begin_layout Standard
+In all modes this value is stored in memory and used to convert the timestamp
+ event counter values from ticks to seconds.
+\end_layout
+
+\begin_layout Standard
+By default the analog units are Hertz (Hz).
+ This can be changed with the LINR and ESLO fields.
+ Use ESLO of 1e-6 to allow user setting/reading in MHz.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Prescaler
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+When using the "Event clock" timestamp source this will return the actual
+ divisor used.
+ In other modes it reads 0.
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp
+\end_layout
+
+\begin_layout Standard
+Special device support.
+\end_layout
+
+\begin_layout Standard
+When processed creates a human readable string with either the current event
+ link time, or the event link time when code # was last received.
+ If Code is omitted or 0 then the current wall clock time is used.
+ Code may also have any valid event number 1-255.
+ Then it will print the time of the last received event.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(stringin, "$(P)Time-I")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "EVR Timestamp")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@OBJ=$(OBJ), Code=0")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(SCAN, "Event")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(EVNT, "$(EVNT1HZ)")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Event Clock TS Div
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+This is an approximate divider from the event link frequency down to 1MHz.
+ It is used to determine the heartbeat timeout.
+\end_layout
+
+\begin_layout Subsubsection
+Receive Error Count
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+The number of event link errors which have occurred.
+\end_layout
+
+\begin_layout Subsection
+SFP
+\end_layout
+
+\begin_layout Standard
+Information and status from the Small Form factor Plugable (SFP) transceiver
+ module.
+ Access to this feature requires EVR firmward version 5 (starting with 25
+ May 2012).
+ It is automatically disabled at runtime if an unsupported version is detected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Property Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Writeable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Notes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Update
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Triggers read of the SFP EEPROM
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vendor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Module vendor name
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Part
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vendor's part number
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rev
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Part revision
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Date
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Date of manufacture
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Serial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SFP module serial number
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Temperature
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Module temperature in C
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Link speed
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bit rate
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Power TX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optical power of SFP transmitter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Power RX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optical power seen by SFP receiver
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Pulse Generator
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the Pulse Generator (Pulser) sub-unit
+ named $(OBJ):Pul# where # is a number between 0 and 15.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrpulser.db
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Property Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Writeable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I/O Intr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Notes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Polarity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prescaler
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Delay
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double, uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Width
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double, uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For example, the property 
+\series bold
+Delay
+\series default
+ could be set by either of the following records.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(ao, "$(D)ena") {
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop double") 
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(OUT , "@OBJ=$(OBJ):Pul#, PROP=Enable")
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+record(longout, "$(D)ena") {
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "Obj Prop uint32") 
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(OUT , "@OBJ=$(OBJ):Pul#, PROP=Enable")
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When not set, the output of the Pulse Generator will remain in its inactive
+ state (normally low).
+ The generator must be enabled before mapped actions will have any effect.
+\end_layout
+
+\begin_layout Subsubsection
+Polarity
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Reverses the output polarity.
+ When set, changes the Pulse Generator's output from normally low to normally
+ high.
+\end_layout
+
+\begin_layout Subsubsection
+Prescaler
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Decreases the resolution of both delay and width by an integer multiple.
+ Determines the tick rate of the internal counters used for delay and width
+ with respect to the EVR's local oscillator.
+\end_layout
+
+\begin_layout Subsubsection
+Delay
+\end_layout
+
+\begin_layout Standard
+Type(s): double and uint32
+\end_layout
+
+\begin_layout Standard
+Determines the time between when the Pulse Generator is triggered and when
+ it changes state from inactive to active (normally low to high).
+\end_layout
+
+\begin_layout Standard
+This can be given in integer ticks, or floating point seconds.
+ This can be changed with the LINR and ESLO fields.
+ Use ESLO of 1e6 to allow user setting/reading in microseconds.
+\end_layout
+
+\begin_layout Subsubsection
+Width
+\end_layout
+
+\begin_layout Standard
+Type(s): double and uint32
+\end_layout
+
+\begin_layout Standard
+Determines the time between when the Pulse Generator changes state from
+ inactive to active (normally low to high), and when it changes back to
+ inactive.
+\end_layout
+
+\begin_layout Standard
+This can be given in integer ticks, or floating point seconds.
+ This can be changed with the LINR and ESLO fields.
+ Use ESLO of 1e6 to allow user setting/reading in microseconds.
+\end_layout
+
+\begin_layout Subsection
+Prescaler (Clock Divider)
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the Prescaler sub-unit.
+ Prescaler objects are named $(OBJ):PS# where # is between 0 and 2.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrscale.db
+\end_layout
+
+\begin_layout Subsubsection
+Divide
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Sets the integer divisor between the Event Clock and the sub-unit output.
+\end_layout
+
+\begin_layout Standard
+By default the analog units are Hertz (Hz).
+ This can be changed with the LINR and ESLO fields.
+ Use ESLO of 1e-6 to allow user setting/reading in MHz.
+\end_layout
+
+\begin_layout Subsection
+Output (TTL and CML)
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the Output sub-unit.
+ Output objects are named either $(OBJ):FrontOut#, $(OBJ):FrontOutUniv#,
+ or $(OBJ):RearUniv# where the range of number # depends on the hardware
+ model.
+\end_layout
+
+\begin_layout Standard
+See: evrMrmApp/Db/mrmevrout.db
+\end_layout
+
+\begin_layout Subsubsection
+Map
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:out:mappings"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+The meaning of this value is determined by the specific implimentation used.
+\end_layout
+
+\begin_layout Standard
+For the MRM implimentation the following codes are valid.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="17" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Output Source
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Output Source
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+63
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Force High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 15
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+62
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Force Low
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+42
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prescaler (Divider) 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+13
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 13
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+41
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prescaler (Divider) 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 12
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+40
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prescaler (Divider) 0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 11
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+39
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+37
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+36
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 7
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+35
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 6
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 5
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+33
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Distributed Bus Bit 0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pulse generator 0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When set to True the mapping set with the 
+\series bold
+Map
+\series default
+ property is used.
+ When False a mapping of Force Low is used.
+\end_layout
+
+\begin_layout Subsection
+Output (CML/GTX only)
+\end_layout
+
+\begin_layout Standard
+Additional properties for Current Mode Logic (CML) and GTX outputs.
+ Output objects are named either $(OBJ):FrontOut#, $(OBJ):FrontOutUniv#,
+ or $(OBJ):RearUniv# where the range of number # depends on the hardware
+ model.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrcml.db
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="16" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Property Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Writeable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I/O Intr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Notes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Enable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Power
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reset
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mode
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pat Rise
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UCHAR waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pat High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UCHAR waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pat Fall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UCHAR waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pat Low
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UCHAR waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+UCHAR waveform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pat Recycle
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Freq Trig Lvl
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Counts Init
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double, uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Counts High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double, uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Counts Low
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double, uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Freq Mult
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Trigger permit.
+\end_layout
+
+\begin_layout Subsubsection
+Power
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Current driver on.
+\end_layout
+
+\begin_layout Subsubsection
+Reset
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Pattern reset.
+\end_layout
+
+\begin_layout Subsubsection
+Mode
+\end_layout
+
+\begin_layout Standard
+Type(s): uint16
+\end_layout
+
+\begin_layout Standard
+Selects CML pattern mode.
+ Possible values are: 4x Pattern (0), Frequency (1), Waveform (2).
+\end_layout
+
+\begin_layout Description
+4x
+\begin_inset space ~
+\end_inset
+
+Pattern Uses the Pat Rise, Pat High, Pat Fall, and Pat Low properties to
+ store four 20 bit (0 -> 0xfff) sub-patterns.
+\end_layout
+
+\begin_layout Description
+Frequency Uses the Freq Trig Lvl, Counts High, and Counts Low properties
+\end_layout
+
+\begin_layout Description
+Waveform Uses the bit pattern stored by the Pattern Set property.
+\end_layout
+
+\begin_layout Subsubsection
+Pat Rise/Pat High/Pat Fall/Pat Low/Waveform
+\end_layout
+
+\begin_layout Standard
+Type(s): UCHAR waveform
+\end_layout
+
+\begin_layout Standard
+Each property stores a seperate bit waveform as an array of bytes.
+\end_layout
+
+\begin_layout Standard
+The four patterns are 20 or 40 bit waveforms are sent once at either edge
+ (rising/falling), and repeatidly when when at a stable level.
+\end_layout
+
+\begin_layout Standard
+Rising and Falling patterns start as soon as the edge is detected and will
+ interrupt the pattern currently being sent.
+\end_layout
+
+\begin_layout Standard
+The High and Low patterns are sent after an edge pattern is sent and will
+ repeat until the next edge.
+\end_layout
+
+\begin_layout Standard
+The Waveform pattern is a variable length patten (max 
+\begin_inset Formula $40940=20*2047$
+\end_inset
+
+ or 
+\begin_inset Formula $81880=40*2047$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Subsubsection
+Pattern Recycle
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+In waveform mode a trigger cause the output to begin sending the pattern
+ from its start.
+ When the end of the pattern is reached the output will either go in active,
+ or begin sending the pattern again, based on this property.
+\end_layout
+
+\begin_layout Subsubsection
+Freq Trig Lvl
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When in frequency mode and a trigger arrives the output is forced to this
+ level.
+\end_layout
+
+\begin_layout Subsubsection
+Counts High/Low/Init
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32 or double
+\end_layout
+
+\begin_layout Standard
+Stores a value which is the number of counts (uint32) or time (double) of
+ the high or low part of a square wave.
+\end_layout
+
+\begin_layout Standard
+The number of ticks must be >20 or 40, whichever is the time of one period
+ of the event clock.
+\end_layout
+
+\begin_layout Standard
+The Counts Init property holds the value which is loaded into the counter
+ when a trigger arrives.
+ This allows for a phase difference between the output and the trigger source.
+\end_layout
+
+\begin_layout Subsubsection
+Freq Mult
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+This read only property gives the multiplier for the CML/GTX output clock.
+ This will be either 20 (CML) or 40 (GTX).
+\end_layout
+
+\begin_layout Subsection
+Input
+\end_layout
+
+\begin_layout Standard
+Properties in this section apply to the Input sub-unit.
+ Input objects are named $(OBJ):FPIn# where the range of the number # depends
+ on the hardware model.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrin.db
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Property Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Writeable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I/O Intr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Notes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Active Level
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Active Edge
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bool
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+External Mode
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+External Code
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Backwards Mode
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Backwards Code
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DBus Mask
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uint16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Active Level
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When operating in level triggered mode, determines if codes are sent when
+ the input level is low, or high.
+\end_layout
+
+\begin_layout Subsubsection
+Active Edge
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+When operating in edge triggered mode, Determines if codes are sent on the
+ falling or rising edge in the input signal.
+\end_layout
+
+\begin_layout Subsubsection
+External Mode
+\end_layout
+
+\begin_layout Standard
+Type(s): uint16
+\end_layout
+
+\begin_layout Standard
+Selects the condition, Level (1), Edge (2), or None (0), in which to inject
+ event codes into the local mapping ram.
+ These codes are treated as codes coming from the downstream event link.
+\end_layout
+
+\begin_layout Subsubsection
+External Code
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Sets the code which will be applied to the local mapping ram whenever the
+ 'External Mode' condition is met.
+\end_layout
+
+\begin_layout Subsubsection
+Backwards Mode
+\end_layout
+
+\begin_layout Standard
+Type(s): uint16
+\end_layout
+
+\begin_layout Standard
+Selects the condition, Level (1), Edge (2), or None (0), in which to send
+ on the upstream event link.
+\end_layout
+
+\begin_layout Subsubsection
+Backwards Code
+\end_layout
+
+\begin_layout Standard
+Type(s): uint32
+\end_layout
+
+\begin_layout Standard
+Sets the code which will be sent on the upstream event link whenever the
+ 'Backwards Mode' condition is met.
+\end_layout
+
+\begin_layout Subsubsection
+DBus Mask
+\end_layout
+
+\begin_layout Standard
+Type(s): uint16
+\end_layout
+
+\begin_layout Standard
+Sets the upstream Distributed Bus bit mask which is driven by this input.
+ DBus bits from multiple sources are condensed with a bit-wise OR.
+\end_layout
+
+\begin_layout Subsection
+Event Mapping
+\end_layout
+
+\begin_layout Standard
+Properties in this section describe actions which should be taken when an
+ event code is received.
+\end_layout
+
+\begin_layout Subsubsection
+Pulse Generator Mapping
+\end_layout
+
+\begin_layout Standard
+Special device support acting on pulser generator objects.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrpulsermap.db
+\end_layout
+
+\begin_layout Standard
+Causes a received event to trigger a Pulse Generator (Pulser) sub-unit,
+ or force it into an active (set) or inactive (reset) state.
+\end_layout
+
+\begin_layout Standard
+These records will have DTYP set to "EVR Pulser Mapping".
+\end_layout
+
+\begin_layout Standard
+Each record will cause one event to trigger, set, or reset one Pulse Generator.
+ It is possible (and likely) that more then one record will interact with
+ each event code or Pulse Generator.
+ However, each pairing must be unique.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(longout, "$(P)$(N)$(M)") {
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DTYP, "EVR Pulser Mapping" )
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( OUT , "@OBJ=$(OBJ):Pul0, Func=$(F=Trig)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( PINI, "YES")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DESC, "Mapping for Pulser $(PID)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( VAL , "$(EVT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( LOPR, "0")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( HOPR, "255")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DRVL, "0")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DRVH, "255")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example the event '$(EVT)' specified in the 'VAL' field will cause
+ function '$(F)' on Pulse Generator # '$(PID)'.
+ Current functions are 'Trig', 'Reset', and 'Set'.
+\end_layout
+
+\begin_layout Subsubsection
+Special Function Mapping
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:spec:mappings"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Special device supportacting on global EVR objects.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrmap.db
+\end_layout
+
+\begin_layout Standard
+Allows a number of special actions to be mapped to certains events.
+ These actions include:
+\end_layout
+
+\begin_layout Description
+Blink An LED on the EVRs front panel will blink when the code is received.
+\end_layout
+
+\begin_layout Description
+Forward The received code will be immediately retransmits on the upstream
+ event link.
+\end_layout
+
+\begin_layout Description
+Stop
+\begin_inset space ~
+\end_inset
+
+Log Freeze the circular event log buffer.
+ An CPU interrupt will be raised which will cause the buffer to be downloaded.
+ This might be a useful action to map to a fault event.
+\end_layout
+
+\begin_layout Description
+Log Include this event code in the circular event log.
+\end_layout
+
+\begin_layout Description
+Heartbeat This event resets the heartbeat timeout timer.
+\end_layout
+
+\begin_layout Description
+Reset
+\begin_inset space ~
+\end_inset
+
+PS Resets the phase of all prescalers.
+\end_layout
+
+\begin_layout Description
+TS
+\begin_inset space ~
+\end_inset
+
+reset Transfers the seconds timestamp from the shift register and zeros
+ the sub-seconds part.
+\end_layout
+
+\begin_layout Description
+TS
+\begin_inset space ~
+\end_inset
+
+tick When the timestamp source is 'Mapped code' then any event with this
+ mapping will cause the sub-seconds part of the timestamp to increment.
+\end_layout
+
+\begin_layout Description
+Shift
+\begin_inset space ~
+\end_inset
+
+1 Shifts the current value of the seconds timestamp shift register up by
+ one bit and sets the low bit to 1.
+\end_layout
+
+\begin_layout Description
+Shift
+\begin_inset space ~
+\end_inset
+
+0 Shifts the current value of the seconds timestamp shift register up by
+ one bit and sets the low bit to 0.
+\end_layout
+
+\begin_layout Description
+FIFO Bypass the automatic allocation mechanism and always include this code
+ in the event FIFO.
+\end_layout
+
+\begin_layout Standard
+In the following example the front panel LED on the EVR will blink whenever
+ event 14 is received.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(longout, "$(P)map:blink") {
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( DTYP, "EVR Mapping" )
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( OUT , "@OBJ=$(OBJ), Func=Blink")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( PINI, "YES")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( VAL , "14")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( LOPR, "0")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field( HOPR, "255")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Database Events
+\end_layout
+
+\begin_layout Standard
+Special device support acting on global EVR objects.
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrevent.db
+\end_layout
+
+\begin_layout Standard
+A device support for the 'event' recordtype is provided which uses the Event
+ FIFO to record the arrival of certain interesting events.
+ When set to SCAN 'I/O Intr' the event record device support will process
+ the record causing the requested DB event.
+ Supports setting it timestamp from device support (set TSE to -2).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(longout, "$(P)$(N)") {
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(DTYP, "EVR")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(SCAN, "I/O Intr")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(INP , "@OBJ=$(OBJ), Code=$(CODE)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(VAL , "$(EVNT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(TSE , "-2") # from device support
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(FLNK, "$(P)$(N):count")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+record(calc, "$(P)$(N):count") {
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(SCAN, "Event")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(EVNT, "$(EVNT)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(CALC, "A+1")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(INPA, "$(P)$(N):count NPP")
+\end_layout
+
+\begin_layout Plain Layout
+
+	field(TSEL, "$(P)$(N).TIME")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example the hardware event code '$(CODE)' will cause the database
+ event '$(EVNT)'.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ that while both '$(CODE)' and '$(EVNT)' are numbers, they need not be the
+ same.
+ Hardware code 21 can cause DB event 40.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Rx
+\end_layout
+
+\begin_layout Standard
+Records associated with receiving variable length data messages.
+\end_layout
+
+\begin_layout Subsubsection
+Enable
+\end_layout
+
+\begin_layout Standard
+See: evrApp/Db/evrbase.db
+\end_layout
+
+\begin_layout Standard
+Object name $(OBJ):BUFRX
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Selects Event link data mode.
+ This chooses between DBus only (1) , and DBus+Buffer (0) modes.
+ In DBus only mode Data Buffer reception is not possible.
+\end_layout
+
+\begin_layout Subsubsection
+Data Rx
+\end_layout
+
+\begin_layout Standard
+See: evrMrmApp/Db/mrmevrbufrx.db
+\end_layout
+
+\begin_layout Standard
+Implemented for: waveform
+\end_layout
+
+\begin_layout Standard
+When a buffer with the given Protocol ID is received a copy is placed in
+ this record.
+ It is possible to have many records receiving the same Protocol ID.
+ Data is received as a byte array and interpreted according to FTVL.
+ For multi-byte types the transmission byte order is assumed to be big endian.
+ Data is truncated to a multiple of the element size.
+\end_layout
+
+\begin_layout Standard
+Many record (or other listeners) may register for the same Protocol ID.
+\end_layout
+
+\begin_layout Standard
+The special Protocol ID 0xff00 may be used to cause a listener to receive
+ messages destined for any ID.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ In order to avoid extra copy overhead this record bypasses the normal scanning
+ process.
+ It function like 
+\begin_inset Quotes eld
+\end_inset
+
+I/O Intr
+\begin_inset Quotes erd
+\end_inset
+
+, however the SCAN field should be left as 
+\begin_inset Quotes eld
+\end_inset
+
+Passive
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=dbd"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(waveform, "$(P)dbus:recv:u32")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DESC, "Recv Buffer") 
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "MRM EVR Buf Rx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Rx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FTVL, "ULONG")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(NELM, "2046")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Buffer Tx
+\end_layout
+
+\begin_layout Standard
+Records associated with sending variable length data messages.
+\end_layout
+
+\begin_layout Standard
+This section is shared between the EVR and EVG.
+\end_layout
+
+\begin_layout Subsubsection
+Outgoing Event Data Mode
+\end_layout
+
+\begin_layout Standard
+See: mrmShared/Db/databuftxCtrl.db
+\end_layout
+
+\begin_layout Standard
+Object name $(OBJ):BUFTX
+\end_layout
+
+\begin_layout Standard
+Type(s): bool
+\end_layout
+
+\begin_layout Standard
+Selects Event link data mode.
+ This chooses between DBus only (1), and DBus+Buffer (0) modes.
+ In DBus only mode Data Buffer transmission is not possible.
+\end_layout
+
+\begin_layout Subsubsection
+Data Tx
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:evr:data:tx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Special device support 
+\begin_inset Quotes eld
+\end_inset
+
+MRF Data Buf Tx
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+See: mrmShared/Db/databuftx.db
+\end_layout
+
+\begin_layout Standard
+This records sends a block of data with the given Protocol ID.
+ If FTVL specifies a multi-byte type then data will be converted to big
+ endian byte order for transmission.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record(waveform, "$(P)dbus:send:u32")
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DESC, "Send Buffer")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(DTYP, "MRF Data Buf Tx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(INP , "@C=$(C), Proto=$(PROTO), P=Data Tx")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(FTVL, "ULONG")
+\end_layout
+
+\begin_layout Plain Layout
+
+  field(NELM, "2046")
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

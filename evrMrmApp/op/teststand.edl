@@ -1,0 +1,316 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1327
+y 117
+w 170
+h 363
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "Test Stand"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 50
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "PMC EVR"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrmain.edl"
+}
+menuLabel {
+  0 "PMC EVR"
+}
+symbols {
+  0 "SYS=TST,D=evr:pmc1"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 85
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVR (1)"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrmain.edl"
+}
+menuLabel {
+  0 "VME EVR (1)"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "SYS=TST, D=evr:wiener"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 10
+y 12
+w 157
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing Test Stand"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 10
+y 275
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Status"
+numPvs 4
+numDsps 2
+displayFileName {
+  0 "ioc_stats.edl"
+  1 "save_restoreStatus_more"
+}
+menuLabel {
+  0 "Stats"
+  1 "autosave"
+}
+symbols {
+  0 "ioc=mrftest1,HOME=teststand.edl"
+  1 "P=mrftest:"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 120
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVR (2)"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrmain.edl"
+}
+menuLabel {
+  0 "VME EVR"
+}
+symbols {
+  0 "SYS=TST, D=evr:nova"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 155
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVG"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evgMain.edl"
+}
+menuLabel {
+  0 "VME EVG"
+}
+symbols {
+  0 "SYS=TST, D=evg:nova"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 5
+y 190
+w 160
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "VME EVR (3)"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evrmain.edl"
+}
+menuLabel {
+  0 "VME EVR"
+}
+symbols {
+  0 "P=evr4"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 10
+y 320
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Demo"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "sequencedemo.edl"
+}
+menuLabel {
+  0 "Demo"
+}
+symbols {
+  0 "SYS=TST, D=evr:3"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 85
+y 320
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Demo"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "sequencedemo.edl"
+}
+menuLabel {
+  0 "Demo"
+}
+symbols {
+  0 "SYS=TST, D=evr:wiener"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 85
+y 275
+w 70
+h 35
+fgColor index 14
+bgColor index 0
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-18.0"
+buttonLabel "Status"
+numPvs 4
+numDsps 2
+displayFileName {
+  0 "ioc_stats.edl"
+  1 "save_restoreStatus_more"
+}
+menuLabel {
+  0 "Stats"
+  1 "autosave"
+}
+symbols {
+  0 "ioc=mrftest2,HOME=teststand.edl"
+  1 "P=mrftest:"
+}
+endObjectProperties
+

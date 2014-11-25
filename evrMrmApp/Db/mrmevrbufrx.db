@@ -1,0 +1,19 @@
+
+record(waveform, "$(P)dbus:recv:s8") {
+  field(DESC, "Recv Buffer")
+  field(DTYP, "MRM EVR Buf Rx")
+  field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Rx")
+  field(FTVL, "CHAR")
+  field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
+}
+
+record(waveform, "$(P)dbus:recv:u32") {
+  field(DESC, "Recv Buffer")
+  field(DTYP, "MRM EVR Buf Rx")
+  field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Rx")
+  field(FTVL, "ULONG")
+  field(NELM, "2046")
+  info(autosaveFields_pass0, "INP")
+}
+
