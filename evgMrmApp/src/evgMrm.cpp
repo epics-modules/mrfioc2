@@ -96,8 +96,22 @@ m_softSeqMgr(this) {
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
         }
     
-        m_wdTimer = new wdTimer("Watch Dog Timer", this);
+        /*
+         * Swtiched order of creation for m_timerEvent and m_wdTimer.
+         *
+         * Reason:
+         * 		wdTimer thread that is started within wdTimer constructor
+         * 		access m_timerEvent. In certian configurations (PSI IFC1210 SBC +RT Linux)
+         * 		the wdTimer thread is executed sooner than m_timerEvent is created which
+         * 		leads to segementation fault.
+         *
+         * 	Changed by: tslejko
+         * 	Reason: Bug fix
+         *
+         */
+
         m_timerEvent = new epicsEvent();
+        m_wdTimer = new wdTimer("Watch Dog Timer", this);
 
         init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
                                             m_seqRamMgr.getSeqRam(0));
@@ -201,9 +215,16 @@ evgMrm::isr(void* arg) {
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
     
+//    printf("EVG Interrupt!:[enable:flag] 0x%x:0x%x\n",enable,flags);
+
+#ifndef __linux__
+    /* on RTEMS/vxWorks this skips extra work with a shared interrupt.
+     * on Linux this allows a race condtion which can leave interrupts disabled
+     */
     if(!active)
-        return;
-    
+      return;
+#endif
+
     if(active & EVG_IRQ_STOP_RAM(0)) {
         if(evg->irqStop0_queued==0) {
             callbackRequest(&evg->irqStop0_cb);
@@ -236,6 +257,17 @@ evgMrm::isr(void* arg) {
 
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
+
+	/**
+	 * On PCI veriant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
+	 * Interrupts must therfore be renabled here.
+	 * 
+	 * Change by: tslejko
+	 * Reason: cPCI support
+	 * Issues: possible issue/lower performance on VME variant. [on VME this is not needed]
+	 */
+    BITSET32(evg->m_pReg,IrqEnable,EVG_IRQ_ENABLE); //Renable EVG interrupt
+
     return;
 }
 

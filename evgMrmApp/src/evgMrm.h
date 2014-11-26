@@ -93,6 +93,9 @@ public:
     CALLBACK                      irqStop1_cb;
     CALLBACK                      irqExtInp_cb;
 
+#ifdef __linux__
+    void* isrLinuxPvt;
+#endif
     // flags for CB rate limiting
     unsigned char irqStop0_queued;
     unsigned char irqStop1_queued;

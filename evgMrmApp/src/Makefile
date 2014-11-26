@@ -74,7 +74,7 @@ evgMrm_DBD += base.dbd
 evgMrm_DBD += evgInit.dbd
 
 # Add all the support libraries needed by this IOC
-evgMrm_LIBS += evgmrm epicsvme mrmShared mrfCommon 
+evgMrm_LIBS += evgmrm epicsvme epicspci mrmShared mrfCommon 
 
 # evgMrm_registerRecordDeviceDriver.cpp derives from evgMrm.dbd
 evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp
