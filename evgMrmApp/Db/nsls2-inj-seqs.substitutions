@@ -2,6 +2,8 @@
 #  LN - Linac PV prefix
 #  BR - Booster PV prefix
 #  INJ- Injector (global) PV prefix
+#  SEQN - Sequencer for w/o beam sequence
+#  SEQB - Sequencer for all events sequence
 #  NELM - Element count of input
 #  NREP - Number of repetitions
 #  CYCLELEN - Number of ticks of the total cycle length.
@@ -19,35 +21,117 @@ file "nsls2-inj-calc.db"
 
 file "seq-repeater.db"
 {
-{P="\$(LN){Seq}", NELM="2048", NREP="10",
-    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
-{P="\$(BR){Seq:1Hz}", NELM="2048", NREP="1",
-    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
-{P="\$(BR){Seq:Stk}", NELM="2048", NREP="1",
-    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
-{P="\$(BR){Seq:2Hz}", NELM="2048", NREP="2",
-    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS", FLNK="\$(INJ){Seq:Out}Rep-Calc_" }
+# W/O Beam events (prefix 'N' on Seq instance)
+{P="\$(LN){Seq:N}", NELM="2048", NREP="10",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:N1Hz}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:NStk}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:N2Hz}", NELM="2048", NREP="2",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+# Beam events only (prefix 'B' on Seq instance)
+{P="\$(LN){Seq:B}", NELM="2048", NREP="10",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:B1Hz}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:BStk}", NELM="2048", NREP="1",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+{P="\$(BR){Seq:B2Hz}", NELM="2048", NREP="2",
+    CYCLELEN="$(INJ){$(EVG)}Div:1-RB MS" }
+# Fine delay "sequences" (one event only)
+{P="\$(INJ){Seq:F0}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F2}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F4}", NELM="1", NREP="1", CYCLELEN="100" }
+{P="\$(INJ){Seq:F6}", NELM="1", NREP="1", CYCLELEN="100" }
+}
+
+file "seq-plain.db"
+{
+# First turn Beam events (only w/ beam, but not shifted)
+{P="\$(INJ){Seq:FT}", NELM="1"}
+# ACMI trigger event sequence (masker allows timing testing modes)
+{P="\$(LN){Seq:ACMI}", NELM="10"}
+}
+
+file "seq-masker.db"
+{
+{N="\$(LN){Seq:ACMI}EvtCode-Calc_", NELM="10",
+ INCODE="\$(LN){Seq:ACMI}EvtCode-SP PP MS",
+ INMASK="\$(LN){ACMI}Mode-Sel.RVAL"
+}
 }
 
 file "seq-merger.db"
 {
-{P="\$(P)", N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
- TIMEA="\$(LN){Seq}Rep-Calc_.VALB MS PP",
- CODEA="\$(LN){Seq}Rep-Calc_.VALC MS PP",
- TIMEB="\$(BR){Seq:1Hz}Rep-Calc_.VALB MS PP",
- CODEB="\$(BR){Seq:1Hz}Rep-Calc_.VALC MS PP",
- TIMEC="\$(BR){Seq:Stk}Rep-Calc_.VALB MS PP",
- CODEC="\$(BR){Seq:Stk}Rep-Calc_.VALC MS PP",
- TIMED="\$(BR){Seq:2Hz}Rep-Calc_.VALB MS PP",
- CODED="\$(BR){Seq:2Hz}Rep-Calc_.VALC MS PP",
+# Pull together fine delays
+{N="\$(INJ){Seq:F}Rep-Calc_", NELM="1",
+ TIMEA="\$(INJ){Seq:F0}Rep-Calc_.VALB MS NPP",
+ CODEA="\$(INJ){Seq:F0}Rep-Calc_.VALC MS NPP",
+ TIMEB="\$(INJ){Seq:F2}Rep-Calc_.VALB MS NPP",
+ CODEB="\$(INJ){Seq:F2}Rep-Calc_.VALC MS NPP",
+ TIMEC="\$(INJ){Seq:F4}Rep-Calc_.VALB MS NPP",
+ CODEC="\$(INJ){Seq:F4}Rep-Calc_.VALC MS NPP",
+ TIMED="\$(INJ){Seq:F6}Rep-Calc_.VALB MS NPP",
+ CODED="\$(INJ){Seq:F6}Rep-Calc_.VALC MS NPP"
+}
+# W/O Beam events (prefix 'N' on Seq instance)
+{N="\$(INJ){Seq:NOut}Rep-Calc_", NELM="2048",
+ TIMEA="\$(LN){Seq:N}Rep-Calc_.VALB MS NPP",
+ CODEA="\$(LN){Seq:N}Rep-Calc_.VALC MS NPP",
+ TIMEB="\$(BR){Seq:N1Hz}Rep-Calc_.VALB MS NPP",
+ CODEB="\$(BR){Seq:N1Hz}Rep-Calc_.VALC MS NPP",
+ TIMEC="\$(BR){Seq:NStk}Rep-Calc_.VALB MS NPP",
+ CODEC="\$(BR){Seq:NStk}Rep-Calc_.VALC MS NPP",
+ TIMED="\$(BR){Seq:N2Hz}Rep-Calc_.VALB MS NPP",
+ CODED="\$(BR){Seq:N2Hz}Rep-Calc_.VALC MS NPP",
+ TIMEE="\$(INJ){Seq:F}Rep-Calc_.VALA MS NPP",
+ CODEE="\$(INJ){Seq:F}Rep-Calc_.VALB MS NPP",
+ TIMEF="\$(LN){Seq:ACMI}Timestamp-SP PP MS",
+ CODEF="\$(LN){Seq:ACMI}EvtCode-Calc_.VALA MS PP",
+ OUTTIME="\$(INJ){Seq:NOut}Shift-Calc_.B PP",
+ OUTCODE="\$(INJ){\$(EVG)-\$(SEQN)}EvtCode-SP PP",
+}
+# Beam events only (prefix 'B' on Seq instance)
+{N="\$(INJ){Seq:BOut}Rep-Calc_", NELM="2048",
+ TIMEA="\$(LN){Seq:B}Rep-Calc_.VALB MS NPP",
+ CODEA="\$(LN){Seq:B}Rep-Calc_.VALC MS NPP",
+ TIMEB="\$(BR){Seq:B1Hz}Rep-Calc_.VALB MS NPP",
+ CODEB="\$(BR){Seq:B1Hz}Rep-Calc_.VALC MS NPP",
+ TIMEC="\$(BR){Seq:BStk}Rep-Calc_.VALB MS NPP",
+ CODEC="\$(BR){Seq:BStk}Rep-Calc_.VALC MS NPP",
+ TIMED="\$(BR){Seq:B2Hz}Rep-Calc_.VALB MS NPP",
+ CODED="\$(BR){Seq:B2Hz}Rep-Calc_.VALC MS NPP",
+ # Results pulled by next
+}
+# All injector (shifted) events
+{N="\$(INJ){Seq:InjOut}Rep-Calc_", NELM="2048",
+ TIMEA="\$(INJ){Seq:NOut}Rep-Calc_.VALA MS NPP",
+ CODEA="\$(INJ){Seq:NOut}Rep-Calc_.VALB MS NPP",
+ TIMEB="\$(INJ){Seq:BOut}Rep-Calc_.VALA MS NPP",
+ CODEB="\$(INJ){Seq:BOut}Rep-Calc_.VALB MS NPP",
  OUTTIME="\$(INJ){Seq:Out}Shift-Calc_.B PP",
- OUTCODE="\$(INJ){\$(EVG)-\$(SEQ)}EvtCode-SP PP",
+ OUTCODE="\$(INJ){Seq:Out}Rep-Calc_.B PP"
+}
+# Merge injector and first turn events
+{N="\$(INJ){Seq:Out}Rep-Calc_", NELM="2048",
+ TIMEA="", # Pushed from Out shifter
+ CODEA="", # Pushed from previous
+ TIMEB="\$(INJ){Seq:FT}Timestamp-SP MS PP",
+ CODEB="\$(INJ){Seq:FT}EvtCode-SP MS PP",
+ OUTTIME="\$(INJ){\$(EVG)-\$(SEQB)}Timestamp-SP PP",
+ OUTCODE="\$(INJ){\$(EVG)-\$(SEQB)}EvtCode-SP PP",
 }
 }
 
 file "seq-shifter.db"
 {
+# Shift injector times
 {P="\$(P)", N="\$(INJ){Seq:Out}Shift-Calc_", NELM="2048",
- OUTTIME="\$(INJ){\$(EVG)-\$(SEQ)}Timestamp-SP PP",
+ OUTTIME="\$(INJ){Seq:Out}Rep-Calc_.A NPP MS",
+}
+# Shift injector w/o beam times
+{P="\$(P)", N="\$(INJ){Seq:NOut}Shift-Calc_", NELM="2048",
+ OUTTIME="\$(INJ){\$(EVG)-\$(SEQN)}Timestamp-SP PP",
 }
 }

@@ -4,24 +4,14 @@
 #! DBDEND
 
 
+# User Control
 record(mbboDirect, "$(LN){}Mode:Prmt-Sel") {
   field(DESC, "LN Permitted TS Modes")
-  field(FLNK, "$(LN){}Mode:Prmt-Calc_")
   field(ASG, "OPERATOR")
   field(DTYP, "Soft and restore")
-  field(NOBT, "5")
+  field(NOBT, "10")
+  field(FLNK, "$(INJ){}Mode-Calc_")
   info(autosaveFields_pass0, "VAL")
-}
-
-record(calcout, "$(LN){}Mode:Prmt-Calc_") {
-  field(FLNK, "$(INJ){}Mode-RB_")
-  field(CALC, "D:=A&(1<<(B-1));E:=D?B:0;D?C:0")
-  field(INPB, "$(LN){}Mode-Sel NPP MS")
-  field(OUT, "$(LN){Seq}Mask:Rep-SP PP")
-  field(IVOA, "Set output to IVOV")
-  field(IVOV, "0")
-  field(INPA, "$(LN){}Mode:Prmt-Sel NPP MS")
-  field(INPC, "$(LN){}Mode-Sel.RVAL")
 }
 
 # User Control
@@ -39,7 +29,7 @@ record(mbbo, "$(LN){}Mode-Sel") {
   field(FRST, "5 Hz")
   field(FVST, "10 Hz")
   field(ASG, "OPERATOR")
-  field(FLNK, "$(LN){}Mode:Prmt-Calc_")
+  field(FLNK, "$(INJ){}Mode-Calc_")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -54,46 +44,22 @@ record(mbbo, "$(BR){}Mode-Sel") {
   field(TWST, "Stack")
   field(THST, "2 Hz")
   field(ASG, "OPERATOR")
-  field(FLNK, "$(BR){}Mode:Prmt1-Calc_")
+  field(FLNK, "$(INJ){}Mode-Calc_")
   info(autosaveFields_pass0, "VAL")
 }
 
 # User Control
 record(mbboDirect, "$(BR){}Mode:Prmt-Sel") {
   field(DESC, "BR Permitted TS Modes")
-  field(FLNK, "$(BR){}Mode:Prmt1-Calc_")
   field(ASG, "OPERATOR")
-  field(NOBT, "3")
+  field(NOBT, "4")
   field(DTYP, "Soft and restore")
+  field(FLNK, "$(INJ){}Mode-Calc_")
   info(autosaveFields_pass0, "VAL")
-}
-
-# Extract BR 1Hz pattern mask
-record(calcout, "$(BR){}Mode:Prmt1-Calc_") {
-  field(FLNK, "$(BR){}Mode:PrmtS-Calc_")
-  field(CALC, "D:=A&(1<<(B-1));E:=D?B:0;D?C&1:0")
-  field(INPB, "$(BR){}Mode-Sel NPP MS")
-  field(OUT, "$(BR){Seq:1Hz}Mask:Rep-SP NPP")
-  field(IVOA, "Set output to IVOV")
-  field(IVOV, "0")
-  field(INPA, "$(BR){}Mode:Prmt-Sel NPP MS")
-  field(INPC, "$(BR){}Mode-Sel.RVAL")
-}
-
-record(calcout, "$(INJ){}Mode-RB_") {
-  field(FLNK, "$(INJ){}Mode-RB")
-  field(CALC, "(A&E)<<4|(D&3)<<2|(C&1)<<1|B&1")
-  field(INPA, "$(LN){Seq}Mask:Rep-SP NPP MS")
-  field(INPB, "$(BR){Seq:1Hz}Mask:Rep-SP NPP MS")
-  field(OUT, "$(INJ){}Mode:Allw1-Calc_.A PP MS")
-  field(INPC, "$(BR){Seq:Stk}Mask:Rep-SP NPP MS")
-  field(INPD, "$(BR){Seq:2Hz}Mask:Rep-SP NPP MS")
-  field(INPE, "0x3ff")
 }
 
 record(mbbiDirect, "$(INJ){}Mode-RB") {
   field(NOBT, "14")
-  field(INP, "$(INJ){}Mode-RB_ NPP MS")
 }
 
 # User Control
@@ -101,56 +67,34 @@ record(bo, "$(INJ){}Mode:Prmt-Sel") {
   field(ZNAM, "Allow any")
   field(ONAM, "Require BR Inject")
   field(ASG, "OPERATOR")
-  field(FLNK, "$(INJ){}Mode:Allw2-Calc_")
+  field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
-}
-
-# Compare against modes which allow BR injection
-record(calcout, "$(INJ){}Mode:Allw1-Calc_") {
-  field(FLNK, "$(INJ){}Mode:Allw-RB")
-  field(CALC, "(A==B)||(A==C)||(A==D)")
-  field(INPB, "0x11")
-  field(INPC, "0x32")
-  field(INPD, "0x21c")
-  field(OUT, "$(INJ){}Mode:Allw2-Calc_.A PP MS")
-}
-
-record(calcout, "$(INJ){}Mode:Allw2-Calc_") {
-  field(CALC, "B?A:1")
-  field(INPB, "$(INJ){}Mode:Prmt-Sel PP MS")
-  field(OUT, "$(INJ){}Mode:Prmt-RB.VAL PP MS")
-  field(IVOA, "Set output to IVOV")
-  field(IVOV, "0")
-  field(INPC, "$(INJ){}Bucket-SP NPP MS")
 }
 
 # User Control
 record(bo, "$(INJ){}Mode:Commit-Cmd") {
-  field(FLNK, "$(INJ){}Mode:Commit-Calc_")
+  field(FLNK, "$(INJ){}Mode:Commit-FO_")
   field(ZNAM, "Commit")
   field(ONAM, "Commit")
   field(ASG, "OPERATOR")
-}
-
-# Only allow commit operation if mode validation permits
-record(calcout, "$(INJ){}Mode:Commit-Calc_") {
-  field(CALC, "A")
-  field(INPA, "$(INJ){}Mode:Prmt-RB.VAL PP MS")
-  field(OUT, "$(INJ){}Mode:Commit-FO_.PROC")
-  field(OOPT, "When Non-zero")
-  field(DOPT, "Use OCAL")
-  field(OCAL, "1")
-  field(IVOA, "Don't drive outputs")
+  field(SDIS, "$(INJ){}Mode:Prmt-RB")
+  field(DISV, "0")
 }
 
 record(fanout, "$(INJ){}Mode:Commit-FO_") {
-  field(LNK1, "$(INJ){$(EVG)-$(SEQ)}Commit-Cmd.PROC")
-  field(LNK2, "$(INJ){}Mode-I")
-  field(LNK3, "$(INJ){}Mode:Allw-Sts")
-  field(LNK4, "$(BR){}Mode-Sts")
-  field(LNK5, "$(LN){}Mode-Sts")
+  field(LNK4, "$(INJ){$(EVG)-$(SEQN)}Commit-Cmd")
+  field(LNK5, "$(INJ){$(EVG)-$(SEQB)}Commit-Cmd")
   field(FLNK, "$(INJ){}Mode:Commit2-FO_")
+}
+
+record(fanout, "$(INJ){}Mode:Commit2-FO_") {
+  field(LNK1, "$(INJ){}Mode-I")
+  field(LNK2, "$(INJ){}Mode:Allw-Sts")
+  field(LNK3, "$(BR){}Mode-Sts")
+  field(LNK4, "$(LN){}Mode-Sts")
+  field(LNK5, "$(INJ){}BucketMod-I")
   field(LNK6, "$(INJ){}Bucket-I")
+  field(FLNK, "$(LN){ACMI}Mode-I")
 }
 
 record(mbbiDirect, "$(INJ){}Mode-I") {
@@ -184,7 +128,6 @@ record(mbbi, "$(LN){}Mode-Sts") {
 
 record(bi, "$(INJ){}Mode:Allw-RB") {
   field(DESC, "TS modes permits inject")
-  field(INP, "$(INJ){}Mode:Allw1-Calc_ NPP MS")
   field(ZSV, "MINOR")
   field(ZNAM, "BR Inj Denied")
   field(ONAM, "BR Inj Allowed")
@@ -209,37 +152,6 @@ record(fanout, "$(INJ){}Mode:Init-FO_") {
   field(LNK5, "$(INJ){}Bucket-SP PP")
 }
 
-record(fanout, "$(BR){}Mode:Prmt-FO_") {
-  field(LNK1, "$(BR){Seq:1Hz}Mask:Rep-SP")
-  field(LNK2, "$(BR){Seq:Stk}Mask:Rep-SP")
-  field(LNK3, "$(BR){Seq:2Hz}Mask:Rep-SP")
-  field(LNK4, "$(INJ){}Mode-RB_ ")
-}
-
-# Extract BR Stacked pattern mask
-record(calcout, "$(BR){}Mode:PrmtS-Calc_") {
-  field(FLNK, "$(BR){}Mode:Prmt2-Calc_")
-  field(CALC, "D:=A&(1<<(B-1));E:=D?B:0;D?(C>>1)&1:0")
-  field(INPB, "$(BR){}Mode-Sel NPP MS")
-  field(OUT, "$(BR){Seq:Stk}Mask:Rep-SP NPP")
-  field(IVOA, "Set output to IVOV")
-  field(IVOV, "0")
-  field(INPA, "$(BR){}Mode:Prmt-Sel NPP MS")
-  field(INPC, "$(BR){}Mode-Sel.RVAL")
-}
-
-# Extract BR 2Hz pattern mask
-record(calcout, "$(BR){}Mode:Prmt2-Calc_") {
-  field(FLNK, "$(BR){}Mode:Prmt-FO_")
-  field(CALC, "D:=A&(1<<(B-1));E:=D?B:0;D?(C>>2)&3:0")
-  field(INPB, "$(BR){}Mode-Sel NPP MS")
-  field(OUT, "$(BR){Seq:2Hz}Mask:Rep-SP NPP")
-  field(IVOA, "Set output to IVOV")
-  field(IVOV, "0")
-  field(INPA, "$(BR){}Mode:Prmt-Sel NPP MS")
-  field(INPC, "$(BR){}Mode-Sel.RVAL")
-}
-
 # User Control
 record(longout, "$(INJ){}Bucket-SP") {
   field(DESC, "Injection bucket")
@@ -254,17 +166,8 @@ record(longout, "$(INJ){}Bucket-SP") {
   field(LSV, "INVALID")
   field(IVOA, "Don't drive outputs")
   field(UDF, "0")
-  field(FLNK, "$(INJ){}Mode:Allw2-Calc_")
   info(autosaveFields_pass0, "VAL")
 }
-
-
-record(calcout, "$(INJ){}Bucket-Calc_") {
-  field(FLNK, "$(INJ){}BucketMod-RB")
-  field(CALC, "B:=A&3;FLOOR(A/4)")
-  field(OUT, "$(INJ){Seq:Out}Shift-Calc_.A PP")
-}
-
 
 record(longin, "$(INJ){}Bucket-I") {
   field(INP, "$(INJ){}Bucket-SP")
@@ -281,10 +184,6 @@ record(longin, "$(INJ){}BucketMod-RB") {
   field(LOPR, "0")
 }
 
-record(fanout, "$(INJ){}Mode:Commit2-FO_") {
-  field(LNK1, "$(INJ){}BucketMod-I")
-}
-
 record(longin, "$(INJ){}BucketMod-I") {
   field(DESC, "Bkt mod evt period")
   field(INP, "$(INJ){}BucketMod-RB")
@@ -293,108 +192,187 @@ record(longin, "$(INJ){}BucketMod-I") {
   field(LOPR, "0")
 }
 
+record(aSub, "$(INJ){}Mode-Calc_") {
+  field(FLNK, "$(INJ){}Mode:Prmt-Calc_")
+  field(SNAM, "NSLS2SeqMask")
+  field(INPA, "$(LN){}Mode-Sel.RVAL")
+  field(INPB, "$(BR){}Mode-Sel.RVAL")
+  field(INPC, "$(LN){}Mode:Prmt-Sel")
+  field(INPD, "$(BR){}Mode:Prmt-Sel")
+  field(FTA, "ULONG")
+  field(FTB, "ULONG")
+  field(FTC, "ULONG")
+  field(FTD, "ULONG")
+  field(OUTA, "$(INJ){}Mode:Allw-RB PP")
+  field(OUTB, "$(INJ){}Mode-RB PP")
+  field(OUTC, "$(LN){Seq}Mask:Rep-FOut_ PP")
+  field(OUTD, "$(BR){Seq:1Hz}Mask:Rep-FOut_ PP")
+  field(OUTE, "$(BR){Seq:2Hz}Mask:Rep-FOut_ PP")
+  field(OUTF, "$(BR){Seq:Stk}Mask:Rep-FOut_ PP")
+  field(FTVA, "ULONG")
+  field(FTVB, "ULONG")
+  field(FTVC, "ULONG")
+  field(FTVD, "ULONG")
+  field(FTVE, "ULONG")
+  field(FTVF, "ULONG")
+  field(OUTG, "INJ-TS{Seq}Mask:Rep-FOut_.PROC")
+}
+
+record(dfanout, "$(LN){Seq}Mask:Rep-FOut_") {
+  field(OUTA, "$(LN){Seq:N}Mask:Rep-SP PP MS")
+  field(OUTB, "$(LN){Seq:B}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(BR){Seq:1Hz}Mask:Rep-FOut_") {
+  field(OUTA, "$(BR){Seq:N1Hz}Mask:Rep-SP PP MS")
+  field(OUTB, "$(BR){Seq:B1Hz}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(BR){Seq:2Hz}Mask:Rep-FOut_") {
+  field(OUTA, "$(BR){Seq:N2Hz}Mask:Rep-SP PP MS")
+  field(OUTB, "$(BR){Seq:B2Hz}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(BR){Seq:Stk}Mask:Rep-FOut_") {
+  field(OUTA, "$(BR){Seq:NStk}Mask:Rep-SP PP MS")
+  field(OUTB, "$(BR){Seq:BStk}Mask:Rep-SP PP MS")
+}
+
+record(calcout, "$(INJ){}Mode:Prmt-Calc_") {
+  field(CALC, "A?B:1")
+  field(INPB, "$(INJ){}Mode:Allw-RB")
+  field(OUT, "$(INJ){}Mode:Prmt-RB PP")
+  field(INPA, "$(INJ){}Mode:Prmt-Sel")
+}
+
+record(calcout, "$(INJ){}Bucket-Calc_") {
+  field(FLNK, "$(INJ){}Bucket-FOut_")
+  field(CALC, "B:=A&3;C:=B+1;FLOOR(A/4)")
+  field(OUT, "$(INJ){}Bucket:0-FOut_.VAL")
+}
+
+record(fanout, "INJ-TS{Seq}Mask:Rep-FOut_") {
+  field(LNK1, "$(INJ){Seq:F}Rep-Calc_")
+  field(LNK2, "$(INJ){Seq:NOut}Rep-Calc_")
+  field(LNK3, "$(INJ){Seq:BOut}Rep-Calc_")
+  field(LNK4, "$(INJ){Seq:InjOut}Rep-Calc_")
+}
+
+record(fanout, "$(INJ){}Bucket-FOut_") {
+  field(LNK1, "$(INJ){}BucketMod-RB")
+  field(LNK2, "$(INJ){}Bucket:0-FOut_")
+  field(LNK3, "$(INJ){}Bucket:1-FOut_")
+  field(LNK4, "$(INJ){}Bucket:2-FOut_")
+  field(LNK5, "INJ-TS{Seq}Mask:Rep-FOut_")
+}
+
+record(dfanout, "$(INJ){}Bucket:1-FOut_") {
+  field(DESC, "Clear all four fine delays")
+  field(VAL, "0")
+  field(OUTA, "$(INJ){Seq:F0}Mask:Rep-SP PP MS")
+  field(OUTB, "$(INJ){Seq:F2}Mask:Rep-SP PP MS")
+  field(OUTC, "$(INJ){Seq:F4}Mask:Rep-SP PP MS")
+  field(OUTD, "$(INJ){Seq:F6}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(INJ){}Bucket:2-FOut_") {
+  field(DESC, "Set appropriate fine delay")
+  field(VAL, "1")
+  field(SELM, "Specified")
+  field(SELL, "$(INJ){}Bucket-Calc_.C")
+  field(OUTA, "$(INJ){Seq:F0}Mask:Rep-SP PP MS")
+  field(OUTB, "$(INJ){Seq:F2}Mask:Rep-SP PP MS")
+  field(OUTC, "$(INJ){Seq:F4}Mask:Rep-SP PP MS")
+  field(OUTD, "$(INJ){Seq:F6}Mask:Rep-SP PP MS")
+}
+
+record(dfanout, "$(INJ){}Bucket:0-FOut_") {
+  field(OUTA, "$(INJ){Seq:Out}Shift-Calc_.A")
+  field(OUTB, "$(INJ){Seq:NOut}Shift-Calc_.A")
+  field(DESC, "Apply coarse delay")
+}
+
+
+record(mbbo, "$(LN){ACMI}Mode-Sel") {
+  field(DESC, "ACMI Test Mode")
+  field(FLNK, "INJ-TS{Seq}Mask:Rep-FOut_")
+  field(ZRVL, "5")
+  field(ONVL, "7")
+  field(TWVL, "1")
+  field(THVL, "0")
+  field(ZRST, "Normal")
+  field(ONST, "Too High")
+  field(TWST, "Too Low")
+  field(THST, "Disable")
+  field(ASG, "OPERATOR")
+}
+
+record(mbbi, "$(LN){ACMI}Mode-I") {
+  field(DESC, "ACMI Test Mode")
+  field(INP, "$(LN){ACMI}Mode-Sel.VAL")
+  field(ZRVL, "5")
+  field(ONVL, "7")
+  field(TWVL, "1")
+  field(THVL, "0")
+  field(ZRST, "Normal")
+  field(ONST, "Too High")
+  field(TWST, "Too Low")
+  field(THST, "Disable")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(2500,3514,1.0)
+#! View(2460,3275,1.0)
 #! Record("$(LN){}Mode:Prmt-Sel",2620,1954,0,0,"$(LN){}Mode:Prmt-Sel")
-#! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,0,"$(LN){}Mode:Prmt-Sel.VAL")
+#! Field("$(LN){}Mode:Prmt-Sel.VAL",16777215,1,"$(LN){}Mode:Prmt-Sel.VAL")
 #! Field("$(LN){}Mode:Prmt-Sel.FLNK",16777215,1,"$(LN){}Mode:Prmt-Sel.FLNK")
-#! Link("$(LN){}Mode:Prmt-Sel.FLNK","$(LN){}Mode:Prmt-Calc_")
-#! Record("$(LN){}Mode:Prmt-Calc_",2660,2152,0,1,"$(LN){}Mode:Prmt-Calc_")
-#! Field("$(LN){}Mode:Prmt-Calc_.OUT",16777215,1,"$(LN){}Mode:Prmt-Calc_.OUT")
-#! Field("$(LN){}Mode:Prmt-Calc_.FLNK",16777215,1,"$(LN){}Mode:Prmt-Calc_.FLNK")
-#! Link("$(LN){}Mode:Prmt-Calc_.FLNK","$(INJ){}Mode-RB_")
-#! Field("$(LN){}Mode:Prmt-Calc_.INPA",16777215,0,"$(LN){}Mode:Prmt-Calc_.INPA")
-#! Link("$(LN){}Mode:Prmt-Calc_.INPA","$(LN){}Mode:Prmt-Sel.VAL")
-#! Field("$(LN){}Mode:Prmt-Calc_.INPB",16777215,0,"$(LN){}Mode:Prmt-Calc_.INPB")
-#! Link("$(LN){}Mode:Prmt-Calc_.INPB","$(LN){}Mode-Sel.VAL")
-#! Field("$(LN){}Mode:Prmt-Calc_.INPC",16777215,0,"$(LN){}Mode:Prmt-Calc_.INPC")
-#! Link("$(LN){}Mode:Prmt-Calc_.INPC","$(LN){}Mode-Sel.RVAL")
+#! Link("$(LN){}Mode:Prmt-Sel.FLNK","$(INJ){}Mode-Calc_")
 #! Record("$(LN){}Mode-Sel",2340,2089,0,0,"$(LN){}Mode-Sel")
-#! Field("$(LN){}Mode-Sel.VAL",16777215,1,"$(LN){}Mode-Sel.VAL")
+#! Field("$(LN){}Mode-Sel.VAL",16777215,0,"$(LN){}Mode-Sel.VAL")
+#! Field("$(LN){}Mode-Sel.FLNK",16777215,1,"$(LN){}Mode-Sel.FLNK")
+#! Link("$(LN){}Mode-Sel.FLNK","$(INJ){}Mode-Calc_")
 #! Field("$(LN){}Mode-Sel.RVAL",16777215,1,"$(LN){}Mode-Sel.RVAL")
-#! Field("$(LN){}Mode-Sel.FLNK",16777215,0,"$(LN){}Mode-Sel.FLNK")
-#! Link("$(LN){}Mode-Sel.FLNK","$(LN){}Mode-Sel/FLNK")
-#! Connector("$(LN){}Mode-Sel/FLNK","$(LN){}Mode:Prmt-Calc_",2520,2313,16777215,"",0)
 #! Record("$(BR){}Mode-Sel",2340,2645,0,0,"$(BR){}Mode-Sel")
-#! Field("$(BR){}Mode-Sel.VAL",16777215,1,"$(BR){}Mode-Sel.VAL")
+#! Field("$(BR){}Mode-Sel.VAL",16777215,0,"$(BR){}Mode-Sel.VAL")
+#! Field("$(BR){}Mode-Sel.FLNK",16777215,1,"$(BR){}Mode-Sel.FLNK")
+#! Link("$(BR){}Mode-Sel.FLNK","$(INJ){}Mode-Calc_")
 #! Field("$(BR){}Mode-Sel.RVAL",16777215,1,"$(BR){}Mode-Sel.RVAL")
-#! Field("$(BR){}Mode-Sel.FLNK",16777215,0,"$(BR){}Mode-Sel.FLNK")
-#! Link("$(BR){}Mode-Sel.FLNK","$(BR){}Mode-Sel/FLNK")
-#! Connector("$(BR){}Mode-Sel/FLNK","$(BR){}Mode:Prmt1-Calc_",2520,2853,16777215,"",0)
 #! Record("$(BR){}Mode:Prmt-Sel",2620,2514,0,0,"$(BR){}Mode:Prmt-Sel")
 #! Field("$(BR){}Mode:Prmt-Sel.VAL",16777215,1,"$(BR){}Mode:Prmt-Sel.VAL")
 #! Field("$(BR){}Mode:Prmt-Sel.FLNK",16777215,1,"$(BR){}Mode:Prmt-Sel.FLNK")
-#! Link("$(BR){}Mode:Prmt-Sel.FLNK","$(BR){}Mode:Prmt1-Calc_")
-#! Record("$(BR){}Mode:Prmt1-Calc_",2660,2732,0,1,"$(BR){}Mode:Prmt1-Calc_")
-#! Field("$(BR){}Mode:Prmt1-Calc_.OUT",16777215,1,"$(BR){}Mode:Prmt1-Calc_.OUT")
-#! Field("$(BR){}Mode:Prmt1-Calc_.FLNK",16777215,0,"$(BR){}Mode:Prmt1-Calc_.FLNK")
-#! Link("$(BR){}Mode:Prmt1-Calc_.FLNK","$(BR){}Mode:PrmtS-Calc_")
-#! Field("$(BR){}Mode:Prmt1-Calc_.INPA",16777215,0,"$(BR){}Mode:Prmt1-Calc_.INPA")
-#! Link("$(BR){}Mode:Prmt1-Calc_.INPA","$(BR){}Mode:Prmt-Sel.VAL")
-#! Field("$(BR){}Mode:Prmt1-Calc_.INPB",16777215,0,"$(BR){}Mode:Prmt1-Calc_.INPB")
-#! Link("$(BR){}Mode:Prmt1-Calc_.INPB","$(BR){}Mode-Sel.VAL")
-#! Field("$(BR){}Mode:Prmt1-Calc_.INPC",16777215,0,"$(BR){}Mode:Prmt1-Calc_.INPC")
-#! Link("$(BR){}Mode:Prmt1-Calc_.INPC","$(BR){}Mode-Sel.RVAL")
-#! Record("$(INJ){}Mode-RB_",3100,2352,0,1,"$(INJ){}Mode-RB_")
-#! Field("$(INJ){}Mode-RB_.INPA",16777215,0,"$(INJ){}Mode-RB_.INPA")
-#! Field("$(INJ){}Mode-RB_.INPB",16777215,0,"$(INJ){}Mode-RB_.INPB")
-#! Field("$(INJ){}Mode-RB_.INPC",16777215,1,"$(INJ){}Mode-RB_.INPC")
-#! Field("$(INJ){}Mode-RB_.INPD",16777215,1,"$(INJ){}Mode-RB_.INPD")
-#! Field("$(INJ){}Mode-RB_.VAL",16777215,0,"$(INJ){}Mode-RB_.VAL")
-#! Field("$(INJ){}Mode-RB_.OUT",16777215,1,"$(INJ){}Mode-RB_.OUT")
-#! Link("$(INJ){}Mode-RB_.OUT","$(INJ){}Mode:Allw1-Calc_.A")
-#! Field("$(INJ){}Mode-RB_.FLNK",16777215,0,"$(INJ){}Mode-RB_.FLNK")
-#! Link("$(INJ){}Mode-RB_.FLNK","$(INJ){}Mode-RB")
-#! Record("$(INJ){}Mode-RB",3100,2676,0,0,"$(INJ){}Mode-RB")
-#! Field("$(INJ){}Mode-RB.INP",16777215,0,"$(INJ){}Mode-RB.INP")
-#! Link("$(INJ){}Mode-RB.INP","$(INJ){}Mode-RB_.VAL")
+#! Link("$(BR){}Mode:Prmt-Sel.FLNK","$(INJ){}Mode-Calc_")
+#! Record("$(INJ){}Mode-RB",3340,2590,0,0,"$(INJ){}Mode-RB")
 #! Field("$(INJ){}Mode-RB.VAL",16777215,1,"$(INJ){}Mode-RB.VAL")
-#! Record("$(INJ){}Mode:Prmt-Sel",3760,2168,0,0,"$(INJ){}Mode:Prmt-Sel")
-#! Field("$(INJ){}Mode:Prmt-Sel.VAL",16777215,1,"$(INJ){}Mode:Prmt-Sel.VAL")
-#! Field("$(INJ){}Mode:Prmt-Sel.FLNK",16777215,0,"$(INJ){}Mode:Prmt-Sel.FLNK")
-#! Link("$(INJ){}Mode:Prmt-Sel.FLNK","$(INJ){}Mode:Allw2-Calc_")
-#! Record("$(INJ){}Mode:Allw1-Calc_",3440,2400,0,1,"$(INJ){}Mode:Allw1-Calc_")
-#! Field("$(INJ){}Mode:Allw1-Calc_.VAL",16777215,1,"$(INJ){}Mode:Allw1-Calc_.VAL")
-#! Field("$(INJ){}Mode:Allw1-Calc_.FLNK",16777215,0,"$(INJ){}Mode:Allw1-Calc_.FLNK")
-#! Link("$(INJ){}Mode:Allw1-Calc_.FLNK","$(INJ){}Mode:Allw-RB")
-#! Field("$(INJ){}Mode:Allw1-Calc_.A",16777215,0,"$(INJ){}Mode:Allw1-Calc_.A")
-#! Field("$(INJ){}Mode:Allw1-Calc_.OUT",16777215,1,"$(INJ){}Mode:Allw1-Calc_.OUT")
-#! Link("$(INJ){}Mode:Allw1-Calc_.OUT","$(INJ){}Mode:Allw2-Calc_.A")
-#! Record("$(INJ){}Mode:Allw2-Calc_",3740,2380,0,0,"$(INJ){}Mode:Allw2-Calc_")
-#! Field("$(INJ){}Mode:Allw2-Calc_.INPB",16777215,1,"$(INJ){}Mode:Allw2-Calc_.INPB")
-#! Link("$(INJ){}Mode:Allw2-Calc_.INPB","$(INJ){}Mode:Prmt-Sel.VAL")
-#! Field("$(INJ){}Mode:Allw2-Calc_.A",16777215,0,"$(INJ){}Mode:Allw2-Calc_.A")
-#! Field("$(INJ){}Mode:Allw2-Calc_.OUT",16777215,1,"$(INJ){}Mode:Allw2-Calc_.OUT")
-#! Link("$(INJ){}Mode:Allw2-Calc_.OUT","$(INJ){}Mode:Prmt-RB.VAL")
-#! Field("$(INJ){}Mode:Allw2-Calc_.INPC",16777215,0,"$(INJ){}Mode:Allw2-Calc_.INPC")
-#! Link("$(INJ){}Mode:Allw2-Calc_.INPC","$(INJ){}Bucket-SP.VAL")
-#! Record("$(INJ){}Mode:Commit-Cmd",3460,2768,0,0,"$(INJ){}Mode:Commit-Cmd")
-#! Field("$(INJ){}Mode:Commit-Cmd.FLNK",16777215,1,"$(INJ){}Mode:Commit-Cmd.FLNK")
-#! Link("$(INJ){}Mode:Commit-Cmd.FLNK","$(INJ){}Mode:Commit-Calc_")
-#! Record("$(INJ){}Mode:Commit-Calc_",3780,2806,0,0,"$(INJ){}Mode:Commit-Calc_")
-#! Field("$(INJ){}Mode:Commit-Calc_.INPA",16777215,0,"$(INJ){}Mode:Commit-Calc_.INPA")
-#! Link("$(INJ){}Mode:Commit-Calc_.INPA","$(INJ){}Mode:Prmt-RB.VAL")
-#! Field("$(INJ){}Mode:Commit-Calc_.OUT",16777215,1,"$(INJ){}Mode:Commit-Calc_.OUT")
-#! Link("$(INJ){}Mode:Commit-Calc_.OUT","$(INJ){}Mode:Commit-FO_.PROC")
-#! Record("$(INJ){}Mode:Commit-FO_",4060,3046,0,1,"$(INJ){}Mode:Commit-FO_")
-#! Field("$(INJ){}Mode:Commit-FO_.PROC",16777215,0,"$(INJ){}Mode:Commit-FO_.PROC")
-#! Field("$(INJ){}Mode:Commit-FO_.LNK1",16777215,1,"$(INJ){}Mode:Commit-FO_.LNK1")
-#! Field("$(INJ){}Mode:Commit-FO_.LNK2",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK2")
-#! Link("$(INJ){}Mode:Commit-FO_.LNK2","$(INJ){}Mode-I")
-#! Field("$(INJ){}Mode:Commit-FO_.LNK3",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK3")
-#! Link("$(INJ){}Mode:Commit-FO_.LNK3","$(INJ){}Mode:Allw-Sts")
+#! Record("$(INJ){}Mode:Prmt-Sel",3960,2128,0,0,"$(INJ){}Mode:Prmt-Sel")
+#! Field("$(INJ){}Mode:Prmt-Sel.VAL",16777215,0,"$(INJ){}Mode:Prmt-Sel.VAL")
+#! Record("$(INJ){}Mode:Commit-Cmd",4220,2680,0,0,"$(INJ){}Mode:Commit-Cmd")
+#! Field("$(INJ){}Mode:Commit-Cmd.SDIS",16777215,0,"$(INJ){}Mode:Commit-Cmd.SDIS")
+#! Link("$(INJ){}Mode:Commit-Cmd.SDIS","$(INJ){}Mode:Prmt-RB.VAL")
+#! Field("$(INJ){}Mode:Commit-Cmd.FLNK",16777215,0,"$(INJ){}Mode:Commit-Cmd.FLNK")
+#! Link("$(INJ){}Mode:Commit-Cmd.FLNK","$(INJ){}Mode:Commit-FO_")
+#! Record("$(INJ){}Mode:Commit-FO_",4060,3082,0,0,"$(INJ){}Mode:Commit-FO_")
 #! Field("$(INJ){}Mode:Commit-FO_.LNK4",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK4")
-#! Link("$(INJ){}Mode:Commit-FO_.LNK4","$(BR){}Mode-Sts")
 #! Field("$(INJ){}Mode:Commit-FO_.LNK5",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK5")
-#! Link("$(INJ){}Mode:Commit-FO_.LNK5","$(LN){}Mode-Sts")
-#! Field("$(INJ){}Mode:Commit-FO_.LNK6",16777215,0,"$(INJ){}Mode:Commit-FO_.LNK6")
-#! Link("$(INJ){}Mode:Commit-FO_.LNK6","$(INJ){}Bucket-I")
 #! Field("$(INJ){}Mode:Commit-FO_.FLNK",16777215,0,"$(INJ){}Mode:Commit-FO_.FLNK")
 #! Link("$(INJ){}Mode:Commit-FO_.FLNK","$(INJ){}Mode:Commit2-FO_")
-#! Record("$(INJ){}Mode-I",3620,3156,0,1,"$(INJ){}Mode-I")
+#! Record("$(INJ){}Mode:Commit2-FO_",4060,3426,0,0,"$(INJ){}Mode:Commit2-FO_")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK1",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK1")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK1","$(INJ){}Mode-I")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK2",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK2")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK2","$(INJ){}Mode:Allw-Sts")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK3",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK3")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK3","$(BR){}Mode-Sts")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK4",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK4")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK4","$(LN){}Mode-Sts")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK5",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK5")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK5","$(INJ){}BucketMod-I")
+#! Field("$(INJ){}Mode:Commit2-FO_.LNK6",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK6")
+#! Link("$(INJ){}Mode:Commit2-FO_.LNK6","$(INJ){}Bucket-I")
+#! Field("$(INJ){}Mode:Commit2-FO_.FLNK",16777215,1,"$(INJ){}Mode:Commit2-FO_.FLNK")
+#! Link("$(INJ){}Mode:Commit2-FO_.FLNK","$(LN){ACMI}Mode-I")
+#! Record("$(INJ){}Mode-I",3760,2836,0,1,"$(INJ){}Mode-I")
 #! Field("$(INJ){}Mode-I.INP",16777215,0,"$(INJ){}Mode-I.INP")
 #! Link("$(INJ){}Mode-I.INP","$(INJ){}Mode-RB.VAL")
-#! Record("$(INJ){}Mode:Prmt-RB",3780,2622,0,1,"$(INJ){}Mode:Prmt-RB")
+#! Record("$(INJ){}Mode:Prmt-RB",3760,2542,0,1,"$(INJ){}Mode:Prmt-RB")
 #! Field("$(INJ){}Mode:Prmt-RB.VAL",16777215,1,"$(INJ){}Mode:Prmt-RB.VAL")
 #! Record("$(BR){}Mode-Sts",2340,3054,0,1,"$(BR){}Mode-Sts")
 #! Field("$(BR){}Mode-Sts.INP",16777215,0,"$(BR){}Mode-Sts.INP")
@@ -403,12 +381,10 @@ record(longin, "$(INJ){}BucketMod-I") {
 #! Field("$(LN){}Mode-Sts.INP",16777215,0,"$(LN){}Mode-Sts.INP")
 #! Link("$(LN){}Mode-Sts.INP","$(LN){}Mode-Sts/INP")
 #! Connector("$(LN){}Mode-Sts/INP","$(LN){}Mode-Sel.VAL",2100,2920,16777215,"",0)
-#! Record("$(INJ){}Mode:Allw-RB",3420,2214,0,0,"$(INJ){}Mode:Allw-RB")
-#! Field("$(INJ){}Mode:Allw-RB.INP",16777215,1,"$(INJ){}Mode:Allw-RB.INP")
-#! Link("$(INJ){}Mode:Allw-RB.INP","$(INJ){}Mode:Allw1-Calc_.VAL")
+#! Record("$(INJ){}Mode:Allw-RB",3360,2428,0,0,"$(INJ){}Mode:Allw-RB")
 #! Field("$(INJ){}Mode:Allw-RB.VAL",16777215,1,"$(INJ){}Mode:Allw-RB.VAL")
-#! Record("$(INJ){}Mode:Allw-Sts",3380,2994,0,1,"$(INJ){}Mode:Allw-Sts")
-#! Field("$(INJ){}Mode:Allw-Sts.INP",16777215,1,"$(INJ){}Mode:Allw-Sts.INP")
+#! Record("$(INJ){}Mode:Allw-Sts",3740,3034,0,1,"$(INJ){}Mode:Allw-Sts")
+#! Field("$(INJ){}Mode:Allw-Sts.INP",16777215,0,"$(INJ){}Mode:Allw-Sts.INP")
 #! Link("$(INJ){}Mode:Allw-Sts.INP","$(INJ){}Mode:Allw-RB.VAL")
 #! Record("$(INJ){}Mode:Init-FO_",1620,1932,0,1,"$(INJ){}Mode:Init-FO_")
 #! Field("$(INJ){}Mode:Init-FO_.LNK1",16777215,1,"$(INJ){}Mode:Init-FO_.LNK1")
@@ -428,67 +404,133 @@ record(longin, "$(INJ){}BucketMod-I") {
 #! Connector("$(INJ){}Mode:Init-FO_/LNK1","$(INJ){}Mode:Init-FO_/LNK12",1920,2060,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK12","$(LN){}Mode:Prmt-Sel",2560,2020,16777215,"",0)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK6","$(INJ){}Mode:Init-FO_/LNK61",1860,2240,16777215,"",1)
-#! Connector("$(INJ){}Mode:Init-FO_/LNK61","$(INJ){}Mode:Commit-Cmd",3460,2700,16777215,"",0)
+#! Connector("$(INJ){}Mode:Init-FO_/LNK61","$(INJ){}Mode:Commit-Cmd",4180,2700,16777215,"",0)
+#! Connector("$(INJ){}Mode:Init-FO_/LNK5","$(INJ){}Bucket-SP",1900,2260,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK4","$(INJ){}Mode:Init-FO_/LNK41",1940,2280,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK41","$(BR){}Mode-Sel",2340,2580,16777215,"",0)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK31","$(INJ){}Mode:Init-FO_/LNK3",2000,2020,16777215,"",1)
 #! Connector("$(INJ){}Mode:Init-FO_/LNK3","$(LN){}Mode-Sel",2240,2220,16777215,"",0)
-#! Connector("$(INJ){}Mode:Init-FO_/LNK5","$(INJ){}Bucket-SP",1900,2260,16777215,"",1)
-#! Record("$(BR){}Mode:Prmt-FO_",3080,3348,0,1,"$(BR){}Mode:Prmt-FO_")
-#! Field("$(BR){}Mode:Prmt-FO_.LNK1",16777215,1,"$(BR){}Mode:Prmt-FO_.LNK1")
-#! Field("$(BR){}Mode:Prmt-FO_.LNK2",16777215,1,"$(BR){}Mode:Prmt-FO_.LNK2")
-#! Field("$(BR){}Mode:Prmt-FO_.LNK3",16777215,1,"$(BR){}Mode:Prmt-FO_.LNK3")
-#! Field("$(BR){}Mode:Prmt-FO_.LNK4",16777215,0,"$(BR){}Mode:Prmt-FO_.LNK4")
-#! Link("$(BR){}Mode:Prmt-FO_.LNK4","$(INJ){}Mode-RB_")
-#! Record("$(BR){}Mode:PrmtS-Calc_",2660,3112,0,0,"$(BR){}Mode:PrmtS-Calc_")
-#! Field("$(BR){}Mode:PrmtS-Calc_.FLNK",16777215,1,"$(BR){}Mode:PrmtS-Calc_.FLNK")
-#! Link("$(BR){}Mode:PrmtS-Calc_.FLNK","$(BR){}Mode:Prmt2-Calc_")
-#! Field("$(BR){}Mode:PrmtS-Calc_.INPB",16777215,0,"$(BR){}Mode:PrmtS-Calc_.INPB")
-#! Link("$(BR){}Mode:PrmtS-Calc_.INPB","$(BR){}Mode-Sel.VAL")
-#! Field("$(BR){}Mode:PrmtS-Calc_.OUT",16777215,1,"$(BR){}Mode:PrmtS-Calc_.OUT")
-#! Field("$(BR){}Mode:PrmtS-Calc_.INPA",16777215,0,"$(BR){}Mode:PrmtS-Calc_.INPA")
-#! Link("$(BR){}Mode:PrmtS-Calc_.INPA","$(BR){}Mode:Prmt-Sel.VAL")
-#! Field("$(BR){}Mode:PrmtS-Calc_.INPC",16777215,0,"$(BR){}Mode:PrmtS-Calc_.INPC")
-#! Link("$(BR){}Mode:PrmtS-Calc_.INPC","$(BR){}Mode-Sel.RVAL")
-#! Record("$(BR){}Mode:Prmt2-Calc_",2960,2852,0,0,"$(BR){}Mode:Prmt2-Calc_")
-#! Field("$(BR){}Mode:Prmt2-Calc_.INPB",16777215,0,"$(BR){}Mode:Prmt2-Calc_.INPB")
-#! Link("$(BR){}Mode:Prmt2-Calc_.INPB","$(BR){}Mode-Sel.VAL")
-#! Field("$(BR){}Mode:Prmt2-Calc_.OUT",16777215,1,"$(BR){}Mode:Prmt2-Calc_.OUT")
-#! Field("$(BR){}Mode:Prmt2-Calc_.INPA",16777215,0,"$(BR){}Mode:Prmt2-Calc_.INPA")
-#! Link("$(BR){}Mode:Prmt2-Calc_.INPA","$(BR){}Mode:Prmt-Sel.VAL")
-#! Field("$(BR){}Mode:Prmt2-Calc_.INPC",16777215,0,"$(BR){}Mode:Prmt2-Calc_.INPC")
-#! Link("$(BR){}Mode:Prmt2-Calc_.INPC","$(BR){}Mode-Sel.RVAL")
-#! Field("$(BR){}Mode:Prmt2-Calc_.FLNK",16777215,1,"$(BR){}Mode:Prmt2-Calc_.FLNK")
-#! Link("$(BR){}Mode:Prmt2-Calc_.FLNK","$(BR){}Mode:Prmt-FO_")
-#! Record("$(INJ){}Bucket-SP",2760,3643,0,0,"$(INJ){}Bucket-SP")
+#! Record("$(INJ){}Bucket-SP",2760,3657,0,0,"$(INJ){}Bucket-SP")
 #! Field("$(INJ){}Bucket-SP.VAL",16777215,1,"$(INJ){}Bucket-SP.VAL")
 #! Field("$(INJ){}Bucket-SP.OUT",16777215,1,"$(INJ){}Bucket-SP.OUT")
 #! Link("$(INJ){}Bucket-SP.OUT","$(INJ){}Bucket-Calc_.A")
-#! Field("$(INJ){}Bucket-SP.FLNK",16777215,1,"$(INJ){}Bucket-SP.FLNK")
-#! Link("$(INJ){}Bucket-SP.FLNK","$(INJ){}Mode:Allw2-Calc_")
-#! Record("$(INJ){}Bucket-Calc_",3160,3842,0,1,"$(INJ){}Bucket-Calc_")
-#! Field("$(INJ){}Bucket-Calc_.A",16777215,0,"$(INJ){}Bucket-Calc_.A")
-#! Field("$(INJ){}Bucket-Calc_.FLNK",16777215,0,"$(INJ){}Bucket-Calc_.FLNK")
-#! Link("$(INJ){}Bucket-Calc_.FLNK","$(INJ){}BucketMod-RB")
-#! Field("$(INJ){}Bucket-Calc_.OUT",16777215,1,"$(INJ){}Bucket-Calc_.OUT")
-#! Field("$(INJ){}Bucket-Calc_.B",16777215,0,"$(INJ){}Bucket-Calc_.B")
-#! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
-#! TextBox(TB5,3760,2120,3940,2160,0,"Dialog",24,1,16724787,"User Control",null)
-#! TextBox(TB4,2620,2480,2800,2520,0,"Dialog",24,1,16724787,"User Control",null)
-#! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
-#! TextBox(TB2,3460,2720,3640,2760,0,"Dialog",24,1,16724787,"User Control",null)
-#! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
 #! Record("$(INJ){}Bucket-I",3180,3628,0,1,"$(INJ){}Bucket-I")
 #! Field("$(INJ){}Bucket-I.INP",16777215,0,"$(INJ){}Bucket-I.INP")
 #! Link("$(INJ){}Bucket-I.INP","$(INJ){}Bucket-SP.VAL")
-#! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
 #! Record("$(INJ){}BucketMod-RB",2820,4014,0,1,"$(INJ){}BucketMod-RB")
 #! Field("$(INJ){}BucketMod-RB.INP",16777215,1,"$(INJ){}BucketMod-RB.INP")
 #! Link("$(INJ){}BucketMod-RB.INP","$(INJ){}Bucket-Calc_.B")
 #! Field("$(INJ){}BucketMod-RB.VAL",16777215,1,"$(INJ){}BucketMod-RB.VAL")
-#! Record("$(INJ){}Mode:Commit2-FO_",4060,3450,0,0,"$(INJ){}Mode:Commit2-FO_")
-#! Field("$(INJ){}Mode:Commit2-FO_.LNK1",16777215,0,"$(INJ){}Mode:Commit2-FO_.LNK1")
-#! Link("$(INJ){}Mode:Commit2-FO_.LNK1","$(INJ){}BucketMod-I")
-#! Record("$(INJ){}BucketMod-I",3200,4034,0,1,"$(INJ){}BucketMod-I")
+#! Record("$(INJ){}BucketMod-I",3180,4034,0,1,"$(INJ){}BucketMod-I")
 #! Field("$(INJ){}BucketMod-I.INP",16777215,0,"$(INJ){}BucketMod-I.INP")
 #! Link("$(INJ){}BucketMod-I.INP","$(INJ){}BucketMod-RB.VAL")
+#! Record("$(INJ){}Mode-Calc_",2940,2024,0,1,"$(INJ){}Mode-Calc_")
+#! Field("$(INJ){}Mode-Calc_.FLNK",16777215,1,"$(INJ){}Mode-Calc_.FLNK")
+#! Link("$(INJ){}Mode-Calc_.FLNK","$(INJ){}Mode:Prmt-Calc_")
+#! Field("$(INJ){}Mode-Calc_.INPA",16777215,0,"$(INJ){}Mode-Calc_.INPA")
+#! Link("$(INJ){}Mode-Calc_.INPA","$(LN){}Mode-Sel.RVAL")
+#! Field("$(INJ){}Mode-Calc_.INPB",16777215,0,"$(INJ){}Mode-Calc_.INPB")
+#! Link("$(INJ){}Mode-Calc_.INPB","$(BR){}Mode-Sel.RVAL")
+#! Field("$(INJ){}Mode-Calc_.INPC",16777215,0,"$(INJ){}Mode-Calc_.INPC")
+#! Link("$(INJ){}Mode-Calc_.INPC","$(LN){}Mode:Prmt-Sel.VAL")
+#! Field("$(INJ){}Mode-Calc_.INPD",16777215,0,"$(INJ){}Mode-Calc_.INPD")
+#! Link("$(INJ){}Mode-Calc_.INPD","$(BR){}Mode:Prmt-Sel.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTA",16777215,1,"$(INJ){}Mode-Calc_.OUTA")
+#! Link("$(INJ){}Mode-Calc_.OUTA","$(INJ){}Mode:Allw-RB.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTB",16777215,1,"$(INJ){}Mode-Calc_.OUTB")
+#! Link("$(INJ){}Mode-Calc_.OUTB","$(INJ){}Mode-RB.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTC",16777215,1,"$(INJ){}Mode-Calc_.OUTC")
+#! Link("$(INJ){}Mode-Calc_.OUTC","$(LN){Seq}Mask:Rep-FOut_.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTD",16777215,1,"$(INJ){}Mode-Calc_.OUTD")
+#! Link("$(INJ){}Mode-Calc_.OUTD","$(BR){Seq:1Hz}Mask:Rep-FOut_.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTE",16777215,1,"$(INJ){}Mode-Calc_.OUTE")
+#! Link("$(INJ){}Mode-Calc_.OUTE","$(BR){Seq:2Hz}Mask:Rep-FOut_.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTF",16777215,1,"$(INJ){}Mode-Calc_.OUTF")
+#! Link("$(INJ){}Mode-Calc_.OUTF","$(BR){Seq:Stk}Mask:Rep-FOut_.VAL")
+#! Field("$(INJ){}Mode-Calc_.OUTG",16777215,1,"$(INJ){}Mode-Calc_.OUTG")
+#! Link("$(INJ){}Mode-Calc_.OUTG","INJ-TS{Seq}Mask:Rep-FOut_.PROC")
+#! Record("$(LN){Seq}Mask:Rep-FOut_",3000,2656,0,1,"$(LN){Seq}Mask:Rep-FOut_")
+#! Field("$(LN){Seq}Mask:Rep-FOut_.VAL",16777215,1,"$(LN){Seq}Mask:Rep-FOut_.VAL")
+#! Field("$(LN){Seq}Mask:Rep-FOut_.OUTA",16777215,1,"$(LN){Seq}Mask:Rep-FOut_.OUTA")
+#! Field("$(LN){Seq}Mask:Rep-FOut_.OUTB",16777215,1,"$(LN){Seq}Mask:Rep-FOut_.OUTB")
+#! Record("$(BR){Seq:1Hz}Mask:Rep-FOut_",3000,2816,0,1,"$(BR){Seq:1Hz}Mask:Rep-FOut_")
+#! Field("$(BR){Seq:1Hz}Mask:Rep-FOut_.VAL",16777215,1,"$(BR){Seq:1Hz}Mask:Rep-FOut_.VAL")
+#! Field("$(BR){Seq:1Hz}Mask:Rep-FOut_.OUTA",16777215,1,"$(BR){Seq:1Hz}Mask:Rep-FOut_.OUTA")
+#! Field("$(BR){Seq:1Hz}Mask:Rep-FOut_.OUTB",16777215,1,"$(BR){Seq:1Hz}Mask:Rep-FOut_.OUTB")
+#! Record("$(BR){Seq:2Hz}Mask:Rep-FOut_",3000,2976,0,1,"$(BR){Seq:2Hz}Mask:Rep-FOut_")
+#! Field("$(BR){Seq:2Hz}Mask:Rep-FOut_.VAL",16777215,1,"$(BR){Seq:2Hz}Mask:Rep-FOut_.VAL")
+#! Field("$(BR){Seq:2Hz}Mask:Rep-FOut_.OUTA",16777215,1,"$(BR){Seq:2Hz}Mask:Rep-FOut_.OUTA")
+#! Field("$(BR){Seq:2Hz}Mask:Rep-FOut_.OUTB",16777215,1,"$(BR){Seq:2Hz}Mask:Rep-FOut_.OUTB")
+#! Record("$(BR){Seq:Stk}Mask:Rep-FOut_",3000,3136,0,1,"$(BR){Seq:Stk}Mask:Rep-FOut_")
+#! Field("$(BR){Seq:Stk}Mask:Rep-FOut_.VAL",16777215,1,"$(BR){Seq:Stk}Mask:Rep-FOut_.VAL")
+#! Field("$(BR){Seq:Stk}Mask:Rep-FOut_.OUTA",16777215,1,"$(BR){Seq:Stk}Mask:Rep-FOut_.OUTA")
+#! Field("$(BR){Seq:Stk}Mask:Rep-FOut_.OUTB",16777215,1,"$(BR){Seq:Stk}Mask:Rep-FOut_.OUTB")
+#! Record("$(INJ){}Mode:Prmt-Calc_",3680,2348,0,0,"$(INJ){}Mode:Prmt-Calc_")
+#! Field("$(INJ){}Mode:Prmt-Calc_.INPA",16777215,1,"$(INJ){}Mode:Prmt-Calc_.INPA")
+#! Link("$(INJ){}Mode:Prmt-Calc_.INPA","$(INJ){}Mode:Prmt-Sel.VAL")
+#! Field("$(INJ){}Mode:Prmt-Calc_.INPB",16777215,0,"$(INJ){}Mode:Prmt-Calc_.INPB")
+#! Link("$(INJ){}Mode:Prmt-Calc_.INPB","$(INJ){}Mode:Allw-RB.VAL")
+#! Field("$(INJ){}Mode:Prmt-Calc_.OUT",16777215,1,"$(INJ){}Mode:Prmt-Calc_.OUT")
+#! Link("$(INJ){}Mode:Prmt-Calc_.OUT","$(INJ){}Mode:Prmt-RB.VAL")
+#! Record("$(INJ){}Bucket-Calc_",3120,3822,0,1,"$(INJ){}Bucket-Calc_")
+#! Field("$(INJ){}Bucket-Calc_.A",16777215,0,"$(INJ){}Bucket-Calc_.A")
+#! Field("$(INJ){}Bucket-Calc_.FLNK",16777215,1,"$(INJ){}Bucket-Calc_.FLNK")
+#! Link("$(INJ){}Bucket-Calc_.FLNK","$(INJ){}Bucket-FOut_")
+#! Field("$(INJ){}Bucket-Calc_.B",16777215,0,"$(INJ){}Bucket-Calc_.B")
+#! Field("$(INJ){}Bucket-Calc_.OUT",16777215,1,"$(INJ){}Bucket-Calc_.OUT")
+#! Link("$(INJ){}Bucket-Calc_.OUT","$(INJ){}Bucket:0-FOut_.VAL")
+#! Field("$(INJ){}Bucket-Calc_.C",16777215,1,"$(INJ){}Bucket-Calc_.C")
+#! Record("INJ-TS{Seq}Mask:Rep-FOut_",3280,2848,0,1,"INJ-TS{Seq}Mask:Rep-FOut_")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK1",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK1")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK2",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK2")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.PROC",16777215,0,"INJ-TS{Seq}Mask:Rep-FOut_.PROC")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK3",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK3")
+#! Field("INJ-TS{Seq}Mask:Rep-FOut_.LNK4",16777215,1,"INJ-TS{Seq}Mask:Rep-FOut_.LNK4")
+#! Record("$(INJ){}Bucket-FOut_",3480,3754,0,0,"$(INJ){}Bucket-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK1",16777215,0,"$(INJ){}Bucket-FOut_.LNK1")
+#! Link("$(INJ){}Bucket-FOut_.LNK1","$(INJ){}Bucket-FOut_/LNK11")
+#! Field("$(INJ){}Bucket-FOut_.LNK2",16777215,1,"$(INJ){}Bucket-FOut_.LNK2")
+#! Link("$(INJ){}Bucket-FOut_.LNK2","$(INJ){}Bucket:0-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK3",16777215,1,"$(INJ){}Bucket-FOut_.LNK3")
+#! Link("$(INJ){}Bucket-FOut_.LNK3","$(INJ){}Bucket:1-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK4",16777215,1,"$(INJ){}Bucket-FOut_.LNK4")
+#! Link("$(INJ){}Bucket-FOut_.LNK4","$(INJ){}Bucket:2-FOut_")
+#! Field("$(INJ){}Bucket-FOut_.LNK5",16777215,1,"$(INJ){}Bucket-FOut_.LNK5")
+#! Link("$(INJ){}Bucket-FOut_.LNK5","$(INJ){}Bucket-FOut_/LNK51")
+#! Connector("$(INJ){}Bucket-FOut_/LNK51","$(INJ){}Bucket-FOut_/LNK5",3740,3845,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK5","INJ-TS{Seq}Mask:Rep-FOut_",3607,3720,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK11","$(INJ){}Bucket-FOut_/LNK1",3460,4065,16777215,"",0)
+#! Connector("$(INJ){}Bucket-FOut_/LNK1","$(INJ){}BucketMod-RB",3237,4240,16777215,"",0)
+#! Record("$(INJ){}Bucket:1-FOut_",3860,4040,0,0,"$(INJ){}Bucket:1-FOut_")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTB")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTC",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTC")
+#! Field("$(INJ){}Bucket:1-FOut_.OUTD",16777215,1,"$(INJ){}Bucket:1-FOut_.OUTD")
+#! Record("$(INJ){}Bucket:2-FOut_",3860,4272,0,0,"$(INJ){}Bucket:2-FOut_")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTB")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTC",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTC")
+#! Field("$(INJ){}Bucket:2-FOut_.OUTD",16777215,1,"$(INJ){}Bucket:2-FOut_.OUTD")
+#! Field("$(INJ){}Bucket:2-FOut_.SELL",16777215,0,"$(INJ){}Bucket:2-FOut_.SELL")
+#! Link("$(INJ){}Bucket:2-FOut_.SELL","$(INJ){}Bucket-Calc_.C")
+#! Record("$(INJ){}Bucket:0-FOut_",3860,3862,0,0,"$(INJ){}Bucket:0-FOut_")
+#! Field("$(INJ){}Bucket:0-FOut_.VAL",16777215,0,"$(INJ){}Bucket:0-FOut_.VAL")
+#! Field("$(INJ){}Bucket:0-FOut_.OUTA",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTA")
+#! Field("$(INJ){}Bucket:0-FOut_.OUTB",16777215,1,"$(INJ){}Bucket:0-FOut_.OUTB")
+#! TextBox(TB0,2340,2040,2520,2080,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB7,4240,4200,4420,4240,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB6,2760,3600,2940,3640,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB5,3940,2080,4120,2120,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB4,2620,2460,2800,2500,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB3,2620,1900,2800,1940,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB2,4220,2640,4400,2680,0,"Dialog",24,1,16724787,"User Control",null)
+#! TextBox(TB1,2340,2600,2520,2640,0,"Dialog",24,1,16724787,"User Control",null)
+#! Record("$(LN){ACMI}Mode-Sel",4260,4211,0,1,"$(LN){ACMI}Mode-Sel")
+#! Field("$(LN){ACMI}Mode-Sel.FLNK",16777215,0,"$(LN){ACMI}Mode-Sel.FLNK")
+#! Link("$(LN){ACMI}Mode-Sel.FLNK","$(INJ){ACMI}Mode-Sel/FLNK")
+#! Connector("$(INJ){ACMI}Mode-Sel/FLNK","$(INJ){ACMI}Mode-Sel/FLNK1",4060,4075,16777215,"",0)
+#! Connector("$(INJ){ACMI}Mode-Sel/FLNK1","INJ-TS{Seq}Mask:Rep-FOut_",3767,3720,16777215,"",0)
+#! Field("$(LN){ACMI}Mode-Sel.VAL",16777215,0,"$(LN){ACMI}Mode-Sel.VAL")
+#! Record("$(LN){ACMI}Mode-I",4520,3872,0,0,"$(LN){ACMI}Mode-I")
+#! Field("$(LN){ACMI}Mode-I.INP",16777215,0,"$(LN){ACMI}Mode-I.INP")
+#! Link("$(LN){ACMI}Mode-I.INP","$(LN){ACMI}Mode-Sel.VAL")
