@@ -115,6 +115,7 @@ public:
     void finishSync();
     void commitSoftSeq();
 
+    void process_sos();
     void process_eos();
 
     void incNumOfRuns();
@@ -125,6 +126,7 @@ public:
 
     IOSCANPVT                  ioscanpvt;
     IOSCANPVT                  ioScanPvtErr;
+    IOSCANPVT                  iostartscan;
     IOSCANPVT                  iorunscan;
     epicsMutex                 m_lock;
 

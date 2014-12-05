@@ -238,6 +238,18 @@ evgSeqRam::isAllocated() const {
 }
 
 void
+evgSeqRam::process_sos() {
+    evgSoftSeq* softSeq = getSoftSeq();
+    if(!softSeq)
+        return;
+    epicsGuard<epicsMutex> g(softSeq->m_lock);
+    if(softSeq->getSeqRam()!=this)
+        return;
+
+    softSeq->process_sos();
+}
+
+void
 evgSeqRam::process_eos() {
     evgSoftSeq* softSeq = getSoftSeq();
     if(!softSeq)

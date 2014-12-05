@@ -66,6 +66,7 @@ device( bi, VME_IO, devBiEvgCommitStatus, "EVG COMMIT STATUS")
 
 device( stringin, VME_IO, devSiErr,          "EVG SEQ ERR")
 device( longin,   VME_IO, devLiNumOfRuns,    "EVG NUM OF RUNS")
+device( bi,       VME_IO, devbiStartOfSeq,   "EVG START OF SEQ")
 device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")
 
 

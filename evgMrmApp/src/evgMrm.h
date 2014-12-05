@@ -67,6 +67,8 @@ public:
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
     static void process_eos0_cb(CALLBACK*);
     static void process_eos1_cb(CALLBACK*);
+    static void process_sos0_cb(CALLBACK*);
+    static void process_sos1_cb(CALLBACK*);
     static void process_inp_cb(CALLBACK*);
 
     /** TimeStamp    **/
@@ -91,6 +93,8 @@ public:
 
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
+    CALLBACK                      irqStart0_cb;
+    CALLBACK                      irqStart1_cb;
     CALLBACK                      irqExtInp_cb;
 
 #ifdef __linux__
@@ -99,6 +103,8 @@ public:
     // flags for CB rate limiting
     unsigned char irqStop0_queued;
     unsigned char irqStop1_queued;
+    unsigned char irqStart0_queued;
+    unsigned char irqStart1_queued;
     unsigned char irqExtInp_queued;
 
     IOSCANPVT                     ioScanTimestamp;

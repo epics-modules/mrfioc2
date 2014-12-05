@@ -485,6 +485,11 @@ evgSoftSeq::commitSoftSeq() {
         fprintf(stderr, "SS%u: Commit complete, need sync\n",m_id);
 }
 
+void
+evgSoftSeq::process_sos()
+{
+    scanIoRequest(iostartscan);
+}
 
 void
 evgSoftSeq::process_eos()

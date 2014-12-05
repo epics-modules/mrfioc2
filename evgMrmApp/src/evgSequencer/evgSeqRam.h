@@ -47,6 +47,7 @@ public:
     bool isRunning() const;
     bool isAllocated() const;
 
+    void process_sos();
     void process_eos();
 
     evgSoftSeq* getSoftSeq();

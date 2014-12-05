@@ -8,3 +8,7 @@ lib
 envPaths
 html
 rtf
+
+.project
+.cproject
+.settings

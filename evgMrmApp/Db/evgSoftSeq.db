@@ -384,6 +384,13 @@ record(longin, "$(P)NumOfRuns-I") {
     field( SCAN, "I/O Intr")
 }
 
+record(bi, "$(P)StartOfSeq-I") {
+    field( DTYP, "EVG START OF SEQ")
+    field( DESC, "Start of sequence")
+    field( INP,  "#C S$(seqNum) @$(EVG)")
+    field( SCAN, "I/O Intr")
+}
+
 #
 #Process Load-Cmd record if the sequence  was perviously in LOADED state
 #

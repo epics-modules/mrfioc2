@@ -113,6 +113,10 @@ m_softSeqMgr(this) {
         m_timerEvent = new epicsEvent();
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
 
+        init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
+                                            m_seqRamMgr.getSeqRam(0));
+        init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
+                                            m_seqRamMgr.getSeqRam(1));
         init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
                                             m_seqRamMgr.getSeqRam(0));
         init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
@@ -245,6 +249,26 @@ evgMrm::isr(void* arg) {
         }
     }
 
+    if(active & EVG_IRQ_START_RAM(0)) {
+        if(evg->irqStart0_queued==0) {
+            callbackRequest(&evg->irqStart0_cb);
+            evg->irqStart0_queued=1;
+        } else if(evg->irqStart0_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(0));
+            evg->irqStart0_queued=2;
+        }
+    }
+
+    if(active & EVG_IRQ_START_RAM(1)) {
+        if(evg->irqStart1_queued==0) {
+            callbackRequest(&evg->irqStart1_cb);
+            evg->irqStart1_queued=1;
+        } else if(evg->irqStart1_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(1));
+            evg->irqStart1_queued=2;
+        }
+    }
+
     if(active & EVG_IRQ_EXT_INP) {
         if(evg->irqExtInp_queued==0) {
             callbackRequest(&evg->irqExtInp_cb);
@@ -309,6 +333,46 @@ evgMrm::process_eos1_cb(CALLBACK *pCallback) {
     }
 
     seqRam->process_eos();
+}
+
+void
+evgMrm::process_sos0_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStop0_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(0));
+        seqRam->m_owner->irqStop0_queued=0;
+    }
+
+    seqRam->process_sos();
+}
+
+void
+evgMrm::process_sos1_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStop1_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(1));
+        seqRam->m_owner->irqStop1_queued=0;
+    }
+
+    seqRam->process_sos();
 }
 
 void

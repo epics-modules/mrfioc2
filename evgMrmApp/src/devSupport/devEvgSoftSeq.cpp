@@ -205,6 +205,32 @@ get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     return 0;
 }
 
+static long
+get_ioint_info_startSeq(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+    evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
+    if(!seq) {
+        return -1;
+    }
+
+    *ppvt = seq->iostartscan;
+    return 0;
+}
+
+/**
+ * This is the read function for the start of sequence device support.
+ * There is no reasonable data to read so we set the value arbitrarily.
+ */
+static long
+read_bi_startSeq(biRecord* pbi) {
+    evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+    if(!seq) {
+        throw std::runtime_error("Device pvt field not initialized");
+    }
+
+    pbi->rval = 0;
+    return 0;
+}
+
 /*returns: (-1,0)=>(failure,success)*/
 static long
 write_bo_timestampInpMode(boRecord* pbo) {
@@ -1204,6 +1230,16 @@ common_dset devSiErr = {
     (DEVSUPFUN)read_si_err,
 };
 epicsExportAddress(dset, devSiErr);
+
+common_dset devbiStartOfSeq = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bi,
+    (DEVSUPFUN)get_ioint_info_startSeq,
+    (DEVSUPFUN)read_bi_startSeq,
+};
+epicsExportAddress(dset, devbiStartOfSeq);
 
 common_dset devLiNumOfRuns = {
     5,
