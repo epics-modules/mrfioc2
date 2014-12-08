@@ -39,6 +39,7 @@ m_numOfRuns(0) {
     scanIoInit(&ioscanpvt);
     scanIoInit(&ioScanPvtErr);
     scanIoInit(&iorunscan);
+    scanIoInit(&iostartscan);
 }
 
 const epicsUInt32

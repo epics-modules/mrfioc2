@@ -198,6 +198,7 @@ static long
 get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
+        errlogPrintf("Device pvt field not initialized\n");
         return -1;
     }
 
@@ -209,6 +210,7 @@ static long
 get_ioint_info_startSeq(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
+        errlogPrintf("Device pvt field not initialized\n");
         return -1;
     }
 
