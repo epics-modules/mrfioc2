@@ -896,6 +896,33 @@ EVRMRM::enableIRQ(void)
     epicsInterruptUnlock(key);
 }
 
+void
+EVRMRM::isr_pci(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    // ?
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(arg);
+
+    // ?
+}
+
+void
+EVRMRM::isr_vme(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    if(!active)
+        return;
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(arg);
+
+    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
+        printf("Failed to re-enable interrupt.  Stuck...\n");
+    }
+}
+
 // A place to write to which will keep the read
 // at the end of the ISR from being optimized out.
 // This value should never be used anywhere else.
@@ -909,14 +936,6 @@ EVRMRM::isr(void *arg)
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     epicsUInt32 active=flags&evr->shadowIRQEna;
-
-#ifndef __linux__
-    /* on RTEMS/vxWorks this skips extra work with a shared interrupt.
-     * on Linux this allows a race condtion which can leave interrupts disabled
-     */
-    if(!active)
-      return;
-#endif
 
     if(active&IRQ_RXErr){
         evr->count_recv_error++;
@@ -958,12 +977,6 @@ EVRMRM::isr(void *arg)
     WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
-
-#ifdef __linux__
-    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
-        printf("Failed to re-enable interrupt.  Stuck...\n");
-    }
-#endif
 }
 
 

@@ -64,6 +64,8 @@ public:
 
     /**    Interrupt and Callback    **/
     static void isr(void*);
+    static void isr_pci(void*);
+    static void isr_vme(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
     static void process_eos0_cb(CALLBACK*);
     static void process_eos1_cb(CALLBACK*);

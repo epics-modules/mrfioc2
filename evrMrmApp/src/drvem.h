@@ -187,6 +187,8 @@ public:
     void enableIRQ(void);
 
     static void isr(void*);
+    static void isr_vme(void*);
+    static void isr_pci(void*);
 #ifdef __linux__
     const void *isrLinuxPvt;
 #endif

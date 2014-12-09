@@ -212,6 +212,39 @@ evgMrm::resetMxc(bool reset) {
 }
 
 void
+evgMrm::isr_pci(void* arg) {
+    evgMrm *evg = (evgMrm*)(arg);
+
+    // Call to the generic implementation
+    evg->isr(arg);
+
+    /**
+     * On PCI veriant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
+     * Interrupts must therfore be renabled here.
+     *
+     * Change by: tslejko
+     * Reason: cPCI support
+     * Issues: possible issue/lower performance on VME variant. [on VME this is not needed]
+     */
+    BITSET32(evg->m_pReg,IrqEnable,EVG_IRQ_ENABLE); //Renable EVG interrupt
+}
+
+void
+evgMrm::isr_vme(void* arg) {
+    evgMrm *evg = (evgMrm*)(arg);
+
+    epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
+    epicsUInt32 active = flags & enable;
+
+    // This skips extra work with a shared interrupt.
+    if(!active)
+      return;
+
+    // Call to the generic implementation
+    evg->isr(arg);
+}
+
+void
 evgMrm::isr(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
 
@@ -220,14 +253,6 @@ evgMrm::isr(void* arg) {
     epicsUInt32 active = flags & enable;
     
 //    printf("EVG Interrupt!:[enable:flag] 0x%x:0x%x\n",enable,flags);
-
-#ifndef __linux__
-    /* on RTEMS/vxWorks this skips extra work with a shared interrupt.
-     * on Linux this allows a race condtion which can leave interrupts disabled
-     */
-    if(!active)
-      return;
-#endif
 
     if(active & EVG_IRQ_STOP_RAM(0)) {
         if(evg->irqStop0_queued==0) {
@@ -281,16 +306,6 @@ evgMrm::isr(void* arg) {
 
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
-
-	/**
-	 * On PCI veriant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
-	 * Interrupts must therfore be renabled here.
-	 * 
-	 * Change by: tslejko
-	 * Reason: cPCI support
-	 * Issues: possible issue/lower performance on VME variant. [on VME this is not needed]
-	 */
-    BITSET32(evg->m_pReg,IrqEnable,EVG_IRQ_ENABLE); //Renable EVG interrupt
 
     return;
 }
