@@ -351,7 +351,7 @@ mrmEvgSetupPCI (
 		//			At this point in time we do not have any BE PCI systems at hand so this is left as
 		//			unsported until we HW to test it on...
 
-		uint32_t plxCtrl = LE_READ32(BAR_plx,LAS0BRD);
+		epicsUInt32 plxCtrl = LE_READ32(BAR_plx,LAS0BRD);
 		plxCtrl = plxCtrl & ~LAS0BRD_ENDIAN;
 		LE_WRITE32(BAR_plx,LAS0BRD,plxCtrl);
 

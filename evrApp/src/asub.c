@@ -32,7 +32,6 @@
  *@param OUTA The output sequence
  *@type OUTA DOUBLE
  */
-static
 long gen_timeline(aSubRecord *prec)
 {
     double x0, dx;
@@ -95,7 +94,6 @@ long gen_timeline(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
-static
 long gen_delaygen(aSubRecord *prec)
 {
     double delay, width, egupertick;
@@ -180,7 +178,6 @@ long gen_delaygen(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
-static
 long gen_bitarraygen(aSubRecord *prec)
 {
     epicsEnum16 *intype=&prec->fta;
@@ -226,7 +223,6 @@ long gen_bitarraygen(aSubRecord *prec)
     return 0;
 }
 
-static
 long gun_bunchTrain(aSubRecord *prec)
 {
     if (prec->fta != menuFtypeULONG) {
