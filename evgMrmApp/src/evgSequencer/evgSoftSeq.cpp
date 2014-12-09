@@ -334,10 +334,13 @@ evgSoftSeq::abort(bool callBack) {
              * Satisfy any callback request pending on irqStop0 or irqStop1
              * recList. As no 'End of sequence' Intrrupt will be generated. 
              */
-        if(m_seqRam->getId() == 0)
+        if(m_seqRam->getId() == 0) {
             callbackRequest(&m_owner->irqStop0_cb);
-        else
+            callbackRequest(&m_owner->irqStart0_cb);
+        } else {
             callbackRequest(&m_owner->irqStop1_cb);
+            callbackRequest(&m_owner->irqStart1_cb);
+        }
     }
 }
 

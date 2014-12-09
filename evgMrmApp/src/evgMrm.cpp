@@ -31,6 +31,8 @@ evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
 mrf::ObjectInst<evgMrm>(id),
 irqStop0_queued(0),
 irqStop1_queued(0),
+irqStart0_queued(0),
+irqStart1_queued(0),
 irqExtInp_queued(0),
 m_syncTimestamp(false),
 m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
