@@ -362,9 +362,9 @@ evgMrm::process_sos0_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStop0_queued==2)
+        if(seqRam->m_owner->irqStart0_queued==2)
             BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(0));
-        seqRam->m_owner->irqStop0_queued=0;
+        seqRam->m_owner->irqStart0_queued=0;
     }
 
     seqRam->process_sos();
@@ -382,9 +382,9 @@ evgMrm::process_sos1_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStop1_queued==2)
+        if(seqRam->m_owner->irqStart1_queued==2)
             BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(1));
-        seqRam->m_owner->irqStop1_queued=0;
+        seqRam->m_owner->irqStart1_queued=0;
     }
 
     seqRam->process_sos();

@@ -245,7 +245,7 @@ mrmEvgSetupVME (
             vme_level_mask |= 1 << ((irqLevel&0x7)-1);
     
             /*Connect Interrupt handler to vector*/
-            if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+            if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr_vme, evg)){
                 errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n"
                                                          ,irqVector&0xff);
                 delete evg;
@@ -382,7 +382,7 @@ mrmEvgSetupPCI (
 #endif
 
 		/*Connect Interrupt handler to isr thread*/
-		if (devPCIConnectInterrupt(cur, &evgMrm::isr, (void*) evg, 0)) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+		if (devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0)) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
 			errlogPrintf("ERROR:Failed to connect PCI interrupt\n");
 			delete evg;
 			return -1;

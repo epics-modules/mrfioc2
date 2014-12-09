@@ -350,7 +350,7 @@ try {
     receiver->isrLinuxPvt = (void*)cur;
 #endif
 
-    if(devPCIConnectInterrupt(cur, &EVRMRM::isr, arg, 0)){
+    if(devPCIConnectInterrupt(cur, &EVRMRM::isr_pci, arg, 0)){
         printf("Failed to install ISR\n");
         delete receiver;
     }else{
@@ -552,7 +552,7 @@ try {
         // VME IRQ level will be enabled later during iocInit()
         vme_level_mask|=1<<(level-1);
 
-        if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
+        if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr_vme, receiver))
         {
             printf("Failed to connection VME IRQ %d\n",vector&0xff);
             delete receiver;
