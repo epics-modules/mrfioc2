@@ -234,6 +234,7 @@ evgMrm::isr_vme(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
 
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
+    epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
 
     // This skips extra work with a shared interrupt.

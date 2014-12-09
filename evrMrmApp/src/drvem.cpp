@@ -912,6 +912,9 @@ void
 EVRMRM::isr_vme(void *arg) {
     EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
+    epicsUInt32 flags=READ32(evr->base, IRQFlag);
+    epicsUInt32 active=flags&evr->shadowIRQEna;
+
     if(!active)
         return;
 
