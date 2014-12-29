@@ -900,12 +900,12 @@ void
 EVRMRM::isr_pci(void *arg) {
     EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
-    // ?
-
     // Calling the default platform-independent interrupt routine
     evr->isr(arg);
 
-    // ?
+    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
+        printf("Failed to re-enable interrupt.  Stuck...\n");
+    }
 }
 
 void
@@ -920,10 +920,6 @@ EVRMRM::isr_vme(void *arg) {
 
     // Calling the default platform-independent interrupt routine
     evr->isr(arg);
-
-    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
-        printf("Failed to re-enable interrupt.  Stuck...\n");
-    }
 }
 
 // A place to write to which will keep the read

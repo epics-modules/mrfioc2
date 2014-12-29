@@ -226,7 +226,6 @@ evgMrm::isr_pci(void* arg) {
      *
      * Change by: tslejko
      * Reason: cPCI support
-     * Issues: possible issue/lower performance on VME variant. [on VME this is not needed]
      */
     BITSET32(evg->m_pReg,IrqEnable,EVG_IRQ_ENABLE); //Renable EVG interrupt
 }
