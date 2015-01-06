@@ -98,8 +98,9 @@
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <epicsMMIO.h>           /* OS-dependent synchronous I/O routines                          */
+#include <epicsMMIO.h>           /* OS-dependent synchronous I/O routines                         */
 #include <mrfBitOps.h>          /* Generic bit operations                                         */
+#include <endian.h>
 
 /**************************************************************************************************/
 /*                            Macros For Accessing MRF Timing Modules                             */
@@ -167,7 +168,7 @@
 /*---------------------
  * Synchronous Read Operations
  */
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#if __BYTE_ORDER__ == __BIG_ENDIAN
 #define NAT_READ8(base,offset)  \
         ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
 #else
@@ -187,7 +188,7 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 		nat_read8_addrFlip  ((epicsUInt8 *)(base) + U8_  ## offset)
 #endif
 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#if __BYTE_ORDER__ == __BIG_ENDIAN
 #define NAT_READ16(base,offset) \
         nat_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
 #else
@@ -210,7 +211,7 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
 /*---------------------
  * Synchronous Write Operations
  */
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#if __BYTE_ORDER__ == __BIG_ENDIAN
 #define NAT_WRITE8(base,offset,value) \
         iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #else
@@ -230,7 +231,7 @@ INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
 		nat_write8_addrFlip  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #endif
 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#if __BYTE_ORDER__ == __BIG_ENDIAN
 #define NAT_WRITE16(base,offset,value) \
         nat_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #else
