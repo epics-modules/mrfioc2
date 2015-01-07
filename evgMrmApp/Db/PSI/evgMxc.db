@@ -1,0 +1,80 @@
+record(bi, "$(P)Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(P)Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(P)Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(P)Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(OBJ), PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(P)Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(P)Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(P)Prescaler-RB")
+}
+
+record(longout, "$(P)Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(OBJ), PROP=Prescaler")
+    field( PINI, "YES")
+    field( VAL,  "124920")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( FLNK, "$(P)Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(P)Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( FLNK, "$(SYS):$(D)-ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(P)EvtClkFreq-RB_") {
+    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(P)Frequency-RB")
+}

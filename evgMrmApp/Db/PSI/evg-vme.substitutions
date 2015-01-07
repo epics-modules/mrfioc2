@@ -59,3 +59,15 @@ pattern { P, OBJ, EVG, trigEvtNum }
 { "$(SYS):$(EVG)-TrigEvt-6-", "$(EVG):TrigEvt6", $(EVG), 6 }
 { "$(SYS):$(EVG)-TrigEvt-7-", "$(EVG):TrigEvt7", $(EVG), 7 }
 }
+
+file evgMxc.db {
+pattern { P, OBJ, SYS, D }
+{ "$(SYS):$(EVG)-Mxc-0-", "$(EVG):Mxc0", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-1-", "$(EVG):Mxc1", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-2-", "$(EVG):Mxc2", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-3-", "$(EVG):Mxc3", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-4-", "$(EVG):Mxc4", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-5-", "$(EVG):Mxc5", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-6-", "$(EVG):Mxc6", $(SYS), $(EVG) }
+{ "$(SYS):$(EVG)-Mxc-7-", "$(EVG):Mxc7", $(SYS), $(EVG) }
+}
