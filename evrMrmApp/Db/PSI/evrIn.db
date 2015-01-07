@@ -1,0 +1,150 @@
+# Record set for an EVR's physical input
+#
+# Macros-
+#  IN = record name prefix
+#  OBJ = devObj name
+#  DESC = Physical label found on output jack
+
+record(bo, "$(IN)Lvl-Sel") {
+  field( DTYP, "Obj Prop bool")
+  field( DESC, "Input $(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Active Level")
+  field( PINI, "YES")
+  field( VAL , "1")
+  field( ZNAM, "Active Low")
+  field( ONAM, "Active High")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(IN)Edge-Sel") {
+  field( DTYP, "Obj Prop bool")
+  field( OUT , "@OBJ=$(OBJ), PROP=Active Edge")
+  field( PINI, "YES")
+  field( VAL , "1")
+  field( ZNAM, "Active Falling")
+  field( ONAM, "Active Rising")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(IN)Trig-Ext-Sel") {
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=External Mode")
+  field( PINI, "YES")
+  field( ZRST, "Off")
+  field( ONST, "Level")
+  field( TWST, "Edge")
+  field( ZRVL, 0)
+  field( ONVL, 1)
+  field( TWVL, 2)
+  field( THSV, "INVALID")
+  field( FRSV, "INVALID")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(IN)Code-Ext-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( OUT , "@OBJ=$(OBJ), PROP=External Code")
+  field( PINI, "YES")
+  field( LOPR, "0")
+  field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(IN)Trig-Back-Sel") {
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")
+  field( PINI, "YES")
+  field( ZRST, "Off")
+  field( ONST, "Level")
+  field( TWST, "Edge")
+  field( ZRVL, 0)
+  field( ONVL, 1)
+  field( TWVL, 2)
+  field( THSV, "INVALID")
+  field( FRSV, "INVALID")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(IN)Code-Back-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Code")
+  field( PINI, "YES")
+  field( LOPR, "0")
+  field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(IN)DBus-Sel") {
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=DBus Mask")
+  field( PINI, "YES")
+  field( ZRST, "Bit 0")
+  field( ONST, "Bit 1")
+  field( TWST, "Bit 2")
+  field( THST, "Bit 3")
+  field( FRST, "Bit 4")
+  field( FVST, "Bit 5")
+  field( SXST, "Bit 6")
+  field( SVST, "Bit 7")
+  field( ZRVL, 0x1)
+  field( ONVL, 0x2)
+  field( TWVL, 0x4)
+  field( THVL, 0x8)
+  field( FRVL, 0x10)
+  field( FVVL, 0x20)
+  field( SXVL, 0x40)
+  field( SVVL, 0x80)
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+  info(autosaveFields_pass0, "VAL")
+}
+
+
+# Place for user provided note of what is
+# connected to this input.
+record(waveform, "$(IN)User-SP") {
+  field( DESC, "Desc. of user or purpose")
+  field( FTVL, "CHAR")
+  field( NELM, "128")
+  field( NORD, "1") # default include null termination
+  info(autosaveFields_pass1, "VAL")
+}

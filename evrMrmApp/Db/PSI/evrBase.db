@@ -1,0 +1,286 @@
+# Base record set for an EVR
+#
+# Macros-
+#  P = record name prefix
+#  OBJ = devObj name
+#  EVNT1HZ = DB event number for the 1 second tick
+
+record(bo, "$(P)Ena-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field(DESC, "Master enable for EVR device")
+  field(MASK, "1")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)Cnt-LinkTimo-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=HB Timeout Count")
+  field(SCAN, "I/O Intr")
+  field(DESC, "# of heartbeat timeout")
+}
+
+record(bo, "$(P)ExtInhib-Sel") {
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=External Inhibit")
+  field(PINI, "YES")
+  field(DESC, "Use HW trigger inhibit (EVRTG only)")
+  field(MASK, "1")
+  field(ZNAM, "Use Inhibit")
+  field(ONAM, "Always Permit")
+  field(OSV, "MINOR")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)Link-Sts") {
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=Link Status")
+  field(DESC, "Status of event link")
+  field(SCAN, "1 second")
+  field(ZNAM, "Fail")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")
+  field(FLNK, "$(P)Cnt-RxErr-I")
+}
+
+record(longin, "$(P)Cnt-RxErr-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Receive Error Count")
+  field(INP , "@OBJ=$(OBJ), PROP=Receive Error Count")
+  field(DESC, "Rx error count")
+  field(TSEL, "$(P)Link-Sts.TIME")
+  field(FLNK, "$(P)Cnt-HwOflw-I")
+}
+
+record(longin, "$(P)Cnt-HwOflw-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "FIFO Hw Overflow Count")
+  field(INP , "@OBJ=$(OBJ), PROP=FIFO Overflow Count")
+  field(TSEL, "$(P)Cnt-RxErr-I.TIME")
+  field(FLNK, "$(P)Cnt-SwOflw-I")
+}
+
+record(longin, "$(P)Cnt-SwOflw-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "FIFO Sw Overrate Count")
+  field(INP , "@OBJ=$(OBJ), PROP=FIFO Over rate")
+  field(TSEL, "$(P)Cnt-RxErr-I.TIME")
+  field(FLNK, "$(P)Link-Init-FO_")
+}
+
+# Detect the first time the event link
+# is online.  Then set master enable.
+record(calcout, "$(P)Link-Init-FO_") {
+  field(DESC, "Detect initial link up")
+  field(INPA, "$(P)Link-Sts")
+  field(CALC, "A")
+  field(OUT , "$(P)Ena-Sel PP")
+  field(OOPT, "Transition To Non-zero")
+  field(ODLY, "1.0")
+  field(TSEL, "$(P)Link-Sts.TIME")
+}
+
+record(ao, "$(P)Link-Clk-SP") {
+  field(DTYP, "Obj Prop double")
+  field(OUT , "@OBJ=$(OBJ), PROP=Clock")
+  field(PINI, "YES")
+  field(DESC, "Event Link speed")
+  field(VAL , "124.916")
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e-6")
+  field(HOPR, "150")
+  field(LOPR, "50")
+  field(DRVH, "150")
+  field(DRVL, "50")
+  field(PREC, "3")
+  field(FLNK, "$(P)Link-Clk-I")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
+}
+
+record(ai, "$(P)Link-Clk-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Clock")
+  field(DESC, "Event Link speed")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e-6")
+  field(PREC, "3")
+  field(FLNK, "$(P)Link-ClkErr-I")
+  info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
+}
+
+record(calc, "$(P)Link-ClkErr-I") {
+  field(CALC, "(A-B)*1000")
+  field(EGU , "KHz")
+  field(PREC, "3")
+  field(INPA, "$(P)Link-Clk-SP")
+  field(INPB, "$(P)Link-Clk-I")
+  field(TSEL, "$(P)Link-Clk-I.TIME")
+  field(FLNK, "$(P)Link-ClkPeriod-I")
+  info(autosaveFields_pass0, "EGU CALC PREC")
+}
+
+# Intended for use in calculations
+record(calc, "$(P)Link-ClkPeriod-I") {
+  field(DESC, "Event period")
+  field(CALC, "B/A")
+  field(EGU , "s")
+  field(PREC, "3")
+  field(INPA, "$(P)Link-Clk-SP")
+  field(INPB, "$(P)Link-Clk-SP.ESLO")
+  field(TSEL, "$(P)Link-Clk-I.TIME")
+}
+
+record(bi, "$(P)Pll-Sts") {
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=PLL Lock Status")
+  field(SCAN, "1 second")
+  field(PINI, "YES")
+  field(DESC, "Status of PLL")
+  field(ZNAM, "Error")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")
+}
+
+record(longin, "$(P)HwType-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Model")
+  field(PINI, "YES")
+  field(DESC, "Hardware type code")
+}
+
+record(longin, "$(P)FwVer-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Version")
+  field(PINI, "YES")
+  field(DESC, "Firmware version")
+}
+
+record(stringin, "$(P)SwVer-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
+  field(PINI, "YES")
+  field(DESC, "Software version")
+}
+
+record(stringin, "$(P)Pos-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=Position")
+  field(PINI, "YES")
+  field(DESC, "Card position in system")
+}
+
+record(fanout, "$(P)Time-Init-FO_") {
+  field(PINI, "YES")
+  field(LNK1, "$(P)Time-Clock-SP")
+  field(LNK2, "$(P)Time-Src-Sel")
+}
+
+record(bi, "$(P)Time-Valid-Sts") {
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=Timestamp Valid")
+  field(PINI, "YES")
+  field(SCAN, "I/O Intr")
+  field(ZSV , "MAJOR")
+  field(ZNAM, "Invalid")
+  field(ONAM, "Valid")
+}
+
+record(mbbo, "$(P)Time-Src-Sel") {
+  field( DTYP, "Raw Soft Channel")
+  field( OUT , "$(P)Time-Src-Sel_")
+  field( PINI, "YES")
+  field( ZRST, "Event clock")
+  field( ONST, "Mapped code(s)")
+  field( TWST, "DBus 4")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( THSV, "INVALID")
+  field( FRSV, "INVALID")
+  field( FVSV, "INVALID")
+  field( SXSV, "INVALID")
+  field( SVSV, "INVALID")
+  field( EISV, "INVALID")
+  field( NISV, "INVALID")
+  field( TESV, "INVALID")
+  field( ELSV, "INVALID")
+  field( TVSV, "INVALID")
+  field( TTSV, "INVALID")
+  field( FTSV, "INVALID")
+  field( FFSV, "INVALID")
+  field( UNSV, "INVALID")
+  field( IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)Time-Src-Sel_")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(P)Time-Src-Sel_") {
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Source")
+  field(FLNK, "$(P)Time-Clock-I")
+}
+
+record(ao, "$(P)Time-Clock-SP") {
+  field(DTYP, "Obj Prop double")
+  field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Clock")
+  field(DESC, "Timestamp tick rate")
+  field(VAL , "0.0")
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e-6")
+  field(HOPR, "150")
+  field(LOPR, "0")
+  field(DRVH, "150")
+  field(DRVL, "0")
+  field(PREC, "3")
+  field(FLNK, "$(P)Time-Clock-I")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
+}
+
+record(ai, "$(P)Time-Clock-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Timestamp Clock")
+  field(SCAN, "1 second")
+  field(DESC, "Timestamp tick rate")
+  field(PINI, "YES")
+  field(UDF , "0")
+  field(EGU , "MHz")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e-6")
+  field(HOPR, "150")
+  field(LOPR, "0")
+  field(PREC, "3")
+  field(FLNK, "$(P)Time-Div-I")
+}
+
+record(longin, "$(P)Time-Div-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Timestamp Prescaler")
+  field(DESC, "Timestamp divider")
+}
+
+record(stringin, "$(P)Time-I") {
+  field(DTYP, "EVR Timestamp")
+  field(INP , "@OBJ=$(OBJ)")
+  field(SCAN, "Event")
+  field(EVNT, "$(EVNT1HZ)")
+  field(TSE , "125")
+}
+
+record(bo, "$(P)Link-RxMode-Sel") {
+  field(DESC, "Downstream data mode")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ)-BUFRX, PROP=Enable")
+  field(PINI, "YES")
+  field(VAL , "1")
+  field(ZNAM, "DBus only")
+  field(ONAM, "DBus+Buffer")
+  info(autosaveFields_pass0, "VAL")
+}
+

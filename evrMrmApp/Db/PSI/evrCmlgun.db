@@ -1,0 +1,39 @@
+# Extra properties for cPCI-EVRTG-300
+# in addition to evrcml.db
+#
+# Macros:
+#  ON = output record name prefix
+#  OBJ = devObj name
+
+record(ao, "$(ON)Delay-SP") {
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(OBJ), PROP=Fine Delay")
+    field(PINI, "YES")
+    field(LINR, "LINEAR")
+    field(ESLO, "9216") # 1024 steps of 9ps
+    field( EGU, "ps")
+    field( VAL, "0.0")
+    field( UDF, "0")
+    field(HOPR, "9216")
+    field(LOPR, "0")
+    field(DRVH, "9216")
+    field(DRVL, "0")
+    field(FLNK, "$(ON)Delay-RB")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(ON)Delay-RB") {
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=Fine Delay")
+    field(PINI, "YES")
+    field(LINR, "LINEAR")
+    field(ESLO, "9216")
+    field( EGU, "ps")
+    field( VAL, "0.0")
+    field( UDF, "0")
+    field(HOPR, "9216")
+    field(LOPR, "0")
+    info(autosaveFields_pass0, "VAL")
+}
+
+

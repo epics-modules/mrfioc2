@@ -1,0 +1,28 @@
+# Mapping between hardware event code and a software database event
+#
+# Macros:
+#  EN = record name prefix
+#  OBJ = EVR devObj name
+#  CODE = Event code (hardware)
+#  EVNT = Database event code (software)
+#
+
+# EVT  - Timing hardware event code
+# ENUM - EPICS DB event number
+record(longout, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP") {
+  field(DTYP, "EVR Event")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(EVR,undefined),Code=$(CODE,recursive)")
+  field(VAL , "$(EVNT,recursive)")
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I")
+  info(autosaveFields_pass0, "OUT VAL")
+}
+
+record(calc, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I") {
+  field(SDIS, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP")
+  field(DISV, "0")
+  field(CALC, "A+1")
+  field(INPA, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I NPP")
+  field(TSEL, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP.TIME")
+}

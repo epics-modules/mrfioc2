@@ -1,0 +1,31 @@
+# Record set for an EVR's programable frequency divider
+#
+# Macros:
+#  SN = scaler record name prefix
+#  P  = base record name prefix
+#  OBJ = devObj name
+#  IDX = ID # corresponding to output mapping codes
+#  MAX = Maximum division
+
+record(longout, "$(SN)Div-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Divide")
+  field( PINI, "YES")
+  field( VAL , "2")
+  field( HOPR, "$(MAX=0xffff)")
+  field( LOPR, "2")
+  field( DRVH, "$(MAX=0xffff)")
+  field( DRVL, "2")
+  field( FLNK, "$(SN)Rate-I")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(calc, "$(SN)Rate-I") {
+  field(DESC, "Output frequency")
+  field(INPA, "$(SN)Div-SP NPP")
+  field(INPB, "$(P)Link-Clk-I CP")
+  field(CALC, "B/A")
+  field(EGU, "MHz")
+  field(PREC, "2")
+}
