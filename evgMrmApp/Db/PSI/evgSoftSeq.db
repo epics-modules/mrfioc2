@@ -1,26 +1,26 @@
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsInpMode-Sel") {
     field( DTYP, "EVG SEQ INPUT MODE")
     field( DESC, "EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "EGU")
     field( ONAM, "TICKS")
     field( FLNK, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsInpMode-RB")
-    info(autosaveFields_pass0, "VAL")
+    info(autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsInpMode-RB") {
     field( DTYP, "EVG SEQ INPUT MODE")
     field( DESC, "EVG Sequence Input Mode")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( ZNAM, "EGU")
     field( ONAM, "TICKS")
 }
 
 record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsResolution-Sel") {
     field( DTYP, "EVG SEQ TS RES")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( ZRST, "Sec")
     field( ONST, "mSec")
     field( TWST, "uSec")
@@ -44,12 +44,12 @@ record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsRe
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
     field( FLNK, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsResolution-RB")
-    info(autosaveFields_pass0, "VAL")
+    info(autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsResolution-RB") {
     field( DTYP, "EVG SEQ TS RES")
-    field( INP , "#C S0 @$(EVG,recursive)")
+    field( INP , "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( ZRST, "Sec")
     field( ONST, "mSec")
     field( TWST, "uSec")
@@ -76,7 +76,7 @@ record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TsRe
 record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-EvtCode-SP") {
     field( DTYP, "EVG SEQ EVENT CODE")
     field( DESC, "Sequence event code array")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( NELM, "$(NELM,recursive)")
     field( FTVL, "UCHAR")
     info( autosaveFields_pass1, "VAL")
@@ -85,7 +85,7 @@ record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-
 record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-EvtCode-RB") {
     field( DTYP, "EVG SEQ EVENT CODE RB")
     field( DESC, "Sequence event code readback")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM,recursive)")
     field( FTVL, "UCHAR")
@@ -94,7 +94,7 @@ record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-
 record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Timestamp-SP") {
     field( DTYP, "EVG SEQ TIMESTAMP")
     field( DESC, "Sequence timestamp array")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( NELM, "$(NELM,recursive)")
     field( FTVL, "DOUBLE")
     info( autosaveFields_pass1, "VAL")
@@ -103,7 +103,7 @@ record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-
 record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Timestamp-RB") {
     field( DTYP, "EVG SEQ TIMESTAMP RB")
     field( DESC, "Sequence timestamp readback")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM,recursive)")
     field( FTVL, "DOUBLE")
@@ -111,7 +111,7 @@ record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-
 
 record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-RunMode-Sel") {
     field( DTYP, "EVG SEQ RUN MODE")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( UDF,  "0")
     field( ZRST, "Normal")
     field( ONST, "Automatic")
@@ -131,12 +131,12 @@ record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-RunM
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
-    info(autosaveFields_pass0, "VAL")
+    info(autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-RunMode-RB") {
     field( DTYP, "EVG SEQ RUN MODE")
-    field( INP , "#C S0 @$(EVG,recursive)")
+    field( INP , "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
     field( ZRST, "Normal")
     field( ONST, "Automatic")
@@ -159,7 +159,7 @@ record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-RunM
 
 record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TrigSrc-Sel") {
     field( DTYP, "EVG SEQ TRIG SRC")
-    field( OUT , "#C S0 @$(EVG,recursive)")
+    field( OUT , "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( UDF,  "0")
     field( ZRST, "None")
     field( ONST, "Mxc0")
@@ -193,12 +193,12 @@ record(mbbo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Trig
     field( TTVL, 42)
     field( FTVL, 46)
     field( FFVL, 50)
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-TrigSrc-RB") {
     field( DTYP, "EVG SEQ TRIG SRC")
-    field( INP , "#C S0 @$(EVG,recursive)")
+    field( INP , "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( UDF,  "0")
     field( SCAN, "I/O Intr")
     field( ZRST, "None")
@@ -238,7 +238,7 @@ record(mbbi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Trig
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Commit-Cmd") {
     field( DTYP, "EVG COMMIT SEQ")
     field( DESC, "Commit EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -249,7 +249,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Commit
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Load-Cmd") {
     field( DTYP, "EVG LOAD SEQ")
     field( DESC, "ALLOC EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -260,7 +260,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Load-C
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Unload-Cmd") {
     field( DTYP, "EVG UNLOAD SEQ")
     field( DESC, "Dealloc EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -271,7 +271,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Unload
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Enable-Cmd") {
     field( DTYP, "EVG ENABLE SEQ")
     field( DESC, "Enable EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -283,7 +283,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Enable
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Disable-Cmd") {
     field( DTYP, "EVG DISABLE SEQ")
     field( DESC, "Disable EVG Sequence")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -294,7 +294,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Disabl
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Abort-Cmd") {
     field( DTYP, "EVG ABORT SEQ")
     field( DESC, "Abort Sequence immediately")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -304,7 +304,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Abort-
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Pause-Cmd") {
     field( DTYP, "EVG PAUSE SEQ")
     field( DESC, "Pause Sequence immediately")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -314,7 +314,7 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Pause-
 record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-SoftTrig-Cmd") {
     field( DTYP, "EVG SOFT TRIG")
     field( DESC, "Sequence RAM soft trigger")
-    field( OUT,  "#C S0 @$(EVG,recursive)")
+    field( OUT,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -324,42 +324,42 @@ record(bo, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-SoftTr
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Load-RB") {
     field( DTYP, "EVG LOAD STATUS")
     field( DESC, "Soft Seq Load status")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
     field( ZNAM, "Unloaded")
     field( ONAM, "Loaded")
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Commit-RB") {
     field( DTYP, "EVG COMMIT STATUS")
     field( DESC, "Soft Seq Commit status")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Uncommitted")
     field( ONAM, "Committed")
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Enable-RB") {
     field( DTYP, "EVG ENA STATUS")
     field( DESC, "Soft Seq Ena status")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
     field( FLNK, "")
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Enable-Sts") {
     field( DTYP, "EVG ENA STATUS")
     field( DESC, "Soft Seq Ena status")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
     field( FLNK, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Enable-RB")
-    info( autosaveFields_pass0, "VAL")
+    info( autosaveFields_pasS$(SEQNUM,undefined), "VAL")
 }
 
 record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-LoadedSeq-RB") {
@@ -373,21 +373,21 @@ record(waveform, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-
 record(stringin, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-Error-RB") {
     field( DTYP, "EVG SEQ ERR")
     field( DESC, "Sequence error msg.")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
 }
 
 record(longin, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-NumOfRuns-I") {
     field( DTYP, "EVG NUM OF RUNS")
     field( DESC, "# times soft sequence ran")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
 }
 
 record(bi, "$(SYS,undefined):$(EVG,recursive)-SoftSeq-$(SEQNUM,undefined)-StartOfSeq-I") {
     field( DTYP, "EVG START OF SEQ")
     field( DESC, "Start of sequence")
-    field( INP,  "#C S0 @$(EVG,recursive)")
+    field( INP,  "#C S$(SEQNUM,undefined) @$(EVG,recursive)")
     field( SCAN, "I/O Intr")
 }
 
