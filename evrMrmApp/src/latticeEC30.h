@@ -11,7 +11,7 @@
  * This device is exposed as BAR #0 on PCI and PMC versions of the EVR
  */
 
-#define U32_CONTROL             0x00004
-# define CONTROL_LEMDE          0x19        /* Endian: clear = BE, set = LE */
+#define U32_AC30CTRL                0x00004
+# define AC30CTRL_LEMDE             0x19        /* Endian: clear = BE, set = LE */
 
 #endif /* LATTICEEC30_H_ */

@@ -260,6 +260,7 @@ try {
     printf("Using IRQ %u\n",cur->irq);
 
     volatile epicsUInt8 *plx = 0, *evr = 0;
+    epicsUInt32 evrlen = 0;
 
     /*
      * The EC 30 device has only 1 bar (0) which we need to map to *evr.
@@ -275,7 +276,6 @@ try {
             return;
         }
 
-        epicsUInt32 evrlen;
         if( devPCIBarLen(cur,0,&evrlen) ) {
             printf("Can't find BAR #0 length\n");
             return;
@@ -293,7 +293,6 @@ try {
             return;
         }
 
-        epicsUInt32 evrlen;
         if( devPCIBarLen(cur,2,&evrlen) ) {
             printf("Can't find BAR #2 length\n");
             return;
@@ -356,9 +355,9 @@ try {
 
     case PCI_DEVICE_ID_EC_30:
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-        BITCLR(LE,32, evr, U32_CONTROL, CONTROL_LEMDE);
+        BITCLR(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-        BITSET(LE,32, evr, U32_CONTROL, CONTROL_LEMDE);
+        BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
 #endif
 
         // Disable interrupts on device
