@@ -21,16 +21,20 @@ MODULE_PARM_DESC(gpiobase, "User space interface version");
 
 /************************ PCI Device and vendor IDs ****************/
 
-#define PCI_SUBVENDOR_ID_MRF             0x1a3e
+#define PCI_SUBVENDOR_ID_MRF                0x1a3e
+
+#define PCI_VENDOR_ID_LATTICE               0x1204
+
+#define PCI_DEVICE_ID_EC_30                 0xEC30
 
 /* PMC-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230   0x11e6
+#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230     0x11e6
 /* cPCI-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230   0x10e6
+#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230     0x10e6
 /* cPCI-EVRTG-300 */
-#define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300      0x192c
 /* PCIe EC 30 */
-#define PCI_SUBDEVICE_ID_MRF_EVRTG_300E   0x172c
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300E     0x172c
 
 /************************ Compatability ****************************/
 
