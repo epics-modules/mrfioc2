@@ -19,6 +19,19 @@ static int modparam_iversion = 1;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
 MODULE_PARM_DESC(gpiobase, "User space interface version");
 
+/************************ PCI Device and vendor IDs ****************/
+
+#define PCI_SUBVENDOR_ID_MRF             0x1a3e
+
+/* PMC-EVR-230 */
+#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230   0x11e6
+/* cPCI-EVR-230 */
+#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230   0x10e6
+/* cPCI-EVRTG-300 */
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
+/* PCIe EC 30 */
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300E   0x172c
+
 /************************ Compatability ****************************/
 
 
@@ -139,6 +152,8 @@ mrf_handler_plx(int irq, struct uio_info *info)
     return IRQ_HANDLED;
 }
 
+
+
 static
 irqreturn_t
 mrf_handler(int irq, struct uio_info *info)
@@ -224,29 +239,54 @@ mrf_probe(struct pci_dev *dev,
         if (pci_request_regions(dev, DRV_NAME))
                 goto err_disable;
 
-        /* BAR 0 is the PLX bridge */
-        info->mem[0].addr = pci_resource_start(dev, 0);
-        info->mem[0].size = pci_resource_len(dev,0);
-        info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
-        info->mem[0].memtype = UIO_MEM_PHYS;
+        /* PCIe EVR300 has only 1 BAR so it must be treated differently.
+         * EVR memory space is mapped directly to uio0 region so that it
+         * matches windows version
+         */
+        if(dev->subsystem_device == PCI_SUBDEVICE_ID_MRF_EVRTG_300E){
+            dev_info(&dev->dev, "Attaching BAR0 of PCIe-EVRTG300e\n");
+            /* BAR 0 is the EVR */
+            info->mem[0].name = "EVR memory";
+            info->mem[0].addr = pci_resource_start(dev, 0);
+            info->mem[0].size = pci_resource_len(dev,0);
+            info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
+            info->mem[0].memtype = UIO_MEM_PHYS;
 
-        /* Not used */
-        info->mem[1].memtype = UIO_MEM_NONE;
-        info->mem[1].size = 1; /* Otherwise UIO will stop searching... */
-
-        /* BAR 2 is the EVR */
-        info->mem[2].addr = pci_resource_start(dev, 2);
-        info->mem[2].size = pci_resource_len(dev,2);
-        info->mem[2].internal_addr =pci_ioremap_bar(dev,2);
-        info->mem[2].memtype = UIO_MEM_PHYS;
-
-        if (!info->mem[0].internal_addr ||
-            !info->mem[0].addr ||
-            !info->mem[2].internal_addr ||
-            !info->mem[2].addr) {
+            if(!info->mem[0].internal_addr || !info->mem[0].addr){
                 dev_err(&dev->dev, "Failed to map BARS!\n");
                 ret=-ENODEV;
                 goto err_release;
+            }
+
+        }
+        /* Other devices also have BAR 1 and 2 present (for PLX bridge).. */
+        else{
+            dev_info(&dev->dev, "Attaching BAR0,2,3 of MRF");
+
+            /* BAR 0 is the PLX bridge */
+            info->mem[0].addr = pci_resource_start(dev, 0);
+            info->mem[0].size = pci_resource_len(dev,0);
+            info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
+            info->mem[0].memtype = UIO_MEM_PHYS;
+
+            /* Not used */
+            info->mem[1].memtype = UIO_MEM_NONE;
+            info->mem[1].size = 1; /* Otherwise UIO will stop searching... */
+
+            /* BAR 2 is the EVR */
+            info->mem[2].addr = pci_resource_start(dev, 2);
+            info->mem[2].size = pci_resource_len(dev,2);
+            info->mem[2].internal_addr =pci_ioremap_bar(dev,2);
+            info->mem[2].memtype = UIO_MEM_PHYS;
+
+            if (!info->mem[0].internal_addr ||
+                !info->mem[0].addr ||
+                !info->mem[2].internal_addr ||
+                !info->mem[2].addr) {
+                    dev_err(&dev->dev, "Failed to map BARS!\n");
+                    ret=-ENODEV;
+                    goto err_release;
+            }
         }
 
         info->irq = dev->irq;
@@ -330,15 +370,6 @@ err_free:
         return ret;
 }
 
-#define PCI_SUBVENDOR_ID_MRF             0x1a3e
-
-/* PMC-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230   0x11e6
-/* cPCI-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230   0x10e6
-/* cPCI-EVRTG-300 */
-#define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
-
 static struct pci_device_id mrf_pci_ids[] __devinitdata = {
     {
         .vendor =       PCI_VENDOR_ID_PLX,
@@ -357,6 +388,12 @@ static struct pci_device_id mrf_pci_ids[] __devinitdata = {
         .device =       PCI_DEVICE_ID_PLX_9056,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_EVRTG_300,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_LATTICE,
+        .device =       PCI_DEVICE_ID_EC_30,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_MRF_EVRTG_300E,
     },
     { 0, }
 };
@@ -401,10 +438,10 @@ mrf_remove(struct pci_dev *dev)
 
 
 static struct pci_driver mrf_driver = {
-    .name    =DRV_NAME,
-    .id_table=mrf_pci_ids,
-    .probe   = mrf_probe,
-    .remove  = __devexit_p(mrf_remove),
+    .name     = DRV_NAME,
+    .id_table = mrf_pci_ids,
+    .probe    = mrf_probe,
+    .remove   = __devexit_p(mrf_remove),
 };
 
 static int __init mrf_init_module(void)
