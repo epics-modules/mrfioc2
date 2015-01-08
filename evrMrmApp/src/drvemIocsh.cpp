@@ -35,6 +35,7 @@
 #include "evrRegMap.h"
 #include "plx9030.h"
 #include "plx9056.h"
+#include "latticeEC30.h"
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
@@ -52,6 +53,8 @@ static const epicsPCIID mrmevrs[] = {
                                 PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9056,    PCI_VENDOR_ID_PLX,
                                 PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
+                                PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -256,24 +259,45 @@ try {
     position<<cur->bus<<":"<<cur->device<<"."<<cur->function;
     printf("Using IRQ %u\n",cur->irq);
 
-    volatile epicsUInt8 *plx, *evr;
+    volatile epicsUInt8 *plx = 0, *evr = 0;
 
-    if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
-        devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
-    {
-        printf("Failed to map BARs 0 and 2\n");
-        return;
-    }
-    if(!plx || !evr){
-        printf("BARs mapped to zero? (%08lx,%08lx)\n",
-               (unsigned long)plx,(unsigned long)evr);
-        return;
-    }
+    /*
+     * The EC 30 device has only 1 bar (0) which we need to map to *evr.
+     */
+    if(cur->id.device == PCI_DEVICE_ID_EC_30) {
+        if(devPCIToLocalAddr(cur,0,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+        {
+            printf("Failed to map BARs 0 for EC 30\n");
+            return;
+        }
+        if(!evr){
+            printf("BAR mapped to zero? (%08lx)\n", (unsigned long)evr);
+            return;
+        }
 
-    epicsUInt32 evrlen;
-    if( devPCIBarLen(cur,2,&evrlen) ) {
-        printf("Can't find BAR #2 length\n");
-        return;
+        epicsUInt32 evrlen;
+        if( devPCIBarLen(cur,0,&evrlen) ) {
+            printf("Can't find BAR #0 length\n");
+            return;
+        }
+    } else {
+        if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
+            devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+        {
+            printf("Failed to map BARs 0 and 2\n");
+            return;
+        }
+        if(!plx || !evr){
+            printf("BARs mapped to zero? (%08lx,%08lx)\n",
+                   (unsigned long)plx,(unsigned long)evr);
+            return;
+        }
+
+        epicsUInt32 evrlen;
+        if( devPCIBarLen(cur,2,&evrlen) ) {
+            printf("Can't find BAR #2 length\n");
+            return;
+        }
     }
 
     // handle various PCI to local bus bridges
@@ -330,6 +354,16 @@ try {
 #endif
         break;
 
+    case PCI_DEVICE_ID_EC_30:
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+        BITCLR(LE,32, evr, U32_CONTROL, CONTROL_LEMDE);
+#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+        BITSET(LE,32, evr, U32_CONTROL, CONTROL_LEMDE);
+#endif
+
+        // Disable interrupts on device
+        NAT_WRITE32(evr, IRQEnable, 0);
+        break;
     default:
         printf("Unknown PCI bridge %04x\n", cur->id.device);
         return;
