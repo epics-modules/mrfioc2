@@ -50,7 +50,7 @@ Event Generators.  Current only the VME-EVG-230
 Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
 
 @note Support for the VME-EVR-230 (non-RF) is present, but has not been tested.
-@note Support for the PCI-EVRTG-300e is present, but has not been testedl
+@note Support for the PCI-EVRTG-300e is present, but has not been tested
 
 @section doc Documentation
 
@@ -87,7 +87,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @li Added sequence masker aSub (bit mask to replace event codes with zero)
 @li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
 @li Added start of sequence interrupt device support
-@li Changed record naming convention (renamed all records)
+@li Added record naming convention (added all records according to PSI naming convention)
 
 @subsection v203 2.0.3 (Aug 2014)
 
