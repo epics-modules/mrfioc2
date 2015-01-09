@@ -358,7 +358,7 @@ try {
         //BITCLR(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
         //BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
-        *(unit8_t)(evr+0x04) = 0x82; // unknown magic number
+        *(uint8_t *)(evr+0x04) = 0x82; // unknown magic number
 #endif
 
         // Disable interrupts on device

@@ -21,3 +21,10 @@ cd mrfioc2
 The databases will be installed in the ./db folder where the script was ran from.
 
 
+EXAMPLE STARTUP SCRIPT
+======================
+
+PSI folder contains an example ST.cmd file for the VME platform name example_st.cmd.
+
+
+
