@@ -3,8 +3,7 @@ include /ioc/tools/driver.makefile
 
 BUILDCLASSES=Linux
 EXCLUDE_VERSIONS=3.13 3.14.8
-#EXCLUDE_ARCHS=T2 V67 ppc603 ppc405 embeddedlinux-xscale_be 
-EXCLUDE_ARCHS=T2 V67 ppc603 ppc405 embeddedlinux-xscale_be eldk42 eldk52
+EXCLUDE_ARCHS=T2 V67 ppc603 ppc405 embeddedlinux-xscale_be
 
 
 SOURCES+=./evrApp/src/asub.c

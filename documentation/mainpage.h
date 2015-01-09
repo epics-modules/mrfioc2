@@ -87,7 +87,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @li Added sequence masker aSub (bit mask to replace event codes with zero)
 @li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
 @li Added start of sequence interrupt device support
-@li Added record naming convention (added all records according to PSI naming convention)
+@li Renamed records in Db/PSI to conform to PSI naming convention
 
 @subsection v203 2.0.3 (Aug 2014)
 
