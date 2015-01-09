@@ -35,10 +35,6 @@ if [ ! -d "$MRFIOC2_DIR/evrMrmApp" ]; then
     exit 1
 fi
 
-for arg in $@; do
-    DB_LIST+=("$arg")
-done
-
 mkdir -p $OUTPUT_DIR
 for db in ${DB_LIST[@]}; do
     db_name=`basename "$db" | cut -d. -f1`
