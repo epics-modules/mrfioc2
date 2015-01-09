@@ -75,7 +75,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
 @li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
 
-@subsubsection v204bug
+@subsubsection v204bug Bug fixes
 
 @li Fixed incorrect firmware version warning message
 @li Reworked interrupt handling to fully eliminate race in IRQ acknowledge.
