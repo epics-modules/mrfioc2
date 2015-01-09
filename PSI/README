@@ -1,0 +1,23 @@
+COMPILATION
+===========
+
+To complile the IOC use the makefile provided in the PSI folder:
+
+cd mrfioc2
+cp PSI/makefile ../
+make -f makefile
+
+Compilation will only work on a PSI infrastructure where the correct applications and environment variables are already configured.
+
+
+DATABASES
+=========
+
+PSI databases should be prepared separately using the provided script:
+
+cd mrfioc2
+./PSI/make_databases.sh
+
+The databases will be installed in the ./db folder where the script was ran from.
+
+

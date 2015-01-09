@@ -47,9 +47,10 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 Event Generators.  Current only the VME-EVG-230
 
-Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300
+Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
 
 @note Support for the VME-EVR-230 (non-RF) is present, but has not been tested.
+@note Support for the PCI-EVRTG-300e is present, but has not been testedl
 
 @section doc Documentation
 
@@ -65,21 +66,28 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v204 2.0.4 (Xyz 2020)
+@subsection v204 2.0.4 (Jan 2015)
 
 @subsubsection v204not Notices
 
-@li Requires devLib >= 2.6
+@li Requires devLib >= 2.6l
+@li EVR GTP is currently disabled
+@li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
+@li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
 
 @subsubsection v204bug
 
-@li Fix incorrect firmware version warning message
-@li Linux only.  Rework interrupt handling to fully eliminate race in IRQ acknowledge.
-    Requires new kernel module.
+@li Fixed incorrect firmware version warning message
+@li Reworked interrupt handling to fully eliminate race in IRQ acknowledge.
+    requires new kernel module (linux only).
 
 @subsubsection v204feat Features
 
-@li Add sequence masker aSub (bit mask to replace event codes with zero)
+@li Added support for PCI-EVRTG-300e (interrupts are not tested)
+@li Added sequence masker aSub (bit mask to replace event codes with zero)
+@li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
+@li Added start of sequence interrupt device support
+@li Changed record naming convention (renamed all records)
 
 @subsection v203 2.0.3 (Aug 2014)
 
