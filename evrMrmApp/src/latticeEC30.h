@@ -12,6 +12,8 @@
  */
 
 #define U32_AC30CTRL                0x00004
-# define AC30CTRL_LEMDE             0x19        /* Endian: clear = BE, set = LE */
+# define AC30CTRL_LEMDE             (1<<25)        /* Endian: clear = BE, set = LE */
+
+#define U32_AC30FWVER               0x0002C
 
 #endif /* LATTICEEC30_H_ */
