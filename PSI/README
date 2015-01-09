@@ -15,8 +15,8 @@ DATABASES
 
 PSI databases should be prepared separately using the provided script:
 
-cd mrfioc2
-./PSI/make_databases.sh
+cd mrfioc2/PSI
+./make_databases.sh
 
 The databases will be installed in the ./db folder where the script was ran from.
 
@@ -24,7 +24,7 @@ The databases will be installed in the ./db folder where the script was ran from
 EXAMPLE STARTUP SCRIPT
 ======================
 
-PSI folder contains an example ST.cmd file for the VME platform name example_st.cmd.
+PSI folder contains an example st.cmd file for the VME platform named example_st.cmd.
 
 
 
