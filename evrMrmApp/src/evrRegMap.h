@@ -123,6 +123,7 @@ enum evrForm {
   evrFormVME64=2,
   evrFormCRIO=3,
   evrFormCPCIFULL=4, // 6U
+  evrFormPCIe=7,
 };
 
 #define U32_CounterPS   0x040 /* Timestamp event counter prescaler */

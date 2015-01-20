@@ -188,6 +188,10 @@ try{
         nOFPUV=4;
         kind=MRMCML::typeTG300;
         break;
+    case evrFormPCIe:
+        printf("PCIe ");
+        nOFPUV=8;
+        break;
     default:
         printf("Unknown EVR variant %d\n",v);
     }
