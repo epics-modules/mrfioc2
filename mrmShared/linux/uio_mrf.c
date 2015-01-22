@@ -286,8 +286,8 @@ mrf_probe(struct pci_dev *dev,
          * EVR memory space is mapped directly to uio0 region so that it
          * matches windows version
          */
-        if(dev->subsystem_device == PCI_SUBDEVICE_ID_MRF_EVRTG_300E){
-            dev_info(&dev->dev, "Attaching BAR0 of PCIe-EVRTG300e\n");
+        if(dev->subsystem_device == PCI_SUBDEVICE_ID_PCIE_EVR_300){
+            dev_info(&dev->dev, "Attaching BAR0 of PCIe-EVR-300\n");
             /* BAR 0 is the EVR */
             info->mem[0].name = "EVR memory";
             info->mem[0].addr = pci_resource_start(dev, 0);
@@ -439,7 +439,7 @@ static struct pci_device_id mrf_pci_ids[] __devinitdata = {
         .vendor =       PCI_VENDOR_ID_LATTICE,
         .device =       PCI_DEVICE_ID_EC_30,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
-        .subdevice =    PCI_SUBDEVICE_ID_MRF_EVRTG_300E,
+        .subdevice =    PCI_SUBDEVICE_ID_PCIE_EVR_300,
     },
     { 0, }
 };
