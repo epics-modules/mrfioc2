@@ -91,18 +91,22 @@ mrf_handler_evr(int irq, struct uio_info *info)
         enable = ioread32(base + IRQEnable);
     }
 
-    if (!(status & enable))
+    if (!(status & enable)) {
             return IRQ_NONE;
+    }
 
-    if(!(enable & IRQ_Enable))
+    if(!(enable & IRQ_Enable)) {
         dev_info(&dev->dev, "Interrupt when not enabled! 0x%08lx 0x%08lx\n",
                  (unsigned long)enable, (unsigned long)status);
+    }
 
     /* Disable interrupt */
-    if (end)
+    if (end) {
         iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
-    else
+    } else {
         iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
+    }
+
     /* Ensure interrupts have really been disabled */
     wmb();
     if (end) {
@@ -110,9 +114,10 @@ mrf_handler_evr(int irq, struct uio_info *info)
     } else {
         enable = ioread32(base + IRQEnable);
     }
-    if(enable & IRQ_Enable)
-        dev_info(&dev->dev, "Interrupt not disabled!!!");
 
+    if(enable & IRQ_Enable) {
+        dev_info(&dev->dev, "Interrupt not disabled!!!");
+    }
 
     return IRQ_HANDLED;
 }
@@ -150,8 +155,9 @@ mrf_handler_plx(int irq, struct uio_info *info)
         return IRQ_NONE;
     }
 
-    if(oops)
+    if(oops) {
         dev_info(&dev->dev, "Interrupt not disabled %08x", (unsigned)val);
+    }
 
     return IRQ_HANDLED;
 }
@@ -165,10 +171,11 @@ mrf_handler(int irq, struct uio_info *info)
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
     rmb();
-    if(priv->irqmode)
+    if(priv->irqmode) {
         return mrf_handler_plx(irq, info);
-    else
+    } else {
         return mrf_handler_evr(irq, info);
+    }
 }
 
 static
@@ -179,18 +186,21 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
     void __iomem *plx;
     u32 val;
 
-    if (onoff < 0)
+    // FIXME: Why not -EINVAL in both cases?
+    if (onoff < 0) {
         return -EINVAL;
-    else if (onoff > 1)
+    } else if (onoff > 1) {
         return 0;
+    }
 
     switch (dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
         plx = info->mem[0].internal_addr;
 
         val = INTCSR_INT1_Enable | INTCSR_INT1_Polarity;
-        if (onoff == 1)
+        if (onoff == 1) {
             val |= INTCSR_PCI_Enable;
+        }
 
         iowrite32(val, plx + INTCSR);
 
@@ -201,8 +211,9 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         plx = info->mem[0].internal_addr;
 
         val = INTCSR9056_LCL_Enable;
-        if (onoff == 1)
+        if (onoff == 1) {
             val |= INTCSR9056_PCI_Enable;
+        }
 
         iowrite32(val, plx + INTCSR9056);
 
@@ -220,8 +231,9 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         // Write the register back
 
         val = INTCSR9056_LCL_Enable;
-        if (onoff == 1)
+        if (onoff == 1) {
             val |= INTCSR9056_PCI_Enable;
+        }
 
         iowrite32(val, plx + INTCSR9056);
 
@@ -251,7 +263,7 @@ mrf_probe(struct pci_dev *dev,
         struct uio_info *info;
 
         priv = kzalloc(sizeof(struct mrf_priv), GFP_KERNEL);
-        if (!priv) return -ENOMEM;
+        if (!priv) { return -ENOMEM; }
         info = &priv->uio;
         priv->pdev = dev;
 
@@ -266,8 +278,9 @@ mrf_probe(struct pci_dev *dev,
                 goto err_disable;
         }
 
-        if (pci_request_regions(dev, DRV_NAME))
+        if (pci_request_regions(dev, DRV_NAME)) {
                 goto err_disable;
+        }
 
         /* PCIe EVR 300 has only 1 BAR so it must be treated differently.
          * EVR memory space is mapped directly to uio0 region so that it
@@ -331,11 +344,13 @@ mrf_probe(struct pci_dev *dev,
         pci_set_drvdata(dev, info);
 
         ret = uio_register_device(&dev->dev, info);
-        if (ret)
-                goto err_unmap;
+        if (ret) {
+            goto err_unmap;
+        }
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         spin_lock_init(&priv->lock);
+
         if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             u32 val;
             void __iomem *plx = info->mem[0].internal_addr;
