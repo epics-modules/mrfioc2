@@ -33,8 +33,8 @@ MODULE_PARM_DESC(gpiobase, "User space interface version");
 #define PCI_SUBDEVICE_ID_MRF_PXIEVR_230     0x10e6
 /* cPCI-EVRTG-300 */
 #define PCI_SUBDEVICE_ID_MRF_EVRTG_300      0x192c
-/* PCIe EC 30 */
-#define PCI_SUBDEVICE_ID_MRF_EVRTG_300E     0x172c
+/* PCIe-EVR-300 */
+#define PCI_SUBDEVICE_ID_PCIE_EVR_300       0x172c
 
 /************************ Compatability ****************************/
 
@@ -179,34 +179,60 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
     void __iomem *plx;
     u32 val;
 
-    if(onoff<0)
+    if (onoff < 0)
         return -EINVAL;
-    else if(onoff>1)
+    else if (onoff > 1)
         return 0;
 
-    switch(dev->device) {
+    switch (dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
         plx = info->mem[0].internal_addr;
 
-        val = INTCSR_INT1_Enable|INTCSR_INT1_Polarity;
-        if(onoff==1)
+        val = INTCSR_INT1_Enable | INTCSR_INT1_Polarity;
+        if (onoff == 1)
             val |= INTCSR_PCI_Enable;
 
-        iowrite32(val, plx+INTCSR);
+        iowrite32(val, plx + INTCSR);
+
+        priv->irqmode = 1;
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
         plx = info->mem[0].internal_addr;
 
         val = INTCSR9056_LCL_Enable;
-        if(onoff==1)
+        if (onoff == 1)
             val |= INTCSR9056_PCI_Enable;
 
-        iowrite32(val, plx+INTCSR9056);
+        iowrite32(val, plx + INTCSR9056);
+
         break;
+
+    case PCI_DEVICE_ID_EC_30:
+        plx = info->mem[0].internal_addr;
+
+        // Check endianism
+
+        // Read current IRQ enable register
+
+        // Modify the IRQ enable bit
+
+        // Write the register back
+
+        val = INTCSR9056_LCL_Enable;
+        if (onoff == 1)
+            val |= INTCSR9056_PCI_Enable;
+
+        iowrite32(val, plx + INTCSR9056);
+
+        break;
+
     default:
         return -EINVAL;
     }
+
+    // Writing 0 or 1 to /dev/uioX selects switches
+    // interrupt handling to PLX mode
     priv->irqmode = 1;
     wmb();
 
@@ -243,7 +269,7 @@ mrf_probe(struct pci_dev *dev,
         if (pci_request_regions(dev, DRV_NAME))
                 goto err_disable;
 
-        /* PCIe EVR300 has only 1 BAR so it must be treated differently.
+        /* PCIe EVR 300 has only 1 BAR so it must be treated differently.
          * EVR memory space is mapped directly to uio0 region so that it
          * matches windows version
          */
@@ -253,7 +279,7 @@ mrf_probe(struct pci_dev *dev,
             info->mem[0].name = "EVR memory";
             info->mem[0].addr = pci_resource_start(dev, 0);
             info->mem[0].size = pci_resource_len(dev,0);
-            info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
+            info->mem[0].internal_addr = pci_ioremap_bar(dev,0);
             info->mem[0].memtype = UIO_MEM_PHYS;
 
             if(!info->mem[0].internal_addr || !info->mem[0].addr){
@@ -352,8 +378,9 @@ mrf_probe(struct pci_dev *dev,
 #endif
         }
 #else
-        if (dev->device==PCI_DEVICE_ID_PLX_9030)
+        if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             dev_info(&dev->dev, "GPIO support not built, JTAG unavailable\n");
+        }
 #endif /* defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC) */
 
         dev_info(&dev->dev, "MRF Setup complete\n");
