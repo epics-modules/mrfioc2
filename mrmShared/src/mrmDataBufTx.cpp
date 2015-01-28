@@ -1,14 +1,28 @@
-
-#include "mrmDataBufTx.h"
-
 #include <cstdio>
 #include <stdexcept>
+
+#ifdef _WIN32
+	#include <Winsock2.h>
+	#pragma comment (lib, "Ws2_32.lib")
+#endif
+
+#include <epicsTypes.h>
 
 #include <epicsThread.h>
 #include <epicsInterrupt.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
+
+#include "mrf/databuf.h"
+
+#include <epicsExport.h>
+
+#include "mrmDataBufTx.h"
+
+#ifndef STATIC_ASSERT
+#define STATIC_ASSERT(dummy)
+#endif
 
 #ifndef bswap32
 #define bswap32(value) (  \
@@ -84,18 +98,17 @@ mrmDataBufTx::dataRTS() const
 epicsUInt32
 mrmDataBufTx::lenMax() const
 {
-    return DataTxCtrl_len_max-1;
+    return DataTxCtrl_len_max;
 }
 
 void
-mrmDataBufTx::dataSend(epicsUInt8 id,
-                   epicsUInt32 len,
-                   const epicsUInt8 *ubuf
+mrmDataBufTx::dataSend(epicsUInt32 len,
+                       const epicsUInt8 *ubuf
 )
 {
     static const double quantum=epicsThreadSleepQuantum();
 
-    if (len > DataTxCtrl_len_max-1)
+    if (len > DataTxCtrl_len_max)
         throw std::out_of_range("Tx buffer is too long");
 
     STATIC_ASSERT(DataTxCtrl_len_max%4==0);
@@ -109,24 +122,22 @@ mrmDataBufTx::dataSend(epicsUInt8 id,
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
-    // start with proto id
-    epicsUInt32 temp = id;
-    len++;
+    epicsUInt32 temp = 0;
 
     epicsUInt32 index;
-    for(index=1; index<len; index++) {
+    for(index=0; index<len; index++) {
         int byte=index%4;
 
         if(byte==0)
             temp=0;
 
         temp <<= 8;
-        temp |= ubuf[index-1];
+        temp |= ubuf[index];
 
         if(byte==3)
             nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
     }
-	
+
     for(; index%4; index++) {
         temp <<= 8;
         len++;
