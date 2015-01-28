@@ -152,7 +152,7 @@ try {
       }
   }
 
-  paddr->priv->dataSend(paddr->proto,requested,buf);
+  paddr->priv->dataSend(requested,buf);
 
   return 0;
 } catch(std::exception& e) {
