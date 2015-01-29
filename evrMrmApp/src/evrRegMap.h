@@ -88,6 +88,7 @@
 #define U32_IRQEnable   0x00c
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
+#  define IRQ_PCIee     0x40000000
 
 #define U32_IRQPulseMap 0x010
 

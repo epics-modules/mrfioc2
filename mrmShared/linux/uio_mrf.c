@@ -5,6 +5,9 @@
 
 #include "mrf.h"
 
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+
 #define DRV_NAME "mrf-pci"
 #define DRV_VERSION "1"
 
@@ -18,6 +21,13 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 static int modparam_iversion = 1;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
 MODULE_PARM_DESC(gpiobase, "User space interface version");
+
+#define PROCFS_NAME "mrf-pci"
+/**
+ * This structure hold information about the /proc file
+ *
+ */
+struct proc_dir_entry *mrf_proc_file;
 
 /************************ PCI Device and vendor IDs ****************/
 
@@ -130,13 +140,12 @@ irqreturn_t
 mrf_handler_plx(int irq, struct uio_info *info)
 {
     struct pci_dev *dev = info->priv;
-    void __iomem *plx;
-    u32 val;
+    void __iomem *plx = info->mem[0].internal_addr;
+    u32 val, end;
     int oops;
 
     switch(dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
-        plx = info->mem[0].internal_addr;
         // clear INTCSR_PCI_Enable
         iowrite32(INTCSR_INT1_Enable|INTCSR_INT1_Polarity, plx+INTCSR);
         val = ioread32(plx+INTCSR);
@@ -144,11 +153,56 @@ mrf_handler_plx(int irq, struct uio_info *info)
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
-        plx = info->mem[0].internal_addr;
         // clear INTCSR9056_PCI_Enable
         iowrite32(INTCSR9056_LCL_Enable, plx+INTCSR9056);
         val = ioread32(plx+INTCSR9056);
         oops = val&INTCSR9056_PCI_Enable;
+        break;
+
+    case PCI_DEVICE_ID_EC_30:
+        // Check endianism
+        val = ioread32(plx + FPGAVersion);
+        if(((val & FPGAVer_FF) >> 24) == 0x7) {
+            // little endian
+            end = 0;
+        } else {
+            val = ioread32be(plx + FPGAVersion);
+            if(((val & FPGAVer_FF) >> 24) == 0x7) {
+                // big endian
+                end = 1;
+            } else {
+                // This should never happen.
+                dev_info(&dev->dev, "ERROR: Unable to read form factor magic number.");
+                return IRQ_NONE;
+            }
+        }
+
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        if(!(val & IRQ_Enable_ALL)) {
+            return IRQ_NONE;
+        }
+
+        // Clear interrupts on FPGA
+        if(end) {
+            iowrite32be(val & (~IRQ_Enable_ALL), plx + IRQEnable);
+        } else {
+            iowrite32(val & (~IRQ_Enable_ALL), plx + IRQEnable);
+        }
+
+        // Check if clear succeded
+        wmb();
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        oops = val & IRQ_Enable_ALL;
         break;
 
     default:
@@ -170,6 +224,9 @@ mrf_handler(int irq, struct uio_info *info)
 {
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
+    // Count interrupt handler executions
+    priv->intrcount++;
+
     rmb();
     if(priv->irqmode) {
         return mrf_handler_plx(irq, info);
@@ -183,8 +240,8 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 {
     struct pci_dev *dev = info->priv;
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
-    void __iomem *plx;
-    u32 val;
+    void __iomem *plx = info->mem[0].internal_addr;
+    u32 val, end;
 
     // FIXME: Why not -EINVAL in both cases?
     if (onoff < 0) {
@@ -195,7 +252,6 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 
     switch (dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
-        plx = info->mem[0].internal_addr;
 
         val = INTCSR_INT1_Enable | INTCSR_INT1_Polarity;
         if (onoff == 1) {
@@ -208,7 +264,6 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
-        plx = info->mem[0].internal_addr;
 
         val = INTCSR9056_LCL_Enable;
         if (onoff == 1) {
@@ -220,22 +275,42 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         break;
 
     case PCI_DEVICE_ID_EC_30:
-        plx = info->mem[0].internal_addr;
 
         // Check endianism
-
-        // Read current IRQ enable register
-
-        // Modify the IRQ enable bit
-
-        // Write the register back
-
-        val = INTCSR9056_LCL_Enable;
-        if (onoff == 1) {
-            val |= INTCSR9056_PCI_Enable;
+        val = ioread32(plx + FPGAVersion);
+        if(((val & FPGAVer_FF) >> 24) == 0x7) {
+            end = 0;
+        } else {
+            val = ioread32be(plx + FPGAVersion);
+            if(((val & FPGAVer_FF) >> 24) == 0x7) {
+                end = 1;
+            } else {
+                dev_info(&dev->dev, "ERROR: Unable to read form factor magic number.");
+                return -EINVAL;
+            }
         }
 
-        iowrite32(val, plx + INTCSR9056);
+        // Read current IRQ enable register
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        // Modify the IRQ enable bit
+        if (onoff == 1) {
+            //val |= IRQ_PCIee;
+            val |= IRQ_Enable_ALL;
+        }/* else {
+            val &= (!IRQ_PCIee);
+        }*/
+
+        // Write the register back
+        if(end) {
+            iowrite32be(val, plx + IRQEnable);
+        } else {
+            iowrite32(val, plx + IRQEnable);
+        }
 
         break;
 
@@ -453,6 +528,8 @@ mrf_remove(struct pci_dev *dev)
         struct uio_info *info = pci_get_drvdata(dev);
         struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
+        remove_proc_entry(PROCFS_NAME, NULL);
+
 #ifdef CONFIG_PARPORT_NOT_PC
         mrf_pp_cleanup(priv);
 #endif
@@ -461,19 +538,25 @@ mrf_remove(struct pci_dev *dev)
 #endif
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         {
-            void __iomem *plx = info->mem[0].internal_addr;
-            u32 val = ioread32(plx + GPIOC);
-            // Disable output drivers for TCLK, TMS, and TDI
-            val &= ~GPIOC_pin_dir(0);
-            val &= ~GPIOC_pin_dir(1);
-            val &= ~GPIOC_pin_dir(3);
-            iowrite32(val, plx + GPIOC);
+            if(dev->subsystem_device != PCI_SUBDEVICE_ID_PCIE_EVR_300) {
+                void __iomem *plx = info->mem[0].internal_addr;
+                u32 val = ioread32(plx + GPIOC);
+                // Disable output drivers for TCLK, TMS, and TDI
+                val &= ~GPIOC_pin_dir(0);
+                val &= ~GPIOC_pin_dir(1);
+                val &= ~GPIOC_pin_dir(3);
+                iowrite32(val, plx + GPIOC);
+            }
         }
 #endif
         uio_unregister_device(info);
         pci_set_drvdata(dev, NULL);
         iounmap(info->mem[0].internal_addr);
-        iounmap(info->mem[2].internal_addr);
+
+        if(dev->subsystem_device != PCI_SUBDEVICE_ID_PCIE_EVR_300) {
+            iounmap(info->mem[2].internal_addr);
+        }
+
         pci_release_regions(dev);
         pci_disable_device(dev);
 

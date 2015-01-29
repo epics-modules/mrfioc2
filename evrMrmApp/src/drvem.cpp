@@ -890,7 +890,7 @@ EVRMRM::enableIRQ(void)
 {
     int key=epicsInterruptLock();
 
-    shadowIRQEna = IRQ_Enable
+    shadowIRQEna =  IRQ_Enable   |IRQ_PCIee
                    |IRQ_RXErr    |IRQ_BufFull
                    |IRQ_Heartbeat|IRQ_HWMapped
                    |IRQ_Event    |IRQ_FIFOFull;
@@ -1093,8 +1093,12 @@ EVRMRM::drain_fifo()
 
         int iflags=epicsInterruptLock();
 
+        //*
         shadowIRQEna |= IRQ_Event|IRQ_FIFOFull;
         WRITE32(base, IRQEnable, shadowIRQEna);
+        //*/
+        // FIXME: This is the replaced upper code
+        //BITSET32(base, IRQEnable, IRQ_Event | IRQ_FIFOFull);
 
         epicsInterruptUnlock(iflags);
 
