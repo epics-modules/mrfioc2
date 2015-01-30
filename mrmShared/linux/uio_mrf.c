@@ -20,14 +20,7 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
  */
 static int modparam_iversion = 1;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
-MODULE_PARM_DESC(gpiobase, "User space interface version");
-
-#define PROCFS_NAME "mrf-pci"
-/**
- * This structure hold information about the /proc file
- *
- */
-struct proc_dir_entry *mrf_proc_file;
+MODULE_PARM_DESC(interfaceversion, "User space interface version");
 
 /************************ PCI Device and vendor IDs ****************/
 
@@ -184,6 +177,7 @@ mrf_handler_plx(int irq, struct uio_info *info)
         }
 
         if(!(val & IRQ_Enable_ALL)) {
+            dev_info(&dev->dev, "ERROR: Interrupt happening when not enabled!");
             return IRQ_NONE;
         }
 
@@ -301,9 +295,9 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         if (onoff == 1) {
             //val |= IRQ_PCIee;
             val |= IRQ_Enable_ALL;
-        }/* else {
-            val &= (!IRQ_PCIee);
-        }*/
+        } else {
+            val &= (~IRQ_Enable_ALL);
+        }
 
         // Write the register back
         if(end) {
@@ -527,8 +521,6 @@ mrf_remove(struct pci_dev *dev)
 {
         struct uio_info *info = pci_get_drvdata(dev);
         struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
-
-        remove_proc_entry(PROCFS_NAME, NULL);
 
 #ifdef CONFIG_PARPORT_NOT_PC
         mrf_pp_cleanup(priv);
