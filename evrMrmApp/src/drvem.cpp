@@ -890,10 +890,13 @@ EVRMRM::enableIRQ(void)
 {
     int key=epicsInterruptLock();
 
-    shadowIRQEna =  IRQ_Enable   |IRQ_PCIee
+    shadowIRQEna =  IRQ_Enable
                    |IRQ_RXErr    |IRQ_BufFull
                    |IRQ_Heartbeat|IRQ_HWMapped
                    |IRQ_Event    |IRQ_FIFOFull;
+
+    // IRQ PCIe enable flag should not be changed. Possible RACER here
+    shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
 
     WRITE32(base, IRQEnable, shadowIRQEna);
 
@@ -975,6 +978,9 @@ EVRMRM::isr(void *arg)
         scanIoRequest(evr->IRQfifofull);
     }
     evr->count_hardware_irq++;
+
+    // IRQ PCIe enable flag should not be changed. Possible RACER here
+    evr->shadowIRQEna |= (IRQ_PCIee & (READ32(evr->base, IRQEnable)));
 
     WRITE32(evr->base, IRQFlag, flags);
     WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
@@ -1094,11 +1100,11 @@ EVRMRM::drain_fifo()
         int iflags=epicsInterruptLock();
 
         //*
-        shadowIRQEna |= IRQ_Event|IRQ_FIFOFull;
+        shadowIRQEna |= IRQ_Event | IRQ_FIFOFull;
+        // IRQ PCIe enable flag should not be changed. Possible RACER here
+        shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
+
         WRITE32(base, IRQEnable, shadowIRQEna);
-        //*/
-        // FIXME: This is the replaced upper code
-        //BITSET32(base, IRQEnable, IRQ_Event | IRQ_FIFOFull);
 
         epicsInterruptUnlock(iflags);
 
@@ -1172,6 +1178,8 @@ try {
         scanIoRequest(evr->IRQrxError);
         int iflags=epicsInterruptLock();
         evr->shadowIRQEna |= IRQ_RXErr;
+        // IRQ PCIe enable flag should not be changed. Possible RACER here
+        evr->shadowIRQEna |= (IRQ_PCIee & (READ32(evr->base, IRQEnable)));
         WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
         epicsInterruptUnlock(iflags);
     }

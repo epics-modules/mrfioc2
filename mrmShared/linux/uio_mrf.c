@@ -183,9 +183,9 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
         // Clear interrupts on FPGA
         if(end) {
-            iowrite32be(val & (~IRQ_Enable_ALL), plx + IRQEnable);
+            iowrite32be(val & (~IRQ_PCIee), plx + IRQEnable);
         } else {
-            iowrite32(val & (~IRQ_Enable_ALL), plx + IRQEnable);
+            iowrite32(val & (~IRQ_PCIee), plx + IRQEnable);
         }
 
         // Check if clear succeded
@@ -196,7 +196,7 @@ mrf_handler_plx(int irq, struct uio_info *info)
             val = ioread32(plx + IRQEnable);
         }
 
-        oops = val & IRQ_Enable_ALL;
+        oops = val & IRQ_PCIee;
         break;
 
     default:
@@ -209,8 +209,6 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
     return IRQ_HANDLED;
 }
-
-
 
 static
 irqreturn_t
@@ -293,10 +291,9 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 
         // Modify the IRQ enable bit
         if (onoff == 1) {
-            //val |= IRQ_PCIee;
-            val |= IRQ_Enable_ALL;
+            val |= IRQ_PCIee;
         } else {
-            val &= (~IRQ_Enable_ALL);
+            val &= (~IRQ_PCIee);
         }
 
         // Write the register back
