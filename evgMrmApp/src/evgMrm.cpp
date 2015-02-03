@@ -253,28 +253,43 @@ evgMrm::isr(void* arg) {
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
-    
-//    printf("EVG Interrupt!:[enable:flag] 0x%x:0x%x\n",enable,flags);
 
-    if(active & EVG_IRQ_STOP_RAM(0)) {
-        if(evg->irqStop0_queued==0) {
-            callbackRequest(&evg->irqStop0_cb);
-            evg->irqStop0_queued=1;
-        } else if(evg->irqStop0_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
-            evg->irqStop0_queued=2;
-        }
-    }
 
-    if(active & EVG_IRQ_STOP_RAM(1)) {
-        if(evg->irqStop1_queued==0) {
-            callbackRequest(&evg->irqStop1_cb);
-            evg->irqStop1_queued=1;
-        } else if(evg->irqStop1_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
-            evg->irqStop1_queued=2;
-        }
-    }
+    #ifdef vxWorks
+    /* actually: if isr runs in kernel mode */
+
+        /*
+         * For IFC1210 board this is useless
+         * and for SwissFEL_TIM it is dangerous, since
+         * in the unlikely event of queuing more than 2 IRQs the system
+         * will stop dropping them. For SwissFEL timing system this is
+         * unacceptable.
+         * Furthermore it is not thread safe!!!
+         * A race condition has been observed where
+         * x_queued is changed back to 0 without re-enabling interrupts.         *
+         * For PSI, this is now handled in the IRQ thread, avg ISR time is
+         * around ~10us
+         */
+
+     if(active & EVG_IRQ_STOP_RAM(0)) {
+         if(evg->irqStop0_queued==0) {
+             callbackRequest(&evg->irqStop0_cb);
+             evg->irqStop0_queued=1;
+         } else if(evg->irqStop0_queued==1) {
+             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
+             evg->irqStop0_queued=2;
+         }
+     }
+
+     if(active & EVG_IRQ_STOP_RAM(1)) {
+         if(evg->irqStop1_queued==0) {
+             callbackRequest(&evg->irqStop1_cb);
+             evg->irqStop1_queued=1;
+         } else if(evg->irqStop1_queued==1) {
+             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
+             evg->irqStop1_queued=2;
+         }
+     }
 
     if(active & EVG_IRQ_START_RAM(0)) {
         if(evg->irqStart0_queued==0) {
@@ -296,6 +311,42 @@ evgMrm::isr(void* arg) {
         }
     }
 
+     if(active & EVG_IRQ_EXT_INP) {
+         if(evg->irqExtInp_queued==0) {
+             callbackRequest(&evg->irqExtInp_cb);
+             evg->irqExtInp_queued=1;
+         } else if(evg->irqExtInp_queued==1) {
+             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
+             evg->irqExtInp_queued=2;
+         }
+     }
+
+    #else
+    
+    /*
+     * This is far far far far from proper solution
+     * since it blocks IRQ thread. Luckily the whole ISR
+     * Executes in ~10us so it's not a big problem.
+     * A better solution would be to use epics callback like
+     * original driver, but care must be taken in order to
+     * avoid race conditions.
+     */
+    if(active & EVG_IRQ_STOP_RAM(0)) {
+        evg->getSeqRamMgr()->getSeqRam(0)->process_eos();
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(1)) {
+        evg->getSeqRamMgr()->getSeqRam(1)->process_eos();
+    }
+
+    if(active & EVG_IRQ_START_RAM(0)) {
+        evg->getSeqRamMgr()->getSeqRam(0)->process_sos();
+    }
+
+    if(active & EVG_IRQ_START_RAM(1)) {
+        evg->getSeqRamMgr()->getSeqRam(1)->process_sos();
+    }
+
     if(active & EVG_IRQ_EXT_INP) {
         if(evg->irqExtInp_queued==0) {
             callbackRequest(&evg->irqExtInp_cb);
@@ -305,6 +356,9 @@ evgMrm::isr(void* arg) {
             evg->irqExtInp_queued=2;
         }
     }
+#endif
+
+
 
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
