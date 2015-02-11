@@ -276,7 +276,7 @@ record(stringin, "$(P)Time-I") {
 record(bo, "$(P)Link-RxMode-Sel") {
   field(DESC, "Downstream data mode")
   field(DTYP, "Obj Prop bool")
-  field(OUT , "@OBJ=$(OBJ)-BUFRX, PROP=Enable")
+  field(OUT , "@OBJ=$(OBJ):BUFRX, PROP=Enable")
   field(PINI, "YES")
   field(VAL , "1")
   field(ZNAM, "DBus only")

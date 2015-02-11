@@ -9,7 +9,7 @@
  * With the MRM both the EVG and the EVR have
  * the exact same Tx control register
  */
-class mrmDataBufTx : public dataBufTx
+class epicsShareClass mrmDataBufTx : public dataBufTx
 {
 public:
 
@@ -29,7 +29,7 @@ public:
 
     virtual epicsUInt32 lenMax() const;
 
-    virtual void dataSend(epicsUInt8 id, epicsUInt32 len, const epicsUInt8 *buf);
+    virtual void dataSend(epicsUInt32 len, const epicsUInt8 *buf);
 
 private:
     volatile epicsUInt8 * const dataCtrl;

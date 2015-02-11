@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <epicsExport.h>
+
 #include <dbAccess.h>
 #include <devSup.h>
 #include <recGbl.h>
@@ -12,18 +12,25 @@
 #include <menuFtype.h>
 #include <epicsEndian.h>
 
-// for htons() et al.
-#include <netinet/in.h> // on rtems
-#include <arpa/inet.h> // on linux
+#ifdef _WIN32
+ #include <Winsock2.h>
+#else
+ // for htons() et al.
+ #include <netinet/in.h> // on rtems
+ #include <arpa/inet.h> // on linux
+#endif
 
-#include "mrf/databuf.h"
+
 #include "linkoptions.h"
 #include "devObj.h"
+#include "mrf/databuf.h"
 
 #include <stdexcept>
 #include <string>
 #include <cfloat>
 
+
+#include <epicsExport.h>
 struct priv
 {
   char obj[40];
@@ -145,7 +152,7 @@ try {
       }
   }
 
-  paddr->priv->dataSend(paddr->proto,requested,buf);
+  paddr->priv->dataSend(requested,buf);
 
   return 0;
 } catch(std::exception& e) {

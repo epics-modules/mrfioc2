@@ -1,3 +1,14 @@
+#ifdef DATABUF_H_INC_LEVEL2
+ #ifndef DATABUFL2_epicsExportSharedSymbols
+  //#undef DATABUF_H_INC
+ #endif
+ #ifdef epicsExportSharedSymbols
+  #define DATABUFL2_epicsExportSharedSymbols
+  #undef epicsExportSharedSymbols
+  #include "shareLib.h"
+ #endif
+#endif
+
 
 #ifndef DATABUF_H_INC
 #define DATABUF_H_INC
@@ -13,10 +24,11 @@
  *@param len Number of bytes in buffer.
  *@param buf[in] Byte array
  */
-typedef void (*dataBufComplete)(void *arg, epicsStatus ok, epicsUInt8 proto,
+typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
                            epicsUInt32 len, const epicsUInt8* buf);
 
-class dataBufTx : public mrf::ObjectInst<dataBufTx> {
+
+class epicsShareClass dataBufTx : public mrf::ObjectInst<dataBufTx> {
     struct impl;
     impl *pimpl;
 public:
@@ -34,22 +46,18 @@ public:
 
     /**@brief Transmit a byte array
      *
-     *@param id Send buffer with this Protocol ID.
      *@param len Number of bytes to send
      *@param buf[in] Pointer to byte array to be sent
      */
-    virtual void dataSend(epicsUInt8 id, epicsUInt32 len, const epicsUInt8 *buf)=0;
+    virtual void dataSend(epicsUInt32 len, const epicsUInt8 *buf)=0;
 
 };
 
-class dataBufRx : public mrf::ObjectInst<dataBufRx> {
+
+
+class epicsShareClass dataBufRx : public mrf::ObjectInst<dataBufRx> {
 public:
     dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
-
-    enum {
-        // Special Protocol ID to receive buffers from all IDs.
-        AllProtocol=0xff00
-    };
 
     virtual ~dataBufRx()=0;
 
@@ -68,17 +76,20 @@ public:
 
     /**@brief Register to receive data buffers
      *
-     *@param id Receive buffers with this Protocol ID.
      *@param fptr[in] Function pointer invoken after Rx
      *@param arg[in] Arbitrary pointer passed to completion function
      */
-    virtual void dataRxAddReceive(epicsUInt16 id,
-                                  dataBufComplete fptr,
-                                  void* arg=0)=0;
+    virtual void dataRxAddReceive(dataBufComplete fptr, void* arg=0)=0;
 
     /**@brief Unregister
      */
-    virtual void dataRxDeleteReceive(epicsUInt16 id, dataBufComplete fptr, void* arg=0)=0;
+    virtual void dataRxDeleteReceive(dataBufComplete fptr, void* arg=0)=0;
 };
 
 #endif // DATABUF_H_INC
+
+#ifdef DATABUFL2_epicsExportSharedSymbols
+ #undef DATABUF_H_INC_LEVEL2
+ #define epicsExportSharedSymbols
+ #include "shareLib.h"
+#endif

@@ -916,12 +916,6 @@ void
 EVRMRM::isr_vme(void *arg) {
     EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
-    epicsUInt32 flags=READ32(evr->base, IRQFlag);
-    epicsUInt32 active=flags&evr->shadowIRQEna;
-
-    if(!active)
-        return;
-
     // Calling the default platform-independent interrupt routine
     evr->isr(arg);
 }
@@ -939,6 +933,9 @@ EVRMRM::isr(void *arg)
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     epicsUInt32 active=flags&evr->shadowIRQEna;
+
+    if(!active)
+        return;
 
     if(active&IRQ_RXErr){
         evr->count_recv_error++;

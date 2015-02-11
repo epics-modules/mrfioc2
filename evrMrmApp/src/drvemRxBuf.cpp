@@ -8,24 +8,24 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemRxBuf.h"
+
 
 #include <cstdio>
 #include <errlog.h>
+
+#ifdef _WIN32
+	#include <Winsock2.h>
+	#pragma comment (lib, "Ws2_32.lib")
+#endif
+#include <callback.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
-
-#include "evrRegMap.h"
-
 #include <epicsInterrupt.h>
 
-#ifndef bswap32
-#define bswap32(value) (  \
-        (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
-        (((epicsUInt32)(value) & 0x0000ff00) << 8)    |                \
-        (((epicsUInt32)(value) & 0x00ff0000) >> 8)    |                \
-        (((epicsUInt32)(value) & 0xff000000) >> 24))
-#endif
+#define DATABUF_H_INC_LEVEL2
+#include <epicsExport.h>
+#include "evrRegMap.h"
+#include "drvemRxBuf.h"
 
 mrmBufRx::mrmBufRx(const std::string& n, volatile void *b,unsigned int qdepth, unsigned int bsize)
     :bufRxManager(n, qdepth, bsize)
@@ -67,6 +67,8 @@ mrmBufRx::dataRxEnable(bool v)
  * Further, since the DataBufCtrl and DataRx(i) registers are not used anywhere else
  * we can safely avoid locking while accessing them.
  */
+int evrDebug;
+
 void
 mrmBufRx::drainbuf(CALLBACK* cb)
 {
@@ -97,43 +99,27 @@ try {
         } else {
 
             unsigned int rsize=sts&DataBufCtrl_len_mask;
-
+            
             if (rsize>bsize) {
                 errlogPrintf("Received data buffer with size %u >= %u\n", rsize, bsize);
                 rsize=bsize;
             }
-
-            epicsUInt32 val=0;
-            for(unsigned int i=0; i<rsize; i++) {
-                if(i%4==0)
-                    val=bswap32(READ32(self.base, DataRx(i)));
-                buf[i] = val>>24;
-                val<<=8;
+            
+            if(evrDebug>2)
+            {
+                printf("buffer %s: %02x %02x %02x %02x = %08x\n",
+                    self.name().c_str(),
+                    *(self.base+U32_DataRx(0)),
+                    *(self.base+U32_DataRx(1)),
+                    *(self.base+U32_DataRx(2)),
+                    *(self.base+U32_DataRx(3)),
+                    *(epicsUInt32*)(self.base+U32_DataRx(0)));
             }
 
-            if(rsize%4) {
-                epicsUInt32 rem=bswap32(READ32(self.base, DataRx(rsize&~0x3)));
-                // maximum of 3 iterations
-                for(unsigned int i=rsize-rsize%4; i<rsize; i++) {
-                    buf[i] = rem>>24; // take top byte
-                    rem<<=8; // shift next byte up
-                }
+            /* keep buffer in big endian mode (as sent by EVG) */
+            for(unsigned int i=0; i<rsize; i+=4) {
+                *(epicsUInt32*)(buf+i) = BE_READ32(self.base, DataRx(i));
             }
-/*
-            const unsigned int dblen=10;
-            char pbuf[dblen*2+1];
-            for(unsigned int i=0; i<dblen; i++) {
-                if(i<rsize) {
-                    pbuf[2*i] = buf[i]/16<=9 ? '0' + buf[i]/16 : 'a' + buf[i]/16;
-                    pbuf[2*i+1] = buf[i]%16<=9 ? '0' + buf[i]%16 : 'a' + buf[i]%16;
-                } else {
-                    pbuf[2*i] = '\0';
-                    pbuf[2*i+1] = '\0';
-                }
-            }
-            pbuf[dblen*2]='\0';
-            errlogPrintf("Data %s\n",pbuf);
-*/
             self.receive(buf, rsize);
         }
     }
