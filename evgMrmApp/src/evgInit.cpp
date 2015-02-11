@@ -390,8 +390,6 @@ mrmEvgSetupPCI (
 			printf("PCI interrupt connected!\n");
 		}
 
-
-
 		return 0;
 
 	} catch (std::exception& e) {

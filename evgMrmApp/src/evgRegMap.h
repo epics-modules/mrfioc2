@@ -189,7 +189,7 @@
 /**************************************************************************************************/
 
 #define  EVG_IRQ_ENABLE         0x80000000  // Master Interrupt Enable Bit
-#define  EVG_IRQ_PCIIE			0x40000000
+#define  EVG_IRQ_PCIIE          0x40000000
 #define  EVG_IRQ_STOP_RAM_BASE  0x00001000  // Sequence RAM Stop Interrupt Bit
 #define  EVG_IRQ_STOP_RAM(N)    (EVG_IRQ_STOP_RAM_BASE<<N)
 #define  EVG_IRQ_START_RAM_BASE 0x00000100  // Sequence RAM Start Interrupt Bit

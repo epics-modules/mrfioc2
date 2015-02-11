@@ -93,6 +93,10 @@
 /* For MRM EVR 230 and 300 series
  */
 
+#define CTRLMain    0x004
+#  define CTRL_BeEnd   0x02000000
+#  define CTRL_LeEnd   0x00000040
+
 #define IRQFlag     0x008
 #  define IRQ_LinkChg   0x40
 #  define IRQ_BufFull   0x20
@@ -105,6 +109,12 @@
 #define IRQEnable   0x00c
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
+#  define IRQ_PCIee     0x40000000
+
+#define IRQ_Enable_ALL  (IRQ_Enable|IRQ_PCIee)
+
+#define FPGAVersion 0x02c
+#  define FPGAVer_FF    0x0f000000
 
 /* driver private struct */
 
@@ -112,6 +122,7 @@ struct mrf_priv {
     struct uio_info uio;
     struct pci_dev *pdev;
     unsigned int irqmode;
+    unsigned int intrcount;
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
     spinlock_t lock;

@@ -325,7 +325,7 @@ try {
 #else
         /* ask the kernel module to enable interrupts through the PLX bridge */
         if(devPCIEnableInterrupt(cur)) {
-            printf("Failed to enable interrupt\n");
+            printf("PLX 9030: Failed to enable interrupt\n");
             return;
         }
 #endif
@@ -345,9 +345,9 @@ try {
 #ifndef __linux__
         BITSET(LE,32,plx, INTCSR9056, INTCSR9056_PCI_Enable|INTCSR9056_LCL_Enable);
 #else
-        /* ask the kernel module to enable interrupts through the PLX bridge */
+        /* ask the kernel module to enable interrupts */
         if(devPCIEnableInterrupt(cur)) {
-            printf("Failed to enable interrupt\n");
+            printf("PLX 9056: Failed to enable interrupt\n");
             return;
         }
 #endif
@@ -359,10 +359,21 @@ try {
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
         //BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
         *(uint8_t *)(evr+0x04) = 0x82; // unknown magic number
+        printf("Setting magic LE number!\n");
 #endif
 
         // Disable interrupts on device
         NAT_WRITE32(evr, IRQEnable, 0);
+
+#ifndef __linux__
+        BITSET32(evr, IRQEnable, IRQ_PCIee);
+#else
+        /* ask the kernel module to enable interrupts */
+        if(devPCIEnableInterrupt(cur)) {
+            printf("EC 30: Failed to enable interrupt\n");
+            return;
+        }
+#endif
         break;
     default:
         printf("Unknown PCI bridge %04x\n", cur->id.device);
