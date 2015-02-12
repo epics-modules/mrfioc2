@@ -9,20 +9,20 @@
 
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
-record(longout, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP") {
+record(longout, "$(SYS)-$(EVR):Event-$(CODE)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
-  field(OUT , "@OBJ=$(EVR,undefined),Code=$(CODE,recursive)")
-  field(VAL , "$(EVNT,recursive)")
+  field(OUT , "@OBJ=$(EVR),Code=$(CODE)")
+  field(VAL , "$(EVNT)")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I")
+  field(FLNK, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I")
   info(autosaveFields_pass0, "OUT VAL")
 }
 
-record(calc, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I") {
-  field(SDIS, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP")
+record(calc, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I") {
+  field(SDIS, "$(SYS)-$(EVR):Event-$(CODE)-SP")
   field(DISV, "0")
   field(CALC, "A+1")
-  field(INPA, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-Cnt-I NPP")
-  field(TSEL, "$(SYS,undefined):$(EVR,undefined)-Event-$(CODE,recursive)-SP.TIME")
+  field(INPA, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I NPP")
+  field(TSEL, "$(SYS)-$(EVR):Event-$(CODE)-SP.TIME")
 }
