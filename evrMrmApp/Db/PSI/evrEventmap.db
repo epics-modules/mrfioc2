@@ -9,12 +9,12 @@
 #                 "TS reset", "TS tick", "Shift 1", "Shift 0",
 #
 
-record(longout, "$(SYS,undefined):$(EVR,undefined)-Evtmap-$(EVT,recursive)-DNC") {
+record(longout, "$(SYS)-$(EVR):Evtmap-$(EVT)-DNC") {
   field( DTYP, "EVR Mapping" )
-  field( OUT , "@OBJ=$(EVR,undefined), Func=$(FUNC,undefined)")
+  field( OUT , "@OBJ=$(EVR), Func=$(FUNC)")
   field( PINI, "YES")
-  field( DESC, "Mapping for $(FUNC,undefined)")
-  field( VAL , $(EVT,recursive))
+  field( DESC, "Mapping for $(FUNC)")
+  field( VAL , $(EVT))
   field( LOPR, "0")
   field( HOPR, "255")
   field( DRVL, "0")
