@@ -13,7 +13,7 @@ record(bo, "$(ON)Ena-SP") {
   field( PINI, "YES")
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
-  field( VAL , "1") # Default to enabled
+  field( VAL , "$($(OBJ)-Ena-SP\=1)") # Default to enabled
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -23,7 +23,7 @@ record(longout, "$(ON)Src-SP") {
   field( OUT , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(ON)Src-RB")
   field( PINI, "YES")
-  field( VAL , "63")
+  field( VAL , "$($(OBJ)-Src-SP\=63)")  # Defaults to Force high (if enabled -> Ena-SP)
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
@@ -33,6 +33,7 @@ record(longout, "$(ON)Src-SP") {
 record(mbbo, "$(ON)Src-Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
+  field( VAL , "$($(OBJ)-Src-Pulse-SP\=0)")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -73,6 +74,7 @@ record(mbbo, "$(ON)Src-Pulse-SP") {
 record(mbbo, "$(ON)Src-DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
+  field( VAL , "$($(OBJ)-Src-DBus-SP\=32)")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -115,7 +117,7 @@ record(mbbo, "$(ON)Src-Scale-SP") {
   field( FRST, "Force High")
   field( THVL, "63")
   field( FRVL, "62")
-  field( VAL , "3")
+  field( VAL , "$($(OBJ)-Src-Scale-SP\=3)")
   field( FVSV, "INVALID")
   field( SXSV, "INVALID")
   field( SVSV, "INVALID")

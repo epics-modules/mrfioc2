@@ -12,6 +12,7 @@ record(bo, "$(P)Ena-Sel") {
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
+  field( VAL , "$($(OBJ):Ena-Sel\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -31,6 +32,7 @@ record(bo, "$(P)ExtInhib-Sel") {
   field(ZNAM, "Use Inhibit")
   field(ONAM, "Always Permit")
   field(OSV, "MINOR")
+  field( VAL , "$($(OBJ):ExtInhib-Sel\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -87,7 +89,7 @@ record(ao, "$(P)Link-Clk-SP") {
   field(OUT , "@OBJ=$(OBJ), PROP=Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , "124.916")
+  field( VAL , "$($(OBJ):Link-Clk-SP\=124.916)")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
@@ -195,6 +197,7 @@ record(mbbo, "$(P)Time-Src-Sel") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(P)Time-Src-Sel_")
   field( PINI, "YES")
+  field( VAL , "$($(OBJ):Time-Src-Sel\=0)")
   field( ZRST, "Event clock")
   field( ONST, "Mapped code(s)")
   field( TWST, "DBus 4")
@@ -230,7 +233,7 @@ record(ao, "$(P)Time-Clock-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Clock")
   field(DESC, "Timestamp tick rate")
-  field(VAL , "0.0")
+  field( VAL , "$($(OBJ):Time-Clock-SP\=0.0)")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
@@ -278,7 +281,7 @@ record(bo, "$(P)Link-RxMode-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ):BUFRX, PROP=Enable")
   field(PINI, "YES")
-  field(VAL , "1")
+  field( VAL , "$($(OBJ):Link-RxMode-Sel\=1)")
   field(ZNAM, "DBus only")
   field(ONAM, "DBus+Buffer")
   info(autosaveFields_pass0, "VAL")
