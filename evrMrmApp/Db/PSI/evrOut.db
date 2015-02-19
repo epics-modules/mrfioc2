@@ -33,7 +33,6 @@ record(longout, "$(ON)Src-SP") {
 record(mbbo, "$(ON)Src-Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
-  field( VAL , "$($(OBJ)-Src-Pulse-SP\=0)")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -74,7 +73,6 @@ record(mbbo, "$(ON)Src-Pulse-SP") {
 record(mbbo, "$(ON)Src-DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
-  field( VAL , "$($(OBJ)-Src-DBus-SP\=32)")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -117,7 +115,7 @@ record(mbbo, "$(ON)Src-Scale-SP") {
   field( FRST, "Force High")
   field( THVL, "63")
   field( FRVL, "62")
-  field( VAL , "$($(OBJ)-Src-Scale-SP\=3)")
+  field( VAL , "3")
   field( FVSV, "INVALID")
   field( SXSV, "INVALID")
   field( SVSV, "INVALID")

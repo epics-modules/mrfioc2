@@ -51,7 +51,6 @@ record(longin, "$(P)Cnt-RxErr-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Receive Error Count")
   field(INP , "@OBJ=$(OBJ), PROP=Receive Error Count")
-  field(DESC, "Rx error count")
   field(TSEL, "$(P)Link-Sts.TIME")
   field(FLNK, "$(P)Cnt-HwOflw-I")
 }
