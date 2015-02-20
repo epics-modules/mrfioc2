@@ -1,0 +1,1 @@
+msi -M "SYS=VME,EVR=EVRx" -I"../evrMrmApp/Db/PSI/" -S ../evrMrmApp/Db/PSI/evr-vmerf230.substitutions | grep 'VAL , "$(' | cut -d'(' -s -f 3 | cut -d',' -s -f 1 > settings.txt

@@ -13,7 +13,7 @@ record(bo, "$(ON)Ena-SP") {
   field( PINI, "YES")
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
-  field( VAL , "1") # Default to enabled
+  field( VAL , "$($(OBJ)-Ena-SP\=1)") # Default to enabled
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -23,7 +23,7 @@ record(longout, "$(ON)Src-SP") {
   field( OUT , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(ON)Src-RB")
   field( PINI, "YES")
-  field( VAL , "63")
+  field( VAL , "$($(OBJ)-Src-SP\=63)")  # Defaults to Force high (if enabled -> Ena-SP)
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
