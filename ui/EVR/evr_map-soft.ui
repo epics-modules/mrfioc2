@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
-    <height>25</height>
+    <width>210</width>
+    <height>20</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,16 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>2</y>
-     <width>141</width>
-     <height>21</height>
+     <y>0</y>
+     <width>80</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Code $(CODE) count</string>
+    <string>Event $(EVT)</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
    <property name="visibility">
     <enum>caLabel::StaticV</enum>
@@ -41,22 +41,22 @@
   <widget class="caLineEdit" name="calineedit_6">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>2</y>
-     <width>100</width>
+     <x>85</x>
+     <y>0</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Event-$(CODE)-Cnt-I</string>
+    <string notr="true">$(EVR):Event-$(EVT)-Cnt-I</string>
    </property>
   </widget>
   <widget class="caLabel" name="calabel">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>2</y>
-     <width>101</width>
+     <x>85</x>
+     <y>0</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
@@ -70,7 +70,7 @@
     <enum>caLabel::IfZero</enum>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Event-$(CODE)-SP</string>
+    <string notr="true">$(EVR):Event-$(EVT)-SP</string>
    </property>
   </widget>
  </widget>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
-    <height>25</height>
+    <width>180</width>
+    <height>20</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,13 +17,13 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>2</y>
-     <width>141</width>
-     <height>21</height>
+     <y>0</y>
+     <width>80</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>$(FUNC) on $(EVT)</string>
+    <string>Event $(EVT)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -38,34 +38,28 @@
     <string notr="true"/>
    </property>
   </widget>
-  <widget class="caLabel" name="calabel">
+  <widget class="caLineEdit" name="calineedit">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>2</y>
-     <width>101</width>
+     <x>90</x>
+     <y>0</y>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
-    <string>SET</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="visibility">
-    <enum>caLabel::StaticV</enum>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true"/>
+    <string notr="true">$(EVR):Evtmap-$(EVT)-DNC.OUT</string>
    </property>
   </widget>
-  <widget class="caLabel" name="calabel_3">
+  <widget class="caLabel" name="calabel_4">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>2</y>
-     <width>100</width>
+     <x>90</x>
+     <y>0</y>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
@@ -88,6 +82,11 @@
    <class>caLabel</class>
    <extends>QLabel</extends>
    <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>caLineEdit</header>
   </customwidget>
  </customwidgets>
  <resources/>
