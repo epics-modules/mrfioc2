@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>255</width>
+    <height>25</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="caLabel" name="calabel_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>2</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>$(FUNC) on $(EVT)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="visibility">
+    <enum>caLabel::StaticV</enum>
+   </property>
+   <property name="visibilityCalc">
+    <string notr="true"/>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true"/>
+   </property>
+  </widget>
+  <widget class="caLabel" name="calabel">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>2</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>SET</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="visibility">
+    <enum>caLabel::StaticV</enum>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true"/>
+   </property>
+  </widget>
+  <widget class="caLabel" name="calabel_3">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>2</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Not set</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="visibility">
+    <enum>caLabel::IfZero</enum>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):Evtmap-$(EVT)-DNC</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
