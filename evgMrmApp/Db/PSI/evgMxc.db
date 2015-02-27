@@ -68,7 +68,7 @@ record(longin , "$(P)Prescaler-RB") {
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
-    field( FLNK, "$(SYS):$(D)-ResetMxc-Cmd")
+    field( FLNK, "$(SYS)-$(D):ResetMxc-Cmd")
 }
 
 #
