@@ -91,6 +91,7 @@
     INTCSR9056_DM0_Status|INTCSR9056_DM1_Status)
 
 /* For MRM EVR 230 and 300 series
+ * FPGA register and flag values
  */
 
 #define CTRLMain    0x004
@@ -113,8 +114,15 @@
 
 #define IRQ_Enable_ALL  (IRQ_Enable|IRQ_PCIee)
 
+/* The expected value (form factor and 0x1 for EVR) that is
+ * stored in FPGA of EVR300 @ first byte of FPGAVersion register.
+ *
+ * This value is used to test enianness of the EVR 300 PCIe card.
+ */
+#define FPGAVER_EVR300  0x17
+
 #define FPGAVersion 0x02c
-#  define FPGAVer_FF    0x0f000000
+#  define FPGAVer_FF    0xff000000
 
 /* driver private struct */
 
