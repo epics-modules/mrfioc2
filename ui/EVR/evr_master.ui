@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>674</width>
-    <height>675</height>
+    <width>676</width>
+    <height>646</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,8 +16,23 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>675</width>
+    <height>645</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>676</width>
+    <height>646</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>EVR</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="caLabel" name="calabel">
@@ -51,7 +66,7 @@
     <widget class="caInclude" name="cainclude_6">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>135</x>
        <y>10</y>
        <width>260</width>
        <height>140</height>
@@ -117,6 +132,27 @@
         <property name="channel" stdset="0">
          <string notr="true">$(EVR):Ena-Sel</string>
         </property>
+        <property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -134,6 +170,27 @@
         <property name="channel" stdset="0">
          <string notr="true">$(EVR):Time-Valid-Sts</string>
         </property>
+        <property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -150,6 +207,27 @@
         </property>
         <property name="channel" stdset="0">
          <string notr="true">$(EVR):Pll-Sts</string>
+        </property>
+        <property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
         </property>
        </widget>
       </item>
@@ -178,9 +256,9 @@
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>125</x>
        <y>10</y>
-       <width>16</width>
+       <width>10</width>
        <height>171</height>
       </rect>
      </property>
@@ -227,11 +305,11 @@
       <x>0</x>
       <y>230</y>
       <width>671</width>
-      <height>441</height>
+      <height>411</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -274,120 +352,390 @@
      <attribute name="title">
       <string>Outputs</string>
      </attribute>
-     <widget class="QWidget" name="verticalLayoutWidget_2">
+     <widget class="QScrollArea" name="scrollArea">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>661</width>
-        <height>401</height>
+        <width>671</width>
+        <height>381</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="spacing">
-        <number>6</number>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>651</width>
+         <height>700</height>
+        </rect>
        </property>
-       <item>
-        <widget class="caInclude" name="cainclude_3">
-         <property name="macro">
-          <string notr="true">ID=0, P=FP, EVR=$(EVR)</string>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>700</height>
+        </size>
+       </property>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>661</width>
+          <height>700</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>6</number>
          </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_out-details-min.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_4">
-         <property name="macro">
-          <string notr="true">ID=1, P=FP, EVR=$(EVR)</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_out-details-min.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_5">
-         <property name="macro">
-          <string notr="true">ID=2, P=FP, EVR=$(EVR)</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_out-details-min.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_7">
-         <property name="macro">
-          <string notr="true">ID=3, P=FP, EVR=$(EVR)</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_out-details-min.ui</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+         <item>
+          <widget class="caInclude" name="cainclude_3">
+           <property name="macro">
+            <string notr="true">ID=0, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_4">
+           <property name="macro">
+            <string notr="true">ID=1, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_5">
+           <property name="macro">
+            <string notr="true">ID=2, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_7">
+           <property name="macro">
+            <string notr="true">ID=3, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_14">
+           <property name="macro">
+            <string notr="true">ID=4, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_559">
+           <property name="macro">
+            <string notr="true">ID=5, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_560">
+           <property name="macro">
+            <string notr="true">ID=6, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_561">
+           <property name="macro">
+            <string notr="true">ID=7, P=FP, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_562">
+           <property name="macro">
+            <string notr="true">ID=0, P=FPUV, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_563">
+           <property name="macro">
+            <string notr="true">ID=1, P=FPUV, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_564">
+           <property name="macro">
+            <string notr="true">ID=2, P=FPUV, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_565">
+           <property name="macro">
+            <string notr="true">ID=3, P=FPUV, EVR=$(EVR)</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_out-details-min.ui</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
       <string>Pulsers</string>
      </attribute>
-     <widget class="QWidget" name="verticalLayoutWidget_3">
+     <widget class="QScrollArea" name="scrollArea_2">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>661</width>
-        <height>401</height>
+        <width>671</width>
+        <height>381</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="spacing">
-        <number>6</number>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>98</width>
+         <height>1600</height>
+        </rect>
        </property>
-       <item>
-        <widget class="caInclude" name="cainclude_17">
-         <property name="macro">
-          <string notr="true">EVR=$(EVR),ID=0</string>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>1600</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <widget class="QWidget" name="verticalLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>661</width>
+          <height>1600</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>6</number>
          </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_pulser.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_18">
-         <property name="macro">
-          <string notr="true">EVR=$(EVR),ID=1</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_pulser.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_19">
-         <property name="macro">
-          <string notr="true">EVR=$(EVR),ID=2</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_pulser.ui</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="caInclude" name="cainclude_20">
-         <property name="macro">
-          <string notr="true">EVR=$(EVR),ID=3</string>
-         </property>
-         <property name="filename" stdset="0">
-          <string notr="true">evr_pulser.ui</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+         <item>
+          <widget class="caInclude" name="cainclude_17">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=0</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_18">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=1</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_19">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=2</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_20">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=3</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_21">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=4</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_292">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=5</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_549">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=6</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_550">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=7</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_551">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=8</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_552">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=9</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_553">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=10</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_554">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=11</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_555">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=12</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_556">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=13</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_557">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=14</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="caInclude" name="cainclude_558">
+           <property name="macro">
+            <string notr="true">EVR=$(EVR),ID=15</string>
+           </property>
+           <property name="filename" stdset="0">
+            <string notr="true">evr_pulser.ui</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_4">
