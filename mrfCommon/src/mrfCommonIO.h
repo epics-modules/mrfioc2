@@ -175,7 +175,6 @@
 INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 	switch ((size_t)addr % 4) {
 	case 0:
-<<<<<<< HEAD
 		return ioread8((char*)addr + 3);
 	case 1:
 		return ioread8((char*)addr + 1);
@@ -183,15 +182,6 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 		return ioread8((char*)addr - 1);
 	case 3:
 		return ioread8((char*)addr - 3);
-=======
-		return ioread8(((epicsUInt8 *)addr) + 3);
-	case 1:
-		return ioread8(((epicsUInt8 *)addr) + 1);
-	case 2:
-		return ioread8(((epicsUInt8 *)addr) - 1);
-	case 3:
-		return ioread8(((epicsUInt8 *)addr) - 3);
->>>>>>> 0cdcde317e77a73f3b7504288de308d19960578b
 	}
 }
 #define NAT_READ8(base,offset)  \
@@ -205,15 +195,9 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
   	switch ((size_t)addr % 4) {
   	case 0:
-<<<<<<< HEAD
   		return nat_ioread16((char*)addr + 2);
   	case 2:
   		return nat_ioread16((char*)addr - 2);
-=======
-  		return nat_ioread16(((epicsUInt8 *)addr) + 2);
-  	case 2:
-  		return nat_ioread16(((epicsUInt8 *)addr) - 2);
->>>>>>> 0cdcde317e77a73f3b7504288de308d19960578b
   	}
   }
  #define NAT_READ16(base,offset) \
@@ -234,7 +218,6 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
 INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
  	switch ((size_t)addr % 4) {
  	case 0:
-<<<<<<< HEAD
  		return iowrite8((char*)addr + 3,val);
  	case 1:
  		return iowrite8((char*)addr + 1,val);
@@ -242,15 +225,6 @@ INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
  		return iowrite8((char*)addr - 1,val);
  	case 3:
  		return iowrite8((char*)addr - 3,val);
-=======
- 		return iowrite8(((epicsUInt8 *)addr) + 3,val);
- 	case 1:
- 		return iowrite8(((epicsUInt8 *)addr) + 1,val);
- 	case 2:
- 		return iowrite8(((epicsUInt8 *)addr) - 1,val);
- 	case 3:
- 		return iowrite8(((epicsUInt8 *)addr) - 3,val);
->>>>>>> 0cdcde317e77a73f3b7504288de308d19960578b
  	}
  }
  #define NAT_WRITE8(base,offset,value) \
@@ -264,15 +238,9 @@ INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
 INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
  	switch ((size_t)addr % 4) {
  	case 0:
-<<<<<<< HEAD
  		return nat_iowrite16((short*)addr + 2,val);
  	case 2:
  		return nat_iowrite16((short*)addr - 2,val);
-=======
- 		return nat_iowrite16(((epicsUInt8 *)addr) + 2,val);
- 	case 2:
- 		return nat_iowrite16(((epicsUInt8 *)addr) - 2,val);
->>>>>>> 0cdcde317e77a73f3b7504288de308d19960578b
  	}
  }
 #define NAT_WRITE16(base,offset,value) \

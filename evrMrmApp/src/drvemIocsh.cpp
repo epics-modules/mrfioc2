@@ -237,7 +237,7 @@ static int checkUIOVersion(int expect) {return 0;}
 
 extern "C"
 void
-mrmEvrSetupPCI(const char* id,int o,int b,int d,int f)
+mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
     std::ostringstream position;
@@ -250,7 +250,7 @@ try {
         return;
 
     const epicsPCIDevice *cur=0;
-    if( devPCIFindDBDF(mrmevrs,o,b,d,f,&cur,0) ){
+    if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
         printf("PCI Device not found\n");
         return;
     }
@@ -369,7 +369,6 @@ try {
         BITSET32(evr, IRQEnable, IRQ_PCIee);
 #else
         /* ask the kernel module to enable interrupts */
-        printf("EC 30: Enabling interrupts\n");
         if(devPCIEnableInterrupt(cur)) {
             printf("EC 30: Failed to enable interrupt\n");
             return;
@@ -490,19 +489,17 @@ void inithooks(initHookState state)
     }
 }
 
-
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
-static const iocshArg mrmEvrSetupPCIArg1 = { "Domain number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg2 = { "Bus number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg3 = { "Device number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg4 = { "Function number",iocshArgInt};
-static const iocshArg * const mrmEvrSetupPCIArgs[5] =
-{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2,&mrmEvrSetupPCIArg3,&mrmEvrSetupPCIArg4};
+static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg3 = { "Function number",iocshArgInt};
+static const iocshArg * const mrmEvrSetupPCIArgs[4] =
+{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2,&mrmEvrSetupPCIArg3};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =
-    {"mrmEvrSetupPCI",5,mrmEvrSetupPCIArgs};
+    {"mrmEvrSetupPCI",4,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
+    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival);
 }
 
 extern "C"
