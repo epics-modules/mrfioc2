@@ -30,6 +30,9 @@ MODULE_PARM_DESC(interfaceversion, "User space interface version");
 
 #define PCI_DEVICE_ID_EC_30                 0xEC30
 
+#define PCI_DEVICE_ID_PLX_9030              0x9030      /** PCI Device ID for PLX-9030 bridge chip */
+#define PCI_DEVICE_ID_PLX_9056              0x9056      /** PCI Device ID for PLX-9056 bridge chip */
+
 /* PMC-EVR-230 */
 #define PCI_SUBDEVICE_ID_MRF_PMCEVR_230     0x11e6
 /* cPCI-EVR-230 */
@@ -155,12 +158,12 @@ mrf_handler_plx(int irq, struct uio_info *info)
     case PCI_DEVICE_ID_EC_30:
         // Check endianism
         val = ioread32(plx + FPGAVersion);
-        if(((val & FPGAVer_FF) >> 24) == 0x7) {
+        if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
             // little endian
             end = 0;
         } else {
             val = ioread32be(plx + FPGAVersion);
-            if(((val & FPGAVer_FF) >> 24) == 0x7) {
+            if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
                 // big endian
                 end = 1;
             } else {
@@ -267,14 +270,14 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         break;
 
     case PCI_DEVICE_ID_EC_30:
-
+	
         // Check endianism
         val = ioread32(plx + FPGAVersion);
-        if(((val & FPGAVer_FF) >> 24) == 0x7) {
+        if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
             end = 0;
         } else {
             val = ioread32be(plx + FPGAVersion);
-            if(((val & FPGAVer_FF) >> 24) == 0x7) {
+            if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
                 end = 1;
             } else {
                 dev_info(&dev->dev, "ERROR: Unable to read form factor magic number.");
