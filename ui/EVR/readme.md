@@ -18,6 +18,7 @@ from this folder. The script switches to office channel access and runs
 - __evr_out-details-min.ui__ a compact view of the output with settable output source.
 - __evr_out-details.ui__ similar to _evr_out-details-min.ui_, but including user description
 - __evr_out-helper.ui__ a helper widget used to display the right output source in _evr_out_*\_ widgets
+- __evr_out-helper.ui__ a helper widget used to display the led next to the right output source in _evr_out_*\_ widgets
 - __evr_out-small.ui__ only enabled status and selected output source display of the EVR output
 - __evr_prescaler.ui__ information and settings for a prescaler
 - __evr_pulser.ui__ information and settings for a pulser

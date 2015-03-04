@@ -22,6 +22,9 @@
      <height>28</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+   </property>
    <property name="text">
     <string>$(TITLE)</string>
    </property>
@@ -37,6 +40,9 @@
      <width>371</width>
      <height>231</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
     <string>$(TEXT)</string>

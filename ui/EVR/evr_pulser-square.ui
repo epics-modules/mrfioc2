@@ -59,6 +59,16 @@
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):DlyGen-$(ID)-Delay-SP</string>
        </property>
+       <property name="background">
+        <color>
+         <red>212</red>
+         <green>219</green>
+         <blue>157</blue>
+        </color>
+       </property>
+       <property name="colorMode">
+        <enum>caLineEdit::Static</enum>
+       </property>
       </widget>
      </item>
      <item row="0" column="2">
@@ -90,6 +100,16 @@
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):DlyGen-$(ID)-Width-SP</string>
        </property>
+       <property name="background">
+        <color>
+         <red>212</red>
+         <green>219</green>
+         <blue>157</blue>
+        </color>
+       </property>
+       <property name="colorMode">
+        <enum>caLineEdit::Static</enum>
+       </property>
       </widget>
      </item>
      <item row="1" column="2">
@@ -120,6 +140,16 @@
       <widget class="caTextEntry" name="catextentry_6">
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-SP</string>
+       </property>
+       <property name="background">
+        <color>
+         <red>212</red>
+         <green>219</green>
+         <blue>157</blue>
+        </color>
+       </property>
+       <property name="colorMode">
+        <enum>caLineEdit::Static</enum>
        </property>
       </widget>
      </item>
@@ -198,6 +228,9 @@
       <height>20</height>
      </size>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+    </property>
     <property name="text">
      <string>DlyGen-$(ID)</string>
     </property>
@@ -216,6 +249,23 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):DlyGen-$(ID)-Polarity-Sel</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>

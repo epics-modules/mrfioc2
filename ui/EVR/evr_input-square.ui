@@ -22,6 +22,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(212, 219, 157);</string>
+   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):In-$(ID)-DBus-Sel</string>
    </property>
@@ -88,6 +91,23 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):In-$(ID)-Lvl-Sel</string>
     </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
+    </property>
     <property name="endBit">
      <number>1</number>
     </property>
@@ -100,6 +120,9 @@
       <width>141</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
      <string>Level Select</string>
@@ -136,6 +159,23 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):In-$(ID)-Edge-Sel</string>
     </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
+    </property>
     <property name="endBit">
      <number>1</number>
     </property>
@@ -148,6 +188,9 @@
       <width>141</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
      <string>Edge Select</string>
@@ -165,6 +208,9 @@
      <width>291</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
     <string>Input-$(ID)</string>
@@ -207,6 +253,9 @@
      </item>
      <item row="0" column="1">
       <widget class="caMenu" name="camenu_4">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(212, 219, 157);</string>
+       </property>
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Trig-Back-Sel</string>
        </property>
@@ -226,6 +275,16 @@
       <widget class="caTextEntry" name="catextentry_5">
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Code-Back-SP</string>
+       </property>
+       <property name="background">
+        <color>
+         <red>212</red>
+         <green>219</green>
+         <blue>157</blue>
+        </color>
+       </property>
+       <property name="colorMode">
+        <enum>caLineEdit::Static</enum>
        </property>
       </widget>
      </item>
@@ -266,6 +325,9 @@
      </item>
      <item row="0" column="1">
       <widget class="caMenu" name="camenu_2">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(212, 219, 157);</string>
+       </property>
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Trig-Ext-Sel</string>
        </property>
@@ -285,6 +347,16 @@
       <widget class="caTextEntry" name="catextentry_4">
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Code-Ext-SP</string>
+       </property>
+       <property name="background">
+        <color>
+         <red>212</red>
+         <green>219</green>
+         <blue>157</blue>
+        </color>
+       </property>
+       <property name="colorMode">
+        <enum>caLineEdit::Static</enum>
        </property>
       </widget>
      </item>

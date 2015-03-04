@@ -54,6 +54,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(212, 219, 157);</string>
+   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP</string>
    </property>
@@ -67,6 +70,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(212, 219, 157);</string>
+   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP</string>
    </property>
@@ -79,6 +85,9 @@
      <width>131</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(212, 219, 157);</string>
    </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP</string>
@@ -243,6 +252,9 @@
      <width>670</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
     <string>Out-$(P)$(ID)</string>

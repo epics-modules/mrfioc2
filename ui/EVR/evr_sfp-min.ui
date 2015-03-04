@@ -22,6 +22,9 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+   </property>
    <property name="text">
     <string>SFP</string>
    </property>
@@ -106,6 +109,13 @@
    </property>
    <property name="toolTip">
     <string>Link status</string>
+   </property>
+   <property name="background">
+    <color>
+     <red>183</red>
+     <green>157</green>
+     <blue>92</blue>
+    </color>
    </property>
    <property name="labels">
     <string notr="true">More</string>

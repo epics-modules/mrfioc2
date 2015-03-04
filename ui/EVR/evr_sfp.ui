@@ -22,6 +22,9 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+   </property>
    <property name="text">
     <string>SFP</string>
    </property>

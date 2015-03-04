@@ -66,6 +66,16 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):PS-$(ID)-Div-SP</string>
     </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Static</enum>
+    </property>
    </widget>
    <widget class="caLabel" name="calabel">
     <property name="geometry">
@@ -75,6 +85,9 @@
       <width>194</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
      <string>PS-$(ID)</string>
