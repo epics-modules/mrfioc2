@@ -48,7 +48,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label_16">
       <property name="text">
-       <string>Tranceiver Temperature</string>
+       <string>SFP Temperature (C)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -57,6 +57,9 @@
     </item>
     <item row="0" column="1">
      <widget class="caLineEdit" name="calineedit_6">
+      <property name="toolTip">
+       <string>Transceiver temperature in Celsius</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-T-I</string>
       </property>
@@ -65,7 +68,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_17">
       <property name="text">
-       <string>Tranceiver Output Power</string>
+       <string>SFP Output Power</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -74,6 +77,9 @@
     </item>
     <item row="1" column="1">
      <widget class="caLineEdit" name="calineedit_7">
+      <property name="toolTip">
+       <string>Transceiver optical output power</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-TX-I</string>
       </property>
@@ -82,7 +88,7 @@
     <item row="2" column="0">
      <widget class="QLabel" name="label_18">
       <property name="text">
-       <string>Tranceiver Input Power</string>
+       <string>SFP Input Power</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -91,6 +97,9 @@
     </item>
     <item row="2" column="1">
      <widget class="caLineEdit" name="calineedit_8">
+      <property name="toolTip">
+       <string>Transceiver optical input power</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-RX-I</string>
       </property>
@@ -101,14 +110,14 @@
   <widget class="caRelatedDisplay" name="carelateddisplay_3">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>219</x>
      <y>0</y>
-     <width>30</width>
-     <height>15</height>
+     <width>41</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="toolTip">
-    <string>Link status</string>
+    <string>Detailed SFP information</string>
    </property>
    <property name="background">
     <color>

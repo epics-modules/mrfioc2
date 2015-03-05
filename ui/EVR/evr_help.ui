@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -22,16 +21,15 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-   </property>
    <property name="text">
     <string>$(TITLE)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
   <widget class="caLabel" name="calabel_2">
    <property name="geometry">
     <rect>
@@ -40,9 +38,6 @@
      <width>371</width>
      <height>231</height>
     </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
     <string>$(TEXT)</string>
@@ -53,7 +48,9 @@
    <property name="wordWrap">
     <bool>true</bool>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
  </widget>
  <customwidgets>
   <customwidget>

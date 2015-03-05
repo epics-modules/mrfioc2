@@ -68,7 +68,7 @@
         </property><property name="bordercolor">
          <color>
           <red>0</red>
-          <green>255</green>
+          <green>0</green>
           <blue>0</blue>
          </color>
         </property><property name="colorMode">
@@ -130,7 +130,7 @@
         </property><property name="bordercolor">
          <color>
           <red>0</red>
-          <green>255</green>
+          <green>0</green>
           <blue>0</blue>
          </color>
         </property><property name="colorMode">

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -22,13 +21,12 @@
      <height>25</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(212, 219, 157);</string>
-   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):In-$(ID)-DBus-Sel</string>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
   <widget class="caLineEdit" name="calineedit">
    <property name="geometry">
     <rect>
@@ -91,27 +89,24 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):In-$(ID)-Lvl-Sel</string>
     </property>
-    <property name="background">
-     <color>
-      <red>212</red>
-      <green>219</green>
-      <blue>157</blue>
-     </color>
-    </property>
-    <property name="bordercolor">
-     <color>
-      <red>0</red>
-      <green>255</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="colorMode">
-     <enum>caChoice::Static</enum>
-    </property>
     <property name="endBit">
      <number>1</number>
     </property>
-   </widget>
+   <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="bordercolor">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caChoice::Static</enum>
+        </property></widget>
    <widget class="caLabel" name="calabel_3">
     <property name="geometry">
      <rect>
@@ -121,16 +116,15 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-    </property>
     <property name="text">
      <string>Level Select</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
-   </widget>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
   </widget>
   <widget class="QFrame" name="frame_2">
    <property name="geometry">
@@ -159,27 +153,24 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):In-$(ID)-Edge-Sel</string>
     </property>
-    <property name="background">
-     <color>
-      <red>212</red>
-      <green>219</green>
-      <blue>157</blue>
-     </color>
-    </property>
-    <property name="bordercolor">
-     <color>
-      <red>0</red>
-      <green>255</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="colorMode">
-     <enum>caChoice::Static</enum>
-    </property>
     <property name="endBit">
      <number>1</number>
     </property>
-   </widget>
+   <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="bordercolor">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caChoice::Static</enum>
+        </property></widget>
    <widget class="caLabel" name="calabel_2">
     <property name="geometry">
      <rect>
@@ -189,16 +180,15 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-    </property>
     <property name="text">
      <string>Edge Select</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
-   </widget>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
   </widget>
   <widget class="caLabel" name="calabel">
    <property name="geometry">
@@ -209,16 +199,15 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-   </property>
    <property name="text">
     <string>Input-$(ID)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
@@ -253,13 +242,12 @@
      </item>
      <item row="0" column="1">
       <widget class="caMenu" name="camenu_4">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(212, 219, 157);</string>
-       </property>
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Trig-Back-Sel</string>
        </property>
-      </widget>
+      <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_18">
@@ -277,16 +265,14 @@
         <string notr="true">$(EVR):In-$(ID)-Code-Back-SP</string>
        </property>
        <property name="background">
-        <color>
-         <red>212</red>
-         <green>219</green>
-         <blue>157</blue>
-        </color>
-       </property>
-       <property name="colorMode">
-        <enum>caLineEdit::Static</enum>
-       </property>
-      </widget>
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caLineEdit::Static</enum>
+        </property></widget>
      </item>
     </layout>
    </widget>
@@ -325,13 +311,12 @@
      </item>
      <item row="0" column="1">
       <widget class="caMenu" name="camenu_2">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(212, 219, 157);</string>
-       </property>
        <property name="channel" stdset="0">
         <string notr="true">$(EVR):In-$(ID)-Trig-Ext-Sel</string>
        </property>
-      </widget>
+      <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_16">
@@ -349,16 +334,14 @@
         <string notr="true">$(EVR):In-$(ID)-Code-Ext-SP</string>
        </property>
        <property name="background">
-        <color>
-         <red>212</red>
-         <green>219</green>
-         <blue>157</blue>
-        </color>
-       </property>
-       <property name="colorMode">
-        <enum>caLineEdit::Static</enum>
-       </property>
-      </widget>
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caLineEdit::Static</enum>
+        </property></widget>
      </item>
     </layout>
    </widget>

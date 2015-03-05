@@ -101,7 +101,7 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>5</x>
        <y>110</y>
        <width>121</width>
        <height>20</height>
@@ -129,6 +129,9 @@
       </property>
       <item row="0" column="0">
        <widget class="caLed" name="caled">
+        <property name="toolTip">
+         <string>Master enable for the EVR. If not set then very little will happen.</string>
+        </property>
         <property name="rectangular">
          <bool>false</bool>
         </property>
@@ -167,6 +170,9 @@
       </item>
       <item row="1" column="0">
        <widget class="caLed" name="caled_4">
+        <property name="toolTip">
+         <string>Indicates if the EVR has a current, valid timestamp.</string>
+        </property>
         <property name="rectangular">
          <bool>false</bool>
         </property>
@@ -205,6 +211,9 @@
       </item>
       <item row="2" column="0">
        <widget class="caLed" name="caled_2">
+        <property name="toolTip">
+         <string>Is the EVR's local oscilator phase locked with the phase of the EVG's oscilator.</string>
+        </property>
         <property name="rectangular">
          <bool>false</bool>
         </property>
@@ -251,6 +260,9 @@
        <width>81</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Frequency of the EVR's local oscilator. Must be close enough to the EVG master oscilator.</string>
      </property>
      <property name="channel" stdset="0">
       <string notr="true">$(EVR):Link-Clk-SP</string>
@@ -312,7 +324,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -817,7 +829,7 @@
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
-      <string>Events</string>
+      <string>Event counters</string>
      </attribute>
      <widget class="QScrollArea" name="scrollArea_3">
       <property name="geometry">

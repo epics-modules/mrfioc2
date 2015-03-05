@@ -2,10 +2,15 @@
 ## Quick start
 run 
 
-    ./startUI.sh
-from this folder. The script switches to office channel access and runs 
+    ./startUI.sh -s <system name>
+from this folder.
 
-    caqtdm -macro "EVR=MTEST-VME-BSREAD-EVR0" evr_master.ui &
+Usage: $0 [options]
+
+Options:
+- -s <system name>     The system/project name
+- -r <EVR name>        Event Receiver name (default: EVR0)
+- -h                   This help
 
 ## Files description
 - __evr_master.ui__ is the main screen of the EVR

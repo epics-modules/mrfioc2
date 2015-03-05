@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -54,13 +53,12 @@
      <height>25</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(212, 219, 157);</string>
-   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP</string>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
   <widget class="caMenu" name="camenu_3">
    <property name="geometry">
     <rect>
@@ -70,13 +68,12 @@
      <height>25</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(212, 219, 157);</string>
-   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP</string>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
   <widget class="caMenu" name="camenu_4">
    <property name="geometry">
     <rect>
@@ -86,13 +83,12 @@
      <height>25</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(212, 219, 157);</string>
-   </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP</string>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">
     <rect>
@@ -253,16 +249,15 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-   </property>
    <property name="text">
     <string>Out-$(P)$(ID)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
  </widget>
  <customwidgets>
   <customwidget>

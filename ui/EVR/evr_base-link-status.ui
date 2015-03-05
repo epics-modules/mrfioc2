@@ -38,6 +38,9 @@
     </item>
     <item row="0" column="1">
      <widget class="caLineEdit" name="calineedit_6">
+      <property name="toolTip">
+       <string>Number of times the hardware heartbeat timer has expired. This indicates that the EVG is not sending event code 122.</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Cnt-LinkTimo-I</string>
       </property>
@@ -72,6 +75,9 @@
     </item>
     <item row="2" column="1">
      <widget class="caLineEdit" name="calineedit_8">
+      <property name="toolTip">
+       <string>The number of hardware event buffer overflows.</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Cnt-HwOflw-I</string>
       </property>
@@ -89,6 +95,9 @@
     </item>
     <item row="3" column="1">
      <widget class="caLineEdit" name="calineedit_9">
+      <property name="toolTip">
+       <string>Overflows in all of the per-event software buffers. This indicates that the period between successive events is shorter then the runtime of the code that it causes.</string>
+      </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Cnt-SwOflw-I</string>
       </property>

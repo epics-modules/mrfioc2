@@ -80,10 +80,10 @@
    <widget class="caLabel" name="calabel">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>194</width>
-      <height>20</height>
+      <x>1</x>
+      <y>1</y>
+      <width>192</width>
+      <height>19</height>
      </rect>
     </property>
     <property name="styleSheet">

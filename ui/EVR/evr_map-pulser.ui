@@ -70,6 +70,9 @@
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Trig0-SP.OUT</string>
    </property>
+   <property name="fontScaleMode">
+    <enum>caLineEdit::Height</enum>
+   </property>
   </widget>
   <widget class="QLabel" name="label_11">
    <property name="geometry">
@@ -157,6 +160,9 @@
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Trig1-SP.OUT</string>
    </property>
+   <property name="fontScaleMode">
+    <enum>caLineEdit::Height</enum>
+   </property>
   </widget>
   <widget class="QLabel" name="label_12">
    <property name="geometry">
@@ -228,6 +234,9 @@
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Trig2-SP.OUT</string>
    </property>
+   <property name="fontScaleMode">
+    <enum>caLineEdit::Height</enum>
+   </property>
   </widget>
   <widget class="QLabel" name="label_13">
    <property name="geometry">
@@ -258,7 +267,7 @@
     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
-    <string>Not set</string>
+    <string>Not used</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -283,7 +292,7 @@
     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
-    <string>Not set</string>
+    <string>Not used</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -308,7 +317,7 @@
     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
-    <string>Not set</string>
+    <string>Not used</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
