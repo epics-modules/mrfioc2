@@ -6,43 +6,44 @@
 #include "mrf/databuf.h"
 #include "mrmDataBufTx.h"
 
-#define BUF_TX      ":BUFTX"
 #define BUF_RX      ":BUFRX"
+#define BUF_TX      ":BUFTX"
 
-struct buffer_info_t {
-    mrmDataBufTx *bufTx;
-    dataBufRx *bufRx;
+struct bufferInfo {
+    dataBufRx       *bufRx;
+    mrmDataBufTx    *bufTx;
 };
 
-extern "C" buffer_info *bufInit(char *dev_name) {
+extern "C" bufferInfo_t *bufInit(char *dev_name) {
 
-    buffer_info *data = NULL;
+    bufferInfo_t *data  = NULL;
     mrf::Object *object = NULL;
-    std::string bufTxName(dev_name);
     std::string bufRxName(dev_name);
+    std::string bufTxName(dev_name);
 
-    if(!(data = (buffer_info *)calloc(1, sizeof(buffer_info)))) {
+    if(!(data = (bufferInfo_t *)calloc(1, sizeof(bufferInfo_t)))) {
+        errlogPrintf("bufInit ERROR: failed to allocate memory for buffer info!\n");
         return NULL;
     }
 
-    bufTxName += BUF_TX;
     bufRxName += BUF_RX;
-
-    object = mrf::Object::getObject(bufTxName);
-    if(!object) {
-        errlogPrintf("bufInit: failed to find object '%s'\n", bufTxName.c_str());
-    } else {
-        data->bufTx = dynamic_cast<mrmDataBufTx*>(object);
-    }
+    bufTxName += BUF_TX;
 
     object = mrf::Object::getObject(bufRxName);
     if(!object) {
-        errlogPrintf("bufInit: failed to find object '%s'\n", bufRxName.c_str());
+        errlogPrintf("bufInit WARNING: failed to find object '%s'\n", bufRxName.c_str());
     } else {
         data->bufRx = dynamic_cast<dataBufRx*>(object);
     }
 
-    if(!data->bufTx && !data->bufRx) {
+    object = mrf::Object::getObject(bufTxName);
+    if(!object) {
+        errlogPrintf("bufInit WARNING: failed to find object '%s'\n", bufTxName.c_str());
+    } else {
+        data->bufTx = dynamic_cast<mrmDataBufTx*>(object);
+    }
+
+    if(!data->bufRx && !data->bufTx) {
         errlogPrintf("bufInit: ERROR: failed to find both objects!\n");
         free(data);
         data = NULL;
@@ -51,53 +52,79 @@ extern "C" buffer_info *bufInit(char *dev_name) {
     return data;
 }
 
-extern "C" buffer_status maxLen(buffer_info *data, epicsUInt32 *maxLength) {
+epicsStatus bufEnable(bufferInfo_t *data) {
 
-    if(!data) {
-        errlogPrintf("bufInit: ERROR: data not initialized!\n");
-        return bufferDataNull;
+    if(data && data->bufRx) {
+        data->bufRx->dataRxEnable(true);
     }
+
+    if(data && data->bufTx) {
+        data->bufTx->dataTxEnable(true);
+    }
+
+    return statusOK;
+}
+
+epicsStatus bufDisable(bufferInfo_t *data) {
+
+    if(data && data->bufRx) {
+        data->bufRx->dataRxEnable(false);
+    }
+
+    if(data && data->bufTx) {
+        data->bufTx->dataTxEnable(false);
+    }
+
+    return statusOK;
+}
+
+extern "C" epicsStatus bufMaxLen(bufferInfo *data, epicsUInt32 *maxLength) {
 
     if(!data->bufTx) {
         errlogPrintf("bufInit: ERROR: transfer structure not initialized!\n");
-        return bufferTxNotInit;
+        return statusERROR;
     }
 
-    *maxLength = data->bufTx->lenMax();
+    try {
+        *maxLength = data->bufTx->lenMax();
+    } catch(std::exception &e) {
+        errlogPrintf("Exception: %s\n", e.what());
+        return statusERROR;
+    }
 
-    return bufferOK;
+    return statusOK;
 }
 
-extern "C" buffer_status bufSend(buffer_info *data, epicsUInt32 len, epicsUInt8 *buf) {
-
-    if(!data) {
-        errlogPrintf("bufInit: ERROR: data not initialized!\n");
-        return bufferDataNull;
-    }
+extern "C" epicsStatus bufSend(bufferInfo *data, epicsUInt32 len, epicsUInt8 *buf) {
 
     if(!data->bufTx) {
         errlogPrintf("bufInit: ERROR: transfer structure not initialized!\n");
-        return bufferTxNotInit;
+        return statusERROR;
     }
 
-    data->bufTx->dataSend(len, buf);
+    try {
+        data->bufTx->dataSend(len, buf);
+    } catch(std::exception &e) {
+        errlogPrintf("Exception: %s\n", e.what());
+        return statusERROR;
+    }
 
-    return bufferOK;
+    return statusOK;
 }
 
-extern "C" buffer_status bufRegCallback(buffer_info *data, void (*bufRecievedCallback)(void *, epicsStatus , epicsUInt32 , const epicsUInt8* ), void * pass) {
-
-    if(!data) {
-        errlogPrintf("bufInit: ERROR: data not initialized!\n");
-        return bufferDataNull;
-    }
+extern "C" epicsStatus bufRegCallback(bufferInfo *data, void (*bufRecievedCallback)(void *, epicsStatus , epicsUInt32 , const epicsUInt8* ), void * pass) {
 
     if(!data->bufRx) {
         errlogPrintf("bufInit: ERROR: receive structure not initialized!\n");
-        return bufferRxNotInit;
+        return statusERROR;
     }
 
-    data->bufRx->dataRxAddReceive(bufRecievedCallback, pass);
+    try {
+        data->bufRx->dataRxAddReceive(bufRecievedCallback, pass);
+    } catch(std::exception &e) {
+        errlogPrintf("Exception: %s\n", e.what());
+        return statusERROR;
+    }
 
-    return bufferOK;
+    return statusOK;
 }

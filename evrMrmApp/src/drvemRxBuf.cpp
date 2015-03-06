@@ -27,8 +27,8 @@
 #include "evrRegMap.h"
 #include "drvemRxBuf.h"
 
-mrmBufRx::mrmBufRx(const std::string& n, volatile void *b,unsigned int qdepth, unsigned int bsize)
-    :bufRxManager(n, qdepth, bsize)
+mrmBufRx::mrmBufRx(const std::string& n, volatile void *b,unsigned int qdepth, mrf::Object *parent, unsigned int bsize)
+    :bufRxManager(n, qdepth, parent, bsize)
     ,base((volatile unsigned char *)b)
 {
 }

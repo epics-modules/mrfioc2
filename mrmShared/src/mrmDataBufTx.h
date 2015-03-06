@@ -4,6 +4,7 @@
 #include <epicsMutex.h>
 
 #include "mrf/databuf.h"
+#include "mrf/object.h"
 
 /**
  * With the MRM both the EVG and the EVR have
@@ -15,7 +16,8 @@ public:
 
     mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
-                 volatile epicsUInt8* buffer);
+                 volatile epicsUInt8* buffer,
+                 mrf::Object *parent);
     virtual ~mrmDataBufTx();
 
     /* locking done internally */
