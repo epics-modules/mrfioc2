@@ -56,8 +56,8 @@ void defaulterr(void *, epicsStatus err,
     }
 }
 
-bufRxManager::bufRxManager(const std::string& n, unsigned int qdepth, mrf::Object *parent, unsigned int bsize)
-  :dataBufRx(n, parent)
+bufRxManager::bufRxManager(const std::string& n, unsigned int qdepth, unsigned int bsize)
+  :dataBufRx(n)
   ,guard()
   ,onerror(defaulterr)
   ,onerror_arg(NULL)

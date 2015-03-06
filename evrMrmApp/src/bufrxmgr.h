@@ -15,12 +15,15 @@
 #include <ellLib.h>
 #include <callback.h>
 #include "mrf/databuf.h"
-#include "mrf/object.h"
+
+
+
+#include "mrf/databuf.h"
 
 class epicsShareClass bufRxManager : public dataBufRx
 {
 public:
-    bufRxManager(const std::string&, unsigned int qdepth, mrf::Object *parent, unsigned int bsize=0);
+    bufRxManager(const std::string&, unsigned int qdepth, unsigned int bsize=0);
 
     virtual ~bufRxManager();
 

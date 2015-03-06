@@ -326,7 +326,7 @@ class ObjectInst : public Object
     static void initObject(void*);
     static epicsThreadOnceId initId;
 protected:
-    ObjectInst(const std::string& n, const Object *par=0) : Object(n, par) {}
+    ObjectInst(const std::string& n) : Object(n) {}
     virtual ~ObjectInst(){};
 public:
 

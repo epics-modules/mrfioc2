@@ -46,9 +46,8 @@ dataBufRx::~dataBufRx() {}
 
 mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
-                 volatile epicsUInt8* buffer,
-                 mrf::Object *parent
-) :dataBufTx(n, parent)
+                 volatile epicsUInt8* buffer
+) :dataBufTx(n)
   ,dataCtrl(bufcontrol)
   ,dataBuf(buffer)
   ,dataGuard()

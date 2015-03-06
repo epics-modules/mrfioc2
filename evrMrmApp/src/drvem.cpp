@@ -90,8 +90,8 @@ EVRMRM::EVRMRM(const std::string& n,
   ,id(n)
   ,base(b)
   ,baselen(bl)
-  ,buftx(n+":BUFTX", b+U32_DataTxCtrl, b+U32_DataTx_base, (mrf::Object *)this)
-  ,bufrx(n+":BUFRX", b, 10, (mrf::Object *)this) // Sets depth of Rx queue
+  ,buftx(n+":BUFTX", b+U32_DataTxCtrl, b+U32_DataTx_base)
+  ,bufrx(n+":BUFRX", b, 10) // Sets depth of Rx queue
   ,count_recv_error(0)
   ,count_hardware_irq(0)
   ,count_heartbeat(0)

@@ -32,7 +32,7 @@ class epicsShareClass dataBufTx : public mrf::ObjectInst<dataBufTx> {
     struct impl;
     impl *pimpl;
 public:
-    dataBufTx(const std::string& n, mrf::Object *p) : mrf::ObjectInst<dataBufTx>(n, p) {}
+    dataBufTx(const std::string& n) : mrf::ObjectInst<dataBufTx>(n) {}
     virtual ~dataBufTx()=0;
 
     //! Is card configured for buffer transmission?
@@ -57,7 +57,7 @@ public:
 
 class epicsShareClass dataBufRx : public mrf::ObjectInst<dataBufRx> {
 public:
-    dataBufRx(const std::string& n, mrf::Object *par) : mrf::ObjectInst<dataBufRx>(n, par) {}
+    dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
 
     virtual ~dataBufRx()=0;
 
