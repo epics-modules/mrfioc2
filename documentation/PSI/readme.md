@@ -16,6 +16,7 @@ __However__, in order to set the default values of macros, while recursivly expa
 
 ##Event Receiver
 Each Event Receiver (EVR) consists of a number of basic _components_ and a _mapping ram_. Components are as follows:
+
 - basic settings (event link speed, clock and link status, time source and timestamp tick rate select, downstream mode)
 - input settings (level, edge select, backwards or external mode selection, DBus mask settings)
 - output settings (enable/disable, output routing of pulsers, DBus, prescalers or low/high signal)
@@ -23,6 +24,7 @@ Each Event Receiver (EVR) consists of a number of basic _components_ and a _mapp
 - pulser settings (enable/disable, polarity, pulse delay, pulse width and prescaler settings)
 
 All of theese are available through a predefined template `evr-vmerf230.template`, and can be configured through a substitution file or at runtime. _Mapping ram_ is used to associate components to events in order to achieve the desired functionality of the EVR. There exists two types of mapping:
+
 - mapping between hardware event code and a software database event
     - here, we can specify soft events that can be used in EPICS records to trigger processing based on the event code received
 - mapping between hardware event code and EVR component
@@ -34,6 +36,7 @@ An [example](#example) of the described functionalities is available [below](#ex
 ## Quick start
 Use a predefined main and supporting EVR templates together with an application substitution file. 
 In the application substitution file change/add/remove:
+
 - macros _$(SYS)_ and _$(EVR)_
 - optionally apply macros for overriding default values, eg. `$(EVR):PS0-Div-SP=1`
 - substitutions/macros for pulser maps, events, event maps, and any other components.
@@ -49,6 +52,7 @@ In the application substitution file change/add/remove:
     - mrfioc2/PSI/`evr_ex.subs` --> `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_EVR.subs`
     > Please mind the file name and extention changes while copying!
 3. Create startup script `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_startup.script`, so it looks like this:
+
         ## Load IFC1210 devLib and pev modules
         require 'pev'
         ## Load mrfioc2 device support
@@ -68,9 +72,6 @@ In the application substitution file change/add/remove:
         mrmEvrSetupVME(EVR0,2,0x3000000,4,0x28);
         
         ## EVR init done
-   - Remove _epicsEnvSet SYS "PSI-IFC-XXXX"_, since the variables will be defined in the substitution file.
-   - Remove the EVG setup from the startup script, since we are configuring EVR.
-   - Remove _dbLoadRecords_ commands, since the records will be automatically loaded.
    
    >Depending on your setup you can also change _mrmEvrSetupVME(EVR0,2,0x3000000,4,0x28);_ to reflect the connected hardware setup.
 
@@ -81,13 +82,13 @@ In the application substitution file change/add/remove:
     > Check for the correct EVR name: `EVR0`, and search-replace if needed
     - set the desired values for _Global settings_, _Prescalers_, _Pulsers_, _Front panel inputs_ and _Front panel outputs_ according to the documentation next to the macros for _evr-vmerf230.template_.
     - if needed, add/remove/change the mapping between hardware event code and a software (EPICS) database event in _evr-Event.template_ substitutions
-    - if needed, add/remove/change the mapping between hardware event code and a special function of the EVR in evr-Eventmap.template_ substitutions
+    - if needed, add/remove/change the mapping between hardware event code and a special function of the EVR in _evr-Eventmap.template_ substitutions
     - if needed, add/remove/change the mapping of the hardware event codes to pulse geneators in _evr-Pulsermap.template_ substitutions
     > Pulsers can be mapped using three functions to multiple events.
 
 5. Install the prepared IOC (run `swit -V` from your project directory (`MTEST-VME-EVRTEST`))
 
-### Description of the template files in _MTEST-VME-EVRTEST_EVR.subs_<a name="longHeaderName"></a>
+### Description of the template files in _MTEST-VME-EVRTEST\_EVR.subs_ <a name="longHeaderName"></a>
 Example project name is "MTEST-VME-EVRTEST". In the next few chapters we will describe how to use the provided application substitution file, and add/remove/change desired mappings.
 
 The available macros are listed using their name and default value. Where many components with the same macros are available (eg. many pulsers), the macro names will reflect the first component (eg. pulser 0).
@@ -99,7 +100,7 @@ The available macros are listed using their name and default value. Where many c
     
     Here we set the system name, the EVR name. and set its global settings. 
     -  __SYS__=_MTEST-VME-BSREAD_ : 
-        The system name, which should be the same as the project name.
+        The system name, eg. MTEST-VME-EVRTEST.
     -  __EVR__=_EVR0_ : 
         The name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script.
     -  __EVR0:ExtInhib-Sel__=_0_ :
@@ -159,9 +160,10 @@ The available macros are listed using their name and default value. Where many c
 
 5. Outputs (TTL)
 
-    Here we can set the macros for the EVRs Output sub-unit. Outputs are named either FrontOut#, FrontOutUniv# or RearUniv#, where the range of the number # depends of the hardwre model.
+    Here we can set the macros for the EVRs Output sub-unit. Outputs are named either FrontOut#, FrontOutUniv# or RearUniv#, where the range of the number # depends of the hardware model.
     
     Special mapping properties are available to set the outputs:
+
         | mapping code | output source |
         |--------------|---------------|
         |      0       |  Pulser 0     |
@@ -200,6 +202,7 @@ The available macros are listed using their name and default value. Where many c
 
 #### evr-Eventmap.template
 There is a number of special functions available, that can trigger on specified event:
+
 - __Blink__ : An LED on the EVRs front panel will blink when the code is received.
 - __Forward__ : The received code will be immediately retransmits on the upstream event link.
 - __Stop Log__ : Freeze the circular event log buffer. An CPU interrupt will be raised which will cause the buffer to be downloaded. This might be a useful action to map to a fault event.
@@ -216,7 +219,8 @@ There is a number of special functions available, that can trigger on specified 
 Using this template we can map a specific hardware event code to a special function of the EVR.
 
 Macros:
-- __SYS__ represents the system name, which should be the same as the project name.
+
+- __SYS__ represents the system name,  eg. MTEST-VME-EVRTEST
 - __EVR__ represents the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script.
 - __EVT__ represents a hardware EVR Event code.
 - __FUNC__ represents one of the functions listed above.
@@ -232,14 +236,16 @@ We will blink the EVR0 led on each occurance of event 1, and 6.
 
 #### evr-Pulsermap.template
 Event receivers have multiple pulsers that can preform several functions on different events.  It is possible that more than one record will interach with each event code / pulser combinations, however each pairing must be unique. Currently available functions for each pulser are:
+
 - __Trig__ : causes a received event to trigger a pulser.
 - __Set__ : causes a received event to force a pulser into active state.
 - __Reset__ : causes a received event to force a pulser into inactive state.
 
 
 Macros:
-- __PID__ represents the system name, which should be the same as the project name.
-- __NAME__ represents a unique mapping name, ocmprised of the system name, which should be the same as the project name, the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script, and unique identifiers for the specific trigger.
+
+- __PID__ pulser ID.
+- __NAME__ represents a unique mapping name, comprised of the system name, eg. MTEST-VME-EVRTEST, the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script, and unique identifiers for the specific trigger.
 - __OBJ__ represents a pulser object comprised of Event Receiver name and Pulser name.
 - __F__ represents one of the functions described above.
 - __EVT__ represents a hardware EVR Event code.
@@ -257,7 +263,8 @@ Example: Pulser 0 of EVR0 will be set to trigger on event 2 and reset on event 3
 Provides us with the ability to map between hardware event code and a software (EPICS) database event.
 
 Macros:
-- __SYS__ represents the system name, which should be the same as the project name.
+
+- __SYS__ represents the system name, eg. MTEST-VME-EVRTEST.
 - __EVR__ represents the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script.
 - __CODE__ represents a hardware EVR Event code
 - __EVNT__ represents an EPICS database event number (software).
