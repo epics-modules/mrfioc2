@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Ac Trig</string>
+    <string/>
    </property>
    <widget class="caTextEntry" name="catextentry">
     <property name="geometry">

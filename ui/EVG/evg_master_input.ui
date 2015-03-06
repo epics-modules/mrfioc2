@@ -55,9 +55,6 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="toolTip">
-    <string>Master enable for the EVR. If not set then very little will happen.</string>
-   </property>
    <property name="rectangular">
     <bool>false</bool>
    </property>
