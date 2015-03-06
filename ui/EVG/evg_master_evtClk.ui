@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>355</width>
-    <height>188</height>
+    <width>347</width>
+    <height>183</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -249,9 +249,9 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>120</y>
+      <y>115</y>
       <width>121</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -259,6 +259,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_10">
@@ -319,7 +322,7 @@
    <widget class="caLineEdit" name="calineedit_12">
     <property name="geometry">
      <rect>
-      <x>215</x>
+      <x>214</x>
       <y>150</y>
       <width>90</width>
       <height>20</height>
@@ -335,7 +338,7 @@
    <widget class="caLineEdit" name="calineedit_13">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>309</x>
       <y>150</y>
       <width>30</width>
       <height>20</height>

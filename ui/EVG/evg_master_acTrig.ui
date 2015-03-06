@@ -90,7 +90,7 @@
      </rect>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-Divider-RB</string>
@@ -161,7 +161,7 @@
      </rect>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-Phase-RB</string>
@@ -217,9 +217,9 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>90</y>
+      <y>85</y>
       <width>121</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -227,6 +227,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caLed" name="caled_2">
@@ -341,7 +344,7 @@
      </rect>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-SyncSrc-RB</string>

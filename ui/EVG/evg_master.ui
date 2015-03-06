@@ -275,7 +275,7 @@
    <widget class="caInclude" name="cainclude">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>620</x>
       <y>70</y>
       <width>185</width>
       <height>95</height>
@@ -288,27 +288,11 @@
      <string notr="true">evg_master_softEvt.ui</string>
     </property>
    </widget>
-   <widget class="caInclude" name="cainclude_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>270</y>
-      <width>355</width>
-      <height>160</height>
-     </rect>
-    </property>
-    <property name="macro">
-     <string notr="true">EVG=$(EVG)</string>
-    </property>
-    <property name="filename" stdset="0">
-     <string notr="true">evg_master_acTrig.ui</string>
-    </property>
-   </widget>
    <widget class="caInclude" name="cainclude_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>440</y>
+      <x>260</x>
+      <y>40</y>
       <width>355</width>
       <height>181</height>
      </rect>
@@ -323,14 +307,14 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>180</y>
+      <x>0</x>
+      <y>230</y>
       <width>541</width>
       <height>391</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -788,25 +772,27 @@
       </widget>
      </widget>
     </widget>
-   </widget>
-   <widget class="caRelatedDisplay" name="carelateddisplay">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>50</y>
-      <width>150</width>
-      <height>62</height>
-     </rect>
-    </property>
-    <property name="labels">
-     <string notr="true">caWidget window</string>
-    </property>
-    <property name="files">
-     <string notr="true">testis_caWidgetWindow.ui</string>
-    </property>
-    <property name="args">
-     <string notr="true">EVG=($EVG)</string>
-    </property>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>AC Trig</string>
+     </attribute>
+     <widget class="caInclude" name="cainclude_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>355</width>
+        <height>160</height>
+       </rect>
+      </property>
+      <property name="macro">
+       <string notr="true">EVG=$(EVG)</string>
+      </property>
+      <property name="filename" stdset="0">
+       <string notr="true">evg_master_acTrig.ui</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
@@ -815,11 +801,6 @@
    <class>caMenu</class>
    <extends>QComboBox</extends>
    <header>caMenu</header>
-  </customwidget>
-  <customwidget>
-   <class>caRelatedDisplay</class>
-   <extends>QWidget</extends>
-   <header>caRelatedDisplay</header>
   </customwidget>
   <customwidget>
    <class>caToggleButton</class>

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o errexit
 
-SYS="FTEST-TMAST"
+SYS="CSL-IFC1"
 EVG="EVG0"
 
 usage()

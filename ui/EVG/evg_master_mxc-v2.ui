@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -6,293 +7,319 @@
     <x>0</x>
     <y>0</y>
     <width>490</width>
-    <height>85</height>
+    <height>87</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="caLabel" name="calabel_2">
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>1</x>
-     <y>1</y>
-     <width>100</width>
-     <height>20</height>
+     <x>0</x>
+     <y>0</y>
+     <width>491</width>
+     <height>85</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Mxc-$(ID)</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-  </property></widget>
-  <widget class="caLed" name="caled_2">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>1</y>
-     <width>20</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string/>
-   </property>
-   <property name="rectangular">
-    <bool>false</bool>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Status-RB</string>
-   </property>
-   <property name="trueColor">
-         <color>
-          <red>0</red>
-          <green>205</green>
-          <blue>0</blue>
-         </color>
-        </property><property name="falseColor">
-         <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
-        </property><property name="undefinedColor">
-         <color>
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </property></widget>
-  <widget class="caLineEdit" name="calineedit_11">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>60</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="channel" stdset="0">
-    <string>0</string>
-   </property>
-  </widget>
-  <widget class="caChoice" name="cachoice_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>120</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>Reverses the output polarity. When set, changes the output from normally low to normally high.</string>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Polarity-Sel</string>
-   </property>
-   <property name="foreground">
-    <color>
-     <red>0</red>
-     <green>0</green>
-     <blue>0</blue>
-    </color>
-   </property>
-   <property name="stackingMode" stdset="0">
-    <enum>caChoice::Column</enum>
-   </property>
-   <property name="endBit">
-    <number>1</number>
-   </property>
-  <property name="background">
-         <color>
-          <red>212</red>
-          <green>219</green>
-          <blue>157</blue>
-         </color>
-        </property><property name="bordercolor">
-         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
-        </property><property name="colorMode">
-         <enum>caChoice::Static</enum>
-        </property></widget>
-  <widget class="QLabel" name="label_32">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>RB</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_30">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>121</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Polarity select</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_34">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>20</y>
-     <width>71</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Frequency</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="caNumeric" name="canumeric_2">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>1</y>
-     <width>131</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Frequency-SP</string>
-   </property>
-  <property name="background">
-         <color>
-          <red>212</red>
-          <green>219</green>
-          <blue>157</blue>
-         </color>
-        </property></widget>
-  <widget class="caLineEdit" name="calineedit_12">
-   <property name="geometry">
-    <rect>
-     <x>395</x>
-     <y>20</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Divider-RB</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_37">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>20</y>
-     <width>20</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>RB</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_38">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>60</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Prescaler</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="caTextEntry" name="catextentry_4">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>60</y>
-     <width>131</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-SP</string>
-   </property>
-  <property name="background">
-         <color>
-          <red>212</red>
-          <green>219</green>
-          <blue>157</blue>
-         </color>
-        </property><property name="colorMode">
-         <enum>caLineEdit::Static</enum>
-        </property></widget>
-  <widget class="QLabel" name="label_39">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>60</y>
-     <width>20</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>RB</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="caLineEdit" name="calineedit_13">
-   <property name="geometry">
-    <rect>
-     <x>395</x>
-     <y>60</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Mxc-$(ID)-Divider-RB</string>
-   </property>
+   <widget class="caLed" name="caled_2">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>1</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="rectangular">
+     <bool>false</bool>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Status-RB</string>
+    </property>
+    <property name="falseColor">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="trueColor">
+     <color>
+      <red>0</red>
+      <green>205</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="undefinedColor">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_34">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>20</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Frequency</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_30">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Polarity select</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="caTextEntry" name="catextentry_4">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>60</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-SP</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Static</enum>
+    </property>
+   </widget>
+   <widget class="caChoice" name="cachoice_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>120</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Reverses the output polarity. When set, changes the output from normally low to normally high.</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Polarity-Sel</string>
+    </property>
+    <property name="foreground">
+     <color>
+      <red>0</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
+    </property>
+    <property name="stackingMode" stdset="0">
+     <enum>caChoice::Column</enum>
+    </property>
+    <property name="endBit">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_11">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>60</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Polarity-RB</string>
+    </property>
+   </widget>
+   <widget class="caLabel" name="calabel_2">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>1</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Mxc-$(ID)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_38">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>60</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Prescaler</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caNumeric" name="canumeric_2">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>1</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Frequency-SP</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_39">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>60</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RB</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_12">
+    <property name="geometry">
+     <rect>
+      <x>395</x>
+      <y>20</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Frequency-RB</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_13">
+    <property name="geometry">
+     <rect>
+      <x>395</x>
+      <y>60</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-RB</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_32">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>21</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RB</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_37">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>20</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RB</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
