@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>930</width>
+    <height>676</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EVG</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(218, 218, 218);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="caLabel" name="calabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>675</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>$(EVG)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="caLed" name="caled">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Master enable for the EVR. If not set then very little will happen.</string>
+    </property>
+    <property name="rectangular">
+     <bool>false</bool>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Enable-RB</string>
+    </property>
+    <property name="falseColor">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="trueColor">
+     <color>
+      <red>0</red>
+      <green>205</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="undefinedColor">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Master enable</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Enable-Sel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Firmware version</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>70</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):FwVer-I</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_2">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>100</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):SwVer-I</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Software version</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>0</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ResetMxc-Cmd: bo, val 1</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>20</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SyncTimestamp-Cmd</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_3">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>130</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Timestamp-RB</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Timestamp</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>121</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1PPS Input</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caMenu" name="camenu">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>190</y>
+      <width>100</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(212, 219, 157);</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):1ppsInp-Sel</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_4">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>160</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):DbusStatus-RB</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DBus status</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>70</y>
+      <width>185</width>
+      <height>95</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVG=$(EVG)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evg_master_softEvt.ui</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>270</y>
+      <width>355</width>
+      <height>160</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVG=$(EVG)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evg_master_acTrig.ui</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>440</y>
+      <width>355</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVG=$(EVG)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evg_master_evtClk.ui</string>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>180</y>
+      <width>541</width>
+      <height>391</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>DBus</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>541</width>
+        <height>361</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>539</width>
+         <height>359</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Input</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>541</width>
+        <height>361</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>539</width>
+         <height>359</height>
+        </rect>
+       </property>
+       <widget class="caInclude" name="cainclude_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front0, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front1, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front2, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Univ0, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_8">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Univ1, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Univ2, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>310</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Univ3, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_input.ui</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Output</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>541</width>
+        <height>361</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>539</width>
+         <height>359</height>
+        </rect>
+       </property>
+       <widget class="caInclude" name="cainclude_11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>375</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front0, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_output.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>35</y>
+          <width>375</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front1, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_output.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_13">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>375</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front2, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_output.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_14">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>85</y>
+          <width>375</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=Front3, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_output.ui</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>TrigEvt</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>541</width>
+        <height>361</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>539</width>
+         <height>359</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>MXC</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>539</width>
+        <height>359</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>519</width>
+         <height>750</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>750</height>
+        </size>
+       </property>
+       <widget class="caInclude" name="cainclude_15">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=0, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=1, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=2, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_18">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>280</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=3, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_19">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>370</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=4, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_20">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>460</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=5, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_21">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>550</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=6, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>640</y>
+          <width>490</width>
+          <height>85</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=7, EVG=$(EVG)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evg_master_mxc-v2.ui</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="caRelatedDisplay" name="carelateddisplay">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>50</y>
+      <width>150</width>
+      <height>62</height>
+     </rect>
+    </property>
+    <property name="labels">
+     <string notr="true">caWidget window</string>
+    </property>
+    <property name="files">
+     <string notr="true">testis_caWidgetWindow.ui</string>
+    </property>
+    <property name="args">
+     <string notr="true">EVG=($EVG)</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caMenu</class>
+   <extends>QComboBox</extends>
+   <header>caMenu</header>
+  </customwidget>
+  <customwidget>
+   <class>caRelatedDisplay</class>
+   <extends>QWidget</extends>
+   <header>caRelatedDisplay</header>
+  </customwidget>
+  <customwidget>
+   <class>caToggleButton</class>
+   <extends>QCheckBox</extends>
+   <header>caToggleButton</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+  <customwidget>
+   <class>caLed</class>
+   <extends>QWidget</extends>
+   <header>caLed</header>
+  </customwidget>
+  <customwidget>
+   <class>caLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>caLineEdit</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

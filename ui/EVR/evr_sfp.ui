@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(218, 218, 218);</string>
+  </property>
+  <widget class="caLabel" name="calabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>320</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+   </property>
+   <property name="text">
+    <string>SFP</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>20</y>
+     <width>321</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_16">
+      <property name="text">
+       <string>Transceiver Temperature (C)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_17">
+      <property name="text">
+       <string>Transceiver Output Power</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_18">
+      <property name="text">
+       <string>Transceiver Input Power</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_19">
+      <property name="text">
+       <string>Transceiver Line Rate</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_20">
+      <property name="text">
+       <string>Vendor name</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_21">
+      <property name="text">
+       <string>Vendor part number</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_22">
+      <property name="text">
+       <string>Vendor part revision</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_23">
+      <property name="text">
+       <string>SFP serial number</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_25">
+      <property name="text">
+       <string>Manufactured date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="caLineEdit" name="calineedit_6">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-T-I</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="caLineEdit" name="calineedit_7">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Pwr-TX-I</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="caLineEdit" name="calineedit_8">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Pwr-RX-I</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="caLineEdit" name="calineedit_9">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Speed-Link-I</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="caLineEdit" name="calineedit_10">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Vendor-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="caLineEdit" name="calineedit_11">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Part-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="caLineEdit" name="calineedit_12">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Rev-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="caLineEdit" name="calineedit_13">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Serial-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="caLineEdit" name="calineedit_14">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):SFP-Date-Manu-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>caLineEdit</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

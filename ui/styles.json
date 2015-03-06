@@ -1,0 +1,63 @@
+{
+	"QMainWindow": {
+		"background-color": "rgb(218, 218, 218)"
+	},
+	"caLabel": {
+		"background-color": "rgb(236, 236, 236, 255)"
+	},
+	"caMenu": {
+		"background-color": "rgb(212, 219, 157)"
+	},
+	"caChoice":{
+		"background": {
+			"red": 212,
+			"green": 219,
+			"blue": 157
+		},
+		"bordercolor": {
+			"red": 0,
+			"green": 0,
+			"blue": 0
+		},
+		"colorMode": "caChoice"
+	},
+	"caTextEntry":{
+		"background": {
+			"red": 212,
+			"green": 219,
+			"blue": 157
+		},
+		"colorMode": "caLineEdit"
+	},
+	"caLed":{
+		"falseColor": {
+			"red": 255,
+			"green": 0,
+			"blue": 0
+		},
+		"trueColor": {
+			"red": 0,
+			"green": 205,
+			"blue": 0
+		},
+		"undefinedColor": {
+			"red": 255,
+			"green": 255,
+			"blue": 255
+		}
+	},
+	"caNumeric":{
+		"background": {
+			"red": 212,
+			"green": 219,
+			"blue": 157
+		}
+	},
+	"caSpinbox":{
+		"background": {
+			"red": 212,
+			"green": 219,
+			"blue": 157
+		}
+	}
+}
