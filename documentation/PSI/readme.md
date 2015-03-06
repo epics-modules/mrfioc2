@@ -73,17 +73,19 @@ In the application substitution file change/add/remove:
         
         ## EVR init done
    
-   >Depending on your setup you can also change _mrmEvrSetupVME(EVR0,2,0x3000000,4,0x28);_ to reflect the connected hardware setup.
+    > Depending on your setup you can also change _mrmEvrSetupVME(EVR0,2,0x3000000,4,0x28);_ to reflect the connected hardware setup.
 
 4. Edit EVR application substitution file `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_EVR.subs`
     
     The substitution file comprises of main EVR macros and additional event mappings. It should be changed as per the application requirements, and the documentation in the substitution file.
     - search-replace all occurances of _MTEST-VME-BSREAD_ with _MTEST-VME-EVRTEST_
     > Check for the correct EVR name: `EVR0`, and search-replace if needed
+
     - set the desired values for _Global settings_, _Prescalers_, _Pulsers_, _Front panel inputs_ and _Front panel outputs_ according to the documentation next to the macros for _evr-vmerf230.template_.
     - if needed, add/remove/change the mapping between hardware event code and a software (EPICS) database event in _evr-Event.template_ substitutions
     - if needed, add/remove/change the mapping between hardware event code and a special function of the EVR in _evr-Eventmap.template_ substitutions
     - if needed, add/remove/change the mapping of the hardware event codes to pulse geneators in _evr-Pulsermap.template_ substitutions
+    
     > Pulsers can be mapped using three functions to multiple events.
 
 5. Install the prepared IOC (run `swit -V` from your project directory (`MTEST-VME-EVRTEST`))
@@ -99,6 +101,7 @@ The available macros are listed using their name and default value. Where many c
 1. Main settings
     
     Here we set the system name, the EVR name. and set its global settings. 
+
     -  __SYS__=_MTEST-VME-BSREAD_ : 
         The system name, eg. MTEST-VME-EVRTEST.
     -  __EVR__=_EVR0_ : 
@@ -123,12 +126,14 @@ The available macros are listed using their name and default value. Where many c
 2. Prescalers
 
     Here we can set the macros for EVRs Prescaler sub-unit. There are three prescalers named PS0, PS1 and PS2.
+
     - __EVR0:PS0-Div-SP__=_2_ :
         Sets the integer divisor between the Event Clock and the sub-unit output in a range of `2-0xffff`.
 
 3. Pulsers
     
     Here we can set the macros for the EVRs Pulse Generators. There are 16 prescalers available, named Pul0 - Pul15, where __only a subset__ (0-3) of theese __support prescalers__.
+
     -   __EVR0:Pul0-Ena-Sel__=_1_
         When `disabled(0)`, the output of the pulser will remain in its inactive state (low). The pulser must be `enabled(1)`, before mapped actions will have any effect.
     -   __EVR0:Pul0-Polarity-Sel__=_0_ : 
@@ -143,6 +148,7 @@ The available macros are listed using their name and default value. Where many c
 4. Inputs
 
     Here we can set the macros for the EVRs Input sub-unit. The number of inputs depends of the hardware model.
+
     -   __EVR0:FPIn0-Lvl-Sel__=_1_ : 
         When operating in level triggered mode, determines if codes are sent when the input level is low `Active Low(0)` or high `Active High(1)`.
     -   __EVR0:FPIn0-Edge-Sel__=_1_ : 
