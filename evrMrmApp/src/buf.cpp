@@ -14,7 +14,9 @@ struct bufferInfo {
     mrmDataBufTx    *bufTx;
 };
 
-extern "C" bufferInfo_t *bufInit(char *dev_name) {
+extern "C" {
+
+bufferInfo_t *bufInit(char *dev_name) {
 
     bufferInfo_t *data  = NULL;
     mrf::Object *object = NULL;
@@ -62,7 +64,7 @@ epicsStatus bufEnable(bufferInfo_t *data) {
         data->bufTx->dataTxEnable(true);
     }
 
-    return statusOK;
+    return 0;
 }
 
 epicsStatus bufDisable(bufferInfo_t *data) {
@@ -75,56 +77,58 @@ epicsStatus bufDisable(bufferInfo_t *data) {
         data->bufTx->dataTxEnable(false);
     }
 
-    return statusOK;
+    return 0;
 }
 
-extern "C" epicsStatus bufMaxLen(bufferInfo *data, epicsUInt32 *maxLength) {
+epicsStatus bufMaxLen(bufferInfo *data, epicsUInt32 *maxLength) {
 
     if(!data->bufTx) {
-        errlogPrintf("bufInit: ERROR: transfer structure not initialized!\n");
-        return statusERROR;
+        errlogPrintf("bufMaxLen: ERROR: transfer structure not initialized!\n");
+        return -1;
     }
 
     try {
         *maxLength = data->bufTx->lenMax();
     } catch(std::exception &e) {
-        errlogPrintf("Exception: %s\n", e.what());
-        return statusERROR;
+        errlogPrintf("bufMaxLen: EXCEPTION: %s\n", e.what());
+        return -1;
     }
 
-    return statusOK;
+    return 0;
 }
 
-extern "C" epicsStatus bufSend(bufferInfo *data, epicsUInt32 len, epicsUInt8 *buf) {
+epicsStatus bufSend(bufferInfo *data, epicsUInt32 len, epicsUInt8 *buf) {
 
     if(!data->bufTx) {
-        errlogPrintf("bufInit: ERROR: transfer structure not initialized!\n");
-        return statusERROR;
+        errlogPrintf("bufSend: ERROR: transfer structure not initialized!\n");
+        return -1;
     }
 
     try {
         data->bufTx->dataSend(len, buf);
     } catch(std::exception &e) {
-        errlogPrintf("Exception: %s\n", e.what());
-        return statusERROR;
+        errlogPrintf("bufSend: EXCEPTION: %s\n", e.what());
+        return -1;
     }
 
-    return statusOK;
+    return 0;
 }
 
-extern "C" epicsStatus bufRegCallback(bufferInfo *data, void (*bufRecievedCallback)(void *, epicsStatus , epicsUInt32 , const epicsUInt8* ), void * pass) {
+epicsStatus bufRegCallback(bufferInfo *data, bufRecievedCallback callback, void * pass) {
 
     if(!data->bufRx) {
-        errlogPrintf("bufInit: ERROR: receive structure not initialized!\n");
-        return statusERROR;
+        errlogPrintf("bufRegCallback: ERROR: receive structure not initialized!\n");
+        return -1;
     }
 
     try {
-        data->bufRx->dataRxAddReceive(bufRecievedCallback, pass);
+        data->bufRx->dataRxAddReceive(callback, pass);
     } catch(std::exception &e) {
-        errlogPrintf("Exception: %s\n", e.what());
-        return statusERROR;
+        errlogPrintf("bufRegCallback: EXCEPTION: %s\n", e.what());
+        return -1;
     }
 
-    return statusOK;
+    return 0;
 }
+
+} /* extern "C" */
