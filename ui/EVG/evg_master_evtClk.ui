@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>355</width>
-    <height>188</height>
+    <width>347</width>
+    <height>278</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,18 +19,18 @@
      <x>0</x>
      <y>0</y>
      <width>351</width>
-     <height>181</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="title">
-    <string>Evt Clock</string>
+    <string/>
    </property>
    <widget class="caTextEntry" name="catextentry">
     <property name="geometry">
      <rect>
       <x>140</x>
       <y>30</y>
-      <width>121</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -45,7 +45,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_30">
@@ -94,6 +94,12 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-RFFreq-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -148,7 +154,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_9">
@@ -165,6 +171,9 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-RFDiv-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="caChoice" name="cachoice">
@@ -249,9 +258,9 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>120</y>
+      <y>115</y>
       <width>121</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -259,6 +268,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_10">
@@ -276,13 +288,19 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-FracSynFreq-RB</string>
     </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="caTextEntry" name="catextentry_3">
     <property name="geometry">
      <rect>
       <x>140</x>
       <y>120</y>
-      <width>121</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -297,14 +315,14 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>150</y>
+      <y>170</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -319,9 +337,9 @@
    <widget class="caLineEdit" name="calineedit_12">
     <property name="geometry">
      <rect>
-      <x>215</x>
-      <y>150</y>
-      <width>90</width>
+      <x>214</x>
+      <y>170</y>
+      <width>121</width>
       <height>20</height>
      </rect>
     </property>
@@ -331,12 +349,15 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-Frequency-RB</string>
     </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_13">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>150</y>
+      <x>60</x>
+      <y>10</y>
       <width>30</width>
       <height>20</height>
      </rect>
@@ -346,6 +367,44 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-Frequency-RB.EGU</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_14">
+    <property name="geometry">
+     <rect>
+      <x>229</x>
+      <y>30</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):EvtClk-RFFreq-SP.EGU</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_15">
+    <property name="geometry">
+     <rect>
+      <x>229</x>
+      <y>120</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):EvtClk-FracSynFreq-SP.EGU</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

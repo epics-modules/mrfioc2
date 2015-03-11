@@ -1,8 +1,9 @@
 #!/bin/bash
 set -o errexit
 
-SYS="FTEST-TMAST"
+SYS="CSL-IFC1"
 EVG="EVG0"
+s_flag=0 # reset s_flag (-s is required)
 
 usage()
 {
@@ -13,12 +14,13 @@ usage()
     echo "    -h                   This help"
 }
 
-while getopts ":s:r:h" o; do
+while getopts ":s:g:h" o; do
     case "${o}" in
         s)
             SYS=${OPTARG}
+            s_flag=1
             ;;
-        r)
+        g)
             EVG=${OPTARG}
             ;;
         h)
@@ -32,7 +34,8 @@ while getopts ":s:r:h" o; do
     esac
 done
 
-#if [ $OPTIND -le 1 ]; then
+# -s is not present
+#if [ $s_flag -eq 0 ]; then
 #    usage
 #    exit 1
 #fi

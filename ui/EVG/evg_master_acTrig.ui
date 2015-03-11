@@ -18,36 +18,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>358</width>
      <height>151</height>
     </rect>
    </property>
    <property name="title">
-    <string>Ac Trig</string>
+    <string/>
    </property>
-   <widget class="caTextEntry" name="catextentry">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>30</y>
-      <width>121</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVG):AcTrig-Divider-SP</string>
-    </property>
-    <property name="background">
-     <color>
-      <red>212</red>
-      <green>219</green>
-      <blue>157</blue>
-     </color>
-    </property>
-    <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_30">
     <property name="geometry">
      <rect>
@@ -78,22 +55,6 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="caLineEdit" name="calineedit_8">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>30</y>
-      <width>70</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVG):AcTrig-Divider-RB</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -133,7 +94,7 @@
      <rect>
       <x>140</x>
       <y>60</y>
-      <width>121</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -148,7 +109,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_9">
@@ -156,15 +117,21 @@
      <rect>
       <x>270</x>
       <y>60</y>
-      <width>70</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-Phase-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caChoice" name="cachoice">
@@ -217,9 +184,9 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>90</y>
+      <y>85</y>
       <width>121</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -227,6 +194,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caLed" name="caled_2">
@@ -249,9 +219,9 @@
     </property>
     <property name="falseColor">
      <color>
-      <red>255</red>
-      <green>0</green>
-      <blue>0</blue>
+      <red>218</red>
+      <green>218</green>
+      <blue>218</blue>
      </color>
     </property>
     <property name="trueColor">
@@ -336,15 +306,76 @@
      <rect>
       <x>270</x>
       <y>120</y>
-      <width>70</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-SyncSrc-RB</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_11">
+    <property name="geometry">
+     <rect>
+      <x>229</x>
+      <y>60</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):AcTrig-Phase-SP.EGU</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_8">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>30</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):AcTrig-Divider-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
+    </property>
+   </widget>
+   <widget class="caTextEntry" name="catextentry">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>30</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):AcTrig-Divider-SP</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
   </widget>
