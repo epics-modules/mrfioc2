@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>358</width>
      <height>151</height>
     </rect>
    </property>
@@ -85,7 +85,7 @@
      <rect>
       <x>270</x>
       <y>30</y>
-      <width>70</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -133,7 +133,7 @@
      <rect>
       <x>140</x>
       <y>60</y>
-      <width>121</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -156,7 +156,7 @@
      <rect>
       <x>270</x>
       <y>60</y>
-      <width>70</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -165,6 +165,9 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-Phase-RB</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caChoice" name="cachoice">
@@ -252,9 +255,9 @@
     </property>
     <property name="falseColor">
      <color>
-      <red>255</red>
-      <green>0</green>
-      <blue>0</blue>
+      <red>218</red>
+      <green>218</green>
+      <blue>218</blue>
      </color>
     </property>
     <property name="trueColor">
@@ -339,7 +342,7 @@
      <rect>
       <x>270</x>
       <y>120</y>
-      <width>70</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -348,6 +351,25 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):AcTrig-SyncSrc-RB</string>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_11">
+    <property name="geometry">
+     <rect>
+      <x>229</x>
+      <y>60</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):AcTrig-Phase-SP.EGU</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
