@@ -370,7 +370,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-1141</y>
+         <y>0</y>
          <width>651</width>
          <height>1550</height>
         </rect>
@@ -677,6 +677,27 @@
         </layout>
        </widget>
       </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_7">
+     <attribute name="title">
+      <string>Output - CML</string>
+     </attribute>
+     <widget class="caInclude" name="cainclude_11">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>631</width>
+        <height>381</height>
+       </rect>
+      </property>
+      <property name="macro">
+       <string notr="true">ID=0, P=Cml, EVR=$(EVR)</string>
+      </property>
+      <property name="filename" stdset="0">
+       <string notr="true">evr_out_cml.ui</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
