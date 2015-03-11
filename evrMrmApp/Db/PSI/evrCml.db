@@ -10,7 +10,7 @@ record(bo, "$(ON)Ena-Sel") {
   field(OUT, "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
   field(UDF, "0")
-  field(VAL, "0")
+  field(VAL, "$($(OBJ)-Ena-Sel\=0)")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
   info(autosaveFields_pass0, "VAL")
@@ -21,7 +21,7 @@ record(bo, "$(ON)Pwr-Sel") {
   field(OUT, "@OBJ=$(OBJ), PROP=Power")
   field(PINI, "YES")
   field(UDF, "0")
-  field(VAL, "0")
+  field(VAL, "$($(OBJ)-Pwr-Sel\=0)")
   field(ZNAM, "Off")
   field(ONAM, "On")
   info(autosaveFields_pass0, "VAL")
@@ -32,7 +32,7 @@ record(bo, "$(ON)Rst-Sel") {
   field(OUT, "@OBJ=$(OBJ), PROP=Reset")
   field(PINI, "YES")
   field(UDF, "0")
-  field(VAL, "0")
+  field(VAL, "$($(OBJ)-Rst-Sel\=0)")
   field(ZNAM, "Normal")
   field(ONAM, "Reset")
   info(autosaveFields_pass0, "VAL")
@@ -42,6 +42,7 @@ record(mbbo, "$(ON)Mode-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(OBJ), PROP=Mode")
   field( PINI, "YES")
+  field( VAL, "$($(OBJ)-Mode-Sel\=0)")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
   field( TWST, "Waveform")
@@ -309,7 +310,7 @@ record(bo, "$(ON)Freq:Lvl-SP") {
   field(OUT, "@OBJ=$(OBJ), PROP=Freq Trig Lvl")
   field(PINI, "YES")
   field(UDF, "0")
-  field(VAL, "0")
+  field(VAL, "$($(OBJ)-Freq:Lvl-SP\=0)")
   field(ZNAM, "Active high")
   field(ONAM, "Active low")
   info(autosaveFields_pass0, "VAL")
@@ -321,7 +322,7 @@ record(ao, "$(ON)Freq:Init-SP") {
   field(OUT, "@OBJ=$(OBJ), PROP=Counts Init")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "0")
+  field(VAL , "$($(OBJ)-Freq:Init-SP\=0)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -340,13 +341,13 @@ record(longin, "$(ON)Freq:Init-RB") {
   field(LSV, "INVALID")
 }
 
-record(ao, "$(ON)Freq:High-SP") {
+record(ao, "$(ON)-Freq:High-SP") {
   field(DESC, "Time active")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "10")
+  field(VAL , "$($(OBJ)-Freq:High-SP\=10)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -370,7 +371,7 @@ record(ao, "$(ON)Freq:Low-SP") {
   field(OUT, "@OBJ=$(OBJ), PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "10")
+  field(VAL , "$($(OBJ)-Freq:Low-SP\=10)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -397,7 +398,7 @@ record(bo, "$(ON)Pat:WfCycle-SP") {
   field(OUT, "@OBJ=$(OBJ), PROP=Pat Recycle")
   field(PINI, "YES")
   field(UDF, "0")
-  field(VAL, "0")
+  field(VAL, "$($(OBJ)-Pat:WfCycle-SP\=0)")
   field(ZNAM, "Single shot")
   field(ONAM, "Loop")
   info(autosaveFields_pass0, "VAL")
@@ -454,6 +455,7 @@ record(waveform, "$(ON)Pat:WfX-I") {
 
 record(bo, "$(ON)WfCalc:Ena-SP") {
   field(DESC, "Disable calculator")
+  field(VAL, "$($(OBJ)-WfCalc:Ena-SP\=0)")
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
@@ -465,7 +467,7 @@ record(ao, "$(ON)WfCalc:Delay-SP") {
   field(OUT , "$(ON)WfCalc-ASub_.A PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "16")
+  field(VAL , "$($(OBJ)-WfCalc:Delay-SP\=16)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -474,7 +476,7 @@ record(ao, "$(ON)WfCalc:Width-SP") {
   field(OUT , "$(ON)WfCalc-ASub_.B PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "50")
+  field(VAL , "$($(OBJ)-WfCalc:Width-SP\=50)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -500,6 +502,7 @@ record(bo, "$(ON)BunchTrain:Ena-SP") {
   field(DESC, "Disable calculator")
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
+  field(VAL, "$($(OBJ)-BunchTrain:Ena-SP\=0)")
   field(UDF , "0")
   field(FLNK, "$(ON)BunchTrain:Size-SP")
   info(autosaveFields_pass0, "VAL")
@@ -509,7 +512,7 @@ record(longout, "$(ON)BunchTrain:Size-SP") {
   field(PINI, "YES")
   field(OUT , "$(ON)BunchTrain:ASub_.A PP")
   field(UDF , "0")
-  field(VAL , "1")
+  field(VAL , "$($(OBJ)-BunchTrain:Ena-SP=\1)")
   info(autosaveFields_pass0, "VAL")
 }
 

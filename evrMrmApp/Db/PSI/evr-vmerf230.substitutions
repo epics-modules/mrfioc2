@@ -88,3 +88,11 @@ file "evrOut.db"
 {"$(SYS)-$(EVR):Out-RB14-", "$(EVR):RearUniv14", "TRANSITION 14"}
 {"$(SYS)-$(EVR):Out-RB15-", "$(EVR):RearUniv15", "TRANSITION 15"}
 }
+
+file "evrCml.db"
+{pattern
+{ON, P, OBJ}
+{"$(SYS)-$(EVR):Out-Cml-0-", "$(SYS)-$(EVR):", "$(EVR):CML0"}
+{"$(SYS)-$(EVR):Out-Cml-1-", "$(SYS)-$(EVR):", "$(EVR):CML1"}
+{"$(SYS)-$(EVR):Out-Cml-2-", "$(SYS)-$(EVR):", "$(EVR):CML2"}
+}
