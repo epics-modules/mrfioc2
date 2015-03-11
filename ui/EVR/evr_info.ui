@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -6,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>80</height>
+    <height>96</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,10 +19,13 @@
      <x>0</x>
      <y>0</y>
      <width>261</width>
-     <height>81</height>
+     <height>88</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label_16">
       <property name="text">
@@ -63,26 +67,6 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_18">
-      <property name="text">
-       <string>Software version</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="caLineEdit" name="calineedit_8">
-      <property name="channel" stdset="0">
-       <string notr="true">$(EVR):SwVer-I</string>
-      </property>
-      <property name="formatType">
-       <enum>caLineEdit::string</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="label_19">
       <property name="text">
        <string>Card position in system</string>
@@ -92,7 +76,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="2" column="1">
      <widget class="caLineEdit" name="calineedit_9">
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Pos-I</string>
