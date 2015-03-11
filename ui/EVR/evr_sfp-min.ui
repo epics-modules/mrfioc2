@@ -63,6 +63,9 @@
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-T-I</string>
       </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="1" column="0">
@@ -83,6 +86,9 @@
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-TX-I</string>
       </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="2" column="0">
@@ -102,6 +108,9 @@
       </property>
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-RX-I</string>
+      </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -134,45 +143,6 @@
    </property>
    <property name="args">
     <string notr="true">EVR=$(EVR)</string>
-   </property>
-  </widget>
-  <widget class="caLineEdit" name="calineedit">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>39</y>
-     <width>41</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):SFP-Pwr-TX-I.EGU</string>
-   </property>
-  </widget>
-  <widget class="caLineEdit" name="calineedit_2">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>62</y>
-     <width>41</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):SFP-Pwr-RX-I.EGU</string>
-   </property>
-  </widget>
-  <widget class="caLineEdit" name="calineedit_3">
-   <property name="geometry">
-    <rect>
-     <x>177</x>
-     <y>15</y>
-     <width>41</width>
-     <height>15</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):SFP-T-I.EGU</string>
    </property>
   </widget>
  </widget>

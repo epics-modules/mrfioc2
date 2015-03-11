@@ -28,14 +28,17 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>5</x>
+      <x>10</x>
       <y>53</y>
-      <width>121</width>
+      <width>81</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Output frequency</string>
+     <string>Frequency</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -73,14 +76,17 @@
    <widget class="caLineEdit" name="calineedit">
     <property name="geometry">
      <rect>
-      <x>119</x>
+      <x>99</x>
       <y>50</y>
-      <width>71</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):PS-$(ID)-Rate-I</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="caSpinbox" name="caspinbox_2">

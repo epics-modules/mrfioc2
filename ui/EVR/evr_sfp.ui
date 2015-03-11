@@ -140,6 +140,9 @@
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-T-I</string>
       </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="1" column="1">
@@ -147,12 +150,18 @@
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-TX-I</string>
       </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="2" column="1">
      <widget class="caLineEdit" name="calineedit_8">
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):SFP-Pwr-RX-I</string>
+      </property>
+      <property name="unitsEnabled">
+       <bool>true</bool>
       </property>
      </widget>
     </item>

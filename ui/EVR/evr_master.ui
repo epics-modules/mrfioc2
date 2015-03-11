@@ -82,22 +82,6 @@
       <string notr="true">evr_base-link-status.ui</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
-     <property name="geometry">
-      <rect>
-       <x>92</x>
-       <y>130</y>
-       <width>30</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>MHz</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
@@ -257,7 +241,7 @@
       <rect>
        <x>10</x>
        <y>130</y>
-       <width>81</width>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
@@ -266,6 +250,9 @@
      </property>
      <property name="channel" stdset="0">
       <string notr="true">$(EVR):Link-Clk-SP</string>
+     </property>
+     <property name="unitsEnabled">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="Line" name="line">
