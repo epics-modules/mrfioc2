@@ -130,6 +130,9 @@
      <property name="channel" stdset="0">
       <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-EvtCode-RB</string>
      </property>
+     <property name="colorMode">
+      <enum>caLineEdit::Alarm_Default</enum>
+     </property>
     </widget>
     <widget class="QLabel" name="label_30">
      <property name="geometry">
@@ -170,7 +173,7 @@
       </color>
      </property>
      <property name="colorMode">
-      <enum>caLineEdit::Static</enum>
+      <enum>caLineEdit::Alarm_Default</enum>
      </property>
     </widget>
     <widget class="QLabel" name="label_29">

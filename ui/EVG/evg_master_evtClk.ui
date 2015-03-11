@@ -45,7 +45,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_30">
@@ -94,6 +94,9 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-RFFreq-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -151,7 +154,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_9">
@@ -168,6 +171,9 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-RFDiv-RB</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="caChoice" name="cachoice">
@@ -282,6 +288,9 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):EvtClk-FracSynFreq-RB</string>
     </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Default</enum>
+    </property>
     <property name="unitsEnabled">
      <bool>true</bool>
     </property>
@@ -306,7 +315,7 @@
      </color>
     </property>
     <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
+     <enum>caLineEdit::Alarm_Default</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">

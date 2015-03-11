@@ -80,7 +80,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Master enable for the EVR. If not set then very little will happen.</string>
+     <string/>
     </property>
     <property name="rectangular">
      <bool>false</bool>
@@ -90,9 +90,9 @@
     </property>
     <property name="falseColor">
      <color>
-      <red>255</red>
-      <green>0</green>
-      <blue>0</blue>
+      <red>218</red>
+      <green>218</green>
+      <blue>218</blue>
      </color>
     </property>
     <property name="trueColor">
