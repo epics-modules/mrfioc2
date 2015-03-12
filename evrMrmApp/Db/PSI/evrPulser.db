@@ -42,6 +42,7 @@ record(ao, "$(PN)Delay-SP") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
+  field(LOPR, "0")
   field(FLNK, "$(PN)Delay-RB")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
@@ -77,6 +78,7 @@ record(ao, "$(PN)Width-SP") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
+  field(LOPR, "0")
   field(FLNK, "$(PN)Width-RB")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
