@@ -35,10 +35,10 @@ while getopts ":s:g:h" o; do
 done
 
 # -s is not present
-#if [ $s_flag -eq 0 ]; then
-#    usage
-#    exit 1
-#fi
+if [ $s_flag -eq 0 ]; then
+    usage
+    exit 1
+fi
 
 macro="EVG=$SYS-$EVG"
 caqtdm -macro "$macro" evg_master.ui &
