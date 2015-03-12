@@ -370,7 +370,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-102</y>
          <width>651</width>
          <height>1550</height>
         </rect>
@@ -458,16 +458,6 @@
           <widget class="caInclude" name="cainclude_560">
            <property name="macro">
             <string notr="true">ID=6, P=FP, EVR=$(EVR)</string>
-           </property>
-           <property name="filename" stdset="0">
-            <string notr="true">evr_out-details-min.ui</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="caInclude" name="cainclude_561">
-           <property name="macro">
-            <string notr="true">ID=7, P=FP, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -686,10 +676,10 @@
      <widget class="caInclude" name="cainclude_11">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>631</width>
-        <height>381</height>
+        <x>0</x>
+        <y>0</y>
+        <width>661</width>
+        <height>411</height>
        </rect>
       </property>
       <property name="macro">

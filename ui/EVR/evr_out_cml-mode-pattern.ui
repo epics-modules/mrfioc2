@@ -1,0 +1,3977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>427</width>
+    <height>198</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>431</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Pattern</string>
+   </property>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>20</y>
+      <width>411</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Rising edge</string>
+     </attribute>
+     <widget class="caMessageButton" name="camessagebutton_64">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_50">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_33">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_57">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_38">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_42">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_35">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_51">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_45">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_53">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_41">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>301</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="endBit">
+       <number>9</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_47">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_34">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_54">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_39">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_40">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_37">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_59">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_43">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_62">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_56">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_46">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>50</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 0 - 9</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>70</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 10 - 19</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_243">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_8">
+      <property name="geometry">
+       <rect>
+        <x>271</x>
+        <y>70</y>
+        <width>120</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>0</number>
+      </property>
+      <property name="endBit">
+       <number>3</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_240">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_242">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_234">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_238">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_241">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_235">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_239">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_3">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>10</number>
+      </property>
+      <property name="endBit">
+       <number>15</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_48">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_58">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_49">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_60">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_52">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_61">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_55">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_63">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_65">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_66">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Rise00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>High</string>
+     </attribute>
+     <widget class="caMessageButton" name="camessagebutton_64">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_50">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_33">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_57">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_38">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_42">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_35">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_51">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_45">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_53">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_41">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>301</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="endBit">
+       <number>9</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_47">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_34">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_54">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_39">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_40">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_37">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_59">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_43">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_62">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_56">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_46">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>50</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 0 - 9</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>70</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 10 - 19</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_243">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_8">
+      <property name="geometry">
+       <rect>
+        <x>271</x>
+        <y>70</y>
+        <width>120</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>0</number>
+      </property>
+      <property name="endBit">
+       <number>3</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_240">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_242">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_234">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_238">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_241">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_235">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_239">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_3">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>10</number>
+      </property>
+      <property name="endBit">
+       <number>15</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_48">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_58">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_49">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_60">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_52">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_61">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_55">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_63">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_65">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_66">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:High00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Falling edge</string>
+     </attribute>
+     <widget class="caMessageButton" name="camessagebutton_64">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_50">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_33">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_57">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_38">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_42">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_35">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_51">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_45">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_53">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_41">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>301</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="endBit">
+       <number>9</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_47">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_34">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_54">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_39">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_40">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_37">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_59">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_43">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_62">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_56">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_46">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>50</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 0 - 9</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>70</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 10 - 19</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_243">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_8">
+      <property name="geometry">
+       <rect>
+        <x>271</x>
+        <y>70</y>
+        <width>120</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>0</number>
+      </property>
+      <property name="endBit">
+       <number>3</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_240">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_242">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_234">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_238">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_241">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_235">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_239">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_3">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>10</number>
+      </property>
+      <property name="endBit">
+       <number>15</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_48">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_58">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_49">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_60">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_52">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_61">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_55">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_63">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_65">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_66">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Fall00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Low</string>
+     </attribute>
+     <widget class="caMessageButton" name="camessagebutton_64">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_50">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_33">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_57">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_38">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_42">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_35">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_51">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_45">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_53">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B5</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_41">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>301</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="endBit">
+       <number>9</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_47">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BA</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_34">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_54">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_39">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B9</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_40">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B6</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_37">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_59">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B7</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_43">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B4</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_62">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B8</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_56">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_46">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>30</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>50</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 0 - 9</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>70</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bits: 10 - 19</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_243">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_8">
+      <property name="geometry">
+       <rect>
+        <x>271</x>
+        <y>70</y>
+        <width>120</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>0</number>
+      </property>
+      <property name="endBit">
+       <number>3</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_240">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_242">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_234">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_238">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B0</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_241">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B2</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_235">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B1</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_239">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low16_31-SP.B3</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caByte" name="cabyte_3">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP</string>
+      </property>
+      <property name="direction">
+       <enum>caByte::Right</enum>
+      </property>
+      <property name="startBit">
+       <number>10</number>
+      </property>
+      <property name="endBit">
+       <number>15</number>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_48">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_58">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BB</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_49">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_60">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BC</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_52">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_61">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BD</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_55">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_63">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BE</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_65">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">ON</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">1</string>
+      </property>
+     </widget>
+     <widget class="caMessageButton" name="camessagebutton_66">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>110</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="fontScaleMode">
+       <enum>EPushButton::WidthAndHeight</enum>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Low00_15-SP.BF</string>
+      </property>
+      <property name="label">
+       <string notr="true">OFF</string>
+      </property>
+      <property name="releaseMessage">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caMessageButton</class>
+   <extends>QPushButton</extends>
+   <header>caMessageButton</header>
+  </customwidget>
+  <customwidget>
+   <class>caByte</class>
+   <extends>QWidget</extends>
+   <header>caByte</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

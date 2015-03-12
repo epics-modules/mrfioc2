@@ -6,556 +6,216 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
-    <height>327</height>
+    <width>658</width>
+    <height>328</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="caLed" name="caled">
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>20</width>
-     <height>20</height>
+     <x>0</x>
+     <y>0</y>
+     <width>651</width>
+     <height>311</height>
     </rect>
    </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Ena-Sel</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-  </widget>
-  <widget class="caToggleButton" name="catogglebutton">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>10</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="text">
-    <string>Enable</string>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Ena-Sel</string>
-   </property>
-  </widget>
-  <widget class="caChoice" name="cachoice">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>50</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Pwr-Sel</string>
-   </property>
-   <property name="stackingMode" stdset="0">
-    <enum>caChoice::Column</enum>
-   </property>
-   <property name="endBit">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>62</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Power</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>62</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Reset</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="caChoice" name="cachoice_2">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>80</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Rst-Sel</string>
-   </property>
-   <property name="stackingMode" stdset="0">
-    <enum>caChoice::Column</enum>
-   </property>
-   <property name="endBit">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="caMenu" name="camenu">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>110</y>
-     <width>100</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Mode-Sel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>62</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Mode</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="caLineEdit" name="calineedit">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>140</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Mult-I</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>140</y>
-     <width>62</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Freq mult</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>10</y>
-     <width>331</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Out</string>
-   </property>
-   <widget class="caByte" name="cabyte">
+   <widget class="caLabel" name="calabel">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>321</width>
+      <x>1</x>
+      <y>1</y>
+      <width>649</width>
       <height>20</height>
      </rect>
     </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Rise00_15-SP</string>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
-    <property name="direction">
-     <enum>caByte::Right</enum>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>20</width>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
       <height>20</height>
-     </rect>
+     </size>
     </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>20</width>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
       <height>20</height>
-     </rect>
+     </size>
     </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_4">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_5">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_6">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_7">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_8">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_9">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_10">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_11">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_12">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_13">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_14">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_15">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_16">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_17">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>50</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>321</width>
-     <height>151</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Frequency mode</string>
-   </property>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>30</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Level</string>
+     <string>Out-$(P)-$(ID)</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="caChoice" name="cachoice_3">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>30</y>
-      <width>100</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:Lvl-SP</string>
-    </property>
-    <property name="stackingMode" stdset="0">
-     <enum>caChoice::Column</enum>
-    </property>
-    <property name="endBit">
-     <number>1</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>60</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Trigger point</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="caLineEdit" name="calineedit_2">
+   <widget class="caInclude" name="cainclude_pattern">
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>60</y>
-      <width>100</width>
-      <height>20</height>
+      <y>30</y>
+      <width>432</width>
+      <height>272</height>
      </rect>
     </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:Init-RB</string>
+    <property name="macro">
+     <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
     </property>
-   </widget>
-   <widget class="caTextEntry" name="catextentry">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>60</y>
-      <width>100</width>
-      <height>22</height>
-     </rect>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out_cml-mode-pattern.ui</string>
     </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:Init-SP</string>
+    <property name="visibility">
+     <enum>caInclude::Calc</enum>
     </property>
-   </widget>
-   <widget class="caTextEntry" name="catextentry_2">
-    <property name="geometry">
-     <rect>
-      <x>99</x>
-      <y>90</y>
-      <width>100</width>
-      <height>22</height>
-     </rect>
+    <property name="visibilityCalc">
+     <string notr="true">A=0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:High-SP</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>81</width>
+      <x>5</x>
+      <y>80</y>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Time active</string>
+     <string>Reset</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="caLineEdit" name="calineedit_3">
+   <widget class="caLineEdit" name="calineedit_6">
     <property name="geometry">
      <rect>
-      <x>209</x>
-      <y>90</y>
-      <width>100</width>
+      <x>80</x>
+      <y>170</y>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:High-RB</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Res-I</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="caTextEntry" name="catextentry_3">
+   <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>99</x>
-      <y>120</y>
-      <width>100</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:Low-SP</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>81</width>
+      <x>5</x>
+      <y>140</y>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Time inactive</string>
+     <string>Freq mult</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="caLineEdit" name="calineedit_4">
+   <widget class="caInclude" name="cainclude_waveform">
     <property name="geometry">
      <rect>
-      <x>209</x>
-      <y>120</y>
-      <width>100</width>
-      <height>20</height>
+      <x>210</x>
+      <y>30</y>
+      <width>312</width>
+      <height>162</height>
      </rect>
     </property>
+    <property name="macro">
+     <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out_cml-mode-waveform.ui</string>
+    </property>
+    <property name="visibility">
+     <enum>caInclude::Calc</enum>
+    </property>
+    <property name="visibilityCalc">
+     <string notr="true">A=2</string>
+    </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Freq:Low-RB</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>100</y>
-     <width>191</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Waveform mode</string>
-   </property>
-   <widget class="caChoice" name="cachoice_4">
+   <widget class="caToggleButton" name="catogglebutton">
     <property name="geometry">
      <rect>
-      <x>99</x>
+      <x>40</x>
       <y>30</y>
       <width>100</width>
       <height>20</height>
      </rect>
     </property>
+    <property name="text">
+     <string>Enable</string>
+    </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):Pat:WfCycle-SP</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Ena-Sel</string>
+    </property>
+   </widget>
+   <widget class="caMenu" name="camenu">
+    <property name="geometry">
+     <rect>
+      <x>79</x>
+      <y>110</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
+    </property>
+   </widget>
+   <widget class="caLed" name="caled">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Ena-Sel</string>
+    </property>
+   </widget>
+   <widget class="caChoice" name="cachoice_2">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>80</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Rst-Sel</string>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>
@@ -564,207 +224,112 @@
      <number>1</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Cycle mode</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>171</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Waveform and readback</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_4">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>90</y>
-     <width>151</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Waveform delay</string>
-   </property>
-   <widget class="caLed" name="caled_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):WfCalc:Ena-SP</string>
-    </property>
-   </widget>
-   <widget class="caToggleButton" name="catogglebutton_18">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>40</y>
-      <width>100</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enable</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):WfCalc:Ena-SP</string>
-    </property>
-   </widget>
-   <widget class="caTextEntry" name="catextentry_4">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>70</y>
+      <x>5</x>
+      <y>110</y>
       <width>71</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):WfCalc:Delay-SP</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>70</y>
-      <width>51</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Delay</string>
+     <string>Mode</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="caTextEntry" name="catextentry_5">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>100</y>
-      <width>71</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):WfCalc:Width-SP</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>100</y>
-      <width>51</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Width</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_5">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>230</y>
-     <width>161</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>CML Gun</string>
-   </property>
-   <widget class="caToggleButton" name="catogglebutton_19">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>30</y>
-      <width>100</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enable</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):BunchTrain:Ena-SP</string>
-    </property>
-   </widget>
-   <widget class="caTextEntry" name="catextentry_6">
+   <widget class="caChoice" name="cachoice">
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>60</y>
-      <width>71</width>
-      <height>22</height>
+      <y>50</y>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):BunchTrain:Size-SP</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Pwr-Sel</string>
+    </property>
+    <property name="stackingMode" stdset="0">
+     <enum>caChoice::Column</enum>
+    </property>
+    <property name="endBit">
+     <number>1</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="caLineEdit" name="calineedit_5">
     <property name="geometry">
      <rect>
-      <x>21</x>
-      <y>60</y>
-      <width>51</width>
+      <x>80</x>
+      <y>140</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mult-I</string>
+    </property>
+    <property name="unitsEnabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>170</y>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Size</string>
+     <string>Resolution</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="caLed" name="caled_3">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>20</width>
+      <x>5</x>
+      <y>50</y>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
+    <property name="text">
+     <string>Power</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_freq">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>312</width>
+      <height>162</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out_cml-mode-freq.ui</string>
+    </property>
+    <property name="visibility">
+     <enum>caInclude::Calc</enum>
+    </property>
+    <property name="visibilityCalc">
+     <string notr="true">A=1</string>
+    </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-Cml-$(P)$(ID):BunchTrain:Ena-SP</string>
+     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
     </property>
    </widget>
   </widget>
@@ -781,14 +346,19 @@
    <header>caChoice</header>
   </customwidget>
   <customwidget>
-   <class>caTextEntry</class>
-   <extends>caLineEdit</extends>
-   <header>caTextEntry</header>
-  </customwidget>
-  <customwidget>
    <class>caToggleButton</class>
    <extends>QCheckBox</extends>
    <header>caToggleButton</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
   </customwidget>
   <customwidget>
    <class>caLed</class>
@@ -799,11 +369,6 @@
    <class>caLineEdit</class>
    <extends>QLineEdit</extends>
    <header>caLineEdit</header>
-  </customwidget>
-  <customwidget>
-   <class>caByte</class>
-   <extends>QWidget</extends>
-   <header>caByte</header>
   </customwidget>
  </customwidgets>
  <resources/>
