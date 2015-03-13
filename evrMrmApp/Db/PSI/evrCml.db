@@ -503,8 +503,6 @@ record(bo, "$(ON)BunchTrain:Ena-SP") {
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(VAL, "$($(OBJ)-BunchTrain:Ena-SP\=0)")
-  field(HOPR, "150")
-  field(LOPR, "1")
   field(UDF , "0")
   field(FLNK, "$(ON)BunchTrain:Size-SP")
   info(autosaveFields_pass0, "VAL")
@@ -514,6 +512,8 @@ record(longout, "$(ON)BunchTrain:Size-SP") {
   field(PINI, "YES")
   field(OUT , "$(ON)BunchTrain:ASub_.A PP")
   field(UDF , "0")
+  field(HOPR, "150")
+  field(LOPR, "1")
   field(VAL , "$($(OBJ)-BunchTrain:Ena-SP=\1)")
   info(autosaveFields_pass0, "VAL")
 }
