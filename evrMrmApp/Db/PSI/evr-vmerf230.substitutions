@@ -64,9 +64,9 @@ file "evrOut.db"
 {"$(SYS)-$(EVR):Out-FP1-", "$(EVR):FrontOut1", "OUT1 (TTL)"}
 {"$(SYS)-$(EVR):Out-FP2-", "$(EVR):FrontOut2", "OUT2 (TTL)"}
 {"$(SYS)-$(EVR):Out-FP3-", "$(EVR):FrontOut3", "OUT3 (TTL)"}
-{"$(SYS)-$(EVR):Out-FP4-", "$(EVR):FrontOut4", "OUT4 (TTL)"}
-{"$(SYS)-$(EVR):Out-FP5-", "$(EVR):FrontOut5", "OUT5 (TTL)"}
-{"$(SYS)-$(EVR):Out-FP6-", "$(EVR):FrontOut6", "OUT6 (TTL)"}
+{"$(SYS)-$(EVR):Out-CML4-", "$(EVR):FrontOut4", "OUT4 (TTL)"}
+{"$(SYS)-$(EVR):Out-CML5-", "$(EVR):FrontOut5", "OUT5 (TTL)"}
+{"$(SYS)-$(EVR):Out-CML6-", "$(EVR):FrontOut6", "OUT6 (TTL)"}
 {"$(SYS)-$(EVR):Out-FPUV0-", "$(EVR):FrontUnivOut0", "UNIV0"}
 {"$(SYS)-$(EVR):Out-FPUV1-", "$(EVR):FrontUnivOut1", "UNIV1"}
 {"$(SYS)-$(EVR):Out-FPUV2-", "$(EVR):FrontUnivOut2", "UNIV2"}
@@ -92,7 +92,7 @@ file "evrOut.db"
 file "evrCml.db"
 {pattern
 {ON, P, OBJ}
-{"$(SYS)-$(EVR):Out-Cml-0-", "$(SYS)-$(EVR):", "$(EVR):CML0"}
-{"$(SYS)-$(EVR):Out-Cml-1-", "$(SYS)-$(EVR):", "$(EVR):CML1"}
-{"$(SYS)-$(EVR):Out-Cml-2-", "$(SYS)-$(EVR):", "$(EVR):CML2"}
+{"$(SYS)-$(EVR):Out-CML-4-", "$(SYS)-$(EVR):", "$(EVR):CML0"}
+{"$(SYS)-$(EVR):Out-CML-5-", "$(SYS)-$(EVR):", "$(EVR):CML1"}
+{"$(SYS)-$(EVR):Out-CML-6-", "$(SYS)-$(EVR):", "$(EVR):CML2"}
 }
