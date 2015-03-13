@@ -54,7 +54,7 @@
     <string notr="true">$(EVR):Event-$(EVT)-Cnt-I</string>
    </property>
   </widget>
-  <widget class="caLabel" name="calabel">
+  <widget class="caLabel" name="calabel_notUsed">
    <property name="geometry">
     <rect>
      <x>85</x>
@@ -79,8 +79,52 @@
     <string notr="true">$(EVR):Event-$(EVT)-SP</string>
    </property>
   </widget>
+  <widget class="caFrame" name="caframe">
+   <property name="geometry">
+    <rect>
+     <x>85</x>
+     <y>0</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="visibility">
+    <enum>caFrame::Calc</enum>
+   </property>
+   <property name="visibilityCalc">
+    <string notr="true">J</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):Event-$(EVT)-Cnt-I</string>
+   </property>
+   <widget class="caLineEdit" name="calineedit_frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>120</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Event-$(EVT)-Cnt-I</string>
+    </property>
+    <property name="colorMode">
+     <enum>caLineEdit::Alarm_Static</enum>
+    </property>
+    <property name="alarmHandling">
+     <enum>caLineEdit::onBackground</enum>
+    </property>
+   </widget>
+  </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>caFrame</class>
+   <extends>QFrame</extends>
+   <header>caFrame</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>caLabel</class>
    <extends>QLabel</extends>

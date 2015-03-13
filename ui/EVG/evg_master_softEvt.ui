@@ -56,7 +56,7 @@
      <rect>
       <x>1</x>
       <y>1</y>
-      <width>173</width>
+      <width>172</width>
       <height>20</height>
      </rect>
     </property>
@@ -64,7 +64,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>SoftEvt</string>
+     <string>Soft / manual event</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -75,12 +75,12 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>20</width>
-      <height>20</height>
+      <width>18</width>
+      <height>18</height>
      </rect>
     </property>
     <property name="toolTip">
-     <string>Master enable for the EVR. If not set then very little will happen.</string>
+     <string/>
     </property>
     <property name="rectangular">
      <bool>false</bool>
@@ -90,9 +90,9 @@
     </property>
     <property name="falseColor">
      <color>
-      <red>255</red>
-      <green>0</green>
-      <blue>0</blue>
+      <red>218</red>
+      <green>218</green>
+      <blue>218</blue>
      </color>
     </property>
     <property name="trueColor">
@@ -132,11 +132,11 @@
       <x>40</x>
       <y>30</y>
       <width>131</width>
-      <height>20</height>
+      <height>18</height>
      </rect>
     </property>
     <property name="text">
-     <string>Master enable</string>
+     <string>Enable</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):SoftEvt-Enable-Sel</string>
@@ -168,7 +168,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Set</string>
+     <string>Set Event</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

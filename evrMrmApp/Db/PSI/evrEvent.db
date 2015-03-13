@@ -25,4 +25,6 @@ record(calc, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I") {
   field(CALC, "A+1")
   field(INPA, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I NPP")
   field(TSEL, "$(SYS)-$(EVR):Event-$(CODE)-SP.TIME")
+  field(LOLO, "0")
+  field(LLSV, "MINOR")
 }

@@ -28,14 +28,17 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>5</x>
+      <x>10</x>
       <y>53</y>
-      <width>121</width>
+      <width>81</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Output frequency</string>
+     <string>Frequency</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -49,32 +52,6 @@
     </property>
     <property name="text">
      <string>Set prescaler</string>
-    </property>
-   </widget>
-   <widget class="caTextEntry" name="catextentry">
-    <property name="geometry">
-     <rect>
-      <x>99</x>
-      <y>25</y>
-      <width>91</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Integer divisor between the Event clock and the sub-unit output.</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):PS-$(ID)-Div-SP</string>
-    </property>
-    <property name="background">
-     <color>
-      <red>212</red>
-      <green>219</green>
-      <blue>157</blue>
-     </color>
-    </property>
-    <property name="colorMode">
-     <enum>caLineEdit::Static</enum>
     </property>
    </widget>
    <widget class="caLabel" name="calabel">
@@ -99,23 +76,52 @@
    <widget class="caLineEdit" name="calineedit">
     <property name="geometry">
      <rect>
-      <x>119</x>
+      <x>99</x>
       <y>50</y>
-      <width>71</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):PS-$(ID)-Rate-I</string>
     </property>
+    <property name="unitsEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="caSpinbox" name="caspinbox_2">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>28</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>How long does a pulse state stay active</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):PS-$(ID)-Div-SP</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="fixedFormat">
+     <bool>false</bool>
+    </property>
    </widget>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>caTextEntry</class>
-   <extends>caLineEdit</extends>
-   <header>caTextEntry</header>
+   <class>caSpinbox</class>
+   <extends>QFrame</extends>
+   <header>caSpinbox</header>
   </customwidget>
   <customwidget>
    <class>caFrame</class>

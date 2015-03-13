@@ -62,6 +62,7 @@ record(longout, "$(P)Prescaler-SP") {
     field( VAL,  "$($(OBJ)-Prescaler-SP\=124920)")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
+    field( LOPR, "2")
     field( FLNK, "$(P)Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }

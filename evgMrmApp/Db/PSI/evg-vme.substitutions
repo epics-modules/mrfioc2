@@ -32,12 +32,28 @@ pattern { P, OBJ, EVG, dbusBit }
 
 file evgInput.db {
 pattern { P, OBJ, , SYS, D, Num }
-{ "$(SYS)-$(EVG):Inp-Front0-", "$(EVG):FrontInp0", $(SYS), $(EVG), 0 }
-{ "$(SYS)-$(EVG):Inp-Front1-", "$(EVG):FrontInp1", $(SYS), $(EVG), 1 }
-{ "$(SYS)-$(EVG):Inp-Univ0-",  "$(EVG):UnivInp0",  $(SYS), $(EVG), 2 }
-{ "$(SYS)-$(EVG):Inp-Univ1-",  "$(EVG):UnivInp1",  $(SYS), $(EVG), 3 }
-{ "$(SYS)-$(EVG):Inp-Univ2-",  "$(EVG):UnivInp2",  $(SYS), $(EVG), 4 }
-{ "$(SYS)-$(EVG):Inp-Univ3-",  "$(EVG):UnivInp3",  $(SYS), $(EVG), 5 }
+{ "$(SYS)-$(EVG):Inp-Front0-", "$(EVG):FrontInp0", $(SYS), $(EVG), 1 }
+{ "$(SYS)-$(EVG):Inp-Front1-", "$(EVG):FrontInp1", $(SYS), $(EVG), 2 }
+{ "$(SYS)-$(EVG):Inp-Univ0-",  "$(EVG):UnivInp0",  $(SYS), $(EVG), 3 }
+{ "$(SYS)-$(EVG):Inp-Univ1-",  "$(EVG):UnivInp1",  $(SYS), $(EVG), 4 }
+{ "$(SYS)-$(EVG):Inp-Univ2-",  "$(EVG):UnivInp2",  $(SYS), $(EVG), 5 }
+{ "$(SYS)-$(EVG):Inp-Univ3-",  "$(EVG):UnivInp3",  $(SYS), $(EVG), 6 }
+{ "$(SYS)-$(EVG):Inp-Tran0-",  "$(EVG):RearInp0",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran1-",  "$(EVG):RearInp1",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran2-",  "$(EVG):RearInp2",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran3-",  "$(EVG):RearInp3",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran4-",  "$(EVG):RearInp4",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran5-",  "$(EVG):RearInp5",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran6-",  "$(EVG):RearInp6",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran7-",  "$(EVG):RearInp7",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran8-",  "$(EVG):RearInp8",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran9-",  "$(EVG):RearInp9",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran10-",  "$(EVG):RearInp10",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran11-",  "$(EVG):RearInp11",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran12-",  "$(EVG):RearInp12",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran13-",  "$(EVG):RearInp13",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran14-",  "$(EVG):RearInp14",  $(SYS), $(EVG), 0 }
+{ "$(SYS)-$(EVG):Inp-Tran15-",  "$(EVG):RearInp15",  $(SYS), $(EVG), 0 }
 }
 
 file evgOutput.db {
@@ -46,6 +62,10 @@ pattern { P, OBJ }
 { "$(SYS)-$(EVG):Out-Front1-", "$(EVG):FrontOut1" }
 { "$(SYS)-$(EVG):Out-Front2-", "$(EVG):FrontOut2" }
 { "$(SYS)-$(EVG):Out-Front3-", "$(EVG):FrontOut3" }
+{ "$(SYS)-$(EVG):Out-Univ0-", "$(EVG):UnivOut0" }
+{ "$(SYS)-$(EVG):Out-Univ1-", "$(EVG):UnivOut1" }
+{ "$(SYS)-$(EVG):Out-Univ2-", "$(EVG):UnivOut2" }
+{ "$(SYS)-$(EVG):Out-Univ3-", "$(EVG):UnivOut3" }
 }
 
 file evgTrigEvt.db {
