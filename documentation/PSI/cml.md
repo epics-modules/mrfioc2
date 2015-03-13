@@ -1,9 +1,10 @@
 # CML
 
 Front Panel CML Outputs provide low jitter differential signals with special outputs. The outputs can work in different configurations waveform (pulse) mode, pattern mode and frequency mode.
+CML outputs correspond to Front Pannel ouputs 4-6. If CML is disabled, normal TTL outputs are used.
 
 ## Pattern mode
-There are 4 configurable waveforms (20 or 40 bit pattern), each corresponds to a state of the signal:
+There are 4 configurable waveforms (20 bit pattern), each corresponds to a state of the signal:
 
 - signal is __rising__: _Pat:Rising-SP_ waveform is sent out after the rising edge is detected and will interrupt the current pattern being sent.
 
