@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>658</width>
+    <width>678</width>
     <height>328</height>
    </rect>
   </property>
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>651</width>
-     <height>311</height>
+     <width>661</width>
+     <height>241</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -68,10 +68,10 @@
    <widget class="caInclude" name="cainclude_pattern">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>215</x>
       <y>30</y>
       <width>432</width>
-      <height>272</height>
+      <height>202</height>
      </rect>
     </property>
     <property name="macro">
@@ -141,9 +141,9 @@
    <widget class="caInclude" name="cainclude_waveform">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>215</x>
       <y>30</y>
-      <width>312</width>
+      <width>371</width>
       <height>162</height>
      </rect>
     </property>
@@ -188,6 +188,9 @@
       <height>25</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(212, 219, 157);</string>
+    </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
     </property>
@@ -204,6 +207,27 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):Out-$(P)-$(ID)-Ena-Sel</string>
     </property>
+    <property name="falseColor">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="trueColor">
+     <color>
+      <red>0</red>
+      <green>205</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="undefinedColor">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
    </widget>
    <widget class="caChoice" name="cachoice_2">
     <property name="geometry">
@@ -216,6 +240,23 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):Out-$(P)-$(ID)-Rst-Sel</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>
@@ -251,6 +292,23 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):Out-$(P)-$(ID)-Pwr-Sel</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>212</red>
+      <green>219</green>
+      <blue>157</blue>
+     </color>
+    </property>
+    <property name="bordercolor">
+     <color>
+      <red>0</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colorMode">
+     <enum>caChoice::Static</enum>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>
@@ -310,9 +368,9 @@
    <widget class="caInclude" name="cainclude_freq">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>215</x>
       <y>30</y>
-      <width>312</width>
+      <width>362</width>
       <height>162</height>
      </rect>
     </property>

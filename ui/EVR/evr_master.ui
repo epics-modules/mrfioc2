@@ -370,7 +370,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-102</y>
+         <y>-122</y>
          <width>651</width>
          <height>1550</height>
         </rect>
@@ -437,7 +437,7 @@
          <item>
           <widget class="caInclude" name="cainclude_14">
            <property name="macro">
-            <string notr="true">ID=4, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=4, P=CML, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -447,7 +447,7 @@
          <item>
           <widget class="caInclude" name="cainclude_559">
            <property name="macro">
-            <string notr="true">ID=5, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=5, P=CML, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -457,7 +457,7 @@
          <item>
           <widget class="caInclude" name="cainclude_560">
            <property name="macro">
-            <string notr="true">ID=6, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=6, P=CML, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -673,21 +673,82 @@
      <attribute name="title">
       <string>Output - CML</string>
      </attribute>
-     <widget class="caInclude" name="cainclude_11">
+     <widget class="QScrollArea" name="scrollArea_5">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>661</width>
+        <width>671</width>
         <height>411</height>
        </rect>
       </property>
-      <property name="macro">
-       <string notr="true">ID=0, P=Cml, EVR=$(EVR)</string>
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
-      <property name="filename" stdset="0">
-       <string notr="true">evr_out_cml.ui</string>
-      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>-341</y>
+         <width>651</width>
+         <height>750</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>750</height>
+        </size>
+       </property>
+       <widget class="caInclude" name="cainclude_11">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>662</width>
+          <height>242</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=4, P=CML, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_cml.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_12">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>250</y>
+          <width>662</width>
+          <height>242</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=5, P=CML, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_cml.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_13">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>500</y>
+          <width>662</width>
+          <height>242</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=6, P=CML, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_cml.ui</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">

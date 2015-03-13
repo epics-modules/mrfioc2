@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
@@ -206957,16 +206956,15 @@
      <height>20</height>
     </size>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-   </property>
    <property name="text">
     <string>Waveform for Out-$(P)-$(ID) pattern</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
  </widget>
  <customwidgets>
   <customwidget>
