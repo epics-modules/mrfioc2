@@ -341,7 +341,7 @@ record(longin, "$(ON)Freq:Init-RB") {
   field(LSV, "INVALID")
 }
 
-record(ao, "$(ON)-Freq:High-SP") {
+record(ao, "$(ON)Freq:High-SP") {
   field(DESC, "Time active")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=Counts High")
