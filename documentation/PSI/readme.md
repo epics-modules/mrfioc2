@@ -1,18 +1,11 @@
-# mrfioc2 in PSI
-- [Introduction](#introduction)
-- [Problem](#problem)
-- [Solution](#solution)
-- [Event Receiver - EVR](#event-receiver)
-- [Quick start](#quick-start)
-    - [Example](#example)
-    - [Macro description](#longHeaderName)
-- [Advanced](#advanced)
+# Usage of the mrfioc2 timing system driver: The Event Receiver
 
-## Introduction
-Timing system cards ara available in many form factors. Each of them can have different amount of basic hardware components, such as pulsers, inputs, outputs, SFPs, etc.
-To create EPICS database(template) for a specific form factor we would normally use a suitable substitution file and expand it using the MSI tool, which works the same way as the EPICS macro substitutions do. The output of the tool can then be used in our EPICS application.
+Timing system cards ara available in many form factors. Each of them can have different amount of basic hardware components, such as pulsers, inputs, outputs, [SFPs](http://en.wikipedia.org/wiki/Small_form-factor_pluggable_transceiver), etc.
+To create an EPICS database(template) for a specific form factor we would normally use a suitable substitution file and expand it using the [MSI](http://www.aps.anl.gov/epics/extensions/msi/) tool, which works the same way as the EPICS macro substitutions do. The output of the tool can then be used in our EPICS application.
 
 __However__, in order to set the default values of macros, while recursivly expanding templates (using MSI), we need to use a trick in the original substitution file, which is described in the [advanced section](#substitution-trick).
+
+To quickly set up you basic application, check the [Quick start section](#quick-start), that provides an [example](#example) of how to start, together with the [description](#longHeaderName) of the available customizations.
 
 ##Event Receiver
 Each Event Receiver (EVR) consists of a number of basic _components_ and a _mapping ram_. Components are as follows:
@@ -23,34 +16,37 @@ Each Event Receiver (EVR) consists of a number of basic _components_ and a _mapp
 - prescaler settings (Integer divisor selection and output frequency display)
 - pulser settings (enable/disable, polarity, pulse delay, pulse width and prescaler settings)
 
-All of theese are available through a predefined template `evr-vmerf230.template`, and can be configured through a substitution file or at runtime. _Mapping ram_ is used to associate components to events in order to achieve the desired functionality of the EVR. There exists two types of mapping:
+All of these are available through a predefined template `evr-vmerf230.template`, and can be configured through a substitution file or at runtime. The _Mapping ram_ is used to associate components to events in order to achieve the desired functionality of the EVR. There exists two types of mapping:
 
 - mapping between hardware event code and a software database event
     - here, we can specify soft events that can be used in EPICS records to trigger processing based on the event code received
 - mapping between hardware event code and EVR component
-    -  mapping a special EVR function (_"FIFO", "Latch TS", "Blink", "Forward","Stop Log", "Log", "Heartbeat", "Reset PS", "TS reset", "TS tick", "Shift 1", "Shift 0"_) to an event code
-    -  mapping a pulser function (_"Trig", "Set", "Reset"_) to an event code
+    -  mapping a special EVR function (described in [evr-Eventmap.template section](#evrEventTemplate)) to an event code
+    -  mapping a pulser function (described in [evr-Pulsermap.template section](#evrPulsermapTemplate)) to an event code
 
 An [example](#example) of the described functionalities is available [below](#example).
 
 ## Quick start
-Use a predefined main and supporting EVR templates together with an application substitution file. 
-In the application substitution file change/add/remove:
+The driver is located in [PSI github](https://github.psi.ch/projects/ED/repos/mrfioc2/browse). Start by cloning the reporsitory
 
-- macros _$(SYS)_ and _$(EVR)_
-- optionally apply macros for overriding default values, eg. `$(EVR):PS0-Div-SP=1`
-- substitutions/macros for pulser maps, events, event maps, and any other components.
-- if needed, add additional soft event triggering
+		git clone https://github.psi.ch/scm/ed/mrfioc2.git
+which will create a `mrfioc2` folder, containing the driver.
+Follow the [example](#example), which will guide you through bootstrapping your project, then check how to customize your project in the [templates description section](#longHeaderName), where you find out 
+
+- how to apply macros for overriding default values of EVR components, eg. `$(EVR):PS0-Div-SP=1`,
+- how to use substitutions/macros for pulser maps, events, event maps, and any other components,
+- how to set up soft event triggering.
 
 ### Example
 1. Create a project folder, eg. `MTEST-VME-EVRTEST`
 2. Copy the following files to it:
     - mrfioc2/evrMrmApp/Db/PSI/`evr-vmerf230.template` --> `MTEST-VME-EVRTEST/evr-vmerf230.template`
+    >If the "evr-vmerf230.template" does not exist, refer to [Manually generating EVR template section](#manually-generating-evr-template).
     - mrfioc2/evrMrmApp/Db/PSI/`evrEvent.db` --> `MTEST-VME-EVRTEST/evr-Event.template`
     - mrfioc2/evrMrmApp/Db/PSI/`evrEventmap.db` --> `MTEST-VME-EVRTEST/evr-Eventmap.template`
     - mrfioc2/evrMrmApp/Db/PSI/`evrPulsermap.db` --> `MTEST-VME-EVRTEST/evr-Pulsermap.template`
     - mrfioc2/PSI/`evr_ex.subs` --> `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_EVR.subs`
-    > Please mind the file name and extention changes while copying!
+    > Please mind the file name and extention differences between the source and destination files!
 3. Create startup script `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_startup.script`, so it looks like this:
 
         ## Load IFC1210 devLib and pev modules
@@ -61,7 +57,7 @@ In the application substitution file change/add/remove:
         ##########################
         #-----! EVR Setup ------!#
         ##########################
-        ## Configure EVG
+        ## Configure EVR
         ## Arguments:
         ##  - device name
         ##  - slot number
@@ -75,20 +71,21 @@ In the application substitution file change/add/remove:
    
     > Depending on your setup you can also change _mrmEvrSetupVME(EVR0,2,0x3000000,4,0x28);_ to reflect the connected hardware setup.
 
+In this example the EVR named "EVR0" is present in VME slot #2. It is given a base A24 address of 0x3000000 and configured to interrupt on level 4 with interrupt vector 0x28. __Unused address range should be selected by the user__ based on resources available on VME. This is not checked by the system, where the existance of the EVR in selected slot is detected. If no EVR is found the setup will abort.
+
 4. Edit EVR application substitution file `MTEST-VME-EVRTEST/MTEST-VME-EVRTEST_EVR.subs`
     
-    The substitution file comprises of main EVR macros and additional event mappings. It should be changed as per the application requirements, and the documentation in the substitution file.
+    The substitution file comprises of main EVR macros and additional event mappings. It should be changed as per the application requirements, and the documentation in the substitution file. Details of the steps below are also documented in the [templates description section](#longHeaderName). 
+   
     - search-replace all occurances of _MTEST-VME-BSREAD_ with _MTEST-VME-EVRTEST_
-    > Check for the correct EVR name: `EVR0`, and search-replace if needed
-
-    - set the desired values for _Global settings_, _Prescalers_, _Pulsers_, _Front panel inputs_ and _Front panel outputs_ according to the documentation next to the macros for _evr-vmerf230.template_.
-    - if needed, add/remove/change the mapping between hardware event code and a software (EPICS) database event in _evr-Event.template_ substitutions
-    - if needed, add/remove/change the mapping between hardware event code and a special function of the EVR in _evr-Eventmap.template_ substitutions
-    - if needed, add/remove/change the mapping of the hardware event codes to pulse geneators in _evr-Pulsermap.template_ substitutions
+    > Check for the correct EVR name: `EVR0` (must be the same as we defined in mrmEvrSetupVME(...) command in startup script), and search-replace all occurances if needed
+    - based on your application, add/remove/change the mapping between hardware event code and a software (EPICS) database event in _evr-Event.template_ substitutions
+    - based on your application, add/remove/change the mapping between hardware event code and a special function of the EVR in _evr-Eventmap.template_ substitutions
+    - based on your application, add/remove/change the mapping of the hardware event codes to pulse geneators in _evr-Pulsermap.template_ substitutions
     
-    > Pulsers can be mapped using three functions to multiple events.
+There are some default settings allready present in the substitution file. The changes are dependant of the user project/application and a specific use case.
 
-5. Install the prepared IOC (run `swit -V` from your project directory (`MTEST-VME-EVRTEST`))
+5. Install the prepared IOC (run `swit -V` from your project directory (`MTEST-VME-EVRTEST`)
 
 ### Description of the template files in _MTEST-VME-EVRTEST\_EVR.subs_ <a name="longHeaderName"></a>
 Example project name is "MTEST-VME-EVRTEST". In the next few chapters we will describe how to use the provided application substitution file, and add/remove/change desired mappings.
@@ -206,7 +203,7 @@ The available macros are listed using their name and default value. Where many c
     -   EVR0:FrontOut0-Src-SP=63 : 
         `Mapping property codes` from the upper table can be set here. The mapping property code coresponds to an output source.
 
-#### evr-Eventmap.template
+#### evr-Eventmap.template <a name="evrEventTemplate"></a>
 There is a number of special functions available, that can trigger on specified event:
 
 - __Blink__ : An LED on the EVRs front panel will blink when the code is received.
@@ -240,7 +237,7 @@ We will blink the EVR0 led on each occurance of event 1, and 6.
             {"MTEST-VME-EVRTEST",   "EVR0",  "6",   "Blink"}
     }
 
-#### evr-Pulsermap.template
+#### evr-Pulsermap.template <a name="evrPulsermapTemplate"></a>
 Event receivers have multiple pulsers that can preform several functions on different events.  It is possible that more than one record will interach with each event code / pulser combinations, however each pairing must be unique. Currently available functions for each pulser are:
 
 - __Trig__ : causes a received event to trigger a pulser.
