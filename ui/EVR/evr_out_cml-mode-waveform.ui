@@ -87,7 +87,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Calculate pattern</string>
+     <string>Square pattern</string>
     </property>
     <widget class="caLed" name="caled_2">
      <property name="geometry">

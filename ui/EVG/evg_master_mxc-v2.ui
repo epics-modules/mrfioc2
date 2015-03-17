@@ -28,50 +28,10 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="caLed" name="caled_2">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>35</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string/>
-    </property>
-    <property name="rectangular">
-     <bool>false</bool>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVG):Mxc-$(ID)-Status-RB</string>
-    </property>
-    <property name="falseColor">
-     <color>
-      <red>255</red>
-      <green>0</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="trueColor">
-     <color>
-      <red>0</red>
-      <green>205</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="undefinedColor">
-     <color>
-      <red>255</red>
-      <green>255</green>
-      <blue>255</blue>
-     </color>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_34">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>110</x>
       <y>10</y>
       <width>71</width>
       <height>20</height>
@@ -87,7 +47,7 @@
    <widget class="QLabel" name="label_30">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>70</x>
       <y>60</y>
       <width>111</width>
       <height>20</height>
@@ -103,9 +63,9 @@
    <widget class="caChoice" name="cachoice_2">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>190</x>
       <y>60</y>
-      <width>141</width>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -184,7 +144,7 @@
    <widget class="QLabel" name="label_38">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>120</x>
       <y>35</y>
       <width>61</width>
       <height>20</height>
@@ -247,6 +207,9 @@
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-RB</string>
     </property>
+    <property name="formatType">
+     <enum>caLineEdit::hexadecimal</enum>
+    </property>
    </widget>
    <widget class="QLabel" name="label_32">
     <property name="geometry">
@@ -283,9 +246,9 @@
    <widget class="caSpinbox" name="caspinbox">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>188</x>
       <y>10</y>
-      <width>139</width>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -325,17 +288,14 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="caSpinbox" name="caspinbox_2">
+   <widget class="caTextEntry" name="catextentry_6">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>190</x>
       <y>35</y>
-      <width>139</width>
+      <width>91</width>
       <height>20</height>
      </rect>
-    </property>
-    <property name="toolTip">
-     <string/>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-SP</string>
@@ -347,8 +307,30 @@
       <blue>157</blue>
      </color>
     </property>
-    <property name="fixedFormat">
-     <bool>false</bool>
+    <property name="colorMode">
+     <enum>caLineEdit::Static</enum>
+    </property>
+    <property name="formatType">
+     <enum>caLineEdit::hexadecimal</enum>
+    </property>
+   </widget>
+   <widget class="caLineEdit" name="calineedit_15">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>35</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):Mxc-$(ID)-Prescaler-SP.EGU</string>
+    </property>
+    <property name="formatType">
+     <enum>caLineEdit::hexadecimal</enum>
     </property>
    </widget>
   </widget>
@@ -360,6 +342,11 @@
    <header>caChoice</header>
   </customwidget>
   <customwidget>
+   <class>caTextEntry</class>
+   <extends>caLineEdit</extends>
+   <header>caTextEntry</header>
+  </customwidget>
+  <customwidget>
    <class>caSpinbox</class>
    <extends>QFrame</extends>
    <header>caSpinbox</header>
@@ -368,11 +355,6 @@
    <class>caLabel</class>
    <extends>QLabel</extends>
    <header>caLabel</header>
-  </customwidget>
-  <customwidget>
-   <class>caLed</class>
-   <extends>QWidget</extends>
-   <header>caLed</header>
   </customwidget>
   <customwidget>
    <class>caLineEdit</class>
