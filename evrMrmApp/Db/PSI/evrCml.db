@@ -461,6 +461,7 @@ record(bo, "$(ON)WfCalc:Ena-SP") {
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
+  field(FLNK, "$(ON)WfCalc:Delay-SP")
   info(autosaveFields_pass0, "VAL")
 }
 
