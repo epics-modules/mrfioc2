@@ -70,6 +70,7 @@ record(mbbo, "$(ON)Mode-Sel") {
 record(longin, "$(ON)Mult-I") {
   field(DTYP, "Obj Prop uint32")
   field(INP, "@OBJ=$(OBJ), PROP=Freq Mult")
+  field(PINI, "YES")
   field(HIGH, "65535")
   field(LOW, "20")
   field(HSV, "INVALID")
@@ -77,11 +78,12 @@ record(longin, "$(ON)Mult-I") {
 }
 
 record(calcout, "$(ON)Res-I") {
-  field(INPA, "$(P)Link:ClkPeriod-I CP")
+  field(INPA, "$(P)Link-ClkPeriod-I CP")
   field(INPB, "$(ON)Mult-I PP")
-  field(CALC, "1e9*A/B")
+  field(CALC, "(1e9*A)/B")
   field(EGU , "ns")
-  field(TSEL, "$(P)Link:ClkPeriod-I.TIME CA")
+  field(PREC, "5")
+  field(TSEL, "$(P)Link-ClkPeriod-I.TIME CA")
   field(FLNK, "$(ON)Res-FO_")
 }
 
@@ -327,7 +329,7 @@ record(ao, "$(ON)Freq:Init-SP") {
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
   field(PREC, "3")
-  field(FLNK, "$(ON)Freq:High-RB")
+  field(FLNK, "$(ON)Freq:Init-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -459,6 +461,7 @@ record(bo, "$(ON)WfCalc:Ena-SP") {
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
+  field(FLNK, "$(ON)WfCalc:Delay-SP")
   info(autosaveFields_pass0, "VAL")
 }
 
