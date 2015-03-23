@@ -203,6 +203,29 @@ The available macros are listed using their name and default value. Where many c
     -   EVR0:FrontOut0-Src-SP=63 : 
         `Mapping property codes` from the upper table can be set here. The mapping property code coresponds to an output source.
 
+#### evr-Event.template
+Provides us with the ability to map between hardware event code and a software (EPICS) database event.
+
+Macros:
+
+- __SYS__ represents the system name, eg. MTEST-VME-EVRTEST.
+- __EVR__ represents the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script.
+- __CODE__ represents a hardware EVR Event code
+- __EVNT__ represents an EPICS database event number (software).
+
+Example:
+
+    file "evr-Event.template"{
+    pattern { SYS,                  EVR,    CODE,   EVNT}
+            {"MTEST-VME-EVRTEST",   "EVR0", "1",    "1"}
+            {"MTEST-VME-EVRTEST",   "EVR0", "2",    "2"}
+            {"MTEST-VME-EVRTEST",   "EVR1", "2",    "2"}
+    }
+We set the system name and reference our Event Receiver using SYS and EVR macros respectively. Then we set and EPIC database event 1 to trigger when a hardware EVR code 1 is received, and event 2 to trigger on HW code 2. It is `recommended to use the same event and code numbers` to avoid confusion during the developmen, but it is not mandatory.
+
+The functionality of EPIC events and links is out of the scope of this documents. It is also possible to manually forward link an appropriate event record, but the details are again out of the scope of this documents.
+
+
 #### evr-Eventmap.template <a name="evrEventTemplate"></a>
 There is a number of special functions available, that can trigger on specified event:
 
@@ -261,29 +284,6 @@ Example: Pulser 0 of EVR0 will be set to trigger on event 2 and reset on event 3
             {0,   "MTEST-VME-EVRTEST-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",  "EVR0:Pul$(PID)",   Reset,   3}
     }
 
-
-#### evr-Event.template
-Provides us with the ability to map between hardware event code and a software (EPICS) database event.
-
-Macros:
-
-- __SYS__ represents the system name, eg. MTEST-VME-EVRTEST.
-- __EVR__ represents the name of the connected Event Receiver, which should be the same as defined using the _mrmEvrSetupVME(...)_ command in startup script.
-- __CODE__ represents a hardware EVR Event code
-- __EVNT__ represents an EPICS database event number (software).
-
-Example:
-
-    file "evr-Event.template"{
-    pattern { SYS,                  EVR,    CODE,   EVNT}
-            {"MTEST-VME-EVRTEST",   "EVR0", "1",    "1"}
-            {"MTEST-VME-EVRTEST",   "EVR0", "2",    "2"}
-            {"MTEST-VME-EVRTEST",   "EVR1", "2",    "2"}
-    }
-We set the system name and reference our Event Receiver using SYS and EVR macros respectively. Then we set and EPIC database event 1 to trigger when a hardware EVR code 1 is received, and event 2 to trigger on HW code 2. It is `recommended to use the same event and code numbers` to avoid confusion during the developmen, but it is not mandatory.
-
-The functionality of EPIC events and links is out of the scope of this documents. It is also possible to manually forward link an appropriate event record, but the details are again out of the scope of this documents.
-
 ## Advanced
 ### Substitution trick
 #### Problem
@@ -302,6 +302,8 @@ Here is what happens:
 After using the MSI tool with macro `EVR=evr0, OBJ=evr0:PS0` we get
 `field( VAL , "$(evr0:PS0-Div-SP=2,undefined)")`
 Then we can use macro substitution `evr0:PS0-Div-SP=val` in our application to set the fields value, otherwise we default to '2'.
+
+> This trick can be observed in `evrBase.db`, `evrCml.db, evrIn.db`, `evrPulser.db` and `evrScale.db` located in `mrfioc2/evrMrmApp/Db/PSI/`.
 
 ### Manually generating EVR template
 Use a predefined template `evr-vmerf230.template`. If you do not have the template, create one by issuing the following command in `mrfioc2/evrMrmApp/Db/PSI` folder:
