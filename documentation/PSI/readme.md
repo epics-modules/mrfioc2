@@ -303,7 +303,7 @@ After using the MSI tool with macro `EVR=evr0, OBJ=evr0:PS0` we get
 `field( VAL , "$(evr0:PS0-Div-SP=2,undefined)")`
 Then we can use macro substitution `evr0:PS0-Div-SP=val` in our application to set the fields value, otherwise we default to '2'.
 
-> This trick can be observed in `evrBase.db`, `evrCml.db, evrIn.db`, `evrPulser.db` and `evrScale.db` located in `mrfioc2/evrMrmApp/Db/PSI/`.
+> This trick can be observed in `evrBase.db`, `evrCml.db`, `evrIn.db`, `evrPulser.db` and `evrScale.db` located in `mrfioc2/evrMrmApp/Db/PSI/`.
 
 ### Manually generating EVR template
 Use a predefined template `evr-vmerf230.template`. If you do not have the template, create one by issuing the following command in `mrfioc2/evrMrmApp/Db/PSI` folder:
