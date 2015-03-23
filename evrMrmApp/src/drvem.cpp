@@ -101,6 +101,8 @@ EVRMRM::EVRMRM(const std::string& n,
   ,prescalers()
   ,pulsers()
   ,shortcmls()
+  //,gpio()
+  //,delays()
   ,drain_fifo_method(*this)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
@@ -157,6 +159,7 @@ try{
     size_t nPS=3;   // number of prescalers
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
+    size_t nOFPDly=0;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
     // # of CML outputs
     size_t nCML=0;
     MRMCML::outkind kind=MRMCML::typeCML;
@@ -167,6 +170,7 @@ try{
     case evrFormCPCI:
         printf("CPCI ");
         nOFPUV=4;
+        nOFPDly=2;
         nIFP=2;
         nORB=6;
         break;
@@ -179,6 +183,7 @@ try{
         printf("VME64 ");
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
+        nOFPDly=2;
         nOFPUV=4;
         nORB=16;
         nIFP=2;
@@ -195,9 +200,10 @@ try{
     default:
         printf("Unknown EVR variant %d\n",v);
     }
-    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
+    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
            (unsigned int)nOFP,(unsigned int)nOFPUV,
-           (unsigned int)nORB,(unsigned int)nIFP);
+           (unsigned int)nORB,(unsigned int)nIFP,
+           (unsigned int)nOFPDly);
 
     // Special output for mapping bus interrupt
     //outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
@@ -219,6 +225,14 @@ try{
         std::ostringstream name;
         name<<id<<":FrontUnivOut"<<i;
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
+    }
+
+    gpio_ = new MRMGpio(this);
+    delays.resize(nOFPDly);
+    for(size_t i=0; i<nOFPDly; i++){
+        std::ostringstream name;
+        name<<id<<":FrontDlyModule"<<i;
+        delays[i]=new DelayModule(name.str(), this, i);
     }
 
     for(size_t i=0; i<nORB; i++){
@@ -427,6 +441,13 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
+DelayModule*
+EVRMRM::delay(epicsUInt32 i){
+    if(i>=delays.size())
+        throw std::out_of_range("Delay Module id is out of range.");
+    return delays[i];
+}
+
 MRMInput*
 EVRMRM::input(epicsUInt32 i)
 {
@@ -473,6 +494,11 @@ EVRMRM::cml(epicsUInt32 i) const
     if(i>=shortcmls.size() || !shortcmls[i])
         throw std::out_of_range("CML Short id is out of range");
     return shortcmls[i];
+}
+
+MRMGpio*
+EVRMRM::gpio(){
+    return gpio_;
 }
 
 bool

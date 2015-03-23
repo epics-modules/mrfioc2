@@ -96,3 +96,11 @@ file "evrCml.db"
 {"$(SYS)-$(EVR):Out-CML-5-", "$(SYS)-$(EVR):", "$(EVR):CML1"}
 {"$(SYS)-$(EVR):Out-CML-6-", "$(SYS)-$(EVR):", "$(EVR):CML2"}
 }
+
+
+file "evrDelay.db"
+{pattern
+	{ON, OBJ}
+	{"$(SYS)-$(EVR):FPUV-Module-0-", "$(EVR):FrontDlyModule0"}
+	{"$(SYS)-$(EVR):FPUV-Module-1-", "$(EVR):FrontDlyModule1"}
+}

@@ -18,6 +18,8 @@
 #include "evr/cml.h"
 #include "evr/util.h"
 
+#include "delayModule.h"
+
 #include "dbCommon.h"
 
 /**@file evr.cpp
@@ -217,3 +219,10 @@ OBJECT_BEGIN(CML) {
                             &CML::setPattern<CML::patternLow>);
 
 } OBJECT_END(CML)
+
+OBJECT_BEGIN(DelayModule) {
+
+    OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
+    OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
+
+} OBJECT_END(DelayModule)

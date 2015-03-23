@@ -1,0 +1,41 @@
+# Delay Module control
+#
+# Macros:
+#  ON = output record name prefix
+#  OBJ = devObj name
+
+record(ao, "$(ON)Delay0-SP") {
+  field( DESC, "First delay output")
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Delay0")
+  field( EGU , "bits")
+  field( PINI, "YES")
+  field( VAL, "$($(OBJ)-Delay0-SP\=1)")
+  field( FLNK, "$(ON)Delay0-RB")
+  info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(ON)Delay0-RB") {
+  field( DESC, "Read data")
+  field( DTYP, "Obj Prop uint16")
+  field( INP , "@OBJ=$(OBJ), PROP=Delay0")
+  field( EGU,  "bits")
+}
+
+record(ao, "$(ON)Delay1-SP") {
+  field( DESC, "Second delay output")
+  field( DTYP, "Obj Prop uint16")
+  field( OUT , "@OBJ=$(OBJ), PROP=Delay1")
+  field( EGU , "bits")
+  field( PINI, "YES")
+  field( VAL, "$($(OBJ)-Delay1-SP\=1)")
+  field( FLNK, "$(ON)Delay1-RB")
+  info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(ON)Delay1-RB") {
+  field( DESC, "Read data")
+  field( DTYP, "Obj Prop uint16")
+  field( INP , "@OBJ=$(OBJ), PROP=Delay1")
+  field( EGU,  "bits")
+}
