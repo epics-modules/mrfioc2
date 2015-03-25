@@ -1,11 +1,7 @@
 COMPILATION
 ===========
 
-To complile the IOC use the makefile provided in the PSI folder:
-
-cd mrfioc2
-cp PSI/makefile .
-make -f makefile
+To complile to a PSI style module (loadable with require) run make in this folder.
 
 Compilation will only work on a PSI infrastructure where the correct applications and environment variables are already configured.
 
