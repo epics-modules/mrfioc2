@@ -1,11 +1,11 @@
 /**
- * @file    buf.h
+ * @file    devMrmBuf.h
  * @author  Jure Krasna <jure.krasna@cosylab.com>
  * @brief   C interface for data buffer sending and receiving
  */
 
-#ifndef BUF_H_
-#define BUF_H_
+#ifndef DEVMRMBUF_H_
+#define DEVMRMBUF_H_
 
 #include <epicsTypes.h>
 
@@ -15,7 +15,7 @@
  * This structure holds references to receive and send classes for
  * a specific device - either a receiver or a generator.
  */
-typedef struct bufferInfo bufferInfo_t;
+typedef struct mrmBufferInfo mrmBufferInfo_t;
 
 /**
  * @brief Buffer received callback function
@@ -25,7 +25,7 @@ typedef struct bufferInfo bufferInfo_t;
  * @param length    Length of the buffer in bytes
  * @param buffer    Buffer data
  */
-typedef void (*bufRecievedCallback)(void *arg, epicsStatus status, epicsUInt32 length, const epicsUInt8 *buffer);
+typedef void (*mrmBufRecievedCallback)(void *arg, epicsStatus status, epicsUInt32 length, const epicsUInt8 *buffer);
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,7 +44,7 @@ extern "C" {
  *
  * @return Returns the structure pointer on success and NULL on failure.
  */
-bufferInfo_t *bufInit(char *dev_name);
+mrmBufferInfo_t *mrmBufInit(char *dev_name);
 
 /**
  * @brief Disable buffer sending logic.
@@ -57,7 +57,7 @@ bufferInfo_t *bufInit(char *dev_name);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufEnable(bufferInfo_t *data);
+epicsStatus mrmBufEnable(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
@@ -68,7 +68,7 @@ epicsStatus bufEnable(bufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufDisable(bufferInfo_t *data);
+epicsStatus mrmBufDisable(mrmBufferInfo_t *data);
 
 /**
  * @brief Get maximum supported buffer length.
@@ -78,7 +78,7 @@ epicsStatus bufDisable(bufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufMaxLen(bufferInfo_t *data, epicsUInt32 *maxLength);
+epicsStatus mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
 
 /**
  * @brief Send buffer data
@@ -91,7 +91,7 @@ epicsStatus bufMaxLen(bufferInfo_t *data, epicsUInt32 *maxLength);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufSend(bufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
+epicsStatus mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
 
 /**
  * @brief Register data receive callback function
@@ -102,10 +102,10 @@ epicsStatus bufSend(bufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufRegCallback(bufferInfo_t *data, bufRecievedCallback callback, void *param);
+epicsStatus mrmBufRegCallback(mrmBufferInfo_t *data, mrmBufRecievedCallback callback, void *param);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* BUF_H_ */
+#endif /* DEVMRMBUF_H_ */

@@ -1,4 +1,4 @@
-#include "buf.h"
+#include "devMrmBuf.h"
 
 #include <epicsExport.h>
 #include "devObj.h"
@@ -9,22 +9,22 @@
 #define BUF_RX      ":BUFRX"
 #define BUF_TX      ":BUFTX"
 
-struct bufferInfo {
+struct mrmBufferInfo {
     dataBufRx       *bufRx;
     mrmDataBufTx    *bufTx;
 };
 
 extern "C" {
 
-bufferInfo_t *bufInit(char *dev_name) {
+mrmBufferInfo_t *mrmBufInit(char *dev_name) {
 
-    bufferInfo_t *data  = NULL;
+    mrmBufferInfo_t *data  = NULL;
     mrf::Object *object = NULL;
     std::string bufRxName(dev_name);
     std::string bufTxName(dev_name);
 
-    if(!(data = (bufferInfo_t *)calloc(1, sizeof(bufferInfo_t)))) {
-        errlogPrintf("bufInit ERROR: failed to allocate memory for buffer info!\n");
+    if(!(data = (mrmBufferInfo_t *)calloc(1, sizeof(mrmBufferInfo_t)))) {
+        errlogPrintf("mrmBufInit ERROR: failed to allocate memory for buffer info!\n");
         return NULL;
     }
 
@@ -33,20 +33,20 @@ bufferInfo_t *bufInit(char *dev_name) {
 
     object = mrf::Object::getObject(bufRxName);
     if(!object) {
-        errlogPrintf("bufInit WARNING: failed to find object '%s'\n", bufRxName.c_str());
+        errlogPrintf("mrmBufInit WARNING: failed to find object '%s'\n", bufRxName.c_str());
     } else {
         data->bufRx = dynamic_cast<dataBufRx*>(object);
     }
 
     object = mrf::Object::getObject(bufTxName);
     if(!object) {
-        errlogPrintf("bufInit WARNING: failed to find object '%s'\n", bufTxName.c_str());
+        errlogPrintf("mrmBufInit WARNING: failed to find object '%s'\n", bufTxName.c_str());
     } else {
         data->bufTx = dynamic_cast<mrmDataBufTx*>(object);
     }
 
     if(!data->bufRx && !data->bufTx) {
-        errlogPrintf("bufInit: ERROR: failed to find both objects!\n");
+        errlogPrintf("mrmBufInit: ERROR: failed to find both objects!\n");
         free(data);
         data = NULL;
     }
@@ -54,7 +54,7 @@ bufferInfo_t *bufInit(char *dev_name) {
     return data;
 }
 
-epicsStatus bufEnable(bufferInfo_t *data) {
+epicsStatus mrmBufEnable(mrmBufferInfo_t *data) {
 
     if(data && data->bufRx) {
         data->bufRx->dataRxEnable(true);
@@ -67,7 +67,7 @@ epicsStatus bufEnable(bufferInfo_t *data) {
     return 0;
 }
 
-epicsStatus bufDisable(bufferInfo_t *data) {
+epicsStatus mrmBufDisable(mrmBufferInfo_t *data) {
 
     if(data && data->bufRx) {
         data->bufRx->dataRxEnable(false);
@@ -80,51 +80,51 @@ epicsStatus bufDisable(bufferInfo_t *data) {
     return 0;
 }
 
-epicsStatus bufMaxLen(bufferInfo *data, epicsUInt32 *maxLength) {
+epicsStatus mrmBufMaxLen(mrmBufferInfo *data, epicsUInt32 *maxLength) {
 
     if(!data->bufTx) {
-        errlogPrintf("bufMaxLen: ERROR: transfer structure not initialized!\n");
+        errlogPrintf("mrmBufMaxLen: ERROR: transfer structure not initialized!\n");
         return -1;
     }
 
     try {
         *maxLength = data->bufTx->lenMax();
     } catch(std::exception &e) {
-        errlogPrintf("bufMaxLen: EXCEPTION: %s\n", e.what());
+        errlogPrintf("mrmBufMaxLen: EXCEPTION: %s\n", e.what());
         return -1;
     }
 
     return 0;
 }
 
-epicsStatus bufSend(bufferInfo *data, epicsUInt32 len, epicsUInt8 *buf) {
+epicsStatus mrmBufSend(mrmBufferInfo *data, epicsUInt32 len, epicsUInt8 *buf) {
 
     if(!data->bufTx) {
-        errlogPrintf("bufSend: ERROR: transfer structure not initialized!\n");
+        errlogPrintf("mrmBufSend: ERROR: transfer structure not initialized!\n");
         return -1;
     }
 
     try {
         data->bufTx->dataSend(len, buf);
     } catch(std::exception &e) {
-        errlogPrintf("bufSend: EXCEPTION: %s\n", e.what());
+        errlogPrintf("mrmBufSend: EXCEPTION: %s\n", e.what());
         return -1;
     }
 
     return 0;
 }
 
-epicsStatus bufRegCallback(bufferInfo *data, bufRecievedCallback callback, void * pass) {
+epicsStatus mrmBufRegCallback(mrmBufferInfo *data, mrmBufRecievedCallback callback, void * pass) {
 
     if(!data->bufRx) {
-        errlogPrintf("bufRegCallback: ERROR: receive structure not initialized!\n");
+        errlogPrintf("mrmBufRegCallback: ERROR: receive structure not initialized!\n");
         return -1;
     }
 
     try {
         data->bufRx->dataRxAddReceive(callback, pass);
     } catch(std::exception &e) {
-        errlogPrintf("bufRegCallback: EXCEPTION: %s\n", e.what());
+        errlogPrintf("mrmBufRegCallback: EXCEPTION: %s\n", e.what());
         return -1;
     }
 
