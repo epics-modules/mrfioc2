@@ -34,6 +34,7 @@ SOURCES+=../evrApp/src/evr.cpp
 #SOURCES+=../evrApp/src/ntpShmNull.cpp
 #SOURCES+=../evrApp/src/evrMain.cpp
 SOURCES+=../evrApp/src/devEvrMapping.cpp
+SOURCES+=../evrMrmApp/src/devMrmBuf.cpp
 SOURCES+=../evrMrmApp/src/drvemPulser.cpp
 SOURCES+=../evrMrmApp/src/drvemIocsh.cpp
 SOURCES+=../evrMrmApp/src/bufrxmgr.cpp
@@ -87,3 +88,5 @@ DBDS+=../evrMrmApp/src/drvemSupport.dbd
 DBDS+=../evgMrmApp/src/evgInit.dbd
 #DBDS+=../mrfCommon/src/aSubRecord.dbd # aSubRecord is part of epics base!
 DBDS+=../mrfCommon/src/mrfCommon.dbd
+
+HEADERS+=../evrMrmApp/src/devMrmBuf.h
