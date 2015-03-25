@@ -9,7 +9,7 @@
 #include <epicsExport.h>
 #include <epicsExit.h>
 
-#include "../evrMrmApp/src/buf.h"
+#include "../../../evrMrmApp/src/devMrmBuf.h"
 
 /* Subtract member byte offset, returning pointer to parent object */
 #ifndef CONTAINER
@@ -33,7 +33,7 @@ typedef struct deviceData {
     epicsThreadId *threadId;
     int running;
 
-    bufferInfo_t *bufferData;
+    mrmBufferInfo_t *bufferData;
 
     ELLNODE node;
 } deviceData_t;
@@ -50,7 +50,7 @@ static void threadRun(void *param)
     time_t curTime;
 
     if(!devData->bufferData) {
-        devData->bufferData = bufInit(devData->deviceName);
+        devData->bufferData = mrmBufInit(devData->deviceName);
     }
 
     if(!devData->bufferData) {
@@ -64,7 +64,7 @@ static void threadRun(void *param)
         return;
     }
 
-//    rc = bufEnable(devData->bufferData);
+//    rc = mrmBufEnable(devData->bufferData);
 //    if(rc) {
 //        printf("ERROR: Failiure to enable data buffers!\n");
 //        return;
@@ -79,7 +79,7 @@ static void threadRun(void *param)
         buffer[4] = 0;
         size = BUFFER_SIZE;
 
-        rc = bufSend(devData->bufferData, size, buffer);
+        rc = mrmBufSend(devData->bufferData, size, buffer);
         if(rc) {
             printf("ERROR: Failed to send buffer data!\n");
         }
@@ -133,7 +133,7 @@ static void bufferMonitor(char *deviceName) {
     }
 
     if(!devData->bufferData) {
-        devData->bufferData = bufInit(deviceName);
+        devData->bufferData = mrmBufInit(deviceName);
     }
 
     if(!devData->bufferData) {
@@ -141,13 +141,13 @@ static void bufferMonitor(char *deviceName) {
         return;
     }
 
-    rc = bufRegCallback(devData->bufferData, recievedCallback, (void *)devData->deviceName);
+    rc = mrmBufRegCallback(devData->bufferData, recievedCallback, (void *)devData->deviceName);
     if(rc) {
         printf("ERROR: Failed to register callback!\n");
     } else {
         printf("Callback successfully regisrered!\n");
 
-//        rc = bufEnable(devData->bufferData);
+//        rc = mrmBufEnable(devData->bufferData);
 //        if(rc) {
 //            printf("ERROR: Failiure to enable data buffers!\n");
 //            return;
