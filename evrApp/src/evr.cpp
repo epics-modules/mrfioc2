@@ -222,6 +222,7 @@ OBJECT_BEGIN(CML) {
 
 OBJECT_BEGIN(DelayModule) {
 
+    OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
     OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
     OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
 

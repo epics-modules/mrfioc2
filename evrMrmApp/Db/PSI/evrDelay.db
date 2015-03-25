@@ -4,38 +4,70 @@
 #  ON = output record name prefix
 #  OBJ = devObj name
 
+record(bo, "$(ON)Ena-SP") {
+  field( DESC, "Enable")
+  field( DTYP, "Obj Prop bool")
+  field( OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field( PINI, "YES")
+  field( ZNAM, "Disabled")
+  field( ONAM, "Enabled")
+  field( VAL , "$($(OBJ)-Ena-SP\=1)") # Default to enabled
+  field( FLNK, "$(ON)Ena-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(ON)Ena-RB") {
+  field( DESC, "Is module enabled")
+  field( DTYP, "Obj Prop bool")
+  field( INP , "@OBJ=$(OBJ), PROP=Enable")
+  field( ZNAM, "Disabled")
+  field( ONAM, "Enabled")
+}
+
 record(ao, "$(ON)Delay0-SP") {
   field( DESC, "First delay output")
-  field( DTYP, "Obj Prop uint16")
+  field( DTYP, "Obj Prop double")
   field( OUT , "@OBJ=$(OBJ), PROP=Delay0")
-  field( EGU , "bits")
+  field( EGU , "ns")
   field( PINI, "YES")
-  field( VAL, "$($(OBJ)-Delay0-SP\=1)")
+  field( VAL, "$($(OBJ)-Delay0-SP\=2.200)")
+  field( HOPR, "12.430")
+  field( LOPR, "2.200")
+  field( PREC, 2)
   field( FLNK, "$(ON)Delay0-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(ON)Delay0-RB") {
-  field( DESC, "Read data")
-  field( DTYP, "Obj Prop uint16")
+  field( DESC, "First delay readback")
+  field( DTYP, "Obj Prop double")
   field( INP , "@OBJ=$(OBJ), PROP=Delay0")
-  field( EGU,  "bits")
+  field( HIHI, "12.431")
+  field( LOLO, "2.199")
+  field( PREC, 2)
+  field( EGU,  "ns")
 }
 
 record(ao, "$(ON)Delay1-SP") {
   field( DESC, "Second delay output")
-  field( DTYP, "Obj Prop uint16")
+  field( DTYP, "Obj Prop double")
   field( OUT , "@OBJ=$(OBJ), PROP=Delay1")
-  field( EGU , "bits")
+  field( EGU , "ns")
   field( PINI, "YES")
-  field( VAL, "$($(OBJ)-Delay1-SP\=1)")
+  field( VAL, "$($(OBJ)-Delay1-SP\=2.200)")
+  field( HOPR, "12.430")
+  field( LOPR, "2.200")
+  field( PREC, 2)
   field( FLNK, "$(ON)Delay1-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(ON)Delay1-RB") {
-  field( DESC, "Read data")
-  field( DTYP, "Obj Prop uint16")
+  field( DESC, "Second delay readback")
+  field( DTYP, "Obj Prop double")
   field( INP , "@OBJ=$(OBJ), PROP=Delay1")
-  field( EGU,  "bits")
+  field( HIHI, "12.431")
+  field( LOLO, "2.199")
+  field( PREC, 2)
+  field( EGU,  "ns")
 }

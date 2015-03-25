@@ -836,33 +836,7 @@ static void mrmEvrGpioWriteCallFunc(const iocshArgBuf *args)
     mrmEvrGpioWrite(args[0].sval,args[1].ival);
 }
 
-extern "C"
-void
-mrmEvrGpioRead(const char* id)
-{
-    try {
-        mrf::Object *obj=mrf::Object::getObject(id);
-        if(!obj)
-            throw std::runtime_error("Object not found");
-        EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
-        if(!card)
-            throw std::runtime_error("Not a MRM EVR");
 
-        printf("Read: %x\n", card->gpio()->read());
-    } catch(std::exception& e) {
-        printf("Error: %s\n",e.what());
-    }
-}
-
-static const iocshArg mrmEvrGpioReadArg0 = { "name",iocshArgString};
-static const iocshArg * const mrmEvrGpioReadArgs[1] =
-{&mrmEvrGpioReadArg0};
-static const iocshFuncDef mrmEvrGpioReadFuncDef =
-    {"mrmEvrGpioRead",1,mrmEvrGpioReadArgs};
-static void mrmEvrGpioReadCallFunc(const iocshArgBuf *args)
-{
-    mrmEvrGpioRead(args[0].sval);
-}
 
 extern "C"
 void
@@ -892,6 +866,35 @@ static void mrmEvrDelayStartCallFunc(const iocshArgBuf *args)
     mrmEvrDelayStart(args[0].sval);
 }
 */
+
+/*extern "C"
+void
+mrmEvrGpioRead(const char* id)
+{
+    try {
+        mrf::Object *obj=mrf::Object::getObject(id);
+        if(!obj)
+            throw std::runtime_error("Object not found");
+        EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
+        if(!card)
+            throw std::runtime_error("Not a MRM EVR");
+
+        printf("Read: %x\n", card->gpio()->getOutput());
+    } catch(std::exception& e) {
+        printf("Error: %s\n",e.what());
+    }
+}
+
+static const iocshArg mrmEvrGpioReadArg0 = { "name",iocshArgString};
+static const iocshArg * const mrmEvrGpioReadArgs[1] =
+{&mrmEvrGpioReadArg0};
+static const iocshFuncDef mrmEvrGpioReadFuncDef =
+    {"mrmEvrGpioRead",1,mrmEvrGpioReadArgs};
+static void mrmEvrGpioReadCallFunc(const iocshArgBuf *args)
+{
+    mrmEvrGpioRead(args[0].sval);
+}
+
 extern "C"
 void
 mrmEvrDelaySet(const char* id, int out0, int out1, int delay0, int delay1, int module)
@@ -924,7 +927,7 @@ static const iocshFuncDef mrmEvrDelaySetFuncDef =
 static void mrmEvrDelaySetCallFunc(const iocshArgBuf *args)
 {
     mrmEvrDelaySet(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival,  args[5].ival);
-}
+}*/
 
 static
 void mrmsetupreg()
@@ -935,10 +938,12 @@ void mrmsetupreg()
     iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
     iocshRegister(&mrmEvrForwardFuncDef,mrmEvrForwardCallFunc);
     /*iocshRegister(&mrmEvrGpioDirectionFuncDef,mrmEvrGpioDirectionCallFunc);
+     *
+    iocshRegister(&mrmEvrDelaySetFuncDef,mrmEvrDelaySetCallFunc);
     iocshRegister(&mrmEvrGpioReadFuncDef,mrmEvrGpioReadCallFunc);
+
     iocshRegister(&mrmEvrGpioWriteFuncDef,mrmEvrGpioWriteCallFunc);
     iocshRegister(&mrmEvrDelayStartFuncDef,mrmEvrDelayStartCallFunc);*/
-    iocshRegister(&mrmEvrDelaySetFuncDef,mrmEvrDelaySetCallFunc);
 }
 
 epicsExportRegistrar(mrmsetupreg);

@@ -101,8 +101,7 @@ EVRMRM::EVRMRM(const std::string& n,
   ,prescalers()
   ,pulsers()
   ,shortcmls()
-  //,gpio()
-  //,delays()
+  ,gpio_(*this)
   ,drain_fifo_method(*this)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
@@ -227,7 +226,7 @@ try{
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
-    gpio_ = new MRMGpio(this);
+//    gpio_ = new MRMGpio(this);
     delays.resize(nOFPDly);
     for(size_t i=0; i<nOFPDly; i++){
         std::ostringstream name;
@@ -498,7 +497,7 @@ EVRMRM::cml(epicsUInt32 i) const
 
 MRMGpio*
 EVRMRM::gpio(){
-    return gpio_;
+    return &gpio_;
 }
 
 bool

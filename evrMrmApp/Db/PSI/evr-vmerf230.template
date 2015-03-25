@@ -11540,6 +11540,7 @@ record(aSub, "$(SYS,undefined)-$(EVR,undefined):Out-CML-6-BunchTrain:ASub_") {
   field(FTVA, "UCHAR")
   field(NOVA, "40940") # 20*2047
 }
+<<<<<<< HEAD
 # Delay Module control
 #
 # Macros:
@@ -11685,3 +11686,5 @@ record(ai, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay1-RB") {
   field( PREC, 2)
   field( EGU,  "ns")
 }
+=======
+>>>>>>> [COSYLAB-19] Code corrections, added comments, added database, corrected template

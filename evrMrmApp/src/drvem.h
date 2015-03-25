@@ -248,7 +248,7 @@ private:
     typedef std::vector<MRMCML*> shortcmls_t;
     shortcmls_t shortcmls;
 
-    MRMGpio* gpio_;
+    MRMGpio gpio_;
 
     // run when FIFO not-full IRQ is received
     void drain_fifo();
