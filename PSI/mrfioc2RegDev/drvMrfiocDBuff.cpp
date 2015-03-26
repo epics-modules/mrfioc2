@@ -306,7 +306,13 @@ static const regDevSupport mrfiocDBuffSupport = {
 
 void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int protocol)
 {
+    if (!regDevName || !mrfName) {
+        errlogPrintf("usage: mrfiocDBuffConfigure \"regDevName\", \"mrfName\", [protocol]\n");
+        return;
+    }
+
     //Check if device already exists:
+    printf ("regDevFind %s\n", regDevName);
     if (regDevFind(regDevName)) {
         errlogPrintf("mrfiocDBuffConfigure: FATAL ERROR! device %s already exists!\n", regDevName);
         return;
@@ -314,18 +320,21 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
 
     regDevice* device;
 
+    printf ("calloc...\n");
     device = (regDevice*) calloc(1, sizeof(regDevice) + strlen(regDevName) + 1);
     if (!device) {
         errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Out of memory!\n", regDevName);
         return;
     }
     device->name = (char*)(device + 1);
+    printf ("strcpy name...\n");
     strcpy(device->name, regDevName);
 
     /*
      * Query mrfioc2 device support for device
      */
     epicsPrintf("Looking for device %s\n", mrfName);
+    printf ("mrmBufInit %s\n", mrfName);
     device->bufferHandle = mrmBufInit((char*)mrfName);  // TODO: change mrmBufInit to using const char*
 
     if (!device->bufferHandle) {
@@ -333,6 +342,7 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
         return;
     }
 
+    printf ("mrmBufMaxLen\n");
     epicsUInt32 maxLength;
     mrmBufMaxLen(device->bufferHandle, &maxLength);
 
