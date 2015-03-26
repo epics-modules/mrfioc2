@@ -2,7 +2,7 @@ file "evr-vmerf230.template"
 {
     {
         ## System name
-        SYS=MTEST-VME-BSREAD,
+        SYS=MTEST-VME-EVRTEST,
         EVR=EVR0,
         
 
@@ -49,25 +49,21 @@ file "evr-vmerf230.template"
 		EVR0:Pul4-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
 		EVR0:Pul4-Delay-SP=0,		#0-0xffffff : Delay in us 
 		EVR0:Pul4-Width-SP=0,		#0-0xffff : Width in us
-		EVR0:Pul4-Prescaler-SP=1,   #0-0xff : Pulser prescaler
 
 		EVR0:Pul5-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		EVR0:Pul5-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
 		EVR0:Pul5-Delay-SP=0,		#0-0xffffff : Delay in us 
 		EVR0:Pul5-Width-SP=0,		#0-0xffff : Width in us
-		EVR0:Pul5-Prescaler-SP=1,   #0-0xff : Pulser prescaler
 
 		EVR0:Pul6-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		EVR0:Pul6-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
 		EVR0:Pul6-Delay-SP=0,		#0-0xffffff : Delay in us 
 		EVR0:Pul6-Width-SP=0,		#0-0xffff : Width in us
-		EVR0:Pul6-Prescaler-SP=1,   #0-0xff : Pulser prescaler
 
 		EVR0:Pul7-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		EVR0:Pul7-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
 		EVR0:Pul7-Delay-SP=0,		#0-0xffffff : Delay in us 
 		EVR0:Pul7-Width-SP=0,		#0-0xffff : Width in us
-		EVR0:Pul7-Prescaler-SP=1,   #0-0xff : Pulser prescaler
 
 		EVR0:Pul8-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		EVR0:Pul8-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
@@ -168,6 +164,7 @@ file "evr-vmerf230.template"
 		# 63	Force Low
 		# 62	Force High
 
+		# TTL Outputs
 		EVR0:FrontOut0-Ena-SP=1, 		# Default to enabled
 		EVR0:FrontOut0-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
 
@@ -180,19 +177,61 @@ file "evr-vmerf230.template"
 		EVR0:FrontOut3-Ena-SP=1, 		# Default to enabled
 		EVR0:FrontOut3-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
 
+		# CML outputs
 		EVR0:FrontOut4-Ena-SP=1, 		# Default to enabled
 		EVR0:FrontOut4-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		EVR0:CML0-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
+		EVR0:CML0-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
+		EVR0:CML0-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		EVR0:CML0-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
+		EVR0:CML0-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
+		EVR0:CML0-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
+		EVR0:CML0-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
+		EVR0:CML0-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
+		EVR0:CML0-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		EVR0:CML0-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculator enabled
+		EVR0:CML0-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
+		EVR0:CML0-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		EVR0:CML0-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		EVR0:CML0-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
 
 		EVR0:FrontOut5-Ena-SP=1, 		# Default to enabled
 		EVR0:FrontOut5-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+		EVR0:CML1-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
+		EVR0:CML1-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
+		EVR0:CML1-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		EVR0:CML1-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
+		EVR0:CML1-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
+		EVR0:CML1-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
+		EVR0:CML1-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
+		EVR0:CML1-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
+		EVR0:CML1-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated1in a loop
+		EVR0:CML1-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculat1r enabled
+		EVR0:CML1-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
+		EVR0:CML1-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		EVR0:CML1-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		EVR0:CML1-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
+
 
 		EVR0:FrontOut6-Ena-SP=1, 		# Default to enabled
 		EVR0:FrontOut6-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		EVR0:CML2-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
+		EVR0:CML2-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
+		EVR0:CML2-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		EVR0:CML2-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
+		EVR0:CML2-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
+		EVR0:CML2-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
+		EVR0:CML2-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
+		EVR0:CML2-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
+		EVR0:CML2-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated2in a loop
+		EVR0:CML2-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculat2r enabled
+		EVR0:CML2-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
+		EVR0:CML2-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		EVR0:CML2-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		EVR0:CML2-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
 
-		EVR0:FrontOut7-Ena-SP=1, 		# Default to enabled
-		EVR0:FrontOut7-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
 
-		#Universal outputs
+		# Universal outputs
 		EVR0:FrontUnivOut0-Ena-SP=1, 	# Default to enabled
 		EVR0:FrontUnivOut0-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
 
@@ -205,40 +244,76 @@ file "evr-vmerf230.template"
 		EVR0:FrontUnivOut3-Ena-SP=1, 	# Default to enabled
 		EVR0:FrontUnivOut3-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
 
+		# Transition board outputs
+		EVR0:RearUniv0-Ena-SP=1, 	 	# Default to enabled	
+		EVR0:RearUniv0-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv1-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv1-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv2-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv2-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv3-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv3-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv4-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv4-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv5-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv5-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv6-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv6-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv7-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv7-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv8-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv8-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv9-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv9-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv10-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv10-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv11-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv11-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv12-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv12-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv13-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv13-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv14-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv14-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+	
+		EVR0:RearUniv15-Ena-SP=1, 		# Default to enabled
+		EVR0:RearUniv15-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+
      }
  }
-
 
 # Mapping between hardware event code and a software (EPICS) database event
 #
 # Macros:
 #  SYS = System name
 #  EVR = EVR devObj name
-#  CODE = Event code (hardware)
-#  EVNT = EPICS database event number (software). Set EVNT=0 to disable.
+#  EVT = Event code (hardware). Set EVT=0 to disable.
+#  CODE = EPICS database event number (software)
 #
-file "evr-Event.template"{
-pattern { SYS,                  EVR,	CODE,	EVNT    }
-		{"MTEST-VME-BSREAD",   "EVR0",	"1",    "1"}
-		{"MTEST-VME-BSREAD",   "EVR0",	"2",    "2"}
-		{"MTEST-VME-BSREAD",   "EVR0",	"3",    "3"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"4",    "4"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"5",    "5"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"6",    "6"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"7",    "7"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"8",    "8"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"9",    "9"}        
-	    {"MTEST-VME-BSREAD",   "EVR0",	"10",   "10"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"11",   "11"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"12",   "12"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"13",   "13"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"14",   "14"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"15",   "15"}
-	    {"MTEST-VME-BSREAD",   "EVR0",	"16",   "16"}
+file "evr-softEvent.template"{
+pattern { SYS,                  EVR,	EVT,	CODE    }
+		{"MTEST-VME-EVRTEST",   "EVR0",	"1",    "1"}
+		{"MTEST-VME-EVRTEST",   "EVR0",	"2",    "2"}
+		{"MTEST-VME-EVRTEST",   "EVR0",	"3",    "3"}
 }
 
 
 # Mapping between hardware event code and a special function of the EVR
+# Each event can be mapped only to one function!
 #
 # Macros:
 #  SYS = System name
@@ -249,72 +324,106 @@ pattern { SYS,                  EVR,	CODE,	EVNT    }
 #                 "Stop Log", "Log", "Heartbeat", "Reset PS",
 #                 "TS reset", "TS tick", "Shift 1", "Shift 0",
 #
-file "evr-Eventmap.template"{
+file "evr-specialFunctionMap.template"{
 pattern { SYS,                  EVR,    EVT,   FUNC }
-        {"MTEST-VME-BSREAD",   "EVR0",  "1",   "Blink"}
+        {"MTEST-VME-EVRTEST",   "EVR0",  "1",   "Blink"}
 }
 
-
-# Control for mapping a pulse geneator to an event code in hardware. Pulsers can be mapped using three functions to multiple events.
+## Control for mapping a pulse geneator to an event code in hardware. Pulsers can be mapped using three functions to multiple events.
 #
 # Macros:
-#  PID = Pulder ID #
-#  NAME = Pulser map record name
-#  OBJ = EVR devObj name and pulser name
+#  SYS = system name
+#  EVR = EVR devObj name
+#  PID = Pulser ID #
 #  F = Pulse generator action
 #    Choices are: "Trig", "Set", "Reset"
-#  EVT = Initial hardware event code. Set EVNT=0 to disable.
-#
-file "evr-Pulsermap.template"{
-pattern {PID, NAME,                                                     OBJ,                    F,      EVT}
-        {0,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {1,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {2,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {3,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {4,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {5,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {6,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {7,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {8,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {9,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {10,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {11,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {12,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {13,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {14,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
-        {15,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig0-SP",       "EVR0:Pul$(PID)",       Trig,   1}
+#  EVT = Initial event code
+#  ID = Mappings must have unique ID for each F-EVT combination.
+#    Only mappings with ID=0 are displayed in the GUI
+#    
+file "evr-pulserMap.template"{
+pattern {SYS, 					EVR,  PID   F,      EVT, ID}
+        {"MTEST-VME-EVRTEST", "EVR0", 0,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 1,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 2,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 3,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 4,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 5,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 6,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 7,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 8,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 9,    Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 10,   Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 11,   Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 12,   Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 13,   Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 14,   Trig,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 15,   Trig,   0,   0 }
 
-        {0,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {1,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {2,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {3,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {4,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {5,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {6,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {7,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {8,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {9,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {10,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {11,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {12,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {13,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {14,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
-        {15,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig1-SP",       "EVR0:Pul$(PID)",       Set,   2}
 
-        {0,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {1,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {2,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {3,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {4,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {5,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {6,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {7,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {8,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {9,   "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {10,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {11,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {12,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {13,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {14,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
-        {15,  "MTEST-VME-BSREAD-EVR0:DlyGen-$(PID)-Evt-Trig2-SP",       "EVR0:Pul$(PID)",       Reset,   3}
+        {"MTEST-VME-EVRTEST", "EVR0", 0,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 1,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 2,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 3,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 4,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 5,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 6,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 7,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 8,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 9,    Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 10,   Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 11,   Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 12,   Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 13,   Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 14,   Set,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 15,   Set,   0,   0 }
+
+
+        {"MTEST-VME-EVRTEST", "EVR0", 0,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 1,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 2,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 3,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 4,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 5,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 6,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 7,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 8,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 9,    Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 10,   Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 11,   Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 12,   Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 13,   Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 14,   Reset,   0,   0 }
+        {"MTEST-VME-EVRTEST", "EVR0", 15,   Reset,   0,   0 }
 }
+
+# UNIV-LVPECL-DLY Delay module
+#
+# Macros:
+#  SYS = System name
+#  EVR = EVR devObj name
+#  SLOT = Slot where module is inserted. FrontUnivOut0 is the first and FrontUnivOut1 the second output of slot 0, where FrontUnivOut2 is the first and FrontUnivOut3 is the second output of slot 1.
+#  Enabled = Enable or disable the module. When disabled, both outputs are pulled to logic low.
+#  Delay0 = The delay (in ns) of the first output
+#  Delay1 = The delay (in ns) of the second output
+#
+#file "evr-delayModule.template"
+#{
+#    { SYS     = MTEST-VME-EVRTEST,
+#      EVR     = EVR0,
+#      SLOT    = 0,			# 0 = Slot 0, 1 = Slot 1
+#
+#      Enabled = 1,			# 0 =  Both outputs disabled(logic low), 1 = Both outputs enabled
+#      Delay0  = 2.2,		# 2.2ns - 12.43ns: The delay of the first output
+#      Delay1  = 2.2,		# 2.2ns - 12.43ns: The delay of the second output
+#    }
+#
+#    { SYS     = MTEST-VME-EVRTEST,
+#      EVR     = EVR0,
+#      SLOT    = 1,			# 0 = Slot 0, 1 = Slot 1
+#
+#      Enabled = 1,			# 0 =  Both outputs disabled(logic low), 1 = Both outputs enabled
+#      Delay0  = 2.2,		# 2.2ns - 12.43ns: The delay of the first output
+#      Delay1  = 2.2,		# 2.2ns - 12.43ns: The delay of the second output
+#    }
+#}

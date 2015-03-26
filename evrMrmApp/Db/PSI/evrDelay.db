@@ -1,71 +1,75 @@
 # Delay Module control
 #
 # Macros:
-#  ON = output record name prefix
-#  OBJ = devObj name
+#  SYS = System name
+#  EVR = EVR devObj name
+#  SLOT = Delay module can be fitted in slot 0 or slot 1. 
+#  Enabled = Enable or disable the module. When disabled outputs are pulled to logic low.
+#  Delay0 = The delay (in ns) of the first output
+#  Delay1 = The delay (in ns) of the second output
 
-record(bo, "$(ON)Ena-SP") {
+record(bo, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-SP") {
   field( DESC, "Enable")
   field( DTYP, "Obj Prop bool")
-  field( OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field( OUT , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Enable")
   field( PINI, "YES")
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
-  field( VAL , "$($(OBJ)-Ena-SP\=1)") # Default to enabled
-  field( FLNK, "$(ON)Ena-RB")
+  field( VAL , "$(Enabled=1)") # Default to enabled
+  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(ON)Ena-RB") {
+record(bi, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-RB") {
   field( DESC, "Is module enabled")
   field( DTYP, "Obj Prop bool")
-  field( INP , "@OBJ=$(OBJ), PROP=Enable")
+  field( INP , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Enable")
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
 }
 
-record(ao, "$(ON)Delay0-SP") {
+record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-SP") {
   field( DESC, "First delay output")
   field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(OBJ), PROP=Delay0")
+  field( OUT , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Delay0")
   field( EGU , "ns")
   field( PINI, "YES")
-  field( VAL, "$($(OBJ)-Delay0-SP\=2.200)")
+  field( VAL , "$(Delay0=2.200)")
   field( HOPR, "12.430")
   field( LOPR, "2.200")
   field( PREC, 2)
-  field( FLNK, "$(ON)Delay0-RB")
+  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(ON)Delay0-RB") {
+record(ai, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-RB") {
   field( DESC, "First delay readback")
   field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(OBJ), PROP=Delay0")
+  field( INP , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Delay0")
   field( HIHI, "12.431")
   field( LOLO, "2.199")
   field( PREC, 2)
   field( EGU,  "ns")
 }
 
-record(ao, "$(ON)Delay1-SP") {
+record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-SP") {
   field( DESC, "Second delay output")
   field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(OBJ), PROP=Delay1")
+  field( OUT , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Delay1")
   field( EGU , "ns")
   field( PINI, "YES")
-  field( VAL, "$($(OBJ)-Delay1-SP\=2.200)")
+  field( VAL , "$(Delay1-SP=2.200)")
   field( HOPR, "12.430")
   field( LOPR, "2.200")
   field( PREC, 2)
-  field( FLNK, "$(ON)Delay1-RB")
+  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(ON)Delay1-RB") {
+record(ai, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-RB") {
   field( DESC, "Second delay readback")
   field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(OBJ), PROP=Delay1")
+  field( INP , "@OBJ=$(EVR):FrontDlyModule$(SLOT), PROP=Delay1")
   field( HIHI, "12.431")
   field( LOLO, "2.199")
   field( PREC, 2)

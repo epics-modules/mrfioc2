@@ -1,30 +1,28 @@
-# Mapping between hardware event code and a software database event
+# Mapping between hardware event code and a software (EPICS) database event
 #
 # Macros:
-#  EN = record name prefix
-#  OBJ = EVR devObj name
-#  CODE = Event code (hardware)
-#  EVNT = Database event code (software)
+#  SYS = System name
+#  EVR = EVR devObj name
+#  EVT = Event code (hardware). Set EVT=0 to disable.
+#  CODE = EPICS database event number (software)
 #
-
-# EVT  - Timing hardware event code
-# ENUM - EPICS DB event number
-record(longout, "$(SYS)-$(EVR):Event-$(CODE)-SP") {
+#
+record(longout, "$(SYS)-$(EVR):Event-$(EVT)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
-  field(OUT , "@OBJ=$(EVR),Code=$(CODE)")
-  field(VAL , "$(EVNT)")
+  field(OUT , "@OBJ=$(EVR),Code=$(EVT)")
+  field(VAL , "$(CODE)")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I")
+  field(FLNK, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I")
   info(autosaveFields_pass0, "OUT VAL")
 }
 
-record(calc, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I") {
-  field(SDIS, "$(SYS)-$(EVR):Event-$(CODE)-SP")
+record(calc, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I") {
+  field(SDIS, "$(SYS)-$(EVR):Event-$(EVT)-SP")
   field(DISV, "0")
   field(CALC, "A+1")
-  field(INPA, "$(SYS)-$(EVR):Event-$(CODE)-Cnt-I NPP")
-  field(TSEL, "$(SYS)-$(EVR):Event-$(CODE)-SP.TIME")
+  field(INPA, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I NPP")
+  field(TSEL, "$(SYS)-$(EVR):Event-$(EVT)-SP.TIME")
   field(LOLO, "0")
   field(LLSV, "MINOR")
 }

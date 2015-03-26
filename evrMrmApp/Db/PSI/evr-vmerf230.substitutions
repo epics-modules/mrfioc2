@@ -5,20 +5,20 @@
 #  SYS = System name (ie SR-TM)
 #
 
-file "evrBase.db"
+file "evr-base.template"
 {pattern
 {P, OBJ, EVNT1HZ}
 {"$(SYS)-$(EVR):", $(EVR), 125}
 }
 
 
-file "sfp.db"
+file "sfp.template"
 {
 {P="$(SYS)-$(EVR):SFP-", OBJ="$(EVR):SFP"}
 }
 
 
-file "evrScale.db"
+file "evr-prescaler.template"
 {pattern
 {IDX, P, SN, OBJ, MAX}
 {0, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):PS-$(IDX)-", "$(EVR):PS$(IDX)", "0xffff"}
@@ -27,37 +27,37 @@ file "evrScale.db"
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
-file "evrPulser.db"
+file "evr-pulser.template"
 {pattern
 {PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
 {0, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
 {1, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
 {2, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
 {3, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "0xff", 0}
-{4, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{5, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{6, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{7, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{8, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{9, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{10,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{11,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{12,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{13,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{14,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
-{15,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 0}
+{4, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{5, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{6, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{7, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{8, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{9, "$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{10,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{11,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{12,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{13,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{14,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
+{15,"$(SYS)-$(EVR):", "$(SYS)-$(EVR):DlyGen-$(PID)-", "$(EVR):Pul$(PID)", "0xffffff", "0xffff", "1", 1}
 }
 
 ## Form factor specific
 
-file "evrIn.db"
+file "evr-in.template"
 {pattern
 {IN, OBJ, DESC}
 {"$(SYS)-$(EVR):In-0-", "$(EVR):FPIn0", "IN0 (TTL)"}
 {"$(SYS)-$(EVR):In-1-", "$(EVR):FPIn1", "IN1 (TTL)"}
 }
 
-file "evrOut.db"
+file "evr-out.template"
 {pattern
 {ON, OBJ, DESC}
 {"$(SYS)-$(EVR):Out-FP0-", "$(EVR):FrontOut0", "OUT0 (TTL)"}
@@ -89,18 +89,10 @@ file "evrOut.db"
 {"$(SYS)-$(EVR):Out-RB15-", "$(EVR):RearUniv15", "TRANSITION 15"}
 }
 
-file "evrCml.db"
+file "evr-cml.template"
 {pattern
 {ON, P, OBJ}
 {"$(SYS)-$(EVR):Out-CML-4-", "$(SYS)-$(EVR):", "$(EVR):CML0"}
 {"$(SYS)-$(EVR):Out-CML-5-", "$(SYS)-$(EVR):", "$(EVR):CML1"}
 {"$(SYS)-$(EVR):Out-CML-6-", "$(SYS)-$(EVR):", "$(EVR):CML2"}
-}
-
-
-file "evrDelay.db"
-{pattern
-	{ON, OBJ}
-	{"$(SYS)-$(EVR):FPUV-Module-0-", "$(EVR):FrontDlyModule0"}
-	{"$(SYS)-$(EVR):FPUV-Module-1-", "$(EVR):FrontDlyModule1"}
 }
