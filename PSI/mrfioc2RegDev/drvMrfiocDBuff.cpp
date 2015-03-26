@@ -77,10 +77,6 @@
  * mrfIoc2 headers
  */
 
-#include <mrf/object.h> //mrm::Object
-#include <evgMrm.h> //evgMrm
-#include <drvem.h> //EVRMRM
-
 #ifdef _WIN32
  #pragma comment (lib, "Ws2_32.lib")
  #include <Winsock2.h>
@@ -88,6 +84,7 @@
 #include <netinet/in.h> /* for htonl */ 
 #endif
 #include <stdlib.h>
+#include <string.h>
 /*
  *  EPICS headers
  */
@@ -96,6 +93,7 @@
 #include <epicsExport.h>
 #include <epicsEndian.h>
 #include <regDev.h>
+#include <devMrmBuf.h>
 
 /*                                        */
 /*        DEFINES                         */
@@ -113,31 +111,19 @@ extern "C" {
 #endif
 
 
-#define DBUFF_LEN 2048
 #define PROTO_LEN 4
-
-#define DBCR                0x20    //Data Buffer Control Register
-#define TXDBCR              0x24    //Equivalent to DBCR on EVG
-#define DBCR_TXCPT_bit      (1<<20) //tx complete (ro)
-#define DBCR_TXRUN_bit      (1<<19) //tx running (ro)
-#define DBCR_TRIG_bit       (1<<18) //trigger tx (rw)
-#define DBCR_ENA_bit        (1<<17) //enable data buff (rw)
-#define DBCR_MODE_bit       (1<<16) //DBUS shared mode
 
 /*
  * mrfDev reg driver private
  */
 struct regDevice{
     char*                   name;            //regDevName of device
-    epicsBoolean            isEVG;           //epicsTrue if card is EVG
-    epicsUInt8*             txBufferBase;    //pointer to card memory space, retrieved from mrfioc2
-    volatile epicsUInt32*   dbcr;            //pointer to DBCR (TXDBCR on EVR) register of mrfioc card
-    epicsUInt8              DBEN;            //set to 1 if DBus is shared with data transmission
     epicsUInt32             proto;           //protocol ID (4 bytes)
     epicsUInt8*             txBuffer;        //pointer to 2k tx buffer
     size_t                  txBufferLen;     //amount of data written in buffer (last touched byte)
     epicsUInt8*             rxBuffer;        //pointer to 2k rx buffer
     IOSCANPVT               ioscanpvt;
+    mrmBufferInfo_t*        bufferHandle;         
 };
 
 
@@ -155,25 +141,12 @@ static void mrfiocDBuff_flush(regDevice* device)
     //Copy protocol ID
     *((epicsUInt32*) device->txBuffer) = htonl(device->proto);//Since everything in txBuffer is big endian
 
-    //The data can now be copied onto card memory, but we need to copy 4-bytes at the time and
-    //convert endianess to BE on a 4 byte word baseis
-    regDevCopy(4, device->txBufferLen>>2, device->txBuffer, device->txBufferBase, NULL, LE_SWAP);
+    mrmBufEnable(device->bufferHandle);
 
-    //Enable data buffer
-    epicsUInt32 dbcr = (DBCR_ENA_bit | DBCR_MODE_bit | DBCR_TRIG_bit);
+    mrmBufSend(device->bufferHandle, device->txBufferLen, device->txBuffer);
 
-    //Set buffer size
-    device->txBufferLen = (device->txBufferLen%4) == 0 ? device->txBufferLen : device->txBufferLen+4;
-    dbcr |= device->txBufferLen;
-    device->txBufferLen = 0; // reset for next write cycle
-
-    //Output to register and trigger tx
-    *device->dbcr = 0;
-    *device->dbcr = dbcr;
-
-//    printf("DBCR: 0x%x\n", dbcr);
-//    printf("complete: %d\n", dbcr & DBCR_TXCPT_bit ? 1 : 0);
-//    printf("running: %d\n", dbcr & DBCR_TXRUN_bit ? 1 : 0);
+    // reset used length
+    device->txBufferLen = 0;
 }
 
 
@@ -185,7 +158,7 @@ static void mrfiocDBuff_flush(regDevice* device)
  *    is copied into device private rxBuffer and scan IO
  *    is requested.
  */
-static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
+void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     regDevice* device = (regDevice *)pvt;
@@ -222,7 +195,10 @@ static void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
 
 void mrfiocDBuff_report(regDevice* device, int level)
 {
-    printf("%s dataBuffer\n", device->isEVG?"EVG":"EVR");
+    epicsUInt32 maxLength;
+
+    mrmBufMaxLen(device->bufferHandle, &maxLength);
+    printf("%s dataBuffer max length %u\n", device->name, maxLength);
 }
 
 /*
@@ -243,13 +219,9 @@ int mrfiocDBuff_read(
 {
     dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n", (int)offset, (int)(datalength*nelem));
 
-    if(device->isEVG){
-        errlogPrintf("mrfiocDBuff_read: FATAL ERROR, EVG does not have RX capability!\n");
-        return -1;
-    }
-
     if(offset < PROTO_LEN){
-        errlogPrintf("mrfiocDBuff_read: READ ERROR, address out of range!\n");
+        errlogPrintf("mrfiocDBuff_read %s: device %s: byte offset must be greater than %d\n", 
+                user, device->name, PROTO_LEN);
         return -1;
     }
 
@@ -287,7 +259,7 @@ int mrfiocDBuff_write(
 
     if (offset < PROTO_LEN) {
         errlogPrintf(
-                "mrfDBuffWriteMaskedArray %s: device %s: byte offset must be greater than %d\n",
+                "mrfiocDBuff_write %s: device %s: byte offset must be greater than %d\n",
                 user, device->name, PROTO_LEN);
         return -1;
     }
@@ -306,11 +278,6 @@ int mrfiocDBuff_write(
 
 IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* device, size_t offset)
 {
-    if (!device->txBufferBase) {
-        errlogPrintf("mrfiocDBuff_getInIoscan: device %s: FATAL ERROR, device not initialized!\n", device->name);
-        return NULL;
-    }
-
     return device->ioscanpvt;
 }
 
@@ -347,80 +314,53 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
 
     regDevice* device;
 
-    /* Allocate all of the memory */
-    device = (regDevice*) calloc(1, sizeof(regDevice));
+    device = (regDevice*) calloc(1, sizeof(regDevice) + strlen(regDevName) + 1);
     if (!device) {
         errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Out of memory!\n", regDevName);
         return;
     }
+    device->name = (char*)(device + 1);
+    strcpy(device->name, regDevName);
 
+    /*
+     * Query mrfioc2 device support for device
+     */
+    epicsPrintf("Looking for device %s\n", mrfName);
+    device->bufferHandle = mrmBufInit((char*)mrfName);  // TODO: change mrmBufInit to using const char*
+
+    if (!device->bufferHandle) {
+        errlogPrintf("mrfiocDBuffConfigure %s: FAILED! Can not connect to mrf device: %s\n", regDevName, mrfName);
+        return;
+    }
+
+    epicsUInt32 maxLength;
+    mrmBufMaxLen(device->bufferHandle, &maxLength);
+
+    /* Allocate the buffer memory */
     device->txBufferLen = 0;
-    device->txBuffer = (epicsUInt8*) calloc(1, DBUFF_LEN); //allocate 2k memory
+    device->txBuffer = (epicsUInt8*) calloc(1, maxLength); //allocate 2k memory
 
     if (!device->txBuffer) {
         errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate TX buffer!", regDevName);
         return;
     }
 
-    device->rxBuffer = (epicsUInt8*) calloc(1, DBUFF_LEN); //initialize to 0
+    device->rxBuffer = (epicsUInt8*) calloc(1, maxLength); //initialize to 0
 
     if (!device->rxBuffer) {
         errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
         return;
     }
 
-    scanIoInit(&device->ioscanpvt);
-
-    /*
-     * Query mrfioc2 device support for device
-     */
-    epicsPrintf("Looking for device %s\n", mrfName);
-    mrf::Object *obj = mrf::Object::getObject(mrfName);
-
-    if (!obj) {
-        errlogPrintf("mrfiocDBuffConfigure %s: FAILED! Can not find mrf device: %s\n", regDevName, mrfName);
-        return;
-    }
-
-    evgMrm* evg = dynamic_cast<evgMrm*>(obj);
-    EVRMRM* evr = dynamic_cast<EVRMRM*>(obj);
-
-    if (evg) epicsPrintf("\t%s is EVG!\n", mrfName);
-    if (evr) epicsPrintf("\t%s is EVR!\n", mrfName);
-
-    if (!evg && !evr) {
-        errlogPrintf("mrfiocDBuffConfigure %s: FAILED! %s is neither EVR or EVG!\n", regDevName, mrfName);
-        return;
-    }
-
-    //Retrieve device info, base memory pointer, device type...
-    if (evr) {
-        device->isEVG = epicsFalse;
-        device->txBufferBase = (epicsUInt8*) (evr->base + 0x1800);
-        device->dbcr = (epicsUInt32*) (evr->base + 0x24); //TXDBCR register
-        evr->bufrx.dataRxAddReceive(mrmEvrDataRxCB, device);
-    }
-#ifndef _WIN32
-    if (evg) {
-        device->isEVG = epicsTrue;
-        device->txBufferBase = (epicsUInt8*)(evg->getRegAddr() + 0x800);
-        device->dbcr = (epicsUInt32*)(evg->getRegAddr()+ 0x20); //DBCR register
-    }
-#endif
-    /*
-     * Fill in rest of the device info
-     */
-    device->name = strdup(regDevName);
-
-
     device->proto = (epicsUInt32) protocol; //protocol ID
-
-    //just a quick verification test...
-    epicsUInt32 versionReg = *(epicsUInt32*)(device->txBufferBase+0x2c);
-    epicsPrintf("\t%s device %s is %s. Version: 0x%x\n", regDevName, mrfName, (device->isEVG?"EVG":"EVR"), versionReg);
     epicsPrintf("\t%s registered to protocol %d\n", regDevName, device->proto);
 
-    regDevRegisterDevice(regDevName, &mrfiocDBuffSupport, device, DBUFF_LEN);
+    scanIoInit(&device->ioscanpvt);
+
+    // register callback only for RX buffer, but how to find out?
+    mrmBufRegCallback(device->bufferHandle, mrmEvrDataRxCB, device);
+
+    regDevRegisterDevice(regDevName, &mrfiocDBuffSupport, device, maxLength);
 }
 
 /****************************************/
