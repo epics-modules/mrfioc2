@@ -13,7 +13,7 @@
 
 record(longout, "$(SYS)-$(EVR):DlyGen-$(PID)-Evt-$(F)$(ID)-SP") {
   field( DTYP, "EVR Pulser Mapping" )
-  field( OUT , "@OBJ=$(OBJ), Func=$(F=Trig)")
+  field( OUT , "@OBJ=$(EVR):Pul$(PID), Func=$(F=Trig)")
   field( PINI, "YES")
   field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , "$(EVT)")
