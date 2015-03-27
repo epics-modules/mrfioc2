@@ -1,6 +1,6 @@
 #include "delayModule.h"
 #include "drvem.h"
-#include "mrmGpio.h"
+
 
 #define SERIAL_DATA_BIT(idx)            (1 << (0+4*idx))
 #define SERIAL_CLOCK_BIT(idx)           (1 << (1+4*idx))
@@ -13,7 +13,6 @@ DelayModule::DelayModule(const std::string& n, EVRMRM* o, unsigned int idx)
     ,N_(idx)
     ,gpio_(o->gpio())
 {
-    setGpioOutput();
 }
 
 void DelayModule::setDelay0(double val)

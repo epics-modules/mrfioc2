@@ -6,9 +6,10 @@
 #include <epicsGuard.h>
 #include <epicsTypes.h>
 
+#include "mrmGpio.h"
+
 
 class EVRMRM;
-class MRMGpio;
 
 class DelayModule : public mrf::ObjectInst<DelayModule>
 {
@@ -17,7 +18,7 @@ public:
 
     /**
      * @brief setDelay0 Sets the delay of the output 0 in the module
-     * @param val Delay in range of 2.2ns - 12.43ns
+     * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
     void setDelay0(double val);
     /**
@@ -28,7 +29,7 @@ public:
 
     /**
      * @brief setDelay1 Sets the delay of the output 1 in the module
-     * @param val Delay in range of 2.2ns - 12.43ns
+     * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
     void setDelay1(double val);
     /**
@@ -85,9 +86,9 @@ private:
      */
     void pushData(epicsUInt32 data);
 
-    // There is no locking needed
-    void lock() const {}
-    void unlock() const {}
+    // There is no locking needed, but methods must be present since there are virtual in mrf::Object class
+    virtual void lock() const {}
+    virtual void unlock() const {}
 };
 
 #endif // DELAYMODULE_H
