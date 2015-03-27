@@ -54,7 +54,7 @@
      </rect>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Scale-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Scale-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper.ui</string>
@@ -66,10 +66,10 @@
      <string notr="true">A=B&amp;&amp;A#0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_2">
@@ -85,7 +85,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude">
@@ -98,7 +98,7 @@
      </rect>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Pulse-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper.ui</string>
@@ -110,10 +110,10 @@
      <string notr="true">A=B</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_16">
@@ -177,7 +177,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_3">
@@ -190,7 +190,7 @@
      </rect>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-DBus-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-DBus-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper.ui</string>
@@ -202,10 +202,10 @@
      <string notr="true">A=B&amp;&amp;A#0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_4">
@@ -221,7 +221,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP</string>
     </property>
    </widget>
    <widget class="caToggleButton" name="catogglebutton">
@@ -237,7 +237,7 @@
      <string>enabled</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Ena-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Ena-SP</string>
     </property>
    </widget>
    <widget class="caLabel" name="calabel">
@@ -253,7 +253,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Out-$(P)$(ID)</string>
+     <string>$(P)$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -285,7 +285,7 @@
      <string notr="true">border-color: rgb(0, 255, 0);</string>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-DBus-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-DBus-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper-led.ui</string>
@@ -297,10 +297,10 @@
      <string notr="true">A=B&amp;&amp;A#0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_4">
@@ -313,7 +313,7 @@
      </rect>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Scale-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Scale-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper-led.ui</string>
@@ -325,10 +325,10 @@
      <string notr="true">A=B&amp;&amp;A#0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_6">
@@ -341,7 +341,7 @@
      </rect>
     </property>
     <property name="macro">
-     <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Pulse-RB</string>
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
     </property>
     <property name="filename" stdset="0">
      <string notr="true">evr_out-helper-led.ui</string>
@@ -353,10 +353,10 @@
      <string notr="true">A=B</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
     </property>
    </widget>
   </widget>

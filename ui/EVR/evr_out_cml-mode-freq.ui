@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Lvl-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Lvl-SP</string>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>
@@ -99,7 +99,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Init-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Init-RB</string>
     </property>
    </widget>
    <widget class="caTextEntry" name="catextentry">
@@ -112,7 +112,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Init-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Init-SP</string>
     </property>
    <property name="background">
          <color>
@@ -133,7 +133,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:High-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:High-SP</string>
     </property>
    <property name="background">
          <color>
@@ -170,7 +170,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:High-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:High-RB</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -186,7 +186,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Low-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Low-SP</string>
     </property>
    <property name="background">
          <color>
@@ -223,7 +223,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Low-RB</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Low-RB</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -239,7 +239,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Init-SP.EGU</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Init-SP.EGU</string>
     </property>
    </widget>
    <widget class="caLineEdit" name="calineedit_8">
@@ -252,7 +252,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:Low-SP.EGU</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:Low-SP.EGU</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -268,7 +268,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Freq:High-SP.EGU</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Freq:High-SP.EGU</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>

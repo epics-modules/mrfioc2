@@ -59,7 +59,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Out-$(P)-$(ID)</string>
+     <string>$(P)$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -87,7 +87,7 @@
      <string notr="true">A=0</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Mode-Sel</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -116,7 +116,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Res-I</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Res-I</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -163,7 +163,7 @@
      <string notr="true">A=2</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Mode-Sel</string>
     </property>
    </widget>
    <widget class="caToggleButton" name="catogglebutton">
@@ -179,7 +179,7 @@
      <string>Trigger permit</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Ena-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Ena-Sel</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu">
@@ -195,7 +195,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Mode-Sel</string>
     </property>
    </widget>
    <widget class="caLed" name="caled">
@@ -208,7 +208,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Ena-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Ena-Sel</string>
     </property>
     <property name="falseColor">
      <color>
@@ -242,7 +242,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Rst-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Rst-Sel</string>
     </property>
     <property name="background">
      <color>
@@ -294,7 +294,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Pwr-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Pwr-Sel</string>
     </property>
     <property name="background">
      <color>
@@ -330,7 +330,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mult-I</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Mult-I</string>
     </property>
     <property name="unitsEnabled">
      <bool>false</bool>
@@ -393,7 +393,7 @@
      <string notr="true">A=1</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Mode-Sel</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Mode-Sel</string>
     </property>
    </widget>
   </widget>

@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Trig0-SP</string>
+    <string notr="true">$(EVR):Pul$(PULSER)-Evt-Trig0-SP</string>
    </property>
    <property name="background">
     <color>
@@ -81,7 +81,7 @@
     </rect>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Set0-SP</string>
+    <string notr="true">$(EVR):Pul$(PULSER)-Evt-Set0-SP</string>
    </property>
    <property name="background">
     <color>
@@ -120,7 +120,7 @@
     </rect>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):DlyGen-$(PULSER)-Evt-Reset0-SP</string>
+    <string notr="true">$(EVR):Pul$(PULSER)-Evt-Reset0-SP</string>
    </property>
    <property name="background">
     <color>

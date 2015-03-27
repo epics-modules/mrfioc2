@@ -56,7 +56,7 @@
      <item row="0" column="1">
       <widget class="caTextEntry" name="catextentry_4">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Delay-SP</string>
+        <string notr="true">$(EVR):Pul$(ID)-Delay-SP</string>
        </property>
        <property name="background">
          <color>
@@ -71,14 +71,14 @@
      <item row="0" column="2">
       <widget class="caLineEdit" name="calineedit_2">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Delay-RB</string>
+        <string notr="true">$(EVR):Pul$(ID)-Delay-RB</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="caLineEdit" name="calineedit_3">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Delay-Raw-RB</string>
+        <string notr="true">$(EVR):Pul$(ID)-Delay-Raw-RB</string>
        </property>
       </widget>
      </item>
@@ -95,7 +95,7 @@
      <item row="1" column="1">
       <widget class="caTextEntry" name="catextentry_5">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Width-SP</string>
+        <string notr="true">$(EVR):Pul$(ID)-Width-SP</string>
        </property>
        <property name="background">
          <color>
@@ -110,14 +110,14 @@
      <item row="1" column="2">
       <widget class="caLineEdit" name="calineedit_4">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Width-RB</string>
+        <string notr="true">$(EVR):Pul$(ID)-Width-RB</string>
        </property>
       </widget>
      </item>
      <item row="1" column="3">
       <widget class="caLineEdit" name="calineedit_5">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Width-Raw-RB</string>
+        <string notr="true">$(EVR):Pul$(ID)-Width-Raw-RB</string>
        </property>
       </widget>
      </item>
@@ -134,7 +134,7 @@
      <item row="2" column="1">
       <widget class="caTextEntry" name="catextentry_6">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-SP</string>
+        <string notr="true">$(EVR):Pul$(ID)-Prescaler-SP</string>
        </property>
        <property name="background">
          <color>
@@ -149,14 +149,14 @@
      <item row="2" column="2">
       <widget class="caLineEdit" name="calineedit_6">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-RB</string>
+        <string notr="true">$(EVR):Pul$(ID)-Prescaler-RB</string>
        </property>
       </widget>
      </item>
      <item row="2" column="3">
       <widget class="caLineEdit" name="calineedit_7">
        <property name="channel" stdset="0">
-        <string notr="true">$(EVR):DlyGen-$(ID)-Res-I</string>
+        <string notr="true">$(EVR):Pul$(ID)-Res-I</string>
        </property>
       </widget>
      </item>
@@ -191,7 +191,7 @@
      <string>Enabled</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):DlyGen-$(ID)-Ena-Sel</string>
+     <string notr="true">$(EVR):Pul$(ID)-Ena-Sel</string>
     </property>
    </widget>
    <widget class="caLabel" name="calabel">
@@ -222,7 +222,7 @@
      </size>
     </property>
     <property name="text">
-     <string>DlyGen-$(ID)</string>
+     <string>Pul$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -240,7 +240,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):DlyGen-$(ID)-Polarity-Sel</string>
+     <string notr="true">$(EVR):Pul$(ID)-Polarity-Sel</string>
     </property>
     <property name="stackingMode" stdset="0">
      <enum>caChoice::Column</enum>

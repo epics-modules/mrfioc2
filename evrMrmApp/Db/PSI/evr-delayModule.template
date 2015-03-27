@@ -8,7 +8,7 @@
 #  Delay0 = The delay (in ns) of the first output
 #  Delay1 = The delay (in ns) of the second output
 
-record(bo, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-SP") {
+record(bo, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Ena-SP") {
   field( DESC, "Enable")
   field( DTYP, "Obj Prop bool")
   field( OUT , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Enable")
@@ -16,11 +16,11 @@ record(bo, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-SP") {
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
   field( VAL , "$(Enabled=1)") # Default to enabled
-  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-RB")
+  field( FLNK, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Ena-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-RB") {
+record(bi, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Ena-RB") {
   field( DESC, "Is module enabled")
   field( DTYP, "Obj Prop bool")
   field( INP , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Enable")
@@ -28,7 +28,7 @@ record(bi, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Ena-RB") {
   field( ONAM, "Enabled")
 }
 
-record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-SP") {
+record(ao, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay0-SP") {
   field( DESC, "First delay output")
   field( DTYP, "Obj Prop double")
   field( OUT , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Delay0")
@@ -38,11 +38,11 @@ record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-SP") {
   field( HOPR, "12.430")
   field( LOPR, "2.200")
   field( PREC, 2)
-  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-RB")
+  field( FLNK, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay0-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-RB") {
+record(ai, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay0-RB") {
   field( DESC, "First delay readback")
   field( DTYP, "Obj Prop double")
   field( INP , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Delay0")
@@ -52,7 +52,7 @@ record(ai, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay0-RB") {
   field( EGU,  "ns")
 }
 
-record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-SP") {
+record(ao, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay1-SP") {
   field( DESC, "Second delay output")
   field( DTYP, "Obj Prop double")
   field( OUT , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Delay1")
@@ -62,11 +62,11 @@ record(ao, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-SP") {
   field( HOPR, "12.430")
   field( LOPR, "2.200")
   field( PREC, 2)
-  field( FLNK, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-RB")
+  field( FLNK, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay1-RB")
   info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(SYS)-$(EVR):FPUV-Module-$(SLOT)-Delay1-RB") {
+record(ai, "$(SYS)-$(EVR):UnivDlyModule$(SLOT)-Delay1-RB") {
   field( DESC, "Second delay readback")
   field( DTYP, "Obj Prop double")
   field( INP , "@OBJ=$(EVR):UnivDlyModule$(SLOT), PROP=Delay1")
