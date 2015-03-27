@@ -1,17 +1,19 @@
 # Control for mapping a pulse geneator to an event code in hardware
 #
 # Macros:
-#  NAME = record name
-#  PID = Pulder ID #
-#  OBJ = EVR devObj name
+#  SYS = system name
+#  EVR = EVR devObj name
+#  PID = Pulser ID #
 #  F = Pulse generator action
 #    Choices are: "Trig", "Set", "Reset"
 #  EVT = Initial event code
+#  ID = Mappings must have unique ID for each F-EVT combination
+#    Only mappings with ID=0 are displayed in the GUI
 #
 
-record(longout, "$(NAME)") {
+record(longout, "$(SYS)-$(EVR):DlyGen-$(PID)-Evt-$(F)$(ID)-SP") {
   field( DTYP, "EVR Pulser Mapping" )
-  field( OUT , "@OBJ=$(OBJ), Func=$(F=Trig)")
+  field( OUT , "@OBJ=$(EVR):Pul$(PID), Func=$(F=Trig)")
   field( PINI, "YES")
   field( DESC, "Mapping for Pulser $(PID)")
   field( VAL , "$(EVT)")

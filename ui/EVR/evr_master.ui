@@ -311,7 +311,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -370,8 +370,8 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-122</y>
-         <width>651</width>
+         <y>0</y>
+         <width>654</width>
          <height>1550</height>
         </rect>
        </property>
@@ -689,8 +689,8 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-341</y>
-         <width>651</width>
+         <y>0</y>
+         <width>654</width>
          <height>750</height>
         </rect>
        </property>
@@ -751,6 +751,82 @@
       </widget>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_8">
+     <attribute name="title">
+      <string>Delays</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_6">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>671</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>669</width>
+         <height>409</height>
+        </rect>
+       </property>
+       <widget class="caInclude" name="cainclude_33">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>10</y>
+          <width>511</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=0, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_delay.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_35">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>500</y>
+          <width>662</width>
+          <height>242</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=6, P=CML, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_cml.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_34">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>80</y>
+          <width>511</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=1, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_delay.ui</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
       <string>Pulsers</string>
@@ -775,7 +851,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1700</height>
         </rect>
        </property>
@@ -1067,7 +1143,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1900</height>
         </rect>
        </property>
@@ -3924,7 +4000,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1900</height>
         </rect>
        </property>

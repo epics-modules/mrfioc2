@@ -1192,8 +1192,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-4-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul4-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-4-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -1338,8 +1338,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-5-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul5-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-5-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -1484,8 +1484,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-6-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul6-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-6-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -1630,8 +1630,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-7-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul7-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-7-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -1776,8 +1776,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-8-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul8-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-8-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -1922,8 +1922,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-9-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul9-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-9-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2068,8 +2068,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-10-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul10-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-10-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2214,8 +2214,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-11-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul11-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-11-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2360,8 +2360,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-12-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul12-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-12-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2506,8 +2506,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-13-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul13-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-13-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2652,8 +2652,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-14-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul14-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-14-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -2798,8 +2798,8 @@ record(longout, "$(SYS,undefined)-$(EVR,undefined):DlyGen-15-Prescaler-SP") {
   field(DRVL, "1")
   field(VAL , "$($(EVR,undefined):Pul15-Prescaler-SP=1,undefined)")
   field(FLNK, "$(SYS,undefined)-$(EVR,undefined):DlyGen-15-Prescaler-RB")
-  field(DISP, "0")
-  field(DISA, "0")
+  field(DISP, "1")
+  field(DISA, "1")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11539,149 +11539,4 @@ record(aSub, "$(SYS,undefined)-$(EVR,undefined):Out-CML-6-BunchTrain:ASub_") {
   field(OUTA, "$(SYS,undefined)-$(EVR,undefined):Out-CML-6-Pat:Wf-SP PP")
   field(FTVA, "UCHAR")
   field(NOVA, "40940") # 20*2047
-}
-# Delay Module control
-#
-# Macros:
-#  ON = output record name prefix
-#  OBJ = devObj name
-
-record(bo, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Ena-SP") {
-  field( DESC, "Enable")
-  field( DTYP, "Obj Prop bool")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Enable")
-  field( PINI, "YES")
-  field( ZNAM, "Disabled")
-  field( ONAM, "Enabled")
-  field( VAL , "$($(EVR,undefined):FrontDlyModule0-Ena-SP=1,undefined)") # Default to enabled
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Ena-RB")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bi, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Ena-RB") {
-  field( DESC, "Is module enabled")
-  field( DTYP, "Obj Prop bool")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Enable")
-  field( ZNAM, "Disabled")
-  field( ONAM, "Enabled")
-}
-
-record(ao, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay0-SP") {
-  field( DESC, "First delay output")
-  field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Delay0")
-  field( EGU , "ns")
-  field( PINI, "YES")
-  field( VAL, "$($(EVR,undefined):FrontDlyModule0-Delay0-SP=2.200,undefined)")
-  field( HOPR, "12.430")
-  field( LOPR, "2.200")
-  field( PREC, 2)
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay0-RB")
-  info( autosaveFields_pass0, "VAL")
-}
-
-record(ai, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay0-RB") {
-  field( DESC, "First delay readback")
-  field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Delay0")
-  field( HIHI, "12.431")
-  field( LOLO, "2.199")
-  field( PREC, 2)
-  field( EGU,  "ns")
-}
-
-record(ao, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay1-SP") {
-  field( DESC, "Second delay output")
-  field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Delay1")
-  field( EGU , "ns")
-  field( PINI, "YES")
-  field( VAL, "$($(EVR,undefined):FrontDlyModule0-Delay1-SP=2.200,undefined)")
-  field( HOPR, "12.430")
-  field( LOPR, "2.200")
-  field( PREC, 2)
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay1-RB")
-  info( autosaveFields_pass0, "VAL")
-}
-
-record(ai, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-0-Delay1-RB") {
-  field( DESC, "Second delay readback")
-  field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule0, PROP=Delay1")
-  field( HIHI, "12.431")
-  field( LOLO, "2.199")
-  field( PREC, 2)
-  field( EGU,  "ns")
-}# Delay Module control
-#
-# Macros:
-#  ON = output record name prefix
-#  OBJ = devObj name
-
-record(bo, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Ena-SP") {
-  field( DESC, "Enable")
-  field( DTYP, "Obj Prop bool")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Enable")
-  field( PINI, "YES")
-  field( ZNAM, "Disabled")
-  field( ONAM, "Enabled")
-  field( VAL , "$($(EVR,undefined):FrontDlyModule1-Ena-SP=1,undefined)") # Default to enabled
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Ena-RB")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bi, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Ena-RB") {
-  field( DESC, "Is module enabled")
-  field( DTYP, "Obj Prop bool")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Enable")
-  field( ZNAM, "Disabled")
-  field( ONAM, "Enabled")
-}
-
-record(ao, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay0-SP") {
-  field( DESC, "First delay output")
-  field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Delay0")
-  field( EGU , "ns")
-  field( PINI, "YES")
-  field( VAL, "$($(EVR,undefined):FrontDlyModule1-Delay0-SP=2.200,undefined)")
-  field( HOPR, "12.430")
-  field( LOPR, "2.200")
-  field( PREC, 2)
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay0-RB")
-  info( autosaveFields_pass0, "VAL")
-}
-
-record(ai, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay0-RB") {
-  field( DESC, "First delay readback")
-  field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Delay0")
-  field( HIHI, "12.431")
-  field( LOLO, "2.199")
-  field( PREC, 2)
-  field( EGU,  "ns")
-}
-
-record(ao, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay1-SP") {
-  field( DESC, "Second delay output")
-  field( DTYP, "Obj Prop double")
-  field( OUT , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Delay1")
-  field( EGU , "ns")
-  field( PINI, "YES")
-  field( VAL, "$($(EVR,undefined):FrontDlyModule1-Delay1-SP=2.200,undefined)")
-  field( HOPR, "12.430")
-  field( LOPR, "2.200")
-  field( PREC, 2)
-  field( FLNK, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay1-RB")
-  info( autosaveFields_pass0, "VAL")
-}
-
-record(ai, "$(SYS,undefined)-$(EVR,undefined):FPUV-Module-1-Delay1-RB") {
-  field( DESC, "Second delay readback")
-  field( DTYP, "Obj Prop double")
-  field( INP , "@OBJ=$(EVR,undefined):FrontDlyModule1, PROP=Delay1")
-  field( HIHI, "12.431")
-  field( LOLO, "2.199")
-  field( PREC, 2)
-  field( EGU,  "ns")
 }

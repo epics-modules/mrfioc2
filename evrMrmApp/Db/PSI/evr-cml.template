@@ -517,7 +517,7 @@ record(longout, "$(ON)BunchTrain:Size-SP") {
   field(UDF , "0")
   field(HOPR, "150")
   field(LOPR, "1")
-  field(VAL , "$($(OBJ)-BunchTrain:Ena-SP=\1)")
+  field(VAL , "$($(OBJ)-BunchTrain:Size-SP=\1)")
   info(autosaveFields_pass0, "VAL")
 }
 
