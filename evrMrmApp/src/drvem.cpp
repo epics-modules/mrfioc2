@@ -226,11 +226,10 @@ try{
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
-//    gpio_ = new MRMGpio(this);
     delays.resize(nOFPDly);
     for(size_t i=0; i<nOFPDly; i++){
         std::ostringstream name;
-        name<<id<<":FrontDlyModule"<<i;
+        name<<id<<":UnivDlyModule"<<i;
         delays[i]=new DelayModule(name.str(), this, i);
     }
 

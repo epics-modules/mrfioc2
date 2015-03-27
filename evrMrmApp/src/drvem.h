@@ -124,7 +124,7 @@ public:
     virtual MRMOutput* output(OutputType,epicsUInt32 o);
     virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
-    DelayModule* delay(epicsUInt32);
+    DelayModule* delay(epicsUInt32 i);
 
     virtual MRMInput* input(epicsUInt32 idx);
     virtual const MRMInput* input(epicsUInt32) const;
