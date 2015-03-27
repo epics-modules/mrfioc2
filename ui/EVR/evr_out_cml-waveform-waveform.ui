@@ -22,7 +22,7 @@
     </rect>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:Wf-SP</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Pat:Wf-SP</string>
    </property>
    <property name="numberOfRows">
     <number>2048</number>
@@ -206957,7 +206957,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Waveform for Out-$(P)-$(ID) pattern</string>
+    <string>Waveform for $(P)$(ID) pattern</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

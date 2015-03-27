@@ -1,36 +1,38 @@
 # Record set for an EVR's physical input
 #
 # Macros-
-#  IN = record name prefix
-#  OBJ = devObj name
+#  SYS = System name
+#  EVR = EVR devObj
+#  OBJ = devObj name prefix
+#  ID  = input ID #
 #  DESC = Physical label found on output jack
 
-record(bo, "$(IN)Lvl-Sel") {
+record(bo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Lvl-Sel") {
   field( DTYP, "Obj Prop bool")
   field( DESC, "Input $(DESC)")
-  field( OUT , "@OBJ=$(OBJ), PROP=Active Level")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Active Level")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Lvl-Sel\=1)")
+  field( VAL , "$($(OBJ)$(ID)-Lvl-Sel\=1)")
   field( ZNAM, "Active Low")
   field( ONAM, "Active High")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bo, "$(IN)Edge-Sel") {
+record(bo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Edge-Sel") {
   field( DTYP, "Obj Prop bool")
-  field( OUT , "@OBJ=$(OBJ), PROP=Active Edge")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Active Edge")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Edge-Sel\=1)")
+  field( VAL , "$($(OBJ)$(ID)-Edge-Sel\=1)")
   field( ZNAM, "Active Falling")
   field( ONAM, "Active Rising")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(IN)Trig-Ext-Sel") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Trig-Ext-Sel") {
   field( DTYP, "Obj Prop uint16")
-  field( OUT , "@OBJ=$(OBJ), PROP=External Mode")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=External Mode")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Trig-Ext-Sel\=0)")
+  field( VAL , "$($(OBJ)$(ID)-Trig-Ext-Sel\=0)")
   field( ZRST, "Off")
   field( ONST, "Level")
   field( TWST, "Edge")
@@ -55,11 +57,11 @@ record(mbbo, "$(IN)Trig-Ext-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(IN)Code-Ext-SP") {
+record(longout, "$(SYS)-$(EVR):$(OBJ)$(ID)-Code-Ext-SP") {
   field( DTYP, "Obj Prop uint32")
-  field( OUT , "@OBJ=$(OBJ), PROP=External Code")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=External Code")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Code-Ext-SP\=0)")
+  field( VAL , "$($(OBJ)$(ID)-Code-Ext-SP\=0)")
   field( LOPR, "0")
   field( HOPR, "255")
   field( DRVL, "0")
@@ -67,11 +69,11 @@ record(longout, "$(IN)Code-Ext-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(IN)Trig-Back-Sel") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Trig-Back-Sel") {
   field( DTYP, "Obj Prop uint16")
-  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Backwards Mode")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Trig-Back-Sel\=0)")
+  field( VAL , "$($(OBJ)$(ID)-Trig-Back-Sel\=0)")
   field( ZRST, "Off")
   field( ONST, "Level")
   field( TWST, "Edge")
@@ -96,11 +98,11 @@ record(mbbo, "$(IN)Trig-Back-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(IN)Code-Back-SP") {
+record(longout, "$(SYS)-$(EVR):$(OBJ)$(ID)-Code-Back-SP") {
   field( DTYP, "Obj Prop uint32")
-  field( OUT , "@OBJ=$(OBJ), PROP=Backwards Code")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Backwards Code")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Code-Back-SP\=0)")
+  field( VAL , "$($(OBJ)$(ID)-Code-Back-SP\=0)")
   field( LOPR, "0")
   field( HOPR, "255")
   field( DRVL, "0")
@@ -108,11 +110,11 @@ record(longout, "$(IN)Code-Back-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(IN)DBus-Sel") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-DBus-Sel") {
   field( DTYP, "Obj Prop uint16")
-  field( OUT , "@OBJ=$(OBJ), PROP=DBus Mask")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=DBus Mask")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-DBus-Sel\=0)")
+  field( VAL , "$($(OBJ)$(ID)-DBus-Sel\=0)")
   field( ZRST, "Bit 0")
   field( ONST, "Bit 1")
   field( TWST, "Bit 2")
@@ -146,7 +148,7 @@ record(mbbo, "$(IN)DBus-Sel") {
 
 # Place for user provided note of what is
 # connected to this input.
-record(waveform, "$(IN)User-SP") {
+record(waveform, "$(SYS)-$(EVR):$(OBJ)$(ID)-User-SP") {
   field( DESC, "Desc. of user or purpose")
   field( FTVL, "CHAR")
   field( NELM, "128")

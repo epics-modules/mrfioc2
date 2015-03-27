@@ -92,7 +92,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay0-RB</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay0-RB</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -127,7 +127,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay1-RB</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay1-RB</string>
     </property>
     <property name="unitsEnabled">
      <bool>true</bool>
@@ -159,7 +159,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Ena-RB</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Ena-RB</string>
     </property>
     <property name="falseColor">
      <color>
@@ -196,7 +196,7 @@
      <string>Enable</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Ena-SP</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Ena-SP</string>
     </property>
    </widget>
    <widget class="caSpinbox" name="caspinbox_2">
@@ -212,7 +212,7 @@
      <string>How long does a pulse state stay active</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay0-SP</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay0-SP</string>
     </property>
     <property name="background">
      <color>
@@ -238,7 +238,7 @@
      <string>How long does a pulse state stay active</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay1-SP</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay1-SP</string>
     </property>
     <property name="background">
      <color>
@@ -264,7 +264,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay0-SP.EGU</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay0-SP.EGU</string>
     </property>
     <property name="unitsEnabled">
      <bool>false</bool>
@@ -283,7 +283,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPUV-Module-$(ID)-Delay1-SP.EGU</string>
+     <string notr="true">$(EVR):UnivDlyModule$(ID)-Delay1-SP.EGU</string>
     </property>
     <property name="unitsEnabled">
      <bool>false</bool>

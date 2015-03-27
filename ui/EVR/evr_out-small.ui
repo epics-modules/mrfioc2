@@ -25,7 +25,7 @@
     <bool>false</bool>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Ena-SP</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Ena-SP</string>
    </property>
    <property name="trueColor">
          <color>
@@ -56,7 +56,7 @@
     </rect>
    </property>
    <property name="macro">
-    <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Pulse-RB</string>
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
    </property>
    <property name="filename" stdset="0">
     <string notr="true">evr_out-helper.ui</string>
@@ -68,10 +68,10 @@
     <string notr="true">A=B</string>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
    </property>
    <property name="channelB">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Pulse-SP.RVAL</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
    </property>
   </widget>
   <widget class="caInclude" name="cainclude_2">
@@ -84,7 +84,7 @@
     </rect>
    </property>
    <property name="macro">
-    <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-Scale-RB</string>
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Scale-RB</string>
    </property>
    <property name="filename" stdset="0">
     <string notr="true">evr_out-helper.ui</string>
@@ -96,10 +96,10 @@
     <string notr="true">A=B&amp;&amp;A#0</string>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
    </property>
    <property name="channelB">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-Scale-SP.RVAL</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
    </property>
   </widget>
   <widget class="caInclude" name="cainclude_3">
@@ -112,7 +112,7 @@
     </rect>
    </property>
    <property name="macro">
-    <string notr="true">CHAN=$(EVR):Out-$(P)$(ID)-Src-DBus-RB</string>
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-DBus-RB</string>
    </property>
    <property name="filename" stdset="0">
     <string notr="true">evr_out-helper.ui</string>
@@ -124,10 +124,10 @@
     <string notr="true">A=B&amp;&amp;A#0</string>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-RB</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
    </property>
    <property name="channelB">
-    <string notr="true">$(EVR):Out-$(P)$(ID)-Src-DBus-SP.RVAL</string>
+    <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
    </property>
   </widget>
   <widget class="caRelatedDisplay" name="carelateddisplay">
