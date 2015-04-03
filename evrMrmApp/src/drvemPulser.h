@@ -17,7 +17,7 @@
 
 class EVRMRM;
 
-class MRMPulser : public Pulser
+class epicsShareClass MRMPulser : public Pulser
 {
     const epicsUInt32 id;
     EVRMRM& owner;

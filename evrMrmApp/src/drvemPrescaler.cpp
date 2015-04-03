@@ -8,12 +8,18 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemPrescaler.h"
 
-#include <epicsMMIO.h>
+#include "mrf/databuf.h"
+//#include <epicsMMIO.h>
+#include <mrfCommonIO.h>
 #include "evrRegMap.h"
 
 #include <stdexcept>
+#include <evr/prescaler.h>
+
+#include <epicsExport.h>
+#include "drvemPrescaler.h"
+
 
 epicsUInt32
 MRMPreScaler::prescaler() const

@@ -10,6 +10,9 @@
 
 #include "mrf/version.h"
 
+#include "dbCommon.h"
+#include <epicsExport.h>
+
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
@@ -17,8 +20,6 @@
 #include "evr/prescaler.h"
 #include "evr/cml.h"
 #include "evr/util.h"
-
-#include "dbCommon.h"
 
 /**@file evr.cpp
  *

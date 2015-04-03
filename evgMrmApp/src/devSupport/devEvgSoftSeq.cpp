@@ -15,6 +15,7 @@
 #include <devSup.h>
 #include <dbAccess.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
 #include <epicsExport.h>
 #include <errlog.h>
 
@@ -358,9 +359,9 @@ write_wf_timestamp(waveformRecord* pwf) {
             epicsFloat64 seconds;
             epicsUInt32 timeScaler = seq->getTimestampResolution() ;
             for(unsigned int i = 0; i < size; i++) {
-               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10, timeScaler);
+               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10.0,(int) timeScaler);
                ts[i] = (epicsUInt64)floor(seconds *
-                       evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
+                       evg->getEvtClk()->getFrequency() * pow(10.0,6) + 0.5);
             }
         }
         seq->setTimestamp(&ts[0], size);
@@ -392,7 +393,7 @@ read_wf_timestamp(waveformRecord* pwf) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         std::vector<epicsUInt64> timestamp = seq->getTimestampCt();
-        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10,6);
+        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10.0,6);
         epicsUInt32 timeScaler = seq->getTimestampResolution();
 
         epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
@@ -400,7 +401,7 @@ read_wf_timestamp(waveformRecord* pwf) {
             if(seq->getTimestampInpMode() == TICKS)
                  bptr[i] = (epicsFloat64)timestamp[i];
             else
-                bptr[i] = timestamp[i] * pow(10, timeScaler) / evtClk;
+                bptr[i] = timestamp[i] * pow(10.0,(int) timeScaler) / evtClk;
         }
 
         pwf->nord = timestamp.size();

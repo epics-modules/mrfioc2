@@ -21,6 +21,7 @@
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
+#include <epicsExport.h>
 #include "evrRegMap.h"
 
 MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)

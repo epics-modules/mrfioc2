@@ -15,6 +15,9 @@ mrmShared_SRCS += mrmDataBufTx.cpp
 mrmShared_SRCS += devMrfBufTx.cpp
 mrmShared_SRCS += sfp.cpp
 
+ifeq ($(OS),Windows_NT)
+mrmShared_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
+endif
 
 #---------------------
 # Generic EPICS build rules

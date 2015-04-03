@@ -19,6 +19,7 @@
 #include <errlog.h>
 
 #include <longoutRecord.h>
+#include <eventRecord.h>
 
 #include "devObj.h"
 #include "evr/evr.h"

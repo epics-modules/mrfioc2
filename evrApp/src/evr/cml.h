@@ -23,7 +23,7 @@ enum cmlMode {
   cmlModeInvalid
 };
 
-class CML : public mrf::ObjectInst<CML>, public IOStatus
+class epicsShareClass CML : public mrf::ObjectInst<CML>, public IOStatus
 {
 public:
   enum pattern {

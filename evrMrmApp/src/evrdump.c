@@ -18,6 +18,10 @@
 
 #include "mrmpci.h"
 
+#ifndef _WIN32
+epicsShareFunc void devLibPCIRegisterBaseDefault(void);
+#endif
+
 static const epicsPCIID mrmevrs[] = {
    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
                               PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
@@ -56,11 +60,13 @@ int printevr(void* raw,const epicsPCIDevice* dev)
 
 int main(int argc, char* argv[])
 {
-    extern void devLibPCIRegisterBaseDefault(void);
+    args a = {0,0x80,0};
+
+#ifndef _WIN32
     devLibPCIRegisterBaseDefault();
+#endif
 
     fprintf(stderr,"Usage: evrdump [BAR#] [Length] [offset]\n");
-    args a = {0,0x80,0};
 
     if (argc>=2) a.bar=atoi(argv[1]);
     if (argc>=3) a.len=atoi(argv[2]);

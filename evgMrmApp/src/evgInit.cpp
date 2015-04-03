@@ -1,4 +1,4 @@
-#include "evgInit.h"
+
 
 #include <iostream>
 #include <stdexcept>
@@ -6,19 +6,33 @@
 #include <sstream>
 
 #include <epicsExit.h>
-#include <epicsExport.h>
+#include <epicsThread.h>
+
 #include <iocsh.h>
 #include <drvSup.h>
 #include <initHooks.h>
 #include <errlog.h>
 
+#include "mrf/object.h"
+#include "mrf/databuf.h"
+
+#include <devcsr.h>
+/* DZ: Does Win32 have a problem with devCSRTestSlot()? */
+#ifdef _WIN32
+#define devCSRTestSlot(vmeEvgIDs,slot,info) (NULL)
+#include "plx9030.h"
+
+#include <time.h>
+#endif
+
 #include <mrfcsr.h>
 #include <mrfCommonIO.h>
 #include <devLibPCI.h>
 
-#include "plx9030.h"
-
+#include <epicsExport.h>
 #include "evgRegMap.h"
+
+#include "evgInit.h"
 
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvgSetupVME().  Levels are
@@ -398,6 +412,7 @@ mrmEvgSetupPCI (
 	return -1;
 } //mrmEvgSetupPCI
 
+#ifndef _WIN32
 /*
  * This function spawns additional thread that emulate PPS input. Function is used for
  * testing of timestamping functionality... DO NOT USE IN PRODUCTION!!!!!
@@ -416,7 +431,7 @@ void mrmEvgSoftTime(void* pvt) {
 		epicsUInt32 data = evg->sendTimestamp();
 		if (!data){
 			errlogPrintf("mrmEvgSoftTimestamp: Could not retrive timestamp...\n");
-			sleep(1);
+			epicsThreadSleep(1);
 			continue;
 		}
 
@@ -444,6 +459,9 @@ void mrmEvgSoftTime(void* pvt) {
 //		sleep(1);
 	}
 }
+#else
+void mrmEvgSoftTime(void* pvt) {}
+#endif
 
 /*
  *    EPICS Registrar Function for this Module
@@ -506,6 +524,7 @@ static void mrmEvgSetupPCICallFunc(const iocshArgBuf *args) {
 
 }
 
+extern "C"{
 static void evgMrmRegistrar() {
 	initHookRegister(&inithooks);
 	iocshRegister(&mrmEvgSetupVMEFuncDef, mrmEvgSetupVMECallFunc);
@@ -515,7 +534,7 @@ static void evgMrmRegistrar() {
 }
 
 epicsExportRegistrar(evgMrmRegistrar);
-
+}
 
 /*
  * EPICS Driver Support for this module
@@ -658,7 +677,7 @@ report(int level) {
     printf("===   End MRF EVG support    ===\n");
     return 0;
 }
-
+extern "C"{
 static
 drvet drvEvgMrm = {
     2,
@@ -666,4 +685,4 @@ drvet drvEvgMrm = {
     NULL
 };
 epicsExportAddress (drvet, drvEvgMrm);
-
+}

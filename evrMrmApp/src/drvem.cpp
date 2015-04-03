@@ -8,10 +8,9 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvem.h"
-
 #include <cstdio>
 #include <cstring>
+#include <cmath>
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
@@ -19,24 +18,43 @@
 #include <epicsMath.h>
 #include <errlog.h>
 #include <epicsMath.h>
+#include <dbDefs.h>
+#include <dbScan.h>
+#include <epicsInterrupt.h>
 
-#include <mrfCommon.h>
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
-
-#ifdef __linux__
-#  include "devLibPCI.h"
-#endif
+#include "mrmDataBufTx.h"
+#include "sfp.h"
 
 #include "evrRegMap.h"
 
 #include "mrfFracSynth.h"
 
+#include <mrfCommon.h>
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
+
 #include "drvemIocsh.h"
 
-#include <dbDefs.h>
-#include <dbScan.h>
-#include <epicsInterrupt.h>
+#include <evr/evr.h>
+#include <evr/pulser.h>
+#include <evr/cml.h>
+#include <evr/prescaler.h>
+#include <evr/input.h>
+
+#if defined(__linux__) || defined(_WIN32)
+#  include "devLibPCI.h"
+#endif
+
+#include <epicsExport.h>
+
+#include "drvem.h"
+
+int evrDebug;
+extern "C" {
+ epicsExportAddress(int, evrDebug);
+}
+
+using namespace std;
 
 #define CBINIT(ptr, prio, fn, valptr) \
 do { \
@@ -72,6 +90,8 @@ extern "C" {
      * No point in making this shorter than the system tick
      */
     double mrmEvrFIFOPeriod = 1.0/ 1000.0; /* 1/rate in Hz */
+
+    epicsExportAddress(double,mrmEvrFIFOPeriod);
 }
 
 /* Number of good updates before the time is considered valid */
@@ -1233,6 +1253,3 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 
 
 }
-
-#include <epicsExport.h>
-epicsExportAddress(double,mrmEvrFIFOPeriod);

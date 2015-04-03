@@ -13,6 +13,8 @@
 #include <dbAccess.h>
 #include <recGbl.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
+
 #include <epicsExport.h>
 
 #include "devObj.h"

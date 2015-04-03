@@ -1,13 +1,12 @@
-
-#include "mrf/object.h"
-
 #include <vector>
 #include <algorithm>
 
 #include "epicsUnitTest.h"
 #include "epicsString.h"
 #include "testMain.h"
+#include "epicsExport.h"
 
+#include "mrf/object.h"
 using namespace mrf;
 
 class mine : public ObjectInst<mine>

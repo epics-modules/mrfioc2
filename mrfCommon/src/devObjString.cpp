@@ -7,6 +7,11 @@
 /*
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
+#ifdef _WIN32
+ #define NOMINMAX
+ #include <algorithm>
+#endif
+
 
 #include <stringoutRecord.h>
 #include <stringinRecord.h>
@@ -75,7 +80,7 @@ OBJECT_DSET(SOFromString,
             NULL);
 
 #include <epicsExport.h>
-
-OBJECT_DSET_EXPORT(SIFromString);
-OBJECT_DSET_EXPORT(SOFromString);
-
+extern "C" {
+ OBJECT_DSET_EXPORT(SIFromString);
+ OBJECT_DSET_EXPORT(SOFromString);
+}

@@ -44,7 +44,7 @@ extern "C" {
  *
  * @return Returns the structure pointer on success and NULL on failure.
  */
-bufferInfo_t *bufInit(char *dev_name);
+bufferInfo_t epicsShareFunc *bufInit(char *dev_name);
 
 /**
  * @brief Disable buffer sending logic.
@@ -57,7 +57,7 @@ bufferInfo_t *bufInit(char *dev_name);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufEnable(bufferInfo_t *data);
+epicsStatus epicsShareFunc bufEnable(bufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
@@ -68,7 +68,7 @@ epicsStatus bufEnable(bufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufDisable(bufferInfo_t *data);
+epicsStatus epicsShareFunc bufDisable(bufferInfo_t *data);
 
 /**
  * @brief Get maximum supported buffer length.
@@ -78,7 +78,7 @@ epicsStatus bufDisable(bufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufMaxLen(bufferInfo_t *data, epicsUInt32 *maxLength);
+epicsStatus epicsShareFunc bufMaxLen(bufferInfo_t *data, epicsUInt32 *maxLength);
 
 /**
  * @brief Send buffer data
@@ -91,7 +91,7 @@ epicsStatus bufMaxLen(bufferInfo_t *data, epicsUInt32 *maxLength);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufSend(bufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
+epicsStatus epicsShareFunc bufSend(bufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
 
 /**
  * @brief Register data receive callback function
@@ -102,7 +102,7 @@ epicsStatus bufSend(bufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus bufRegCallback(bufferInfo_t *data, bufRecievedCallback callback, void *param);
+epicsStatus epicsShareFunc bufRegCallback(bufferInfo_t *data, bufRecievedCallback callback, void *param);
 
 #ifdef __cplusplus
 }

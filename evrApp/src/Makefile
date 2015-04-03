@@ -39,6 +39,15 @@ evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
 evr_SRCS_Linux += ntpShm.cpp
 evr_SRCS_DEFAULT += ntpShmNull.cpp
 
+ifeq ($(OS),Windows_NT)
+evr_LIBS += mrfCommon
+evr_LIBS += Com
+evr_LIBS += dbIoc
+evr_LIBS += dbStaticIoc
+evr_LIBS += miscIoc
+evr_LIBS += registryIoc
+endif
+
 # Note: evrtest is NOT a working ioc.
 #       it exists to ensure that libevr
 #       will link correctly.

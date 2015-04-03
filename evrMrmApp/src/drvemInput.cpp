@@ -9,13 +9,12 @@
  */
 
 #include <drvemInput.h>
+#include <stdexcept>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
-
+#include <epicsExport.h>
 #include "evrRegMap.h"
-
-#include <stdexcept>
 
 #include <epicsInterrupt.h>
 

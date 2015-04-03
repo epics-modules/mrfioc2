@@ -76,8 +76,14 @@
 #include <errno.h>              /* Standard C errno defintions                                    */
 
 #include <epicsTypes.h>         /* EPICS type definitions                                         */
+#ifdef _WIN32
+ #include <mrfFracSynth.h>       /* MRF SY87739L control word creation & analysis prototypes      */
+#endif
+#include <debugPrint.h>                   /* SLAC Debug print utility                             */
 
 #include <mrfCommon.h>          /* MRF common definitions                                         */
+
+#include <epicsExport.h>        /* EPICS Symbol exporting macro definitions                       */
 
 /**************************************************************************************************/
 /*  Import the Fractional Synthesizer Utility Routines                                            */
@@ -85,8 +91,10 @@
 
 #define HOST_BUILD
 
-#include <mrfFracSynth.h>       /* MRF SY87739L control word creation & analysis prototypes       */
-#include <mrfFracSynth.c>       /* MRF SY87739L control word creation & analysis routines         */
+#ifndef _WIN32
+# include <mrfFracSynth.h>       /* MRF SY87739L control word creation & analysis prototypes       */
+# include <mrfFracSynth.c>       /* MRF SY87739L control word creation & analysis routines         */
+#endif
 
 /**************************************************************************************************/
 /*  Main Program                                                                                  */

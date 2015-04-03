@@ -17,6 +17,7 @@
 
 #include <menuFtype.h>
 #include <aSubRecord.h>
+#include <epicsExport.h>
 
 #define NINPUTS (aSubRecordU - aSubRecordA)
 
@@ -225,6 +226,12 @@ long gen_bitarraygen(aSubRecord *prec)
 
 long gun_bunchTrain(aSubRecord *prec)
 {
+	int bunchPerTrain;
+	unsigned char *result;
+	epicsUInt32 count;
+	int i, j;
+
+
     if (prec->fta != menuFtypeULONG) {
         errlogPrintf("%s incorrect input type. A(ULONG)",
                      prec->name);
@@ -237,16 +244,16 @@ long gun_bunchTrain(aSubRecord *prec)
         return -1;
     }
 
-    int bunchPerTrain = *(int*)prec->a;
-    unsigned char *result = prec->vala;
+    bunchPerTrain = *(int*)prec->a;
+    result = prec->vala;
 
     if(bunchPerTrain<1 || bunchPerTrain>150) {
         errlogPrintf("%s : invalid number of bunches per train %d.\n",prec->name,bunchPerTrain);
         return -1;
     }
 
-    epicsUInt32 count = 0;
-    int i, j;
+    count = 0;
+
     for(i = 0; i < bunchPerTrain; i++) {
         for(j = 0; j < 10; j++) {
             count++;

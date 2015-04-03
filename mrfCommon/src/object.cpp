@@ -1,12 +1,11 @@
-
-#include "mrf/object.h"
-
 #include <sstream>
 #include <iostream>
-
 #include <errlog.h>
 #include <epicsMutex.h>
 #include <epicsGuard.h>
+
+#include <epicsExport.h>
+#include "mrf/object.h"
 
 using namespace mrf;
 
@@ -40,7 +39,10 @@ void initObjectsOnce()
         throw std::runtime_error(emsg);
 }
 
+epicsShareFunc
 propertyBase::~propertyBase() {}
+
+epicsShareFunc
 void
 propertyBase::show(std::ostream& strm) const
 {
@@ -239,4 +241,6 @@ void objectsreg()
 
 #include <epicsExport.h>
 
+extern "C" {
 epicsExportRegistrar(objectsreg);
+}

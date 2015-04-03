@@ -84,27 +84,45 @@ PROD_HOST += FracSynthControlWord
 FracSynthAnalyze_SRCS += FracSynthAnalyze.c
 FracSynthControlWord_SRCS += FracSynthControlWord.c
 
-PROD_LIBS += Com
+PROD_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 
 #---------------------
 # Generic EPICS build rules
 #
 include $(TOP)/configure/RULES
 
-$(COMMON_DIR)/mrf/version-git.h::
-	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-ifneq ($(wildcard $(TOP)/.git),)
-	printf '#define GIT_VERSION "%s"\n' `git describe --tags` > $@
-else
-	touch $@
-endif
+# $(COMMON_DIR)/mrf/version-git.h::
+	# mkdir $(subst,/,\,$(COMMON_DIR))\mrf
+# ifeq ($(OS),Windows_NT)
+# else
+	# [ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
+# endif
+# ifneq ($(wildcard $(TOP)/.git),)
+	# #printf '#define GIT_VERSION "%s"\n' `git describe --tags` > $@
+	# printf '#define GIT_VERSION "2.0.4-win"\n' > $@
+# else
+# ifeq ($(OS),Windows_NT)
+	# echo $$null >> $@
+# else
+	# touch $@
+# endif
+# endif
 
-$(COMMON_DIR)/mrf/version-hg.h::
-	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-ifneq ($(wildcard $(TOP)/.hg),)
-	printf '#define HG_VERSION "%s"\n' `hg tip|sed -n -e '/changeset/ s/changeset:\W*//p'` > $@
-else
-	touch $@
-endif
+# $(COMMON_DIR)/mrf/version-hg.h::
+# ifeq ($(OS),Windows_NT)
+	# mkdir $(subst,/,\,$(COMMON_DIR))\mrf
+# else
+	# [ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
+# endif
+# ifneq ($(wildcard $(TOP)/.hg),)
+	# #printf '#define HG_VERSION "%s"\n' `hg tip|sed -n -e '/changeset/ s/changeset:\W*//p'` > $@
+	# printf '#define HG_VERSION "2.0.4-win"\n' > $@
+# else
+# ifeq ($(OS),Windows_NT)
+	# echo $$null >> $@
+# else
+	# touch $@
+# endif
+# endif
 
-../mrf/version.h: $(COMMON_DIR)/mrf/version-git.h $(COMMON_DIR)/mrf/version-hg.h
+#../mrf/version.h: $(COMMON_DIR)/mrf/version-git.h $(COMMON_DIR)/mrf/version-hg.h
