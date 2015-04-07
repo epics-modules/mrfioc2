@@ -11,10 +11,16 @@ record(longout, "$(SYS)-$(EVR):Event-$(EVT)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(EVR),Code=$(EVT)")
-  field(VAL , "$(CODE)")
+  #field(VAL , "$(CODE)")
+  field(VAL , "-1")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I")
+  field(FLNK, "$(SYS)-$(EVR):Event-$(EVT)-Trig")
   info(autosaveFields_pass0, "OUT VAL")
+}
+
+record(event, "$(SYS)-$(EVR):Event-$(EVT)-Trig") {
+  field(VAL , "$(CODE)")
+  field(FLNK, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I")
 }
 
 record(calc, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I") {
