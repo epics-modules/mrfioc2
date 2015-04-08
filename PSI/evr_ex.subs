@@ -1,11 +1,7 @@
-file "evr-vmerf230.template"
+file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 {
     {
-        ## System name
-        SYS=MTEST-VME-EVRTEST,
-        EVR=EVR0,
-        
-
+    
         ## Global settings
 		ExtInhib-Sel=0, 		#0 = Use Inhibit, 1 = Always permitt : Use HW trigger inhibit (EVRTG only)
 		Link-Clk-SP=124.916,	#50-150 : Event Link speed (MHz)
@@ -15,125 +11,125 @@ file "evr-vmerf230.template"
 
 
 		## Prescalers
-		PS0-Div-SP=2, 			#2-0xffff :Integer divisor between the Event Clock and the sub-unit output.
-		PS1-Div-SP=2, 			#2-0xffff :Integer divisor between the Event Clock and the sub-unit output.
-		PS2-Div-SP=2, 			#2-0xffff :Integer divisor between the Event Clock and the sub-unit output.
+		PS0-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
+		PS1-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
+		PS2-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
 			
 
 		## Pulsers
-		Pul0-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul0-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul0-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul0-Width-SP=0,		#0-0xffff : Width in us
-		Pul0-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul0-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul0-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul0-Delay-SP=100,		#0-4294967295 : Delay in us 
+		Pul0-Width-SP=10,		#0-65535 : Width in us
+		Pul0-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
-		Pul1-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul1-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul1-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul1-Width-SP=0,		#0-0xffff : Width in us
-		Pul1-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul1-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul1-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul1-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul1-Width-SP=10,		#0-65535 : Width in us
+		Pul1-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
-		Pul2-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul2-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul2-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul2-Width-SP=0,		#0-0xffff : Width in us
-		Pul2-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul2-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul2-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul2-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul2-Width-SP=0,		#0-65535 : Width in us
+		Pul2-Prescaler-SP=1, 	#0-255 : Pulser prescaler
 
-		Pul3-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul3-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul3-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul3-Width-SP=0,		#0-0xffff : Width in us
-		Pul3-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul3-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul3-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul3-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul3-Width-SP=0,		#0-65535 : Width in us
+		Pul3-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
-		Pul4-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul4-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul4-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul4-Width-SP=0,		#0-0xffff : Width in us
+		Pul4-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul4-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul4-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul4-Width-SP=0,		#0-65535 : Width in us
 
-		Pul5-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul5-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul5-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul5-Width-SP=0,		#0-0xffff : Width in us
+		Pul5-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul5-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul5-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul5-Width-SP=0,		#0-65535 : Width in us
 
-		Pul6-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul6-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul6-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul6-Width-SP=0,		#0-0xffff : Width in us
+		Pul6-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul6-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul6-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul6-Width-SP=0,		#0-65535 : Width in us
 
-		Pul7-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul7-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul7-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul7-Width-SP=0,		#0-0xffff : Width in us
+		Pul7-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul7-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul7-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul7-Width-SP=0,		#0-65535 : Width in us
 
-		Pul8-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul8-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul8-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul8-Width-SP=0,		#0-0xffff : Width in us
-		Pul8-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul8-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul8-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul8-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul8-Width-SP=0,		#0-65535 : Width in us
+		Pul8-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
-		Pul9-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul9-Polarity-Sel=0,   #0 = Active High, 1 = Active Low
-		Pul9-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul9-Width-SP=0,		#0-0xffff : Width in us
-		Pul9-Prescaler-SP=1,   #0-0xff : Pulser prescaler
+		Pul9-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
+		Pul9-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
+		Pul9-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul9-Width-SP=0,		#0-65535 : Width in us
+		Pul9-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
 		Pul10-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul10-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul10-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul10-Width-SP=0,		#0-0xffff : Width in us
-		Pul10-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul10-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul10-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul10-Width-SP=0,		#0-65535 : Width in us
+		Pul10-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul11-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul11-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul11-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul11-Width-SP=0,		#0-0xffff : Width in us
-		Pul11-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul11-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul11-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul11-Width-SP=0,		#0-65535 : Width in us
+		Pul11-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul12-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul12-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul12-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul12-Width-SP=0,		#0-0xffff : Width in us
-		Pul12-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul12-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul12-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul12-Width-SP=0,		#0-65535 : Width in us
+		Pul12-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul13-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul13-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul13-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul13-Width-SP=0,		#0-0xffff : Width in us
-		Pul13-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul13-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul13-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul13-Width-SP=0,		#0-65535 : Width in us
+		Pul13-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul14-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul14-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul14-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul14-Width-SP=0,		#0-0xffff : Width in us
-		Pul14-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul14-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul14-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul14-Width-SP=0,		#0-65535 : Width in us
+		Pul14-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul15-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul15-Polarity-Sel=0,  #0 = Active High, 1 = Active Low
-		Pul15-Delay-SP=0,		#0-0xffffff : Delay in us 
-		Pul15-Width-SP=0,		#0-0xffff : Width in us
-		Pul15-Prescaler-SP=1,  #0-0xff : Pulser prescaler
+		Pul15-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
+		Pul15-Delay-SP=0,		#0-4294967295 : Delay in us 
+		Pul15-Width-SP=0,		#0-65535 : Width in us
+		Pul15-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 
-		##Front panel inputs
+		## Front panel inputs
 		FPIn0-Lvl-Sel=1,		#0 = Active Low, 1 = Active High : Active Level
 		FPIn0-Edge-Sel=1,		#0 = Active Falling, 1 = Active Rising: Active Edge
 		FPIn0-Trig-Ext-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : External mode trigger type
-		FPIn0-Code-Ext-SP=0,	#0-0xff : Event code that triggers this input
+		FPIn0-Code-Ext-SP=0,	#0-255 : Event code that triggers this input
 		FPIn0-Trig-Back-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : Backwards mode trigger type
-		FPIn0-Code-Back-SP=0,	#0-0xff : Event code that triggers this input
+		FPIn0-Code-Back-SP=0,	#0-255 : Event code that triggers this input
 		FPIn0-DBus-Sel=0,		#0x1 = Bit 0, 0x2 = Bit 1, 0x4 = Bit 2, 0x8 = Bit 3, 0x10 = Bit 4, 0x20 = Bit 5, 0x40 = Bit 6, 0x80 = Bit 7 : DBus bits are OR-ed with this value and sent out
 
 		FPIn1-Lvl-Sel=1,		#0 = Active Low, 1 = Active High : Active Level
 		FPIn1-Edge-Sel=1,		#0 = Active Falling, 1 = Active Rising: Active Edge
 		FPIn1-Trig-Ext-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : External mode trigger type
-		FPIn1-Code-Ext-SP=0,	#0-0xff : Event code that triggers this input
+		FPIn1-Code-Ext-SP=0,	#0-255 : Event code that triggers this input
 		FPIn1-Trig-Back-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : Backwards mode trigger type
-		FPIn1-Code-Back-SP=0,	#0-0xff : Event code that triggers this input
+		FPIn1-Code-Back-SP=0,	#0-255 : Event code that triggers this input
 		FPIn1-DBus-Sel=0,		#0x1 = Bit 0, 0x2 = Bit 1, 0x4 = Bit 2, 0x8 = Bit 3, 0x10 = Bit 4, 0x20 = Bit 5, 0x40 = Bit 6, 0x80 = Bit 7 : DBus bits are OR-ed with this value and sent out
 
 
-		##Front panel outputs
-		#Available -Src-SP choices:
+		## Front panel outputs
+		# Available -Src-SP choices:
 		# 0 	Pulser 0
 		# 1 	Pulser 1
 		# 2 	Pulser 2
@@ -166,261 +162,288 @@ file "evr-vmerf230.template"
 
 		# TTL Outputs
 		FrontOut0-Ena-SP=1, 		# Default to enabled
-		FrontOut0-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		FrontOut0-Src-SP=0,  		# Use pulser 0 
 
 		FrontOut1-Ena-SP=1, 		# Default to enabled
-		FrontOut1-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		FrontOut1-Src-SP=1,  		# Use pulser 1
 
 		FrontOut2-Ena-SP=1, 		# Default to enabled
-		FrontOut2-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		FrontOut2-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 
 		FrontOut3-Ena-SP=1, 		# Default to enabled
-		FrontOut3-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		FrontOut3-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 
 		# CML outputs
 		FrontOut4-Ena-SP=1, 		# Default to enabled
-		FrontOut4-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
-		CML0-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
-		CML0-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
-		CML0-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		FrontOut4-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
+		CML0-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
+		CML0-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
+		CML0-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
 		CML0-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML0-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
-		CML0-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
-		CML0-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
-		CML0-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
+		CML0-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
+		CML0-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML0-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML0-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
 		CML0-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML0-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculator enabled
-		CML0-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
-		CML0-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		CML0-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculator enabled
+		CML0-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
+		CML0-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
 		CML0-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
 		CML0-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
 
 		FrontOut5-Ena-SP=1, 		# Default to enabled
-		FrontOut5-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
-		CML1-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
-		CML1-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
-		CML1-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		FrontOut5-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
+		CML1-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
+		CML1-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
+		CML1-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
 		CML1-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML1-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
-		CML1-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
-		CML1-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
-		CML1-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
-		CML1-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated1in a loop
-		CML1-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculat1r enabled
-		CML1-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
-		CML1-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		CML1-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
+		CML1-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML1-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML1-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
+		CML1-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		CML1-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square wave pattern calculator enabled
+		CML1-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
+		CML1-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
 		CML1-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
 		CML1-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
 
 
 		FrontOut6-Ena-SP=1, 		# Default to enabled
-		FrontOut6-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
-		CML2-Ena-Sel=0 			# 0 = Output disabled, 1 = Output enabled
-		CML2-Pwr-Sel=0 			# 0 = Outputs powered down, 1 = Normal operation
-		CML2-Rst-Sel=0 			# 0 = Normal operation, 1 = Reset CML output
+		FrontOut6-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
+		CML2-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
+		CML2-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
+		CML2-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
 		CML2-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML2-Freq:Lvl-SP=0 		# For frequency mode: 0 = Active high, 1 = Active low
-		CML2-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 0xFFFF clock periods)
-		CML2-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 0xFFFF clock periods)
-		CML2-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 0xFFFF clock periods)
-		CML2-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated2in a loop
-		CML2-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square pattern calculator disabled, 1 = Square pattern calculat2r enabled
-		CML2-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square pattern in ns
-		CML2-WfCalc:Width-SP=50 	# For waveform mode: Width of the square pattern in ns
+		CML2-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
+		CML2-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML2-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML2-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
+		CML2-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		CML2-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculat2r enabled
+		CML2-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
+		CML2-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
 		CML2-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
 		CML2-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
 
 
-		# Universal outputs
+		# Universal outputs, Slot 0
 		FrontUnivOut0-Ena-SP=1, 	# Default to enabled
-		FrontUnivOut0-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		FrontUnivOut0-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
 
 		FrontUnivOut1-Ena-SP=1, 	# Default to enabled
-		FrontUnivOut1-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		FrontUnivOut1-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
 
+		# Universal outputs, Slot 1
 		FrontUnivOut2-Ena-SP=1, 	# Default to enabled
-		FrontUnivOut2-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		FrontUnivOut2-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
 
 		FrontUnivOut3-Ena-SP=1, 	# Default to enabled
-		FrontUnivOut3-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		FrontUnivOut3-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
 
 		# Transition board outputs
 		RearUniv0-Ena-SP=1, 	 	# Default to enabled	
-		RearUniv0-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv0-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv1-Ena-SP=1, 		# Default to enabled
-		RearUniv1-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv1-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv2-Ena-SP=1, 		# Default to enabled
-		RearUniv2-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv2-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv3-Ena-SP=1, 		# Default to enabled
-		RearUniv3-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv3-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv4-Ena-SP=1, 		# Default to enabled
-		RearUniv4-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv4-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv5-Ena-SP=1, 		# Default to enabled
-		RearUniv5-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv5-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv6-Ena-SP=1, 		# Default to enabled
-		RearUniv6-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv6-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv7-Ena-SP=1, 		# Default to enabled
-		RearUniv7-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv7-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv8-Ena-SP=1, 		# Default to enabled
-		RearUniv8-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv8-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv9-Ena-SP=1, 		# Default to enabled
-		RearUniv9-Src-SP=63,  		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv9-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv10-Ena-SP=1, 		# Default to enabled
-		RearUniv10-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv10-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv11-Ena-SP=1, 		# Default to enabled
-		RearUniv11-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv11-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv12-Ena-SP=1, 		# Default to enabled
-		RearUniv12-Src-SP=63, 		# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv12-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv13-Ena-SP=1, 		# Default to enabled
-		RearUniv13-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv13-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv14-Ena-SP=1, 		# Default to enabled
-		RearUniv14-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv14-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 	
 		RearUniv15-Ena-SP=1, 		# Default to enabled
-		RearUniv15-Src-SP=63,  	# Defaults to Force high (if enabled -> Ena-SP)
+		RearUniv15-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 
      }
  }
 
-# Mapping between hardware event code and a software (EPICS) database event
+## Mapping between hardware event code and a software (EPICS) database event
+## In addition to firing an EPICS database event on each occurance of hardware event, a counter for the specific EVT is increased.
 #
 # Macros:
-#  SYS = System name
-#  EVR = EVR devObj name
+#  SYS = System name (auto expanded by parent)
+#  EVR = EVR devObj name (auto expanded by parent)
 #  EVT = Event code (hardware). Set EVT=0 to disable.
 #  CODE = EPICS database event number (software)
 #
-file "evr-softEvent.template"{
-pattern { SYS,                  EVR,	EVT,	CODE    }
-		{"MTEST-VME-EVRTEST",   "EVR0",	"1",    "1"}
-		{"MTEST-VME-EVRTEST",   "EVR0",	"2",    "2"}
-		{"MTEST-VME-EVRTEST",   "EVR0",	"3",    "3"}
+file "$(TEMPLATE_DIR)/evr-softEvent.template"{
+pattern { EVT,	CODE }
+		{ "1",    "1"}
+		{ "2",    "2"}
+		{ "3",    "3"}
+		{ "3",    "3"}
+		{ "40",   "40"}
 }
 
 
-# Mapping between hardware event code and a special function of the EVR
-# Each event can be mapped only to one function!
+## Mapping between hardware event code and a special function of the EVR
+## Each event can be mapped only to one function!
+## There are some default events, that allways trigger specific functions!
+## Available functions:
+##		- Blink : An LED on the EVRs front panel will blink when the code is received.
+##		- Forward : The received code will be immediately retransmits on the upstream event link.
+##		- Stop Log (default event 121): Freeze the circular event log buffer. An CPU interrupt will be raised which will cause the buffer to be downloaded. This might be a useful action to map to a fault event.
+##		- Log : Include this event code in the circular event log.
+##		- Heartbeat (default event 122): This event resets the heartbeat timeout timer.
+##		- Reset PS (default event 123): Resets the phase of all prescalers.
+##		- TS reset (default event 124): Transfers the seconds timestamp from the shift register and zeros the sub-seconds part.
+##		- TS tick (default event 125): When the timestamp source is 'Mapped code' then any event with this mapping will cause the sub-seconds part of the timestamp to increment.
+##		- Shift 1 (default event 113): Shifts the current value of the seconds timestamp shift register up by one bit and sets the low bit to 1.
+##		- Shift 0  (default event 112): Shifts the current value of the seconds timestamp shift register up by one bit and sets the low bit to 0.
+##		- FIFO : Bypass the automatic allocation mechanism and always include this code in the event FIFO.
 #
 # Macros:
-#  SYS = System name
-#  EVR = EVR devObj name
+#  SYS = System name (auto expanded by parent)
+#  EVR = EVR devObj name (auto expanded by parent)
 #  EVT = Event code (hardware). Set EVNT=0 to disable.
 #  FUNC = Function to be mapped
 #    Choices are: "FIFO", "Latch TS", "Blink", "Forward",
 #                 "Stop Log", "Log", "Heartbeat", "Reset PS",
 #                 "TS reset", "TS tick", "Shift 1", "Shift 0",
 #
-file "evr-specialFunctionMap.template"{
-pattern { SYS,                  EVR,    EVT,   FUNC }
-        {"MTEST-VME-EVRTEST",   "EVR0",  "1",   "Blink"}
+file "$(TEMPLATE_DIR)/evr-specialFunctionMap.template"{
+pattern { EVT,   FUNC }
+        {"1",   "Blink"}
 }
 
-## Control for mapping a pulse geneator to an event code in hardware. Pulsers can be mapped using three functions to multiple events.
+## Control for mapping a pulse geneator to an event code in hardware.
+## Each pulser-function combination can be mapped to multiple events.
+## Available functions:
+##		- Trig : causes a received event to trigger a pulser. A pulse based on pulser polarity, delay and width will be outputted.
+##		- Set  : causes a received event to force a pulser into active state(based on pulser polarity).
+##		- Reset: causes a received event to force a pulser into inactive state(based on pulser polarity).
+#
+## Pulser polarity defines the pulser active and inactive state:
+##		- Active high: Pulse is logic high in active state and logic low in inactive state
+##		- Active low: Pulse is logic low in active state and logic high in inactive state
 #
 # Macros:
-#  SYS = system name
-#  EVR = EVR devObj name
+#  SYS = system name (auto expanded by parent)
+#  EVR = EVR devObj name (auto expanded by parent)
 #  PID = Pulser ID #
-#  F = Pulse generator action
+#  F = Pulse generator function
 #    Choices are: "Trig", "Set", "Reset"
 #  EVT = Initial event code
-#  ID = Mappings must have unique ID for each F-EVT combination.
+#  ID = Mappings must have unique ID for each PID-F combination.
 #    Only mappings with ID=0 are displayed in the GUI
 #    
-file "evr-pulserMap.template"{
-pattern {SYS, 					EVR,  PID   F,      EVT, ID}
-        {"MTEST-VME-EVRTEST", "EVR0", 0,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 1,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 2,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 3,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 4,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 5,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 6,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 7,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 8,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 9,    Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 10,   Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 11,   Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 12,   Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 13,   Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 14,   Trig,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 15,   Trig,   0,   0 }
+file "$(TEMPLATE_DIR)/evr-pulserMap.template"{
+pattern {PID   F,      EVT, ID}
+        {0,    Trig,   1,   0 }
+        {1,    Trig,   1,   0 }
+        {2,    Trig,   0,   0 }
+        {3,    Trig,   0,   0 }
+        {4,    Trig,   0,   0 }
+        {5,    Trig,   0,   0 }
+        {6,    Trig,   0,   0 }
+        {7,    Trig,   0,   0 }
+        {8,    Trig,   0,   0 }
+        {9,    Trig,   0,   0 }
+        {10,   Trig,   0,   0 }
+        {11,   Trig,   0,   0 }
+        {12,   Trig,   0,   0 }
+        {13,   Trig,   0,   0 }
+        {14,   Trig,   0,   0 }
+        {15,   Trig,   0,   0 }
 
 
-        {"MTEST-VME-EVRTEST", "EVR0", 0,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 1,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 2,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 3,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 4,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 5,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 6,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 7,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 8,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 9,    Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 10,   Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 11,   Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 12,   Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 13,   Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 14,   Set,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 15,   Set,   0,   0 }
+        {0,    Set,   0,   0 }
+        {1,    Set,   0,   0 }
+        {2,    Set,   0,   0 }
+        {3,    Set,   0,   0 }
+        {4,    Set,   0,   0 }
+        {5,    Set,   0,   0 }
+        {6,    Set,   0,   0 }
+        {7,    Set,   0,   0 }
+        {8,    Set,   0,   0 }
+        {9,    Set,   0,   0 }
+        {10,   Set,   0,   0 }
+        {11,   Set,   0,   0 }
+        {12,   Set,   0,   0 }
+        {13,   Set,   0,   0 }
+        {14,   Set,   0,   0 }
+        {15,   Set,   0,   0 }
 
 
-        {"MTEST-VME-EVRTEST", "EVR0", 0,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 1,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 2,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 3,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 4,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 5,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 6,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 7,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 8,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 9,    Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 10,   Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 11,   Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 12,   Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 13,   Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 14,   Reset,   0,   0 }
-        {"MTEST-VME-EVRTEST", "EVR0", 15,   Reset,   0,   0 }
+        {0,    Reset,   0,   0 }
+        {1,    Reset,   0,   0 }
+        {2,    Reset,   0,   0 }
+        {3,    Reset,   0,   0 }
+        {4,    Reset,   0,   0 }
+        {5,    Reset,   0,   0 }
+        {6,    Reset,   0,   0 }
+        {7,    Reset,   0,   0 }
+        {8,    Reset,   0,   0 }
+        {9,    Reset,   0,   0 }
+        {10,   Reset,   0,   0 }
+        {11,   Reset,   0,   0 }
+        {12,   Reset,   0,   0 }
+        {13,   Reset,   0,   0 }
+        {14,   Reset,   0,   0 }
+        {15,   Reset,   0,   0 }
 }
 
-# UNIV-LVPECL-DLY Delay module
+## UNIV-LVPECL-DLY Delay module
+## This delay module can be inserted in one of the two available UNIV slots.
+## This module will delay any signal from the FrontUnivOut output. The delay can be configired from 2200ps to 12430ps, with 10ps resolution.
+## When the delay module is inserted, uncomment bottom macro substitutions for the appropriate slot.
 #
 # Macros:
-#  SYS = System name
-#  EVR = EVR devObj name
-#  SLOT = Slot where module is inserted. FrontUnivOut0 is the first and FrontUnivOut1 the second output of slot 0, where FrontUnivOut2 is the first and FrontUnivOut3 is the second output of slot 1.
+#  SYS = System name (auto expanded by parent)
+#  EVR = EVR devObj name (auto expanded by parent)
+#  SLOT = Slot where module is inserted. 
+#  			FrontUnivOut0 is the first and FrontUnivOut1 is the second output of slot 0, where 
+#  			FrontUnivOut2 is the first and FrontUnivOut3 is the second output of slot 1.
 #  Enabled = Enable or disable the module. When disabled, both outputs are pulled to logic low.
 #  Delay0 = The delay (in ns) of the first output
 #  Delay1 = The delay (in ns) of the second output
 #
 #file "evr-delayModule.template"
 #{
-#    { SYS     = MTEST-VME-EVRTEST,
-#      EVR     = EVR0,
-#      SLOT    = 0,			# 0 = Slot 0, 1 = Slot 1
+#    { SLOT    = 0,			# 0 = Slot 0, 1 = Slot 1
 #
 #      Enabled = 1,			# 0 =  Both outputs disabled(logic low), 1 = Both outputs enabled
 #      Delay0  = 2.2,		# 2.2ns - 12.43ns: The delay of the first output
 #      Delay1  = 2.2,		# 2.2ns - 12.43ns: The delay of the second output
 #    }
 #
-#    { SYS     = MTEST-VME-EVRTEST,
-#      EVR     = EVR0,
-#      SLOT    = 1,			# 0 = Slot 0, 1 = Slot 1
+#    { SLOT    = 1,			# 0 = Slot 0, 1 = Slot 1
 #
 #      Enabled = 1,			# 0 =  Both outputs disabled(logic low), 1 = Both outputs enabled
 #      Delay0  = 2.2,		# 2.2ns - 12.43ns: The delay of the first output
