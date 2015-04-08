@@ -311,7 +311,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -370,8 +370,8 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-122</y>
-         <width>651</width>
+         <y>0</y>
+         <width>654</width>
          <height>1550</height>
         </rect>
        </property>
@@ -397,7 +397,7 @@
          <item>
           <widget class="caInclude" name="cainclude_3">
            <property name="macro">
-            <string notr="true">ID=0, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=0, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -407,7 +407,7 @@
          <item>
           <widget class="caInclude" name="cainclude_4">
            <property name="macro">
-            <string notr="true">ID=1, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=1, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -417,7 +417,7 @@
          <item>
           <widget class="caInclude" name="cainclude_5">
            <property name="macro">
-            <string notr="true">ID=2, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=2, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -427,7 +427,7 @@
          <item>
           <widget class="caInclude" name="cainclude_7">
            <property name="macro">
-            <string notr="true">ID=3, P=FP, EVR=$(EVR)</string>
+            <string notr="true">ID=3, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -437,7 +437,7 @@
          <item>
           <widget class="caInclude" name="cainclude_14">
            <property name="macro">
-            <string notr="true">ID=4, P=CML, EVR=$(EVR)</string>
+            <string notr="true">ID=4, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -447,7 +447,7 @@
          <item>
           <widget class="caInclude" name="cainclude_559">
            <property name="macro">
-            <string notr="true">ID=5, P=CML, EVR=$(EVR)</string>
+            <string notr="true">ID=5, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -457,7 +457,7 @@
          <item>
           <widget class="caInclude" name="cainclude_560">
            <property name="macro">
-            <string notr="true">ID=6, P=CML, EVR=$(EVR)</string>
+            <string notr="true">ID=6, P=FrontOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -467,7 +467,7 @@
          <item>
           <widget class="caInclude" name="cainclude_562">
            <property name="macro">
-            <string notr="true">ID=0, P=FPUV, EVR=$(EVR)</string>
+            <string notr="true">ID=0, P=FrontUnivOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -477,7 +477,7 @@
          <item>
           <widget class="caInclude" name="cainclude_563">
            <property name="macro">
-            <string notr="true">ID=1, P=FPUV, EVR=$(EVR)</string>
+            <string notr="true">ID=1, P=FrontUnivOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -487,7 +487,7 @@
          <item>
           <widget class="caInclude" name="cainclude_564">
            <property name="macro">
-            <string notr="true">ID=2, P=FPUV, EVR=$(EVR)</string>
+            <string notr="true">ID=2, P=FrontUnivOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -497,7 +497,7 @@
          <item>
           <widget class="caInclude" name="cainclude_565">
            <property name="macro">
-            <string notr="true">ID=3, P=FPUV, EVR=$(EVR)</string>
+            <string notr="true">ID=3, P=FrontUnivOut, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -507,7 +507,7 @@
          <item>
           <widget class="caInclude" name="cainclude_566">
            <property name="macro">
-            <string notr="true">ID=0, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=0, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -517,7 +517,7 @@
          <item>
           <widget class="caInclude" name="cainclude_567">
            <property name="macro">
-            <string notr="true">ID=1, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=1, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -527,7 +527,7 @@
          <item>
           <widget class="caInclude" name="cainclude_568">
            <property name="macro">
-            <string notr="true">ID=2, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=2, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -537,7 +537,7 @@
          <item>
           <widget class="caInclude" name="cainclude_569">
            <property name="macro">
-            <string notr="true">ID=3, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=3, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -547,7 +547,7 @@
          <item>
           <widget class="caInclude" name="cainclude_570">
            <property name="macro">
-            <string notr="true">ID=4, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=4, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -557,7 +557,7 @@
          <item>
           <widget class="caInclude" name="cainclude_571">
            <property name="macro">
-            <string notr="true">ID=5, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=5, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -567,7 +567,7 @@
          <item>
           <widget class="caInclude" name="cainclude_572">
            <property name="macro">
-            <string notr="true">ID=6, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=6, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -577,7 +577,7 @@
          <item>
           <widget class="caInclude" name="cainclude_573">
            <property name="macro">
-            <string notr="true">ID=7, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=7, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -587,7 +587,7 @@
          <item>
           <widget class="caInclude" name="cainclude_574">
            <property name="macro">
-            <string notr="true">ID=8, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=8, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -597,7 +597,7 @@
          <item>
           <widget class="caInclude" name="cainclude_575">
            <property name="macro">
-            <string notr="true">ID=9, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=9, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -607,7 +607,7 @@
          <item>
           <widget class="caInclude" name="cainclude_576">
            <property name="macro">
-            <string notr="true">ID=10, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=10, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -617,7 +617,7 @@
          <item>
           <widget class="caInclude" name="cainclude_577">
            <property name="macro">
-            <string notr="true">ID=11, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=11, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -627,7 +627,7 @@
          <item>
           <widget class="caInclude" name="cainclude_578">
            <property name="macro">
-            <string notr="true">ID=12, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=12, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -637,7 +637,7 @@
          <item>
           <widget class="caInclude" name="cainclude_579">
            <property name="macro">
-            <string notr="true">ID=13, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=13, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -647,7 +647,7 @@
          <item>
           <widget class="caInclude" name="cainclude_580">
            <property name="macro">
-            <string notr="true">ID=14, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=14, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -657,7 +657,7 @@
          <item>
           <widget class="caInclude" name="cainclude_581">
            <property name="macro">
-            <string notr="true">ID=15, P=RB, EVR=$(EVR)</string>
+            <string notr="true">ID=15, P=RearUniv, EVR=$(EVR)</string>
            </property>
            <property name="filename" stdset="0">
             <string notr="true">evr_out-details-min.ui</string>
@@ -689,8 +689,8 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-341</y>
-         <width>651</width>
+         <y>0</y>
+         <width>654</width>
          <height>750</height>
         </rect>
        </property>
@@ -710,7 +710,7 @@
          </rect>
         </property>
         <property name="macro">
-         <string notr="true">ID=4, P=CML, EVR=$(EVR)</string>
+         <string notr="true">ID=0, P=CML, EVR=$(EVR)</string>
         </property>
         <property name="filename" stdset="0">
          <string notr="true">evr_out_cml.ui</string>
@@ -726,7 +726,7 @@
          </rect>
         </property>
         <property name="macro">
-         <string notr="true">ID=5, P=CML, EVR=$(EVR)</string>
+         <string notr="true">ID=1, P=CML, EVR=$(EVR)</string>
         </property>
         <property name="filename" stdset="0">
          <string notr="true">evr_out_cml.ui</string>
@@ -742,10 +742,70 @@
          </rect>
         </property>
         <property name="macro">
-         <string notr="true">ID=6, P=CML, EVR=$(EVR)</string>
+         <string notr="true">ID=2, P=CML, EVR=$(EVR)</string>
         </property>
         <property name="filename" stdset="0">
          <string notr="true">evr_out_cml.ui</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_8">
+     <attribute name="title">
+      <string>Delays</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_6">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>671</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>669</width>
+         <height>409</height>
+        </rect>
+       </property>
+       <widget class="caInclude" name="cainclude_33">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>10</y>
+          <width>511</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=0, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_delay.ui</string>
+        </property>
+       </widget>
+       <widget class="caInclude" name="cainclude_34">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>80</y>
+          <width>511</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="macro">
+         <string notr="true">ID=1, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">evr_out_delay.ui</string>
         </property>
        </widget>
       </widget>
@@ -775,7 +835,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1700</height>
         </rect>
        </property>
@@ -1067,7 +1127,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1900</height>
         </rect>
        </property>
@@ -3924,7 +3984,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>651</width>
+         <width>654</width>
          <height>1900</height>
         </rect>
        </property>

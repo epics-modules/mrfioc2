@@ -104,7 +104,7 @@
       <string>Sets the code which will be applied to the local mapping ram whenever the External Mode condition is met.</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Code-Ext-SP</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Code-Ext-SP</string>
      </property>
      <property name="background">
       <color>
@@ -133,7 +133,7 @@
       <string notr="true">background-color: rgb(212, 219, 157);</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Trig-Ext-Sel</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Trig-Ext-Sel</string>
      </property>
     </widget>
    </widget>
@@ -165,7 +165,7 @@
       <string notr="true">background-color: rgb(212, 219, 157);</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Trig-Back-Sel</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Trig-Back-Sel</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_17">
@@ -197,7 +197,7 @@
       <string>Sets the code which will be sent on the upstream event link whenever the Backwards Mode condition is met.</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Code-Back-SP</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Code-Back-SP</string>
      </property>
      <property name="background">
       <color>
@@ -259,7 +259,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):In-$(ID)-DBus-Sel</string>
+     <string notr="true">$(EVR):FPIn$(ID)-DBus-Sel</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
@@ -287,7 +287,7 @@
       <string>When operating in level triggered mode, determines if codes are sent when the input level is low or high.</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Lvl-Sel</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Lvl-Sel</string>
      </property>
      <property name="background">
       <color>
@@ -336,7 +336,7 @@
       <string>When operating in edge triggered mode, determines if codes are sent on the falling or rising edge in the input signal.</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):In-$(ID)-Edge-Sel</string>
+      <string notr="true">$(EVR):FPIn$(ID)-Edge-Sel</string>
      </property>
      <property name="background">
       <color>

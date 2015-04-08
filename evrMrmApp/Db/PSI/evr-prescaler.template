@@ -1,0 +1,31 @@
+# Record set for an EVR's programable frequency divider
+#
+# Macros:
+#  SYS = System name
+#  EVR = EVR devObj name
+#  OBJ = Prefix for devObj name
+#  IDX = ID # corresponding to output mapping codes
+#  MAX = Maximum division
+
+record(longout, "$(SYS)-$(EVR):$(OBJ)$(ID)-Div-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(ID)")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Divide")
+  field( PINI, "YES")
+  field( VAL , "$($(OBJ)$(ID)-Div-SP\=2)") #Integer divisor between the Event Clock and the sub-unit output.
+  field( HOPR, "$(MAX=0xffff)")
+  field( LOPR, "2")
+  field( DRVH, "$(MAX=0xffff)")
+  field( DRVL, "2")
+  field( FLNK, "$(SYS)-$(EVR):$(OBJ)$(ID)-Rate-I")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(calc, "$(SYS)-$(EVR):$(OBJ)$(ID)-Rate-I") {
+  field(DESC, "Output frequency")
+  field(INPA, "$(SYS)-$(EVR):$(OBJ)$(ID)-Div-SP NPP")
+  field(INPB, "$(SYS)-$(EVR):Link-Clk-I CP")
+  field(CALC, "B/A")
+  field(EGU, "MHz")
+  field(PREC, "2")
+}

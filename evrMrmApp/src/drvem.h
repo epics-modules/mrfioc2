@@ -34,6 +34,9 @@
 #include "drvemCML.h"
 #include "drvemRxBuf.h"
 
+#include "mrmGpio.h"
+#include "delayModule.h"
+
 #include "mrmDataBufTx.h"
 #include "sfp.h"
 
@@ -121,6 +124,8 @@ public:
     virtual MRMOutput* output(OutputType,epicsUInt32 o);
     virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
+    DelayModule* delay(epicsUInt32 i);
+
     virtual MRMInput* input(epicsUInt32 idx);
     virtual const MRMInput* input(epicsUInt32) const;
 
@@ -129,6 +134,8 @@ public:
 
     virtual MRMCML* cml(epicsUInt32 idx);
     virtual const MRMCML* cml(epicsUInt32) const;
+
+    MRMGpio* gpio();
 
     virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
     virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -230,6 +237,8 @@ private:
     typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
     outputs_t outputs;
 
+    std::vector<DelayModule*> delays;
+
     typedef std::vector<MRMPreScaler*> prescalers_t;
     prescalers_t prescalers;
 
@@ -238,6 +247,8 @@ private:
 
     typedef std::vector<MRMCML*> shortcmls_t;
     shortcmls_t shortcmls;
+
+    MRMGpio gpio_;
 
     // run when FIFO not-full IRQ is received
     void drain_fifo();

@@ -2,7 +2,6 @@ record(bi, "$(P)Status-RB") {
     field( DESC, "EVG Mux Output Status")
     field( DTYP, "Obj Prop bool")
     field( INP , "@OBJ=$(OBJ), PROP=Status")
-    field( PINI, "YES")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
@@ -49,8 +48,8 @@ record(ai, "$(P)Frequency-RB") {
     field( DTYP, "Obj Prop double")
     field( INP , "@OBJ=$(OBJ), PROP=Frequency")
     field( EGU,  "Hz")
-    field( HOPR, "62500000")
-    field( LOPR, "0.029")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
     field( PREC, "3")
     field( FLNK, "$(P)Prescaler-RB")
 }
@@ -74,8 +73,8 @@ record(longin , "$(P)Prescaler-RB") {
     field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
     field( EGU, "Evt Clk Tick")
-    field( HOPR, "4294967295")
-    field( LOPR, "2")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
     field( FLNK, "$(SYS)-$(D):ResetMxc-Cmd")
 }
 

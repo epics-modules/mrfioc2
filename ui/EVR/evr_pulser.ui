@@ -63,7 +63,7 @@
      <string>Enabled</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):DlyGen-$(ID)-Ena-Sel</string>
+     <string notr="true">$(EVR):Pul$(ID)-Ena-Sel</string>
     </property>
    </widget>
    <widget class="caLabel" name="calabel">
@@ -97,7 +97,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>DlyGen-$(ID)</string>
+     <string>Pul$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -116,7 +116,7 @@
      <string>Reverses the output polarity. When set, changes the output from normally low to normally high.</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):DlyGen-$(ID)-Polarity-Sel</string>
+     <string notr="true">$(EVR):Pul$(ID)-Polarity-Sel</string>
     </property>
     <property name="foreground">
      <color>
@@ -174,7 +174,7 @@
       <string>How long does a pulse state stay active</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Width-SP</string>
+      <string notr="true">$(EVR):Pul$(ID)-Width-SP</string>
      </property>
      <property name="background">
       <color>
@@ -229,7 +229,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Width-RB</string>
+      <string notr="true">$(EVR):Pul$(ID)-Width-RB</string>
      </property>
      <property name="unitsEnabled">
       <bool>true</bool>
@@ -245,7 +245,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Width-Raw-RB</string>
+      <string notr="true">$(EVR):Pul$(ID)-Width-Raw-RB</string>
      </property>
     </widget>
     <widget class="caLineEdit" name="calineedit_15">
@@ -258,7 +258,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Delay-SP.EGU</string>
+      <string notr="true">$(EVR):Pul$(ID)-Delay-SP.EGU</string>
      </property>
     </widget>
    </widget>
@@ -303,7 +303,7 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Delay-RB</string>
+      <string notr="true">$(EVR):Pul$(ID)-Delay-RB</string>
      </property>
      <property name="unitsEnabled">
       <bool>true</bool>
@@ -322,7 +322,7 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Delay-Raw-RB</string>
+      <string notr="true">$(EVR):Pul$(ID)-Delay-Raw-RB</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_30">
@@ -354,7 +354,7 @@
       <string/>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Delay-SP</string>
+      <string notr="true">$(EVR):Pul$(ID)-Delay-SP</string>
      </property>
      <property name="background">
       <color>
@@ -377,7 +377,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):DlyGen-$(ID)-Delay-SP.EGU</string>
+      <string notr="true">$(EVR):Pul$(ID)-Delay-SP.EGU</string>
      </property>
     </widget>
    </widget>
@@ -394,7 +394,7 @@
      <enum>caFrame::IfZero</enum>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-SP.DISA</string>
+     <string notr="true">$(EVR):Pul$(ID)-Prescaler-SP.DISA</string>
     </property>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
@@ -418,7 +418,7 @@
        </rect>
       </property>
       <property name="channel" stdset="0">
-       <string notr="true">$(EVR):DlyGen-$(ID)-Res-I</string>
+       <string notr="true">$(EVR):Pul$(ID)-Res-I</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_23">
@@ -447,7 +447,7 @@
        </rect>
       </property>
       <property name="channel" stdset="0">
-       <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-RB</string>
+       <string notr="true">$(EVR):Pul$(ID)-Prescaler-RB</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_24">
@@ -495,7 +495,7 @@
        <string>How long does a pulse state stay active</string>
       </property>
       <property name="channel" stdset="0">
-       <string notr="true">$(EVR):DlyGen-$(ID)-Prescaler-SP</string>
+       <string notr="true">$(EVR):Pul$(ID)-Prescaler-SP</string>
       </property>
       <property name="background">
        <color>

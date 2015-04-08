@@ -35,7 +35,7 @@
      </rect>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Out-$(P)-$(ID)-Pat:WfCycle-SP</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Pat:WfCycle-SP</string>
     </property>
     <property name="background">
      <color>
@@ -99,7 +99,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Ena-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Ena-SP</string>
      </property>
      <property name="falseColor">
       <color>
@@ -136,7 +136,7 @@
       <string>Enable</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Ena-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Ena-SP</string>
      </property>
     </widget>
     <widget class="caTextEntry" name="catextentry_4">
@@ -149,7 +149,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Delay-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Delay-SP</string>
      </property>
      <property name="background">
       <color>
@@ -188,7 +188,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Width-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Width-SP</string>
      </property>
      <property name="background">
       <color>
@@ -227,7 +227,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Delay-SP.EGU</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Delay-SP.EGU</string>
      </property>
     </widget>
     <widget class="caLineEdit" name="calineedit_11">
@@ -240,7 +240,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-WfCalc:Width-SP.EGU</string>
+      <string notr="true">$(EVR):$(P)$(ID)-WfCalc:Width-SP.EGU</string>
      </property>
     </widget>
    </widget>
@@ -295,7 +295,7 @@
       <string>Enable</string>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-BunchTrain:Ena-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-BunchTrain:Ena-SP</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_13">
@@ -324,7 +324,7 @@
       </rect>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-BunchTrain:Ena-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-BunchTrain:Ena-SP</string>
      </property>
      <property name="falseColor">
       <color>
@@ -361,7 +361,7 @@
       <string/>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVR):Out-$(P)-$(ID)-BunchTrain:Size-SP</string>
+      <string notr="true">$(EVR):$(P)$(ID)-BunchTrain:Size-SP</string>
      </property>
      <property name="background">
       <color>
