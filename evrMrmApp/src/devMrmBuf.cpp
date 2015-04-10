@@ -16,18 +16,25 @@ struct mrmBufferInfo {
 
 extern "C" {
 
-mrmBufferInfo_t *mrmBufInit(char *dev_name) {
+mrmBufferInfo_t *mrmBufInit(const char *dev_name) {
 
     mrmBufferInfo_t *data  = NULL;
     mrf::Object *object = NULL;
-    std::string bufRxName(dev_name);
-    std::string bufTxName(dev_name);
+    std::string bufRxName;
+    std::string bufTxName;
+
+    if(!dev_name) {
+        errlogPrintf("mrmBufInit ERROR: NULL device name!\n");
+        return NULL;
+    }
 
     if(!(data = (mrmBufferInfo_t *)calloc(1, sizeof(mrmBufferInfo_t)))) {
         errlogPrintf("mrmBufInit ERROR: failed to allocate memory for buffer info!\n");
         return NULL;
     }
 
+    bufRxName(dev_name);
+    bufTxName(dev_name);
     bufRxName += BUF_RX;
     bufTxName += BUF_TX;
 
@@ -52,6 +59,35 @@ mrmBufferInfo_t *mrmBufInit(char *dev_name) {
     }
 
     return data;
+}
+
+epicsStatus mrmBufRxSupported(mrmBufferInfo_t *data) {
+
+    if(!data) {
+        errlogPrintf("mrmBufRxSupported ERROR: NULL data parameter!\n");
+        return -1;
+    }
+
+    if(data->bufRx) {
+        return 1;
+    }
+
+    return 0;
+}
+
+epicsStatus mrmBufTxSupported(mrmBufferInfo_t *data) {
+
+    if(!data) {
+        errlogPrintf("mrmBufTxSupported ERROR: NULL data parameter!\n");
+        return -1;
+    }
+
+    if(data->bufTx) {
+        return 1;
+    }
+
+    return 0;
+
 }
 
 epicsStatus mrmBufEnable(mrmBufferInfo_t *data) {
