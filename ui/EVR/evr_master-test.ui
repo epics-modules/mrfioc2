@@ -1,0 +1,1120 @@
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>896</width>
+    <height>564</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EVR</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>200</y>
+      <width>141</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>3</x>
+       <y>10</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HW Inhibit trigger</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="caChoice" name="cachoice">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>30</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):ExtInhib-Sel</string>
+     </property>
+     <property name="endBit">
+      <number>1</number>
+     </property>
+    <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="bordercolor">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caChoice::Static</enum>
+        </property></widget>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>200</y>
+      <width>141</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>8</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Downstream mode</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="caChoice" name="cachoice_2">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>30</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Link-RxMode-Sel</string>
+     </property>
+     <property name="endBit">
+      <number>1</number>
+     </property>
+    <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="bordercolor">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caChoice::Static</enum>
+        </property></widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>70</y>
+      <width>211</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Event Link speed [MHz]</string>
+    </property>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="caTextEntry" name="catextentry_2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>20</y>
+       <width>100</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Link-Clk-SP</string>
+     </property>
+    <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caLineEdit::Static</enum>
+        </property></widget>
+    <widget class="QFrame" name="frame_5">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>50</y>
+       <width>211</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="caLineEdit" name="calineedit_3">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>40</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Link-ClkPeriod-I</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Clock period</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Read Back</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caLineEdit" name="calineedit_2">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Link-Clk-I</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="caLabel" name="calabel">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>10</y>
+      <width>161</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>$(EVR)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>211</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Timestamp</string>
+    </property>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>23</y>
+       <width>71</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set source</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>50</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set Tick Rate</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QFrame" name="frame_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>80</y>
+       <width>211</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tick Rate</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caLineEdit" name="calineedit_6">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Time-Clock-I</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Divider</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caLineEdit" name="calineedit_7">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>40</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Time-Div-I</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>70</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="caLineEdit" name="calineedit_8">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>70</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Time-I</string>
+      </property>
+      <property name="formatType">
+       <enum>caLineEdit::string</enum>
+      </property>
+     </widget>
+    </widget>
+    <widget class="caTextEntry" name="catextentry_4">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>100</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Time-Clock-SP</string>
+     </property>
+    <property name="background">
+         <color>
+          <red>212</red>
+          <green>219</green>
+          <blue>157</blue>
+         </color>
+        </property><property name="colorMode">
+         <enum>caLineEdit::Static</enum>
+        </property></widget>
+    <widget class="caMenu" name="camenu">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>131</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Time-Src-Sel</string>
+     </property>
+    <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>70</y>
+      <width>171</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Status</string>
+    </property>
+    <widget class="caRelatedDisplay" name="carelateddisplay">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>30</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Link status</string>
+     </property>
+     <property name="labels">
+      <string notr="true">&gt;</string>
+     </property>
+     <property name="files">
+      <string notr="true">evr_base-link-status</string>
+     </property>
+     <property name="args">
+      <string notr="true">EVR=$(EVR)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>32</y>
+       <width>101</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Master enable</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_19">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>64</y>
+       <width>121</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Time valid status</string>
+     </property>
+    </widget>
+    <widget class="caLed" name="caled_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>57</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="rectangular">
+      <bool>false</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Time-Valid-Sts</string>
+     </property>
+    <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property></widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>97</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PLL lock status</string>
+     </property>
+    </widget>
+    <widget class="caLed" name="caled_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="rectangular">
+      <bool>false</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Pll-Sts</string>
+     </property>
+    <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property></widget>
+    <widget class="caLed" name="caled">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>25</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="rectangular">
+      <bool>false</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Ena-Sel</string>
+     </property>
+    <property name="trueColor">
+         <color>
+          <red>0</red>
+          <green>205</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="falseColor">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property><property name="undefinedColor">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property></widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>211</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Prescalers</string>
+    </property>
+    <widget class="caInclude" name="cainclude_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>195</width>
+       <height>95</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">ID=1, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_prescaler.ui</string>
+     </property>
+     <property name="visibility">
+      <enum>caInclude::StaticV</enum>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true"/>
+     </property>
+    </widget>
+    <widget class="caInclude" name="cainclude">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>195</width>
+       <height>95</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">ID=0, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_prescaler.ui</string>
+     </property>
+     <property name="visibility">
+      <enum>caInclude::StaticV</enum>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true"/>
+     </property>
+    </widget>
+    <widget class="caInclude" name="cainclude_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>195</width>
+       <height>95</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">ID=2, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_prescaler.ui</string>
+     </property>
+     <property name="visibility">
+      <enum>caInclude::StaticV</enum>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="caMenu" name="camenu_2">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>290</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP0-Src-Pulse-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caInclude" name="cainclude_4">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>380</y>
+      <width>190</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVR=$(EVR), P=FP, ID=0</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out-small.ui</string>
+    </property>
+   </widget>
+   <widget class="caMenu" name="camenu_3">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>320</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP0-Src-Scale-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caMenu" name="camenu_4">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>350</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP0-Src-DBus-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caInclude" name="cainclude_5">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>380</y>
+      <width>190</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVR=$(EVR), P=FP, ID=1</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out-small.ui</string>
+    </property>
+   </widget>
+   <widget class="caMenu" name="camenu_5">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>290</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP1-Src-Pulse-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caMenu" name="camenu_6">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>350</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP1-Src-DBus-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caMenu" name="camenu_7">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>320</y>
+      <width>131</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):Out-FP1-Src-Scale-SP</string>
+    </property>
+   <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+   <widget class="caInclude" name="cainclude_6">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>170</y>
+      <width>260</width>
+      <height>140</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_base-link-status.ui</string>
+    </property>
+   </widget>
+   <widget class="caRelatedDisplay" name="carelateddisplay_2">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>10</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Link status</string>
+    </property>
+    <property name="labels">
+     <string notr="true">&gt;</string>
+    </property>
+    <property name="files">
+     <string notr="true">evr_info</string>
+    </property>
+    <property name="args">
+     <string notr="true">EVR=$(EVR)</string>
+    </property>
+   </widget>
+   <widget class="caRelatedDisplay" name="carelateddisplay_3">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>20</y>
+      <width>30</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Link status</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="labels">
+     <string notr="true">SFP</string>
+    </property>
+    <property name="files">
+     <string notr="true">evr_sfp.ui</string>
+    </property>
+    <property name="args">
+     <string notr="true">EVR=$(EVR)</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_7">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>410</y>
+      <width>400</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">EVR=$(EVR),ID=0</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_pulser.ui</string>
+    </property>
+   </widget>
+   <widget class="caRelatedDisplay" name="carelateddisplay_4">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>200</y>
+      <width>51</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Link status</string>
+    </property>
+    <property name="labels">
+     <string notr="true">In 1;In 2;In 3</string>
+    </property>
+    <property name="files">
+     <string notr="true">evr_input;evr_input;evr_input</string>
+    </property>
+    <property name="args">
+     <string notr="true">ID=1, EVR=$(EVR); ID=2, EVR=$(EVR); ID=3, EVR=$(EVR)</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_11">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>10</y>
+      <width>255</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">FUNC=Blink, EVT=1, EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_map-special.ui</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_12">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>40</y>
+      <width>255</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">FUNC=Blink, EVT=0, EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_map-special.ui</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_13">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>380</y>
+      <width>255</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">FUNC=Trig, EVT=0, PULSER=0, ID=0, EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_map-pulser.ui</string>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_14">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>410</y>
+      <width>255</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">FUNC=Trig, EVT=1, PULSER=0, ID=0, EVR=$(EVR)</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_map-pulser.ui</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>70</y>
+      <width>261</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Events</string>
+    </property>
+    <widget class="caInclude" name="cainclude_10">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>255</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">CODE=2, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_map-soft.ui</string>
+     </property>
+    </widget>
+    <widget class="caInclude" name="cainclude_8">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>255</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">CODE=0, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_map-soft.ui</string>
+     </property>
+    </widget>
+    <widget class="caInclude" name="cainclude_9">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>45</y>
+       <width>255</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="macro">
+      <string notr="true">CODE=1, EVR=$(EVR)</string>
+     </property>
+     <property name="filename" stdset="0">
+      <string notr="true">evr_map-soft.ui</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ <property name="styleSheet">
+   <string notr="true">background-color: rgb(218, 218, 218);</string>
+  </property></widget>
+ <customwidgets>
+  <customwidget>
+   <class>caMenu</class>
+   <extends>QComboBox</extends>
+   <header>caMenu</header>
+  </customwidget>
+  <customwidget>
+   <class>caChoice</class>
+   <extends>QWidget</extends>
+   <header>caChoice</header>
+  </customwidget>
+  <customwidget>
+   <class>caRelatedDisplay</class>
+   <extends>QWidget</extends>
+   <header>caRelatedDisplay</header>
+  </customwidget>
+  <customwidget>
+   <class>caTextEntry</class>
+   <extends>caLineEdit</extends>
+   <header>caTextEntry</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+  <customwidget>
+   <class>caLed</class>
+   <extends>QWidget</extends>
+   <header>caLed</header>
+  </customwidget>
+  <customwidget>
+   <class>caLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>caLineEdit</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

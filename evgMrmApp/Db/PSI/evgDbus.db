@@ -1,7 +1,7 @@
 record(mbbo, "$(P)Src-Sel") {
     field( DESC, "EVG DBUS Source")
     field( PINI, "YES")
-    field( VAL,  "0")
+    field( VAL,  "$($(OBJ)-Src-Sel\=0)")
     field( ZRST, "Off")
     field( ONST, "Front0")
     field( TWST, "Front1")
@@ -61,7 +61,7 @@ record(mbbo, "$(P)Map-Sel") {
     field( DTYP, "Obj Prop uint16")
     field( OUT , "@OBJ=$(OBJ), PROP=Source")
     field( PINI, "YES")
-    field( VAL,  "0")
+    field( VAL,  "$($(OBJ)-Map-Sel\=0)")
     field( UDF,  "0")
     field( ZRST, "Off")
     field( ONST, "ExtInp")

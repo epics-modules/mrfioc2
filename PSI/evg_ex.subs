@@ -1,0 +1,127 @@
+
+##EVG Base
+file "evg-vme.db"
+{
+    {
+         SYS=CSL-IFC1,
+         EVG=EVG0,
+         
+         EVG0:AcTrig-Phase-SP=0.0,   #0-25.5 : EVG AC Phase Shifter
+         EVG0:AcTrig-Divider-SP=0,   #0-255 : EVG AC Divider
+         EVG0:AcTrig-Bypass-Sel=1,   #0 = Off, 1 = On : Bypass AC divider and Phase shifter
+         EVG0:AcTrig-SyncSrc-Sel=1,  #0 = EvtClk, 1 = Mxc7 : Sync to Event Clock or Mxc7
+         
+         EVG0:EvtClk-Source-Sel=0,   #0 = FracSynth, 1 = RF : EVG Evt Clk Source
+         EVG0:EvtClk-RFFreq-SP=500,  #50-1600 : EVG RF Frequency [MHz]
+         EVG0:EvtClk-RFDiv-SP=4,     #0-32 : RF Divider 
+         EVG0:EvtClk-FracSynFreq-SP=124.920, #50-125 : Fractional Synthesizer Freq [MHz]
+         
+         ## Distributed bus configuration
+         EVG0:Dbus0-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus0-Map-Sel=0, #?? Might be removed
+         EVG0:Dbus1-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus1-Map-Sel=0,
+         EVG0:Dbus2-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus2-Map-Sel=0,
+         EVG0:Dbus3-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus3-Map-Sel=0,
+         EVG0:Dbus4-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus4-Map-Sel=0,
+         EVG0:Dbus5-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus5-Map-Sel=0,
+         EVG0:Dbus6-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus6-Map-Sel=0, 
+         EVG0:Dbus7-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
+         EVG0:Dbus7-Map-Sel=0,
+
+         ## Input configuration         
+         EVG0:FrontInp0-EnaIrq-Sel=0, #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         EVG0:FrontInp1-EnaIrq-Sel=0, #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         EVG0:UnivInp0-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         EVG0:UnivInp1-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         EVG0:UnivInp2-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         EVG0:UnivInp3-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+
+         ## Output configuration
+         EVG0:FrontOut0-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         EVG0:FrontOut1-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         EVG0:FrontOut2-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         EVG0:FrontOut3-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         
+         ## Event trigger configuration
+         EVG0:TrigEvt0-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         EVG0:TrigEvt0-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+         EVG0:TrigEvt0-TrigSrc-Sel=0, 
+         EVG0:TrigEvt1-Enable-Sel=1, 
+         EVG0:TrigEvt1-EvtCode-SP=0, 
+         EVG0:TrigEvt1-TrigSrc-Sel=0, 
+         EVG0:TrigEvt2-Enable-Sel=1, 
+         EVG0:TrigEvt2-EvtCode-SP=0, 
+         EVG0:TrigEvt2-TrigSrc-Sel=0, 
+         EVG0:TrigEvt3-Enable-Sel=1, 
+         EVG0:TrigEvt3-EvtCode-SP=0, 
+         EVG0:TrigEvt3-TrigSrc-Sel=0, 
+         EVG0:TrigEvt4-Enable-Sel=1, 
+         EVG0:TrigEvt4-EvtCode-SP=0, 
+         EVG0:TrigEvt4-TrigSrc-Sel=0, 
+         EVG0:TrigEvt5-Enable-Sel=1, 
+         EVG0:TrigEvt5-EvtCode-SP=0, 
+         EVG0:TrigEvt5-TrigSrc-Sel=0, 
+         EVG0:TrigEvt6-Enable-Sel=1, 
+         EVG0:TrigEvt6-EvtCode-SP=0, 
+         EVG0:TrigEvt6-TrigSrc-Sel=0, 
+         EVG0:TrigEvt7-Enable-Sel=1, 
+         EVG0:TrigEvt7-EvtCode-SP=0, 
+         EVG0:TrigEvt7-TrigSrc-Sel=0, 
+         
+         ## Multiplexed counters configuration
+         EVG0:Mxc0-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         EVG0:Mxc0-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         EVG0:Mxc0-Prescaler-SP=124920, # Overriden by Frequency-SP
+         EVG0:Mxc1-Polarity-Sel=0,
+         EVG0:Mxc1-Frequency-SP=1,
+         EVG0:Mxc1-Prescaler-SP=124920,
+         EVG0:Mxc2-Polarity-Sel=0,
+         EVG0:Mxc2-Frequency-SP=1,
+         EVG0:Mxc2-Prescaler-SP=124920,
+         EVG0:Mxc3-Polarity-Sel=0,
+         EVG0:Mxc3-Frequency-SP=1,
+         EVG0:Mxc3-Prescaler-SP=124920,
+         EVG0:Mxc4-Polarity-Sel=0,
+         EVG0:Mxc4-Frequency-SP=1,
+         EVG0:Mxc4-Prescaler-SP=124920,
+         EVG0:Mxc5-Polarity-Sel=0,
+         EVG0:Mxc5-Frequency-SP=1,
+         EVG0:Mxc5-Prescaler-SP=124920,
+         EVG0:Mxc6-Polarity-Sel=0,
+         EVG0:Mxc6-Frequency-SP=1,
+         EVG0:Mxc6-Prescaler-SP=124920,
+         EVG0:Mxc7-Polarity-Sel=0,
+         EVG0:Mxc7-Frequency-SP=1,
+         EVG0:Mxc7-Prescaler-SP=1
+        }
+}
+
+##EVG soft sequences (we need 2 for ping-pong loader)
+file "evgSoftSeq.db"
+{
+    { SYS     = CSL-IFC1,
+          EVG     = EVG0,
+          SEQNUM  = 1,
+          NELM    = 2047,
+          TSIMODE = 0,         ## 0 = EGU, 1 = Ticks
+          TSRES   = 2,         ## 0 = Sec, 1 = mSec, 2 = uSec, 3 = nSec
+          TRIGSRC = 1,         ## 0 = None, 1-8 = Mxc0-7, 9 = AC, 10 = Soft, 11 = Front0, 12 = Front1, 13 = Univ0, 14 = Univ1, 15 = Univ2,
+          RUNMODE = 2          ## 0 = Normal, 1 = Automatic, 2 = Single
+        }
+
+        { SYS     = CSL-IFC1,
+          EVG     = EVG0,
+          SEQNUM  = 2,
+          NELM    = 2047,
+          TSIMODE = 0,         ## 0 = EGU, 1 = Ticks
+          TSRES   = 2,         ## 0 = Sec, 1 = mSec, 2 = uSec, 3 = nSec
+          TRIGSRC = 1,         ## 0 = None, 1-8 = Mxc0-7, 9 = AC, 10 = Soft, 11 = Front0, 12 = Front1, 13 = Univ0, 14 = Univ1, 15 = Univ2,
+          RUNMODE = 2          ## 0 = Normal, 1 = Automatic, 2 = Single
+        }
+}

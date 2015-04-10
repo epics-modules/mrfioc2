@@ -11,7 +11,7 @@ record(bo, "$(P)Polarity-Sel") {
     field( DTYP, "Obj Prop bool")
     field( OUT , "@OBJ=$(OBJ), PROP=Polarity")
     field( PINI, "YES")
-    field( VAL,  "1")
+    field( VAL,  "$($(OBJ)-Polarity-Sel\=0)")
     field( UDF,  "0")
     field( ZNAM, "Orginal")
     field( ONAM, "Inverted")
@@ -37,6 +37,8 @@ record(ao, "$(P)Frequency-SP") {
     field( DRVH, "62500000")
     field( DRVL, "0.029")
     field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$($(OBJ)-Frequency-SP\=1)")
     field( FLNK, "$(P)Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
@@ -46,8 +48,8 @@ record(ai, "$(P)Frequency-RB") {
     field( DTYP, "Obj Prop double")
     field( INP , "@OBJ=$(OBJ), PROP=Frequency")
     field( EGU,  "Hz")
-    field( HOPR, "62500000")
-    field( LOPR, "0.029")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
     field( PREC, "3")
     field( FLNK, "$(P)Prescaler-RB")
 }
@@ -56,10 +58,12 @@ record(longout, "$(P)Prescaler-SP") {
     field( DESC, "EVG Mux Prescaler")
     field( DTYP, "Obj Prop uint32")
     field( OUT , "@OBJ=$(OBJ), PROP=Prescaler")
-    field( PINI, "YES")
-    field( VAL,  "124920")
+    field( PINI, "NO")
+    field( VAL,  "$($(OBJ)-Prescaler-SP\=124920)")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
     field( FLNK, "$(P)Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
@@ -68,7 +72,10 @@ record(longin , "$(P)Prescaler-RB") {
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
-    field( FLNK, "$(SYS):$(D)-ResetMxc-Cmd")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS)-$(D):ResetMxc-Cmd")
 }
 
 #

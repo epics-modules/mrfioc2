@@ -1,38 +1,39 @@
 # Record set for an EVR's physical output
 #
 # Macros-
-#  ON = record name prefix
-#  OBJ = devObj name
+#  SYS = System name
+#  EVR = EVR devObj name
+#  ID  = ID # of the output
+#  OBJ = devObj name prefix
 #  DESC = Physical label found on output jack
 
-
-record(bo, "$(ON)Ena-SP") {
+record(bo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Ena-SP") {
   field( DTYP, "Obj Prop bool")
   field( DESC, "Output $(DESC)")
-  field( OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Enable")
   field( PINI, "YES")
   field( ZNAM, "Disabled")
   field( ONAM, "Enabled")
-  field( VAL , "$($(OBJ)-Ena-SP\=1)") # Default to enabled
+  field( VAL , "$($(OBJ)$(ID)-Ena-SP\=1)") # Default to enabled
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(ON)Src-SP") {
+record(longout, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-SP") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
-  field( OUT , "@OBJ=$(OBJ), PROP=Map")
-  field( FLNK, "$(ON)Src-RB")
+  field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Map")
+  field( FLNK, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-RB")
   field( PINI, "YES")
-  field( VAL , "$($(OBJ)-Src-SP\=63)")  # Defaults to Force high (if enabled -> Ena-SP)
+  field( VAL , "$($(OBJ)$(ID)-Src-SP\=63)")  # Defaults to Force high (if enabled -> Ena-SP)
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
 # Settings
 # Users use will set one of these at a time.
 
-record(mbbo, "$(ON)Src-Pulse-SP") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(ON)Src-SP PP")
+  field( OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-SP PP")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -70,9 +71,9 @@ record(mbbo, "$(ON)Src-Pulse-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src-DBus-SP") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-DBus-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(ON)Src-SP PP")
+  field( OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-SP PP")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -102,9 +103,9 @@ record(mbbo, "$(ON)Src-DBus-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src-Scale-SP") {
+record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Scale-SP") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(ON)Src-SP PP")
+  field( OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-SP PP")
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")
@@ -134,16 +135,16 @@ record(mbbo, "$(ON)Src-Scale-SP") {
 
 # Mapping readback
 
-record(longin, "$(ON)Src-RB") {
+record(longin, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-RB") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
-  field( INP , "@OBJ=$(OBJ), PROP=Map")
-  field( FLNK, "$(ON)Src-Pulse-RB")
+  field( INP , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Map")
+  field( FLNK, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Pulse-RB")
 }
 
-record(mbbi, "$(ON)Src-Pulse-RB") {
+record(mbbi, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Pulse-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(ON)Src-RB")
+  field( INP , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-RB")
   field( ZRST, "Pulser 0")
   field( ONST, "Pulser 1")
   field( TWST, "Pulser 2")
@@ -177,12 +178,12 @@ record(mbbi, "$(ON)Src-Pulse-RB") {
   field( FTVL, "14")
   field( FFVL, "15")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(ON)Src-DBus-RB")
+  field( FLNK, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-DBus-RB")
 }
 
-record(mbbi, "$(ON)Src-DBus-RB") {
+record(mbbi, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-DBus-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(ON)Src-RB")
+  field( INP , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-RB")
   field( ZRST, "DBus 0")
   field( ONST, "DBus 1")
   field( TWST, "DBus 2")
@@ -208,12 +209,12 @@ record(mbbi, "$(ON)Src-DBus-RB") {
   field( FTSV, "MAJOR")
   field( FFSV, "MAJOR")
   field( UNSV, "MAJOR")
-  field( FLNK, "$(ON)Src-Scale-RB")
+  field( FLNK, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Scale-RB")
 }
 
-record(mbbi, "$(ON)Src-Scale-RB") {
+record(mbbi, "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-Scale-RB") {
   field( DTYP, "Raw Soft Channel")
-  field( INP , "$(ON)Src-RB")
+  field( INP , "$(SYS)-$(EVR):$(OBJ)$(ID)-Src-RB")
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")
@@ -243,7 +244,7 @@ record(mbbi, "$(ON)Src-Scale-RB") {
 
 # Place for user provided note of what is
 # connected to this output.
-record(waveform, "$(ON)User-SP") {
+record(waveform, "$(SYS)-$(EVR):$(OBJ)$(ID)-User-SP") {
   field( DESC, "Desc. of user or purpose")
   field( FTVL, "CHAR")
   field( NELM, "128")

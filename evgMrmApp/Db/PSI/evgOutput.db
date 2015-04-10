@@ -32,7 +32,7 @@ record(mbbo, "$(P)Source-Sel") {
     field( IVOA, "Don't drive outputs")
     field( PINI, "YES")
     field( UDF,  "0")
-    field( VAL,  "0")
+    field( VAL,  "$($(OBJ)-Source-Sel\=0)")
     field( FLNK, "$(P)Source-RB")
     info(autosaveFields_pass0, "VAL")
 }

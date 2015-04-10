@@ -1,8 +1,14 @@
+##Macros:
+## TSIMODE  [EGU,TICKS]
+## TSRES    [Sec,mSec,uSec,nSec]
+## RUNMODE  [Normal,Automatic,Single]
+## TRIGSRC  [None,Mxc(0-7),AC,Software,Front0,Front1,Univ0,Univ1,Univ2]
+
 record(bo, "$(SYS)-$(EVG):SoftSeq-$(SEQNUM)-TsInpMode-Sel") {
     field( DTYP, "EVG SEQ INPUT MODE")
     field( DESC, "EVG Sequence")
     field( OUT,  "#C S$(SEQNUM) @$(EVG)")
-    field( VAL,  "1")
+    field( VAL,  "$(TSINPMODE=0)")
     field( UDF,  "0")
     field( ZNAM, "EGU")
     field( ONAM, "TICKS")
@@ -43,6 +49,7 @@ record(mbbo, "$(SYS)-$(EVG):SoftSeq-$(SEQNUM)-TsResolution-Sel") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    field( VAL, "$(TSRES=0)")
     field( FLNK, "$(SYS)-$(EVG):SoftSeq-$(SEQNUM)-TsResolution-RB")
     info(autosaveFields_pasS$(SEQNUM), "VAL")
 }
@@ -131,6 +138,7 @@ record(mbbo, "$(SYS)-$(EVG):SoftSeq-$(SEQNUM)-RunMode-Sel") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    field( VAL, "$(RUNMODE=0)" )
     info(autosaveFields_pasS$(SEQNUM), "VAL")
 }
 
@@ -193,6 +201,7 @@ record(mbbo, "$(SYS)-$(EVG):SoftSeq-$(SEQNUM)-TrigSrc-Sel") {
     field( TTVL, 42)
     field( FTVL, 46)
     field( FFVL, 50)
+    field( VAL, "$(TRIGSRC=0)")
     info( autosaveFields_pasS$(SEQNUM), "VAL")
 }
 

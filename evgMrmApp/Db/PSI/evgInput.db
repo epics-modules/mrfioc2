@@ -7,6 +7,7 @@ record(bo, "$(P)EnaIrq-Sel") {
     field( OMSL, "closed_loop")
     field( DOL,  "$(SYS){$(D)}1ppsInp-MbbiDir_.B$(Num) CP")
     field( FLNK, "$(P)EnaIrq-RB")
+    field( VAL, "$($(OBJ)-EnaIrq-Sel\=0)")
     info( autosaveFields_pass0, "VAL")
 }
 

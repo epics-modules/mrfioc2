@@ -1,0 +1,291 @@
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>138</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="caToggleButton" name="catogglebutton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>81</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enabled</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Ena-SP</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>50</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Active Source</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="caMenu" name="camenu_2">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>50</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP</string>
+   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+  <widget class="caMenu" name="camenu_3">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>50</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP</string>
+   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+  <widget class="caMenu" name="camenu_4">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>50</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP</string>
+   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(212, 219, 157);</string>
+  </property></widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>30</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set Pulse source</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>30</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set DBus source</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_17">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>30</y>
+     <width>150</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set Prescaler source</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="caLineEdit" name="calineedit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>80</y>
+     <width>651</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-User-SP</string>
+   </property>
+   <property name="formatType">
+    <enum>caLineEdit::string</enum>
+   </property>
+  </widget>
+  <widget class="caInclude" name="cainclude">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>50</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">evr_out-helper.ui</string>
+   </property>
+   <property name="visibility">
+    <enum>caInclude::Calc</enum>
+   </property>
+   <property name="visibilityCalc">
+    <string notr="true">A=B</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
+   </property>
+   <property name="channelB">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
+   </property>
+  </widget>
+  <widget class="caInclude" name="cainclude_2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>50</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Scale-RB</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">evr_out-helper.ui</string>
+   </property>
+   <property name="visibility">
+    <enum>caInclude::Calc</enum>
+   </property>
+   <property name="visibilityCalc">
+    <string notr="true">A=B&amp;&amp;A#0</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
+   </property>
+   <property name="channelB">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
+   </property>
+  </widget>
+  <widget class="caInclude" name="cainclude_3">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>50</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-DBus-RB</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">evr_out-helper.ui</string>
+   </property>
+   <property name="visibility">
+    <enum>caInclude::Calc</enum>
+   </property>
+   <property name="visibilityCalc">
+    <string notr="true">A=B&amp;&amp;A#0</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
+   </property>
+   <property name="channelB">
+    <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
+   </property>
+  </widget>
+  <widget class="caLabel" name="calabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>670</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>$(P)$(ID)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+  </property></widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caMenu</class>
+   <extends>QComboBox</extends>
+   <header>caMenu</header>
+  </customwidget>
+  <customwidget>
+   <class>caToggleButton</class>
+   <extends>QCheckBox</extends>
+   <header>caToggleButton</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+  <customwidget>
+   <class>caLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>caLineEdit</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
