@@ -117,7 +117,7 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		FPIn0-Code-Ext-SP=0,	#0-255 : Event code that triggers this input
 		FPIn0-Trig-Back-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : Backwards mode trigger type
 		FPIn0-Code-Back-SP=0,	#0-255 : Event code that triggers this input
-		FPIn0-DBus-Sel=0,		#0x1 = Bit 0, 0x2 = Bit 1, 0x4 = Bit 2, 0x8 = Bit 3, 0x10 = Bit 4, 0x20 = Bit 5, 0x40 = Bit 6, 0x80 = Bit 7 : DBus bits are OR-ed with this value and sent out
+		FPIn0-DBus-Sel=0,		#1 = Bit 0, 2 = Bit 1, 4 = Bit 2, 8 = Bit 3, 16 = Bit 4, 32 = Bit 5, 64 = Bit 6, 128 = Bit 7 : DBus bits are OR-ed with this value and sent out
 
 		FPIn1-Lvl-Sel=1,		#0 = Active Low, 1 = Active High : Active Level
 		FPIn1-Edge-Sel=1,		#0 = Active Falling, 1 = Active Rising: Active Edge
@@ -125,7 +125,7 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		FPIn1-Code-Ext-SP=0,	#0-255 : Event code that triggers this input
 		FPIn1-Trig-Back-Sel=0,	#0 = Off,	1 = Level, 	2 = Edge : Backwards mode trigger type
 		FPIn1-Code-Back-SP=0,	#0-255 : Event code that triggers this input
-		FPIn1-DBus-Sel=0,		#0x1 = Bit 0, 0x2 = Bit 1, 0x4 = Bit 2, 0x8 = Bit 3, 0x10 = Bit 4, 0x20 = Bit 5, 0x40 = Bit 6, 0x80 = Bit 7 : DBus bits are OR-ed with this value and sent out
+		FPIn1-DBus-Sel=0,		#1 = Bit 0, 2 = Bit 1, 4 = Bit 2, 8 = Bit 3, 16 = Bit 4, 32 = Bit 5, 64 = Bit 6, 128 = Bit 7 : DBus bits are OR-ed with this value and sent out
 
 
 		## Front panel outputs
@@ -307,8 +307,6 @@ pattern { EVT,	CODE }
 		{ "1",    "1"}
 		{ "2",    "2"}
 		{ "3",    "3"}
-		{ "3",    "3"}
-		{ "40",   "40"}
 }
 
 
@@ -346,12 +344,12 @@ pattern { EVT,   FUNC }
 ## Each pulser-function combination can be mapped to multiple events.
 ## Available functions:
 ##		- Trig : causes a received event to trigger a pulser. A pulse based on pulser polarity, delay and width will be outputted.
-##		- Set  : causes a received event to force a pulser into active state(based on pulser polarity).
-##		- Reset: causes a received event to force a pulser into inactive state(based on pulser polarity).
+##		- Set  : causes a received event to force a pulser into set state(based on pulser polarity).
+##		- Reset: causes a received event to force a pulser into reset state(based on pulser polarity).
 #
-## Pulser polarity defines the pulser active and inactive state:
-##		- Active high: Pulse is logic high in active state and logic low in inactive state
-##		- Active low: Pulse is logic low in active state and logic high in inactive state
+## Pulser polarity defines the pulser set and reset state:
+##		- Active high: Output is logic high in set state and logic low in reset state
+##		- Active low: Output is logic low in set state and logic high in reset state
 #
 # Macros:
 #  SYS = system name (auto expanded by parent)
@@ -366,7 +364,7 @@ pattern { EVT,   FUNC }
 file "$(TEMPLATE_DIR)/evr-pulserMap.template"{
 pattern {PID   F,      EVT, ID}
         {0,    Trig,   1,   0 }
-        {1,    Trig,   1,   0 }
+        {1,    Trig,   0,   0 }
         {2,    Trig,   0,   0 }
         {3,    Trig,   0,   0 }
         {4,    Trig,   0,   0 }
@@ -383,7 +381,7 @@ pattern {PID   F,      EVT, ID}
         {15,   Trig,   0,   0 }
 
 
-        {0,    Set,   0,   0 }
+        {0,    Set,   2,   0 }
         {1,    Set,   0,   0 }
         {2,    Set,   0,   0 }
         {3,    Set,   0,   0 }
@@ -401,7 +399,7 @@ pattern {PID   F,      EVT, ID}
         {15,   Set,   0,   0 }
 
 
-        {0,    Reset,   0,   0 }
+        {0,    Reset,   3,   0 }
         {1,    Reset,   0,   0 }
         {2,    Reset,   0,   0 }
         {3,    Reset,   0,   0 }
