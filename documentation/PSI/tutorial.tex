@@ -24,8 +24,10 @@
 
 \maketitle
 
-%\begin{abstract}
-%\end{abstract}
+\begin{abstract}
+A timing system consists of an Event Generator (EVG), a series of Event Receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. An EVR is then configured to respond to specific events in various ways, including processing EPICS records, generating pulses, synchronized clock or custom signals on its outputs.
+This document contains description of the Event Receiver components and tutorials containing step-by-step instructions to configuring some of the basic functionalities of the Event Receiver
+\end{abstract}
 
 \tableofcontents
 
@@ -110,7 +112,7 @@ Based on the output source signal, various patterns can be outputted. A pattern 
 
 	\includegraphics[]{./img/univ}
 
-Universal I/O slots provide different types of input or output with exchangeable Universal I/O modules~\cite{mrf}. Each module provides two inputs or outputs (TTL , NIM or optical). 
+Universal I/O slots provide different types of input or output with exchangeable Universal I/O modules~\cite{mrf_modules}. Each module provides two inputs or outputs (TTL , NIM or optical). 
 The exact output signal is dependent on the inserted module.
 
 \subsubsection{Rear Universal output - Transition Board output (RearUniv)}
@@ -127,7 +129,7 @@ To set up a timing system we need a VME crate, a Single Board Computer (SBC) and
 \end{itemize}
 
 
-\subsection{Create a new IOC application}
+\subsection{Create a new IOC application}\label{sec:Create a new IOC application}
 To set up an IOC application for Event Receiver we need a startup script and a substitution file. The following steps demonstrate how to prepare such a SWIT compatible IOC application:
 \begin{enumerate}
 
@@ -354,6 +356,6 @@ This tutorial demonstrates how to set up the DBus bit as a source of an EVR fron
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
 \bibliographystyle{plain}
-\bibliography{tutorial}
+\bibliography{references}
 
 \end{document}
