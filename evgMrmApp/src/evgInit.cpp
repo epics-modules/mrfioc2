@@ -179,6 +179,7 @@ mrmEvgSetupVME (
 {
     volatile epicsUInt8* regCpuAddr = 0;
     struct VMECSRID info;
+    info.board = 0; info.revision = 0; info.vendor = 0;
 
     try {
         if(mrf::Object::getObject(id)){
