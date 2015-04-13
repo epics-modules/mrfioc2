@@ -36,7 +36,7 @@ typedef struct {
 
 int printevr(void* raw,const epicsPCIDevice* dev)
 {
-    epicsUInt32 i;
+    epicsUInt32 i, offset, length;
     args *a=raw;
     volatile epicsUInt32 *base;
 
@@ -47,7 +47,10 @@ int printevr(void* raw,const epicsPCIDevice* dev)
         return 0;
     }
 
-    for (i=a->offset/4; i<(a->offset+a->len)/4; i++) {
+    offset = (epicsUInt32)a->offset;
+    length = (epicsUInt32)a->len;
+
+    for (i=offset/4; i < (offset + length)/4; i++) {
         if(i%4==0)
             printf("\n%08x : ", 4*i);
 
