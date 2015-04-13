@@ -7,14 +7,14 @@
 #  CODE = EPICS database event number (software)
 #
 #
-record(longout, "$(SYS)-$(EVR):Event-$(EVT)-SP") {
+record(event, "$(SYS)-$(EVR):Event-$(EVT)-SP") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
-  field(OUT , "@OBJ=$(EVR),Code=$(EVT)")
-  field(VAL , "$(CODE)")
+  field(INP , "@OBJ=$(EVR),Code=$(EVT)")
   field(TSE , "-2") # from device support
+  field(VAL , "$(CODE)")
   field(FLNK, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I")
-  info(autosaveFields_pass0, "OUT VAL")
+  info(autosaveFields_pass0, "INP VAL")
 }
 
 record(calc, "$(SYS)-$(EVR):Event-$(EVT)-Cnt-I") {

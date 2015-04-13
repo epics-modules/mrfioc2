@@ -148,7 +148,7 @@
       <item row="0" column="1">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Master enable</string>
+         <string>EVR enabled</string>
         </property>
        </widget>
       </item>
@@ -311,7 +311,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
