@@ -183,6 +183,9 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 	case 3:
 		return ioread8(((epicsUInt8 *)addr) - 3);
 	}
+
+	// To remove a warning on Windows
+	return 0;
 }
 #define NAT_READ8(base,offset)  \
 		nat_read8_addrFlip  ((epicsUInt8 *)(base) + U8_  ## offset)
@@ -199,6 +202,7 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
   	case 2:
   		return nat_ioread16(((epicsUInt8 *)addr) - 2);
   	}
+
   }
  #define NAT_READ16(base,offset) \
 		 nat_ioread16_addrFlip ((epicsUInt8 *)(base) + U16_ ## offset)
