@@ -29,7 +29,7 @@ evgSoftEvt::enabled() const {
 
 bool 
 evgSoftEvt::pend() const {
-    return READ8(m_pReg, SwEventControl) & SW_EVT_PEND;
+    return (READ8(m_pReg, SwEventControl) & SW_EVT_PEND) != 0;
 }
     
 void

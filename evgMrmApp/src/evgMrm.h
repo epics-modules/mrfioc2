@@ -195,7 +195,7 @@ public:
 
     bool getPilotCount() {
         SCOPED_LOCK(m_lock);
-        return m_pilotCount;
+        return m_pilotCount != 0;
     }
 
     epicsMutex  m_lock;

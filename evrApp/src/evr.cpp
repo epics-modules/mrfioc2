@@ -70,7 +70,7 @@ long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 
     if(!stat) return 1;
 
-    *io=stat->statusChange(dir);
+    *io=stat->statusChange((dir != 0));
 
     return 0;
 }

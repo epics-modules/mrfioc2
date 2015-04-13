@@ -178,7 +178,7 @@ evgSoftSeq::getSeqRam() {
 
 bool
 evgSoftSeq::isLoaded() {
-    return m_seqRam;
+    return m_seqRam != 0;
 }
 
 bool

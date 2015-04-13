@@ -50,7 +50,7 @@ write_bo_src_inp(boRecord* pbo) {
         if(!inp)
             throw std::runtime_error("Device pvt field not initialized");
 
-        inp->setDbusMap(pbo->out.value.vmeio.signal, pbo->val);
+        inp->setDbusMap(pbo->out.value.vmeio.signal, pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;

@@ -326,7 +326,7 @@ try{
     if(tsDiv()!=0) {
         shadowSourceTS=TSSourceInternal;
     } else {
-        bool usedbus4=READ32(base, Control) & Control_tsdbus;
+        bool usedbus4=(READ32(base, Control) & Control_tsdbus) != 0;
 
         if(usedbus4)
             shadowSourceTS=TSSourceDBus4;
@@ -398,7 +398,7 @@ bool
 EVRMRM::enabled() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_enable;
+    return (v&Control_enable) != 0;
 }
 
 void
@@ -611,7 +611,7 @@ bool
 EVRMRM::extInhib() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_GTXio;
+    return (v&Control_GTXio) != 0;
 }
 
 void
@@ -627,7 +627,7 @@ EVRMRM::setExtInhib(bool v)
 bool
 EVRMRM::pllLocked() const
 {
-    return READ32(base, ClkCtrl) & ClkCtrl_cglock;
+    return (READ32(base, ClkCtrl) & ClkCtrl_cglock) != 0;
 }
 
 bool

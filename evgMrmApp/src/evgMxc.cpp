@@ -24,7 +24,7 @@ evgMxc::~evgMxc() {
 
 bool 
 evgMxc::getStatus() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS) != 0;
 }
 
 void
@@ -37,7 +37,7 @@ evgMxc::setPolarity(bool polarity) {
 
 bool
 evgMxc::getPolarity() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY) != 0;
 }
 
 void
@@ -95,6 +95,6 @@ evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
 
     epicsUInt8 mask = 1 << trigEvt;
     epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
-    return mask & map;
+    return (mask & map) != 0;
 }
 

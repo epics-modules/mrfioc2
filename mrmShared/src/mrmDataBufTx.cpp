@@ -61,8 +61,8 @@ mrmDataBufTx::~mrmDataBufTx()
 bool
 mrmDataBufTx::dataTxEnabled() const
 {
-    return nat_ioread32(dataCtrl) &
-         (DataTxCtrl_ena|DataTxCtrl_mode);
+    return (nat_ioread32(dataCtrl) &
+         (DataTxCtrl_ena|DataTxCtrl_mode)) != 0;
 }
 
 void

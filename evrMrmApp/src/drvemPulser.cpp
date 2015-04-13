@@ -140,7 +140,7 @@ MRMPulser::setPrescaler(epicsUInt32 v)
 bool
 MRMPulser::polarityInvert() const
 {
-    return READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol;
+    return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol) != 0;
 }
 
 void

@@ -72,7 +72,7 @@ write_bo_resetMxc(boRecord* pbo) {
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        evg->resetMxc(pbo->val);
+        evg->resetMxc(pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;

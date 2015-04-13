@@ -52,7 +52,7 @@ evgAcTrig::setBypass(bool byp) {
 
 bool
 evgAcTrig::getBypass() const {
-    return READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_BYP;
+    return (READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_BYP) != 0;
 }
 
 

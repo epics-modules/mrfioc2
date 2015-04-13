@@ -207,7 +207,7 @@ evgMrm::enable(bool ena) {
 
 bool
 evgMrm::enabled() const {
-    return READ32(m_pReg, Control) & EVG_MASTER_ENA;
+    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
 }
 
 void

@@ -58,7 +58,7 @@ private:
 
     void _map(epicsUInt8 evt)   {        mapped[evt/8] |=    1<<(evt%8);  }
     void _unmap(epicsUInt8 evt) {        mapped[evt/8] &= ~( 1<<(evt%8) );}
-    bool _ismap(epicsUInt8 evt) const { return mapped[evt/8]  &    1<<(evt%8);  }
+    bool _ismap(epicsUInt8 evt) const { return (mapped[evt/8]  &    1<<(evt%8)) != 0;  }
 };
 
 #endif // EVRMRMPULSER_H_INC

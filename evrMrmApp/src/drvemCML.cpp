@@ -138,7 +138,7 @@ MRMCML::enable(bool s)
 bool
 MRMCML::inReset() const
 {
-    return shadowEnable & OutputCMLEna_rst;
+    return (shadowEnable & OutputCMLEna_rst) != 0;
 }
 
 void
@@ -198,7 +198,7 @@ MRMCML::setPolarityInvert(bool s)
 bool
 MRMCML::polarityInvert() const
 {
-    return shadowEnable & OutputCMLEna_ftrg;
+    return (shadowEnable & OutputCMLEna_ftrg) != 0;
 }
 
 epicsUInt32
@@ -314,7 +314,7 @@ MRMCML::setTimeInit (double v)
 bool
 MRMCML::recyclePat() const
 {
-    return shadowEnable & OutputCMLEna_cycl;
+    return (shadowEnable & OutputCMLEna_cycl) != 0;
 }
 
 void

@@ -41,7 +41,7 @@ mrmBufRx::~mrmBufRx()
 bool
 mrmBufRx::dataRxEnabled() const
 {
-    return READ32(base, DataBufCtrl) & DataBufCtrl_mode;
+    return (READ32(base, DataBufCtrl) & DataBufCtrl_mode) != 0;
 }
 
 void

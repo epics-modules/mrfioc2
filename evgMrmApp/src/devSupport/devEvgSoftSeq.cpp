@@ -731,7 +731,7 @@ write_bo_abortSeq(boRecord* pbo) {
             return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        seq->abort(pbo->val);
+        seq->abort(pbo->val != 0);
         seq->setErr("");
     } catch(std::runtime_error& e) {
         seq->setErr(e.what());

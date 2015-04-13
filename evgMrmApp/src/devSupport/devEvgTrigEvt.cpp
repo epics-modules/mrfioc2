@@ -52,7 +52,7 @@ write_bo_trigSrc_mxc(boRecord* pbo) {
         if(!mxc)
             throw std::runtime_error("Device pvt field not initialized");
 
-        mxc->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val);
+        mxc->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -74,7 +74,7 @@ write_bo_trigSrc_ac(boRecord* pbo) {
         if(!acTrig)
             throw std::runtime_error("Device pvt field not initialized");
 
-        acTrig->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val);
+        acTrig->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -96,7 +96,7 @@ write_bo_trigSrc_inp(boRecord* pbo) {
         if(!inp)
             throw std::runtime_error("Device pvt field not initialized");
 
-        inp->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val);
+        inp->setTrigEvtMap(pbo->out.value.vmeio.signal, pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
