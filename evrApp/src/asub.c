@@ -129,8 +129,8 @@ long gen_delaygen(aSubRecord *prec)
     if(mult==0)
         mult=1;
 
-    idelay=0.5 + delay/egupertick;
-    iwidth=0.5 + width/egupertick;
+    idelay=(epicsInt32)(0.5 + delay/egupertick);
+    iwidth=(epicsInt32)(0.5 + width/egupertick);
 
     if(idelay<0 || idelay>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);

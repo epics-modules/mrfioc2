@@ -645,7 +645,7 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
                /*---------------------
                 * Compute the integer and fractional parts of the fractional-N frequency
                 */
-                p1 = (FractionalFreq * j);
+                p1 = (epicsInt32)(FractionalFreq * j);
                 p = (p1 / j) + 1;
                 Qpm1 = j - (p1 % j);
                 Qp = j - Qpm1;

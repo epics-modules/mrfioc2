@@ -34,7 +34,7 @@ evgAcTrig::setPhase(epicsFloat64 phase) {
     if(phase < 0 || phase > 25.5)
         throw std::runtime_error("EVG AC Trigger phase out of range.");
 
-    WRITE8(m_pReg, AcTrigPhase, phase);
+    WRITE8(m_pReg, AcTrigPhase, (epicsUInt8)phase);
 }
 
 epicsFloat64
