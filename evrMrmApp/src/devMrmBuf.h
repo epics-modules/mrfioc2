@@ -44,14 +44,40 @@ extern "C" {
  *
  * @return Returns the structure pointer on success and NULL on failure.
  */
-mrmBufferInfo_t *mrmBufInit(char *dev_name);
+mrmBufferInfo_t *mrmBufInit(const char *dev_name);
+
+/**
+ * @brief Checks whether receive buffer is supported.
+ *
+ * Since some devices (EVR or EVG) might only support transfer
+ * functionality this function allows you to check whether you
+ * can call all receive-related functions for this device.
+ *
+ * @param data      The buffer information data structure
+ *
+ * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
+ */
+epicsStatus mrmBufRxSupported(mrmBufferInfo_t *data);
+
+/**
+ * @brief Checks whether transferring buffer is supported.
+ *
+ * Since some devices (EVR or EVG) might only support receive
+ * functionality this function allows you to check whether you
+ * can call all transfer-related functions for this device.
+ *
+ * @param data      The buffer information data structure
+ *
+ * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
+ */
+epicsStatus mrmBufTxSupported(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
  *
  * Enables data buffer logic for both transfer and receive functionality.
  * This is already called by the enable record so it is only needed if
- * the record for buffer enabling are not present.
+ * the records for buffer enabling are not present.
  *
  * @param data      The buffer information data structure
  *

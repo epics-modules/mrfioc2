@@ -73,7 +73,7 @@
     <set>Qt::AlignCenter</set>
    </property>
    <property name="visibility">
-    <enum>caLabel::IfZero</enum>
+    <enum>caLabel::IfNotZero</enum>
    </property>
    <property name="channel" stdset="0">
     <string notr="true">$(EVR):Event-$(EVT)-SP</string>

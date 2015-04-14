@@ -1,7 +1,18 @@
 # CML
 
-Front Panel CML Outputs provide low jitter differential signals with special outputs. The outputs can work in different configurations waveform (pulse) mode, pattern mode and frequency mode.
-CML outputs correspond to Front Pannel ouputs 4-6. If CML is disabled, normal TTL outputs are used.
+Front Panel CML Outputs provide low jitter differential signals with special outputs. Theese outputs are capable of driving Current-mode logic compatible signals. A source signal can be selected for each Front Panel Output. The output source can be a Pulser, a Prescaler, a DBus signal, logic low or logic high.
+Aditionally CML outputs have configurable modes in which we can specify patterns to be sent out the Front Panel CML Output based on the output source signal.
+CML outputs correspond to Front Panel Outputs 4-6.
+
+## Basic configuration macros
+The available macros are listed using their name and default value. The macro name reflects the first CML output (CML0), where CML1 and CML2 are also available.
+
+> Example: __macroName__=_defaultValue_ : Description, with available settings (`settingName (value)`) or `important information` highlighted.
+
+* __CML0-Ena-Sel__= _0_	: `0` = Output disabled, `1` = Output enabled
+* __CML0-Pwr-Sel__=_0_	: `0` = Outputs powered down, `1` = Normal operation
+* __CML0-Rst-Sel__=_0_	: `0` = Normal operation, `1` = Reset CML output
+* __CML0-Mode-Sel__=_0_	: `0` = Pattern mode, `1` = Frequency mode, `2` = Waveform mode
 
 ## Pattern mode
 There are 4 configurable waveforms (20 bit pattern), each corresponds to a state of the signal:
