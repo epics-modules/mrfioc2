@@ -33,8 +33,8 @@ mrmBufferInfo_t *mrmBufInit(const char *dev_name) {
         return NULL;
     }
 
-    bufRxName(dev_name);
-    bufTxName(dev_name);
+    bufRxName = dev_name;
+    bufTxName = dev_name;
     bufRxName += BUF_RX;
     bufTxName += BUF_TX;
 
