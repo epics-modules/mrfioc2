@@ -66,14 +66,17 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 	
 	### EVR configuration
 	#epicsEnvSet EVR EVR0 ##EVR name (default EVR0)
-	#epicsEnvSet EVR_SLOT 2 ##EVR SLOT (default slot 2)
+	#epicsEnvSet EVR_SLOT 3 ##EVR slot (default slot 2)
+	#epicsEnvSet EVR_MEMOFFSET 0xfffff ## A24 base address (default value 0x3000000)
+	#epicsEvnSet EVR_IRQLINE 0xff ## IRQ level (default value 5)
+	#epicsEnvSet EVR_IRQVECT 0xff ## IRQ vector (default value 0x26)
 	
 	< $(TEMPLATE_DIR)/EVR_VME.startup
 	
 	## END OF EVR configuration
 \end{verbatim}
 
-There are three configurable variables:
+The configurable variables in the startup script are:
 \begin{itemize}
 	\item 
 		\texttt{TEMPLATE\_DIR} is the location of the template files, and must not be changed by the user.
@@ -83,8 +86,12 @@ There are three configurable variables:
 		\texttt{EVR} is the event receiver name. If the variable is not defined in the startup script, it defaults to \texttt{EVR0}.
 	\item 
 		\texttt{EVR\_SLOT} is the VME crate slot where EVR is inserted. If the variable is not defined in the startup script, it defaults to \texttt{2}.
+	\item 
+		The the base A24 address (\texttt{EVR\_MEMOFFSET}), interrupt level (\texttt{EVR\_IRQLINE}) and interrupt vector (\texttt{EVR\_IRQVECT}) variables configure the interaction between the SBC and the EVR. The details are out of scope of this document. If a variable is not defined in the startup script, it gets set to its default value.
 \end{itemize}
-Using the above startup script, the system name is set to \textit{MTEST-VME-EVRTEST}, and the event receiver named \textit{EVR0} is placed in the physical slot 2 of the VME crate. Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
+Using the above startup script, the system name is set to \textit{MTEST-VME-EVRTEST}, and the event receiver named \textit{EVR0} is placed in the physical slot 2 of the VME crate. It uses default A24 address and interrupt configuration.
+
+Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
 
 	\item Copy the \textbf{substitution file} \texttt{/fin/devl/iocBoot/templates/slejko/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
 \begin{verbatim}
