@@ -58,7 +58,8 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 
 	The startup script should look similar to:
 \begin{verbatim}
-	##This will be set automatically from INSTBASE + MRFIOC2 version in the future
+	## This will be set automatically from 
+	   INSTBASE + MRFIOC2 version in the future
 	epicsEnvSet TEMPLATE_DIR "/fin/devl/iocBoot/templates/slejko"
 	
 	##System configuration
@@ -67,7 +68,8 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 	### EVR configuration
 	#epicsEnvSet EVR EVR0 ##EVR name (default EVR0)
 	#epicsEnvSet EVR_SLOT 3 ##EVR slot (default slot 2)
-	#epicsEnvSet EVR_MEMOFFSET 0xfffff ## A24 base address (default value 0x3000000)
+	#epicsEnvSet EVR_MEMOFFSET 0xfffff ## A24 base address 
+	                                      (default value 0x3000000)
 	#epicsEvnSet EVR_IRQLINE 0xff ## IRQ level (default value 5)
 	#epicsEnvSet EVR_IRQVECT 0xff ## IRQ vector (default value 0x26)
 	
