@@ -50,14 +50,17 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 	mkdir cfg
 \end{verbatim}
 
-	\item Copy the \textbf{startup script} \texttt{/fin/devl/iocBoot/templates/slejko/EVR\_VME.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
+	\item Copy the \textbf{startup script} \texttt{/fin/devl/iocBoot/templates/slejko/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
+	cp /fin/devl/iocBoot/templates/slejko/example.startup 
 	    MTEST-VME-EVRTEST_startup.script
 \end{verbatim}
 
 	The startup script should look similar to:
 \begin{verbatim}
+	##This will be set automatically from INSTBASE + MRFIOC2 version in the future
+	epicsEnvSet TEMPLATE_DIR "/fin/devl/iocBoot/templates/slejko"
+	
 	##System configuration
 	epicsEnvSet SYS MTEST-VME-EVRTEST
 	
@@ -72,6 +75,8 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 
 There are three configurable variables:
 \begin{itemize}
+	\item 
+		\texttt{TEMPLATE\_DIR} is the location of the template files, and must not be changed by the user.
 	\item
 		\texttt{SYS} is the system name. \textbf{This variable is mandatory.}
 	\item 
@@ -94,7 +99,7 @@ The macro definitions in the substitution file are used to configure the EVR. Al
 %	mkdir MTEST-VME-EVRTEST
 %	cd MTEST-VME-EVRTEST
 %	mkdir cfg
-%	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
+%	cp /fin/devl/iocBoot/templates/slejko/example.startup 
 %	    MTEST-VME-EVRTEST_startup.script
 %	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
 %\end{verbatim}
