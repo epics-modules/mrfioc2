@@ -6,6 +6,7 @@
 \usepackage[usenames]{xcolor}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{float} %for H positioning
 
 %\lstset{ %
 %  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
@@ -17,7 +18,7 @@
 %}
 
 %opening
-\title{Introduction to the Timing System}
+\title{EVR Tutorials}
 %\author{Sašo Skube, PSI}
 
 \begin{document}
@@ -28,34 +29,34 @@
 \newpage
 
 \section{Introduction}
-A timing system consists of an Event Generator (EVG), a series of Event Receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. An EVR is then configured to respond to specific events in various ways, including processing EPICS records, generating pulses, synchronized clock or custom signals on its outputs.
-This document contains step-by-step instructions to configuring some of the basic functionalities of the Event Receiver.
+A timing system consists of an event generator (EVG), a series of event receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. An EVR is then configured to respond to specific events in various ways, including processing EPICS records and generating pulses, synchronized clock or custom signals on its outputs.
+This document contains step-by-step instructions to configuring some of the basic functionalities of the event receiver. A detailed EVR manual is available in~\cite{evr_manual}.
 
 \section{Quick start}\label{sec:Quick start}
-To set up a timing system we need a VME crate, a Single Board Computer (SBC) and an EVR. A VME crate has a number of slots where SBC, EVR and other components can be inserted. Slot numbering should be checked with the VME crate documentation. To use a VME crate for the turorials, check that:
+To set up a timing system we need a VME crate, a Single Board Computer (SBC) and an EVR. A VME crate has a number of slots where SBC, EVR and other components can be inserted. Slot numbering should be checked with the VME crate documentation. The tutorials in this document are written for the following setup:
 \begin{itemize}
-	 \item a VME64x IFC 1210 Single Board Computer is inserted into VME crate slot 1 (how to set up IFC 1210~\cite{ifc}),
-	\item  an EVR is inserted in slot 2,
-	\item the EVR is connected to the timing network through an optical cable.
+	 \item a VME64x IFC 1210 Single Board Computer inserted into VME crate slot 1 (how to set up IFC 1210~\cite{ifc}),
+	\item VME-EVR-230RF event receiver inserted in slot 2,
+	\item the EVR connected to the timing network through an optical cable.
 \end{itemize}
 
-To set up an IOC application for Event Receiver we need a startup script and a substitution file. The following steps demonstrate how to prepare such a SWIT compatible IOC application:
+To set up an IOC application for EVR we need to set up a startup script and a substitution file. The following steps demonstrate how to prepare such a SWIT compatible IOC application:
 \begin{enumerate}
 
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST} and a \textbf{sub-folder named} \textit{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
+	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST} and a \textbf{sub-folder} named \texttt{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
 \begin{verbatim}
 	mkdir MTEST-VME-EVRTEST
 	cd MTEST-VME-EVRTEST
 	mkdir cfg
 \end{verbatim}
 
-	\item Copy the \textbf{startup script} to your project. Use the following command in your project folder:
+	\item Copy the \textbf{startup script} \texttt{/fin/devl/iocBoot/templates/slejko/EVR\_VME.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
 	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
 	    MTEST-VME-EVRTEST_startup.script
 \end{verbatim}
 
-	The startup script should look similar to 
+	The startup script should look similar to:
 \begin{verbatim}
 	##System configuration
 	epicsEnvSet SYS MTEST-VME-EVRTEST
@@ -64,50 +65,65 @@ To set up an IOC application for Event Receiver we need a startup script and a s
 	#epicsEnvSet EVR EVR0 ##EVR name (default EVR0)
 	#epicsEnvSet EVR_SLOT 2 ##EVR SLOT (default slot 2)
 	
-	< $(TEMPLATE\DIR)/EVR_VME.startup
+	< $(TEMPLATE_DIR)/EVR_VME.startup
 	
-## END OF EVR configuration
+	## END OF EVR configuration
 \end{verbatim}
 
-System name (\texttt{SYS}) variable must be defined. When omitted, the \texttt{EVR} name and \texttt{EVR\_SLOT} will fall-back to default values. Using the above startup script, the system name is set to \textit{MTEST-VME-EVRTEST}, and the Event Receiver named \textit{EVR0} is placed in the physical slot 2 of the VME crate. Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, so it should not be changed by the user.
+There are three configurable variables:
+\begin{itemize}
+	\item
+		\texttt{SYS} is the system name. \textbf{This variable is mandatory.}
+	\item 
+		\texttt{EVR} is the event receiver name. If the variable is not defined in the startup script, it defaults to \texttt{EVR0}.
+	\item 
+		\texttt{EVR\_SLOT} is the VME crate slot where EVR is inserted. If the variable is not defined in the startup script, it defaults to \texttt{2}.
+\end{itemize}
+Using the above startup script, the system name is set to \textit{MTEST-VME-EVRTEST}, and the event receiver named \textit{EVR0} is placed in the physical slot 2 of the VME crate. Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
 
-	\item Copy the \textbf{substitution file}~\cite{substitution_git} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
+	\item Copy the \textbf{substitution file} \texttt{/fin/devl/iocBoot/templates/slejko/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
 \begin{verbatim}
 	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
 \end{verbatim}
 \end{enumerate}
 
-The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file~\cite{substitution_git} and set to their default values, so the user can simply change the desired values, remove unused macros (same effect as leaving them with their default value). Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
+The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
 
-\paragraph{Command summary} for creating a new IOC application:
-\begin{verbatim}
-	mkdir MTEST-VME-EVRTEST
-	cd MTEST-VME-EVRTEST
-	mkdir cfg
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
-	    MTEST-VME-EVRTEST_startup.script
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
-\end{verbatim}
+%\paragraph{Command summary} for creating a new IOC application:
+%\begin{verbatim}
+%	mkdir MTEST-VME-EVRTEST
+%	cd MTEST-VME-EVRTEST
+%	mkdir cfg
+%	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
+%	    MTEST-VME-EVRTEST_startup.script
+%	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
+%\end{verbatim}
 
-\section{Generate a pulse uppon receiving an event}
-	\includegraphics[]{./img/pulser}
-	
-This tutorial demonstrates how to configure an EVR to generate a 80ns wide pulse, 40ns after each occurance of event 4 and output it through the front panel TTL output 0(FrontOut0). In order to achieve this, pulser 3 delay and width are configured by setting macro value of \texttt{Pul3-Delay-SP} to 40 and of \texttt{Pul3-Width-SP} to 80. The value of the output source macro \texttt{FrontOut0-Src-SP} is set to 3, which configures the front panel output 0(FrontOut0) to use pulser 3 as its source. Finally pulser 3 is set to trigger on event 4 by setting macro value \texttt{EVT} to 4 in \textit{evr-pulserMap.template}. 
+\section{Generate a pulse upon receiving an event}
+EVR has a number of pulsers available and each of them can generate a pulse upon receiving an event. The pulse can then be outputted through desired EVR outputs. 
 
+This tutorial demonstrates how to configure an EVR to generate a 80 ns wide pulse, 40 ns after each reception of event 4, as seen in Figure~\ref{fig:pulser_signal}. 
+\begin{figure}[H]
+	\centering
 	\includegraphics[width=\columnwidth]{./img/pulserSignal}
+	\caption{An example of 2 pulses generated after the reception of the event 4.}
+	\label{fig:pulser_signal}
+\end{figure}
+The pulse in this tutorial is generated using pulser 3 and outputted through the front panel TTL output 0 (FrontOut0), as seen in Figure~\ref{fig:pulser}. 
+%In order to achieve this, pulser 3 delay and width parameters are configured by setting macro value of \texttt{Pul3-Delay-SP} to 40 and of \texttt{Pul3-Width-SP} to 80. Then the value of the output source macro \texttt{FrontOut0-Src-SP} is set to 3, which configures the front panel output 0 (FrontOut0) to use pulser 3 as its source. Finally, pulser 3 is set to trigger on event 4 by setting macro value \texttt{EVT} to 4. 
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[]{./img/pulser}
+	\caption{Use pulser 3 to generate a pulse upon reception of the event 4. The pulse is outputted through front panel TTL output 0.}
+	\label{fig:pulser}
+\end{figure}
 
 \subsection{Instructions:}
 \begin{enumerate}
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST}.
-	\item Copy \textbf{startup script} and an example \textbf{substitution file} to your project. Use the following commands in your project folder:
-\begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
-	    MTEST-VME-EVRTEST_startup.script
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
-\end{verbatim}
+	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
-	\item Set the macro values in the substitution file according to this snippet:
+	\item Set the macro values in the substitution file (\texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}) according to this snippet (explained in~\ref{sec:explain_pulser}):
 \begin{verbatim}
 	file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 	{
@@ -132,42 +148,37 @@ This tutorial demonstrates how to configure an EVR to generate a 80ns wide pulse
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
-\subsection{Substitution snippet explanation:}
+\subsection{Substitution snippet explanation:}\label{sec:explain_pulser}
 
-First we set up the pulse generator:
+First we set up the pulse generator 3 (Pul3):
 \begin{itemize}
-	\item \textbf{Pul3-Delay-SP} [ns]: Set the delay from when the event occurs to the start of the pulse (pulse rising edge) for pulser 3. 
-	\item \textbf{Pul3-Width-SP} [ns]: Set the pulse width (time between the pulse rising and falling edge) for pulser 3.
+	\item \texttt{Pul3-Delay-SP}=40: Set the delay between the reception of the event and the start of the pulse (pulse rising edge) for pulser 3 to 40 ns. 
+	\item \texttt{Pul3-Width-SP}=80: Set the pulse width (time between the pulse rising and falling edge) for pulser 3 to 80 ns.
 \end{itemize}
 
-Next, we use the macro  \textbf{FrontOut0-Src-SP} to set the source of the front panel output 0  to pulser 3 through a mapping. Mappings 0-15 correspond to pulsers 0-15. A complete list of mappings is available in the EVR manual~\cite{evr_manual}.
+Then the value of the output source macro \texttt{FrontOut0-Src-SP} is set to 3, which configures the front panel output 0 (FrontOut0) to use pulser 3 as its source. Macro values 0-15 correspond to pulsers 0-15. A complete list of available values is available in the EVR manual~\cite{evr_manual}.
 
-Finally set the Pulser 3 to trigger on reception of the event 4:
+Finally, the Pulser 3 is set to trigger on reception of the event 4:
 \begin{itemize}
-	\item \textbf{PID}: Select Pulser 3
-	\item \textbf{F}: Select the \textit{Trigger} function of the pulser
-	\item \textbf{EVT}: Map Pulser 3 Trig function to event 4
-	\item \textbf{ID}: Unique ID for each PID-F combination.
+	\item \texttt{PID}: Select Pulser 3
+	\item \texttt{F}: Select the \textit{Trigger} function of the pulser
+	\item \texttt{EVT}: Map Pulser 3 Trig function to event 4
+	\item \texttt{ID}: Unique ID for each PID-F combination.
 \end{itemize}
 
 In order to use different pulser simply change the pulser number, eg. using \texttt{Pul5-Delay-SP} instead of \texttt{Pul3-Delay-SP} sets the delay of pulser 5 instead of pulser 3.
 Similar is for outputs, eg. using \texttt{FrontOut1-Src-SP} instead of \texttt{FrontOut0-Src-SP} sets the output source signal of front panel output 1 instead of front panel output 0.
 
-\section{Process an EPICS record uppon receiving an event}
-This tutorial demonstrates how to use macro substitutions to trigger an EPICS event number 1 and increase a counter uppon each reception of event 1 from the timing network.
+\section{Trigger an EPICS event upon receiving an event from the timing system}
+Using the macros in the substitution file it is possible to configure triggering of the EPICS events. Each event from the timing system can be configured to trigger an EPICS event.
 
-The counter is a calc record, that counts how many times the event 1 was received from the timing system. Its name is in form of \texttt{\$(SYS)-\$(EVR):Event-\$(EVT)-Cnt-I}, where \texttt{\$(SYS)} represents the system name (set in the startup script), \texttt{\$(EVR)} represents the Event Receiver name (set in the startup script, default "EVR0") and \texttt{\$(EVT)} is the event from the timing network (in this case "1"), thus the full \textbf{name of the counter record is} \texttt{MTEST-VME-EVRTEST-EVR0:Event-1-Cnt-I}.
+This tutorial demonstrates how to trigger an EPICS event number 1 upon reception of event 1 from the timing system.
 
 \subsection{Instructions:}
 \begin{enumerate}
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST}.
-	\item Copy \textbf{startup script} and an example \textbf{substitution file} to your project. Use the following commands in your project folder:
-\begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
-	    MTEST-VME-EVRTEST_startup.script
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
-\end{verbatim}
-	\item Set the macro values in the substitution file according to this snippet:
+	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
+	
+	\item Set the macro values in the substitution file (\texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}) according to this snippet (explained in~\ref{sec:explain_event}):
 \begin{verbatim}
 	file "$(TEMPLATE_DIR)/evr-softEvent.template"{
 	pattern { EVT,    CODE }
@@ -180,34 +191,31 @@ The counter is a calc record, that counts how many times the event 1 was receive
 	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
-\subsection{Substitution snippet explanation:}
-\begin{itemize}
-	\item \textbf{EVT}: Set to event received from timing network (hardware).
-	\item \textbf{CODE}: Set to EPICS event number (software).
-It is suggested that macros \textit{EVT} and \textit{CODE} are set to the same value for simplicity, allthough this is not mandatory.
-\end{itemize}
+\subsection{Substitution snippet explanation:}\label{sec:explain_event}
+An EPICS event 1 (\texttt{CODE=1}) is triggered upon reception of the event a (\texttt{EVT=1}) from the timing system.
+It is suggested that macros \texttt{EVT} and \texttt{CODE} are set to the same value for simplicity, all-though this is not mandatory.
+
+%In addition to triggering an EPICS event, a counter is increased. The counter is a calc record, that counts how many times the event was received from the timing system. Its name is in form of \texttt{\$(SYS)-\$(EVR):Event-\$(EVT)-Cnt-I}, where \texttt{\$(SYS)} represents the system name, \texttt{\$(EVR)} represents the event receiver name (eg. EVR0) and \texttt{\$(EVT)} is the event from the timing network. In this example the full \textbf{name of the counter record is} \texttt{MTEST-VME-EVRTEST-EVR0:Event-1-Cnt-I}.
 
 \section{Generate a clock signal}
-	\includegraphics[width=\columnwidth]{./img/prescaler}
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics{img/prescaler}
-%\caption{prescaler}
-%\end{figure}
 
-Event Receivers have synchronized event clock across the timing system (the same phase and frequency). The event clock can be prescaled and mapped to the EVR output. In order to achieve this, the macro \texttt{PS0-Div-SP} is set to 2, which configures the prescaler 0(PS0) to divide the event clock frequency by 2. Then the value of the output source macro \texttt{FrontOut1-Src-SP} is set to 40, which configures the front panel output 1(FrontOut1) to use prescaler 0 as its source.
+Event receivers have synchronized event clock across the timing system (the same phase and frequency). The event clock can be prescaled and mapped to the EVR output. 
+
+This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the event clock frequency by 2, and output it through the front panel output 1 (FrontOut1), as seen in Figure~\ref{fig:prescaler}. 
+%This can be achieved by setting the prescaler macro \texttt{PS0-Div-SP} to 2, and the output source macro \texttt{FrontOut1-Src-SP} to 40. The latter configures the front panel output 1 (FrontOut1) to use prescaler 0 as its source.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\columnwidth]{./img/prescaler}
+	\caption{An example clock signal generation}
+	\label{fig:prescaler}
+\end{figure}
 
 \subsection{Instructions:}
 \begin{enumerate}
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST}.
-	\item Copy \textbf{startup script} and an example \textbf{substitution file} to your project. Use the following commands in your project folder:
-\begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
-	    MTEST-VME-EVRTEST_startup.script
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
-\end{verbatim}
+	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
-	\item Set the macro values in the substitution file according to this snippet:
+	\item Set the macro values in the substitution file (\texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}) according to this snippet (explained in~\ref{sec:explain_clock}):
 \begin{verbatim}
 	file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 	{
@@ -225,31 +233,31 @@ Event Receivers have synchronized event clock across the timing system (the same
 	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
-\subsection{Substitution snippet explanation:}
+\subsection{Substitution snippet explanation:}\label{sec:explain_clock}
 \begin{itemize}
-	\item \textbf{PS0-Div-SP}: Set the Prescaler 0 to divide event clock frequency by 2.
-	\item \textbf{FrontOut1-Src-SP}: Set the source of the Front Panel Output 1  to Prescaler 0 through a mapping. Mappings 40-42 correspond to prescalers 0-2. A complete list of mappings is available in the EVR manual~\cite{evr_manual}.
+	\item \texttt{PS0-Div-SP}=2: Set the Prescaler 0 to divide event clock frequency by 2.
+	\item \texttt{FrontOut1-Src-SP}=40: Set the source of the Front Panel Output 1 to Prescaler 0. Values 40-42 correspond to prescalers 0-2. A complete list of values is available in the EVR manual~\cite{evr_manual}.
 \end{itemize}
 
 In order to use different prescaler, simply change the prescaler number, eg. using \texttt{PS2-Div-SP} instead of \texttt{PS0-Div-SP} sets the divider of prescaler 2 instead of prescaler 0.
 Similar is for outputs, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
 \section{Output a Distributed Bus bit}
+A custom distributed bus (DBus) bit can be outputted through desired EVR outputs. This tutorial demonstrates how to set up the DBus bit 0 as a source of an EVR front panel output 1, as seen in Figure~\ref{fig:dbus}. 
+%To achieve this, the front panel output 0 should be mapped to the distributed bus bit (signal) 0. This is configured by setting the value of the output source macro \texttt{FrontOut1-Src-Sp} to 32. Mapping 32 corresponds to the DBus bit 0.
+
+\begin{figure}[H]
+	\centering
 	\includegraphics[]{./img/dbus}
-	
-This tutorial demonstrates how to set up the DBus bit as a source of an EVR front panel output. To achieve this, the front panel output 0 should be mapped to the distributed bus bit (signal) 0. This is configured by setting the value of the output source macro \texttt{FrontOut1-Src-Sp} to 32. Mapping 32 corresponds to the DBus bit 0.
+	\caption{Send DBus bit 0 to the front panel output 1}
+	\label{fig:dbus}
+\end{figure}
 
 \subsection{Instructions:}
 \begin{enumerate}
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST}.
-	\item Copy \textbf{startup script} and an example \textbf{substitution file} to your project. Use the following commands in your project folder:
-\begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR_VME.startup 
-	    MTEST-VME-EVRTEST_startup.script
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
-\end{verbatim}
-
-	\item Set the macro values in the substitution file according to this snippet:
+	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
+	
+	\item Set the macro values in the substitution file (\texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}) according to this snippet (explained in~\ref{sec:explain_dbus}):
 \begin{verbatim}
 	file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 	{
@@ -265,9 +273,9 @@ This tutorial demonstrates how to set up the DBus bit as a source of an EVR fron
 	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
-\subsection{Substitution snippet explanation:}
+\subsection{Substitution snippet explanation:}\label{sec:explain_dbus}
 \begin{itemize}
-	\item \textbf{FrontOut1-Src-SP}: Set the source of the front panel output 1  to DBus bit 0 through a mapping. Mappings 32-39 correspond to DBus bits 0-7. A complete list of mappings is available in the EVR manual~\cite{evr_manual}.
+	\item \texttt{FrontOut1-Src-SP}=32: Set the source of the front panel output 1  to DBus bit 0. Values 32-39 correspond to DBus bits 0-7. A complete list of values is available in the EVR manual~\cite{evr_manual}.
 \end{itemize}
 
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
