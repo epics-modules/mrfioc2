@@ -32,7 +32,7 @@ record(mbbo, "$(SYS)-$(EVG):$(OBJ)$(ID)-Source-Sel") {
     field( IVOA, "Don't drive outputs")
     field( PINI, "YES")
     field( UDF,  "0")
-    field( VAL,  "$($(EVG):$(OBJ)$(ID)-Source-Sel\=0)")
+    field( VAL,  "$($(OBJ)$(ID)-Source-Sel\=0)")
     field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Source-RB")
     info(autosaveFields_pass0, "VAL")
 }
