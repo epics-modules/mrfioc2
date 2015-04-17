@@ -26,7 +26,7 @@
     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
    </property>
    <property name="text">
-    <string>Out-$(ID)</string>
+    <string>$(ID)</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -45,7 +45,7 @@
     <string notr="true">background-color: rgb(212, 219, 157);</string>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Out-$(ID)-Source-Sel</string>
+    <string notr="true">$(EVG):$(ID)-Source-Sel</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -93,7 +93,7 @@
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVG):Out-$(ID)-Source-RB</string>
+    <string notr="true">$(EVG):$(ID)-Source-RB</string>
    </property>
   </widget>
  </widget>

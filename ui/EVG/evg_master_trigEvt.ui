@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>127</width>
-    <height>451</height>
+    <width>145</width>
+    <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>124</width>
-     <height>445</height>
+     <width>141</width>
+     <height>121</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -33,7 +33,7 @@
      <rect>
       <x>1</x>
       <y>1</y>
-      <width>121</width>
+      <width>139</width>
       <height>23</height>
      </rect>
     </property>
@@ -41,7 +41,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>TrigEvt-$(TRIGEVTNUM)</string>
+     <string>TrigEvt$(TRIGEVTNUM)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -50,7 +50,7 @@
    <widget class="caToggleButton" name="catogglebutton">
     <property name="geometry">
      <rect>
-      <x>35</x>
+      <x>44</x>
       <y>25</y>
       <width>71</width>
       <height>20</height>
@@ -60,13 +60,13 @@
      <string>Enable</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-Enable-Sel</string>
+     <string notr="true">$(EVG):TrigEvt$(TRIGEVTNUM)-Enable-Sel</string>
     </property>
    </widget>
    <widget class="caLed" name="caled">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>19</x>
       <y>25</y>
       <width>20</width>
       <height>20</height>
@@ -79,7 +79,7 @@
      <bool>false</bool>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-Enable-RB</string>
+     <string notr="true">$(EVG):TrigEvt$(TRIGEVTNUM)-Enable-RB</string>
     </property>
     <property name="falseColor">
      <color>
@@ -106,7 +106,7 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>1</x>
+      <x>10</x>
       <y>50</y>
       <width>121</width>
       <height>61</height>
@@ -118,8 +118,8 @@
     <widget class="caLineEdit" name="calineedit_8">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>40</y>
+       <x>63</x>
+       <y>38</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -128,7 +128,7 @@
       <set>Qt::AlignCenter</set>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-EvtCode-RB</string>
+      <string notr="true">$(EVG):TrigEvt$(TRIGEVTNUM)-EvtCode-RB</string>
      </property>
      <property name="colorMode">
       <enum>caLineEdit::Alarm_Default</enum>
@@ -137,8 +137,8 @@
     <widget class="QLabel" name="label_30">
      <property name="geometry">
       <rect>
-       <x>1</x>
-       <y>20</y>
+       <x>4</x>
+       <y>18</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -153,8 +153,8 @@
     <widget class="caTextEntry" name="catextentry">
      <property name="geometry">
       <rect>
-       <x>1</x>
-       <y>40</y>
+       <x>4</x>
+       <y>38</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -163,7 +163,7 @@
       <set>Qt::AlignCenter</set>
      </property>
      <property name="channel" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-EvtCode-SP</string>
+      <string notr="true">$(EVG):TrigEvt$(TRIGEVTNUM)-EvtCode-SP</string>
      </property>
      <property name="background">
       <color>
@@ -173,14 +173,14 @@
       </color>
      </property>
      <property name="colorMode">
-      <enum>caLineEdit::Alarm_Default</enum>
+      <enum>caLineEdit::Static</enum>
      </property>
     </widget>
     <widget class="QLabel" name="label_29">
      <property name="geometry">
       <rect>
-       <x>61</x>
-       <y>20</y>
+       <x>64</x>
+       <y>18</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -193,78 +193,9 @@
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>1</x>
-      <y>120</y>
-      <width>121</width>
-      <height>322</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Trigger event</string>
-    </property>
-    <widget class="caByte" name="cabyte">
-     <property name="geometry">
-      <rect>
-       <x>75</x>
-       <y>50</y>
-       <width>31</width>
-       <height>288</height>
-      </rect>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-TrigSrc-MbbiDir_</string>
-     </property>
-     <property name="startBit">
-      <number>0</number>
-     </property>
-    </widget>
-    <widget class="caBitnames" name="cabitnames">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>50</y>
-       <width>61</width>
-       <height>271</height>
-      </rect>
-     </property>
-     <property name="channelEnum" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-TrigSrc-Sel</string>
-     </property>
-     <property name="channelValue" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-TrigSrc-Sel</string>
-     </property>
-     <property name="startBit">
-      <number>1</number>
-     </property>
-    </widget>
-    <widget class="caMenu" name="camenu">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>18</y>
-       <width>121</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(212, 219, 157);</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVG):TrigEvt-$(TRIGEVTNUM)-TrigSrc-Sel</string>
-     </property>
-    </widget>
-   </widget>
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>caMenu</class>
-   <extends>QComboBox</extends>
-   <header>caMenu</header>
-  </customwidget>
   <customwidget>
    <class>caTextEntry</class>
    <extends>caLineEdit</extends>
@@ -289,16 +220,6 @@
    <class>caLineEdit</class>
    <extends>QLineEdit</extends>
    <header>caLineEdit</header>
-  </customwidget>
-  <customwidget>
-   <class>caByte</class>
-   <extends>QWidget</extends>
-   <header>caByte</header>
-  </customwidget>
-  <customwidget>
-   <class>caBitnames</class>
-   <extends>QWidget</extends>
-   <header>caBitnames</header>
   </customwidget>
  </customwidgets>
  <resources/>
