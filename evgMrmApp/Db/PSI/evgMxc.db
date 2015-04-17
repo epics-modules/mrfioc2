@@ -1,36 +1,36 @@
-record(bi, "$(P)Status-RB") {
+record(bi, "$(SYS)-$(EVG):$(OBJ)$(ID)-Status-RB") {
     field( DESC, "EVG Mux Output Status")
     field( DTYP, "Obj Prop bool")
-    field( INP , "@OBJ=$(OBJ), PROP=Status")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Status")
     field( ZNAM, "0")
     field( ONAM, "1")
 }
 
-record(bo, "$(P)Polarity-Sel") {
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-Polarity-Sel") {
     field( DESC, "EVG Mux Output Polarity")
     field( DTYP, "Obj Prop bool")
-    field( OUT , "@OBJ=$(OBJ), PROP=Polarity")
+    field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Polarity")
     field( PINI, "YES")
-    field( VAL,  "$($(OBJ)-Polarity-Sel\=0)")
+    field( VAL,  "$($(EVG):$(OBJ)$(ID)-Polarity-Sel\=0)")
     field( UDF,  "0")
     field( ZNAM, "Orginal")
     field( ONAM, "Inverted")
-    field( FLNK, "$(P)Polarity-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Polarity-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)Polarity-RB") {
+record(bi, "$(SYS)-$(EVG):$(OBJ)$(ID)-Polarity-RB") {
     field( DESC, "EVG Mux Output Polarity")
     field( DTYP, "Obj Prop bool")
-    field( INP , "@OBJ=$(OBJ), PROP=Polarity")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Polarity")
     field( ZNAM, "Orginal")
     field( ONAM, "Inverted")
 }
 
-record(ao, "$(P)Frequency-SP") {
+record(ao, "$(SYS)-$(EVG):$(OBJ)$(ID)-Frequency-SP") {
     field( DESC, "EVG Mux Frequency")
     field( DTYP, "Obj Prop double")
-    field( OUT , "@OBJ=$(OBJ), PROP=Frequency")
+    field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Frequency")
     field( EGU , "Hz")
     field( HOPR, "62500000")
     field( LOPR, "0.029")
@@ -38,50 +38,139 @@ record(ao, "$(P)Frequency-SP") {
     field( DRVL, "0.029")
     field( PREC, "3")
     field( PINI, "YES")
-    field( VAL, "$($(OBJ)-Frequency-SP\=1)")
-    field( FLNK, "$(P)Frequency-RB")
+    field( VAL, "$($(EVG):$(OBJ)$(ID)-Frequency-SP\=1)")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P)Frequency-RB") {
+record(ai, "$(SYS)-$(EVG):$(OBJ)$(ID)-Frequency-RB") {
     field( DESC, "EVG Mux Frequency")
     field( DTYP, "Obj Prop double")
-    field( INP , "@OBJ=$(OBJ), PROP=Frequency")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Frequency")
     field( EGU,  "Hz")
     field( HIHI, "62500000")
     field( LOLO, "0.029")
     field( PREC, "3")
-    field( FLNK, "$(P)Prescaler-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Prescaler-RB")
 }
 
-record(longout, "$(P)Prescaler-SP") {
+record(longout, "$(SYS)-$(EVG):$(OBJ)$(ID)-Prescaler-SP") {
     field( DESC, "EVG Mux Prescaler")
     field( DTYP, "Obj Prop uint32")
-    field( OUT , "@OBJ=$(OBJ), PROP=Prescaler")
+    field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Prescaler")
     field( PINI, "NO")
-    field( VAL,  "$($(OBJ)-Prescaler-SP\=124920)")
+    field( VAL,  "$($(EVG):$(OBJ)$(ID)-Prescaler-SP\=124920)")
     field( UDF,  "0")
     field( EGU, "Evt Clk Tick")
     field( HOPR, "4294967295")
     field( LOPR, "2")
-    field( FLNK, "$(P)Frequency-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Frequency-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(longin , "$(P)Prescaler-RB") {
+record(longin , "$(SYS)-$(EVG):$(OBJ)$(ID)-Prescaler-RB") {
     field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
     field( EGU, "Evt Clk Tick")
     field( HIHI, "4294967295")
     field( LOLO, "2")
-    field( FLNK, "$(SYS)-$(D):ResetMxc-Cmd")
+    field( FLNK, "$(SYS)-$(EVG):ResetMxc-Cmd")
 }
 
 #
 # When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
 #
-record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-    field( FLNK, "$(P)Frequency-RB")
+record(ai, "$(SYS)-$(EVG):$(OBJ)$(ID)-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS){$(EVG)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S0 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc0-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S1 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc1-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S2 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc2-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S3 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc3-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S4 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc4-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S5 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc5-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S6 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc6-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt $(OBJ)$(ID)")
+    field( OUT , "#C S7 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc7-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
 }
