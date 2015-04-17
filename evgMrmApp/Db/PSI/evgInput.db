@@ -4,8 +4,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-EnaIrq-Sel") {
     field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=IRQ")
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
-    #field( OMSL, "closed_loop")
-    #field( DOL,  "$(SYS){$(EVG):1ppsInp-MbbiDir_.B$(PPS) CP")
     field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-EnaIrq-RB")
     field( VAL, "$($(OBJ)$(ID)-EnaIrq-Sel\=0)")
     info( autosaveFields_pass0, "VAL")
@@ -118,7 +116,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc0-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc0-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)0-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -130,7 +127,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc1-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc1-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)1-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -142,7 +138,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc2-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc2-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)2-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -154,7 +149,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc3-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc3-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)3-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -166,7 +160,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc4-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc4-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)4-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -178,7 +171,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc5-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc5-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)5-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -190,7 +182,6 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc6-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc6-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)6-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -202,6 +193,5 @@ record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc7-SP") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( VAL, "$($(OBJ)$(ID)-DbusSrc7-SP\=0)")
-    #field( FLNK, "$(SYS)-$(EVG):$(DBUSOBJ)7-InputSrc-Sel")  # If DBus is selected, set DBus source to 'input'.
     info( autosaveFields_pass0, "VAL")
 }

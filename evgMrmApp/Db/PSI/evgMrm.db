@@ -55,47 +55,6 @@ record(bo,"$(SYS)-$(EVG):SyncTimestamp-Cmd" ) {
     field( OUT,  "#C S @$(EVG)")
 }
 
-#record(mbbo, "$(SYS)-$(EVG):1ppsInp-Sel") {
-#    field( DESC, "EVG 1PPS Input")
-#    field( PINI, "YES")
-#    field( UDF,  "0")
-#    field( VAL,  "0")
-#    field( ZRST, "None")
-#    field( ONST, "Front0")
-#    field( TWST, "Front1")
-#    field( THST, "Univ0")
-#    field( FRST, "Univ1")
-#    field( FVST, "Univ2")
-#    field( SXST, "Univ3")
-#    field( ZRVL, 0)
-#    field( ONVL, 1)
-#    field( TWVL, 2)
-#    field( THVL, 4)
-#    field( FRVL, 8)
-#    field( FVVL, 16)
-#    field( SXVL, 32)
-#    field( SVSV, "INVALID")
-#    field( EISV, "INVALID")
-#    field( NISV, "INVALID")
-#    field( TESV, "INVALID")
-#    field( ELSV, "INVALID")
-#    field( TVSV, "INVALID")
-#    field( TTSV, "INVALID")
-#    field( FTSV, "INVALID")
-#    field( FFSV, "INVALID")
-#    field( UNSV, "INVALID")
-#    field( IVOA, "Don't drive outputs")
-#    info( autosaveFields_pass0, "VAL")
-#}
-
-#
-# Each bit of the 1ppsInp-MbbiDir record is used to toggle the external input
-# interrupt of the corresponding external input.
-#
-#record(mbbiDirect, "$(SYS)-$(EVG):1ppsInp-MbbiDir_") {
-#    field( DESC, "EVG 1PPS Input")
-#    field( INP,  "$(SYS)-$(EVG):1ppsInp-Sel.RVAL CP")
-#}
 
 record(longin, "$(SYS)-$(EVG):DbusStatus-RB" ) {
     field( DESC, "EVG Dbus Status")
