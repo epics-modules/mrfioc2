@@ -23,10 +23,11 @@
 #ifndef MRFOBJECT_H
 #define MRFOBJECT_H
 
-#ifdef WIN32
+#ifdef _WIN32
 #pragma warning( disable: 4251 )
 #pragma warning( disable: 4275 )
 #pragma warning( disable: 4661 )
+#pragma warning( disable: 4273 )
 #endif
 
 // dmm: the old gcc v2.96 appears to have problems to find the "new" version of <ostream>
