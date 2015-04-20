@@ -20,10 +20,6 @@
 
 #include "mrmDataBufTx.h"
 
-#ifndef STATIC_ASSERT
-#define STATIC_ASSERT(dummy)
-#endif
-
 #ifndef bswap32
 #define bswap32(value) (  \
         (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
