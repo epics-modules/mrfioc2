@@ -38,5 +38,5 @@ if [ $OPTIND -le 1 ]; then
 fi
 
 macro="EVR=$SYS-$EVR"
-caqtdm -macro "$macro" evr_master.ui &
-#echo caqtdm -macro "$macro" evr_master.ui &
+caqtdm -macro "$macro" G_EVR_VME_master.ui &
+#echo caqtdm -macro "$macro" G_EVR_VME_master.ui &
