@@ -277,7 +277,7 @@ int mrfiocDBuff_write(
 
     //Copy into the scratch buffer
         /* Data in buffer is in big endian byte order */
-    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, REGDEV_SWAP_FROM_BE);
+    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, REGDEV_SWAP_TO_BE);
 
     //Update buffer length (rounded up to multiple of 4)
     size_t bufferLen = (datalength * nelem + offset + 3) & ~3;
@@ -354,12 +354,16 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
         printf ("mrfiocDBuffConfigure %s: mrmBufMaxLen() failed", regDevName);
         return;
     }
+    dbgPrintf("mrfiocDBuffConfigure %s: %s buffer size is %u bytes\n",
+        regDevName, mrfName, maxLength);
 
     device->proto = (epicsUInt32) protocol; //protocol ID
-    epicsPrintf("\t%s registered to protocol %d\n", regDevName, device->proto);
+    epicsPrintf("mrfiocDBuffConfigure %s: registering to protocol %d\n", regDevName, device->proto);
 
     if (mrmBufTxSupported(device->bufferHandle))
     {
+        dbgPrintf("mrfiocDBuffConfigure %s: %s supports TX buffer. Allocating.\n",
+            regDevName, mrfName);
         /* Allocate the buffer memory */
         device->txBuffer = (epicsUInt8*) calloc(1, maxLength);
         if (!device->txBuffer) {
@@ -370,6 +374,8 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
 
     if (mrmBufRxSupported(device->bufferHandle))
     {
+        dbgPrintf("mrfiocDBuffConfigure %s: %s supports RX buffer. Allocating and installing callback\n",
+            regDevName, mrfName);
         device->rxBuffer = (epicsUInt8*) calloc(1, maxLength);
         if (!device->rxBuffer) {
             errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
