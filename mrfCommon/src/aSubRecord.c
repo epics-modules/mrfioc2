@@ -84,7 +84,7 @@ rset aSubRSET = {
 };
 epicsExportAddress(rset, aSubRSET);
 
-static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
+static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
     const char **fldnames, void **pval, void **povl);
 static long fetch_values(aSubRecord *prec);
 static void monitor(aSubRecord *);
@@ -216,7 +216,7 @@ static long init_record(aSubRecord *prec, int pass)
 }
 
 
-static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
+static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
     const char **fldnames, void **pval, void **povl)
 {
     int i;
