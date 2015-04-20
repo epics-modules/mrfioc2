@@ -176,7 +176,7 @@
      <string notr="true">EVG=$(EVG)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evg_master_softEvt.ui</string>
+     <string notr="true">G_EVG_VME_softEvt.ui</string>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -235,7 +235,7 @@
          <string notr="true">ID=0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_26">
@@ -251,7 +251,7 @@
          <string notr="true">ID=1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_27">
@@ -267,7 +267,7 @@
          <string notr="true">ID=2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_36">
@@ -283,7 +283,7 @@
          <string notr="true">ID=3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_37">
@@ -299,7 +299,7 @@
          <string notr="true">ID=4, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_38">
@@ -315,7 +315,7 @@
          <string notr="true">ID=5, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_39">
@@ -331,7 +331,7 @@
          <string notr="true">ID=6, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_40">
@@ -347,7 +347,7 @@
          <string notr="true">ID=7, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_dbus.ui</string>
+         <string notr="true">G_EVG_VME_dbus.ui</string>
         </property>
        </widget>
       </widget>
@@ -397,7 +397,7 @@
          <string notr="true">ID=FrontInp0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_5">
@@ -413,7 +413,7 @@
          <string notr="true">ID=FrontInp1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_7">
@@ -429,7 +429,7 @@
          <string notr="true">ID=UnivInp0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_8">
@@ -445,7 +445,7 @@
          <string notr="true">ID=UnivInp1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_9">
@@ -461,7 +461,7 @@
          <string notr="true">ID=UnivInp2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_10">
@@ -477,7 +477,7 @@
          <string notr="true">ID=UnivInp3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_41">
@@ -493,7 +493,7 @@
          <string notr="true">ID=RearInp0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_42">
@@ -509,7 +509,7 @@
          <string notr="true">ID=RearInp1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_43">
@@ -525,7 +525,7 @@
          <string notr="true">ID=RearInp2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_44">
@@ -541,7 +541,7 @@
          <string notr="true">ID=RearInp3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_45">
@@ -557,7 +557,7 @@
          <string notr="true">ID=RearInp4, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_46">
@@ -573,7 +573,7 @@
          <string notr="true">ID=RearInp5, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_47">
@@ -589,7 +589,7 @@
          <string notr="true">ID=RearInp6, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_48">
@@ -605,7 +605,7 @@
          <string notr="true">ID=RearInp7, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_49">
@@ -621,7 +621,7 @@
          <string notr="true">ID=RearInp8, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_50">
@@ -637,7 +637,7 @@
          <string notr="true">ID=RearInp9, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_51">
@@ -653,7 +653,7 @@
          <string notr="true">ID=RearInp10, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_52">
@@ -669,7 +669,7 @@
          <string notr="true">ID=RearInp11, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_53">
@@ -685,7 +685,7 @@
          <string notr="true">ID=RearInp12, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_54">
@@ -701,7 +701,7 @@
          <string notr="true">ID=RearInp13, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_55">
@@ -717,7 +717,7 @@
          <string notr="true">ID=RearInp14, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_56">
@@ -733,7 +733,7 @@
          <string notr="true">ID=RearInp15, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_input.ui</string>
+         <string notr="true">G_EVG_VME_input.ui</string>
         </property>
        </widget>
       </widget>
@@ -777,7 +777,7 @@
          <string notr="true">ID=FrontOut0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_12">
@@ -793,7 +793,7 @@
          <string notr="true">ID=FrontOut1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_13">
@@ -809,7 +809,7 @@
          <string notr="true">ID=FrontOut2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_14">
@@ -825,7 +825,7 @@
          <string notr="true">ID=FrontOut3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_57">
@@ -841,7 +841,7 @@
          <string notr="true">ID=UnivOut0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_58">
@@ -857,7 +857,7 @@
          <string notr="true">ID=UnivOut1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_59">
@@ -873,7 +873,7 @@
          <string notr="true">ID=UnivOut2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_60">
@@ -889,7 +889,7 @@
          <string notr="true">ID=UnivOut3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_output.ui</string>
+         <string notr="true">G_EVG_VME_output.ui</string>
         </property>
        </widget>
       </widget>
@@ -939,7 +939,7 @@
          <string notr="true">TRIGEVTNUM=0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_24">
@@ -955,7 +955,7 @@
          <string notr="true">TRIGEVTNUM=1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_28">
@@ -971,7 +971,7 @@
          <string notr="true">TRIGEVTNUM=2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_29">
@@ -987,7 +987,7 @@
          <string notr="true">TRIGEVTNUM=3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_30">
@@ -1003,7 +1003,7 @@
          <string notr="true">TRIGEVTNUM=4, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_31">
@@ -1019,7 +1019,7 @@
          <string notr="true">TRIGEVTNUM=5, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_32">
@@ -1035,7 +1035,7 @@
          <string notr="true">TRIGEVTNUM=6, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_33">
@@ -1051,7 +1051,7 @@
          <string notr="true">TRIGEVTNUM=7, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_trigEvt.ui</string>
+         <string notr="true">G_EVG_VME_trigEvt.ui</string>
         </property>
        </widget>
       </widget>
@@ -1107,7 +1107,7 @@
          <string notr="true">ID=0, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_16">
@@ -1123,7 +1123,7 @@
          <string notr="true">ID=1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_17">
@@ -1139,7 +1139,7 @@
          <string notr="true">ID=2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_18">
@@ -1155,7 +1155,7 @@
          <string notr="true">ID=3, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_19">
@@ -1171,7 +1171,7 @@
          <string notr="true">ID=4, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_20">
@@ -1187,7 +1187,7 @@
          <string notr="true">ID=5, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_21">
@@ -1203,7 +1203,7 @@
          <string notr="true">ID=6, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_22">
@@ -1219,7 +1219,7 @@
          <string notr="true">ID=7, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_mxc-v2.ui</string>
+         <string notr="true">G_EVG_VME_mxc-v2.ui</string>
         </property>
        </widget>
       </widget>
@@ -1242,7 +1242,7 @@
        <string notr="true">EVG=$(EVG)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">evg_master_acTrig.ui</string>
+       <string notr="true">G_EVG_VME_acTrig.ui</string>
       </property>
      </widget>
     </widget>
@@ -1263,7 +1263,7 @@
        <string notr="true">EVG=$(EVG)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">evg_master_evtClk.ui</string>
+       <string notr="true">G_EVG_VME_evtClk.ui</string>
       </property>
      </widget>
     </widget>
@@ -1317,7 +1317,7 @@
          <string notr="true">SEQNUM=1, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_softSeq.ui</string>
+         <string notr="true">G_EVG_VME_softSeq.ui</string>
         </property>
        </widget>
        <widget class="caInclude" name="cainclude_35">
@@ -1333,7 +1333,7 @@
          <string notr="true">SEQNUM=2, EVG=$(EVG)</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">evg_master_softSeq.ui</string>
+         <string notr="true">G_EVG_VME_softSeq.ui</string>
         </property>
        </widget>
       </widget>

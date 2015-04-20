@@ -494,7 +494,7 @@
       <string notr="true">&gt;</string>
      </property>
      <property name="files">
-      <string notr="true">evr_base-link-status</string>
+      <string notr="true">G_EVR_VME_base-link-status</string>
      </property>
      <property name="args">
       <string notr="true">EVR=$(EVR)</string>
@@ -667,7 +667,7 @@
       <string notr="true">ID=1, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_prescaler.ui</string>
+      <string notr="true">G_EVR_VME_prescaler.ui</string>
      </property>
      <property name="visibility">
       <enum>caInclude::StaticV</enum>
@@ -689,7 +689,7 @@
       <string notr="true">ID=0, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_prescaler.ui</string>
+      <string notr="true">G_EVR_VME_prescaler.ui</string>
      </property>
      <property name="visibility">
       <enum>caInclude::StaticV</enum>
@@ -711,7 +711,7 @@
       <string notr="true">ID=2, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_prescaler.ui</string>
+      <string notr="true">G_EVR_VME_prescaler.ui</string>
      </property>
      <property name="visibility">
       <enum>caInclude::StaticV</enum>
@@ -749,7 +749,7 @@
      <string notr="true">EVR=$(EVR), P=FP, ID=0</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_out-small.ui</string>
+     <string notr="true">G_EVR_VME_out-small.ui</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_3">
@@ -795,7 +795,7 @@
      <string notr="true">EVR=$(EVR), P=FP, ID=1</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_out-small.ui</string>
+     <string notr="true">G_EVR_VME_out-small.ui</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_5">
@@ -856,7 +856,7 @@
      <string notr="true">EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_base-link-status.ui</string>
+     <string notr="true">G_EVR_VME_base-link-status.ui</string>
     </property>
    </widget>
    <widget class="caRelatedDisplay" name="carelateddisplay_2">
@@ -875,7 +875,7 @@
      <string notr="true">&gt;</string>
     </property>
     <property name="files">
-     <string notr="true">evr_info</string>
+     <string notr="true">G_EVR_VME_info</string>
     </property>
     <property name="args">
      <string notr="true">EVR=$(EVR)</string>
@@ -900,7 +900,7 @@
      <string notr="true">SFP</string>
     </property>
     <property name="files">
-     <string notr="true">evr_sfp.ui</string>
+     <string notr="true">G_EVR_VME_sfp.ui</string>
     </property>
     <property name="args">
      <string notr="true">EVR=$(EVR)</string>
@@ -919,7 +919,7 @@
      <string notr="true">EVR=$(EVR),ID=0</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_pulser.ui</string>
+     <string notr="true">G_EVR_VME_pulser.ui</string>
     </property>
    </widget>
    <widget class="caRelatedDisplay" name="carelateddisplay_4">
@@ -938,7 +938,7 @@
      <string notr="true">In 1;In 2;In 3</string>
     </property>
     <property name="files">
-     <string notr="true">evr_input;evr_input;evr_input</string>
+     <string notr="true">G_EVR_VME_input;G_EVR_VME_input;G_EVR_VME_input</string>
     </property>
     <property name="args">
      <string notr="true">ID=1, EVR=$(EVR); ID=2, EVR=$(EVR); ID=3, EVR=$(EVR)</string>
@@ -957,7 +957,7 @@
      <string notr="true">FUNC=Blink, EVT=1, EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_map-special.ui</string>
+     <string notr="true">G_EVR_VME_map-special.ui</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_12">
@@ -973,7 +973,7 @@
      <string notr="true">FUNC=Blink, EVT=0, EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_map-special.ui</string>
+     <string notr="true">G_EVR_VME_map-special.ui</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_13">
@@ -989,7 +989,7 @@
      <string notr="true">FUNC=Trig, EVT=0, PULSER=0, ID=0, EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_map-pulser.ui</string>
+     <string notr="true">G_EVR_VME_map-pulser.ui</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_14">
@@ -1005,7 +1005,7 @@
      <string notr="true">FUNC=Trig, EVT=1, PULSER=0, ID=0, EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">evr_map-pulser.ui</string>
+     <string notr="true">G_EVR_VME_map-pulser.ui</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_5">
@@ -1033,7 +1033,7 @@
       <string notr="true">CODE=2, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_map-soft.ui</string>
+      <string notr="true">G_EVR_VME_map-soft.ui</string>
      </property>
     </widget>
     <widget class="caInclude" name="cainclude_8">
@@ -1049,7 +1049,7 @@
       <string notr="true">CODE=0, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_map-soft.ui</string>
+      <string notr="true">G_EVR_VME_map-soft.ui</string>
      </property>
     </widget>
     <widget class="caInclude" name="cainclude_9">
@@ -1065,7 +1065,7 @@
       <string notr="true">CODE=1, EVR=$(EVR)</string>
      </property>
      <property name="filename" stdset="0">
-      <string notr="true">evr_map-soft.ui</string>
+      <string notr="true">G_EVR_VME_map-soft.ui</string>
      </property>
     </widget>
    </widget>
