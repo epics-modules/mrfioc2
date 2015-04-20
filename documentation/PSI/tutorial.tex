@@ -1,5 +1,5 @@
 \documentclass[12pt,a4paper]{article}
-\usepackage[in]{fullpage}
+%\usepackage[in]{fullpage}
 \usepackage[utf8x]{inputenc}
 \usepackage{cite}
 %\usepackage{listings}
@@ -20,6 +20,7 @@
 %opening
 \title{EVR Tutorials}
 %\author{Sašo Skube, PSI}
+\date{}
 
 \begin{document}
 
@@ -43,14 +44,14 @@ To set up a timing system we need a VME crate, a Single Board Computer (SBC) and
 To set up an IOC application for EVR we need to set up a startup script and a substitution file. The following steps demonstrate how to prepare such a SWIT compatible IOC application:
 \begin{enumerate}
 
-	\item Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST} and a \textbf{sub-folder} named \texttt{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
+	\item Create a project folder, eg. \texttt{MTEST-VME-EVRTEST} and a sub-folder named \texttt{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
 \begin{verbatim}
 	mkdir MTEST-VME-EVRTEST
 	cd MTEST-VME-EVRTEST
 	mkdir cfg
 \end{verbatim}
 
-	\item Copy the \textbf{startup script} \texttt{/fin/devl/iocBoot/templates/slejko/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
+	\item Copy the startup script \newline \texttt{/fin/devl/iocBoot/templates/slejko/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
 	cp /fin/devl/iocBoot/templates/slejko/example.startup 
 	    MTEST-VME-EVRTEST_startup.script
@@ -95,7 +96,7 @@ Using the above startup script, the system name is set to \textit{MTEST-VME-EVRT
 
 Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
 
-	\item Copy the \textbf{substitution file} \texttt{/fin/devl/iocBoot/templates/slejko/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
+	\item Copy the substitution file \texttt{/fin/devl/iocBoot/templates/slejko/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
 \begin{verbatim}
 	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
 \end{verbatim}
@@ -120,7 +121,7 @@ This tutorial demonstrates how to configure an EVR to generate a 80 ns wide puls
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{./img/pulserSignal}
-	\caption{An example of 2 pulses generated after the reception of the event 4.}
+	\caption{An example of a pulse generated after the reception of the event 4.}
 	\label{fig:pulser_signal}
 \end{figure}
 The pulse in this tutorial is generated using pulser 3 and outputted through the front panel TTL output 0 (FrontOut0), as seen in Figure~\ref{fig:pulser}. 
@@ -160,7 +161,7 @@ The pulse in this tutorial is generated using pulser 3 and outputted through the
 \end{verbatim}
 
 	\item Optionally, you can remove all the macros whose values you did not change. 
-	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 \subsection{Substitution snippet explanation:}\label{sec:explain_pulser}
 
@@ -202,7 +203,7 @@ This tutorial demonstrates how to trigger an EPICS event number 1 upon reception
 \end{verbatim}
 	\item Optionally, you can remove all the macros whose values you did not change. 
 
-	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
 \subsection{Substitution snippet explanation:}\label{sec:explain_event}
@@ -244,7 +245,7 @@ This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the 
 \end{verbatim}
 
 	\item Optionally, you can remove all the macros whose values you did not change. 
-	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
 \subsection{Substitution snippet explanation:}\label{sec:explain_clock}
@@ -284,7 +285,7 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 \end{verbatim}
 
 	\item Optionally, you can remove all the macros whose values you did not change. 
-	\item \textbf{Install the} prepared \textbf{IOC} by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
 
 \subsection{Substitution snippet explanation:}\label{sec:explain_dbus}
