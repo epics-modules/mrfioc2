@@ -101,6 +101,7 @@
 #include <epicsMMIO.h>           /* OS-dependent synchronous I/O routines                         */
 #include <mrfBitOps.h>          /* Generic bit operations                                         */
 #include <endian.h>
+#include <stdexcept>
 
 /**************************************************************************************************/
 /*                            Macros For Accessing MRF Timing Modules                             */
@@ -182,6 +183,9 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 		return ioread8(((epicsUInt8 *)addr) - 1);
 	case 3:
 		return ioread8(((epicsUInt8 *)addr) - 3);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 8bit read.");
 	}
 }
 #define NAT_READ8(base,offset)  \
@@ -198,6 +202,9 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
   		return nat_ioread16(((epicsUInt8 *)addr) + 2);
   	case 2:
   		return nat_ioread16(((epicsUInt8 *)addr) - 2);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 16bit read.");
   	}
   }
  #define NAT_READ16(base,offset) \
@@ -225,6 +232,9 @@ INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
  		return iowrite8(((epicsUInt8 *)addr) - 1,val);
  	case 3:
  		return iowrite8(((epicsUInt8 *)addr) - 3,val);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 8bit write.");
  	}
  }
  #define NAT_WRITE8(base,offset,value) \
@@ -241,6 +251,9 @@ INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
  		return nat_iowrite16(((epicsUInt8 *)addr) + 2,val);
  	case 2:
  		return nat_iowrite16(((epicsUInt8 *)addr) - 2,val);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 16bit write.");
  	}
  }
 #define NAT_WRITE16(base,offset,value) \
