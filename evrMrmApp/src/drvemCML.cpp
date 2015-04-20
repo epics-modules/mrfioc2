@@ -16,9 +16,10 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
-#include "drvem.h"
 
 #include <epicsExport.h>
+
+#include "drvem.h"
 #include "drvemCML.h"
 
 MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, evrForm f)
