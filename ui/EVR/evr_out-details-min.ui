@@ -44,7 +44,7 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="caInclude" name="cainclude_2">
+   <widget class="caInclude" name="cainclude_prescaler">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -63,13 +63,13 @@
      <enum>caInclude::Calc</enum>
     </property>
     <property name="visibilityCalc">
-     <string notr="true">A=B&amp;&amp;A#0</string>
+     <string notr="true">A=B&amp;&amp;A&gt;39</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-RB.RVAL</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_2">
@@ -86,34 +86,6 @@
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP</string>
-    </property>
-   </widget>
-   <widget class="caInclude" name="cainclude">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>22</y>
-      <width>90</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="macro">
-     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
-    </property>
-    <property name="filename" stdset="0">
-     <string notr="true">evr_out-helper.ui</string>
-    </property>
-    <property name="visibility">
-     <enum>caInclude::Calc</enum>
-    </property>
-    <property name="visibilityCalc">
-     <string notr="true">A=B</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
-    </property>
-    <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_16">
@@ -180,7 +152,7 @@
      <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP</string>
     </property>
    </widget>
-   <widget class="caInclude" name="cainclude_3">
+   <widget class="caInclude" name="cainclude_dbus">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -199,13 +171,13 @@
      <enum>caInclude::Calc</enum>
     </property>
     <property name="visibilityCalc">
-     <string notr="true">A=B&amp;&amp;A#0</string>
+     <string notr="true">A=B&amp;&amp;A&lt;40&amp;&amp;A&gt;31</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-RB.RVAL</string>
     </property>
    </widget>
    <widget class="caMenu" name="camenu_4">
@@ -294,13 +266,13 @@
      <enum>caInclude::Calc</enum>
     </property>
     <property name="visibilityCalc">
-     <string notr="true">A=B&amp;&amp;A#0</string>
+     <string notr="true">A=B&amp;&amp;A&lt;40&amp;&amp;A&gt;31</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-DBus-RB.RVAL</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_4">
@@ -322,13 +294,13 @@
      <enum>caInclude::Calc</enum>
     </property>
     <property name="visibilityCalc">
-     <string notr="true">A=B&amp;&amp;A#0</string>
+     <string notr="true">A=B&amp;&amp;A&gt;39</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Scale-RB.RVAL</string>
     </property>
    </widget>
    <widget class="caInclude" name="cainclude_6">
@@ -350,13 +322,47 @@
      <enum>caInclude::Calc</enum>
     </property>
     <property name="visibilityCalc">
-     <string notr="true">A=B</string>
+     <string notr="true">A=B&amp;&amp;A&lt;16&amp;&amp;A&gt;=0&amp;&amp;C&gt;0</string>
     </property>
     <property name="channel" stdset="0">
      <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
     </property>
     <property name="channelB">
-     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-SP.RVAL</string>
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-RB.RVAL</string>
+    </property>
+    <property name="channelC">
+     <string notr="true">$(EVR):$(P)$(ID)-User-SP.NELM</string>
+    </property>
+    <property name="channelD">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="caInclude" name="cainclude_pulser">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>22</y>
+      <width>90</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="macro">
+     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
+    </property>
+    <property name="filename" stdset="0">
+     <string notr="true">evr_out-helper.ui</string>
+    </property>
+    <property name="visibility">
+     <enum>caInclude::Calc</enum>
+    </property>
+    <property name="visibilityCalc">
+     <string notr="true">A=B&amp;&amp;A&lt;16</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVR):$(P)$(ID)-Src-RB</string>
+    </property>
+    <property name="channelB">
+     <string notr="true">$(EVR):$(P)$(ID)-Src-Pulse-RB.RVAL</string>
     </property>
    </widget>
   </widget>
