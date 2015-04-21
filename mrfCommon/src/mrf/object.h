@@ -43,7 +43,6 @@ namespace mrf {
 struct info_t{
     std::string position;
     epicsUInt32 address;
-    epicsUInt32 irqFlag;
     epicsUInt32 irqVector;
     epicsUInt32 irqLevel;
     epicsUInt32 vendor;

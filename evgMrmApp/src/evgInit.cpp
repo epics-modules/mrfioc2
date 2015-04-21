@@ -167,6 +167,9 @@ mrmEvgSetupVME (
     struct VMECSRID info;
 
     try {
+        mrf::info_t cardInfo;
+        std::ostringstream position;
+
         if(mrf::Object::getObject(id)){
             errlogPrintf("ID %s already in use\n",id);
             return -1;
@@ -180,6 +183,7 @@ mrmEvgSetupVME (
             errlogPrintf("No EVG in slot %d\n",slot);
             return -1;
         }
+        position<<"Slot #"<<slot;
 
         printf("##### Setting up MRF EVG in VME Slot %d #####\n",slot);
         printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
@@ -223,7 +227,15 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, regCpuAddr);
+        cardInfo.position = position.str();
+        cardInfo.irqLevel = irqLevel;
+        cardInfo.irqVector = irqVector;
+        cardInfo.vendor = info.vendor;
+        cardInfo.board = info.board;
+        cardInfo.revision = info.revision;
+        cardInfo.address = vmeAddress;
+
+        evgMrm* evg = new evgMrm(id, cardInfo, regCpuAddr);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -313,6 +325,9 @@ mrmEvgSetupPCI (
 {
 
 	try {
+        mrf::info_t cardInfo;
+        std::ostringstream position;
+
 		if (mrf::Object::getObject(id)) {
 			errlogPrintf("ID %s already in use\n", id);
 			return -1;
@@ -328,8 +343,8 @@ mrmEvgSetupPCI (
 			return -1;
 		}
 
-		printf("Device %s  %u:%u.%u\n", id, cur->bus, cur->device,
-				cur->function);
+        printf("Device %s  %u:%u.%u\n", id, cur->bus, cur->device, cur->function);
+        position<<cur->bus<<":"<<cur->device<<"."<<cur->function;
 		printf("Using IRQ %u\n", cur->irq);
 
 		/* MMap BAR0(plx) and BAR2(EVG)*/
@@ -358,7 +373,14 @@ mrmEvgSetupPCI (
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
-		evgMrm* evg = new evgMrm(id, BAR_evg);
+        cardInfo.position = position.str();
+        cardInfo.irqVector = cur->irq;
+        cardInfo.address=0;
+        cardInfo.irqLevel=0;
+        cardInfo.vendor=0;
+        cardInfo.board=0;
+        cardInfo.revision=0;
+        evgMrm* evg = new evgMrm(id, cardInfo, BAR_evg);
 
 		evg->getSeqRamMgr()->getSeqRam(0)->disable();
 		evg->getSeqRamMgr()->getSeqRam(1)->disable();
@@ -634,6 +656,7 @@ printregisters(volatile epicsUInt8 *evg) {
 static bool
 reportCard(mrf::Object* obj, void* arg) {
     int *level=(int*)arg;
+    mrf::info_t info;
     evgMrm *evg=dynamic_cast<evgMrm*>(obj);
     if(!evg)
         return true;
@@ -641,6 +664,19 @@ reportCard(mrf::Object* obj, void* arg) {
     printf("    ID: %s     \n", evg->getId().c_str());
     
     printf("    FPGA version: %08x\n", evg->getFwVersion());
+
+    info = evg->getInfo();
+    printf("    Card info: \n\t \
+id:%s,\n\t \
+%s,\n\t \
+irq vector:%x,\n\t \
+irq flag:%x,\n\t \
+irq level:%x\n\t \
+address:%x\n\t \
+board:%x\n\t \
+vendor:%x\n\t \
+revision:%x\n",
+           evg->getId().c_str(), info.position.c_str(), info.irqVector, READ32(evg->getRegAddr(), IrqFlag), info.irqLevel, info.address, info.board, info.vendor, info.revision);
 
     evg->show(*level);
     

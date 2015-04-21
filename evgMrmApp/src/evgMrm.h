@@ -43,7 +43,7 @@ enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm : public mrf::ObjectInst<evgMrm> {
 public:
-    evgMrm(const std::string& id, volatile epicsUInt8* const);
+    evgMrm(const std::string& id, const mrf::info_t& inf, volatile epicsUInt8* const);
     ~evgMrm();
 
     /* locking done internally */
@@ -52,6 +52,7 @@ public:
 
     /** EVG    **/
     const std::string getId() const;
+    virtual mrf::info_t getInfo() const;
     volatile epicsUInt8* getRegAddr() const;
     epicsUInt32 getFwVersion() const;
     std::string getSwVersion() const;
@@ -119,6 +120,7 @@ public:
 
 private:
     const std::string             m_id;
+    const mrf::info_t             info;
     volatile epicsUInt8* const    m_pReg;
 
     evgAcTrig                     m_acTrig;
