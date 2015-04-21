@@ -17,7 +17,7 @@
 
 class EVRMRM;
 
-class MRMCML : public CML
+class epicsShareClass MRMCML : public CML
 {
 public:
     enum outkind { typeCML, typeTG300, typeTG203 };

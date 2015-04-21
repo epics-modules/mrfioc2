@@ -19,11 +19,11 @@
 #include <epicsTime.h>
 #include <callback.h>
 
-class Pulser;
-class Output;
-class PreScaler;
-class Input;
-class CML;
+class epicsShareClass Pulser;
+class epicsShareClass Output;
+class epicsShareClass PreScaler;
+class epicsShareClass Input;
+class epicsShareClass CML;
 
 enum TSSource {
   TSSourceInternal=0,
@@ -39,7 +39,7 @@ enum TSSource {
  * Device support can use one of the functions returning IOSCANPVT
  * to impliment get_ioint_info().
  */
-class EVR : public mrf::ObjectInst<EVR>
+class epicsShareClass EVR : public mrf::ObjectInst<EVR>
 {
 public:
   EVR(const std::string& n, const std::string& p) : mrf::ObjectInst<EVR>(n), pos(p) {}

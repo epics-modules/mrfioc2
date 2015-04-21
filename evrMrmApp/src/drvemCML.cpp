@@ -8,8 +8,6 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemCML.h"
-
 #include <stdexcept>
 #include <algorithm>
 
@@ -19,6 +17,9 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 #include "drvem.h"
+
+#include <epicsExport.h>
+#include "drvemCML.h"
 
 MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, evrForm f)
   :CML(n)
@@ -137,7 +138,7 @@ MRMCML::enable(bool s)
 bool
 MRMCML::inReset() const
 {
-    return shadowEnable & OutputCMLEna_rst;
+    return (shadowEnable & OutputCMLEna_rst) != 0;
 }
 
 void
@@ -197,7 +198,7 @@ MRMCML::setPolarityInvert(bool s)
 bool
 MRMCML::polarityInvert() const
 {
-    return shadowEnable & OutputCMLEna_ftrg;
+    return (shadowEnable & OutputCMLEna_ftrg) != 0;
 }
 
 epicsUInt32
@@ -313,7 +314,7 @@ MRMCML::setTimeInit (double v)
 bool
 MRMCML::recyclePat() const
 {
-    return shadowEnable & OutputCMLEna_cycl;
+    return (shadowEnable & OutputCMLEna_cycl) != 0;
 }
 
 void

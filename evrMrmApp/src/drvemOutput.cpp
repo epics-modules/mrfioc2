@@ -8,9 +8,8 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemOutput.h"
 
-#include <epicsMMIO.h>
+//#include <epicsMMIO.h>
 #include "evrRegMap.h"
 #include "drvem.h"
 
@@ -19,6 +18,8 @@
 #include <mrfBitOps.h>
 
 #include <stdexcept>
+#include <epicsExport.h>
+#include "drvemOutput.h"
 
 MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int idx)
     :Output(n)

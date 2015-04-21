@@ -8,8 +8,6 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemIocsh.h"
-
 #include <cstdio>
 #include <cstring>
 
@@ -22,23 +20,36 @@
 #include <iocsh.h>
 #include <initHooks.h>
 #include <epicsExit.h>
-#include <epicsExport.h>
 
 #include <devLibPCI.h>
 #include <devcsr.h>
 #include <epicsInterrupt.h>
 #include <epicsThread.h>
-#include "mrmpci.h"
-#include "mrfcsr.h"
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
 
 #include "drvem.h"
+#include "mrfcsr.h"
+#include "mrmpci.h"
+
+#include <epicsExport.h>
+
+#include "drvemIocsh.h"
+
+// for htons() et al.
+#ifdef _WIN32
+ #include <Winsock2.h>
+#endif
+
 #include "evrRegMap.h"
 #include "plx9030.h"
 #include "plx9056.h"
 #include "latticeEC30.h"
 
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
+#ifdef _WIN32
+ #define strtok_r(strToken,strDelimit,lasts ) (*(lasts) = strtok((strToken),(strDelimit)))
+#endif
+
 
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvrSetupVME().  Levels are
@@ -358,7 +369,7 @@ try {
         //BITCLR(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
         //BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
-        *(uint8_t *)(evr+0x04) = 0x82; // unknown magic number
+        *(epicsUInt8 *)(evr+0x04) = 0x82; // unknown magic number
         printf("Setting magic LE number!\n");
 #endif
 
@@ -946,7 +957,6 @@ void mrmsetupreg()
     iocshRegister(&mrmEvrDelayStartFuncDef,mrmEvrDelayStartCallFunc);*/
 }
 
-epicsExportRegistrar(mrmsetupreg);
 
 static
 drvet drvEvrMrm = {
@@ -954,5 +964,7 @@ drvet drvEvrMrm = {
     (DRVSUPFUN)report,
     NULL
 };
-
+extern "C"{
+epicsExportRegistrar(mrmsetupreg);
 epicsExportAddress (drvet, drvEvrMrm);
+}

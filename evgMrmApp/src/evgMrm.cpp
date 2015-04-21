@@ -27,6 +27,9 @@
 
 #include "evgRegMap.h"
 
+#include <epicsExport.h>
+
+
 evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
 mrf::ObjectInst<evgMrm>(id),
 irqStop0_queued(0),
@@ -204,7 +207,7 @@ evgMrm::enable(bool ena) {
 
 bool
 evgMrm::enabled() const {
-    return READ32(m_pReg, Control) & EVG_MASTER_ENA;
+    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
 }
 
 void
@@ -542,7 +545,7 @@ evgMrm::syncTimestamp() {
      *       26.996234643 should be rounded to 27.
      *  Also the nano second value can be assumed to be zero.
      */
-    if(m_timestamp.nsec > 500*pow(10,6))
+    if(m_timestamp.nsec > 500*pow(10.0,6))
         incrTimestamp();
     
     m_timestamp.nsec = 0;

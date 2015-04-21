@@ -75,7 +75,7 @@ try {
 
     {
         scopedLock<mrf::Object> g(*priv->O);
-        priv->P->set(prec->val);
+        priv->P->set((prec->val != 0));
 
         if(priv->rbv)
             prec->val = priv->P->get();
@@ -117,10 +117,11 @@ OBJECT_DSET(LOFromBool,
             NULL);
 
 #include <epicsExport.h>
-
-OBJECT_DSET_EXPORT(LIFromUINT32);
-OBJECT_DSET_EXPORT(LIFromUINT16);
-OBJECT_DSET_EXPORT(LIFromBool);
-OBJECT_DSET_EXPORT(LOFromUINT32);
-OBJECT_DSET_EXPORT(LOFromUINT16);
-OBJECT_DSET_EXPORT(LOFromBool);
+extern "C" {
+ OBJECT_DSET_EXPORT(LIFromUINT32);
+ OBJECT_DSET_EXPORT(LIFromUINT16);
+ OBJECT_DSET_EXPORT(LIFromBool);
+ OBJECT_DSET_EXPORT(LOFromUINT32);
+ OBJECT_DSET_EXPORT(LOFromUINT16);
+ OBJECT_DSET_EXPORT(LOFromBool);
+}

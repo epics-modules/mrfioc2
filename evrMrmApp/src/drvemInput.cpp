@@ -9,13 +9,12 @@
  */
 
 #include <drvemInput.h>
+#include <stdexcept>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
-
+#include <epicsExport.h>
 #include "evrRegMap.h"
-
-#include <stdexcept>
 
 #include <epicsInterrupt.h>
 
@@ -104,8 +103,8 @@ MRMInput::extMode() const
 {
     epicsUInt32 v=READ32(base, InputMapFP(idx));
 
-    bool e=v&InputMapFP_eedg;
-    bool l=v&InputMapFP_elvl;
+    bool e = (v&InputMapFP_eedg) != 0;
+    bool l = (v&InputMapFP_elvl) != 0;
 
     if(!e && !l)
         return TrigNone;
@@ -172,8 +171,8 @@ MRMInput::backMode() const
 {
     epicsUInt32 v=READ32(base, InputMapFP(idx));
 
-    bool e=v&InputMapFP_bedg;
-    bool l=v&InputMapFP_blvl;
+    bool e = (v&InputMapFP_bedg) != 0;
+    bool l = (v&InputMapFP_blvl) != 0;
 
     if(!e && !l)
         return TrigNone;

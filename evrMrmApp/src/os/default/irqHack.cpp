@@ -5,4 +5,6 @@ registerISRHack(void)
 {
     // Unneeded
 }
-epicsExportRegistrar(registerISRHack);
+extern "C"{
+ epicsExportRegistrar(registerISRHack);
+}

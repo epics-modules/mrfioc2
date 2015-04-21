@@ -31,7 +31,7 @@
 
 
 #include <epicsExport.h>
-struct priv
+struct s_priv
 {
   char obj[40];
   epicsUInt32 proto;
@@ -44,9 +44,9 @@ struct priv
 static const
 linkOptionDef eventdef[] = 
 {
-  linkString  (priv, obj , "OBJ"  , 1, 0),
-  linkInt32   (priv, proto, "Proto", 1, 0),
-  linkString  (priv, prop , "P", 1, 0),
+  linkString  (s_priv, obj , "OBJ"  , 1, 0),
+  linkInt32   (s_priv, proto, "Proto", 1, 0),
+  linkString  (s_priv, prop , "P", 1, 0),
   linkOptionEnd
 };
 
@@ -57,7 +57,7 @@ static long add_record_waveform(dbCommon *praw)
 try {
   assert(prec->inp.type==INST_IO);
 
-  std::auto_ptr<priv> paddr(new priv);
+  std::auto_ptr<s_priv> paddr(new s_priv);
 
   if (linkOptionsStore(eventdef, paddr.get(), prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
@@ -99,7 +99,7 @@ static long del_record_waveform(dbCommon *praw)
     long ret=0;
     if (!praw->dpvt) return 0;
     try {
-        std::auto_ptr<priv> paddr((priv*)praw->dpvt);
+        std::auto_ptr<s_priv> paddr((s_priv*)praw->dpvt);
         praw->dpvt = 0;
         delete[] paddr->scratch;
 
@@ -117,7 +117,7 @@ static long write_waveform(waveformRecord* prec)
 {
   if (!prec->dpvt) return -1;
 try {
-  priv *paddr=static_cast<priv*>(prec->dpvt);
+  s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
 
   epicsUInt32 capacity=paddr->priv->lenMax();
   const long esize=dbValueSize(prec->ftvl);

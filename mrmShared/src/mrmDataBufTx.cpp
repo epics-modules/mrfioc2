@@ -41,8 +41,9 @@
 
 #define DataTxCtrl_len_max DataTxCtrl_len_mask
 
-dataBufTx::~dataBufTx() {}
-dataBufRx::~dataBufRx() {}
+// Removed due to warning C4273 on MSVC
+//dataBufTx::~dataBufTx() {}
+//dataBufRx::~dataBufRx() {}
 
 mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
@@ -61,8 +62,8 @@ mrmDataBufTx::~mrmDataBufTx()
 bool
 mrmDataBufTx::dataTxEnabled() const
 {
-    return nat_ioread32(dataCtrl) &
-         (DataTxCtrl_ena|DataTxCtrl_mode);
+    return (nat_ioread32(dataCtrl) &
+         (DataTxCtrl_ena|DataTxCtrl_mode)) != 0;
 }
 
 void

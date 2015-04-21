@@ -42,7 +42,7 @@
 
 //! @brief Helper to allow one class to have several runable methods
 template<class C,void (C::*Method)()>
-class epicsThreadRunableMethod : public epicsThreadRunable
+class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
 {
     C& owner;
 public:
@@ -58,7 +58,7 @@ public:
 
 class EVRMRM;
 
-struct eventCode {
+struct epicsShareClass eventCode {
     epicsUInt8 code; // constant
     EVRMRM* owner;
 
@@ -91,7 +91,7 @@ struct eventCode {
  *
  * 
  */
-class EVRMRM : public EVR
+class epicsShareClass EVRMRM : public EVR
 {
 public:    
     /** @brief Guards access to instance
@@ -196,7 +196,7 @@ public:
     static void isr(void*);
     static void isr_pci(void*);
     static void isr_vme(void*);
-#ifdef __linux__
+#if defined(__linux__) || defined(_WIN32)
     const void *isrLinuxPvt;
 #endif
 
@@ -289,7 +289,7 @@ private:
 
     void _map(epicsUInt8 evt, epicsUInt8 func)   { _mapped[evt] |=    1<<(func);  }
     void _unmap(epicsUInt8 evt, epicsUInt8 func) { _mapped[evt] &= ~( 1<<(func) );}
-    bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return _mapped[evt] & 1<<(func); }
+    bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return (_mapped[evt] & 1<<(func)) != 0; }
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

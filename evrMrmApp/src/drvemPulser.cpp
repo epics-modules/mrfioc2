@@ -21,6 +21,7 @@
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
+#include <epicsExport.h>
 #include "evrRegMap.h"
 
 MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)
@@ -139,7 +140,7 @@ MRMPulser::setPrescaler(epicsUInt32 v)
 bool
 MRMPulser::polarityInvert() const
 {
-    return READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol;
+    return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol) != 0;
 }
 
 void
