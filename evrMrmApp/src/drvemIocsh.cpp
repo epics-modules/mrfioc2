@@ -149,6 +149,7 @@ static
 bool reportCard(mrf::Object* obj, void* raw)
 {
     int *level=(int*)raw;
+    mrf::info_t info;
     EVRMRM *evr=dynamic_cast<EVRMRM*>(obj);
     if(!evr)
         return true;
@@ -158,6 +159,19 @@ bool reportCard(mrf::Object* obj, void* raw)
     printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
 
     printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
+
+    info = evr->getInfo();
+    printf("Card info: \n\t \
+id:%s,\n\t \
+%s,\n\t \
+irq vector:%x,\n\t \
+irq flag:%x,\n\t \
+irq level:%x\n\t \
+address:%x\n\t \
+board:%x\n\t \
+vendor:%x\n\t \
+revision:%x\n",
+           evr->id.c_str(), info.position.c_str(), info.irqVector, info.irqFlag, info.irqLevel, info.address, info.board, info.vendor, info.revision);
 
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
@@ -240,6 +254,7 @@ void
 mrmEvrSetupPCI(const char* id,int o,int b,int d,int f)
 {
 try {
+    mrf::info_t cardInfo;
     std::ostringstream position;
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
@@ -388,8 +403,16 @@ try {
     NAT_WRITE32(evr, IRQFlag, NAT_READ32(evr, IRQFlag));
 
     // Install ISR
+    cardInfo.position = position.str();
+    cardInfo.irqFlag = NAT_READ32(evr, IRQFlag);
+    cardInfo.irqVector = cur->irq;
+    cardInfo.address=0;
+    cardInfo.irqLevel=0;
+    cardInfo.vendor=0;
+    cardInfo.board=0;
+    cardInfo.revision=0;
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,cardInfo,evr,evrlen);
 
     void *arg=receiver;
 #ifdef __linux__
@@ -510,6 +533,7 @@ void
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
+    mrf::info_t cardInfo;
     std::ostringstream position;
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
@@ -581,7 +605,15 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,EVR_REGMAP_SIZE);
+    cardInfo.position = position.str();
+    cardInfo.irqFlag = NAT_READ32(evr, IRQFlag);
+    cardInfo.irqLevel = level;
+    cardInfo.irqVector = vector;
+    cardInfo.vendor = info.vendor;
+    cardInfo.board = info.board;
+    cardInfo.revision = info.revision;
+    cardInfo.address = base;
+    EVRMRM *receiver=new EVRMRM(id,cardInfo,evr,EVR_REGMAP_SIZE);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

@@ -82,10 +82,10 @@ static
 const double fracref=24.0; // MHz
 
 EVRMRM::EVRMRM(const std::string& n,
-               const std::string& p,
+               const mrf::info_t& info,
                volatile unsigned char* b,
                epicsUInt32 bl)
-  :EVR(n,p)
+  :EVR(n,info)
   ,evrLock()
   ,id(n)
   ,base(b)
