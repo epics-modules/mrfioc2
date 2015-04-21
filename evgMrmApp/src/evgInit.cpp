@@ -20,7 +20,6 @@
 /* DZ: Does Win32 have a problem with devCSRTestSlot()? */
 #ifdef _WIN32
 #define devCSRTestSlot(vmeEvgIDs,slot,info) (NULL)
-#include "plx9030.h"
 
 #include <time.h>
 #endif
@@ -28,6 +27,7 @@
 #include <mrfcsr.h>
 #include <mrfCommonIO.h>
 #include <devLibPCI.h>
+#include "plx9030.h"
 
 #include <epicsExport.h>
 #include "evgRegMap.h"
