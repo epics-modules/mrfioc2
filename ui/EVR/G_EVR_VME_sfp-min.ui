@@ -139,7 +139,7 @@
     <string notr="true">More</string>
    </property>
    <property name="files">
-    <string notr="true">evr_sfp.ui</string>
+    <string notr="true">G_EVR_VME_sfp.ui</string>
    </property>
    <property name="args">
     <string notr="true">EVR=$(EVR)</string>

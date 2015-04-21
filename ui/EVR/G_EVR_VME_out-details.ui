@@ -169,7 +169,7 @@
     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Pulse-RB</string>
    </property>
    <property name="filename" stdset="0">
-    <string notr="true">evr_out-helper.ui</string>
+    <string notr="true">G_EVR_VME_out-helper.ui</string>
    </property>
    <property name="visibility">
     <enum>caInclude::Calc</enum>
@@ -197,7 +197,7 @@
     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-Scale-RB</string>
    </property>
    <property name="filename" stdset="0">
-    <string notr="true">evr_out-helper.ui</string>
+    <string notr="true">G_EVR_VME_out-helper.ui</string>
    </property>
    <property name="visibility">
     <enum>caInclude::Calc</enum>
@@ -225,7 +225,7 @@
     <string notr="true">CHAN=$(EVR):$(P)$(ID)-Src-DBus-RB</string>
    </property>
    <property name="filename" stdset="0">
-    <string notr="true">evr_out-helper.ui</string>
+    <string notr="true">G_EVR_VME_out-helper.ui</string>
    </property>
    <property name="visibility">
     <enum>caInclude::Calc</enum>

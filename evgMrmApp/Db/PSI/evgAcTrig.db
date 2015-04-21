@@ -1,7 +1,7 @@
-record(longout, "$(P)Divider-SP") {
+record(longout, "$(SYS)-$(EVG):$(OBJ)-Divider-SP") {
     field( DESC, "EVG AC Divider")
     field( DTYP, "Obj Prop uint32")
-    field( OUT,  "@OBJ=$(OBJ), PROP=Divider")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ), PROP=Divider")
     field( PINI, "YES")
     field( VAL,  "$($(OBJ)-Divider-SP\=0)")
     field( UDF,  "0")
@@ -9,24 +9,24 @@ record(longout, "$(P)Divider-SP") {
     field( LOLO, "-1")
     field( HHSV, "MAJOR")
     field( LLSV, "MAJOR")
-    field( FLNK, "$(P)Divider-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)-Divider-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)Divider-RB") {
+record(longin, "$(SYS)-$(EVG):$(OBJ)-Divider-RB") {
     field( DESC, "EVG AC Divider")
     field( DTYP, "Obj Prop uint32")
-    field( INP,  "@OBJ=$(OBJ), PROP=Divider")
+    field( INP,  "@OBJ=$(EVG):$(OBJ), PROP=Divider")
     field( HIHI, "256")
     field( LOLO, "-1")
     field( HHSV, "MAJOR")
     field( LLSV, "MAJOR")
 }
 
-record(ao, "$(P)Phase-SP") {
+record(ao, "$(SYS)-$(EVG):$(OBJ)-Phase-SP") {
     field( DESC, "EVG AC Phase Shifter")
     field( DTYP, "Obj Prop double")
-    field( OUT,  "@OBJ=$(OBJ), PROP=Phase")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ), PROP=Phase")
     field( PINI, "YES")
     field( VAL,  "$($(OBJ)-Phase-SP\=0.0)")
     field( UDF,  "0")
@@ -40,14 +40,14 @@ record(ao, "$(P)Phase-SP") {
     field( DRVH, "25.5")
     field( DRVL, "0")
     field( PREC, "1")
-    field( FLNK, "$(P)Phase-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)-Phase-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(ai, "$(P)Phase-RB") {
+record(ai, "$(SYS)-$(EVG):$(OBJ)-Phase-RB") {
     field( DESC, "EVG AC Phase Shifter")
     field( DTYP, "Obj Prop double")
-    field( INP,  "@OBJ=$(OBJ), PROP=Phase")
+    field( INP,  "@OBJ=$(EVG):$(OBJ), PROP=Phase")
     field( HIHI, "25.6")
     field( LOLO, "-0.1")
     field( HHSV, "MAJOR")
@@ -56,44 +56,133 @@ record(ai, "$(P)Phase-RB") {
     field( PREC, "1")
 }
 
-record(bo, "$(P)Bypass-Sel") {
+record(bo, "$(SYS)-$(EVG):$(OBJ)-Bypass-Sel") {
     field( DESC, "Bypass AC divider and Phase shifter")
     field( DTYP, "Obj Prop bool")
-    field( OUT,  "@OBJ=$(OBJ), PROP=Bypass")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ), PROP=Bypass")
     field( PINI, "YES")
     field( VAL , "$($(OBJ)-Bypass-Sel\=1)")
     field( UDF,  "0")
     field( ZNAM, "Off")
     field( ONAM, "On")
-    field( FLNK, "$(P)Bypass-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)-Bypass-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)Bypass-RB") {
+record(bi, "$(SYS)-$(EVG):$(OBJ)-Bypass-RB") {
     field( DESC, "Bypass AC divider and Phase shifter")
     field( DTYP, "Obj Prop bool")
-    field( INP,  "@OBJ=$(OBJ), PROP=Bypass")
+    field( INP,  "@OBJ=$(EVG):$(OBJ), PROP=Bypass")
     field( ZNAM, "Off")
     field( ONAM, "On")
 }
 
-record(bo, "$(P)SyncSrc-Sel") {
+record(bo, "$(SYS)-$(EVG):$(OBJ)-SyncSrc-Sel") {
     field( DESC, "Sync to Event Clock or Mxc7")
     field( DTYP, "Obj Prop bool")
-    field( OUT,  "@OBJ=$(OBJ), PROP=SyncSrc")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ), PROP=SyncSrc")
     field( PINI, "YES")
     field( VAL , "$($(OBJ)-SyncSrc-Sel\=1)")
     field( UDF,  "0")
     field( ZNAM, "Event Clk")
     field( ONAM, "Mxc7")
-    field( FLNK, "$(P)SyncSrc-RB")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)-SyncSrc-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)SyncSrc-RB") {
+record(bi, "$(SYS)-$(EVG):$(OBJ)-SyncSrc-RB") {
     field( DESC, "Sync to Event Clock or Mxc7")
     field( DTYP, "Obj Prop bool")
-    field( INP,  "@OBJ=$(OBJ), PROP=SyncSrc")
+    field( INP,  "@OBJ=$(EVG):$(OBJ), PROP=SyncSrc")
     field( ZNAM, "Event Clk")
     field( ONAM, "Mxc7")
 }
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S0 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc0-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S1 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc1-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S2 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc2-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S3 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc3-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S4 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc4-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S5 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc5-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S6 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc6-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S7 @$(EVG):$(OBJ)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)-TrigSrc7-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+

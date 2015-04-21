@@ -264,7 +264,7 @@
      <string notr="true">Show waveform</string>
     </property>
     <property name="files">
-     <string notr="true">evr_out_cml-waveform-waveform.ui</string>
+     <string notr="true">G_EVR_VME_out_cml-waveform-waveform.ui</string>
     </property>
     <property name="args">
      <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>

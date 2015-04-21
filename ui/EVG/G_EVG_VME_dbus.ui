@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>138</width>
-    <height>228</height>
+    <width>310</width>
+    <height>130</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>123</width>
-     <height>212</height>
+     <width>191</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -31,9 +31,9 @@
    <widget class="caMenu" name="camenu">
     <property name="geometry">
      <rect>
-      <x>1</x>
+      <x>10</x>
       <y>30</y>
-      <width>121</width>
+      <width>171</width>
       <height>23</height>
      </rect>
     </property>
@@ -41,51 +41,7 @@
      <string notr="true">background-color: rgb(212, 219, 157);</string>
     </property>
     <property name="channel" stdset="0">
-     <string notr="true">$(EVG):Dbus-$(ID)-Src-Sel</string>
-    </property>
-   </widget>
-   <widget class="caByte" name="cabyte">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>60</y>
-      <width>31</width>
-      <height>168</height>
-     </rect>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVG):Dbus-$(ID)-Src-MbbiDir_</string>
-    </property>
-    <property name="startBit">
-     <number>0</number>
-    </property>
-    <property name="endBit">
-     <number>8</number>
-    </property>
-   </widget>
-   <widget class="caBitnames" name="cabitnames">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>59</y>
-      <width>61</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="channelEnum" stdset="0">
-     <string notr="true">$(EVG):Dbus-$(ID)-Src-Sel</string>
-    </property>
-    <property name="channelValue" stdset="0">
-     <string notr="true">$(EVG):Dbus-$(ID)-Src-Sel</string>
-    </property>
-    <property name="startBit">
-     <number>1</number>
-    </property>
-    <property name="endBit">
-     <number>8</number>
-    </property>
-    <property name="alignment">
-     <enum>EFlag::right</enum>
+     <string notr="true">$(EVG):Dbus$(ID)-Map-Sel</string>
     </property>
    </widget>
    <widget class="caLabel" name="calabel_2">
@@ -93,7 +49,7 @@
      <rect>
       <x>1</x>
       <y>1</y>
-      <width>121</width>
+      <width>189</width>
       <height>20</height>
      </rect>
     </property>
@@ -101,7 +57,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Dbus-$(ID)</string>
+     <string>Dbus$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -119,16 +75,6 @@
    <class>caLabel</class>
    <extends>QLabel</extends>
    <header>caLabel</header>
-  </customwidget>
-  <customwidget>
-   <class>caByte</class>
-   <extends>QWidget</extends>
-   <header>caByte</header>
-  </customwidget>
-  <customwidget>
-   <class>caBitnames</class>
-   <extends>QWidget</extends>
-   <header>caBitnames</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -12,4 +12,4 @@ Options:
 - -h                   This help
 
 ## Files description
-- __evg_master.ui__ is the main screen of the EVG
+- __G_EVG_VME_master.ui__ is the main screen of the EVG

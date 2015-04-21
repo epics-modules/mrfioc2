@@ -54,14 +54,35 @@ enum SeqTrigSrc {
     ExtRam1 = 25,
     External = 40,
 
+    //  Inputs
+    // input#=value
+    // (value-40) / 4 = type
+    // (value-40) % 4 = #
+    //Type = 1
     FrontInp0 = 41,
     FrontInp1 = 45,
+    //Type=2
     UnivInp0 = 42,
     UnivInp1 = 46,
     UnivInp2 = 50,
     UnivInp3 = 54,
+    //Type=3
     RearInp0 = 43,
-    RearInp1 = 47
+    RearInp1 = 47,
+    RearInp2 = 51,
+    RearInp3 = 55,
+    RearInp4 = 59,
+    RearInp5 = 63,
+    RearInp6 = 67,
+    RearInp7 = 71,
+    RearInp8 = 75,
+    RearInp9 = 79,
+    RearInp10 = 83,
+    RearInp11 = 87,
+    RearInp12 = 91,
+    RearInp13 = 95,
+    RearInp14 = 99,
+    RearInp15 = 103
 };
 
 #define IrqStop(id) irqStop##id
