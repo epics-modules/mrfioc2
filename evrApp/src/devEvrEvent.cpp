@@ -17,7 +17,6 @@
 #include <devLib.h> // For S_dev_*
 #include <alarm.h>
 #include <errlog.h>
-#include <stdio.h> // for event long to char* conversion
 
 #include <longoutRecord.h>
 #include <eventRecord.h>
@@ -137,26 +136,23 @@ static long process_longout(longoutRecord *prec)
 {
     priv *p=static_cast<priv*>(prec->dpvt);
     long ret=0;
-    char event[4];
-    try {
+try {
 
-        if (prec->val>=0 && prec->val<=255){
-            sprintf (event, "%d", prec->val);
-            postEvent(eventNameToHandle(event));
-        }
+    if (prec->val>=0 && prec->val<=255)
+        post_event(prec->val);
 
-        if(prec->tse==epicsTimeEventDeviceTime){
-            p->evr->getTimeStamp(&prec->time,p->event);
-        }
-
-        return 0;
-    } catch(std::runtime_error& e) {
-        recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
-        ret=S_dev_noDevice;
-    } catch(std::exception& e) {
-        recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-        ret=S_db_noMemory;
+    if(prec->tse==epicsTimeEventDeviceTime){
+        p->evr->getTimeStamp(&prec->time,p->event);
     }
+
+    return 0;
+} catch(std::runtime_error& e) {
+    recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
+    ret=S_dev_noDevice;
+} catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    ret=S_db_noMemory;
+}
     return ret;
 }
 
