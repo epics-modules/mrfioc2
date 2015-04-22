@@ -443,7 +443,7 @@ record(fanout, "$(P)InitSeq:Cont-FOut_") {
 #(only if TsInpMode = EGU).
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+    field( INP,  "$(P)EvtClk:Frequency-RB CP")
     field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
 }
 
