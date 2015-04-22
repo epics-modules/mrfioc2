@@ -27,7 +27,7 @@
 
 #include "evgRegMap.h"
 
-evgMrm::evgMrm(const std::string& id, const mrf::info_t& inf, volatile epicsUInt8* const pReg):
+evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
 mrf::ObjectInst<evgMrm>(id),
 irqStop0_queued(0),
 irqStop1_queued(0),
@@ -37,7 +37,6 @@ irqExtInp_queued(0),
 m_syncTimestamp(false),
 m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
 m_id(id),
-info(inf),
 m_pReg(pReg),
 m_acTrig(id+":AcTrig", pReg),
 m_evtClk(id+":EvtClk", pReg),
@@ -169,11 +168,6 @@ evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr)
 const std::string
 evgMrm::getId() const {
     return m_id;
-}
-
-mrf::info_t evgMrm::getInfo() const
-{
-    return info;
 }
 
 volatile epicsUInt8*

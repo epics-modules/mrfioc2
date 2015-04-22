@@ -171,7 +171,7 @@ address:%x\n\t \
 board:%x\n\t \
 vendor:%x\n\t \
 revision:%x\n",
-           evr->id.c_str(), info.position.c_str(), info.irqVector, NAT_READ32(evr->base, IRQFlag), info.irqLevel, info.address, info.board, info.vendor, info.revision);
+           evr->id.c_str(), info.position.c_str(), info.irqVector, info.irqFlag, info.irqLevel, info.address, info.board, info.vendor, info.revision);
 
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
@@ -404,6 +404,7 @@ try {
 
     // Install ISR
     cardInfo.position = position.str();
+    cardInfo.irqFlag = NAT_READ32(evr, IRQFlag);
     cardInfo.irqVector = cur->irq;
     cardInfo.address=0;
     cardInfo.irqLevel=0;
@@ -605,6 +606,7 @@ try {
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
     cardInfo.position = position.str();
+    cardInfo.irqFlag = NAT_READ32(evr, IRQFlag);
     cardInfo.irqLevel = level;
     cardInfo.irqVector = vector;
     cardInfo.vendor = info.vendor;
