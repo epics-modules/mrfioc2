@@ -42,12 +42,7 @@ std::string EVR::versionSw() const
 
 std::string EVR::position() const
 {
-    return info.position;
-}
-
-mrf::info_t EVR::getInfo() const
-{
-    return info;
+    return pos;
 }
 
 Pulser::~Pulser()

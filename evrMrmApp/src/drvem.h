@@ -101,7 +101,7 @@ public:
     mutable epicsMutex evrLock;
 
 
-    EVRMRM(const std::string& n, const mrf::info_t& info,volatile unsigned char*,epicsUInt32);
+    EVRMRM(const std::string& n, const std::string& p,volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 private:

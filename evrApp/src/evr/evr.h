@@ -42,7 +42,7 @@ enum TSSource {
 class EVR : public mrf::ObjectInst<EVR>
 {
 public:
-  EVR(const std::string& n, const mrf::info_t& info) : mrf::ObjectInst<EVR>(n), info(info) {}
+  EVR(const std::string& n, const std::string& p) : mrf::ObjectInst<EVR>(n), pos(p) {}
 
   virtual ~EVR()=0;
 
@@ -56,7 +56,6 @@ public:
 
   //! Position of EVR device in enclosure.
   virtual std::string position() const;
-  virtual mrf::info_t getInfo() const;
 
   /**\defgroup ena Enable/disable pulser output.
    */
@@ -205,7 +204,7 @@ public:
   /*@}*/
 
 private:
-  const mrf::info_t info;
+  const std::string pos;
 }; // class EVR
 
 #endif // EVR_HPP_INC
