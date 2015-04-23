@@ -850,7 +850,7 @@ epicsFloat64 FracSynthAnalyze (
     */
     epicsFloat64   CorrectionTerm;
     epicsFloat64   EffectiveFreq = 0.0;         /* Computed effective output frequency            */
-    epicsBoolean   Error = epicsFalse;          /* Error flag from control word analysis          */
+    int   Error = 0;          /* Error flag from control word analysis          */
     epicsInt32     i;                           /* Local loop counter                             */
     epicsUInt32    MDiv;                        /* Coded value of the correction term denominator */
     epicsInt32     MDivClass;                   /* Class designator of the correction denominator */
@@ -912,7 +912,7 @@ epicsFloat64 FracSynthAnalyze (
     */
     if ((Qp + Qpm1) == 0) {
         DEBUGPRINT (DP_FATAL, PrintFlag, (" *Error: Q(p) + Q(p-1) [%d + %d] is 0.\n", Qp, Qpm1));
-        Error = epicsTrue;
+        Error = 1;
     }/*end if fractional denominator is zero*/
 
    /*---------------------
@@ -936,7 +936,7 @@ epicsFloat64 FracSynthAnalyze (
     * Display the control word fields and how they combine to produce the effective output
     * frequency.
     */
-    Error = epicsFalse;
+    Error = 0;
     DEBUGPRINT (DP_DEBUG, PrintFlag,
                ("  P = %d,  Q(p) = %d,  Q(p-1) = %d,  Post Divider = %d\n",
                (int)PVal, Qp, Qpm1, (int)PostDivideVal));
@@ -955,7 +955,7 @@ epicsFloat64 FracSynthAnalyze (
     * Check for preamble field not zero
     */
     if (Preamble != 0) {
-        Error = epicsTrue;
+        Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: PREAMBLE field (bits %d-%d) is 0x%X.\n",
                    CONTROL_PREAMBLE_SHIFT, CONTROL_PREAMBLE_SHIFT+CONTROL_PREAMBLE_BITS-1,
@@ -968,7 +968,7 @@ epicsFloat64 FracSynthAnalyze (
     * Check for MFG field not zero
     */
     if (Mfg != 0) {
-        Error = epicsTrue;
+        Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: MFG field (bits %d-%d) is 0x%X.\n",
                    CONTROL_MFG_SHIFT, CONTROL_MFG_SHIFT+CONTROL_MFG_BITS-1, Mfg));
@@ -982,7 +982,7 @@ epicsFloat64 FracSynthAnalyze (
     */
     if ((Qp + Qpm1) > MAX_FRAC_DIVISOR) {
         if ((Qp + Qpm1) > (MAX_FRAC_DIVISOR + 1))
-            Error = epicsTrue;
+            Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: Q(p) + Q(p-1) [%d + %d] is %d.\n", Qp, Qpm1, (Qp+Qpm1)));
         DEBUGPRINT (DP_ERROR, PrintFlag,
@@ -993,7 +993,7 @@ epicsFloat64 FracSynthAnalyze (
     * Check for correction term too big.
     */
     if ((NDivVal / MDivVal) > MAX_CORRECTION_RATIO) {
-        Error = epicsTrue;
+        Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: Correction Term Ratio = (N/M) = (%d/%d) = %f is too big.\n",
                    (int)NDivVal, (int)MDivVal, (NDivVal/MDivVal)));
@@ -1005,7 +1005,7 @@ epicsFloat64 FracSynthAnalyze (
     * Check for correction term numerator and denominator being from different classes.
     */
     if (NDivClass != MDivClass) {
-        Error = epicsTrue;
+        Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: Correction Term numerator (%d) is not compatible with",
                    (int)NDivVal));
@@ -1025,7 +1025,7 @@ epicsFloat64 FracSynthAnalyze (
     * Check for VCO frequency out of range
     */
     if ((VcoFreq > MAX_VCO_FREQ) || (VcoFreq < MIN_VCO_FREQ)) {
-        Error = epicsTrue;
+        Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    (" *Error: VCO Frequency (%f MHz.) is outside the valid range.\n", VcoFreq));
         DEBUGPRINT (DP_ERROR, PrintFlag,
