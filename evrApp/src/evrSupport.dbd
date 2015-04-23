@@ -15,7 +15,6 @@
 # Func - Mapping function (string)
 #
 
-include "mrmShared.dbd"
 
 # '@C=$(C), I=$(PULIDX), Func=FUNCTIONNAME'
 device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
