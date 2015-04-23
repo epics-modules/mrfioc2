@@ -361,7 +361,7 @@ read_wf_timestamp(waveformRecord* pwf) {
             throw std::runtime_error("Device pvt field not initialized correctly");
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        std::vector<uint64_t> timestamp = seq->getTimestampCt();
+        std::vector<epicsUInt64> timestamp = seq->getTimestampCt();
         epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10,6);
         epicsUInt32 timeScaler = seq->getTimestampResolution();
 
