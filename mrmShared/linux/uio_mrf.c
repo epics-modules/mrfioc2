@@ -37,6 +37,8 @@ MODULE_PARM_DESC(interfaceversion, "User space interface version");
 #define PCI_SUBDEVICE_ID_MRF_PMCEVR_230     0x11e6
 /* cPCI-EVR-230 */
 #define PCI_SUBDEVICE_ID_MRF_PXIEVR_230     0x10e6
+/* cPCI-EVG-230 */
+#define PCI_SUBDEVICE_ID_MRF_PXIEVG_230     0x20E6
 /* cPCI-EVRTG-300 */
 #define PCI_SUBDEVICE_ID_MRF_EVRTG_300      0x192c
 /* PCIe-EVR-300 */
@@ -491,6 +493,12 @@ static struct pci_device_id mrf_pci_ids[] __devinitdata = {
         .device =       PCI_DEVICE_ID_PLX_9030,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVR_230,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_PLX,
+        .device =       PCI_DEVICE_ID_PLX_9030,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVG_230,
     },
     {
         .vendor =       PCI_VENDOR_ID_PLX,
