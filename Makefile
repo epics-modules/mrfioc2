@@ -1,14 +1,7 @@
 #Makefile at top of application tree
 TOP = .
 include $(TOP)/configure/CONFIG
-DIRS := $(DIRS) $(filter-out $(DIRS), configure)
-DIRS := $(DIRS) $(filter-out $(DIRS), mrfCommon)
-DIRS := $(DIRS) $(filter-out $(DIRS), evrApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), mrmShared)
-DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), evrMrmApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), mrmtestApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
+DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmtestApp iocBoot
 
 # 3.14.10 style directory dependencies
 # previous versions will just ignore them
