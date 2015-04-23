@@ -80,7 +80,6 @@ linkOptionDef eventdef[] =
 static long add_lo(dbCommon* praw)
 {
     longoutRecord *prec=(longoutRecord*)praw;
-    epicsUInt32  dummy;  // Dummy status variable
 try {
     assert(prec->out.type==INST_IO);
 
@@ -111,7 +110,7 @@ try {
 
 } catch(std::exception& e) {
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    dummy = recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 }
@@ -119,7 +118,6 @@ try {
 static inline
 long del_lo(dbCommon* praw)
 {
-    epicsUInt32  dummy;  // Dummy status variable
 try {
     std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
@@ -130,13 +128,12 @@ try {
 } catch(std::exception& e) {
     recGblRecordError(S_db_noMemory, (void*)praw, e.what());
 }
-    dummy = recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 
 static long write_lo(longoutRecord* prec)
 {
-    epicsUInt32  dummy;  // Dummy status variable
 try {
     map_priv* priv=static_cast<map_priv*>(prec->dpvt);
 
@@ -148,7 +145,7 @@ try {
     epicsUInt32 code=prec->val;
 
     if(code<0 && code>255) {
-        dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+        (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
         return 0;
     }
 
@@ -168,7 +165,7 @@ try {
 } catch(std::exception& e) {
     prec->val=0;
     recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    dummy = recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+    (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 }

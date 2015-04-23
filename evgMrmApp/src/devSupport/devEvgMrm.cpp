@@ -86,7 +86,6 @@ write_bo_resetMxc(boRecord* pbo) {
 static long 
 read_si_ts(stringinRecord* psi) {
     long ret = 0;
-                unsigned long dummy;
 
     try {
         evgMrm* evg = (evgMrm*)psi->dpvt;
@@ -101,10 +100,10 @@ read_si_ts(stringinRecord* psi) {
             case TS_ALARM_NONE:
                 break;
             case TS_ALARM_MINOR:
-                dummy = recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
+                (void)recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
                 break;
             case TS_ALARM_MAJOR:
-                dummy = recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
+                (void)recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
                 errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");

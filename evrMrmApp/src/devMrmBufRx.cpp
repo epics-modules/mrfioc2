@@ -167,15 +167,13 @@ void datarx(void *arg, epicsStatus ok, epicsUInt8,
 
 static long write_waveform(waveformRecord* prec)
 {
-  epicsUInt32 dummy;
-
   if (!prec->dpvt) return -1;
 try {
   priv *paddr=static_cast<priv*>(prec->dpvt);
 
   if (!paddr->buf && paddr->blen) {
       // Error condition set INVALID_ALARM
-      dummy = recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
+      (void)recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
 
   } else if(paddr->buf) {
 
@@ -184,7 +182,7 @@ try {
 
       if (paddr->blen > capacity) {
           paddr->blen=capacity;
-          dummy = recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+          (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
       }
 
       if(esize==1 || esize>8) // char or string
