@@ -1,5 +1,5 @@
 \documentclass[12pt,a4paper]{article}
-\usepackage[in]{fullpage}
+%\usepackage[in]{fullpage}
 \usepackage[utf8x]{inputenc}
 \usepackage{cite}
 %\usepackage{listings}
@@ -28,6 +28,7 @@
 %opening
 \title{EVR Manual}
 %\author{Sašo Skube, PSI}
+\date{}
 
 \begin{document}
 
@@ -43,12 +44,12 @@
 \section{Introduction}\label{sec:Introduction}
 Event receiver is a part of a timing system. A timing system consists of an event generator (EVG), a series of event receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. An EVR is then configured to respond to specific events in various ways, including processing EPICS records and generating pulses, synchronized clock or custom signals on its outputs.
 
-mrfioc2~\cite{mrfioc2} is an EPICS module for the Micro Research Finland(MRF)~\cite{mrf} timing system. The module enables us to configure and use the event generators and event receivers in the timing system. It comprises of EPICS device support for MRF timing system and devlib2 with additional kernel modules (eg. PCIe) for communication with the hardware.
+mrfioc2~\cite{mrfioc2} is an EPICS device support for the Micro Research Finland(MRF)~\cite{mrf} timing system. The mrfioc2 enables us to configure and use the event generators and event receivers in the timing system. It comprises of EPICS device support for MRF timing system and uses devlib2~\cite{devlib2} with additional kernel modules (eg. PCIe) for communication with the hardware.
 
-The rest of this document describes the mrfioc2 module in regards to the Event Receiver. EVR and its configuration is described, then instructions for starting a new IOC application are provided. The document continues with basic developer information for the mrfioc2 module and ends with a short description of the EVR GUI. Some sections deal with PSI specifics. These are mostly simplifications in the deployment or build process for the mrfioc2 module.
+The rest of this document describes the mrfioc2 device support in regards to the Event Receiver. EVR and its configuration is described, then instructions for starting a new IOC application for EVR are provided. The document continues with basic developer information for the mrfioc2 and ends with a short description of the EVR GUI. Some sections deal with PSI specifics. These are mostly simplifications in the deployment or build process for the mrfioc2 device support.
 
 \section{Event Receiver}\label{sec:Event Receiver}
-EVRs are available in various form factors, each supporting the same basic functionality (executing functions, manipulating DBus,...), but with different number of components (inputs, outputs,...). Each of the EVR components and functionalities is configurable by the user and is briefly described in the following sections. It is possible to configure the EVR through the GUI~\ref{sec:GUI} at runtime, or by setting the appropriate macros in the substitution file\footnote{On the PSI infrastructure, a prepared substitution file for VME-EVR-230RF form factor \texttt{mrfioc2/PSI/evr\_ex.subs} with all the macros and short documentation is available (file list item~\ref{itm:files:evr_substitution} in Section~\ref{sec:PSI specifics})} of your IOC application.
+EVRs are available in various form factors, each supporting the same basic functionality (executing functions, manipulating DBus,...), but with different number of components (inputs, outputs,...). Each of the EVR components and functionalities is configurable by the user and is briefly described in the following sections. It is possible to configure the EVR through the GUI (described in Section~\ref{sec:GUI}) at runtime, or by setting the appropriate macros in the EVR substitution file\footnote{On the PSI infrastructure, a prepared substitution file for VME-EVR-230RF form factor \texttt{mrfioc2/PSI/evr\_ex.subs} with all the macros and short documentation is available (file list item~\ref{itm:files:evr_substitution} in Section~\ref{sec:PSI specifics})} in your IOC application.
 
 %The EVR and its components are configured by setting macros in a form factor specific substitution file. A prepared substitution file for VME-EVR-230RF form factor (file list item~\ref{itm:files:evr_substitution}) is available at~\cite{substitution_git}. All the macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. The substitution file also contains short documentation next to the macros. It is also possible to configure the EVR through the GUI at runtime.
 
@@ -77,7 +78,8 @@ The exact number of form factor specific components is available in~\cite{mrm_ev
 %\end{itemize}
 
 \subsection{General configuration}
-Each event receiver must be given a name, and belongs to a system. There is additional configuration option for form factors supporting GTX outputs (more about these is available in~\cite{mrm_evr}).
+%Each event receiver must be given a name, and belongs to a system. There is additional configuration option for form factors supporting GTX outputs (more about these is available in~\cite{mrm_evr}).
+There is usually only one event receiver controlled from a single IOC application, though it is possible to configure more. Thus the name of the EVR and the system name it belongs to must be defined.
 
 \paragraph{Substitution file macros}
 \begin{itemize}
@@ -85,18 +87,22 @@ Each event receiver must be given a name, and belongs to a system. There is addi
 	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
 \item
 	\textbf{EVR}=\emph{EVR0} : The name of the connected Event Receiver, which should be the same as defined in the startup script. 
+\end{itemize}
+
+For EVR form factors that support GTX outputs (more about these is available in~\cite{mrm_evr}), there is additional configuration option:
+\begin{itemize}
 \item
 	\textbf{ExtInhib-Sel}=\emph{0} : This macro takes effect only when
 configuring GTX ouputs on cPCI-EVRTG-300 form factor. Either honor
 the hardware inhibit signal(\texttt{0}) or don't care about hardware
-inhibit input state(\texttt{1}). More information is available in~\cite{mrm_evr}.
+inhibit input state(\texttt{1}).
 \end{itemize}
 
 \subsection{Distributed Bus (DBus)}\label{sec:DBus}
-The distributed bus is able to carry 8 signals, that are propagated throughout the timing network with the event clock rate. Individual DBus signals (bits) can be outputted through programmable outputs(FrontOut, FrontUnivOut, RearUniv). 
+The distributed bus is able to carry 8 signals, that are propagated throughout the timing network with the event clock rate. Individual DBus signals (bits) can be outputted through programmable outputs(FrontOut, FrontUnivOut, RearUniv), or used as inputs (described in Section~\ref{sec:Front Panel TTL Input}).
 
 \subsection{Events and event clock}\label{sec:Events and event clock}
-EVR receives events transmitted by an event generator from the timing network. Event clock is the frequency, at which the events are received. All the EVRs lock to the phase and frequency of the EVG, thus the event clock is synchronized across the entire timing system.
+EVR receives events transmitted by an event generator from the timing network. Event clock is the frequency, at which the events are transmitted. All the EVRs lock to the phase and frequency of the event clock, thus it is synchronized across the entire timing system.
 
 \paragraph{Substitution file macros}
 \begin{itemize}
@@ -120,7 +126,7 @@ A pulse generator is able to output a configured pulse upon reception of an even
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{./img/pulserGeneric}
-	\caption{An example of 2 pulses generated after the reception of the event.}
+	\caption{An example of a pulse generated after the reception of the event.}
 	\label{fig:pulser_generic}
 \end{figure}
 Figure~\ref{fig:pulser_generic} shows how the pulse is generated by switching between set and reset states, where the states determine the logic level of the pulser output signal.
@@ -209,7 +215,7 @@ There are a maximum of 2 front panel TTL inputs available, depending on the EVR 
 	\label{fig:output}
 \end{figure}
 
-An EVR has a number of outputs, each with a configurable source signal. As seen in Figure~\ref{fig:output}, any of the available pulser, prescaler, DBus, logic low or logic high signals can be selected as the output source signal. Depending on the output type(TTL, CML, ...), the signal can be outputted directly, further manipulated or used as a trigger for a special function of that output.
+An EVR has a number of outputs, each with a configurable source signal. As seen in Figure~\ref{fig:output}, any of the available pulser, prescaler, DBus, logic low or logic high signals can be selected as the output source signal. Depending on the output type(TTL, CML, ...), the signal can be send through directly, further manipulated or used as a trigger for a special function of that output.
 
 \paragraph{Substitution file macros common to all outputs:} Outputs, and the corresponding macro name prefixes, are named either \emph{FrontOut\#},\emph{ FrontOutUniv\#} or \emph{RearUniv\#}, where the range of the number \# depends on the EVR form factor. Macros for the \emph{FrontOut0} are described below. 
 %The source of the output signal is determined by mappings in Table~\ref{tab:mappings}. 
@@ -256,7 +262,7 @@ An EVR has a number of outputs, each with a configurable source signal. As seen 
   \begin{itemize}
   \item
    \textbf{FrontOut0-Ena-SP}=\emph{1} : When set to \texttt{enabled(1)} the mapping
-    defined in \newline \texttt{FrontOut0-Src-SP} is used. When \texttt{disabled(0)}, a
+    defined in \texttt{FrontOut0-Src-SP} is used. When \texttt{disabled(0)}, a
     mapping of \texttt{Force Low(63)} from Table~\ref{tab:mappings} is used.
   \item
     \textbf{FrontOut0-Src-SP}=\emph{63} : \texttt{Mappings} from the Table~\ref{tab:mappings} are
@@ -265,7 +271,7 @@ An EVR has a number of outputs, each with a configurable source signal. As seen 
   \end{itemize}
 
 \subsubsection{Front Panel TTL Output (FrontOut)}\label{sec:Front Panel TTL Output}
-These outputs are capable of driving TTL compatible logic level signals. The output source signal is converted to TTL logic levels(LVTTL of max 3.3 Volts) and outputted, as seen in Figure~\ref{fig:output_ttl}.
+These outputs are capable of driving TTL compatible logic level signals. The output source signal is converted to TTL logic levels(LVTTL of max 3.3 Volts) and send through the output, as seen in Figure~\ref{fig:output_ttl}.
 
 \begin{figure}[H]
 	\centering
@@ -275,7 +281,7 @@ These outputs are capable of driving TTL compatible logic level signals. The out
 \end{figure}
 
 \subsubsection{Front Panel CML Output (FrontOut)}\label{sec:Front Panel CML Output}
-These outputs are capable of driving Current-mode logic compatible signals. Based on the output source signal and the selected CML mode, various patterns can be outputted. As seen in Figure~\ref{fig:output_cml}, patterns are generated using one of the three configurable modes. They are sent out at 20 times the bit rate of the event clock, thus the outputs allow for producing fine grained adjustable pulses and clock frequencies. 	
+These outputs are capable of driving Current-mode logic compatible signals. Based on the output source signal and the selected CML mode, various patterns can be generated. As seen in Figure~\ref{fig:output_cml}, patterns are generated using one of the three configurable modes. They are sent out with a bit rate of 20 times the event clock rate, thus the outputs allow for producing fine grained adjustable pulses and clock frequencies.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{./img/CML}
@@ -287,56 +293,75 @@ These outputs are capable of driving Current-mode logic compatible signals. Base
 There are a maximum of 8 CML outputs available, depending on the EVR form factor. CML outputs are named CML\#, where \# is the ID of the CML output, ranging from 0 to 7. Some form factors do not have any CML outputs.
 \begin{itemize}
 \item
-  \textbf{CML0-Ena-Sel}= \emph{0} : Output is \texttt{disabled(0)} or \texttt{enabled(1)}.
+  \textbf{CML\#-Ena-Sel}= \emph{0} : Output is \texttt{disabled(0)} or \texttt{enabled(1)}.
 \item
-  \textbf{CML0-Pwr-Sel}=\emph{0} : Outputs can be \texttt{powered down(0)} or in normal \texttt{operation(1)}.
+  \textbf{CML\#-Pwr-Sel}=\emph{0} : Outputs can be \texttt{powered down(0)} or in normal \texttt{operation(1)}.
 \item
-  \textbf{CML0-Rst-Sel}=\emph{0} : It is possible to \texttt{reset CML output(1)} or leave it in \texttt{normal operation(0)}.
+  \textbf{CML\#-Rst-Sel}=\emph{0} : It is possible to \texttt{reset CML output(1)} or leave it in \texttt{normal operation(0)}.
 \item
-  \textbf{CML0-Mode-Sel}=\emph{0} : There are three configurable modes, \texttt{pattern mode(0)}, \texttt{frequency mode(1)} and \texttt{waveform mode(2)}.
+  \textbf{CML\#-Mode-Sel}=\emph{0} : There are three configurable modes, \texttt{pattern mode(0)}, \texttt{frequency mode(1)} and \texttt{waveform mode(2)}.
 \end{itemize}
 Patterns are defined by one of the configurable CML modes:
 \begin{itemize}
 \item 
-	In \textbf{pulse mode}, the output logic monitors, and distinguishes between the states of the output source signal(logic low, rising edge, logic high, falling edge). Based on this state, a user configurable 20-bit pattern is sent out.
+	In \textbf{pulse mode} a user configurable 20-bit pattern ia sent out based on the output source signal:
 	
-	\paragraph{Patterns configurable through the GUI:}
 	\begin{itemize}
-	\item
-	  signal is \textbf{rising}: pattern is sent out
-	  after the rising edge is detected and will interrupt the current
-	  pattern being sent.
-	\item
-	  signal is \textbf{falling}: pattern is sent out
-	  after the falling edge is detected and will interrupt the current
-	  pattern being sent.
-	\item
-	  signal is \textbf{high}: pattern is sent out after
-	  the rising edge is detected and will repeat until the falling edge.
-	\item
-	  signal is \textbf{low}: pattern is sent out after
-	  the falling edge is detected and will repeat until the rising edge.
-	\end{itemize}
-\item 
-	In \textbf{frequency mode}, clocks with clock period in steps of 1/20 of the event clock period can be generated. The clock output is synchronized by the output source signal(pulser, DBus signal, ....). 
+		\item
+		  \textbf{rising edge}: pattern is sent out
+		  after the rising edge is detected and will interrupt the current
+		  pattern being sent.
+		\item
+		  \textbf{falling edge}: pattern is sent out
+		  after the falling edge is detected and will interrupt the current
+		  pattern being sent.
+		\item
+		  \textbf{logic high}: pattern is sent out after
+		  the rising edge is detected and will repeat until the falling edge.
+		\item
+		  \textbf{logic low}: pattern is sent out after
+		  the falling edge is detected and will repeat until the rising edge.
+		\end{itemize}
 	
-	This frequency generator is triggered by a rising edge of the output source signal. After the trigger, it waits for a configured initial delay before it starts to generate a clock signal. 
+%	the output logic monitors and distinguishes between the states of the output source signal(logic low, rising edge, logic high, falling edge). Based on this state, a user configurable 20-bit pattern is sent out.
+	
+%	\paragraph{Patterns configurable through the GUI:}
+%	\begin{itemize}
+%	\item
+%	  signal is \textbf{rising}: pattern is sent out
+%	  after the rising edge is detected and will interrupt the current
+%	  pattern being sent.
+%	\item
+%	  signal is \textbf{falling}: pattern is sent out
+%	  after the falling edge is detected and will interrupt the current
+%	  pattern being sent.
+%	\item
+%	  signal is \textbf{high}: pattern is sent out after
+%	  the rising edge is detected and will repeat until the falling edge.
+%	\item
+%	  signal is \textbf{low}: pattern is sent out after
+%	  the falling edge is detected and will repeat until the rising edge.
+%	\end{itemize}
+\item 
+	In \textbf{frequency mode} a clock signal can be generated. Its frequency is tuned in steps of 20 times the event clock frequency.  The clock signal is synchronized by the output source signal(pulser, DBus signal, ....). 
+	
+	Frequency generation is triggered by a rising edge of the output source signal. After the trigger, it waits for a configured initial delay before it starts to generate a clock signal. 
 %	The signal is generated by switching between set and reset states. The states determine the logic level of the frequency generator output signal.
 		
 	\paragraph{Substitution file macros}
 	\begin{itemize}
 	\item
-	  \textbf{CML0-Freq:Lvl-SP}=\emph{0} : set the starting logic level of the frequency generator. Options are:
+	  \textbf{CML\#-Freq:Lvl-SP}=\emph{0} : set the starting logic level for the frequency generation. Options are:
 	  \begin{itemize}
 	  	\item \texttt{Active high(0)}: starting logic level is logic high
 	  	\item \texttt{Active low(1)}: starting logic level is logic low
 	  \end{itemize}
 	\item
-	  \textbf{CML0-Freq:Init-SP}=\emph{0} : Set the initial delay between when the frequency generator is triggered and when it starts to generate a clock signal. This allows for a phase difference between the output source signal and the output signal. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 3276 event clock periods.
+	  \textbf{CML\#-Freq:Init-SP}=\emph{0} : Set the initial delay between when the frequency generation is triggered and when it starts to generate a clock signal. This allows for a phase difference between the output source signal and the output signal. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 3276 event clock periods.
 	\item
-	  \textbf{CML0-Freq:High-SP}=\emph{10} : sets the amount of time in ns the signal stays on logic high, before switching to logic low. The value range in ns depends on the event clock. It must be in range of $20/20=1$ event clock period to $65536/20$ event clock periods.
+	  \textbf{CML\#-Freq:High-SP}=\emph{10} : sets the amount of time in ns the signal stays on logic high, before switching to logic low. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 3276 event clock periods.
 	\item
-	  \textbf{CML0-Freq:Low-SP}=\emph{10} : sets the amount of time in ns the signal stays logic low, before switching to logic high. The value range in ns depends on the event clock. It must be in range of $20/20=1$ event clock period to $65536/20$ event clock periods.
+	  \textbf{CML\#-Freq:Low-SP}=\emph{10} : sets the amount of time in ns the signal stays logic low, before switching to logic high. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 3276 event clock periods.
 	\end{itemize}
 \item 
 	In \textbf{pattern mode}, one can generate arbitrary bit patterns(waveforms), triggered by the output source signal(pulser, DBus signal,...). The waveform length is in multiple of 20 bits (each bit is 1/20 of the event clock period), where maximum waveform length is 20x2048 bits.
@@ -345,7 +370,7 @@ Patterns are defined by one of the configurable CML modes:
 	\paragraph{Substitution file macros}
 	\begin{itemize}
 	\item
-	  \textbf{CML0-Pat:WfCycle-SP}=\emph{0} : In \texttt{single shot mode(0)} the
+	  \textbf{CML\#-Pat:WfCycle-SP}=\emph{0} : In \texttt{single shot mode(0)} the
 	  waveform is sent only once per received trigger, where in \texttt{loop mode(1)}
 	  the pattern will continuously loop after the first trigger occurred.
 	\end{itemize}
@@ -354,11 +379,11 @@ Patterns are defined by one of the configurable CML modes:
 	\paragraph{A delay calculator} has configurable \texttt{delay} and \texttt{width} macros to generate a pulse(similar to a pulser):
 	\begin{itemize}
 	\item
-	  \textbf{CML0-WfCalc:Ena-SP}=\emph{0} : \texttt{enable(1)} or \texttt{disable(0)} the calculation.
+	  \textbf{CML\#-WfCalc:Ena-SP}=\emph{0} : \texttt{enable(1)} or \texttt{disable(0)} the calculation.
 	\item
-	  \textbf{CML0-WfCalc:Delay-SP}=\emph{16} : can be used to specify the time in ns between when the mode is triggered and the pulse is generated. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 2048 event clock periods.
+	  \textbf{CML\#-WfCalc:Delay-SP}=\emph{16} : can be used to specify the time in ns between when the mode is triggered and the pulse is generated. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 2048 event clock periods.
 	\item
-	  \textbf{CML0-WfCalc:Width-SP}=\emph{50} : can be used to specify the width of the pulse - the time the signal is stable at logic high. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 2048 event clock periods.
+	  \textbf{CML\#-WfCalc:Width-SP}=\emph{50} : can be used to specify the width of the pulse - the time the signal is stable at logic high. The value range in ns depends on the event clock. It must be in range of 1 event clock period to 2048 event clock periods.
 	\end{itemize}
 	
 	\paragraph{A bunch train calculator} that generates a series of consecutive pulses with width and delay fixed to $(event clock) / 4$. As seen in Figure~\ref{fig:output_cml_bunch}, each bunch pattern consists of 5 logic low bits and 5 logic high bits. A bunch train always ends with 10 logic low bits.
@@ -372,9 +397,9 @@ Patterns are defined by one of the configurable CML modes:
 	Bunch train calculator has the following substitution macros for configuration:
 	\begin{itemize}
 	\item
-	  \textbf{CML0-BunchTrain:Ena-SP}=\emph{0} : \texttt{enable(1)} or \texttt{disable(0)} the bunch train calculator
+	  \textbf{CML\#-BunchTrain:Ena-SP}=\emph{0} : \texttt{enable(1)} or \texttt{disable(0)} the bunch train calculator
 	\item
-	  \textbf{CML0-BunchTrain:Size-SP}=\emph{1} : set the number of bunches per train in range of \texttt{1-150}.
+	  \textbf{CML\#-BunchTrain:Size-SP}=\emph{1} : set the number of bunches per train in range of \texttt{1-150}.
 	\end{itemize}
 	
 \end{itemize}
@@ -391,51 +416,9 @@ The exact output signal is dependent on the inserted module. Figure~\ref{fig:out
 \end{figure}
 
 \subsubsection{Rear Universal output - Transition Board output (RearUniv)}\label{sec:Rear Universal output}
-An EVR has additional rear universal outputs. They are located on the back-plane of the EVR board. The exact output signal is dependent on the universal module inserted in the transition board.
+An EVR has additional rear universal outputs. The exact output signal is dependent on the universal module inserted in the transition board.
 
-\subsection{Time stamping mechanism}\label{sec:Time stamping mechanism}
-\begin{quote}
-\textbf{The functionality of the time stamping mechanism was not tested!}
-\end{quote}
-The event receiver supports a global time stamping mechanism. Time-stamp consists of a 32-bit time-stamp event counter and a 32-bit seconds counter. The seconds counter can be updated from the
-shift register. Counters are clocked using prescaled event clock, DBus bit 4, or on each reception of the mapped event (\texttt{TS Tick} special function described in Section~\ref{sec:Special functions}). If configured, events together with their time-stamp are stored in a FIFO memory.
-
-\begin{itemize}
-\item
-	\textbf{Time-Src-Sel}=\emph{0} : Determines what causes the
-timestamp event counter to increment.
-
-\begin{itemize}
-\item
-  The \texttt{event clock(0)} source will use a prescaled EVR
-  reference clock.
-\item
-  The \texttt{mapped codes(1)} increment the counter whenever
-  certain event arrives. Time-stamp counter event can be defined using a \texttt{TS Tick} special function described in Section~\ref{sec:Special functions}.
-\item
-  \texttt{DBus bit 4(2)} will increment the counter on the
-  low-to-high transition of the DBus bit 4.
-\end{itemize}
-\item
-	\textbf{Time-Clock-SP}=\emph{0.0} : Specifies the rate at which the
-timestamp event counter will be incremented. This determines the
-resolution of all timestamps. Use \textbf{in conjunction with} the \texttt{Time-Src-Sel}.
-
-When the timestamp source(\texttt{Time-Src-Sel}) is set to \texttt{Event clock}
-this macro value is used to prescale the EVR's reference clock
-frequency to the given frequency. Since this may not be exact it is
-recommended to read back the actual divider setting via the
-timestamp prescaler (\texttt{\$(SYS)-\$(EVR):Time-Div-I} record). In
-all modes this value is stored in memory and used to convert the
-timestamp event counter values from ticks to seconds. The units are
-in \texttt{MHz}.
-\end{itemize}
-
-\subsection{Heartbeat monitor}\label{sec:Heartbeat monitor}
-A heartbeat monitor is provided to receive heartbeat events from the timing network. If no heartbeat event is received (in approx. 1.6 s), the heartbeat timeout occurs and a heartbeat flag is set. 
-%The event receiver may be programmed to generate a heartbeat interrupt.
-
-\subsection{Delay module}\label{evr-delaymodule.template}
+\subsection{UNIV-LVPECL-DLY high precision delay module}\label{sec:UNIV-LVPECL-DLY}
 EVR has universal I/O slots, described in Section~\ref{sec:Front Panel Universal I/O}, where universal modules can be inserted. One of these is UNIV-LVPECL-DLY Delay module. This module will output a delayed signal from the appropriate FrontUnivOut output. The FrontUnivOut output source signal can be configured as described in Section~\ref{sec:Outputs} using mappings from Table~\ref{tab:mappings}. The delay can be configured from 2200 ps to 12430 ps, with 10 ps resolution. 
 
 %Using the inserted module with the prepared substitution file(file list item~\ref{itm:files:evr_substitution} in Section~\ref{sec:PSI specifics}) is simple. User only needs to uncomment the substitution definition and macros for the appropriate slot.
@@ -487,6 +470,49 @@ file "evr-delayModule.template"
 }
 \end{verbatim}
 
+\subsection{Time stamping mechanism}\label{sec:Time stamping mechanism}
+\begin{quote}
+\textbf{The functionality of the time stamping mechanism was not tested!}
+\end{quote}
+The event receiver supports a global time stamping mechanism. Time-stamp consists of a 32-bit time-stamp event counter and a 32-bit seconds counter. The seconds counter can be updated from the
+shift register. Counters are clocked using prescaled event clock, DBus bit 4, or on each reception of the mapped event (\texttt{TS Tick} special function described in Section~\ref{sec:Special functions}). If configured, events together with their time-stamp are stored in a FIFO memory.
+
+\begin{itemize}
+\item
+	\textbf{Time-Src-Sel}=\emph{0} : Determines what causes the
+timestamp event counter to increment.
+
+\begin{itemize}
+\item
+  The \texttt{event clock(0)} source will use a prescaled EVR
+  reference clock.
+\item
+  The \texttt{mapped codes(1)} increment the counter whenever
+  certain event arrives. Time-stamp counter event can be defined using a \texttt{TS Tick} special function described in Section~\ref{sec:Special functions}.
+\item
+  \texttt{DBus bit 4(2)} will increment the counter on the
+  low-to-high transition of the DBus bit 4.
+\end{itemize}
+\item
+	\textbf{Time-Clock-SP}=\emph{0.0} : Specifies the rate at which the
+timestamp event counter will be incremented. This determines the
+resolution of all timestamps. Use \textbf{in conjunction with} the \texttt{Time-Src-Sel}.
+
+When the timestamp source(\texttt{Time-Src-Sel}) is set to \texttt{Event clock}
+this macro value is used to prescale the EVR's reference clock
+frequency to the given frequency. Since this may not be exact it is
+recommended to read back the actual divider setting via the
+timestamp prescaler (\texttt{\$(SYS)-\$(EVR):Time-Div-I} record). In
+all modes this value is stored in memory and used to convert the
+timestamp event counter values from ticks to seconds. The units are
+in \texttt{MHz}.
+\end{itemize}
+
+\subsection{Heartbeat monitor}\label{sec:Heartbeat monitor}
+A heartbeat monitor is provided to receive heartbeat events from the timing network. If no heartbeat event is received (in approx. 1.6 s), the heartbeat timeout occurs and a heartbeat flag is set. 
+%The event receiver may be programmed to generate a heartbeat interrupt.
+
+
 \subsection{Event mapping}\label{sec:Event mapping}
 As mentioned in Section~\ref{sec:Introduction}, an EVR responds to events. In order for the EVR to respond, an appropriate mapping between the event and  EVR function/component needs to be configured.
 
@@ -495,7 +521,7 @@ As mentioned in Section~\ref{sec:Introduction}, an EVR responds to events. In or
 %to trigger an EVR action or a EVR component an appropriate mapping between the event and action/component needs to be configured. When an appropriate mapping is configured, received event triggers the mapped EVR component or action. 
 
 \subsubsection{Trigger an EPICS event}\label{evr-softevent.template}
-Provide us with the ability to map between EPICS event (software) and an event from the timing system (hardware).
+Provides us with the ability to map between EPICS event (software) and an event from the timing system (hardware).
 
 \paragraph{Substitution file macros:}
 \begin{itemize}
@@ -590,7 +616,7 @@ mapped to multiple events.
 \item
   \textbf{PID} represents the pulser number
 \item
-  \textbf{F} represents one of the functions listed above.
+  \textbf{F} represents one of the functions (Trig, Set, Reset) described in Section~\ref{sec:Pulser}.
 \item
   \textbf{EVT} represents an event from the timing network.
 \item
@@ -612,7 +638,7 @@ pattern { SYS,                   EVR,    PID   F,      EVT, ID }
 
 
 \section{PSI IOC startup}\label{sec:PSI IOC startup}
-Section~\ref{TUT-sec:Quick start} of the Tutorial~\cite{tutorial} describes a simple way of using the predefined templates with a generic startup script to create the IOC application. This Section describes how to use the template files directly from the mrfioc2 reporsitory~\cite{git_mrfioc2} with a custom startup script.
+Section~\ref{TUT-sec:Quick start} of the Tutorial~\cite{tutorial} describes a simple way of using the predefined templates with a generic startup script to create an IOC application for EVR. This Section describes how to use the template files directly from the mrfioc2 reporsitory~\cite{git_mrfioc2} with a custom startup script.
 
 The templates are available in \texttt{mrfioc2/evrMrmApp/Db/PSI} folder (folder list item~\ref{itm:folder:evr_db} in Section~\ref{sec:PSI specifics}). The following steps should be taken in order to create a new SWIT compliant IOC application for the Event Receiver:
 
@@ -620,7 +646,7 @@ The templates are available in \texttt{mrfioc2/evrMrmApp/Db/PSI} folder (folder 
 \begin{enumerate}
 %\def\labelenumi{\arabic{enumi}.}
 \item
-  Create a \textbf{project folder}, eg. \texttt{MTEST-VME-EVRTEST}. Let $ <TOP> $ be the path to this folder, eg $ <TOP> $ = \texttt{\textasciitilde/public/F/TEST/MTEST-VME-EVRTEST}.
+  Create a project folder, eg. \texttt{MTEST-VME-EVRTEST}. Let $ <TOP> $ be the path to this folder, eg $ <TOP> $ = \texttt{\textasciitilde/public/F/TEST/MTEST-VME-EVRTEST}.
 \begin{verbatim}
 mkdir -p <TOP>
 \end{verbatim}
@@ -645,7 +671,7 @@ cp evr_ex.subs <top>/MTEST-VME-EVRTEST_EVR.subs
 \end{verbatim}
 
 \item
-  Create a \textbf{startup script}
+  Create a startup script
   \texttt{$<TOP>$/MTEST-VME-EVRTEST\_startup.script}, with the following content:
 
 \begin{verbatim}
@@ -719,7 +745,7 @@ pattern { SYS,                  EVR,    EVT,    CODE }
   Optionally, you can remove all the macros whose values you did not
   change.
 \item
-  \textbf{Install the} prepared \textbf{IOC} by running the command
+  Install the prepared IOC by running the command
   \texttt{swit -V} from your project folder $<TOP>$.
 \end{enumerate}
 
@@ -763,7 +789,7 @@ mrfioc2
 \item 
 	\texttt{mrfCommon} contains common functions and definitions used in the mrfioc2 module. 
 \item 
-	\texttt{mrfShared} contains code shared between EVG and EVR together with some OS specifics.
+	\texttt{mrfShared} contains code shared between EVG and EVR together with some OS specifics and kernel modules.
 \item 
 	\texttt{/} and \texttt{PSI} contain makefiles for building the mrfioc2 module.
 \item 
@@ -771,7 +797,7 @@ mrfioc2
 \end{itemize}
 
 \subsection{PSI specifics}\label{sec:PSI specifics}
-Some folders:
+Some important folders:
 \begin{enumerate}
 \item 
 	\texttt{documentation/PSI} contains this document and a tutorial~\cite{tutorial} with step-by-step instructions to configuring some of the basic functionalities of the Event Receiver, including both document sources.
@@ -786,7 +812,7 @@ Some folders:
 \item 
 	\texttt{ui} contains caQtDM screens for Event Receiver and Event Generator in \texttt{EVR} and \texttt{EVG} sub-folder, respectively.
 \end{enumerate}
-Some files:
+Some important files:
 \begin{enumerate}
 \item 
 	\texttt{mrfioc2/evgMrmApp/Db/PSI/evg-vme.template} is an EVG form factor specific template file.\label{itm:files:evg_template}
@@ -807,7 +833,7 @@ Some files:
 \end{enumerate}
 
 \section{Building from scratch}\label{sec:Building from scratch}
-There are two possible ways to build the mrfioc2 module. First is using the driver.makefile on the PSI infrastructure, and second using the standard makefile.
+There are two possible ways to build the mrfioc2 device support. First is using the driver.makefile~\cite{driver.makefile} on the PSI infrastructure, and second using the standard makefile.
 
 \paragraph{Prerequisites}
 \begin{itemize}
@@ -822,7 +848,7 @@ There are two possible ways to build the mrfioc2 module. First is using the driv
 \end{itemize}
 
 \subsection{PSI driver.makefile}\label{sec:PSI driver.makefile}
-driver.makefile~\cite{driver.makefile}, makes it possible to build IOC software projects such as drivers, state notation code, records, etc. with minimal configuration.
+%driver.makefile~\cite{driver.makefile}, makes it possible to build IOC software projects such as drivers, state notation code, records, etc. with minimal configuration.
 To compile to a PSI style module, first clone the PSI git repository for mrfioc2:
 \begin{verbatim}
 	git clone https://github.psi.ch/scm/ed/mrfioc2.git
@@ -901,36 +927,32 @@ file to output the template to be used in your application.
 
 
 
-\section{devlib2}\label{sec:devlib2}
-devLib2~\cite{devlib2} is an extension to the EPICS OS independent VME bus access library (devLib v1) found in the 3.14.x series. The v2 library is an overlay and extension to the v1 library and not a replacement. It is planned that the v2 library will be merged with the v1 library for the 3.15.x series. After that point devlib2 will continue to exist as a location for backports and bug fixes for the 3.14.x series.
+%\section{devlib2}\label{sec:devlib2}
+%devLib2~\cite{devlib2} is an extension to the EPICS OS independent VME bus access library (devLib v1) found in the 3.14.x series. The v2 library is an overlay and extension to the v1 library and not a replacement. It is planned that the v2 library will be merged with the v1 library for the 3.15.x series. After that point devlib2 will continue to exist as a location for backports and bug fixes for the 3.14.x series.
 
-\section{kernel/pcie port}\label{sec:kernel/pcie port}
+%\section{kernel/pcie port}\label{sec:kernel/pcie port}
 
 
 \section{GUI}\label{sec:GUI}
-There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver available in \texttt{mrfioc2/ui/EVG} and \texttt{mrfioc2/ui/EVR}, respectively. These folders contain a script \texttt{startUI.sh} for launching the GUI.
+There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver available in \texttt{mrfioc2/ui/EVG} and \texttt{mrfioc2/ui/EVR}, respectively. These folders contain a script for launching the GUI.
 
-\paragraph{startUI.sh usage:}
+\paragraph{EVR GUI script usage:}
 \begin{verbatim}
-	./startUI.sh -s <system name> [options]
+	./start_EVR.sh -s <system name> [options]
 \end{verbatim}
 
 
-\paragraph{startUI.sh EVR options}
+\paragraph{EVR GUI script options:}
 \begin{verbatim}
-	-r <event receiver name> ..... set the event receiver name (default:EVR0).
+	-r <event receiver name> ..... set the event receiver name
+	                               (default:EVR0).
 	-h                       ..... shows the options and usage
 \end{verbatim}
 
-\paragraph{startUI.sh EVG options}
-\begin{verbatim}
-	-g <event receiver name> ..... set the event receiver name (default:EVG0).
-	-h                       ..... shows the options and usage
-\end{verbatim}
 
-\paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0} in system \texttt{MTEST-VME-EVRTEST}.
+\paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
-	./startUI.sh -s MTEST-VME-EVRTEST
+	./start_EVR.sh -s MTEST-VME-EVRTEST
 \end{verbatim}
 
 
