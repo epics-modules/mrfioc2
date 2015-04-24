@@ -22,7 +22,7 @@ enum TrigMode {
   TrigEdge=2
 };
 
-class Input : public mrf::ObjectInst<Input>, public IOStatus
+class epicsShareClass Input : public mrf::ObjectInst<Input>, public IOStatus
 {
 public:
   Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}

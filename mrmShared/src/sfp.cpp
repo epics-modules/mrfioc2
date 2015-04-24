@@ -1,5 +1,13 @@
 
 #include <stdio.h>
+
+// for htons() et al.
+#ifdef _WIN32
+ #include <Winsock2.h>
+#endif
+
+#include <epicsExport.h>
+#include "mrf/object.h"
 #include "sfp.h"
 
 #include "mrfCommonIO.h"

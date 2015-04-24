@@ -13,6 +13,8 @@
 #include <dbAccess.h>
 #include <recGbl.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
+
 #include <epicsExport.h>
 
 #include "devObj.h"
@@ -70,7 +72,7 @@ write_bo_resetMxc(boRecord* pbo) {
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        evg->resetMxc(pbo->val);
+        evg->resetMxc(pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -86,7 +88,6 @@ write_bo_resetMxc(boRecord* pbo) {
 static long 
 read_si_ts(stringinRecord* psi) {
     long ret = 0;
-                unsigned long dummy;
 
     try {
         evgMrm* evg = (evgMrm*)psi->dpvt;
@@ -101,10 +102,10 @@ read_si_ts(stringinRecord* psi) {
             case TS_ALARM_NONE:
                 break;
             case TS_ALARM_MINOR:
-                dummy = recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
+                recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
                 break;
             case TS_ALARM_MAJOR:
-                dummy = recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
+                recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
                 errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");

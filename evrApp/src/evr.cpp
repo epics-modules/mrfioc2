@@ -40,9 +40,20 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
+
+bus_configuration *EVR::getBusConfiguration(){
+    return &busConfiguration;
+}
+
 std::string EVR::position() const
 {
-    return pos;
+    std::ostringstream position;
+
+    if(busConfiguration.busType == busType_pci) position << busConfiguration.pci.bus << ":" << busConfiguration.pci.device << "." << busConfiguration.pci.function;
+    else if(busConfiguration.busType == busType_vme) position << "Slot #" << busConfiguration.vme.slot;
+    else position << "Unknown position";
+
+    return position.str();
 }
 
 Pulser::~Pulser()

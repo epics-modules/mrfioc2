@@ -11,7 +11,7 @@ include $(TOP)/configure/CONFIG
 PROD_HOST += evrdump
 
 evrdump_SRCS += evrdump.c
-evrdump_LIBS += Com epicspci Com
+evrdump_LIBS += epicspci $(EPICS_BASE_IOC_LIBS)
 
 ifeq ($(EPICS_VERSION)$(EPICS_REVISION),314)
 ifneq ($(findstring $(EPICS_MODIFICATION),1 2 3 4 5 6 7 8 9),)
@@ -37,6 +37,10 @@ evrMrm_SRCS += devMrmBufRx.cpp
 evrMrm_SRCS += irqHack.cpp
 
 evrMrm_SRCS += buf.cpp
+
+ifeq ($(OS),Windows_NT)
+evrMrm_LIBS += mrfCommon mrmShared evr epicspci epicsvme $(EPICS_BASE_IOC_LIBS)
+endif
 
 #=============================
 # Install the modular register map event receiver support dbd

@@ -20,10 +20,6 @@
 
 #include "mrmDataBufTx.h"
 
-#ifndef STATIC_ASSERT
-#define STATIC_ASSERT(dummy)
-#endif
-
 #ifndef bswap32
 #define bswap32(value) (  \
         (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
@@ -41,6 +37,7 @@
 
 #define DataTxCtrl_len_max DataTxCtrl_len_mask
 
+// If bottom 2 lines are removed, MSVC does not report warning C4273
 dataBufTx::~dataBufTx() {}
 dataBufRx::~dataBufRx() {}
 
@@ -61,8 +58,8 @@ mrmDataBufTx::~mrmDataBufTx()
 bool
 mrmDataBufTx::dataTxEnabled() const
 {
-    return nat_ioread32(dataCtrl) &
-         (DataTxCtrl_ena|DataTxCtrl_mode);
+    return (nat_ioread32(dataCtrl) &
+         (DataTxCtrl_ena|DataTxCtrl_mode)) != 0;
 }
 
 void

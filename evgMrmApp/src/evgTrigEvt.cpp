@@ -30,7 +30,7 @@ evgTrigEvt::enable(bool ena) {
 
 bool
 evgTrigEvt::enabled() const {
-    return READ32(m_pReg, TrigEventCtrl(m_id)) & EVG_TRIG_EVT_ENA;
+    return (READ32(m_pReg, TrigEventCtrl(m_id)) & EVG_TRIG_EVT_ENA) != 0;
 }
 
 epicsUInt32

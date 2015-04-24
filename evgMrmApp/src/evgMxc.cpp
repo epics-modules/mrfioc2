@@ -24,7 +24,7 @@ evgMxc::~evgMxc() {
 
 bool 
 evgMxc::getStatus() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS) != 0;
 }
 
 void
@@ -37,7 +37,7 @@ evgMxc::setPolarity(bool polarity) {
 
 bool
 evgMxc::getPolarity() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY) != 0;
 }
 
 void
@@ -57,7 +57,7 @@ evgMxc::getPrescaler() const {
 void
 evgMxc::setFrequency(epicsFloat64 freq) {
     epicsUInt32 clkSpeed = (epicsUInt32)(m_owner->getEvtClk()->getFrequency() *
-                            pow(10, 6));
+                            pow(10.0, 6));
     epicsUInt32 preScaler = (epicsUInt32)((epicsFloat64)clkSpeed / freq);
     
     setPrescaler(preScaler);
@@ -66,7 +66,7 @@ evgMxc::setFrequency(epicsFloat64 freq) {
 epicsFloat64 
 evgMxc::getFrequency() const {
     epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getFrequency()
-                             * pow(10, 6);
+                             * pow(10.0, 6);
     epicsFloat64 preScaler = (epicsFloat64)getPrescaler();
     return clkSpeed/preScaler;    
 }
@@ -95,6 +95,6 @@ evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
 
     epicsUInt8 mask = 1 << trigEvt;
     epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
-    return mask & map;
+    return (mask & map) != 0;
 }
 

@@ -15,6 +15,7 @@
 #include <devSup.h>
 #include <dbAccess.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
 #include <epicsExport.h>
 #include <errlog.h>
 
@@ -358,9 +359,9 @@ write_wf_timestamp(waveformRecord* pwf) {
             epicsFloat64 seconds;
             epicsUInt32 timeScaler = seq->getTimestampResolution() ;
             for(unsigned int i = 0; i < size; i++) {
-               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10, timeScaler);
+               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10.0,(int) timeScaler);
                ts[i] = (epicsUInt64)floor(seconds *
-                       evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
+                       evg->getEvtClk()->getFrequency() * pow(10.0,6) + 0.5);
             }
         }
         seq->setTimestamp(&ts[0], size);
@@ -392,7 +393,7 @@ read_wf_timestamp(waveformRecord* pwf) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         std::vector<epicsUInt64> timestamp = seq->getTimestampCt();
-        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10,6);
+        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10.0,6);
         epicsUInt32 timeScaler = seq->getTimestampResolution();
 
         epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
@@ -400,7 +401,7 @@ read_wf_timestamp(waveformRecord* pwf) {
             if(seq->getTimestampInpMode() == TICKS)
                  bptr[i] = (epicsFloat64)timestamp[i];
             else
-                bptr[i] = timestamp[i] * pow(10, timeScaler) / evtClk;
+                bptr[i] = timestamp[i] * pow(10.0,(int) timeScaler) / evtClk;
         }
 
         pwf->nord = timestamp.size();
@@ -564,7 +565,6 @@ read_mbbi_trigSrc(mbbiRecord* pmbbi) {
 static long 
 write_bo_loadSeq(boRecord* pbo) {
     long ret = 0;
-    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -579,7 +579,7 @@ write_bo_loadSeq(boRecord* pbo) {
         seq->load();
         seq->setErr("");
     } catch(std::runtime_error& e) {
-        dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+        recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
         seq->setErr(e.what());
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -595,7 +595,6 @@ write_bo_loadSeq(boRecord* pbo) {
 static long 
 write_bo_unloadSeq(boRecord* pbo) {
     long ret = 0;
-    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -610,7 +609,7 @@ write_bo_unloadSeq(boRecord* pbo) {
         seq->unload();
         seq->setErr("");
     } catch(std::runtime_error& e) {
-        dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+        recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
         seq->setErr(e.what());
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -626,7 +625,6 @@ write_bo_unloadSeq(boRecord* pbo) {
 static long 
 write_bo_commitSeq(boRecord* pbo) {
     long ret = 0;
-    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -641,7 +639,7 @@ write_bo_commitSeq(boRecord* pbo) {
         seq->commit();
         seq->setErr("");
     } catch(std::runtime_error& e) {
-        dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+        recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
         seq->setErr(e.what());
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -657,7 +655,6 @@ write_bo_commitSeq(boRecord* pbo) {
 static long 
 write_bo_enableSeq(boRecord* pbo) {
     long ret = 0;
-    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -672,7 +669,7 @@ write_bo_enableSeq(boRecord* pbo) {
         seq->enable();
         seq->setErr("");
     } catch(std::runtime_error& e) {
-        dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+        recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
         seq->setErr(e.what());
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -688,7 +685,6 @@ write_bo_enableSeq(boRecord* pbo) {
 static long 
 write_bo_disableSeq(boRecord* pbo) {
     long ret = 0;
-    unsigned long dummy;
     evgSoftSeq* seq = 0;
 
     try {
@@ -703,7 +699,7 @@ write_bo_disableSeq(boRecord* pbo) {
         seq->disable();
         seq->setErr("");
     } catch(std::runtime_error& e) {
-        dummy = recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
+        recGblSetSevr(pbo, WRITE_ALARM, MAJOR_ALARM);
         seq->setErr(e.what());
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -730,7 +726,7 @@ write_bo_abortSeq(boRecord* pbo) {
             return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        seq->abort(pbo->val);
+        seq->abort(pbo->val != 0);
         seq->setErr("");
     } catch(std::runtime_error& e) {
         seq->setErr(e.what());

@@ -424,8 +424,10 @@ static drvet ntpShared = {
 
 #include <epicsExport.h>
 
-epicsExportAddress(drvet, ntpShared);
-epicsExportAddress(dset, devNtpShmLiOk);
-epicsExportAddress(dset, devNtpShmLiFail);
-epicsExportAddress(dset, devNtpShmAiDelta);
-epicsExportRegistrar(ntpShmRegister);
+extern "C"{
+ epicsExportAddress(drvet, ntpShared);
+ epicsExportAddress(dset, devNtpShmLiOk);
+ epicsExportAddress(dset, devNtpShmLiFail);
+ epicsExportAddress(dset, devNtpShmAiDelta);
+ epicsExportRegistrar(ntpShmRegister);
+}

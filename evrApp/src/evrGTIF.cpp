@@ -12,9 +12,6 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
-#include "mrf/object.h"
-#include "evr/evr.h"
-
 #include <stdexcept>
 #include <errlog.h>
 #include <epicsMutex.h>
@@ -22,7 +19,10 @@
 #include <epicsTime.h>
 #include <epicsVersion.h>
 
-#define epicsExportSharedSymbols
+#include <epicsExport.h>
+
+#include "mrf/object.h"
+#include "evr/evr.h"
 #include "evrGTIF.h"
 
 struct priv {
@@ -116,5 +116,6 @@ void EVRTime_Registrar() {}
 #endif
 
 #include <epicsExport.h>
-
-epicsExportRegistrar(EVRTime_Registrar);
+extern "C"{
+ epicsExportRegistrar(EVRTime_Registrar);
+}

@@ -41,7 +41,7 @@ mrmBufRx::~mrmBufRx()
 bool
 mrmBufRx::dataRxEnabled() const
 {
-    return READ32(base, DataBufCtrl) & DataBufCtrl_mode;
+    return (READ32(base, DataBufCtrl) & DataBufCtrl_mode) != 0;
 }
 
 void
@@ -67,7 +67,7 @@ mrmBufRx::dataRxEnable(bool v)
  * Further, since the DataBufCtrl and DataRx(i) registers are not used anywhere else
  * we can safely avoid locking while accessing them.
  */
-int evrDebug;
+extern int evrDebug;
 
 void
 mrmBufRx::drainbuf(CALLBACK* cb)
