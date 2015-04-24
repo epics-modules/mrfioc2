@@ -37,9 +37,9 @@
 
 #define DataTxCtrl_len_max DataTxCtrl_len_mask
 
-// Removed due to warning C4273 on MSVC
-//dataBufTx::~dataBufTx() {}
-//dataBufRx::~dataBufRx() {}
+// If bottom 2 lines are removed, MSVC does not report warning C4273
+dataBufTx::~dataBufTx() {}
+dataBufRx::~dataBufRx() {}
 
 mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
