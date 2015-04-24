@@ -24,8 +24,26 @@
 #define MRFOBJECT_H
 
 #ifdef _WIN32
+/*
+ * The warnings C4251 and C4275 happen because all objects have a DLL
+ * interface when compiled on VC++ but derive from standard STL objects
+ * that don't have a DLL interface. This can be safely ignored when
+ * deriving from STL objects but not otherwise. See [1] and [2] for
+ * more information.
+ *
+ * [1]: https://msdn.microsoft.com/en-us/library/3tdb471s.aspx
+ * [2]: https://msdn.microsoft.com/en-us/library/esew7y1w.aspx
+ */
 #pragma warning( disable: 4251 )
 #pragma warning( disable: 4275 )
+/*
+ * The warning C4661 is happening due to separate code instantiation
+ * that happens with macros defined in this file (OBJECT_START,
+ * OBJECT_PROP1, OBJECT_PROP2 and OBJECT_END). The objects define
+ * custom instances of generic templates which means that in some code
+ * files where these macros are missing the compiler assumes that
+ * specific instances of functions are missing.
+ */
 #pragma warning( disable: 4661 )
 #endif
 
@@ -64,13 +82,13 @@ public:
  * There is no way other then to up-cast in ObjectInst<C>
  * and then down-cast in getProperty<P>().
  */
-struct propertyBase
+struct epicsShareClass propertyBase
 {
-    epicsShareFunc virtual ~propertyBase()=0;
+    virtual ~propertyBase()=0;
     virtual const char* name() const=0;
     virtual const std::type_info& type() const=0;
     //! @brief Print the value of the field w/o leading or trailing whitespace
-    epicsShareFunc virtual void  show(std::ostream&) const;
+    virtual void  show(std::ostream&) const;
 };
 
 static inline
