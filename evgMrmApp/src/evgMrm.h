@@ -29,6 +29,7 @@
 #include "evgSequencer/evgSoftSeqManager.h"
 #include "mrmDataBufTx.h"
 #include "evgRegMap.h"
+#include "configurationInfo.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -43,7 +44,7 @@ enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm : public mrf::ObjectInst<evgMrm> {
 public:
-    evgMrm(const std::string& id, volatile epicsUInt8* const);
+    evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const);
     ~evgMrm();
 
     /* locking done internally */
@@ -54,6 +55,9 @@ public:
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;
     epicsUInt32 getFwVersion() const;
+    epicsUInt32 getFwVersionID();
+    formFactor getFormFactor();
+    std::string getFormFactorStr();
     std::string getSwVersion() const;
 
     void enable(bool);
@@ -92,6 +96,7 @@ public:
     evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();
+    bus_configuration* getBusConfiguration();
 
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
@@ -120,6 +125,7 @@ public:
 private:
     const std::string             m_id;
     volatile epicsUInt8* const    m_pReg;
+    bus_configuration             busConfiguration;
 
     evgAcTrig                     m_acTrig;
     evgEvtClk                     m_evtClk;
