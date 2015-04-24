@@ -1,3 +1,6 @@
+#ifndef EVGREGMAP_H
+#define EVGREGMAP_H
+
 #include "epicsTypes.h"
 
 /**************************************************************************************************/
@@ -174,8 +177,12 @@
 
 #define FPGAVersion_ZERO_MASK   0x00FFFF00
 #define FPGAVersion_TYPE_MASK   0xF0000000
+#define FPGAVersion_FORM_MASK   0x0f000000
+#define FPGAVersion_FORM_SHIFT  24
 #define FPGAVersion_TYPE_SHIFT  28
 #define FPGAVersion_VER_MASK    0x000000FF
+
+
 
 /**************************************************************************************************/
 /*    AC Trigger Register Bit Assignmen                                                           */
@@ -262,3 +269,4 @@ const epicsUInt16 evgEndOfSeqBuf = 5;
 
 #endif
 
+#endif /* EVGREGMAP_H */

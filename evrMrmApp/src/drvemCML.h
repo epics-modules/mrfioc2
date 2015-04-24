@@ -14,6 +14,7 @@
 #include "evr/cml.h"
 
 #include "evrRegMap.h"
+#include "configurationInfo.h"
 
 class EVRMRM;
 
@@ -22,7 +23,7 @@ class epicsShareClass MRMCML : public CML
 public:
     enum outkind { typeCML, typeTG300, typeTG203 };
 
-    MRMCML(const std::string&, unsigned char, EVRMRM&, outkind, evrForm);
+    MRMCML(const std::string&, unsigned char, EVRMRM&, outkind, formFactor);
     virtual ~MRMCML();
 
     virtual void lock() const;

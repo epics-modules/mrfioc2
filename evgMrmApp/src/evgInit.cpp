@@ -30,6 +30,7 @@
 #include "plx9030.h"
 
 #include <epicsExport.h>
+#include "cardinfo.h"
 #include "evgRegMap.h"
 
 #include "evgInit.h"
@@ -145,8 +146,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required,
     }
 #endif
 	epicsUInt32 type, ver;
-	epicsUInt32 v = READ32(base, FPGAVersion);
-	printf("FPGAVersion 0x%08x\n", v);
+    epicsUInt32 v = READ32(base, FPGAVersion);
 
     if(v & FPGAVersion_ZERO_MASK)
         throw std::runtime_error("Invalid firmware version (HW or bus error)");
@@ -179,7 +179,15 @@ mrmEvgSetupVME (
 {
     volatile epicsUInt8* regCpuAddr = 0;
     struct VMECSRID info;
+    bus_configuration bus;
+
     info.board = 0; info.revision = 0; info.vendor = 0;
+
+    bus.busType = busType_vme;
+    bus.vme.slot = slot;
+    bus.vme.address = vmeAddress;
+    bus.vme.irqLevel = irqLevel;
+    bus.vme.irqVector = irqVector;
 
     try {
         if(mrf::Object::getObject(id)){
@@ -238,7 +246,7 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, regCpuAddr);
+        evgMrm* evg = new evgMrm(id, bus, regCpuAddr);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -249,6 +257,7 @@ mrmEvgSetupVME (
                 CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL),
                 CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR)
             );
+
 
             printf("csrCpuAddr : %p\nregCpuAddr : %p\n",csrCpuAddr, regCpuAddr);
 
@@ -326,6 +335,12 @@ mrmEvgSetupPCI (
 		int d, 					// Device number
 		int f)   				// Function number
 {
+    bus_configuration bus;
+
+    bus.busType = busType_pci;
+    bus.pci.bus = b;
+    bus.pci.device = d;
+    bus.pci.function = f;
 
 	try {
 		if (mrf::Object::getObject(id)) {
@@ -373,7 +388,7 @@ mrmEvgSetupPCI (
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
-		evgMrm* evg = new evgMrm(id, BAR_evg);
+        evgMrm* evg = new evgMrm(id, bus, BAR_evg);
 
 		evg->getSeqRamMgr()->getSeqRam(0)->disable();
 		evg->getSeqRamMgr()->getSeqRam(1)->disable();
@@ -651,6 +666,44 @@ printregisters(volatile epicsUInt8 *evg) {
     }
 }
 
+void
+reportEVGConfiguration(FILE *stream, bus_configuration *bus, int *level){
+
+    if(bus->busType == busType_vme){
+        struct VMECSRID vmeDev;
+        volatile unsigned char* csrAddr = devCSRTestSlot(vmeEvgIDs, bus->vme.slot, &vmeDev);
+        if(csrAddr){
+            epicsUInt32 ader = CSRRead32(csrAddr + CSR_FN_ADER(1));
+            fprintf(stream, "  VME slot: %d\n", bus->vme.slot);
+            fprintf(stream, "  VME A24 address %08x\n", bus->vme.address);
+            fprintf(stream, "  VME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
+            fprintf(stream, "  VME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
+            fprintf(stream, "  VME IRQ Vector %u (configured to %d)\n", CSRRead8(csrAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR), bus->vme.irqVector);
+            if(*level>1) fprintf(stream, "  VME card vendor: %08x\n", vmeDev.vendor);
+            if(*level>1) fprintf(stream, "  VME card board: %08x\n", vmeDev.board);
+            if(*level>1) fprintf(stream, "  VME card revision: %08x\n", vmeDev.revision);
+            if(*level>1) fprintf(stream, "  VME CSR address: %p\n", csrAddr);
+        }else{
+            fprintf(stream, "  Card not detected in slot %d\n", bus->vme.slot);
+        }
+    }
+    else if(bus->busType == busType_pci){
+        const epicsPCIDevice *pciDev;
+        if(!devPCIFindBDF(mrmevgs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
+            fprintf(stream, "  PCI bus: %u (configured to %d)\n", pciDev->bus, bus->pci.bus);
+            fprintf(stream, "  PCI device: %u (configured to %d)\n", pciDev->device, bus->pci.device);
+            fprintf(stream, "  PCI function: %u (configured to %d)\n", pciDev->function, bus->pci.function);
+            fprintf(stream, "  PCI IRQ: %u\n", pciDev->irq);
+            fprintf(stream, "  PCI class: %u, revision: %u, sub device: %u, sub vendor: %u\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+
+        }else{
+            fprintf(stream, "  PCI Device not found\n");
+        }
+    }else{
+        fprintf(stream, "  Unknown bus type\n");
+    }
+}
+
 static bool
 reportCard(mrf::Object* obj, void* arg) {
     int *level=(int*)arg;
@@ -658,9 +711,12 @@ reportCard(mrf::Object* obj, void* arg) {
     if(!evg)
         return true;
 
-    printf("    ID: %s     \n", evg->getId().c_str());
-    
-    printf("    FPGA version: %08x\n", evg->getFwVersion());
+    printf("EVG: %s     \n", evg->getId().c_str());
+    printf("  FPGA Version: %08x (firmware: %x)\n", evg->getFwVersion(), evg->getFwVersionID());
+    printf("  Form factor: %s\n", evg->getFormFactorStr().c_str());
+
+    bus_configuration *bus = evg->getBusConfiguration();
+    reportEVGConfiguration(stdout, bus, level);
 
     evg->show(*level);
     

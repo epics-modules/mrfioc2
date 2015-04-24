@@ -118,15 +118,6 @@
 #  define FWVersion_ver_shift  0
 #  define FWVersion_zero_mask 0x00ffff00
 
-enum evrForm {
-  evrFormCPCI=0, // 3U
-  evrFormPMC=1,
-  evrFormVME64=2,
-  evrFormCRIO=3,
-  evrFormCPCIFULL=4, // 6U
-  evrFormPCIe=7,
-};
-
 #define U32_CounterPS   0x040 /* Timestamp event counter prescaler */
 
 #define U32_USecDiv     0x04C
