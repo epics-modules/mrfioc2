@@ -51,9 +51,9 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 	mkdir cfg
 \end{verbatim}
 
-	\item Copy the startup script \newline \texttt{/fin/devl/iocBoot/templates/slejko/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
+	\item Copy the startup script \newline \texttt{/fin/devl/iocBoot/templates/EVR/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/example.startup 
+	cp /fin/devl/iocBoot/templates/EVR/example.startup 
 	    MTEST-VME-EVRTEST_startup.script
 \end{verbatim}
 
@@ -61,7 +61,7 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 \begin{verbatim}
 	## This will be set automatically from 
 	   INSTBASE + MRFIOC2 version in the future
-	epicsEnvSet TEMPLATE_DIR "/fin/devl/iocBoot/templates/slejko"
+	epicsEnvSet TEMPLATE_DIR "/fin/devl/iocBoot/templates/EVR"
 	
 	##System configuration
 	epicsEnvSet SYS MTEST-VME-EVRTEST
@@ -96,9 +96,9 @@ Using the above startup script, the system name is set to \textit{MTEST-VME-EVRT
 
 Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
 
-	\item Copy the substitution file \texttt{/fin/devl/iocBoot/templates/slejko/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
+	\item Copy the substitution file \texttt{/fin/devl/iocBoot/templates/EVR/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
 \begin{verbatim}
-	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
+	cp /fin/devl/iocBoot/templates/EVR/EVR.subs cfg/
 \end{verbatim}
 \end{enumerate}
 
@@ -109,9 +109,9 @@ The macro definitions in the substitution file are used to configure the EVR. Al
 %	mkdir MTEST-VME-EVRTEST
 %	cd MTEST-VME-EVRTEST
 %	mkdir cfg
-%	cp /fin/devl/iocBoot/templates/slejko/example.startup 
+%	cp /fin/devl/iocBoot/templates/EVR/example.startup 
 %	    MTEST-VME-EVRTEST_startup.script
-%	cp /fin/devl/iocBoot/templates/slejko/EVR.subs cfg/
+%	cp /fin/devl/iocBoot/templates/EVR/EVR.subs cfg/
 %\end{verbatim}
 
 \section{Generate a pulse upon receiving an event}
@@ -294,6 +294,35 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 \end{itemize}
 
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
+
+\section{GUI}\label{sec:gui} 
+There is a caQtDM~\cite{caqtdm} GUI for the Event Receiver available. It can be used to further configure the EVR or simply check the running configuration. The GUI is launched using the following command:
+
+\begin{verbatim}
+	start_EVR.sh -s SYS [options]
+\end{verbatim}
+where the \texttt{SYS} represents a \textbf{mandatory} system name, and \texttt{[options]} are as follows:
+\begin{verbatim}
+	-r <event receiver name> ..... set the event receiver name 
+	                                (default:EVR0).
+	-h    ........................ shows the options and usage
+\end{verbatim}
+
+
+\paragraph{Example 1:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
+\begin{verbatim}
+	start_EVR.sh -s MTEST-VME-EVRTEST
+\end{verbatim}
+
+\paragraph{Example 2:} Open the GUI for the event receiver \texttt{EVR3}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
+\begin{verbatim}
+	start_EVR.sh -s MTEST-VME-EVRTEST -r EVR3
+\end{verbatim}
+
+\paragraph{Example 3:} Shows options and usage.
+\begin{verbatim}
+	start_EVR.sh -h
+\end{verbatim}
 
 \bibliographystyle{plain}
 \bibliography{references}

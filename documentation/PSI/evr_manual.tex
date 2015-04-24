@@ -934,29 +934,25 @@ file to output the template to be used in your application.
 
 
 \section{GUI}\label{sec:GUI}
-There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver available in \texttt{mrfioc2/ui/EVG} and \texttt{mrfioc2/ui/EVR}, respectively. These folders contain a script \texttt{startUI.sh} for launching the GUI.
+There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver available in \texttt{mrfioc2/ui/EVG} and \texttt{mrfioc2/ui/EVR}, respectively. These folders contain a script for launching the GUI.
 
-\paragraph{startUI.sh usage:}
+\paragraph{EVR GUI script usage:}
 \begin{verbatim}
-	./startUI.sh -s <system name> [options]
+	./start_EVR.sh -s <system name> [options]
 \end{verbatim}
 
 
-\paragraph{startUI.sh EVR options}
+\paragraph{EVR GUI script options:}
 \begin{verbatim}
-	-r <event receiver name> ..... set the event receiver name (default:EVR0).
+	-r <event receiver name> ..... set the event receiver name
+	                               (default:EVR0).
 	-h                       ..... shows the options and usage
 \end{verbatim}
 
-\paragraph{startUI.sh EVG options}
-\begin{verbatim}
-	-g <event receiver name> ..... set the event receiver name (default:EVG0).
-	-h                       ..... shows the options and usage
-\end{verbatim}
 
-\paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0} in system \texttt{MTEST-VME-EVRTEST}.
+\paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
-	./startUI.sh -s MTEST-VME-EVRTEST
+	./start_EVR.sh -s MTEST-VME-EVRTEST
 \end{verbatim}
 
 
