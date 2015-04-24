@@ -130,7 +130,7 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
 {
     size_t reg;
 
-    printf("EVR\n");
+    printf("EVR register dump\n");
     for(reg=0; reg<NELEMENTS(printreg); reg++){
 
         if(printreg[reg].offset+printreg[reg].rsize/8 > len)
@@ -156,9 +156,20 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
     }
 }
 
-void
-reportEVRConfiguration(FILE *stream, bus_configuration *bus, int *level){
+static
+bool reportCard(mrf::Object* obj, void* raw)
+{
+    int *level=(int*)raw;
+    EVRMRM *evr=dynamic_cast<EVRMRM*>(obj);
+    if(!evr)
+        return true;
 
+    printf("EVR: %s\n",obj->name().c_str());
+    printf("\tFPGA Version: %08x (firmware: %x)\n", evr->fpgaFirmware(), evr->version());
+    printf("\tForm factor: %s\n", evr->formFactorStr().c_str());
+    printf("\tClock: %.6f MHz\n",evr->clock()*1e-6);
+
+    bus_configuration *bus = evr->getBusConfiguration();
     if(bus->busType == busType_vme){
         struct VMECSRID vmeDev;
         volatile unsigned char* csrAddr = devCSRTestSlot(vmeevrs, bus->vme.slot, &vmeDev);
@@ -171,51 +182,34 @@ reportEVRConfiguration(FILE *stream, bus_configuration *bus, int *level){
                          (( user_offset & 0x0000ff00 )       ) |
                          (( user_offset & 0x000000ff ) << 16 );
 
-            fprintf(stream, "  VME slot: %d\n", bus->vme.slot);
-            fprintf(stream, "  VME A24 address %08x\n", bus->vme.address);
-            fprintf(stream, "  VME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
-            fprintf(stream, "  VME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
-            fprintf(stream, "  VME IRQ Vector %u (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_VECTOR), bus->vme.irqVector);
-            if(*level>1) fprintf(stream, "  VME card vendor: %08x\n", vmeDev.vendor);
-            if(*level>1) fprintf(stream, "  VME card board: %08x\n", vmeDev.board);
-            if(*level>1) fprintf(stream, "  VME card revision: %08x\n", vmeDev.revision);
-            if(*level>1) fprintf(stream, "  VME CSR address: %p\n", csrAddr);
+            printf("\tVME configured slot: %d\n", bus->vme.slot);
+            printf("\tVME configured A24 address 0x%08x\n", bus->vme.address);
+            printf("\tVME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
+            printf("\tVME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
+            printf("\tVME IRQ Vector %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_VECTOR), bus->vme.irqVector);
+            if(*level>1) printf("\tVME card vendor: 0x%08x\n", vmeDev.vendor);
+            if(*level>1) printf("\tVME card board: 0x%08x\n", vmeDev.board);
+            if(*level>1) printf("\tVME card revision: 0x%08x\n", vmeDev.revision);
+            if(*level>1) printf("\tVME CSR address: %p\n", csrAddr);
         }else{
-            fprintf(stream, "  Card not detected in slot %d\n", bus->vme.slot);
+            printf("\tCard not detected in configured slot %d\n", bus->vme.slot);
         }
     }
     else if(bus->busType == busType_pci){
         const epicsPCIDevice *pciDev;
         if(!devPCIFindBDF(mrmevrs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
-            fprintf(stream, "  PCI bus: %u (configured to %d)\n", pciDev->bus, bus->pci.bus);
-            fprintf(stream, "  PCI device: %u (configured to %d)\n", pciDev->device, bus->pci.device);
-            fprintf(stream, "  PCI function: %u (configured to %d)\n", pciDev->function, bus->pci.function);
-            fprintf(stream, "  PCI IRQ: %u\n", pciDev->irq);
-            if(*level>1) fprintf(stream, "  PCI class: %u, revision: %u, sub device: %u, sub vendor: %u\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+            printf("\tPCI configured bus: 0x%08x\n", bus->pci.bus);
+            printf("\tPCI configured device: 0x%08x\n", bus->pci.device);
+            printf("\tPCI configured function: 0x%08x\n", bus->pci.function);
+            printf("\tPCI IRQ: %u\n", pciDev->irq);
+            if(*level>1) printf("\tPCI class: 0x%08x, revision: 0x%x, sub device: 0x%x, sub vendor: 0x%x\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
 
         }else{
-            fprintf(stream, "  PCI Device not found\n");
+            printf("\tPCI Device not found\n");
         }
     }else{
-        fprintf(stream, "  Unknown bus type\n");
+        printf("\tUnknown bus type\n");
     }
-}
-
-static
-bool reportCard(mrf::Object* obj, void* raw)
-{
-    int *level=(int*)raw;
-    EVRMRM *evr=dynamic_cast<EVRMRM*>(obj);
-    if(!evr)
-        return true;
-
-    printf("EVR: %s\n",obj->name().c_str());
-    printf("  FPGA Version: %08x (firmware: %x)\n", evr->fpgaFirmware(), evr->version());
-    printf("  Form factor: %s\n", evr->formFactorStr().c_str());
-    printf("  Clock: %.6f MHz\n",evr->clock()*1e-6);
-
-    bus_configuration *bus = evr->getBusConfiguration();
-    reportEVRConfiguration(stdout, bus, level);
 
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
