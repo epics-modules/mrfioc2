@@ -19,6 +19,8 @@
 #include <epicsTime.h>
 #include <callback.h>
 
+#include "configurationInfo.h"
+
 class Pulser;
 class Output;
 class PreScaler;
@@ -42,7 +44,7 @@ enum TSSource {
 class EVR : public mrf::ObjectInst<EVR>
 {
 public:
-  EVR(const std::string& n, const std::string& p) : mrf::ObjectInst<EVR>(n), pos(p) {}
+  EVR(const std::string& n, bus_configuration& busConfig) : mrf::ObjectInst<EVR>(n), busConfiguration(busConfig) {}
 
   virtual ~EVR()=0;
 
@@ -56,6 +58,7 @@ public:
 
   //! Position of EVR device in enclosure.
   virtual std::string position() const;
+  bus_configuration* getBusConfiguration();
 
   /**\defgroup ena Enable/disable pulser output.
    */
@@ -204,7 +207,7 @@ public:
   /*@}*/
 
 private:
-  const std::string pos;
+  bus_configuration busConfiguration;
 }; // class EVR
 
 #endif // EVR_HPP_INC

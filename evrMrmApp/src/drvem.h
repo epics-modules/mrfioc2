@@ -39,6 +39,7 @@
 
 #include "mrmDataBufTx.h"
 #include "sfp.h"
+#include "configurationInfo.h"
 
 //! @brief Helper to allow one class to have several runable methods
 template<class C,void (C::*Method)()>
@@ -101,7 +102,7 @@ public:
     mutable epicsMutex evrLock;
 
 
-    EVRMRM(const std::string& n, const std::string& p,volatile unsigned char*,epicsUInt32);
+    EVRMRM(const std::string& n, bus_configuration& busConfig,volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 private:
@@ -112,8 +113,11 @@ public:
     virtual void unlock() const{evrLock.unlock();};
 
     virtual epicsUInt32 model() const;
-
+    epicsUInt32 fpgaFirmware();
+    formFactor getFormFactor();
+    std::string formFactorStr();
     virtual epicsUInt32 version() const;
+
 
     virtual bool enabled() const;
     virtual void enable(bool v);

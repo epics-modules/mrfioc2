@@ -82,10 +82,10 @@ static
 const double fracref=24.0; // MHz
 
 EVRMRM::EVRMRM(const std::string& n,
-               const std::string& p,
+               bus_configuration& busConfig,
                volatile unsigned char* b,
                epicsUInt32 bl)
-  :EVR(n,p)
+  :EVR(n,busConfig)
   ,evrLock()
   ,id(n)
   ,base(b)
@@ -117,16 +117,16 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
-    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
+    epicsUInt32 v, evr,ver;
 
+    v = fpgaFirmware();
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    ver=v&FWVersion_ver_mask;
-    ver>>=FWVersion_ver_shift;
+    ver = version();
     if(ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
@@ -150,9 +150,7 @@ try{
      * Create subunit instances
      */
 
-    v&=FWVersion_form_mask;
-    v>>=FWVersion_form_shift;
-    evrForm form=(evrForm)v;
+    formFactor form = getFormFactor();
 
     size_t nPul=16; // number of pulsers
     size_t nPS=3;   // number of prescalers
@@ -165,21 +163,19 @@ try{
     // # of FP inputs
     size_t nIFP=0;
 
+    printf("%s: ", formFactorStr().c_str());
     switch(form){
-    case evrFormCPCI:
-        printf("CPCI ");
+    case formFactor_CPCI:
         nOFPUV=4;
         nOFPDly=2;
         nIFP=2;
         nORB=6;
         break;
-    case evrFormPMC:
-        printf("PMC ");
+    case formFactor_PMC:
         nOFP=3;
         nIFP=1;
         break;
-    case evrFormVME64:
-        printf("VME64 ");
+    case formFactor_VME64:
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
         nOFPDly=2;
@@ -187,13 +183,11 @@ try{
         nORB=16;
         nIFP=2;
         break;
-    case evrFormCPCIFULL:
-        printf("TG ");
+    case formFactor_CPCIFULL:
         nOFPUV=4;
         kind=MRMCML::typeTG300;
         break;
-    case evrFormPCIe:
-        printf("PCIe ");
+    case formFactor_PCIe:
         nOFPUV=8;
         break;
     default:
@@ -253,7 +247,7 @@ try{
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
-    if(v==evrFormCPCIFULL) {
+    if(v==formFactor_CPCIFULL) {
         shortcmls.resize(8);
         for(size_t i=4; i<8; i++) {
             std::ostringstream name;
@@ -379,11 +373,66 @@ EVRMRM::model() const
 }
 
 epicsUInt32
+EVRMRM::fpgaFirmware(){
+    return READ32(base, FWVersion);
+}
+
+epicsUInt32
 EVRMRM::version() const
 {
     epicsUInt32 v = READ32(base, FWVersion);
 
     return (v&FWVersion_ver_mask)>>FWVersion_ver_shift;
+}
+
+formFactor
+EVRMRM::getFormFactor(){
+    epicsUInt32 form = model();
+
+    if(formFactor_CPCI <= form && form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+EVRMRM::formFactorStr(){
+    std::string text;
+    formFactor form;
+
+    form = getFormFactor();
+    switch(form){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
 }
 
 bool

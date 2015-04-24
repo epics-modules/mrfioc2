@@ -145,6 +145,51 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
     }
 }
 
+void
+reportEVRConfiguration(FILE *stream, bus_configuration *bus, int *level){
+
+    if(bus->busType == busType_vme){
+        struct VMECSRID vmeDev;
+        volatile unsigned char* csrAddr = devCSRTestSlot(vmeevrs, bus->vme.slot, &vmeDev);
+        if(csrAddr){
+            epicsUInt32 ader = CSRRead32(csrAddr + CSR_FN_ADER(2));
+            size_t user_offset=CSRRead24(csrAddr+CR_BEG_UCSR);
+            // Currently that value read from the UCSR pointer is
+            // actually little endian.
+            user_offset= (( user_offset & 0x00ff0000 ) >> 16 ) |
+                         (( user_offset & 0x0000ff00 )       ) |
+                         (( user_offset & 0x000000ff ) << 16 );
+
+            fprintf(stream, "  VME slot: %d\n", bus->vme.slot);
+            fprintf(stream, "  VME A24 address %08x\n", bus->vme.address);
+            fprintf(stream, "  VME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
+            fprintf(stream, "  VME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
+            fprintf(stream, "  VME IRQ Vector %u (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_VECTOR), bus->vme.irqVector);
+            if(*level>1) fprintf(stream, "  VME card vendor: %08x\n", vmeDev.vendor);
+            if(*level>1) fprintf(stream, "  VME card board: %08x\n", vmeDev.board);
+            if(*level>1) fprintf(stream, "  VME card revision: %08x\n", vmeDev.revision);
+            if(*level>1) fprintf(stream, "  VME CSR address: %p\n", csrAddr);
+        }else{
+            fprintf(stream, "  Card not detected in slot %d\n", bus->vme.slot);
+        }
+    }
+    else if(bus->busType == busType_pci){
+        const epicsPCIDevice *pciDev;
+        if(!devPCIFindBDF(mrmevrs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
+            fprintf(stream, "  PCI bus: %u (configured to %d)\n", pciDev->bus, bus->pci.bus);
+            fprintf(stream, "  PCI device: %u (configured to %d)\n", pciDev->device, bus->pci.device);
+            fprintf(stream, "  PCI function: %u (configured to %d)\n", pciDev->function, bus->pci.function);
+            fprintf(stream, "  PCI IRQ: %u\n", pciDev->irq);
+            if(*level>1) fprintf(stream, "  PCI class: %u, revision: %u, sub device: %u, sub vendor: %u\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+
+        }else{
+            fprintf(stream, "  PCI Device not found\n");
+        }
+    }else{
+        fprintf(stream, "  Unknown bus type\n");
+    }
+}
+
 static
 bool reportCard(mrf::Object* obj, void* raw)
 {
@@ -153,11 +198,13 @@ bool reportCard(mrf::Object* obj, void* raw)
     if(!evr)
         return true;
 
-    printf("--- EVR %s ---\n",obj->name().c_str());
+    printf("EVR: %s\n",obj->name().c_str());
+    printf("  FPGA Version: %08x (firmware: %x)\n", evr->fpgaFirmware(), evr->version());
+    printf("  Form factor: %s\n", evr->formFactorStr().c_str());
+    printf("  Clock: %.6f MHz\n",evr->clock()*1e-6);
 
-    printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
-
-    printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
+    bus_configuration *bus = evr->getBusConfiguration();
+    reportEVRConfiguration(stdout, bus, level);
 
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
@@ -240,7 +287,12 @@ void
 mrmEvrSetupPCI(const char* id,int o,int b,int d,int f)
 {
 try {
-    std::ostringstream position;
+    bus_configuration bus;
+
+    bus.busType = busType_pci;
+    bus.pci.bus = b;
+    bus.pci.device = d;
+    bus.pci.function = f;
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
         return;
@@ -250,13 +302,13 @@ try {
         return;
 
     const epicsPCIDevice *cur=0;
+
     if( devPCIFindDBDF(mrmevrs,o,b,d,f,&cur,0) ){
         printf("PCI Device not found\n");
         return;
     }
 
     printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
-    position<<cur->bus<<":"<<cur->device<<"."<<cur->function;
     printf("Using IRQ %u\n",cur->irq);
 
     volatile epicsUInt8 *plx = 0, *evr = 0;
@@ -389,7 +441,7 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,bus,evr,evrlen);
 
     void *arg=receiver;
 #ifdef __linux__
@@ -510,7 +562,14 @@ void
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
-    std::ostringstream position;
+    bus_configuration bus;
+
+    bus.busType = busType_vme;
+    bus.vme.slot = slot;
+    bus.vme.address = base;
+    bus.vme.irqLevel = level;
+    bus.vme.irqVector = vector;
+
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
         return;
@@ -525,7 +584,6 @@ try {
     }
 
     printf("Setting up EVR in VME Slot %d\n",slot);
-    position<<"Slot #"<<slot;
 
     printf("Found vendor: %08x board: %08x rev.: %08x\n",
            info.vendor, info.board, info.revision);
@@ -581,7 +639,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,EVR_REGMAP_SIZE);
+    EVRMRM *receiver=new EVRMRM(id, bus, evr, EVR_REGMAP_SIZE);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);
