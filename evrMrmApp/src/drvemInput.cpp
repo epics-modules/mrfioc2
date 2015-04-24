@@ -8,15 +8,16 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include <drvemInput.h>
 #include <stdexcept>
+#include <epicsInterrupt.h>
 
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
-#include <epicsExport.h>
-#include "evrRegMap.h"
 
-#include <epicsInterrupt.h>
+#include <epicsExport.h>
+
+#include "evrRegMap.h"
+#include "drvemInput.h"
 
 MRMInput::MRMInput(const std::string& n, volatile unsigned char *b, size_t i)
   :Input(n)

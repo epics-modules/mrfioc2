@@ -8,10 +8,6 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemPulser.h"
-
-#include "drvem.h"
-
 #include <stdexcept>
 #include <cstring>
 
@@ -19,10 +15,14 @@
 #include <dbDefs.h>
 #include <epicsMath.h>
 
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
+#include "mrfCommonIO.h"
+#include "mrfBitOps.h"
+
 #include <epicsExport.h>
+
+#include "drvem.h"
 #include "evrRegMap.h"
+#include "drvemPulser.h"
 
 MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)
   :Pulser(n)
