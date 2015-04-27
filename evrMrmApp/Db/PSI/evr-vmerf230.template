@@ -56,6 +56,21 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I") {
   field(FLNK, "$(SYS,recursive)-$(EVR,recursive):Cnt-HwOflw-I")
 }
 
+record(calc, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Rate_") {
+  field(DESC, "Averages errors over time period")
+  field(SCAN, "10 second")
+  field(CALC, "A-B")
+  field(INPA, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I")
+  field(INPB, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Last_")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Last_")
+}
+
+record(longin, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Last_"){
+  field(DESC, "RxErr count for last period")
+  field(SCAN, "Passive")
+  field(INP, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I")
+}
+
 record(longin, "$(SYS,recursive)-$(EVR,recursive):Cnt-HwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Hw Overflow Count")

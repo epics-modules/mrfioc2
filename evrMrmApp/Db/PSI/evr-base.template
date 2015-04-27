@@ -56,6 +56,21 @@ record(longin, "$(SYS)-$(EVR):Cnt-RxErr-I") {
   field(FLNK, "$(SYS)-$(EVR):Cnt-HwOflw-I")
 }
 
+record(calc, "$(SYS)-$(EVR):Cnt-RxErr-Rate_") {
+  field(DESC, "Averages errors over time period")
+  field(SCAN, "10 second")
+  field(CALC, "A-B")
+  field(INPA, "$(SYS)-$(EVR):Cnt-RxErr-I")
+  field(INPB, "$(SYS)-$(EVR):Cnt-RxErr-Last_")
+  field(FLNK, "$(SYS)-$(EVR):Cnt-RxErr-Last_")
+}
+
+record(longin, "$(SYS)-$(EVR):Cnt-RxErr-Last_"){
+  field(DESC, "RxErr count for last period")
+  field(SCAN, "Passive")
+  field(INP, "$(SYS)-$(EVR):Cnt-RxErr-I")
+}
+
 record(longin, "$(SYS)-$(EVR):Cnt-HwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Hw Overflow Count")
