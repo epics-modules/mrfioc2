@@ -18,7 +18,7 @@
 #include "evr/cml.h"
 #include "evr/util.h"
 
-#include "delayModule.h"
+#include "../../evrMrmApp/src/delayModule.h"
 
 #include "dbCommon.h"
 
