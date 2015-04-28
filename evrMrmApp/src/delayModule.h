@@ -11,7 +11,7 @@
 
 class EVRMRM;
 
-class DelayModule : public mrf::ObjectInst<DelayModule>
+class epicsShareClass DelayModule : public mrf::ObjectInst<DelayModule>
 {
 public:
     DelayModule(const std::string&, EVRMRM*, unsigned int);
