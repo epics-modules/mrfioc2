@@ -148,6 +148,12 @@
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Cnt-RxErr-Rate_</string>
       </property>
+      <property name="colorMode">
+       <enum>caLineEdit::Alarm_Default</enum>
+      </property>
+      <property name="alarmHandling">
+       <enum>caLineEdit::onBackground</enum>
+      </property>
      </widget>
     </item>
    </layout>
