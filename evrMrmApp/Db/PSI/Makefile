@@ -1,20 +1,13 @@
 TOP = ../../..
 include $(TOP)/configure/CONFIG
 
-DB += evr-base.template
-DB += evr-cml.template
 DB += evr-delayModule.template
-DB += evr-in.template
-DB += evr-out.template
-DB += evr-prescaler.template
-DB += evr-pulser.template
 DB += evr-pulserMap.template
 DB += evr-softEvent.template
 DB += evr-specialFunctionMap.template
-DB += sfp.template
 
-DB += evr-pcie-300.substitutions
-DB += evr-vmerf230.substitutions
+DB += evr-pcie-300.template
+DB += evr-vmerf230.template
 
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db

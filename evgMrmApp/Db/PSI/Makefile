@@ -1,20 +1,8 @@
 TOP = ../../..
 include $(TOP)/configure/CONFIG
 
-DB += evgAcTrig.db
-DB += evgDbus.db
-DB += evgEvtClk.db
-DB += evgInput.db
-DB += evgMrm.db
-DB += evgMxc.db
-DB += evgOutput.db
-DB += evgSoftEvt.db
-DB += evgTrigEvt.db
-
 DB += evgSoftSeq.template
-
-DB += evg-vme.substitutions
-
+DB += evg-vme.template
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
