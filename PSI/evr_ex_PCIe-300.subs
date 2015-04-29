@@ -1,4 +1,4 @@
-file "$(TEMPLATE_DIR)/evr-vmerf230.template"
+file "$(TEMPLATE_DIR)/evr-pcie-300.template"
 {
     {
     
