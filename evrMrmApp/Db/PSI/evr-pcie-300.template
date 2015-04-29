@@ -57,9 +57,13 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I") {
 }
 
 record(calc, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Rate_") {
-  field(DESC, "Averages errors over time period")
+  field(DESC, "Counts errors in time interval")
   field(SCAN, "10 second")
   field(CALC, "A-B")
+  field(HIHI, "1")
+  field(HHSV, "MAJOR")
+  field(LOLO, "-1")
+  field(LLSV, "MAJOR")
   field(INPA, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I")
   field(INPB, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Last_")
   field(FLNK, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Last_")
