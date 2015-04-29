@@ -18,8 +18,6 @@
 #include "evr/cml.h"
 #include "evr/util.h"
 
-#include "../../evrMrmApp/src/delayModule.h"
-
 #include "dbCommon.h"
 
 /**@file evr.cpp
@@ -231,10 +229,4 @@ OBJECT_BEGIN(CML) {
 
 } OBJECT_END(CML)
 
-OBJECT_BEGIN(DelayModule) {
-
-    OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
-    OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
-    OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
-
-} OBJECT_END(DelayModule)
+// the delay module object properties are defined in drvem.cpp, since it does not depend on evr but only on evrMrm.
