@@ -4,6 +4,7 @@ include $(TOP)/configure/CONFIG
 
 INC += mrmDataBufTx.h
 INC += sfp.h
+INC += configurationInfo.h
 
 DBD += mrmShared.dbd
 

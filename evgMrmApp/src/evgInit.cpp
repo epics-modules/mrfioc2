@@ -30,7 +30,6 @@
 #include "plx9030.h"
 
 #include <epicsExport.h>
-#include "cardinfo.h"
 #include "evgRegMap.h"
 
 #include "evgInit.h"

@@ -41,7 +41,7 @@
      <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Input-$(ID)</string>
+     <string>FPIn$(ID)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

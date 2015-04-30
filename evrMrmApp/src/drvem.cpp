@@ -356,6 +356,15 @@ EVRMRM::~EVRMRM()
     cleanup();
 }
 
+// the rest of the objects properties (inputs, outputs, ...) are defined in evr.cpp.
+OBJECT_BEGIN(DelayModule) {
+
+    OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
+    OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
+    OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
+
+} OBJECT_END(DelayModule)
+
 void
 EVRMRM::cleanup()
 {

@@ -1,3 +1,4 @@
+#include <epicsExport.h>
 #include "delayModule.h"
 #include "drvem.h"
 
