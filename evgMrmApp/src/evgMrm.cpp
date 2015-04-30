@@ -27,23 +27,26 @@
 
 #include "evgRegMap.h"
 
-evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgMrm>(id),
-irqStop0_queued(0),
-irqStop1_queued(0),
-irqStart0_queued(0),
-irqStart1_queued(0),
-irqExtInp_queued(0),
-m_syncTimestamp(false),
-m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
-m_id(id),
-m_pReg(pReg),
-m_acTrig(id+":AcTrig", pReg),
-m_evtClk(id+":EvtClk", pReg),
-m_softEvt(id+":SoftEvt", pReg),
-m_seqRamMgr(this),
-m_softSeqMgr(this) {
+#include <epicsExport.h>
 
+evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg):
+    mrf::ObjectInst<evgMrm>(id),
+    irqStop0_queued(0),
+    irqStop1_queued(0),
+    irqStart0_queued(0),
+    irqStart1_queued(0),
+    irqExtInp_queued(0),
+    m_syncTimestamp(false),
+    m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+    m_id(id),
+    m_pReg(pReg),
+    busConfiguration(busConfig),
+    m_acTrig(id+":AcTrig", pReg),
+    m_evtClk(id+":EvtClk", pReg),
+    m_softEvt(id+":SoftEvt", pReg),
+    m_seqRamMgr(this),
+    m_softSeqMgr(this)
+{
     try{
         for(int i = 0; i < evgNumEvtTrig; i++) {
             std::ostringstream name;
@@ -180,6 +183,66 @@ evgMrm::getFwVersion() const {
     return READ32(m_pReg, FPGAVersion);
 }
 
+epicsUInt32
+evgMrm::getFwVersionID(){
+    epicsUInt32 ver = getFwVersion();
+
+    ver &= FPGAVersion_VER_MASK;
+
+    return ver;
+}
+
+formFactor
+evgMrm::getFormFactor(){
+    epicsUInt32 form = getFwVersion();
+
+    form &= FPGAVersion_FORM_MASK;
+    form >>= FPGAVersion_FORM_SHIFT;
+
+    if(formFactor_CPCI <= form && form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+evgMrm::getFormFactorStr(){
+    std::string text;
+
+    switch(getFormFactor()){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
+}
+
 std::string
 evgMrm::getSwVersion() const {
     return MRF_VERSION;
@@ -204,7 +267,7 @@ evgMrm::enable(bool ena) {
 
 bool
 evgMrm::enabled() const {
-    return READ32(m_pReg, Control) & EVG_MASTER_ENA;
+    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
 }
 
 void
@@ -542,7 +605,7 @@ evgMrm::syncTimestamp() {
      *       26.996234643 should be rounded to 27.
      *  Also the nano second value can be assumed to be zero.
      */
-    if(m_timestamp.nsec > 500*pow(10,6))
+    if(m_timestamp.nsec > 500*pow(10.0,6))
         incrTimestamp();
     
     m_timestamp.nsec = 0;
@@ -628,6 +691,11 @@ evgMrm::getSoftSeqMgr() {
 epicsEvent* 
 evgMrm::getTimerEvent() {
     return m_timerEvent;
+}
+
+bus_configuration *evgMrm::getBusConfiguration()
+{
+    return &busConfiguration;
 }
 
 namespace {

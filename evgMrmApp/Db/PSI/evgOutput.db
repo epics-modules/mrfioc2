@@ -1,6 +1,6 @@
-record(mbbo, "$(P)Source-Sel") {
+record(mbbo, "$(SYS)-$(EVG):$(OBJ)$(ID)-Source-Sel") {
     field(DTYP, "Obj Prop uint16")
-    field( OUT , "@OBJ=$(OBJ), PROP=Source")
+    field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Source")
     field( ZRST, "Off")
     field( ONST, "Dbus0")
     field( TWST, "Dbus1")
@@ -32,14 +32,14 @@ record(mbbo, "$(P)Source-Sel") {
     field( IVOA, "Don't drive outputs")
     field( PINI, "YES")
     field( UDF,  "0")
-    field( VAL,  "$($(OBJ)-Source-Sel\=0)")
-    field( FLNK, "$(P)Source-RB")
+    field( VAL,  "$($(OBJ)$(ID)-Source-Sel\=0)")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Source-RB")
     info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbi, "$(P)Source-RB") {
+record(mbbi, "$(SYS)-$(EVG):$(OBJ)$(ID)-Source-RB") {
     field( DTYP, "Obj Prop uint16")
-    field( INP , "@OBJ=$(OBJ), PROP=Source")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Source")
     field( ZRST, "Off")
     field( ONST, "Dbus0")
     field( TWST, "Dbus1")

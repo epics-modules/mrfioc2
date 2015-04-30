@@ -1,111 +1,580 @@
 
 ##EVG Base
-file "evg-vme.db"
+file "evg-vme.template"
 {
     {
-         SYS=CSL-IFC1,
+         SYS=CSL-SKUBE-TST,
          EVG=EVG0,
          
-         EVG0:AcTrig-Phase-SP=0.0,   #0-25.5 : EVG AC Phase Shifter
-         EVG0:AcTrig-Divider-SP=0,   #0-255 : EVG AC Divider
-         EVG0:AcTrig-Bypass-Sel=1,   #0 = Off, 1 = On : Bypass AC divider and Phase shifter
-         EVG0:AcTrig-SyncSrc-Sel=1,  #0 = EvtClk, 1 = Mxc7 : Sync to Event Clock or Mxc7
+         AcTrig-Phase-SP=0.0,   #0-25.5 : EVG AC Phase Shifter
+         AcTrig-Divider-SP=0,   #0-255 : EVG AC Divider
+         AcTrig-Bypass-Sel=1,   #0 = Off, 1 = On : Bypass AC divider and Phase shifter
+         AcTrig-SyncSrc-Sel=1,  #0 = EvtClk, 1 = Mxc7 : Sync to Event Clock or Mxc7
+         AcTrig-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         AcTrig-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
          
-         EVG0:EvtClk-Source-Sel=0,   #0 = FracSynth, 1 = RF : EVG Evt Clk Source
-         EVG0:EvtClk-RFFreq-SP=500,  #50-1600 : EVG RF Frequency [MHz]
-         EVG0:EvtClk-RFDiv-SP=4,     #0-32 : RF Divider 
-         EVG0:EvtClk-FracSynFreq-SP=124.920, #50-125 : Fractional Synthesizer Freq [MHz]
+         EvtClk-Source-Sel=0,   #0 = FracSynth, 1 = RF : EVG Evt Clk Source
+         EvtClk-RFFreq-SP=500,  #50-1600 : EVG RF Frequency [MHz]
+         EvtClk-RFDiv-SP=4,     #0-32 : RF Divider 
+         EvtClk-FracSynFreq-SP=124.920, #50-125 : Fractional Synthesizer Freq [MHz]
          
          ## Distributed bus configuration
-         EVG0:Dbus0-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus0-Map-Sel=0, #?? Might be removed
-         EVG0:Dbus1-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus1-Map-Sel=0,
-         EVG0:Dbus2-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus2-Map-Sel=0,
-         EVG0:Dbus3-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus3-Map-Sel=0,
-         EVG0:Dbus4-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus4-Map-Sel=0,
-         EVG0:Dbus5-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus5-Map-Sel=0,
-         EVG0:Dbus6-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus6-Map-Sel=0, 
-         EVG0:Dbus7-Src-Sel=0, #0 = Off, 1 = Front0, 2= Front1, 3 = Univ0, 4 = Univ1, 5 = Univ 2, 6 = Univ3 : EVG DBUS Source
-         EVG0:Dbus7-Map-Sel=0,
+         Dbus0-Src-Sel=0,
+         Dbus0-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 0, 3 = From upstream EVG : EVG DBUS Source
+         Dbus1-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 1, 3 = From upstream EVG : EVG DBUS Source
+         Dbus2-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 2, 3 = From upstream EVG : EVG DBUS Source
+         Dbus3-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 3, 3 = From upstream EVG : EVG DBUS Source
+         Dbus4-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 4, 3 = From upstream EVG : EVG DBUS Source
+         Dbus5-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 5, 3 = From upstream EVG : EVG DBUS Source
+         Dbus6-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 6, 3 = From upstream EVG : EVG DBUS Source
+         Dbus7-Map-Sel=0, #0 = Off, 1 = Front input, 2= Mxc 7, 3 = From upstream EVG : EVG DBUS Source
 
-         ## Input configuration         
-         EVG0:FrontInp0-EnaIrq-Sel=0, #0 = Disabled, 1 = Enabled : Enable External Input IRQ
-         EVG0:FrontInp1-EnaIrq-Sel=0, #0 = Disabled, 1 = Enabled : Enable External Input IRQ
-         EVG0:UnivInp0-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
-         EVG0:UnivInp1-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
-         EVG0:UnivInp2-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
-         EVG0:UnivInp3-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ
+         ## Input configuration
+         # Front Inputs      
+         FrontInp0-EnaIrq-Sel=0,   #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         FrontInp0-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp0-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp0-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         FrontInp1-EnaIrq-Sel=0, #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         FrontInp1-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         FrontInp1-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         FrontInp1-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         # Universal Inputs
+         UnivInp0-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         UnivInp0-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp0-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp0-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         UnivInp1-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         UnivInp1-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp1-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp1-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         UnivInp2-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         UnivInp2-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp2-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp2-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         UnivInp3-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         UnivInp3-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         UnivInp3-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         UnivInp3-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         # Rear Inputs
+         RearInp0-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp0-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp0-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp0-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp1-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp1-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp1-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp1-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         
+         RearInp2-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp2-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp2-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp2-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp3-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp3-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp3-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp3-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp4-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp4-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp4-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp4-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp5-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp5-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp5-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp5-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp6-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp6-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp6-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp6-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp7-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp7-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp7-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp7-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp8-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp8-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp8-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp8-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp9-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp9-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp9-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp9-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp10-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp10-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp10-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp10-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp11-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp11-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp11-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp11-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp12-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp12-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp12-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp12-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp13-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp13-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp13-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp13-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp14-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp14-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp14-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp14-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+
+         RearInp15-EnaIrq-Sel=0,  #0 = Disabled, 1 = Enabled : Enable External Input IRQ (1PPS input)
+         RearInp15-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         RearInp15-DbusSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
+         RearInp15-DbusSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to DBus bit
 
          ## Output configuration
-         EVG0:FrontOut0-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
-         EVG0:FrontOut1-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
-         EVG0:FrontOut2-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
-         EVG0:FrontOut3-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         FrontOut0-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         FrontOut1-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         FrontOut2-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         FrontOut3-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+
+         UnivOut0-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         UnivOut1-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         UnivOut2-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
+         UnivOut3-Source-Sel=0, #0 = Off, 1 - 8 = Dbus0-7, 9 = High, 10 = Low
          
          ## Event trigger configuration
-         EVG0:TrigEvt0-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
-         EVG0:TrigEvt0-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
-         EVG0:TrigEvt0-TrigSrc-Sel=0, 
-         EVG0:TrigEvt1-Enable-Sel=1, 
-         EVG0:TrigEvt1-EvtCode-SP=0, 
-         EVG0:TrigEvt1-TrigSrc-Sel=0, 
-         EVG0:TrigEvt2-Enable-Sel=1, 
-         EVG0:TrigEvt2-EvtCode-SP=0, 
-         EVG0:TrigEvt2-TrigSrc-Sel=0, 
-         EVG0:TrigEvt3-Enable-Sel=1, 
-         EVG0:TrigEvt3-EvtCode-SP=0, 
-         EVG0:TrigEvt3-TrigSrc-Sel=0, 
-         EVG0:TrigEvt4-Enable-Sel=1, 
-         EVG0:TrigEvt4-EvtCode-SP=0, 
-         EVG0:TrigEvt4-TrigSrc-Sel=0, 
-         EVG0:TrigEvt5-Enable-Sel=1, 
-         EVG0:TrigEvt5-EvtCode-SP=0, 
-         EVG0:TrigEvt5-TrigSrc-Sel=0, 
-         EVG0:TrigEvt6-Enable-Sel=1, 
-         EVG0:TrigEvt6-EvtCode-SP=0, 
-         EVG0:TrigEvt6-TrigSrc-Sel=0, 
-         EVG0:TrigEvt7-Enable-Sel=1, 
-         EVG0:TrigEvt7-EvtCode-SP=0, 
-         EVG0:TrigEvt7-TrigSrc-Sel=0, 
+         TrigEvt0-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt0-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt1-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt1-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt2-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt2-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt3-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt3-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt4-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt4-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt5-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt5-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt6-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt6-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
+
+         TrigEvt7-Enable-Sel=1, #0 = Disabled, 1 = Enabled :  EVG Trigger Event Enable
+         TrigEvt7-EvtCode-SP=0, #0-255 = Event code : EVG Trigger Event Code
          
          ## Multiplexed counters configuration
-         EVG0:Mxc0-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
-         EVG0:Mxc0-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
-         EVG0:Mxc0-Prescaler-SP=124920, # Overriden by Frequency-SP
-         EVG0:Mxc1-Polarity-Sel=0,
-         EVG0:Mxc1-Frequency-SP=1,
-         EVG0:Mxc1-Prescaler-SP=124920,
-         EVG0:Mxc2-Polarity-Sel=0,
-         EVG0:Mxc2-Frequency-SP=1,
-         EVG0:Mxc2-Prescaler-SP=124920,
-         EVG0:Mxc3-Polarity-Sel=0,
-         EVG0:Mxc3-Frequency-SP=1,
-         EVG0:Mxc3-Prescaler-SP=124920,
-         EVG0:Mxc4-Polarity-Sel=0,
-         EVG0:Mxc4-Frequency-SP=1,
-         EVG0:Mxc4-Prescaler-SP=124920,
-         EVG0:Mxc5-Polarity-Sel=0,
-         EVG0:Mxc5-Frequency-SP=1,
-         EVG0:Mxc5-Prescaler-SP=124920,
-         EVG0:Mxc6-Polarity-Sel=0,
-         EVG0:Mxc6-Frequency-SP=1,
-         EVG0:Mxc6-Prescaler-SP=124920,
-         EVG0:Mxc7-Polarity-Sel=0,
-         EVG0:Mxc7-Frequency-SP=1,
-         EVG0:Mxc7-Prescaler-SP=1
+         Mxc0-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc0-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc0-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc0-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc0-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc1-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc1-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc1-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc1-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc1-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc2-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc2-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc2-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc2-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc2-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc3-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc3-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc3-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc3-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc3-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc4-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc4-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc4-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc4-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc4-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc5-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc5-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc5-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc5-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc5-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc6-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc6-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc6-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc6-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc6-TrigSrc7-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+
+         Mxc7-Polarity-Sel=0, #0 = Normal, 1 = Inverted : EVG Mux Output Polarity
+         Mxc7-Frequency-SP=1, #0.029-62500000 EVG Mux Frequency (Hz)
+         Mxc7-Prescaler-SP=124920, # Overriden by Frequency-SP
+         Mxc7-TrigSrc0-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc1-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc2-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc3-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc4-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc5-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc6-SP=0,  #0 = Disable, 1 = Enable: Map to event trigger
+         Mxc7-TrigSrc7-SP=0   #0 = Disable, 1 = Enable: Map to event trigger
+
         }
 }
 
 ##EVG soft sequences (we need 2 for ping-pong loader)
-file "evgSoftSeq.db"
+file "evgSoftSeq.template"
 {
-    { SYS     = CSL-IFC1,
+    { SYS     = CSL-SKUBE-TST
           EVG     = EVG0,
           SEQNUM  = 1,
           NELM    = 2047,

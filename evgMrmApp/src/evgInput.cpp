@@ -62,7 +62,7 @@ evgInput::setExtIrq(bool ena) {
 
 bool
 evgInput::getExtIrq() const {
-    return  nat_ioread32(m_pInReg) & (epicsUInt32)EVG_EXT_INP_IRQ_ENA;
+    return  (nat_ioread32(m_pInReg) & (epicsUInt32)EVG_EXT_INP_IRQ_ENA) != 0;
 }
 
 void
@@ -90,7 +90,7 @@ evgInput::getDbusMap(epicsUInt16 dbus) const {
 
     epicsUInt32 mask = 0x10000 << dbus;
     epicsUInt32 map = nat_ioread32(m_pInReg);
-    return map & mask;
+    return (map & mask) != 0;
 }
 
 void
@@ -139,6 +139,6 @@ evgInput::getTrigEvtMap(epicsUInt16 trigEvt) const {
 
     epicsUInt32 mask = 0x1 << trigEvt;
     epicsUInt32 map = nat_ioread32(m_pInReg);
-    return map & mask;
+    return (map & mask) != 0;
 }
 

@@ -20,8 +20,8 @@ mrmBufferInfo_t *mrmBufInit(const char *dev_name) {
 
     mrmBufferInfo_t *data  = NULL;
     mrf::Object *object = NULL;
-    std::string bufRxName;
-    std::string bufTxName;
+    std::string bufRxName(dev_name);
+    std::string bufTxName(dev_name);
 
     if(!dev_name) {
         errlogPrintf("mrmBufInit ERROR: NULL device name!\n");
@@ -33,8 +33,6 @@ mrmBufferInfo_t *mrmBufInit(const char *dev_name) {
         return NULL;
     }
 
-    bufRxName(dev_name);
-    bufTxName(dev_name);
     bufRxName += BUF_RX;
     bufTxName += BUF_TX;
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>140</height>
+    <width>348</width>
+    <height>290</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>261</width>
-     <height>141</height>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -49,7 +49,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_18">
       <property name="text">
-       <string>Receive error count</string>
+       <string>Link error count (total)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -63,7 +63,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_19">
       <property name="text">
        <string>FIFO Overflow Count</string>
@@ -73,7 +73,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
+    <item row="3" column="1">
      <widget class="caLineEdit" name="calineedit_8">
       <property name="toolTip">
        <string>The number of hardware event buffer overflows.</string>
@@ -83,7 +83,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="label_20">
       <property name="text">
        <string>FIFO Over rate</string>
@@ -93,7 +93,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="caLineEdit" name="calineedit_9">
       <property name="toolTip">
        <string>Overflows in all of the per-event software buffers. This indicates that the period between successive events is shorter then the runtime of the code that it causes.</string>
@@ -103,7 +103,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="label_21">
       <property name="text">
        <string>Detect initial link up </string>
@@ -116,14 +116,14 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="5" column="1">
      <widget class="caLineEdit" name="calineedit_10">
       <property name="channel" stdset="0">
        <string notr="true">$(EVR):Link-Init-FO_</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="label_17">
       <property name="text">
        <string>Link status</string>
@@ -133,13 +133,36 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_22">
+      <property name="text">
+       <string>Link error rate (per 10 s)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="caLineEdit" name="calineedit_11">
+      <property name="channel" stdset="0">
+       <string notr="true">$(EVR):Cnt-RxErr-Rate_</string>
+      </property>
+      <property name="colorMode">
+       <enum>caLineEdit::Alarm_Default</enum>
+      </property>
+      <property name="alarmHandling">
+       <enum>caLineEdit::onBackground</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="caLed" name="caled">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>115</y>
+     <x>160</x>
+     <y>140</y>
      <width>20</width>
      <height>20</height>
     </rect>

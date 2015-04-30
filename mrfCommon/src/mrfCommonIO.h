@@ -98,9 +98,10 @@
 /*  Include Other Header Files Needed by This Module                                              */
 /**************************************************************************************************/
 
-#include <epicsMMIO.h>           /* OS-dependent synchronous I/O routines                         */
+#include <epicsEndian.h>        /* OS-independent macros for system endianness checking           */
+#include <epicsMMIO.h>          /* OS-dependent synchronous I/O routines                          */
 #include <mrfBitOps.h>          /* Generic bit operations                                         */
-#include <endian.h>
+#include <stdexcept>
 
 /**************************************************************************************************/
 /*                            Macros For Accessing MRF Timing Modules                             */
@@ -168,7 +169,7 @@
 /*---------------------
  * Synchronous Read Operations
  */
-#if __BYTE_ORDER__ == __BIG_ENDIAN
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
 #define NAT_READ8(base,offset)  \
         ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
 #else
@@ -182,13 +183,19 @@ INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
 		return ioread8(((epicsUInt8 *)addr) - 1);
 	case 3:
 		return ioread8(((epicsUInt8 *)addr) - 3);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 8bit read.");
 	}
+
+	// To remove a warning on Windows
+	return 0;
 }
 #define NAT_READ8(base,offset)  \
 		nat_read8_addrFlip  ((epicsUInt8 *)(base) + U8_  ## offset)
 #endif
 
-#if __BYTE_ORDER__ == __BIG_ENDIAN
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
 #define NAT_READ16(base,offset) \
         nat_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
 #else
@@ -198,7 +205,11 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
   		return nat_ioread16(((epicsUInt8 *)addr) + 2);
   	case 2:
   		return nat_ioread16(((epicsUInt8 *)addr) - 2);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 16bit read.");
   	}
+
   }
  #define NAT_READ16(base,offset) \
 		 nat_ioread16_addrFlip ((epicsUInt8 *)(base) + U16_ ## offset)
@@ -211,7 +222,7 @@ INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
 /*---------------------
  * Synchronous Write Operations
  */
-#if __BYTE_ORDER__ == __BIG_ENDIAN
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
 #define NAT_WRITE8(base,offset,value) \
         iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #else
@@ -225,13 +236,16 @@ INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
  		return iowrite8(((epicsUInt8 *)addr) - 1,val);
  	case 3:
  		return iowrite8(((epicsUInt8 *)addr) - 3,val);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 8bit write.");
  	}
  }
  #define NAT_WRITE8(base,offset,value) \
 		nat_write8_addrFlip  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
 #endif
 
-#if __BYTE_ORDER__ == __BIG_ENDIAN
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
 #define NAT_WRITE16(base,offset,value) \
         nat_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #else
@@ -241,6 +255,9 @@ INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
  		return nat_iowrite16(((epicsUInt8 *)addr) + 2,val);
  	case 2:
  		return nat_iowrite16(((epicsUInt8 *)addr) - 2,val);
+
+    default:
+        throw std::invalid_argument("Requested address not alligned for 16bit write.");
  	}
  }
 #define NAT_WRITE16(base,offset,value) \

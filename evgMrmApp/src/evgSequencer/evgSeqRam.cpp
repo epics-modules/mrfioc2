@@ -224,17 +224,17 @@ evgSeqRam::dealloc() {
 
 bool 
 evgSeqRam::isEnabled() const {
-    return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED; 
+    return (READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED) != 0;
 }
 
 bool 
 evgSeqRam::isRunning() const {
-    return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
+    return (READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING) != 0;
 }
 
 bool
 evgSeqRam::isAllocated() const {
-    return m_softSeq;
+    return m_softSeq != NULL;
 }
 
 void

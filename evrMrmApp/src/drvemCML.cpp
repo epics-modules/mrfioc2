@@ -8,8 +8,6 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemCML.h"
-
 #include <stdexcept>
 #include <algorithm>
 
@@ -18,12 +16,16 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
-#include "drvem.h"
 
-MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, evrForm f)
+#include <epicsExport.h>
+
+#include "drvem.h"
+#include "drvemCML.h"
+
+MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formFactor f)
   :CML(n)
-  ,mult(f==evrFormCPCIFULL ? 40 : 20) // CML word length
-  ,wordlen(f==evrFormCPCIFULL ? 2 : 1)// # of 32-bit dwords used to store 1 CML word
+  ,mult(f==formFactor_CPCIFULL ? 40 : 20) // CML word length
+  ,wordlen(f==formFactor_CPCIFULL ? 2 : 1)// # of 32-bit dwords used to store 1 CML word
                                       // 40 bits fit in 2 dwords, 20 bits fit in 1
   ,base(o.base)
   ,N(i)
@@ -137,7 +139,7 @@ MRMCML::enable(bool s)
 bool
 MRMCML::inReset() const
 {
-    return shadowEnable & OutputCMLEna_rst;
+    return (shadowEnable & OutputCMLEna_rst) != 0;
 }
 
 void
@@ -197,7 +199,7 @@ MRMCML::setPolarityInvert(bool s)
 bool
 MRMCML::polarityInvert() const
 {
-    return shadowEnable & OutputCMLEna_ftrg;
+    return (shadowEnable & OutputCMLEna_ftrg) != 0;
 }
 
 epicsUInt32
@@ -313,7 +315,7 @@ MRMCML::setTimeInit (double v)
 bool
 MRMCML::recyclePat() const
 {
-    return shadowEnable & OutputCMLEna_cycl;
+    return (shadowEnable & OutputCMLEna_cycl) != 0;
 }
 
 void

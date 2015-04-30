@@ -8,10 +8,9 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvem.h"
-
 #include <cstdio>
 #include <cstring>
+#include <cmath>
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
@@ -19,24 +18,43 @@
 #include <epicsMath.h>
 #include <errlog.h>
 #include <epicsMath.h>
+#include <dbDefs.h>
+#include <dbScan.h>
+#include <epicsInterrupt.h>
 
-#include <mrfCommon.h>
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
-
-#ifdef __linux__
-#  include "devLibPCI.h"
-#endif
+#include "mrmDataBufTx.h"
+#include "sfp.h"
 
 #include "evrRegMap.h"
 
 #include "mrfFracSynth.h"
 
+#include <mrfCommon.h>
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
+
 #include "drvemIocsh.h"
 
-#include <dbDefs.h>
-#include <dbScan.h>
-#include <epicsInterrupt.h>
+#include <evr/evr.h>
+#include <evr/pulser.h>
+#include <evr/cml.h>
+#include <evr/prescaler.h>
+#include <evr/input.h>
+
+#if defined(__linux__) || defined(_WIN32)
+#  include "devLibPCI.h"
+#endif
+
+#include <epicsExport.h>
+
+#include "drvem.h"
+
+int evrDebug;
+extern "C" {
+ epicsExportAddress(int, evrDebug);
+}
+
+using namespace std;
 
 #define CBINIT(ptr, prio, fn, valptr) \
 do { \
@@ -72,6 +90,8 @@ extern "C" {
      * No point in making this shorter than the system tick
      */
     double mrmEvrFIFOPeriod = 1.0/ 1000.0; /* 1/rate in Hz */
+
+    epicsExportAddress(double,mrmEvrFIFOPeriod);
 }
 
 /* Number of good updates before the time is considered valid */
@@ -82,10 +102,10 @@ static
 const double fracref=24.0; // MHz
 
 EVRMRM::EVRMRM(const std::string& n,
-               const std::string& p,
+               bus_configuration& busConfig,
                volatile unsigned char* b,
                epicsUInt32 bl)
-  :EVR(n,p)
+  :EVR(n,busConfig)
   ,evrLock()
   ,id(n)
   ,base(b)
@@ -117,16 +137,16 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
-    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
+    epicsUInt32 v, evr,ver;
 
+    v = fpgaFirmware();
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    ver=v&FWVersion_ver_mask;
-    ver>>=FWVersion_ver_shift;
+    ver = version();
     if(ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
@@ -150,9 +170,7 @@ try{
      * Create subunit instances
      */
 
-    v&=FWVersion_form_mask;
-    v>>=FWVersion_form_shift;
-    evrForm form=(evrForm)v;
+    formFactor form = getFormFactor();
 
     size_t nPul=16; // number of pulsers
     size_t nPS=3;   // number of prescalers
@@ -165,21 +183,19 @@ try{
     // # of FP inputs
     size_t nIFP=0;
 
+    printf("%s: ", formFactorStr().c_str());
     switch(form){
-    case evrFormCPCI:
-        printf("CPCI ");
+    case formFactor_CPCI:
         nOFPUV=4;
         nOFPDly=2;
         nIFP=2;
         nORB=6;
         break;
-    case evrFormPMC:
-        printf("PMC ");
+    case formFactor_PMC:
         nOFP=3;
         nIFP=1;
         break;
-    case evrFormVME64:
-        printf("VME64 ");
+    case formFactor_VME64:
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
         nOFPDly=2;
@@ -187,13 +203,11 @@ try{
         nORB=16;
         nIFP=2;
         break;
-    case evrFormCPCIFULL:
-        printf("TG ");
+    case formFactor_CPCIFULL:
         nOFPUV=4;
         kind=MRMCML::typeTG300;
         break;
-    case evrFormPCIe:
-        printf("PCIe ");
+    case formFactor_PCIe:
         nOFPUV=8;
         break;
     default:
@@ -253,7 +267,7 @@ try{
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
-    if(v==evrFormCPCIFULL) {
+    if(v==formFactor_CPCIFULL) {
         shortcmls.resize(8);
         for(size_t i=4; i<8; i++) {
             std::ostringstream name;
@@ -318,7 +332,7 @@ try{
     if(tsDiv()!=0) {
         shadowSourceTS=TSSourceInternal;
     } else {
-        bool usedbus4=READ32(base, Control) & Control_tsdbus;
+        bool usedbus4=(READ32(base, Control) & Control_tsdbus) != 0;
 
         if(usedbus4)
             shadowSourceTS=TSSourceDBus4;
@@ -341,6 +355,15 @@ EVRMRM::~EVRMRM()
 {
     cleanup();
 }
+
+// the rest of the objects properties (inputs, outputs, ...) are defined in evr.cpp.
+OBJECT_BEGIN(DelayModule) {
+
+    OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
+    OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
+    OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
+
+} OBJECT_END(DelayModule)
 
 void
 EVRMRM::cleanup()
@@ -379,6 +402,11 @@ EVRMRM::model() const
 }
 
 epicsUInt32
+EVRMRM::fpgaFirmware(){
+    return READ32(base, FWVersion);
+}
+
+epicsUInt32
 EVRMRM::version() const
 {
     epicsUInt32 v = READ32(base, FWVersion);
@@ -386,11 +414,61 @@ EVRMRM::version() const
     return (v&FWVersion_ver_mask)>>FWVersion_ver_shift;
 }
 
+formFactor
+EVRMRM::getFormFactor(){
+    epicsUInt32 form = model();
+
+    if(formFactor_CPCI <= form && form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+EVRMRM::formFactorStr(){
+    std::string text;
+    formFactor form;
+
+    form = getFormFactor();
+    switch(form){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
+}
+
 bool
 EVRMRM::enabled() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_enable;
+    return (v&Control_enable) != 0;
 }
 
 void
@@ -615,7 +693,7 @@ bool
 EVRMRM::extInhib() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_GTXio;
+    return (v&Control_GTXio) != 0;
 }
 
 void
@@ -631,7 +709,7 @@ EVRMRM::setExtInhib(bool v)
 bool
 EVRMRM::pllLocked() const
 {
-    return READ32(base, ClkCtrl) & ClkCtrl_cglock;
+    return (READ32(base, ClkCtrl) & ClkCtrl_cglock) != 0;
 }
 
 bool
@@ -1257,6 +1335,3 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 
 
 }
-
-#include <epicsExport.h>
-epicsExportAddress(double,mrmEvrFIFOPeriod);

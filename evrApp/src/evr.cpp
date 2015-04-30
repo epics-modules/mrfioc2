@@ -18,8 +18,6 @@
 #include "evr/cml.h"
 #include "evr/util.h"
 
-#include "delayModule.h"
-
 #include "dbCommon.h"
 
 /**@file evr.cpp
@@ -40,9 +38,20 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
+
+bus_configuration *EVR::getBusConfiguration(){
+    return &busConfiguration;
+}
+
 std::string EVR::position() const
 {
-    return pos;
+    std::ostringstream position;
+
+    if(busConfiguration.busType == busType_pci) position << busConfiguration.pci.bus << ":" << busConfiguration.pci.device << "." << busConfiguration.pci.function;
+    else if(busConfiguration.busType == busType_vme) position << "Slot #" << busConfiguration.vme.slot;
+    else position << "Unknown position";
+
+    return position.str();
 }
 
 Pulser::~Pulser()
@@ -220,10 +229,4 @@ OBJECT_BEGIN(CML) {
 
 } OBJECT_END(CML)
 
-OBJECT_BEGIN(DelayModule) {
-
-    OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
-    OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
-    OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
-
-} OBJECT_END(DelayModule)
+// the delay module object properties are defined in drvem.cpp, since it does not depend on evr but only on evrMrm.

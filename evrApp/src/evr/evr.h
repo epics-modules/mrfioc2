@@ -19,11 +19,13 @@
 #include <epicsTime.h>
 #include <callback.h>
 
-class Pulser;
-class Output;
-class PreScaler;
-class Input;
-class CML;
+#include "configurationInfo.h"
+
+class epicsShareClass Pulser;
+class epicsShareClass Output;
+class epicsShareClass PreScaler;
+class epicsShareClass Input;
+class epicsShareClass CML;
 
 enum TSSource {
   TSSourceInternal=0,
@@ -39,10 +41,10 @@ enum TSSource {
  * Device support can use one of the functions returning IOSCANPVT
  * to impliment get_ioint_info().
  */
-class EVR : public mrf::ObjectInst<EVR>
+class epicsShareClass EVR : public mrf::ObjectInst<EVR>
 {
 public:
-  EVR(const std::string& n, const std::string& p) : mrf::ObjectInst<EVR>(n), pos(p) {}
+  EVR(const std::string& n, bus_configuration& busConfig) : mrf::ObjectInst<EVR>(n), busConfiguration(busConfig) {}
 
   virtual ~EVR()=0;
 
@@ -56,6 +58,7 @@ public:
 
   //! Position of EVR device in enclosure.
   virtual std::string position() const;
+  bus_configuration* getBusConfiguration();
 
   /**\defgroup ena Enable/disable pulser output.
    */
@@ -204,7 +207,7 @@ public:
   /*@}*/
 
 private:
-  const std::string pos;
+  bus_configuration busConfiguration;
 }; // class EVR
 
 #endif // EVR_HPP_INC

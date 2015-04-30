@@ -1,4 +1,4 @@
-#include "evgInit.h"
+
 
 #include <iostream>
 #include <stdexcept>
@@ -6,19 +6,33 @@
 #include <sstream>
 
 #include <epicsExit.h>
-#include <epicsExport.h>
+#include <epicsThread.h>
+
 #include <iocsh.h>
 #include <drvSup.h>
 #include <initHooks.h>
 #include <errlog.h>
 
+#include "mrf/object.h"
+#include "mrf/databuf.h"
+
+#include <devcsr.h>
+/* DZ: Does Win32 have a problem with devCSRTestSlot()? */
+#ifdef _WIN32
+#define devCSRTestSlot(vmeEvgIDs,slot,info) (NULL)
+
+#include <time.h>
+#endif
+
 #include <mrfcsr.h>
 #include <mrfCommonIO.h>
 #include <devLibPCI.h>
-
 #include "plx9030.h"
 
+#include <epicsExport.h>
 #include "evgRegMap.h"
+
+#include "evgInit.h"
 
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvgSetupVME().  Levels are
@@ -131,8 +145,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required,
     }
 #endif
 	epicsUInt32 type, ver;
-	epicsUInt32 v = READ32(base, FPGAVersion);
-	printf("FPGAVersion 0x%08x\n", v);
+    epicsUInt32 v = READ32(base, FPGAVersion);
 
     if(v & FPGAVersion_ZERO_MASK)
         throw std::runtime_error("Invalid firmware version (HW or bus error)");
@@ -165,6 +178,15 @@ mrmEvgSetupVME (
 {
     volatile epicsUInt8* regCpuAddr = 0;
     struct VMECSRID info;
+    bus_configuration bus;
+
+    info.board = 0; info.revision = 0; info.vendor = 0;
+
+    bus.busType = busType_vme;
+    bus.vme.slot = slot;
+    bus.vme.address = vmeAddress;
+    bus.vme.irqLevel = irqLevel;
+    bus.vme.irqVector = irqVector;
 
     try {
         if(mrf::Object::getObject(id)){
@@ -223,7 +245,7 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, regCpuAddr);
+        evgMrm* evg = new evgMrm(id, bus, regCpuAddr);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -234,6 +256,7 @@ mrmEvgSetupVME (
                 CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL),
                 CSRRead8(csrCpuAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR)
             );
+
 
             printf("csrCpuAddr : %p\nregCpuAddr : %p\n",csrCpuAddr, regCpuAddr);
 
@@ -311,6 +334,12 @@ mrmEvgSetupPCI (
 		int d, 					// Device number
 		int f)   				// Function number
 {
+    bus_configuration bus;
+
+    bus.busType = busType_pci;
+    bus.pci.bus = b;
+    bus.pci.device = d;
+    bus.pci.function = f;
 
 	try {
 		if (mrf::Object::getObject(id)) {
@@ -358,7 +387,7 @@ mrmEvgSetupPCI (
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
-		evgMrm* evg = new evgMrm(id, BAR_evg);
+        evgMrm* evg = new evgMrm(id, bus, BAR_evg);
 
 		evg->getSeqRamMgr()->getSeqRam(0)->disable();
 		evg->getSeqRamMgr()->getSeqRam(1)->disable();
@@ -398,6 +427,7 @@ mrmEvgSetupPCI (
 	return -1;
 } //mrmEvgSetupPCI
 
+#ifndef _WIN32
 /*
  * This function spawns additional thread that emulate PPS input. Function is used for
  * testing of timestamping functionality... DO NOT USE IN PRODUCTION!!!!!
@@ -416,7 +446,7 @@ void mrmEvgSoftTime(void* pvt) {
 		epicsUInt32 data = evg->sendTimestamp();
 		if (!data){
 			errlogPrintf("mrmEvgSoftTimestamp: Could not retrive timestamp...\n");
-			sleep(1);
+			epicsThreadSleep(1);
 			continue;
 		}
 
@@ -444,6 +474,9 @@ void mrmEvgSoftTime(void* pvt) {
 //		sleep(1);
 	}
 }
+#else
+void mrmEvgSoftTime(void* pvt) {}
+#endif
 
 /*
  *    EPICS Registrar Function for this Module
@@ -506,6 +539,7 @@ static void mrmEvgSetupPCICallFunc(const iocshArgBuf *args) {
 
 }
 
+extern "C"{
 static void evgMrmRegistrar() {
 	initHookRegister(&inithooks);
 	iocshRegister(&mrmEvgSetupVMEFuncDef, mrmEvgSetupVMECallFunc);
@@ -515,7 +549,7 @@ static void evgMrmRegistrar() {
 }
 
 epicsExportRegistrar(evgMrmRegistrar);
-
+}
 
 /*
  * EPICS Driver Support for this module
@@ -638,9 +672,44 @@ reportCard(mrf::Object* obj, void* arg) {
     if(!evg)
         return true;
 
-    printf("    ID: %s     \n", evg->getId().c_str());
-    
-    printf("    FPGA version: %08x\n", evg->getFwVersion());
+    printf("EVG: %s     \n", evg->getId().c_str());
+    printf("\tFPGA Version: %08x (firmware: %x)\n", evg->getFwVersion(), evg->getFwVersionID());
+    printf("\tForm factor: %s\n", evg->getFormFactorStr().c_str());
+
+    bus_configuration *bus = evg->getBusConfiguration();
+    if(bus->busType == busType_vme){
+        struct VMECSRID vmeDev;
+        volatile unsigned char* csrAddr = devCSRTestSlot(vmeEvgIDs, bus->vme.slot, &vmeDev);
+        if(csrAddr){
+            epicsUInt32 ader = CSRRead32(csrAddr + CSR_FN_ADER(1));
+            printf("\tVME configured slot: %d\n", bus->vme.slot);
+            printf("\tVME configured A24 address 0x%08x\n", bus->vme.address);
+            printf("\tVME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
+            printf("\tVME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
+            printf("\tVME IRQ Vector %d (configured to %d)\n", CSRRead8(csrAddr + MRF_UCSR_DEFAULT + UCSR_IRQ_VECTOR), bus->vme.irqVector);
+            if(*level>1) printf("\tVME card vendor: 0x%08x\n", vmeDev.vendor);
+            if(*level>1) printf("\tVME card board: 0x%08x\n", vmeDev.board);
+            if(*level>1) printf("\tVME card revision: 0x%08x\n", vmeDev.revision);
+            if(*level>1) printf("\tVME CSR address: %p\n", csrAddr);
+        }else{
+            printf("\tCard not detected in configured slot %d\n", bus->vme.slot);
+        }
+    }
+    else if(bus->busType == busType_pci){
+        const epicsPCIDevice *pciDev;
+        if(!devPCIFindBDF(mrmevgs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
+            printf("\tPCI configured bus: 0x%08x\n", bus->pci.bus);
+            printf("\tPCI configured device: 0x%08x\n", bus->pci.device);
+            printf("\tPCI configured function: 0x%08x\n", bus->pci.function);
+            printf("\tPCI IRQ: %u\n", pciDev->irq);
+            if(*level>1) printf("\tPCI class: 0x%08x, revision: 0x%x, sub device: 0x%x, sub vendor: 0x%x\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+
+        }else{
+            printf("\tPCI Device not found\n");
+        }
+    }else{
+        printf("\tUnknown bus type\n");
+    }
 
     evg->show(*level);
     
@@ -658,7 +727,7 @@ report(int level) {
     printf("===   End MRF EVG support    ===\n");
     return 0;
 }
-
+extern "C"{
 static
 drvet drvEvgMrm = {
     2,
@@ -666,4 +735,4 @@ drvet drvEvgMrm = {
     NULL
 };
 epicsExportAddress (drvet, drvEvgMrm);
-
+}

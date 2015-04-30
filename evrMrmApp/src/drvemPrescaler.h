@@ -13,7 +13,7 @@
 
 #include <evr/prescaler.h>
 
-class MRMPreScaler : public PreScaler
+class epicsShareClass MRMPreScaler : public PreScaler
 {
     volatile unsigned char* base;
 

@@ -1,3 +1,4 @@
+#SHELL=cmd.exe
 #Makefile at top of application tree
 TOP = .
 include $(TOP)/configure/CONFIG
@@ -20,7 +21,7 @@ $(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir)
 
 iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
-evrApp_DEPEND_DIRS += mrfCommon
+evrApp_DEPEND_DIRS += mrfCommon mrmShared
 
 mrmShared_DEPEND_DIRS += mrfCommon
 

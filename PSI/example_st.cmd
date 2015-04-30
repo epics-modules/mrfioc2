@@ -5,6 +5,7 @@ require 'mrfioc2'
 #var pevIntrDebug 255
 
 epicsEnvSet SYS "PSI-IFC-XXXX"
+var dbTemplateMaxVars 500
 
 ##########################
 #-----! EVG Setup ------!#

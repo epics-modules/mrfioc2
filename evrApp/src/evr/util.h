@@ -28,7 +28,7 @@ struct dbCommon;
  * impliment reference counting to allow the 'interrupt' to
  * be disabled when unused.
  */
-class IOStatus
+class epicsShareClass IOStatus
 {
 public:
   virtual IOSCANPVT statusChange(bool up=true){return 0;};

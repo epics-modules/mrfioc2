@@ -178,7 +178,7 @@ evgSoftSeq::getSeqRam() {
 
 bool
 evgSoftSeq::isLoaded() {
-    return m_seqRam;
+    return m_seqRam != 0;
 }
 
 bool
@@ -410,7 +410,7 @@ evgSoftSeq::finishSync()
 
 void
 evgSoftSeq::commitSoftSeq() {
-    int64_t tsUInt64;
+    epicsInt64 tsUInt64;
     epicsUInt8 ecUInt8;
     epicsUInt64 preTs = 0;
     epicsUInt64 curTs = 0;
@@ -531,5 +531,6 @@ void evgSoftSeq::show(int lvl)
 }
 
 #include <epicsExport.h>
-
-epicsExportAddress(int,mrmEVGSeqDebug);
+extern "C"{
+ epicsExportAddress(int,mrmEVGSeqDebug);
+}

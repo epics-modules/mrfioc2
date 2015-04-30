@@ -60,12 +60,12 @@ extern "C" {
 /*  Function Prototypes for Fractional Synthesizer Utility Routines                               */
 /**************************************************************************************************/
 
-epicsStatus   mrfSetEventClockSpeed (epicsFloat64,  epicsUInt32,  epicsFloat64,
-                                     epicsFloat64*, epicsUInt32*, epicsInt32);
+epicsShareExtern epicsStatus   mrfSetEventClockSpeed (epicsFloat64,  epicsUInt32,  epicsFloat64,
+                                                      epicsFloat64*, epicsUInt32*, epicsInt32);
 
-epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epicsFloat64*);
+epicsShareExtern epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epicsFloat64*);
 
-epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
+epicsShareExtern epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
 
 /**************************************************************************************************/
 /*  Special Macros to Define Commonly Used Symbols                                                */

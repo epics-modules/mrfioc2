@@ -99,10 +99,14 @@
 #include <iocsh.h>                        /* EPICS IOC shell support library                      */
 #include <registryFunction.h>             /* EPICS Registry support library                       */
 
+#include <epicsExport.h>                  /* EPICS Symbol exporting macro definitions             */
+
+#include <mrfFracSynth.h>                 /* MRF Fractional Synthesizer routines                  */
 #include <mrfCommon.h>                    /* MRF event system constants and definitions           */
 #include <debugPrint.h>                   /* SLAC Debug print utility                             */
 #include <mrfFracSynth.h>                 /* MRF Fractional Synthesizer routines                  */
 
+// FIXME: Is this then really needed?
 #include <epicsExport.h>                  /* EPICS Symbol exporting macro definitions             */
 
 /**************************************************************************************************/
@@ -358,7 +362,7 @@ static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
  *
  **************************************************************************************************/
 
-epicsStatus mrfSetEventClockSpeed (
+epicsShareExtern epicsStatus mrfSetEventClockSpeed (
     epicsFloat64   InputClockSpeed,             /* Desired event clock speed in MHz (or zero)     */
     epicsUInt32    InputControlWord,            /* Fractional synthesizer control word (or zero)  */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency (in MHz)    */
@@ -545,7 +549,7 @@ epicsStatus mrfSetEventClockSpeed (
  **************************************************************************************************/
 
 
-epicsUInt32 FracSynthControlWord (
+epicsShareExtern epicsUInt32 FracSynthControlWord (
     epicsFloat64         DesiredFreq,         /* Desired output frequency                         */
     epicsFloat64         ReferenceFreq,       /* SY87739L input reference frequency               */
     epicsInt32           debugFlag,           /* Flag for debug/informational output              */
@@ -641,7 +645,7 @@ epicsUInt32 FracSynthControlWord (
                /*---------------------
                 * Compute the integer and fractional parts of the fractional-N frequency
                 */
-                p1 = (FractionalFreq * j);
+                p1 = (epicsInt32)(FractionalFreq * j);
                 p = (p1 / j) + 1;
                 Qpm1 = j - (p1 % j);
                 Qp = j - Qpm1;
@@ -839,7 +843,7 @@ epicsUInt32 FracSynthControlWord (
  **************************************************************************************************/
 
 
-epicsFloat64 FracSynthAnalyze (
+epicsShareExtern epicsFloat64 FracSynthAnalyze (
     epicsUInt32    ControlWord,                 /* Control word to analyze                        */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency             */
     epicsInt32     PrintFlag)                   /* Flag to control what we print in this routine  */
