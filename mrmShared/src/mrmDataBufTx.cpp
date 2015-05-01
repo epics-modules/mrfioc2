@@ -35,7 +35,7 @@
 #define DataTxCtrl_mode 0x010000
 #define DataTxCtrl_len_mask 0x0007fc
 
-#define DataTxCtrl_len_max DataTxCtrl_len_mask
+#define DataTxCtrl_len_max 0x000800
 
 // If bottom 2 lines are removed, MSVC does not report warning C4273
 dataBufTx::~dataBufTx() {}
@@ -119,28 +119,9 @@ mrmDataBufTx::dataSend(epicsUInt32 len,
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
-    epicsUInt32 temp = 0;
-
     epicsUInt32 index;
-    for(index=0; index<len; index++) {
-        int byte=index%4;
-
-        if(byte==0)
-            temp=0;
-
-        temp <<= 8;
-        temp |= ubuf[index];
-
-        if(byte==3)
-            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
-    }
-
-    for(; index%4; index++) {
-        temp <<= 8;
-        len++;
-
-        if(index%4==3)
-            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
+    for(index=0; index<len; index+=4) {
+        nat_iowrite32(&dataBuf[index], *(epicsUInt32*)(&ubuf[index]) );
     }
 
     wbarr();

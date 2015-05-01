@@ -1,0 +1,74 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** drvMrfiocDBuff.cpp
+**
+** RegDev device support for Distributed Buffer on MRF EVR and EVG cards using
+** mrfioc2 driver.
+**
+** -- DOCS ----------------------------------------------------------------
+** Driver is registered via iocsh command:
+**    mrfiocDBuffConfigure <regDevName> <mrfName> <protocol ID>
+**
+**      -regDevName: name of device as seen from regDev. E.g. this
+**            name must be the same as parameter 1 in record OUT/IN
+**
+**      -mrfName: name of mrf device
+**
+**      -protocol ID: protocol id (32 bit int). If set to 0, than receiver
+**            will accept all buffers. This is useful for
+**            debugging. If protocol !=0 then only received buffers
+**            with same protocol id are accepted. If you need to work
+**            with multiple protocols you can register multiple instances
+**            of regDev using the same mrfName but different regDevNames and
+**            protocols.
+**
+**
+**    example:  mrfiocDBuffConfigure EVGDBUFF EVG1 42
+**
+**
+** EPICS use:
+**
+**    - records behave the same as for any other regDev device with one exception:
+**
+**    - offset 0x00-0x04 can not be written to, since it is occupied by protocolID
+**    - writing to offset 0x00 will flush the buffer
+**    - input records are automatically processed (if scan==IO) when a valid buffer
+**      is received
+**
+**
+**
+** -- SUPPORTED DEVICES -----------------------------------------------------
+**
+** VME EVG-230 (tx only, EVG does not support databuffer rx)
+** VME EVR-230 (tx and rx)
+** PCI EVR-230 (rx only, firmware version 3 does not support databuffer tx)
+** PCIe EVR-300 (tx and rx)
+**
+**
+** -- IMPLEMENTATION ---------------------------------------------------------
+**
+** In order to sync endianess across different devices and buses a following
+** convention is followed.
+**    - Data in distributed buffer is always BigEndian (4321). This also includes
+**    data-types that are longer than 4bytes (e.g. doubles are 7654321)
+**
+**    - Data in scratch buffers (device->txBuffer, device->rxBuffer) is in
+**    the same format as in hw buffer (always BigEndian).
+**
+**
+** Device access routines mrfiocDBuff_flush, mrmEvrDataRxCB, implement
+** correct conversions and data reconstructions. E.g. data received over PCI/
+** PCIe will be in littleEndian, but the littleEndian conversion will be 4 bytes
+** wide (this means that if data in HW is 76543210 the result will be 45670123)
+**
+**
+** -- MISSING ---------------------------------------------------------------
+**
+** Explicit setting of DataBuffer MODE (whether DataBuffer is shared with DBUS)
+**
+**
+** Author: Tom Slejko
+** --------------------------------------------------------------
