@@ -17,7 +17,7 @@ record(longout, "$(P)-Cmd") {
 record(seq, "$(P)-Seq_") {
   # Trigger soft event
   field(DOL1, "$(CODE)")
-  field(LNK1, "$(SYS){$(D)-SoftEvt}EvtCode-SP PP")
+  field(LNK1, "$(P)SoftEvt:EvtCode-SP PP")
   # Disable command
   field(DOL2, "1")
   field(LNK2, "$(P)-Cmd.DISA NPP")

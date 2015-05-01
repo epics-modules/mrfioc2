@@ -68,13 +68,13 @@ record(longin , "$(P)Prescaler-RB") {
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(OBJ), PROP=Prescaler")
     field( DESC, "EVG Mux Prescaler RB")
-    field( FLNK, "$(SYS){$(D)}ResetMxc-Cmd")
+    field( FLNK, "$(P)ResetMxc-Cmd")
 }
 
 #
 # When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+    field( INP,  "$(P)EvtClk:Frequency-RB CP")
     field( FLNK, "$(P)Frequency-RB")
 }
