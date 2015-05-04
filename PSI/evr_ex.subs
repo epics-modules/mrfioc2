@@ -65,49 +65,41 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		Pul8-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul8-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul8-Width-SP=0,		#0-65535 : Width in us
-		Pul8-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
 		Pul9-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul9-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul9-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul9-Width-SP=0,		#0-65535 : Width in us
-		Pul9-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
 		Pul10-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul10-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul10-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul10-Width-SP=0,		#0-65535 : Width in us
-		Pul10-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul11-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul11-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul11-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul11-Width-SP=0,		#0-65535 : Width in us
-		Pul11-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul12-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul12-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul12-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul12-Width-SP=0,		#0-65535 : Width in us
-		Pul12-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul13-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul13-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul13-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul13-Width-SP=0,		#0-65535 : Width in us
-		Pul13-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul14-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul14-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul14-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul14-Width-SP=0,		#0-65535 : Width in us
-		Pul14-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 		Pul15-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
 		Pul15-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul15-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul15-Width-SP=0,		#0-65535 : Width in us
-		Pul15-Prescaler-SP=1,  	#0-255 : Pulser prescaler
 
 
 		## Front panel inputs
