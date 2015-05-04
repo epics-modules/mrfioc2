@@ -15,7 +15,7 @@
 
 #include "bufrxmgr.h"
 
-class mrmBufRx : public bufRxManager
+class epicsShareClass mrmBufRx : public bufRxManager
 {
 public:
     mrmBufRx(const std::string&, volatile void *base,unsigned int qdepth, unsigned int bsize=0);

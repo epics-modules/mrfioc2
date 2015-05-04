@@ -94,6 +94,7 @@
 #include <epicsEndian.h>
 #include <regDev.h>
 #include <devMrmBuf.h>
+#include <errlog.h>
 
 /*                                        */
 /*        DEFINES                         */
@@ -118,12 +119,12 @@ extern "C" {
  */
 struct regDevice{
     char*                   name;            //regDevName of device
-    epicsUInt32             proto;           //protocol ID (4 bytes)
-    epicsUInt8*             txBuffer;        //pointer to 2k tx buffer
-    size_t                  txBufferLen;     //amount of data written in buffer (last touched byte)
-    epicsUInt8*             rxBuffer;        //pointer to 2k rx buffer
-    IOSCANPVT               ioscanpvt;
     mrmBufferInfo_t*        bufferHandle;         
+    IOSCANPVT               ioscanpvt;
+    epicsUInt8*             rxBuffer;        //pointer to 2k rx buffer
+    epicsUInt8*             txBuffer;        //pointer to 2k tx buffer
+    epicsUInt32             proto;           //protocol ID (4 bytes)
+    epicsUInt16             usedTxBufferLen; //amount of data written in buffer (last touched byte)
 };
 
 
@@ -143,10 +144,19 @@ static void mrfiocDBuff_flush(regDevice* device)
 
     mrmBufEnable(device->bufferHandle);
 
-    mrmBufSend(device->bufferHandle, device->txBufferLen, device->txBuffer);
+    if (drvMrfiocDBuffDebug)
+    {
+        printf("mrfiocDBuff_flush %s sending %u bytes\n", device->name, device->usedTxBufferLen);
+        for (unsigned int i=0; i < device->usedTxBufferLen; i++)
+        {
+            printf(" %02x", device->txBuffer[i]);
+        }
+        printf("\n");
+    }
+    mrmBufSend(device->bufferHandle, device->usedTxBufferLen, device->txBuffer);
 
     // reset used length
-    device->txBufferLen = 0;
+    device->usedTxBufferLen = 0;
 }
 
 
@@ -164,7 +174,7 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
     regDevice* device = (regDevice *)pvt;
     if (drvMrfiocDBuffDebug)
     {
-        printf("RegDev got buffer %u bytes\n", len);
+        printf("mrmEvrDataRxCB %s: received %u bytes\n", device->name, len);
         for (unsigned int i=0; i < len; i++)
         {
             printf(" %02x", buf[i]);
@@ -175,7 +185,7 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
     // Extract protocol ID (big endian)
     epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(buf));
 
-    dbgPrintf("Received DBUFF with protocol: %d\n", receivedProtocolID);
+    dbgPrintf("mrmEvrDataRxCB %s: protocol ID = %d\n", device->name, receivedProtocolID);
 
     // Accept all protocols if devices was initialized with protocol == 0
     // or if the set protocol matches the received one
@@ -217,7 +227,8 @@ int mrfiocDBuff_read(
         regDevTransferComplete callback,
         char* user)
 {
-    dbgPrintf("mrfiocDBuff_read: from 0x%x len: 0x%x\n", (int)offset, (int)(datalength*nelem));
+    dbgPrintf("mrfiocDBuff_read %s: from 0x%x len: 0x%x\n",
+        device->name, (int)offset, (int)(datalength*nelem));
 
     if(offset < PROTO_LEN){
         errlogPrintf("mrfiocDBuff_read %s: device %s: byte offset must be greater than %d\n", 
@@ -226,7 +237,7 @@ int mrfiocDBuff_read(
     }
 
     /* Data in buffer is in big endian byte order */
-    regDevCopy(datalength, nelem, &device->rxBuffer[offset], pdata, NULL, LE_SWAP);
+    regDevCopy(datalength, nelem, &device->rxBuffer[offset], pdata, NULL, REGDEV_SWAP_FROM_BE);
 
     return 0;
 }
@@ -266,11 +277,11 @@ int mrfiocDBuff_write(
 
     //Copy into the scratch buffer
         /* Data in buffer is in big endian byte order */
-    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, LE_SWAP);
+    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, REGDEV_SWAP_TO_BE);
 
     //Update buffer length (rounded up to multiple of 4)
     size_t bufferLen = (datalength * nelem + offset + 3) & ~3;
-    if (bufferLen > device->txBufferLen) device->txBufferLen = bufferLen;
+    if (bufferLen > device->usedTxBufferLen) device->usedTxBufferLen = bufferLen;
 
     return 0;
 }
@@ -312,7 +323,6 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
     }
 
     //Check if device already exists:
-    printf ("regDevFind %s\n", regDevName);
     if (regDevFind(regDevName)) {
         errlogPrintf("mrfiocDBuffConfigure: FATAL ERROR! device %s already exists!\n", regDevName);
         return;
@@ -320,55 +330,63 @@ void mrfiocDBuffConfigure(const char* regDevName, const char* mrfName, int proto
 
     regDevice* device;
 
-    printf ("calloc...\n");
     device = (regDevice*) calloc(1, sizeof(regDevice) + strlen(regDevName) + 1);
     if (!device) {
         errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Out of memory!\n", regDevName);
         return;
     }
     device->name = (char*)(device + 1);
-    printf ("strcpy name...\n");
     strcpy(device->name, regDevName);
 
     /*
      * Query mrfioc2 device support for device
      */
-    epicsPrintf("Looking for device %s\n", mrfName);
-    printf ("mrmBufInit %s\n", mrfName);
-    device->bufferHandle = mrmBufInit((char*)mrfName);  // TODO: change mrmBufInit to using const char*
+    device->bufferHandle = mrmBufInit(mrfName);
 
     if (!device->bufferHandle) {
         errlogPrintf("mrfiocDBuffConfigure %s: FAILED! Can not connect to mrf device: %s\n", regDevName, mrfName);
         return;
     }
 
-    printf ("mrmBufMaxLen\n");
     epicsUInt32 maxLength;
-    mrmBufMaxLen(device->bufferHandle, &maxLength);
-
-    /* Allocate the buffer memory */
-    device->txBufferLen = 0;
-    device->txBuffer = (epicsUInt8*) calloc(1, maxLength); //allocate 2k memory
-
-    if (!device->txBuffer) {
-        errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate TX buffer!", regDevName);
+    if (mrmBufMaxLen(device->bufferHandle, &maxLength) != 0) {
+        /* don't know how much to allocate */
+        printf ("mrfiocDBuffConfigure %s: mrmBufMaxLen() failed", regDevName);
         return;
     }
-
-    device->rxBuffer = (epicsUInt8*) calloc(1, maxLength); //initialize to 0
-
-    if (!device->rxBuffer) {
-        errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
-        return;
-    }
+    dbgPrintf("mrfiocDBuffConfigure %s: %s buffer size is %u bytes\n",
+        regDevName, mrfName, maxLength);
 
     device->proto = (epicsUInt32) protocol; //protocol ID
-    epicsPrintf("\t%s registered to protocol %d\n", regDevName, device->proto);
+    epicsPrintf("mrfiocDBuffConfigure %s: registering to protocol %d\n", regDevName, device->proto);
 
-    scanIoInit(&device->ioscanpvt);
+    if (mrmBufTxSupported(device->bufferHandle))
+    {
+        dbgPrintf("mrfiocDBuffConfigure %s: %s supports TX buffer. Allocating.\n",
+            regDevName, mrfName);
+        /* Allocate the buffer memory */
+        device->txBuffer = (epicsUInt8*) calloc(1, maxLength);
+        if (!device->txBuffer) {
+            errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate TX buffer!", regDevName);
+            return;
+        }
+    }
 
-    // register callback only for RX buffer, but how to find out?
-    mrmBufRegCallback(device->bufferHandle, mrmEvrDataRxCB, device);
+    if (mrmBufRxSupported(device->bufferHandle))
+    {
+        dbgPrintf("mrfiocDBuffConfigure %s: %s supports RX buffer. Allocating and installing callback\n",
+            regDevName, mrfName);
+        device->rxBuffer = (epicsUInt8*) calloc(1, maxLength);
+        if (!device->rxBuffer) {
+            errlogPrintf("mrfiocDBuffConfigure %s: FATAL ERROR! Could not allocate RX buffer!", regDevName);
+            return;
+        }
+        if (mrmBufRegCallback(device->bufferHandle, mrmEvrDataRxCB, device) == 0) {
+            scanIoInit(&device->ioscanpvt);
+        } else {
+            errlogPrintf("mrfiocDBuffConfigure %s: buffer does not support callbacks\n", regDevName);
+        }
+    }
 
     regDevRegisterDevice(regDevName, &mrfiocDBuffSupport, device, maxLength);
 }
@@ -405,8 +423,6 @@ static void mrfioDBuffFlushFunc(const iocshArgBuf* args) {
 
     mrfiocDBuff_flush(device);
 }
-
-
 
 /*        registrar            */
 

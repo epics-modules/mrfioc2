@@ -91,4 +91,8 @@ DBDS+=../evgMrmApp/src/evgInit.dbd
 #DBDS+=../mrfCommon/src/aSubRecord.dbd # aSubRecord is part of epics base!
 DBDS+=../mrfCommon/src/mrfCommon.dbd
 
+# regDev Support
+SOURCES+=mrfioc2RegDev/drvMrfiocDBuff.cpp
+DBDS+=mrfioc2RegDev/mrfregdev.dbd
+ 
 HEADERS+=../evrMrmApp/src/devMrmBuf.h
