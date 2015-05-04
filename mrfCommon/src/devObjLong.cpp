@@ -75,7 +75,7 @@ try {
 
     {
         scopedLock<mrf::Object> g(*priv->O);
-        priv->P->set((prec->val != 0));
+        priv->P->set(prec->val);
 
         if(priv->rbv)
             prec->val = priv->P->get();
