@@ -78,7 +78,7 @@
      <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">G_EVR_VME_out_cml-mode-pattern.ui</string>
+     <string notr="true">G_EVR_out_cml-mode-pattern.ui</string>
     </property>
     <property name="visibility">
      <enum>caInclude::Calc</enum>
@@ -154,7 +154,7 @@
      <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">G_EVR_VME_out_cml-mode-waveform.ui</string>
+     <string notr="true">G_EVR_out_cml-mode-waveform.ui</string>
     </property>
     <property name="visibility">
      <enum>caInclude::Calc</enum>
@@ -384,7 +384,7 @@
      <string notr="true">ID=$(ID), P=$(P), EVR=$(EVR)</string>
     </property>
     <property name="filename" stdset="0">
-     <string notr="true">G_EVR_VME_out_cml-mode-freq.ui</string>
+     <string notr="true">G_EVR_out_cml-mode-freq.ui</string>
     </property>
     <property name="visibility">
      <enum>caInclude::Calc</enum>
