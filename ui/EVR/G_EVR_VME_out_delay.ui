@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>649</width>
+    <height>250</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="caInclude" name="cainclude_33">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>20</y>
+     <width>511</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">ID=0, EVR=$(EVR)</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">G_EVR_out_delay.ui</string>
+   </property>
+  </widget>
+  <widget class="caInclude" name="cainclude_34">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>90</y>
+     <width>511</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">ID=1, EVR=$(EVR)</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">G_EVR_out_delay.ui</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
