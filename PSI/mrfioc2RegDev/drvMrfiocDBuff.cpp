@@ -77,12 +77,6 @@
  * mrfIoc2 headers
  */
 
-#ifdef _WIN32
- #pragma comment (lib, "Ws2_32.lib")
- #include <Winsock2.h>
-#else
-#include <netinet/in.h> /* for htonl */ 
-#endif
 #include <stdlib.h>
 #include <string.h>
 /*
@@ -101,9 +95,7 @@
 /*                                        */
 
 int drvMrfiocDBuffDebug = 0;
-extern "C" {
- epicsExportAddress(int, drvMrfiocDBuffDebug);
-}
+epicsExportAddress(int, drvMrfiocDBuffDebug);
 
 #if defined __GNUC__ && __GNUC__ < 3
 #define dbgPrintf(args...)  if(drvMrfiocDBuffDebug) printf(args);
@@ -111,6 +103,11 @@ extern "C" {
 #define dbgPrintf(...)  if(drvMrfiocDBuffDebug) printf(__VA_ARGS__);
 #endif
 
+#if defined __GNUC__
+#define _unused(x) x __attribute__((unused))
+#else
+#define _unused(x)
+#endif
 
 #define PROTO_LEN 4
 
@@ -125,6 +122,7 @@ struct regDevice{
     epicsUInt8*             txBuffer;        //pointer to 2k tx buffer
     epicsUInt32             proto;           //protocol ID (4 bytes)
     epicsUInt16             usedTxBufferLen; //amount of data written in buffer (last touched byte)
+    epicsStatus             receive_status;
 };
 
 
@@ -139,10 +137,11 @@ struct regDevice{
  */
 static void mrfiocDBuff_flush(regDevice* device)
 {
-    //Copy protocol ID
-    *((epicsUInt32*) device->txBuffer) = htonl(device->proto);//Since everything in txBuffer is big endian
+    if (device->usedTxBufferLen == 0)  /* nothing to send */
+        return;
 
-    mrmBufEnable(device->bufferHandle);
+    /* Copy protocol ID (big endian) */
+    regDevCopy(4, 1, &device->proto, device->txBuffer, NULL, REGDEV_LE_SWAP);
 
     if (drvMrfiocDBuffDebug)
     {
@@ -155,7 +154,7 @@ static void mrfiocDBuff_flush(regDevice* device)
     }
     mrmBufSend(device->bufferHandle, device->usedTxBufferLen, device->txBuffer);
 
-    // reset used length
+    /* reset used length */
     device->usedTxBufferLen = 0;
 }
 
@@ -168,10 +167,11 @@ static void mrfiocDBuff_flush(regDevice* device)
  *    is copied into device private rxBuffer and scan IO
  *    is requested.
  */
-void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
+void mrmEvrDataRxCB(void *pvt, epicsStatus status,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     regDevice* device = (regDevice *)pvt;
+    
     if (drvMrfiocDBuffDebug)
     {
         printf("mrmEvrDataRxCB %s: received %u bytes\n", device->name, len);
@@ -182,19 +182,28 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
         printf("\n");
     }
 
-    // Extract protocol ID (big endian)
-    epicsUInt32 receivedProtocolID = ntohl(*(epicsUInt32*)(buf));
-
-    dbgPrintf("mrmEvrDataRxCB %s: protocol ID = %d\n", device->name, receivedProtocolID);
-
-    // Accept all protocols if devices was initialized with protocol == 0
-    // or if the set protocol matches the received one
-    if(!device->proto | (device->proto == receivedProtocolID));
-    else return;
-
-    dbgPrintf("Received new DATA!!! len: %d\n", len);
-    memcpy(device->rxBuffer, buf, len);
-
+    /* with the current implementation status is always 0 */
+    device->receive_status = status;
+    if (status == 0)
+    {
+        // Accept all protocols if devices was initialized with protocol == 0
+        // or if the set protocol matches the received one
+        if (device->proto != 0)
+        {
+            // Extract protocol ID (big endian)
+            epicsUInt32 receivedProtocolID;
+            regDevCopy(4, 1, buf, &receivedProtocolID, NULL, REGDEV_LE_SWAP);
+            dbgPrintf("mrmEvrDataRxCB %s: protocol ID = %d\n", device->name, receivedProtocolID);
+            
+            if (device->proto != receivedProtocolID) return;
+        }
+        dbgPrintf("Received new DATA!!! len: %d\n", len);
+        memcpy(device->rxBuffer, buf, len);
+    }
+    else
+        errlogPrintf("mrmEvrDataRxCB %s: received error status\n", 
+            device->name);
+    
     scanIoRequest(device->ioscanpvt);
 }
 
@@ -203,7 +212,7 @@ void mrmEvrDataRxCB(void *pvt, epicsStatus ok,
 /*            REG DEV FUNCIONS              */
 /****************************************/
 
-void mrfiocDBuff_report(regDevice* device, int level)
+void mrfiocDBuff_report(regDevice* device, int _unused(level))
 {
     epicsUInt32 maxLength;
 
@@ -223,21 +232,17 @@ int mrfiocDBuff_read(
         unsigned int datalength,
         size_t nelem,
         void* pdata,
-        int priority,
-        regDevTransferComplete callback,
+        int _unused(priority),
+        regDevTransferComplete _unused(callback),
         char* user)
 {
-    dbgPrintf("mrfiocDBuff_read %s: from 0x%x len: 0x%x\n",
-        device->name, (int)offset, (int)(datalength*nelem));
+    dbgPrintf("mrfiocDBuff_read %s: from %s:0x%x len: 0x%x receive_status = %d\n",
+        user, device->name, (int)offset, (int)(datalength*nelem), device->receive_status);
 
-    if(offset < PROTO_LEN){
-        errlogPrintf("mrfiocDBuff_read %s: device %s: byte offset must be greater than %d\n", 
-                user, device->name, PROTO_LEN);
-        return -1;
-    }
+    if (device->receive_status) return -1;
 
     /* Data in buffer is in big endian byte order */
-    regDevCopy(datalength, nelem, &device->rxBuffer[offset], pdata, NULL, REGDEV_SWAP_FROM_BE);
+    regDevCopy(datalength, nelem, &device->rxBuffer[offset], pdata, NULL, REGDEV_LE_SWAP);
 
     return 0;
 }
@@ -249,8 +254,8 @@ int mrfiocDBuff_write(
         size_t nelem,
         void* pdata,
         void* pmask,
-        int priority,
-        regDevTransferComplete callback,
+        int _unused(priority),
+        regDevTransferComplete _unused(callback),
         char* user)
 {
     if (!device->txBuffer) {
@@ -275,11 +280,11 @@ int mrfiocDBuff_write(
         return -1;
     }
 
-    //Copy into the scratch buffer
-        /* Data in buffer is in big endian byte order */
-    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, REGDEV_SWAP_TO_BE);
+    /* Copy into the scratch buffer */
+    /* Data in buffer is in big endian byte order */
+    regDevCopy(datalength, nelem, pdata, &device->txBuffer[offset], pmask, REGDEV_LE_SWAP);
 
-    //Update buffer length (rounded up to multiple of 4)
+    /* Update buffer length (rounded up to multiple of 4) */
     size_t bufferLen = (datalength * nelem + offset + 3) & ~3;
     if (bufferLen > device->usedTxBufferLen) device->usedTxBufferLen = bufferLen;
 
@@ -287,7 +292,7 @@ int mrfiocDBuff_write(
 }
 
 
-IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* device, size_t offset)
+IOSCANPVT mrfiocDBuff_getInIoscan(regDevice* device, size_t _unused(offset))
 {
     return device->ioscanpvt;
 }
@@ -432,7 +437,6 @@ static int mrfiocDBuffRegistrar(void) {
 
     return 1;
 }
-//Automatic registration
 extern "C" {
  epicsExportRegistrar(mrfiocDBuffRegistrar);
 }
