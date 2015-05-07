@@ -1,18 +1,12 @@
 #include <cstdio>
 #include <stdexcept>
 
-#ifdef _WIN32
-	#include <Winsock2.h>
-	#pragma comment (lib, "Ws2_32.lib")
-#endif
-
 #include <epicsTypes.h>
 
 #include <epicsThread.h>
 #include <epicsInterrupt.h>
 
 #include <mrfCommonIO.h>
-#include <mrfBitOps.h>
 
 #include "mrf/databuf.h"
 
@@ -20,22 +14,13 @@
 
 #include "mrmDataBufTx.h"
 
-#ifndef bswap32
-#define bswap32(value) (  \
-        (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
-        (((epicsUInt32)(value) & 0x0000ff00) << 8)    |                \
-        (((epicsUInt32)(value) & 0x00ff0000) >> 8)    |                \
-        (((epicsUInt32)(value) & 0xff000000) >> 24))
-#endif
-
 #define DataTxCtrl_done 0x100000
 #define DataTxCtrl_run  0x080000
 #define DataTxCtrl_trig 0x040000
 #define DataTxCtrl_ena  0x020000
 #define DataTxCtrl_mode 0x010000
 #define DataTxCtrl_len_mask 0x0007fc
-
-#define DataTxCtrl_len_max 0x000800
+#define DataTxCtrl_len_max  DataTxCtrl_len_mask
 
 // If bottom 2 lines are removed, MSVC does not report warning C4273
 dataBufTx::~dataBufTx() {}
@@ -103,34 +88,30 @@ mrmDataBufTx::dataSend(epicsUInt32 len,
                        const epicsUInt8 *ubuf
 )
 {
-    static const double quantum=epicsThreadSleepQuantum();
+    STATIC_ASSERT(DataTxCtrl_len_max%4==0);
 
     if (len > DataTxCtrl_len_max)
         throw std::out_of_range("Tx buffer is too long");
-
-    STATIC_ASSERT(DataTxCtrl_len_max%4==0);
+    
+    // len must be a multiple of 4
+    len &= DataTxCtrl_len_mask;
 
     SCOPED_LOCK(dataGuard);
-
-    // TODO: Timeout needed?
-    while(!dataRTS()) epicsThreadSleep(quantum);
 
     // Zero length
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
+    // Write 4 byte words over VME
     epicsUInt32 index;
     for(index=0; index<len; index+=4) {
         nat_iowrite32(&dataBuf[index], *(epicsUInt32*)(&ubuf[index]) );
     }
 
-    wbarr();
+    nat_iowrite32(dataCtrl, len|DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode);
 
-    epicsUInt32 reg=len&DataTxCtrl_len_mask;
-
-    reg |= DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode;
-
-    nat_iowrite32(dataCtrl, reg);
-
-    while(!dataRTS()) epicsThreadSleep(quantum);
+    // Reading flushes output queue of VME bridge
+    // Actual sending is so fast that we can use busy wait here
+    // Measurements showed that we loop up to 17 times
+    while(!(nat_ioread32(dataCtrl)&DataTxCtrl_done));
 }
