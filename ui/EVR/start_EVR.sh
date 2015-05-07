@@ -42,7 +42,6 @@ if [ $OPTIND -le 1 ]; then
     exit 1
 fi
 
-macro="EVR=$SYS-$EVR"
 macro="EVR=$SYS-$EVR,FF=$FF"
 caqtdm -macro "$macro" G_EVR_master.ui &
 #echo caqtdm -macro "$macro" G_EVR_VME_master.ui &

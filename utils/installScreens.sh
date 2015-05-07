@@ -36,7 +36,8 @@ fi
 qt_dir=${INSTBASE}/config/qt
 sh_dir=${INSTBASE}/bin
 
-cp -v "$1"/*.ui "$qt_dir"
-cp -v "$1"/*.sh "$sh_dir"
-#echo cp "$1"/*.ui "$qt_dir"
-#echo cp "$1"/*.sh "$sh_dir"
+chmod 666 "$1"/*.ui
+chmod 777 "$1"/*.sh
+
+cp -vf --preserve=mode "$1"/*.ui "$qt_dir"
+cp -vf --preserve=mode "$1"/*.sh "$sh_dir"
