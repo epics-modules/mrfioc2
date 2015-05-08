@@ -7,7 +7,6 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xr} % cross-reference across files
-%\usepackage{dirtree} % make directory tree
 \usepackage{float} %for H positioning
 
 \externaldocument[TUT-]{tutorial}
@@ -42,29 +41,52 @@
 %\newpage
 
 \section{Introduction}\label{sec:Introduction}
-Event receiver is a part of a timing system. A timing system consists of an event generator (EVG), a series of event receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. An EVR is then configured to respond to specific events in various ways, including processing EPICS records and generating pulses, synchronized clock or custom signals on its outputs.
+Event receiver is a part of a timing system. A timing system consists of an event generator (EVG), a series of event receivers (EVR), software controlling them and a timing network. EVG generates a series of events, which are delivered to EVRs through a timing network. Each EVR is configured to respond to specific events in various ways, including processing EPICS records and generating pulses, synchronized clock or custom signals on its outputs.
 
-mrfioc2~\cite{mrfioc2} is an EPICS device support for the Micro Research Finland(MRF)~\cite{mrf} timing system. The mrfioc2 enables us to configure and use the event generators and event receivers in the timing system. It comprises of EPICS device support for MRF timing system and uses devlib2~\cite{devlib2} with additional kernel modules (eg. PCIe) for communication with the hardware.
+mrfioc2~\cite{mrfioc2} is an EPICS device support for the Micro Research Finland (MRF)~\cite{mrf} timing system. The mrfioc2 enables us to configure and use the event generators and event receivers in the timing system. It comprises of EPICS device support for MRF timing system and uses devlib2~\cite{devlib2} with additional kernel modules (eg. PCIe) for communication with the hardware.
 
 The rest of this document describes the mrfioc2 device support in regards to the Event Receiver. EVR and its configuration is described, then instructions for starting a new IOC application for EVR are provided. The document continues with basic developer information for the mrfioc2 and ends with a short description of the EVR GUI. Some sections deal with PSI specifics. These are mostly simplifications in the deployment or build process for the mrfioc2 device support.
 
 \section{Event Receiver}\label{sec:Event Receiver}
-EVRs are available in various form factors, each supporting the same basic functionality (executing functions, manipulating DBus,...), but with different number of components (inputs, outputs,...). Each of the EVR components and functionalities is configurable by the user and is briefly described in the following sections. It is possible to configure the EVR through the GUI (described in Section~\ref{sec:GUI}) at runtime, or by setting the appropriate macros in the EVR substitution file\footnote{On the PSI infrastructure, a prepared substitution file for VME-EVR-230RF form factor \texttt{mrfioc2/PSI/evr\_ex.subs} with all the macros and short documentation is available (file list item~\ref{itm:files:evr_substitution} in Section~\ref{sec:PSI specifics})} in your IOC application.
+EVRs are available in various form factors, each supporting the same basic functionality (executing functions, manipulating DBus,...), but with different number of components (inputs, outputs,...). Each of the EVR components and functionalities is configurable by the user and is briefly described in the following sections.
 
-%The EVR and its components are configured by setting macros in a form factor specific substitution file. A prepared substitution file for VME-EVR-230RF form factor (file list item~\ref{itm:files:evr_substitution}) is available at~\cite{substitution_git}. All the macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. The substitution file also contains short documentation next to the macros. It is also possible to configure the EVR through the GUI at runtime.
+%The mrfioc2 contains all the template files needed to use the EVR in your IOC application~\footnote{More about generating EVR templates is available in Section~\ref{sec:Generating templates}, where the PSI specific usage of the templates within the substitution file is described in Section~\ref{sec:PSI IOC startup}.}. It is possible to configure the EVR by setting the appropriate macros in this substitution file\footnote{On the PSI infrastructure, a prepared substitution file for VME-EVR-230RF (\texttt{mrfioc2/PSI/evr\_ex.subs}) and PCIe-EVR-300 (\texttt{mrfioc2/PSI/evr\_ex\_PCIe-300.subs}) form factor with all the macros and short documentation is available (file list items~\ref{itm:files:evr_substitution_vme} and~\ref{itm:files:evr_substitution_pcie} in Section~\ref{sec:PSI specifics}).}, or through the GUI at runtime (starting the GUI is described in Section~\ref{sec:GUI}).
 
-%Each of the EVR components is configurable by the user and is briefly described in the following sections. The available macros are listed using their name and default value. Where many components with the same settings are available (eg. many pulsers), the macro names will reflect the first component (eg. pulser 0).
+The mrfioc2 contains all the template files needed to use the EVR in your IOC application\footnote{mrfioc2 files and folders overview is available in Section~\ref{sec:mrfioc2 organization}, the template and substitution files are described in Section~\ref{sec:Macros} and instructions how to use them in your IOC application are available in Section~\ref{sec:PSI IOC startup}.}. The templates are included in the substitution file, which is in turn loaded by the IOC application (as it is common with any IOC application). 
+%This EVR substitution file can be defined manually by the user, or one of the existing examples (\texttt{mrfioc2/PSI/*.subs}) can be used.
+It is recommended to use one of the existing EVR substitution files, available in \texttt{mrfioc2/PSI/*.subs}. If these are not suitable, user can adopt them to their needs.
+%User can define its own EVR substitution file, or use one of the existing examples at this location: \texttt{mrfioc2/PSI/*.subs}.
+An EVR substitution file consists of
+\begin{itemize}
+	\item an EVR form factor specific template. This template contains all the records describing EVR components (eg. inputs, outputs, pulsers, ...) available on a specific EVR form factor. It accepts macros that allow application specific configuration of these components. For example, through setting a correct macro, one can enable or disable selected output. The following is the EVR substitution file snippet using VME-EVR-230RF form factor template loaded from the \texttt{\$(TEMPLATE\_DIR)}. It shows how to disable front panel output 1 by substituting macro \texttt{FrontOut1-Ena-SP} with 0.
+	\begin{verbatim}
+	file "$(TEMPLATE_DIR)/evr-vmerf230.template"
+	{
+	  {
+	    .....
+	    FrontOut1-Ena-SP=0,
+	    .....
+	  }
+	}
+	\end{verbatim}
+	\item application specific templates. These are used to define application specific behavior, such as mapping of events (described in Section~\ref{sec:Event mapping}) or defining additional components plugged in to the EVR (eg. universal I/O modules). Each template accepts different macros that allow its configuration. The following EVR substitution file snippet shows how to blink a LED light on the EVR named \texttt{EVR0} in system \texttt{MTEST-VME-EVRTEST}, each time the event 1 is received. \newline\texttt{evr-specialFunctionMap.template} loaded from \texttt{\$(TEMPLATE\_DIR)} is used for this functionality.
+	\begin{verbatim}
+	file "$(TEMPLATE_DIR)/evr-specialFunctionMap.template"{
+	pattern { SYS,                 EVR,    EVT,   FUNC }
+	        {"MTEST-VME-EVRTEST", "EVR0", "1",   "Blink"}
+	}
+	\end{verbatim}
+\end{itemize}
+Each of the example EVR substitution files in \texttt{mrfioc2/PSI} folder contains all the available macros for the form factor it represents, together with short documentation. Besides configuring the EVR by setting the appropriate macros in the EVR substitution file, it is also possible to configure the EVR through the GUI at runtime (starting the GUI is described in Section~\ref{sec:GUI}).
+
 
 \paragraph{How to read this section:}
-Each sub-section starts with a short description of an EVR component or functionality. It is followed by the description of available macros, that can be used in a substitution file to configure the specific component or functionality of the EVR.
+Each sub-section starts with a short description of an EVR component or functionality. It is followed by the description of available macros, that can be used in the EVR substitution file to configure the specific component or functionality of the EVR.
 Macro name, its default value, a description, available settings with values or other important information regarding the configuration is listed.
 \begin{quote}
 Example: \textbf{macro name}=\emph{default value} : Description, with available settings. \texttt{Setting name (macro value)} or \texttt{important information} is emphasized.
 \end{quote}
 The exact number of form factor specific components is available in~\cite{mrm_evr}. 
-%Where there is a number of components with the same settings available(eg. 16 pulsers), only macros for the first component are described(eg. pulser 0).
-
-%An example system name ``MTEST-VME-EVRTEST'' is used. You should change it to fit your application.
 
 %\paragraph{The VME-EVR-230RF form factor} has the following component support:
 %\begin{itemize}
@@ -78,28 +100,26 @@ The exact number of form factor specific components is available in~\cite{mrm_ev
 %\end{itemize}
 
 \subsection{General configuration}
-%Each event receiver must be given a name, and belongs to a system. There is additional configuration option for form factors supporting GTX outputs (more about these is available in~\cite{mrm_evr}).
 There is usually only one event receiver controlled from a single IOC application, though it is possible to configure more. Thus the name of the EVR and the system name it belongs to must be defined.
 
-\paragraph{Substitution file macros}
+\paragraph{Substitution file macros}\footnote{For EVR form factors that support GTX outputs (more about these is available in~\cite{mrm_evr}), there is an additional macro. \textbf{ExtInhib-Sel}=\emph{0} is used to set whether to honor the hardware inhibit signal(\texttt{0}) or not (\texttt{1}).}
 \begin{itemize}
 \item
 	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
 \item
-	\textbf{EVR}=\emph{EVR0} : The name of the connected Event Receiver, which should be the same as defined in the startup script. 
+	\textbf{EVR}=\emph{EVR0} : The name of the connected Event Receiver, which should be the same as defined in the startup script of the IOC application. 
 \end{itemize}
 
-For EVR form factors that support GTX outputs (more about these is available in~\cite{mrm_evr}), there is additional configuration option:
-\begin{itemize}
-\item
-	\textbf{ExtInhib-Sel}=\emph{0} : This macro takes effect only when
-configuring GTX ouputs on cPCI-EVRTG-300 form factor. Either honor
-the hardware inhibit signal(\texttt{0}) or don't care about hardware
-inhibit input state(\texttt{1}).
-\end{itemize}
+%For EVR form factors that support GTX outputs (more about these is available in~\cite{mrm_evr}), there is additional configuration option:
+%\begin{itemize}
+%\item
+%	\textbf{ExtInhib-Sel}=\emph{0} : This macro takes effect only when
+%configuring GTX ouputs on cPCI-EVRTG-300 form factor. Either honor
+%the hardware inhibit signal(\texttt{0}) or don't care about hardware
+%inhibit input state(\texttt{1}).
+%\end{itemize}
 
-\subsection{Distributed Bus (DBus)}\label{sec:DBus}
-The distributed bus is able to carry 8 signals, that are propagated throughout the timing network with the event clock rate. Individual DBus signals (bits) can be outputted through programmable outputs(FrontOut, FrontUnivOut, RearUniv), or used as inputs (described in Section~\ref{sec:Front Panel TTL Input}).
+
 
 \subsection{Events and event clock}\label{sec:Events and event clock}
 EVR receives events transmitted by an event generator from the timing network. Event clock is the frequency, at which the events are transmitted. All the EVRs lock to the phase and frequency of the event clock, thus it is synchronized across the entire timing system.
@@ -117,7 +137,7 @@ EVR. Available values are \texttt{50 MHz - 150 MHz}.
 %The clock reference for the event receiver is generated on-board the event receiver using a fractional synthesizer.
 \item
 \textbf{Link-RxMode-Sel}=\emph{1} : Set whether the \texttt{DBus(0)} or
-\texttt{DBus + Data Buffer(1)} are sent downstream (to the timing network). Distributed bus bandwidth may be shared by transmission of a configurable size data buffer to up to 2 kbytes. When data transmission is enabled the distributed bus bandwidth is halved. 
+\texttt{DBus + Data Buffer(1)} are sent downstream (to the timing network). Distributed bus (described in Section~\ref{sec:DBus}) bandwidth may be shared by transmission of a configurable size data buffer to up to 2 kbytes. When data transmission is enabled the distributed bus bandwidth is halved. 
 \end{itemize}
 
 
@@ -154,12 +174,9 @@ There are a maximum of 16 pulsers available, depending on the EVR form factor. P
   \item
     \textbf{Pul\#-Delay-SP}=\emph{0} : Sets the pulse \textbf{delay} in range of \texttt{0 us - 4294967295 us}.
   \item
-    \textbf{Pul\#-Width-SP}=\emph{0} : Sets the pulse \textbf{width} in range of \texttt{0 us- 65535 us}.
+    \textbf{Pul\#-Width-SP}=\emph{0} : Sets the pulse \textbf{width} in range of \texttt{0 us- 4294967295 us}. Maximum configurable width depends on the EVR form factor.
   \item
-    \textbf{Pul\#-Prescaler-SP}=\emph{1} : Decreases the resolution of
-    both \textbf{delay} and \textbf{width} by an integer factor. Value range:
-    \texttt{0-255}. Pulsers without prescalers use a fixed prescale
-    value of 1.
+    \textbf{Pul\#-Prescaler-SP}=\emph{1} : Decreases the resolution of both \textbf{delay} and \textbf{width} by an integer factor. Value range: \texttt{0-65535}. Maximum configurable prescale value depends on the EVR form factor. Pulsers without prescalers use a fixed prescale value of 1.
   \end{itemize}
 
 Each received event can activate a function of the pulser:
@@ -171,42 +188,6 @@ Each received event can activate a function of the pulser:
 
 \textbf{Substitution file macros} for mapping events to pulser function are available in Section~\ref{sec:Pulser mapping}, together with an \textbf{example}.
 
-\subsection{Prescaler (PS)}\label{sec:Prescaler}
-Prescalers can be configured to output the event clock divided by an integer factor. There is a special event 123 (0x7b) that resets all the prescalers, so that the prescaled signal is in the same phase across all EVRs.
-
-\paragraph{Substitution file macros}
-There are a maximum of 4 prescalers available, depending on the EVR form factor. Prescalers are named PS\#, where \# is the ID of the prescaler, ranging from 0 to 3.
-\begin{itemize}
-  \item
-    \textbf{PS\#-Div-SP}=\emph{2} : Sets the integer divisor between the
-    event clock and the prescaled event clock output in a range of
-    \texttt{2-65535}.
-  \end{itemize}
-
-
-\subsection{Front Panel TTL Input (FPIn)}\label{sec:Front Panel TTL Input}
-Front panel inputs can also be called External Event Inputs, because they can be configured to cause an event. The event can be local to the EVR (trigger mode) or sent through the timing network (backwards mode) when a condition occurs. The conditions are configured to respond to the front panel input signal logic level (level condition) or input signal edge (edge condition). Events generated by the front panel input logic are handled as any other events. Front panel inputs also provide configuration options for DBus signal manipulation.
-
-\paragraph{Substitution file macros}
-There are a maximum of 2 front panel TTL inputs available, depending on the EVR form factor. Front panel TTL inputs are named FPIn\#, where \# is the ID of the front panel TTL input, ranging from 0 to 1.
-\begin{itemize}
-  \item
-    \textbf{FPIn\#-Lvl-Sel}=\emph{1} : Determines if event is sent when the input signal logic level is low \texttt{Active Low(0)} or high \texttt{Active High(1)}, when using the \texttt{level} condition.
-  \item
-    \textbf{FPIn\#-Edge-Sel}=\emph{1} : Determines if event is sent on the falling \texttt{Active Falling(0)} or rising \texttt{Active Rising(1)} edge of the input signal, when using the \texttt{edge} condition.
-  \item
-    \textbf{FPIn\#-Trig-Ext-Sel}=\emph{0} : Selects the condition (\texttt{Off(0)}, \texttt{Level(1)} or \texttt{Edge(2)}) on which to trigger an event local to the EVR. This is the trigger mode condition.
-  \item
-    \textbf{FPIn\#-Code-Ext-SP}=\emph{0} : Sets the event which will be sent to timing network, whenever the trigger mode condition is met. Any event in range of \texttt{0-255} can be selected.
-  \item
-    \textbf{FPIn\#-Trig-Back-Sel}=\emph{0} : Selects the condition (\texttt{Off(0)}, \texttt{Level(1)} or \texttt{Edge(2)}) in which to send an event to the timing network. This is the backward mode condition.
-  \item
-    \textbf{FPIn\#-Code-Back-SP}=\emph{0} : Sets the event which will be sent to timing network, whenever the backwards mode condition is met. Any event in range of \texttt{0-255} can be selected.
-  \item
-    \textbf{FPIn\#-DBus-Sel}=\emph{0} : Set the upstream DBus bit mask which is driven by this input. DBus bits and the macro value are condensed with a bit-wise OR. Available values for the DBus bit mask are: \texttt{1 = Bit 0, 2 = Bit 1, 4 = Bit 2, 8 = Bit 3, 16 = Bit 4, 32 = Bit 5, 64 = Bit 6, 128 = Bit 7}.
-  \end{itemize}
-  
-  
 \subsection{Outputs}\label{sec:Outputs}
 \begin{figure}[H]
 	\centering
@@ -217,8 +198,7 @@ There are a maximum of 2 front panel TTL inputs available, depending on the EVR 
 
 An EVR has a number of outputs, each with a configurable source signal. As seen in Figure~\ref{fig:output}, any of the available pulser, prescaler, DBus, logic low or logic high signals can be selected as the output source signal. Depending on the output type(TTL, CML, ...), the signal can be send through directly, further manipulated or used as a trigger for a special function of that output.
 
-\paragraph{Substitution file macros common to all outputs:} Outputs, and the corresponding macro name prefixes, are named either \emph{FrontOut\#},\emph{ FrontOutUniv\#} or \emph{RearUniv\#}, where the range of the number \# depends on the EVR form factor. Macros for the \emph{FrontOut0} are described below. 
-%The source of the output signal is determined by mappings in Table~\ref{tab:mappings}. 
+\paragraph{Substitution file macros common to all outputs:} Outputs, and the corresponding macro name prefixes, are named either \emph{FrontOut\#},\emph{ FrontUnivOut\#} or \emph{RearUniv\#}, where the range of the number \# depends on the EVR form factor. Macros for the \emph{FrontOut0} are described below. 
 
 \begin{table}[!hbt]
 \caption{Output source signal mappings}
@@ -346,7 +326,6 @@ Patterns are defined by one of the configurable CML modes:
 	In \textbf{frequency mode} a clock signal can be generated. Its frequency is tuned in steps of 20 times the event clock frequency.  The clock signal is synchronized by the output source signal(pulser, DBus signal, ....). 
 	
 	Frequency generation is triggered by a rising edge of the output source signal. After the trigger, it waits for a configured initial delay before it starts to generate a clock signal. 
-%	The signal is generated by switching between set and reset states. The states determine the logic level of the frequency generator output signal.
 		
 	\paragraph{Substitution file macros}
 	\begin{itemize}
@@ -418,10 +397,169 @@ The exact output signal is dependent on the inserted module. Figure~\ref{fig:out
 \subsubsection{Rear Universal output - Transition Board output (RearUniv)}\label{sec:Rear Universal output}
 An EVR has additional rear universal outputs. The exact output signal is dependent on the universal module inserted in the transition board.
 
-\subsection{UNIV-LVPECL-DLY high precision delay module}\label{sec:UNIV-LVPECL-DLY}
-EVR has universal I/O slots, described in Section~\ref{sec:Front Panel Universal I/O}, where universal modules can be inserted. One of these is UNIV-LVPECL-DLY Delay module. This module will output a delayed signal from the appropriate FrontUnivOut output. The FrontUnivOut output source signal can be configured as described in Section~\ref{sec:Outputs} using mappings from Table~\ref{tab:mappings}. The delay can be configured from 2200 ps to 12430 ps, with 10 ps resolution. 
+\subsection{Event mapping}\label{sec:Event mapping}
+As mentioned in Section~\ref{sec:Introduction}, an EVR responds to events. In order for the EVR to respond, an appropriate mapping between the event and  EVR function/component needs to be configured.
 
-%Using the inserted module with the prepared substitution file(file list item~\ref{itm:files:evr_substitution} in Section~\ref{sec:PSI specifics}) is simple. User only needs to uncomment the substitution definition and macros for the appropriate slot.
+\subsubsection{Pulser mapping}\label{sec:Pulser mapping}
+Event receivers have multiple pulsers that can preform several functions upon reception of events (described in Section~\ref{sec:Pulser}). Each pulser-function combination can be
+mapped to multiple events.
+
+\paragraph{Substitution file macros:}
+\begin{itemize}
+\item
+	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
+\item
+	\textbf{EVR}=\emph{EVR0} : The name of the connected event receiver, which should be the same as defined in the startup script.
+\item
+  \textbf{PID} represents the pulser number
+\item
+  \textbf{F} represents one of the functions (Trig, Set, Reset) described in Section~\ref{sec:Pulser}.
+\item
+  \textbf{EVT} represents an event from the timing network.
+\item
+  \textbf{ID} Mappings must have unique ID for each PID-F combination.
+%  Only mappings with ID=0 are displayed in the GUI.
+\end{itemize}
+
+\paragraph{Example:} Pulser 0 is set to trigger on event 2 and event 3. It will also
+reset on event 4. The configuration applies to EVR0 in the MTEST-VME-EVRTEST system.
+
+\begin{verbatim}
+file "evr-pulserMap.template"{
+pattern { SYS,                   EVR,    PID   F,      EVT, ID }
+        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Trig,    2,   0 }
+        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Trig,    3,   1 }
+        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Reset,   4,   0 }
+}
+\end{verbatim}
+
+
+\subsubsection{Trigger an EPICS event}\label{evr-softevent.template}
+Provides us with the ability to map between EPICS event (software) and an event from the timing system (hardware).
+
+\paragraph{Substitution file macros:}
+\begin{itemize}
+	\item
+		\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name.
+	\item
+		\textbf{EVR}=\emph{EVR0} : The name of the connected Event Receiver, which should be the same as defined in the startup script. 
+	\item
+	  \textbf{EVT} represents the event from the timing system. Set EVT=0 to disable.
+	\item
+	  \textbf{CODE} represents EPICS event number (software).
+\end{itemize}
+
+\paragraph{Example:} The configuration applies to EVR0 in the MTEST-VME-EVRTEST system. EPICS event 1 is set to trigger when an event 1 from the timing system is received, and EPICS event 2 to trigger on reception of event 2 from the timing system. It is \texttt{recommended to use the same EPICS event and timing system event numbers}, but it is not mandatory.
+
+\begin{verbatim}
+file "evr-softEvent.template"{
+pattern { SYS,                   EVR,    EVT,    CODE}
+        {"MTEST-VME-EVRTEST",   "EVR0",  "1",    "1"}
+        {"MTEST-VME-EVRTEST",   "EVR0",  "2",    "2"}
+}
+\end{verbatim}
+
+It is also possible to manually forward link an appropriate event record instead of using EPICS events. The functionality of EPIC events and links is out of the scope of this documents.
+
+\subsubsection{Special functions}\label{sec:Special functions}
+There is a number of special functions available, that can be activated
+on specified event. Each event can be mapped only to one function. There
+exist some default events, that always trigger specific function.
+
+\paragraph{EVR functions:}
+\begin{itemize}
+\item
+  \textbf{Blink} : An LED on the EVRs front panel will blink when the
+  event is received.
+\item
+  \textbf{Forward} : The received event will be immediately retransmitted
+  on the upstream event link.
+\item
+  \textbf{Stop Log} : Freeze the circular event log buffer which contains up to 512 events with time-stamp information. A CPU interrupt will be raised which will cause this buffer to be downloaded. This might be a useful action to map to a fault event. (default event 121)
+\item
+  \textbf{Log} : Include this event code in the circular event log.
+\item
+  \textbf{Heartbeat} : This event resets the heartbeat timeout. See Section~\ref{sec:Heartbeat monitor} for details. (default event 122)
+\item
+  \textbf{Reset PS} : Resets the phase of all prescalers. (default event 123)
+\item
+  \textbf{TS reset} : Loads the time-stamp seconds counter from the shift register and zeros the time-stamp event counter. See Section~\ref{sec:Time stamping mechanism} for details. (default event 124)
+\item
+  \textbf{TS tick} : When the time-stamp source is `Mapped code' then any event with this mapping will cause the time-stamp event counter to increment. See Section~\ref{sec:Time stamping mechanism} for details. (default event 125)
+\item
+  \textbf{Shift 0} : Shifts the current value of the shift register up by one bit and sets the low bit to 0. See Section~\ref{sec:Time stamping mechanism} for details. (default event 112)
+\item
+  \textbf{Shift 1} : Shifts the current value of the shift register up by one bit and sets the low bit to 1. See Section~\ref{sec:Time stamping mechanism} for details. (default event 113)
+\item
+  \textbf{FIFO} : Bypass the automatic allocation mechanism and always include this code in the FIFO memory. See Section~\ref{sec:Time stamping mechanism} for details.
+\end{itemize}
+
+\paragraph{Substitution file macros:}
+
+\begin{itemize}
+\item
+	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
+\item
+	\textbf{EVR}=\emph{EVR0} : The name of the connected event receiver, which should be the same as defined in the startup script. 
+\item
+  \textbf{EVT} represents an event from the timing system.
+\item
+  \textbf{FUNC} represents one of the functions listed above.
+\end{itemize}
+
+\textbf{Example}: The following macros configure the event mappings to blink the LED on each occurrence of event 1, and event 6. The configuration applies to EVR0 in the MTEST-VME-EVRTEST system.
+
+\begin{verbatim}
+file "evr-specialFunctionMap.template"{
+pattern { SYS,                   EVR,    EVT,   FUNC }
+        {"MTEST-VME-EVRTEST",   "EVR0",  "1",   "Blink"}
+        {"MTEST-VME-EVRTEST",   "EVR0",  "6",   "Blink"}
+}
+\end{verbatim}
+
+
+\subsection{Prescaler (PS)}\label{sec:Prescaler}
+Prescalers can be configured to output the event clock divided by an integer factor. There is a special event 123 (0x7b) that resets all the prescalers, so that the prescaled signal is in the same phase across all EVRs.
+
+\paragraph{Substitution file macros}
+There are a maximum of 4 prescalers available, depending on the EVR form factor. Prescalers are named PS\#, where \# is the ID of the prescaler, ranging from 0 to 3.
+\begin{itemize}
+  \item
+    \textbf{PS\#-Div-SP}=\emph{2} : Sets the integer divisor between the event clock and the prescaled event clock output in a range of \texttt{2-4294967295}. Maximum configurable prescale value depends on the EVR form factor.
+  \end{itemize}
+
+
+\subsection{Distributed Bus (DBus)}\label{sec:DBus}
+The distributed bus is able to carry 8 signals, that are propagated throughout the timing network with the event clock rate. Individual DBus signals (bits) can be outputted through programmable outputs(FrontOut, FrontUnivOut, RearUniv), or used as inputs (described in Section~\ref{sec:Front Panel TTL Input}).
+
+
+\subsection{Front Panel TTL Input (FPIn)}\label{sec:Front Panel TTL Input}
+Front panel inputs can also be called External Event Inputs, because they can be configured to cause an event. The event can be local to the EVR (trigger mode) or sent through the timing network (backwards mode) when a condition occurs. The conditions are configured to respond to the front panel input signal logic level (level condition) or input signal edge (edge condition). Events generated by the front panel input logic are handled as any other events. Front panel inputs also provide configuration options for DBus signal manipulation.
+
+\paragraph{Substitution file macros}
+There are a maximum of 2 front panel TTL inputs available, depending on the EVR form factor. Front panel TTL inputs are named FPIn\#, where \# is the ID of the front panel TTL input, ranging from 0 to 1.
+\begin{itemize}
+  \item
+    \textbf{FPIn\#-Lvl-Sel}=\emph{1} : Determines if event is sent when the input signal logic level is low \texttt{Active Low(0)} or high \texttt{Active High(1)}, when using the \texttt{level} condition.
+  \item
+    \textbf{FPIn\#-Edge-Sel}=\emph{1} : Determines if event is sent on the falling \texttt{Active Falling(0)} or rising \texttt{Active Rising(1)} edge of the input signal, when using the \texttt{edge} condition.
+  \item
+    \textbf{FPIn\#-Trig-Ext-Sel}=\emph{0} : Selects the condition (\texttt{Off(0)}, \texttt{Level(1)} or \texttt{Edge(2)}) on which to trigger an event local to the EVR. This is the trigger mode condition.
+  \item
+    \textbf{FPIn\#-Code-Ext-SP}=\emph{0} : Sets the event which will be sent to timing network, whenever the trigger mode condition is met. Any event in range of \texttt{0-255} can be selected.
+  \item
+    \textbf{FPIn\#-Trig-Back-Sel}=\emph{0} : Selects the condition (\texttt{Off(0)}, \texttt{Level(1)} or \texttt{Edge(2)}) in which to send an event to the timing network. This is the backward mode condition.
+  \item
+    \textbf{FPIn\#-Code-Back-SP}=\emph{0} : Sets the event which will be sent to timing network, whenever the backwards mode condition is met. Any event in range of \texttt{0-255} can be selected.
+  \item
+    \textbf{FPIn\#-DBus-Sel}=\emph{0} : Set the upstream DBus bit mask which is driven by this input. DBus bits and the macro value are condensed with a bit-wise OR. Available values for the DBus bit mask are: \texttt{1 = Bit 0, 2 = Bit 1, 4 = Bit 2, 8 = Bit 3, 16 = Bit 4, 32 = Bit 5, 64 = Bit 6, 128 = Bit 7}.
+  \end{itemize}
+  
+  
+
+\subsection{UNIV-LVPECL-DLY high precision delay module}\label{sec:UNIV-LVPECL-DLY}
+EVR has universal I/O slots, described in Section~\ref{sec:Front Panel Universal I/O}, where universal modules can be inserted. One of these is UNIV-LVPECL-DLY Delay module. This module will output a delayed signal from the appropriate FrontUnivOut output. The FrontUnivOut output source signal can be configured as described in Section~\ref{sec:Outputs}, using mappings from Table~\ref{tab:mappings}. The delay can be configured from 2200 ps to 12430 ps, with 10 ps resolution. 
+
 
 \paragraph{Substitution file macros}
 \begin{itemize}
@@ -510,131 +648,6 @@ in \texttt{MHz}.
 
 \subsection{Heartbeat monitor}\label{sec:Heartbeat monitor}
 A heartbeat monitor is provided to receive heartbeat events from the timing network. If no heartbeat event is received (in approx. 1.6 s), the heartbeat timeout occurs and a heartbeat flag is set. 
-%The event receiver may be programmed to generate a heartbeat interrupt.
-
-
-\subsection{Event mapping}\label{sec:Event mapping}
-As mentioned in Section~\ref{sec:Introduction}, an EVR responds to events. In order for the EVR to respond, an appropriate mapping between the event and  EVR function/component needs to be configured.
-
-%an appropriate mapping needs to be configured. 
-
-%to trigger an EVR action or a EVR component an appropriate mapping between the event and action/component needs to be configured. When an appropriate mapping is configured, received event triggers the mapped EVR component or action. 
-
-\subsubsection{Trigger an EPICS event}\label{evr-softevent.template}
-Provides us with the ability to map between EPICS event (software) and an event from the timing system (hardware).
-
-\paragraph{Substitution file macros:}
-\begin{itemize}
-	\item
-		\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name.
-	\item
-		\textbf{EVR}=\emph{EVR0} : The name of the connected Event Receiver, which should be the same as defined in the startup script. 
-	\item
-	  \textbf{EVT} represents the event from the timing system. Set EVT=0 to disable.
-	\item
-	  \textbf{CODE} represents EPICS event number (software).
-\end{itemize}
-
-\paragraph{Example:} The configuration applies to EVR0 in the MTEST-VME-EVRTEST system. EPICS event 1 is set to trigger when an event 1 from the timing system is received, and EPICS event 2 to trigger on reception of event 2 from the timing system. It is \texttt{recommended to use the same EPICS event and timing system event numbers}, but it is not mandatory.
-
-\begin{verbatim}
-file "evr-softEvent.template"{
-pattern { SYS,                   EVR,    EVT,    CODE}
-        {"MTEST-VME-EVRTEST",   "EVR0",  "1",    "1"}
-        {"MTEST-VME-EVRTEST",   "EVR0",  "2",    "2"}
-}
-\end{verbatim}
-
-It is also possible to manually forward link an appropriate event record instead of using EPICS events. The functionality of EPIC events and links is out of the scope of this documents.
-
-\subsubsection{Special functions}\label{sec:Special functions}
-There is a number of special functions available, that can be activated
-on specified event. Each event can be mapped only to one function. There
-exist some default events, that always trigger specific function.
-
-\paragraph{EVR functions:}
-\begin{itemize}
-\item
-  \textbf{Blink} : An LED on the EVRs front panel will blink when the
-  event is received.
-\item
-  \textbf{Forward} : The received event will be immediately retransmitted
-  on the upstream event link.
-\item
-  \textbf{Stop Log} : Freeze the circular event log buffer which contains up to 512 events with time-stamp information. A CPU interrupt will be raised which will cause this buffer to be downloaded. This might be a useful action to map to a fault event. (default event 121)
-\item
-  \textbf{Log} : Include this event code in the circular event log.
-\item
-  \textbf{Heartbeat} : This event resets the heartbeat timeout. See Section~\ref{sec:Heartbeat monitor} for details. (default event 122)
-\item
-  \textbf{Reset PS} : Resets the phase of all prescalers. (default event 123)
-\item
-  \textbf{TS reset} : Loads the time-stamp seconds counter from the shift register and zeros the time-stamp event counter. See Section~\ref{sec:Time stamping mechanism} for details. (default event 124)
-\item
-  \textbf{TS tick} : When the time-stamp source is `Mapped code' then any event with this mapping will cause the time-stamp event counter to increment. See Section~\ref{sec:Time stamping mechanism} for details. (default event 125)
-\item
-  \textbf{Shift 0} : Shifts the current value of the shift register up by one bit and sets the low bit to 0. See Section~\ref{sec:Time stamping mechanism} for details. (default event 112)
-\item
-  \textbf{Shift 1} : Shifts the current value of the shift register up by one bit and sets the low bit to 1. See Section~\ref{sec:Time stamping mechanism} for details. (default event 113)
-\item
-  \textbf{FIFO} : Bypass the automatic allocation mechanism and always include this code in the FIFO memory. See Section~\ref{sec:Time stamping mechanism} for details.
-\end{itemize}
-
-\paragraph{Substitution file macros:}
-
-\begin{itemize}
-\item
-	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
-\item
-	\textbf{EVR}=\emph{EVR0} : The name of the connected event receiver, which should be the same as defined in the startup script. 
-\item
-  \textbf{EVT} represents an event from the timing system.
-\item
-  \textbf{FUNC} represents one of the functions listed above.
-\end{itemize}
-
-\textbf{Example}: The following macros configure the event mappings to blink the LED on each occurrence of event 1, and event 6. The configuration applies to EVR0 in the MTEST-VME-EVRTEST system.
-
-\begin{verbatim}
-file "evr-specialFunctionMap.template"{
-pattern { SYS,                   EVR,    EVT,   FUNC }
-        {"MTEST-VME-EVRTEST",   "EVR0",  "1",   "Blink"}
-        {"MTEST-VME-EVRTEST",   "EVR0",  "6",   "Blink"}
-}
-\end{verbatim}
-
-\subsubsection{Pulser mapping}\label{sec:Pulser mapping}
-Event receivers have multiple pulsers that can preform several functions upon reception of events (described in Section~\ref{sec:Pulser}). Each pulser-function combination can be
-mapped to multiple events.
-
-\paragraph{Substitution file macros:}
-\begin{itemize}
-\item
-	\textbf{SYS}=\emph{MTEST-VME-EVRTEST} : The system name. 
-\item
-	\textbf{EVR}=\emph{EVR0} : The name of the connected event receiver, which should be the same as defined in the startup script.
-\item
-  \textbf{PID} represents the pulser number
-\item
-  \textbf{F} represents one of the functions (Trig, Set, Reset) described in Section~\ref{sec:Pulser}.
-\item
-  \textbf{EVT} represents an event from the timing network.
-\item
-  \textbf{ID} Mappings must have unique ID for each PID-F combination.
-%  Only mappings with ID=0 are displayed in the GUI.
-\end{itemize}
-
-\paragraph{Example:} Pulser 0 is set to trigger on event 2 and event 3. It will also
-reset on event 4. The configuration applies to EVR0 in the MTEST-VME-EVRTEST system.
-
-\begin{verbatim}
-file "evr-pulserMap.template"{
-pattern { SYS,                   EVR,    PID   F,      EVT, ID }
-        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Trig,    2,   0 }
-        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Trig,    3,   1 }
-        {"MTEST-VME-EVRTEST",   "EVR0",  0,    Reset,   4,   0 }
-}
-\end{verbatim}
 
 
 \section{PSI IOC startup}\label{sec:PSI IOC startup}
@@ -644,7 +657,6 @@ The templates are available in \texttt{mrfioc2/evrMrmApp/Db/PSI} folder (folder 
 
 
 \begin{enumerate}
-%\def\labelenumi{\arabic{enumi}.}
 \item
   Create a project folder, eg. \texttt{MTEST-VME-EVRTEST}. Let $ <TOP> $ be the path to this folder, eg $ <TOP> $ = \texttt{\textasciitilde/public/F/TEST/MTEST-VME-EVRTEST}.
 \begin{verbatim}
@@ -652,7 +664,7 @@ mkdir -p <TOP>
 \end{verbatim}
   
 \item
-  \textbf{Assuming} the form factor is VME-EVR-230RF the template is available at this location: \texttt{mrfioc2/evrMrmApp/Db/PSI/\textbf{evr-vmerf230.template}}. A form factor specific template can also be manually generated as described in Section~\ref{sec:Generating templates}.  
+  \textbf{Assuming} the form factor is VME-EVR-230RF, the template is available at this location: \texttt{mrfioc2/evrMrmApp/Db/PSI/\textbf{evr-vmerf230.template}}. A form factor specific template can also be manually generated as described in Section~\ref{sec:Generating templates}.  
 
 \item
   Copy the template files to your project by issuing the following commands in the \texttt{mrfioc2/evrMrmApp/Db/PSI/} folder:
@@ -749,10 +761,10 @@ pattern { SYS,                  EVR,    EVT,    CODE }
   \texttt{swit -V} from your project folder $<TOP>$.
 \end{enumerate}
 
-\section{Standard IOC startup}
-The EPICS way.
+%\section{Standard IOC startup}
+%The EPICS way.
 
-\section{mrfioc2 organization}\label{sec:Source code organization}
+\section{mrfioc2 organization}\label{sec:mrfioc2 organization}
 Some important folders:
 \begin{verbatim}
 mrfioc2
@@ -787,13 +799,13 @@ mrfioc2
 \item 
 	\texttt{evrApp/src} and \texttt{evrmrmApp/src} contains source files for an Event Receiver.
 \item 
-	\texttt{mrfCommon} contains common functions and definitions used in the mrfioc2 module. 
+	\texttt{mrfCommon} contains common functions and definitions used in the mrfioc2 device support. 
 \item 
 	\texttt{mrfShared} contains code shared between EVG and EVR together with some OS specifics and kernel modules.
 \item 
-	\texttt{/} and \texttt{PSI} contain makefiles for building the mrfioc2 module.
+	\texttt{/} and \texttt{PSI} contain makefiles for building the mrfioc2 device support.
 \item 
-	\texttt{configure} and \texttt{iocBoot} are standard IOC application folders.
+	\texttt{configure} and \texttt{iocBoot} are standard IOC application folders~\cite{appDevGuide}.
 \end{itemize}
 
 \subsection{PSI specifics}\label{sec:PSI specifics}
@@ -815,32 +827,60 @@ Some important folders:
 Some important files:
 \begin{enumerate}
 \item 
+	\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-vmerf230.template} is an EVR form factor specific template file for VME-EVR-230RF.\label{itm:files:evr_template_vme}
+\item 
+	\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-pcie-300.template} is an EVR form factor specific template file for PCIe-EVR-300.\label{itm:files:evr_template_pcie}
+\item 
+	\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-vmerf230.substitutions} is an EVR form factor specific substitution file used to generate the form factor specific template file for VME-EVR-230RF (list item~\ref{itm:files:evr_template_vme}).\label{itm:files:evr_ff_subs_vme}
+	\item 
+		\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-pcie-300.substitutions} is an EVR form factor specific substitution file used to generate the form factor specific template file for PCIe-EVR-300 (list item~\ref{itm:files:evr_template_pcie}).\label{itm:files:evr_ff_subs_pcie}
+\item 
+	\texttt{mrfioc2/PSI/evr\_ex.subs} is the EVR substitution used in creation of an IOC application. It contains form factor specific macros for setting up VME-EVR-230RF.\label{itm:files:evr_substitution_vme}
+\item 
+	\texttt{mrfioc2/PSI/evr\_ex\_PCIe-300.subs} is the EVR substitution used in creation of an IOC application. It contains form factor specific macros for setting up PCIe-EVR-300.\label{itm:files:evr_substitution_pcie}
+\item 
+	\texttt{ui/EVG/startUI.sh} is a script used to launch the EVG GUI.\label{itm:files:evg_gui}
+\item 
+	\texttt{ui/EVR/startUI.sh} is a script used to launch the EVR GUI.\label{itm:files:evr_gui}
+\item 
 	\texttt{mrfioc2/evgMrmApp/Db/PSI/evg-vme.template} is an EVG form factor specific template file.\label{itm:files:evg_template}
 \item 
 	\texttt{mrfioc2/evgMrmApp/Db/PSI/evg-vme.substitutions} is an EVG form factor specific substitution file used to generate the form factor specific template file(list item~\ref{itm:files:evg_template}).\label{itm:files:evg_ff_subs}
 \item 
 	\texttt{mrfioc2/PSI/evg\_ex.subs} is the EVG substitution used in creation of an IOC application. It contains form factor specific macros for setting up EVG.\label{itm:files:evg_substitution}
-\item 
-	\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-vmerf230.template} is an EVR form factor specific template file.\label{itm:files:evr_template}
-\item 
-	\texttt{mrfioc2/evrMrmApp/Db/PSI/evr-vmerf230.substitutions} is an EVR form factor specific substitution file used to generate the form factor specific template file(list item~\ref{itm:files:evr_template}).\label{itm:files:evr_ff_subs}
-\item 
-	\texttt{mrfioc2/PSI/evr\_ex.subs} is the EVR substitution used in creation of an IOC application. It contains form factor specific macros for setting up EVR.\label{itm:files:evr_substitution}
-\item 
-	\texttt{ui/EVG/startUI.sh} is a script used to launch the EVG GUI.\label{itm:files:evg_gui}
-\item 
-	\texttt{ui/EVR/startUI.sh} is a script used to launch the EVR GUI.\label{itm:files:evr_gui}
 \end{enumerate}
 
+\subsection{Macros, substitution files and template files}\label{sec:Macros}
+The mrfioc2 device support contains a series of template and substitution files for the EVR, located in \texttt{mrfioc2/evrMrmAp/Db/PSI} folder. To simplify deployment of an IOC application, form factor specific templates are available. They can be directly included in the EVR substitution file and allow the usage of macros to set application specific configuration of the EVR. User can define its own EVR substitution file, or use one of the examples in \texttt{mrfioc2/PSI} folder (evr\_ex.subs, evr\_ex\_PCIe-300.subs, ...).
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\columnwidth]{./img/templates}
+	\caption{Connection between template and substitution files for the EVR.}
+	\label{fig:templates}
+\end{figure}
+Figure~\ref{fig:templates} shows how the templates and substitutions are connected.
+\begin{itemize}
+	\item 
+		\emph{Component templates}~\footnote{evr-base.template, evr-cml.template, evr-in.template, evr-out.template, evr-prescaler.template, evr-pulser.template, sfp.template} contain records corresponding to specific EVR component (eg. inputs, outputs,...). Each EVR form factor supports different components and a different number of each component (exact number of components is available in~\cite{mrm_evr}).
+%		The templates accept macros that define record names or set field values. For example, through setting a field value, one can configure maximum prescale value of a prescaler component. VAL record fields are set up differently, to allow expansion using the MSI tool~\cite{msi} (as described in Section~\ref{sec:Generating templates}).
+	\item 
+		Depending on the EVR form factor, appropriate component templates are listed in a \emph{form factor specific substitution file}.~\footnote{evr-vmerf230.substitutions, evr-pcie-300.substitutions}. 
+%		This file defines the components, their number and limits, based on the form factor.
+	\item 
+		\emph{Form factor specific template files}~\footnote{evr-vmerf230.template, evr-pcie-300.template} are also available. These contain all the records for an EVR form factor, as listed in the form factor specific substitution file (eg. records for 2 inputs, 3 prescalers, ...). This template should be included in the EVR substitution file for your IOC application, since it only contains form factor specifics. The application specific behavior can be set using macros. The template accepts macros that define system name, EVR name and macros that define some of the record field values for each component. For example, through setting a correct record field value for a desired output, one can enable or disable this output. Such a template can also be created manually using the MSI tool from a form factor specific substitution file, as described in Section~\ref{sec:Generating templates}.
+	\item 
+		\emph{Other templates}~\footnote{evr-pulserMap.template, evr-softEvent.template, evr-specialFunctionMap.template, evr-delayModule.template} define application specific behavior and should be included in the EVR substitution file for your IOC application.
+\end{itemize}
+
 \section{Building from scratch}\label{sec:Building from scratch}
-There are two possible ways to build the mrfioc2 device support. First is using the driver.makefile~\cite{driver.makefile} on the PSI infrastructure, and second using the standard makefile.
+There are two possible ways to build the mrfioc2 device support. First is using the driver.makefile~\cite{driver.makefile} on the PSI infrastructure, and second using the standard makefile~\cite{appDevGuide}.
 
 \paragraph{Prerequisites}
 \begin{itemize}
 \item 
 	EPICS Base 3.14.x~\cite{epics}.
 \item 
-	devLib2~\cite{devlib2}.
+	devLib2 2.6~\cite{devlib2}.
 \item
 	git~\cite{git}, to clone the repository~\cite{git_mrfioc2}.
 \item 
@@ -849,61 +889,76 @@ There are two possible ways to build the mrfioc2 device support. First is using 
 
 \subsection{PSI driver.makefile}\label{sec:PSI driver.makefile}
 %driver.makefile~\cite{driver.makefile}, makes it possible to build IOC software projects such as drivers, state notation code, records, etc. with minimal configuration.
-To compile to a PSI style module, first clone the PSI git repository for mrfioc2:
+To compile to a PSI style module, it is suggested to first clone the PSI git repository for mrfioc2:
 \begin{verbatim}
 	git clone https://github.psi.ch/scm/ed/mrfioc2.git
 \end{verbatim}
 and then run \texttt{make} in \texttt{mrfioc2/PSI} folder:
 \begin{verbatim}
 	cd mrfioc2/PSI
-	make -f makefile
+	make
 \end{verbatim}
 Compilation will only work on a PSI infrastructure where the correct applications and environment variables are already configured.
 
-Template files should be created separately, following the instructions in Section~\ref{sec:Generating templates}.
+Template files in \texttt{mrfioc2/evrMrmApp/Db/PSI} folder should be used for your IOC application, though they can be created separately, following the instructions in Section~\ref{sec:Generating templates}.
 
 \subsection{Standard makefile}\label{sec:Standard makefile}
-Git clone, edit \texttt{configure/CONFIG\_SITE} and run "make".
+To compile the mrfioc2 as a standard IOC application, it is suggested to first clone the latest mrfioc2 repository from the PSI git: 
+\begin{verbatim}
+	git clone https://github.psi.ch/scm/ed/mrfioc2.git
+\end{verbatim}
+
+Then follow these steps:
+\begin{enumerate}
+	\item 
+		Adjust the \texttt{mrfioc2/configure/RELEASE} file for your environment. Make sure that \texttt{DEVLIB2} points to your devLib2 and \texttt{EPICS\_BASE} points to your EPICS base.
+	\item 
+		Run \texttt{make} in \texttt{mrfioc2} folder.
+		\begin{verbatim}
+		cd mrfioc2
+		make
+		\end{verbatim}
+	\item 
+		Template files in \texttt{mrfioc2/Db} folder should be used for your IOC application, though they can be created separately, following the instructions in Section~\ref{sec:Generating templates}.
+\end{enumerate}
 
 \section{Generating templates}\label{sec:Generating templates}
-As described in Section~\ref{sec:Event Receiver}, the EVR has many form factors with variable number of components. In order to simplify creating IOC applications, a form factor specific template file is created (file list item~\ref{itm:files:evr_template} in Section~\ref{sec:Source code organization}).
+As described in Section~\ref{sec:Event Receiver}, the EVR has many form factors with variable number of components. In order to simplify creating IOC applications, a form factor specific template file is available in the mrfioc2 (file list item~\ref{itm:files:evr_template_vme},~\ref{itm:files:evr_template_pcie} in Section~\ref{sec:mrfioc2 organization}).
 
-To create such a template, use a form factor specific substitution file(eg. file list item~\ref{itm:files:evr_ff_subs}) and expand it using the
+To create such a template, use a form factor specific substitution file(eg. file list item~\ref{itm:files:evr_ff_subs_vme},~\ref{itm:files:evr_ff_subs_pcie}) and expand it using the
 MSI tool~\cite{msi}. The tool works the same way as the EPICS macro substitutions do. The output of
-the tool can then be used in the IOC application.
+the tool can then be used in the substitution file for your IOC application.
 
 \textbf{However}, in order to set the default values of macros, while
-recursively expanding templates (using MSI), a trick needs to be used in
-the original substitution file.
+recursively expanding templates (using MSI), a trick is used in the original template files.
 
 \paragraph{Problem}\label{problem}
-A record with a macro in VAL field might look like this:
+A VAL record field with a macro might look like this:
 
 \texttt{field( VAL , "\$(MCR=2)")}. 
 After using the MSI tool, the field would look like this: 
 
 \texttt{field( VAL , "2")}, 
-which means the ability to set the macro value is lost. Or, if the macro is
-defined, the default value is lost.
+which means the ability to set the macro value is lost. On the other hand, if the \texttt{\$(MCR)} macro is defined, the default value of the VAL field is lost.
 
 \paragraph{Solution}\label{solution}
-The record field should be encapsulated using nested macro, like so:
+The record fields in template files are encapsulated using nested macro, like so:
 
-\texttt{field( VAL , "\$(\$(OBJ)-Div-SP\textbackslash{}=2)")} 
+\texttt{field( VAL , "\$(\$(OBJ)\$(ID)-Div-SP\textbackslash{}=2)")} 
 Here is what happens: 
 \begin{itemize}
 \item 
-	\texttt{\$(OBJ)} is extended when running the MSI tool.
+	\texttt{\$(OBJ)\$(ID)} is extended when running the MSI tool.
 This is OK, since it contains template specific information.
 \item 
 	Notice that `=' is escaped. This means that the MSI tool will only unescape the
 default value, instead of applying it to the undefined macro. 
 \item  
-	Using the MSI tool with macro \texttt{EVR=evr0, OBJ=evr0:PS0} yields
+	Using the MSI tool with macro \texttt{OBJ=PS, ID=0} yields
 	
-\texttt{field( VAL , "\$(evr0:PS0-Div-SP=2,undefined)")} 
+\texttt{field( VAL , "\$(PS0-Div-SP=2,undefined)")} 
 \item 
-	The macro substitution \texttt{evr0:PS0-Div-SP=val} can then be used in our application substitution file to set the field value, otherwise it defaults to `2'.
+	The macro substitution \texttt{PS0-Div-SP=value} can then be used in our application substitution file to set the field \texttt{value}, otherwise it defaults to `2'.
 \end{itemize}
 
 \begin{quote}
@@ -913,17 +968,39 @@ Described solution can be observed in \texttt{evr-Base.template},
 \texttt{mrfioc2/evrMrmApp/Db/PSI/} folder.
 \end{quote}
 
-\subsection{Manually generating EVR template}\label{manually-generating-evr-template}
+\subsection{Manually generating EVR template}\label{sec:manually-generating-evr-template}
 A MSI tool~\cite{msi} is required to generate a form factor specific template. It
-is recommended to use a predefined template, but you can create one
-yourself. To create a VME-EVR-230RF form factor compatible template file issue the following command in \texttt{mrfioc2/evrMrmApp/Db/PSI} folder:
+is recommended to use a predefined template, but you can create one yourself. 
+\texttt{make\_databases.sh} script in \texttt{mrfioc2/PSI} folder is used to generate template files needed for the IOC application The script also copies all the needed templates to the specified location.
+
+\paragraph{make\_databases.sh script usage:}
+\begin{verbatim}
+	./make_databases.sh [options]
+\end{verbatim}
+
+\paragraph{make\_databases.sh script options:}
+\begin{verbatim}
+	-t <top>    ....... Top folder of mrfioc2 (default: ..)
+	-o <output> ....... Output folder for databases (default: ./db)
+	-v          ....... Verbose output (default: no output)
+	-h          ....... Shows options and usage
+\end{verbatim}
+
+\paragraph{Example:} Generate and copy all template files to \texttt{mrfioc2/PSI/db}:
+\begin{verbatim}
+	cd mrfioc2/PSI
+	./make_databases.sh
+\end{verbatim}
+Template files are now available in \texttt{mrfioc2/PSI/db}. There are example substitution files prepared to be used with these templates in \texttt{mrvioc2/PSI}, or you can create your own.
+
+\paragraph{Individual form factor compatible template files} can also be generated. The following \textbf{example} shows how to create a VME-EVR-230RF form factor compatible template file, by issuing the following command in \newline\texttt{mrfioc2/evrMrmApp/Db/PSI} folder:
 
 \begin{verbatim}
 msi -S evr-vmerf230.substitutions > evr-vmerf230.template 
 \end{verbatim}
 
-The command will use the EVR form factor specific \texttt{evr-vmerf230.substitutions}
-file to output the template to be used in your application.
+The command will use the EVR form factor specific \newline\texttt{evr-vmerf230.substitutions}
+file to generate the template \newline\texttt{evr-vmerf230.template} to be used in your IOC application substitution file.
 
 
 
@@ -952,6 +1029,7 @@ There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver a
 
 \paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
+	cd mrfioc2/ui/EVR
 	./start_EVR.sh -s MTEST-VME-EVRTEST
 \end{verbatim}
 
