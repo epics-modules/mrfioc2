@@ -69,13 +69,14 @@ An EVR substitution file consists of
 	  }
 	}
 	\end{verbatim}
-	\item application specific templates. These are used to define application specific behavior, such as mapping of events (described in Section~\ref{sec:Event mapping}) or defining additional components plugged in to the EVR (eg. universal I/O modules). Each template accepts different macros that allow its configuration. The following EVR substitution file snippet shows how to blink a LED light on the EVR named \texttt{EVR0} in system \texttt{MTEST-VME-EVRTEST}, each time the event 1 is received. \newline\texttt{evr-specialFunctionMap.template} loaded from \texttt{\$(TEMPLATE\_DIR)} is used for this functionality.
-	\begin{verbatim}
-	file "$(TEMPLATE_DIR)/evr-specialFunctionMap.template"{
-	pattern { SYS,                 EVR,    EVT,   FUNC }
-	        {"MTEST-VME-EVRTEST", "EVR0", "1",   "Blink"}
-	}
-	\end{verbatim}
+	\item other templates, such as \texttt{evr-pulserMap.template, evr-softEvent.template, evr-specialFunctionMap.template, evr-delayModule.template}. These are used to define application specific behavior, such as mapping of events (described in Section~\ref{sec:Event mapping}) or defining additional components plugged in to the EVR (eg. universal I/O modules). 
+%	Each template accepts different macros that allow its configuration. The following EVR substitution file snippet shows how to blink a LED light on the EVR named \texttt{EVR0} in system \texttt{MTEST-VME-EVRTEST}, each time the event 1 is received. \newline\texttt{evr-specialFunctionMap.template} loaded from \texttt{\$(TEMPLATE\_DIR)} is used for this functionality.
+%	\begin{verbatim}
+%	file "$(TEMPLATE_DIR)/evr-specialFunctionMap.template"{
+%	pattern { SYS,                 EVR,    EVT,   FUNC }
+%	        {"MTEST-VME-EVRTEST", "EVR0", "1",   "Blink"}
+%	}
+%	\end{verbatim}
 \end{itemize}
 Each of the example EVR substitution files in \texttt{mrfioc2/PSI} folder contains all the available macros for the form factor it represents, together with short documentation. Besides configuring the EVR by setting the appropriate macros in the EVR substitution file, it is also possible to configure the EVR through the GUI at runtime (starting the GUI is described in Section~\ref{sec:GUI}).
 
@@ -765,32 +766,63 @@ pattern { SYS,                  EVR,    EVT,    CODE }
 %The EPICS way.
 
 \section{mrfioc2 organization}\label{sec:mrfioc2 organization}
-Some important folders:
-\begin{verbatim}
-mrfioc2
-    |-- configure
-    |-- documentation
-       |--PSI
-    |-- evgMrmApp
-        |-- Db
-            |-- PSI
-        |-- src
-    |-- evrApp
-        |-- Db
-        |-- src
-    |-- evrMrmApp
-        |-- Db
-            |-- PSI
-        |-- src
-    |-- iocBoot
-    |-- mrfCommon
-    |-- mrmShared
-    |-- mrmtestApp
-    |-- PSI
-    |-- ui
-        |-- EVG
-        |-- EVR
-\end{verbatim}
+%\begin{verbatim}
+%mrfioc2
+%    |-- configure
+%    |-- documentation
+%       |--PSI
+%           |-- img
+%       |-- demo
+%       |-- images
+%    |-- evgMrmApp
+%        |-- Db
+%            |-- PSI
+%            |-- NSLS
+%            |-- docs
+%            |-- op
+%        |-- src
+%            |-- devSupport
+%            |-- evgSequencer
+%    |-- evrApp
+%        |-- Db
+%        |-- src
+%            |-- evr
+%    |-- evrMrmApp
+%        |-- Db
+%            |-- PSI
+%        |-- src
+%            |-- os
+%                |-- RTEMS
+%                |-- default
+%        |-- op
+%    |-- iocBoot
+%        |-- iocevgmrm
+%        |-- iocevrmrm
+%        |-- iocpcie300
+%    |-- mrfCommon
+%        |-- src
+%            |-- mrf
+%            |-- os
+%                |-- RTEMS
+%                |-- default
+%                |-- vxWorks
+%    |-- mrmShared
+%        |-- Db
+%        |-- linux
+%        |-- src
+%    |-- mrmtestApp
+%        |-- Db
+%        |-- src
+%    |-- PSI
+%        |-- bufferTest
+%        |-- mrfioc2RegDev
+%    |-- ui
+%        |-- EVG
+%        |-- EVR
+%    |-- utils
+%    |-- python
+%        |-- mrfioc2
+%\end{verbatim}
 
 \subsection{Source code}
 \begin{itemize}
