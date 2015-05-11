@@ -44,7 +44,7 @@ extern "C" {
  *
  * @return Returns the structure pointer on success and NULL on failure.
  */
-mrmBufferInfo_t *mrmBufInit(const char *dev_name);
+mrmBufferInfo_t epicsShareFunc *mrmBufInit(const char *dev_name);
 
 /**
  * @brief Checks whether receive buffer is supported.
@@ -83,7 +83,7 @@ epicsStatus mrmBufTxSupported(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus mrmBufEnable(mrmBufferInfo_t *data);
+epicsStatus epicsShareFunc mrmBufEnable(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
@@ -94,7 +94,7 @@ epicsStatus mrmBufEnable(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus mrmBufDisable(mrmBufferInfo_t *data);
+epicsStatus epicsShareFunc mrmBufDisable(mrmBufferInfo_t *data);
 
 /**
  * @brief Get maximum supported buffer length.
@@ -104,7 +104,7 @@ epicsStatus mrmBufDisable(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
+epicsStatus epicsShareFunc mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
 
 /**
  * @brief Send buffer data
@@ -117,7 +117,7 @@ epicsStatus mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
+epicsStatus epicsShareFunc mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
 
 /**
  * @brief Register data receive callback function
@@ -128,7 +128,7 @@ epicsStatus mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus mrmBufRegCallback(mrmBufferInfo_t *data, mrmBufRecievedCallback callback, void *param);
+epicsStatus epicsShareFunc mrmBufRegCallback(mrmBufferInfo_t *data, mrmBufRecievedCallback callback, void *param);
 
 #ifdef __cplusplus
 }

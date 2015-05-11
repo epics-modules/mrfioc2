@@ -1,10 +1,10 @@
-#include "devMrmBuf.h"
-
-#include <epicsExport.h>
 #include "devObj.h"
 #include "mrf/object.h"
 #include "mrf/databuf.h"
 #include "mrmDataBufTx.h"
+
+#include <epicsExport.h>
+#include "devMrmBuf.h"
 
 #define BUF_RX      ":BUFRX"
 #define BUF_TX      ":BUFTX"
