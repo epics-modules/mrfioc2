@@ -271,18 +271,18 @@ int checkUIOVersion(int expect)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s in order to read kernel module interface version\n", ifaceversion);
+        errlogPrintf("Can't open %s in order to read kernel module interface version. Is kernel module loaded?\n", ifaceversion);
         return 1;
     }
     if(fscanf(fd, "%d", &version)!=1) {
-        errlogPrintf("Failed to read %s in order to get the kernel module interface version\n", ifaceversion);
+        errlogPrintf("Failed to read %s in order to get the kernel module interface version. Is kernel module loaded?\n", ifaceversion);
         return 1;
     }
     fclose(fd);
     if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n",version,expect);
-        if(version > expect) return 2;
-        else return 3;
+        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+        if(version > expect) return 0;
+        else return 1;
     }
     return 0;
 }
@@ -306,8 +306,7 @@ try {
         return;
     }
 
-    if(checkUIOVersion(1) > 2) // If version matches, cannot be read, or is greater then expected we continue.
-        return;                // If it is lower then expected we stop.
+    if(checkUIOVersion(1) > 0) return;  // continue only if kernel version is successfully read and is as expected or higher.
 
     const epicsPCIDevice *cur=0;
 
