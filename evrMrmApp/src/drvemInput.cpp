@@ -14,8 +14,6 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 
-
-
 #include "evrRegMap.h"
 #include "drvemInput.h"
 

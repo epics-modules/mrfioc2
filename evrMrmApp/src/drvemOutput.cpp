@@ -18,7 +18,6 @@
 #include <mrfBitOps.h>
 
 #include <stdexcept>
-#include <epicsExport.h>
 #include "drvemOutput.h"
 
 MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int idx)

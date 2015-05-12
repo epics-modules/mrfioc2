@@ -16,6 +16,7 @@
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
+#include "evr/delay.h"
 #include "evr/input.h"
 #include "evr/prescaler.h"
 #include "evr/cml.h"
@@ -72,6 +73,10 @@ PreScaler::~PreScaler()
 }
 
 CML::~CML()
+{
+}
+
+DelayModuleEvr::~DelayModuleEvr()
 {
 }
 
@@ -230,4 +235,10 @@ OBJECT_BEGIN(CML) {
 
 } OBJECT_END(CML)
 
-// the delay module object properties are defined in drvem.cpp, since it does not depend on evr but only on evrMrm.
+OBJECT_BEGIN(DelayModuleEvr) {
+
+	OBJECT_PROP2("Enable", &DelayModuleEvr::enabled, &DelayModuleEvr::setState);
+	OBJECT_PROP2("Delay0", &DelayModuleEvr::getDelay0, &DelayModuleEvr::setDelay0);
+	OBJECT_PROP2("Delay1", &DelayModuleEvr::getDelay1, &DelayModuleEvr::setDelay1);
+
+} OBJECT_END(DelayModuleEvr)

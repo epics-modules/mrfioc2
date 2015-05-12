@@ -1,53 +1,51 @@
 #ifndef DELAYMODULE_H
 #define DELAYMODULE_H
 
-#include "mrf/object.h"
-
-#include <epicsGuard.h>
-#include <epicsTypes.h>
+#include "evr/delay.h"
 
 #include "mrmGpio.h"
 
 
 class EVRMRM;
 
-class epicsShareClass DelayModule : public mrf::ObjectInst<DelayModule>
+class DelayModule : public DelayModuleEvr
 {
 public:
     DelayModule(const std::string&, EVRMRM*, unsigned int);
+	virtual ~DelayModule();
 
     /**
      * @brief setDelay0 Sets the delay of the output 0 in the module
      * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
-    void setDelay0(double val);
+	virtual void setDelay0(double val);
     /**
      * @brief getDelay0 Returns the last set delay for the output 0 in the module
      * @return The delay in [ns]
      */
-    double getDelay0() const;
+	virtual double getDelay0() const;
 
     /**
      * @brief setDelay1 Sets the delay of the output 1 in the module
      * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
-    void setDelay1(double val);
+	virtual void setDelay1(double val);
     /**
      * @brief getDelay1R eturns the last set delay for the output 1 in the module
      * @return  The delay in [ns]
      */
-    double getDelay1() const;
+	virtual double getDelay1() const;
 
     /**
      * @brief setState Sets the enabled state of the delay module. If disabled, the module will output logic low on both ouputs.
      * @param enabled True for enabled and false for disabled
      */
-    void setState(bool enabled);
+	virtual void setState(bool enabled);
     /**
      * @brief enabled Checks if the module is enabled or not.
      * @return True if the module is enabled, false othwerwise.
      */
-    bool enabled() const;
+	virtual bool enabled() const;
 
     //void set(bool a, bool b, epicsUInt16 c, epicsUInt16 d){setDelay(a,b,c,d);}
 
