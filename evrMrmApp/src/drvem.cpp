@@ -121,7 +121,7 @@ EVRMRM::EVRMRM(const std::string& n,
   ,prescalers()
   ,pulsers()
   ,shortcmls()
-  //,gpio_(*this)
+  ,gpio_(*this)
   ,drain_fifo_method(*this)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
@@ -572,10 +572,10 @@ EVRMRM::cml(epicsUInt32 i) const
     return shortcmls[i];
 }
 
-/*MRMGpio*
+MRMGpio*
 EVRMRM::gpio(){
     return &gpio_;
-}*/
+}
 
 bool
 EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const

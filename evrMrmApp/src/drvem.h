@@ -34,7 +34,7 @@
 #include "drvemCML.h"
 #include "drvemRxBuf.h"
 
-//#include "mrmGpio.h"
+#include "mrmGpio.h"
 //#include "delayModule.h"
 
 #include "mrmDataBufTx.h"
@@ -139,7 +139,7 @@ public:
     virtual MRMCML* cml(epicsUInt32 idx);
     virtual const MRMCML* cml(epicsUInt32) const;
 
-    //MRMGpio* gpio();
+    MRMGpio* gpio();
 
     virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
     virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -252,7 +252,7 @@ private:
     typedef std::vector<MRMCML*> shortcmls_t;
     shortcmls_t shortcmls;
 
-    //MRMGpio gpio_;
+    MRMGpio gpio_;
 
     // run when FIFO not-full IRQ is received
     void drain_fifo();

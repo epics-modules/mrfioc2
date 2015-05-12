@@ -37,7 +37,7 @@ evrMrm_SRCS += devMrmBufRx.cpp
 
 evrMrm_SRCS += irqHack.cpp
 
-#evrMrm_SRCS += mrmGpio.cpp
+evrMrm_SRCS += mrmGpio.cpp
 #evrMrm_SRCS += delayModule.cpp
 
 ifeq ($(OS),Windows_NT)
