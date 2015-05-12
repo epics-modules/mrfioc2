@@ -121,7 +121,7 @@ EVRMRM::EVRMRM(const std::string& n,
   ,prescalers()
   ,pulsers()
   ,shortcmls()
-  ,gpio_(*this)
+  //,gpio_(*this)
   ,drain_fifo_method(*this)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
@@ -240,12 +240,12 @@ try{
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
-    delays.resize(nOFPDly);
+    /*delays.resize(nOFPDly);
     for(size_t i=0; i<nOFPDly; i++){
         std::ostringstream name;
         name<<id<<":UnivDlyModule"<<i;
         delays[i]=new DelayModule(name.str(), this, i);
-    }
+    }*/
 
     for(size_t i=0; i<nORB; i++){
         std::ostringstream name;
@@ -357,13 +357,13 @@ EVRMRM::~EVRMRM()
 }
 
 // the rest of the objects properties (inputs, outputs, ...) are defined in evr.cpp.
-OBJECT_BEGIN(DelayModule) {
+/*OBJECT_BEGIN(DelayModule) {
 
     OBJECT_PROP2("Enable", &DelayModule::enabled, &DelayModule::setState);
     OBJECT_PROP2("Delay0", &DelayModule::getDelay0, &DelayModule::setDelay0);
     OBJECT_PROP2("Delay1", &DelayModule::getDelay1, &DelayModule::setDelay1);
 
-} OBJECT_END(DelayModule)
+} OBJECT_END(DelayModule)*/
 
 void
 EVRMRM::cleanup()
@@ -517,12 +517,12 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return it->second;
 }
 
-DelayModule*
+/*DelayModule*
 EVRMRM::delay(epicsUInt32 i){
     if(i>=delays.size())
         throw std::out_of_range("Delay Module id is out of range.");
     return delays[i];
-}
+}*/
 
 MRMInput*
 EVRMRM::input(epicsUInt32 i)
@@ -572,10 +572,10 @@ EVRMRM::cml(epicsUInt32 i) const
     return shortcmls[i];
 }
 
-MRMGpio*
+/*MRMGpio*
 EVRMRM::gpio(){
     return &gpio_;
-}
+}*/
 
 bool
 EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const

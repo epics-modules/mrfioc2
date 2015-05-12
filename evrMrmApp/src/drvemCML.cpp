@@ -17,7 +17,6 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-#include <epicsExport.h>
 
 #include "drvem.h"
 #include "drvemCML.h"

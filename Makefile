@@ -9,7 +9,7 @@ DIRS := $(DIRS) $(filter-out $(DIRS), mrmShared)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evrMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), mrmtestApp)
-DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
+#DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
 
 # 3.14.10 style directory dependencies
 # previous versions will just ignore them
@@ -21,7 +21,7 @@ $(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir)
 
 iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
-evrApp_DEPEND_DIRS += mrfCommon mrmShared
+evrApp_DEPEND_DIRS += mrfCommon
 
 mrmShared_DEPEND_DIRS += mrfCommon
 
