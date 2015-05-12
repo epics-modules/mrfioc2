@@ -229,26 +229,26 @@ try{
         inputs[i]=new MRMInput(name.str(), base,i);
     }
 
-    for(size_t i=0; i<nOFP; i++){
+    for(unsigned int i=0; i<nOFP; i++){
         std::ostringstream name;
         name<<id<<":FrontOut"<<i;
         outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
     }
 
-    for(size_t i=0; i<nOFPUV; i++){
+    for(unsigned int i=0; i<nOFPUV; i++){
         std::ostringstream name;
         name<<id<<":FrontUnivOut"<<i;
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
     delays.resize(nOFPDly);
-    for(size_t i=0; i<nOFPDly; i++){
+    for(unsigned int i=0; i<nOFPDly; i++){
         std::ostringstream name;
         name<<id<<":UnivDlyModule"<<i;
         delays[i]=new DelayModule(name.str(), this, i);
     }
 
-    for(size_t i=0; i<nORB; i++){
+    for(unsigned int i=0; i<nORB; i++){
         std::ostringstream name;
         name<<id<<":RearUniv"<<i;
         outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
@@ -262,7 +262,7 @@ try{
     }
 
     pulsers.resize(nPul);
-    for(size_t i=0; i<nPul; i++){
+    for(epicsUInt32 i=0; i<nPul; i++){
         std::ostringstream name;
         name<<id<<":Pul"<<i;
         pulsers[i]=new MRMPulser(name.str(), i,*this);
@@ -270,7 +270,7 @@ try{
 
     if(v==formFactor_CPCIFULL) {
         shortcmls.resize(8);
-        for(size_t i=4; i<8; i++) {
+        for(unsigned int i=4; i<8; i++) {
             std::ostringstream name;
             name<<id<<":FrontOut"<<i;
             outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
@@ -287,14 +287,14 @@ try{
         for(size_t i=0; i<nCML; i++){
             std::ostringstream name;
             name<<id<<":CML"<<i;
-            shortcmls[i]=new MRMCML(name.str(), i,*this,kind,form);
+            shortcmls[i]=new MRMCML(name.str(), (unsigned char)i,*this,kind,form);
         }
 
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
     }
 
-    for(size_t i=0; i<NELEMENTS(this->events); i++) {
+    for(epicsUInt8 i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=i;
         events[i].owner=this;
         CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
