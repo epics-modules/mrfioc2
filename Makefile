@@ -9,7 +9,7 @@ DIRS := $(DIRS) $(filter-out $(DIRS), mrmShared)
 DIRS := $(DIRS) $(filter-out $(DIRS), evgMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), evrMrmApp)
 DIRS := $(DIRS) $(filter-out $(DIRS), mrmtestApp)
-#DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
+DIRS := $(DIRS) $(filter-out $(DIRS), iocBoot)
 
 # 3.14.10 style directory dependencies
 # previous versions will just ignore them
