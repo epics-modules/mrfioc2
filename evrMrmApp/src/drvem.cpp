@@ -294,7 +294,7 @@ try{
         printf("CML outputs not supported with this firmware\n");
     }
 
-    for(epicsUInt8 i=0; i<NELEMENTS(this->events); i++) {
+    for(epicsUInt32 i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=i;
         events[i].owner=this;
         CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
