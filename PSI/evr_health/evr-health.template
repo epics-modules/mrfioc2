@@ -47,6 +47,8 @@ record(calc, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-calc_"){
 	field(FLNK, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-I")
 } 
 
+
+
 record(mbbi, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-I"){
 	field(INP, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-calc_")
 
@@ -61,8 +63,8 @@ record(mbbi, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-I"){
 
 	field(THVL, "3")
 	field(THST, "SFP error")
-
 }
+
 
 
 record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-LinkTimo-I") {
@@ -85,7 +87,8 @@ record(bi, "$(SYS)-$(EVR)-HEALTH:Link-Sts") {
 record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-I") {
   field(INP , "$(SYS)-$(EVR):Cnt-RxErr-I CP")
   field(TSEL , "$(SYS)-$(EVR):Cnt-RxErr-I.TIME")
-  
+  field(HIGH, "10")
+  field(HSV, "MINOR")
   field(DESC, "Receive Error Count")
 }
 
@@ -103,15 +106,19 @@ record(ai, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-Rate-I") {
 record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-HwOflw-I") {
   field(INP , "$(SYS)-$(EVR):Cnt-HwOflw-I CP")
   field(TSEL , "$(SYS)-$(EVR):Cnt-HwOflw-I.TIME")
-  
+    
   field(DESC, "FIFO Hw Overflow Count")  
+  field(HIGH, "1")
+  field(HSV,  "MAJOR")
 }
 
 record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-SwOflw-I") {
   field(INP , "$(SYS)-$(EVR):Cnt-SwOflw-I CP")
-  field(TSEL, "$(SYS)-$(EVR):Cnt-SwOflw-I.TIME")
-  
+  field(TSEL, "$(SYS)-$(EVR):Cnt-SwOflw-I.TIME")  
+
   field(DESC, "FIFO Sw Overrate Count")    
+  field(HIGH, "1")
+  field(HSV,  "MAJOR")
 }
 
 record(bi, "$(SYS)-$(EVR)-HEALTH:Pll-Sts") {
