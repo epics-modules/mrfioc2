@@ -6,387 +6,51 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>665</width>
-    <height>91</height>
+    <width>712</width>
+    <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QFrame" name="frame_3">
+  <widget class="caInclude" name="cainclude">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>3</x>
      <y>0</y>
-     <width>661</width>
-     <height>90</height>
+     <width>665</width>
+     <height>95</height>
     </rect>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+   <property name="macro">
+    <string notr="true">ID=0, EVR=$(EVR)</string>
    </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+   <property name="filename" stdset="0">
+    <string notr="true">G_EVR_input.ui</string>
    </property>
-   <widget class="caLabel" name="calabel">
-    <property name="geometry">
-     <rect>
-      <x>1</x>
-      <y>1</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
-    </property>
-    <property name="text">
-     <string>FPIn$(ID)</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>1</y>
-      <width>141</width>
-      <height>82</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>External</string>
-    </property>
-    <widget class="QLabel" name="label_16">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>50</y>
-       <width>33</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Code</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_15">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>20</y>
-       <width>35</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Mode</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="caTextEntry" name="catextentry_4">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>50</y>
-       <width>90</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Sets the code which will be applied to the local mapping ram whenever the External Mode condition is met.</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Code-Ext-SP</string>
-     </property>
-     <property name="background">
-      <color>
-       <red>212</red>
-       <green>219</green>
-       <blue>157</blue>
-      </color>
-     </property>
-     <property name="colorMode">
-      <enum>caLineEdit::Static</enum>
-     </property>
-    </widget>
-    <widget class="caMenu" name="camenu_2">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>20</y>
-       <width>90</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Selects the condition in which to inject event codes into the local mapping ram. These codes are treated as codes coming from the downstream event link.</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(212, 219, 157);</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Trig-Ext-Sel</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>1</y>
-      <width>141</width>
-      <height>82</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Backwards</string>
-    </property>
-    <widget class="caMenu" name="camenu_4">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>20</y>
-       <width>90</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Selects the condition in which to send on the upstream event link.</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(212, 219, 157);</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Trig-Back-Sel</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>20</y>
-       <width>35</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Mode</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="caTextEntry" name="catextentry_5">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>50</y>
-       <width>90</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Sets the code which will be sent on the upstream event link whenever the Backwards Mode condition is met.</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Code-Back-SP</string>
-     </property>
-     <property name="background">
-      <color>
-       <red>212</red>
-       <green>219</green>
-       <blue>157</blue>
-      </color>
-     </property>
-     <property name="colorMode">
-      <enum>caLineEdit::Static</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_18">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>50</y>
-       <width>33</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Code</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>DBus Select</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="caMenu" name="camenu">
-    <property name="geometry">
-     <rect>
-      <x>13</x>
-      <y>50</y>
-      <width>81</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Sets the upstream distributred bus bit mask which is driven by this input. DBus bits from multiple sources are condensed with a bit-wise OR.</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(212, 219, 157);</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):FPIn$(ID)-DBus-Sel</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>1</y>
-      <width>121</width>
-      <height>82</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Level</string>
-    </property>
-    <widget class="caChoice" name="cachoice_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>25</y>
-       <width>101</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>When operating in level triggered mode, determines if codes are sent when the input level is low or high.</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Lvl-Sel</string>
-     </property>
-     <property name="background">
-      <color>
-       <red>212</red>
-       <green>219</green>
-       <blue>157</blue>
-      </color>
-     </property>
-     <property name="bordercolor">
-      <color>
-       <red>0</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colorMode">
-      <enum>caChoice::Static</enum>
-     </property>
-     <property name="endBit">
-      <number>1</number>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>1</y>
-      <width>120</width>
-      <height>82</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Edge</string>
-    </property>
-    <widget class="caChoice" name="cachoice_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>25</y>
-       <width>101</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>When operating in edge triggered mode, determines if codes are sent on the falling or rising edge in the input signal.</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string notr="true">$(EVR):FPIn$(ID)-Edge-Sel</string>
-     </property>
-     <property name="background">
-      <color>
-       <red>212</red>
-       <green>219</green>
-       <blue>157</blue>
-      </color>
-     </property>
-     <property name="bordercolor">
-      <color>
-       <red>0</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colorMode">
-      <enum>caChoice::Static</enum>
-     </property>
-     <property name="endBit">
-      <number>1</number>
-     </property>
-    </widget>
-   </widget>
+  </widget>
+  <widget class="caInclude" name="cainclude_2">
+   <property name="geometry">
+    <rect>
+     <x>3</x>
+     <y>110</y>
+     <width>665</width>
+     <height>95</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string notr="true">ID=1, EVR=$(EVR)</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">G_EVR_input.ui</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>caMenu</class>
-   <extends>QComboBox</extends>
-   <header>caMenu</header>
-  </customwidget>
-  <customwidget>
-   <class>caChoice</class>
+   <class>caInclude</class>
    <extends>QWidget</extends>
-   <header>caChoice</header>
-  </customwidget>
-  <customwidget>
-   <class>caTextEntry</class>
-   <extends>caLineEdit</extends>
-   <header>caTextEntry</header>
-  </customwidget>
-  <customwidget>
-   <class>caLabel</class>
-   <extends>QLabel</extends>
-   <header>caLabel</header>
-  </customwidget>
-  <customwidget>
-   <class>caLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>caLineEdit</header>
+   <header>caInclude</header>
   </customwidget>
  </customwidgets>
  <resources/>

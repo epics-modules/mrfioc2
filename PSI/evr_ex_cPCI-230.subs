@@ -1,4 +1,4 @@
-file "$(TEMPLATE_DIR)/evr-vmerf230.template"
+file "$(TEMPLATE_DIR)/evr-cpci-230.template"
 {
     {
     
@@ -11,35 +11,35 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 
 
 		## Prescalers
-		PS0-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
-		PS1-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
-		PS2-Div-SP=2, 			#2-65535 :Integer divisor between the Event Clock and the sub-unit output.
+		PS0-Div-SP=2, 			#2-4294967295 :Integer divisor between the Event Clock and the sub-unit output.
+		PS1-Div-SP=2, 			#2-4294967295 :Integer divisor between the Event Clock and the sub-unit output.
+		PS2-Div-SP=2, 			#2-4294967295 :Integer divisor between the Event Clock and the sub-unit output.
 			
 
 		## Pulsers
 		Pul0-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul0-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul0-Delay-SP=100,		#0-4294967295 : Delay in us 
-		Pul0-Width-SP=10,		#0-65535 : Width in us
-		Pul0-Prescaler-SP=1,   	#0-255 : Pulser prescaler
+		Pul0-Width-SP=10,		#0-4294967295 : Width in us
+		Pul0-Prescaler-SP=1,   	#0-65535 : Pulser prescaler
 
 		Pul1-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul1-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul1-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul1-Width-SP=10,		#0-65535 : Width in us
-		Pul1-Prescaler-SP=1,   	#0-255 : Pulser prescaler
+		Pul1-Width-SP=10,		#0-4294967295 : Width in us
+		Pul1-Prescaler-SP=1,   	#0-65535 : Pulser prescaler
 
 		Pul2-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul2-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
 		Pul2-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul2-Width-SP=0,		#0-65535 : Width in us
-		Pul2-Prescaler-SP=1, 	#0-255 : Pulser prescaler
+		Pul2-Width-SP=0,		#0-4294967295 : Width in us
+		Pul2-Prescaler-SP=1, 	#0-65535 : Pulser prescaler
 
 		Pul3-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul3-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul3-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul3-Width-SP=0,		#0-65535 : Width in us
-		Pul3-Prescaler-SP=1,   	#0-255 : Pulser prescaler
+		Pul3-Width-SP=0,		#0-4294967295 : Width in us
+		Pul3-Prescaler-SP=1,   	#0-65535 : Pulser prescaler
 
 		Pul4-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul4-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
@@ -70,36 +70,6 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		Pul9-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul9-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul9-Width-SP=0,		#0-65535 : Width in us
-
-		Pul10-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul10-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul10-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul10-Width-SP=0,		#0-65535 : Width in us
-
-		Pul11-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul11-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul11-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul11-Width-SP=0,		#0-65535 : Width in us
-
-		Pul12-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul12-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul12-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul12-Width-SP=0,		#0-65535 : Width in us
-
-		Pul13-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul13-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul13-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul13-Width-SP=0,		#0-65535 : Width in us
-
-		Pul14-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul14-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul14-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul14-Width-SP=0,		#0-65535 : Width in us
-
-		Pul15-Ena-Sel=1,		#0 = Disabled, 1 = Enabled
-		Pul15-Polarity-Sel=0,  	#0 = Active High, 1 = Active Low
-		Pul15-Delay-SP=0,		#0-4294967295 : Delay in us 
-		Pul15-Width-SP=0,		#0-65535 : Width in us
 
 
 		## Front panel inputs
@@ -152,73 +122,6 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		# 63	Force Low
 		# 62	Force High
 
-		# TTL Outputs
-		FrontOut0-Ena-SP=1, 		# Default to enabled
-		FrontOut0-Src-SP=0,  		# Use pulser 0 
-
-		FrontOut1-Ena-SP=1, 		# Default to enabled
-		FrontOut1-Src-SP=1,  		# Use pulser 1
-
-		FrontOut2-Ena-SP=1, 		# Default to enabled
-		FrontOut2-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-
-		FrontOut3-Ena-SP=1, 		# Default to enabled
-		FrontOut3-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-
-		# CML outputs
-		FrontOut4-Ena-SP=1, 		# Default to enabled
-		FrontOut4-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-		CML0-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML0-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML0-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML0-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML0-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML0-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML0-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML0-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML0-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML0-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculator enabled
-		CML0-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML0-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML0-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML0-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
-
-		FrontOut5-Ena-SP=1, 		# Default to enabled
-		FrontOut5-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
-		CML1-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML1-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML1-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML1-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML1-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML1-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML1-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML1-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML1-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML1-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square wave pattern calculator enabled
-		CML1-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML1-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML1-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML1-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
-
-
-		FrontOut6-Ena-SP=1, 		# Default to enabled
-		FrontOut6-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-		CML2-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML2-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML2-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML2-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML2-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML2-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML2-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML2-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML2-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML2-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculat2r enabled
-		CML2-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML2-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML2-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML2-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
-
-
 		# Universal outputs, Slot 0
 		FrontUnivOut0-Ena-SP=1, 	# Default to enabled
 		FrontUnivOut0-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
@@ -232,55 +135,6 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 
 		FrontUnivOut3-Ena-SP=1, 	# Default to enabled
 		FrontUnivOut3-Src-SP=63,  	# Defaults to Force low (if enabled -> Ena-SP)
-
-		# Transition board outputs
-		RearUniv0-Ena-SP=1, 	 	# Default to enabled	
-		RearUniv0-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv1-Ena-SP=1, 		# Default to enabled
-		RearUniv1-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv2-Ena-SP=1, 		# Default to enabled
-		RearUniv2-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv3-Ena-SP=1, 		# Default to enabled
-		RearUniv3-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv4-Ena-SP=1, 		# Default to enabled
-		RearUniv4-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv5-Ena-SP=1, 		# Default to enabled
-		RearUniv5-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv6-Ena-SP=1, 		# Default to enabled
-		RearUniv6-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv7-Ena-SP=1, 		# Default to enabled
-		RearUniv7-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv8-Ena-SP=1, 		# Default to enabled
-		RearUniv8-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv9-Ena-SP=1, 		# Default to enabled
-		RearUniv9-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv10-Ena-SP=1, 		# Default to enabled
-		RearUniv10-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv11-Ena-SP=1, 		# Default to enabled
-		RearUniv11-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv12-Ena-SP=1, 		# Default to enabled
-		RearUniv12-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv13-Ena-SP=1, 		# Default to enabled
-		RearUniv13-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv14-Ena-SP=1, 		# Default to enabled
-		RearUniv14-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-	
-		RearUniv15-Ena-SP=1, 		# Default to enabled
-		RearUniv15-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
 
      }
  }
@@ -365,13 +219,6 @@ pattern {PID   F,      EVT, ID}
         {7,    Trig,   0,   0 }
         {8,    Trig,   0,   0 }
         {9,    Trig,   0,   0 }
-        {10,   Trig,   0,   0 }
-        {11,   Trig,   0,   0 }
-        {12,   Trig,   0,   0 }
-        {13,   Trig,   0,   0 }
-        {14,   Trig,   0,   0 }
-        {15,   Trig,   0,   0 }
-
 
         {0,    Set,   2,   0 }
         {1,    Set,   0,   0 }
@@ -383,13 +230,6 @@ pattern {PID   F,      EVT, ID}
         {7,    Set,   0,   0 }
         {8,    Set,   0,   0 }
         {9,    Set,   0,   0 }
-        {10,   Set,   0,   0 }
-        {11,   Set,   0,   0 }
-        {12,   Set,   0,   0 }
-        {13,   Set,   0,   0 }
-        {14,   Set,   0,   0 }
-        {15,   Set,   0,   0 }
-
 
         {0,    Reset,   3,   0 }
         {1,    Reset,   0,   0 }
@@ -401,12 +241,6 @@ pattern {PID   F,      EVT, ID}
         {7,    Reset,   0,   0 }
         {8,    Reset,   0,   0 }
         {9,    Reset,   0,   0 }
-        {10,   Reset,   0,   0 }
-        {11,   Reset,   0,   0 }
-        {12,   Reset,   0,   0 }
-        {13,   Reset,   0,   0 }
-        {14,   Reset,   0,   0 }
-        {15,   Reset,   0,   0 }
 }
 
 ## UNIV-LVPECL-DLY Delay module

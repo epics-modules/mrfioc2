@@ -54,7 +54,7 @@
        <string notr="true">PAT=Rise, ID=$(ID), P=$(P), EVR=$(EVR)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">G_EVR_VME_out_cml-mode-pattern-set.ui</string>
+       <string notr="true">G_EVR_out_cml-mode-pattern-set.ui</string>
       </property>
      </widget>
     </widget>
@@ -75,7 +75,7 @@
        <string notr="true">PAT=High, ID=$(ID), P=$(P), EVR=$(EVR)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">G_EVR_VME_out_cml-mode-pattern-set.ui</string>
+       <string notr="true">G_EVR_out_cml-mode-pattern-set.ui</string>
       </property>
      </widget>
     </widget>
@@ -96,7 +96,7 @@
        <string notr="true">PAT=Fall, ID=$(ID), P=$(P), EVR=$(EVR)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">G_EVR_VME_out_cml-mode-pattern-set.ui</string>
+       <string notr="true">G_EVR_out_cml-mode-pattern-set.ui</string>
       </property>
      </widget>
     </widget>
@@ -117,7 +117,7 @@
        <string notr="true">PAT=Low, ID=$(ID), P=$(P), EVR=$(EVR)</string>
       </property>
       <property name="filename" stdset="0">
-       <string notr="true">G_EVR_VME_out_cml-mode-pattern-set.ui</string>
+       <string notr="true">G_EVR_out_cml-mode-pattern-set.ui</string>
       </property>
      </widget>
     </widget>

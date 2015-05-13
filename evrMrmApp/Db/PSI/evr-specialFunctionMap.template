@@ -15,7 +15,7 @@ record(longout, "$(SYS)-$(EVR):Evtmap-$(EVT)-DNC") {
   field( DTYP, "EVR Mapping" )
   field( OUT , "@OBJ=$(EVR), Func=$(FUNC)")
   field( PINI, "YES")
-  field( DESC, "Mapping for $(FUNC)")
+  field( DESC, "$(FUNC)")
   field( VAL , $(EVT))
   field( LOPR, "0")
   field( HOPR, "255")

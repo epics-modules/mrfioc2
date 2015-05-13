@@ -3,7 +3,7 @@ set -o errexit
 
 OUTPUT_DIR="./db"
 MRFIOC2_DIR=".."
-DB_LIST=(evgSoftSeq.db evg-vme.db evrEvent.db evr-vmerf230.db)
+DB_LIST=(evgSoftSeq.template evg-vme evr-pulserMap.template evr-softEvent.template evr-specialFunctionMap.template evr-delayModule.template evr-vmerf230 evr-pcie-300 evr-cpci-230)
 DB_REL_PATH="Db/PSI"
 
 # Verbose output
@@ -56,18 +56,18 @@ fi
 mkdir -p $OUTPUT_DIR
 for db in ${DB_LIST[@]}; do
     db_name=`basename "$db" | cut -d. -f1`
-    db_file=$(find $MRFIOC2_DIR/*MrmApp/$DB_REL_PATH -name $db_name.db 2>/dev/null)
-    if [ ! -z $db_file ]; then
-        cp $db_file $OUTPUT_DIR
-        echo "COPIED: $db_file"
+    sub_file=$(find $MRFIOC2_DIR/*MrmApp/$DB_REL_PATH -name $db_name.substitutions 2>/dev/null)
+    if [ ! -z $sub_file ]; then
+        msi -I$(dirname $sub_file) -S$sub_file > "$OUTPUT_DIR/$db_name.template"
+        echo "EXPANDED: $sub_file"
     else
-        sub_file=$(find $MRFIOC2_DIR/*MrmApp/$DB_REL_PATH -name $db_name.substitutions 2>/dev/null)
-        if [ ! -z $sub_file ]; then
-            msi -I$(dirname $sub_file) -S$sub_file > "$OUTPUT_DIR/$db_name.db"
-            echo "EXPANDED: $sub_file"
-	else
+        db_file=$(find $MRFIOC2_DIR/*MrmApp/$DB_REL_PATH -name $db_name.template 2>/dev/null)
+        if [ ! -z db_file ]; then
+            cp $db_file $OUTPUT_DIR
+            echo "COPIED: $db_file"
+       else
             >&4 echo "ERROR $db not found!"
-	fi
+       fi
     fi
 done
 exec 1>&3 2>&4

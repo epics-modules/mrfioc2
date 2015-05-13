@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>696</width>
+    <height>442</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>671</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>654</width>
+      <height>1550</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>1550</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>661</width>
+       <height>1531</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="caInclude" name="cainclude_3">
+        <property name="macro">
+         <string notr="true">ID=0, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_4">
+        <property name="macro">
+         <string notr="true">ID=1, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_5">
+        <property name="macro">
+         <string notr="true">ID=2, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_7">
+        <property name="macro">
+         <string notr="true">ID=3, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_14">
+        <property name="macro">
+         <string notr="true">ID=4, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_559">
+        <property name="macro">
+         <string notr="true">ID=5, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_560">
+        <property name="macro">
+         <string notr="true">ID=6, P=FrontOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_562">
+        <property name="macro">
+         <string notr="true">ID=0, P=FrontUnivOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_563">
+        <property name="macro">
+         <string notr="true">ID=1, P=FrontUnivOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_564">
+        <property name="macro">
+         <string notr="true">ID=2, P=FrontUnivOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_565">
+        <property name="macro">
+         <string notr="true">ID=3, P=FrontUnivOut, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_566">
+        <property name="macro">
+         <string notr="true">ID=0, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_567">
+        <property name="macro">
+         <string notr="true">ID=1, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_568">
+        <property name="macro">
+         <string notr="true">ID=2, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_569">
+        <property name="macro">
+         <string notr="true">ID=3, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_570">
+        <property name="macro">
+         <string notr="true">ID=4, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_571">
+        <property name="macro">
+         <string notr="true">ID=5, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_572">
+        <property name="macro">
+         <string notr="true">ID=6, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_573">
+        <property name="macro">
+         <string notr="true">ID=7, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_574">
+        <property name="macro">
+         <string notr="true">ID=8, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_575">
+        <property name="macro">
+         <string notr="true">ID=9, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_576">
+        <property name="macro">
+         <string notr="true">ID=10, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_577">
+        <property name="macro">
+         <string notr="true">ID=11, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_578">
+        <property name="macro">
+         <string notr="true">ID=12, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_579">
+        <property name="macro">
+         <string notr="true">ID=13, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_580">
+        <property name="macro">
+         <string notr="true">ID=14, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_581">
+        <property name="macro">
+         <string notr="true">ID=15, P=RearUniv, EVR=$(EVR)</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_out-details-min.ui</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

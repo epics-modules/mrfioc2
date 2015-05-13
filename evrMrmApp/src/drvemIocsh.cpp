@@ -244,7 +244,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
-        throw std::runtime_error("Address does not correspond to an EVR");
+        throw std::runtime_error("Firmware does not correspond to an EVR");
 
     ver=v&FWVersion_ver_mask;
     ver>>=FWVersion_ver_shift;
@@ -271,17 +271,20 @@ int checkUIOVersion(int expect)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s\n", ifaceversion);
+        errlogPrintf("Can't open %s in order to read kernel module interface version. Is kernel module loaded?\n", ifaceversion);
         return 1;
     }
     if(fscanf(fd, "%d", &version)!=1) {
-        perror("checkUIOVersion fscanf");
+        errlogPrintf("Failed to read %s in order to get the kernel module interface version. Is kernel module loaded?\n", ifaceversion);
+        return 1;
     }
     fclose(fd);
     if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n",version,expect);
+        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+        if(version > expect) return 0;
+        else return 1;
     }
-    return version!=expect;
+    return 0;
 }
 #else
 static int checkUIOVersion(int expect) {return 0;}
@@ -299,17 +302,16 @@ try {
     bus.pci.device = d;
     bus.pci.function = f;
     if(mrf::Object::getObject(id)){
-        printf("ID %s already in use\n",id);
+        printf("Object ID %s already in use\n",id);
         return;
     }
 
-    if(checkUIOVersion(1))
-        return;
+    if(checkUIOVersion(1) > 0) return;  // continue only if kernel version is successfully read and is as expected or higher.
 
     const epicsPCIDevice *cur=0;
 
     if( devPCIFindDBDF(mrmevrs,o,b,d,f,&cur,0) ){
-        printf("PCI Device not found\n");
+        printf("PCI Device not found on %d:%d.%d\n", b, d, f);
         return;
     }
 
@@ -325,33 +327,33 @@ try {
     if(cur->id.device == PCI_DEVICE_ID_EC_30) {
         if(devPCIToLocalAddr(cur,0,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
         {
-            printf("Failed to map BARs 0 for EC 30\n");
+            printf("PCI error: Failed to map BARs 0 for EC 30\n");
             return;
         }
         if(!evr){
-            printf("BAR mapped to zero? (%08lx)\n", (unsigned long)evr);
+            printf("PCI error: BAR mapped to zero? (%08lx)\n", (unsigned long)evr);
             return;
         }
 
         if( devPCIBarLen(cur,0,&evrlen) ) {
-            printf("Can't find BAR #0 length\n");
+            printf("PCI error: Can't find BAR #0 length\n");
             return;
         }
     } else {
         if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
             devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
         {
-            printf("Failed to map BARs 0 and 2\n");
+            printf("PCI error: Failed to map BARs 0 and 2\n");
             return;
         }
         if(!plx || !evr){
-            printf("BARs mapped to zero? (%08lx,%08lx)\n",
+            printf("PCI error: BARs mapped to zero? (%08lx,%08lx)\n",
                    (unsigned long)plx,(unsigned long)evr);
             return;
         }
 
         if( devPCIBarLen(cur,2,&evrlen) ) {
-            printf("Can't find BAR #2 length\n");
+            printf("PCI error: Can't find BAR #2 length\n");
             return;
         }
     }

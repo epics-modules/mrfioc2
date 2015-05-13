@@ -50,14 +50,8 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="layoutDirection">
-    <enum>Qt::RightToLeft</enum>
-   </property>
    <property name="channel" stdset="0">
-    <string notr="true">$(EVR):Evtmap-$(EVT)-DNC.OUT</string>
-   </property>
-   <property name="fontScaleMode">
-    <enum>caLineEdit::Height</enum>
+    <string notr="true">$(EVR):Evtmap-$(EVT)-DNC.DESC</string>
    </property>
   </widget>
   <widget class="caLabel" name="calabel_4">

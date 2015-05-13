@@ -65,7 +65,6 @@ file "$(TEMPLATE_DIR)/evr-pcie-300.template"
 		Pul8-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
 		Pul8-Delay-SP=0,		#0-4294967295 : Delay in us 
 		Pul8-Width-SP=0,		#0-65535 : Width in us
-		Pul8-Prescaler-SP=1,   	#0-255 : Pulser prescaler
 
 		Pul9-Ena-Sel=1,			#0 = Disabled, 1 = Enabled
 		Pul9-Polarity-Sel=0,   	#0 = Active High, 1 = Active Low
