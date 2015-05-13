@@ -15,7 +15,7 @@ usage()
     echo "    -h                   This help"
 }
 
-while getopts ":s:r:h" o; do
+while getopts ":s:r:f:h" o; do
     case "${o}" in
         s)
             SYS=${OPTARG}
