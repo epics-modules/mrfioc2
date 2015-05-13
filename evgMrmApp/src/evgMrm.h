@@ -17,6 +17,8 @@
 #include <epicsEvent.h>
 #include <epicsMutex.h>
 
+#include <devLibPCI.h>
+
 #include "evgAcTrig.h"
 #include "evgEvtClk.h"
 #include "evgSoftEvt.h"
@@ -44,7 +46,7 @@ enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm : public mrf::ObjectInst<evgMrm> {
 public:
-    evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const);
+    evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);
     ~evgMrm();
 
     /* locking done internally */
@@ -121,6 +123,8 @@ public:
     mrmDataBufTx                  m_buftx;
 
     void show(int lvl);
+
+    const epicsPCIDevice*         m_pciDevice;
 
 private:
     const std::string             m_id;

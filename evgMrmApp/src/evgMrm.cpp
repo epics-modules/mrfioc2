@@ -29,7 +29,7 @@
 
 #include <epicsExport.h>
 
-evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg):
+evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
     mrf::ObjectInst<evgMrm>(id),
     irqStop0_queued(0),
     irqStop1_queued(0),
@@ -45,7 +45,8 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_evtClk(id+":EvtClk", pReg),
     m_softEvt(id+":SoftEvt", pReg),
     m_seqRamMgr(this),
-    m_softSeqMgr(this)
+    m_softSeqMgr(this),
+    m_pciDevice(pciDevice)
 {
     try{
         for(int i = 0; i < evgNumEvtTrig; i++) {
@@ -117,7 +118,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
 
         m_timerEvent = new epicsEvent();
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
-
+        
         init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
                                             m_seqRamMgr.getSeqRam(0));
         init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
@@ -290,7 +291,10 @@ evgMrm::isr_pci(void* arg) {
      * Change by: tslejko
      * Reason: cPCI support
      */
-    BITSET32(evg->m_pReg,IrqEnable,EVG_IRQ_ENABLE); //Renable EVG interrupt
+    if(devPCIEnableInterrupt(evg->m_pciDevice)) {
+        printf("PCI: Failed to enable interrupt\n");
+        return;
+    }
 }
 
 void
@@ -316,7 +320,6 @@ evgMrm::isr(void* arg) {
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
-
 
     #ifdef vxWorks
     /* actually: if isr runs in kernel mode */
