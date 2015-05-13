@@ -32,10 +32,10 @@
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
 #include "drvemCML.h"
+#include "delayModule.h"
 #include "drvemRxBuf.h"
 
 #include "mrmGpio.h"
-#include "delayModule.h"
 
 #include "mrmDataBufTx.h"
 #include "sfp.h"
@@ -128,7 +128,7 @@ public:
     virtual MRMOutput* output(OutputType,epicsUInt32 o);
     virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
-    DelayModule* delay(epicsUInt32 i);
+    virtual DelayModule* delay(epicsUInt32 i);
 
     virtual MRMInput* input(epicsUInt32 idx);
     virtual const MRMInput* input(epicsUInt32) const;

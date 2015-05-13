@@ -21,7 +21,7 @@
  * This class is reused by other subunits which
  * have identical mapping registers.
  */
-class epicsShareClass MRMInput : public Input
+class MRMInput : public Input
 {
 public:
     MRMInput(const std::string& n, volatile unsigned char *, size_t);

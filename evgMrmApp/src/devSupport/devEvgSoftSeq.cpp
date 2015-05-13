@@ -404,7 +404,7 @@ read_wf_timestamp(waveformRecord* pwf) {
                 bptr[i] = timestamp[i] * pow(10.0,(int) timeScaler) / evtClk;
         }
 
-        pwf->nord = timestamp.size();
+		pwf->nord = (epicsUInt32)timestamp.size();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
         ret = S_dev_noDevice;
@@ -455,7 +455,7 @@ read_wf_eventCode(waveformRecord* pwf) {
         for(unsigned int i = 0; i < eventCode.size(); i++)
             bptr[i] = eventCode[i];
 
-        pwf->nord = eventCode.size();
+		pwf->nord = (epicsUInt32)eventCode.size();
 
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);

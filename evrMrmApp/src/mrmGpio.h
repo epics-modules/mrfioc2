@@ -9,7 +9,7 @@
 
 class EVRMRM;
 
-class epicsShareClass MRMGpio{
+class MRMGpio{
 public:
     MRMGpio(EVRMRM&);
 

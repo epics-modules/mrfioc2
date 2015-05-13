@@ -679,6 +679,7 @@ reportCard(mrf::Object* obj, void* arg) {
     bus_configuration *bus = evg->getBusConfiguration();
     if(bus->busType == busType_vme){
         struct VMECSRID vmeDev;
+		vmeDev.board = 0; vmeDev.revision = 0; vmeDev.vendor = 0;
         volatile unsigned char* csrAddr = devCSRTestSlot(vmeEvgIDs, bus->vme.slot, &vmeDev);
         if(csrAddr){
             epicsUInt32 ader = CSRRead32(csrAddr + CSR_FN_ADER(1));

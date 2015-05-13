@@ -26,6 +26,7 @@ class epicsShareClass Output;
 class epicsShareClass PreScaler;
 class epicsShareClass Input;
 class epicsShareClass CML;
+class epicsShareClass DelayModuleEvr;
 
 enum TSSource {
   TSSourceInternal=0,

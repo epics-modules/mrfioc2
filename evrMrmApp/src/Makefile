@@ -29,6 +29,7 @@ evrMrm_SRCS += drvemInput.cpp
 evrMrm_SRCS += drvemPrescaler.cpp
 evrMrm_SRCS += drvemPulser.cpp
 evrMrm_SRCS += drvemCML.cpp
+evrMrm_SRCS += delayModule.cpp
 evrMrm_SRCS += drvemRxBuf.cpp
 evrMrm_SRCS += devMrmBuf.cpp
 
@@ -38,7 +39,6 @@ evrMrm_SRCS += devMrmBufRx.cpp
 evrMrm_SRCS += irqHack.cpp
 
 evrMrm_SRCS += mrmGpio.cpp
-evrMrm_SRCS += delayModule.cpp
 
 ifeq ($(OS),Windows_NT)
 evrMrm_LIBS += mrfCommon mrmShared evr epicspci epicsvme $(EPICS_BASE_IOC_LIBS)

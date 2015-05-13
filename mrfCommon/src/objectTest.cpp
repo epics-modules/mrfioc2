@@ -31,10 +31,10 @@ public:
 
     epicsUInt32 getdarr(double* v, epicsUInt32 l) const
     {
-        if(!v) return darr.size();
-        l=std::min((size_t)l,darr.size());
+		if (!v) return (epicsUInt32)darr.size();
+		l = (epicsUInt32)std::min((size_t)l, darr.size());
         std::copy(darr.begin(), darr.begin()+l, v);
-        return l;
+		return l;
     }
     void setdarr(const double* v, epicsUInt32 l)
     {

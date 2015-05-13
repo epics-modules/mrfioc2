@@ -10,15 +10,17 @@
 
 #include "mrf/version.h"
 
+#include "dbCommon.h"
+#include <epicsExport.h>
+
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
+#include "evr/delay.h"
 #include "evr/input.h"
 #include "evr/prescaler.h"
 #include "evr/cml.h"
 #include "evr/util.h"
-
-#include "dbCommon.h"
 
 /**@file evr.cpp
  *
@@ -74,13 +76,17 @@ CML::~CML()
 {
 }
 
+DelayModuleEvr::~DelayModuleEvr()
+{
+}
+
 long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 {
     IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
 
     if(!stat) return 1;
 
-    *io=stat->statusChange(dir);
+    *io=stat->statusChange((dir != 0));
 
     return 0;
 }
@@ -229,4 +235,10 @@ OBJECT_BEGIN(CML) {
 
 } OBJECT_END(CML)
 
-// the delay module object properties are defined in drvem.cpp, since it does not depend on evr but only on evrMrm.
+OBJECT_BEGIN(DelayModuleEvr) {
+
+	OBJECT_PROP2("Enable", &DelayModuleEvr::enabled, &DelayModuleEvr::setState);
+	OBJECT_PROP2("Delay0", &DelayModuleEvr::getDelay0, &DelayModuleEvr::setDelay0);
+	OBJECT_PROP2("Delay1", &DelayModuleEvr::getDelay1, &DelayModuleEvr::setDelay1);
+
+} OBJECT_END(DelayModuleEvr)

@@ -1,4 +1,4 @@
-#include <epicsExport.h>
+
 #include "mrmGpio.h"
 #include "drvem.h"
 

@@ -18,6 +18,7 @@ mrmShared_SRCS += sfp.cpp
 
 ifeq ($(OS),Windows_NT)
 mrmShared_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
+mrmShared_SYS_LIBS += WS2_32
 endif
 
 #---------------------

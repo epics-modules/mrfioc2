@@ -1,7 +1,7 @@
-#include <epicsExport.h>
-#include "delayModule.h"
-#include "drvem.h"
 
+
+#include "drvem.h"
+#include "delayModule.h"
 
 #define SERIAL_DATA_BIT(idx)            (1 << (0+4*idx))
 #define SERIAL_CLOCK_BIT(idx)           (1 << (1+4*idx))
@@ -10,9 +10,13 @@
 
 
 DelayModule::DelayModule(const std::string& n, EVRMRM* o, unsigned int idx)
-    : mrf::ObjectInst<DelayModule>(n)
+    : DelayModuleEvr(n)
     ,N_(idx)
     ,gpio_(o->gpio())
+{
+}
+
+DelayModule::~DelayModule()
 {
 }
 
@@ -20,7 +24,7 @@ void DelayModule::setDelay0(double val)
 {
     if(val < 2.200) val = 2.200;
     if(val > 12.430)val = 12.430;
-    setDelay(true, false, (val - 2.2) * 100 + 0.5, 0);
+	setDelay(true, false, (epicsUInt16)((val - 2.2) * 100 + 0.5), 0);
 }
 
 double DelayModule::getDelay0() const
@@ -32,7 +36,7 @@ void DelayModule::setDelay1(double val)
 {
     if(val < 2.200) val = 2.200;
     if(val > 12.430)val = 12.430;
-    setDelay(false, true, 0, (val - 2.200) * 100.0 + 0.5);
+	setDelay(false, true, 0, (epicsUInt16)((val - 2.200) * 100.0 + 0.5));
 }
 
 double DelayModule::getDelay1() const
