@@ -6,7 +6,7 @@
 #include <epicsGuard.h>
 #include <epicsTypes.h>
 
-class epicsShareClass DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>, public IOStatus
+class epicsShareClass DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>
 {
 public:
 	DelayModuleEvr(const std::string& n) : mrf::ObjectInst<DelayModuleEvr>(n) {}
