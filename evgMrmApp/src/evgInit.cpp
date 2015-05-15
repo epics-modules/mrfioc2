@@ -245,7 +245,7 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, bus, regCpuAddr);
+        evgMrm* evg = new evgMrm(id, bus, regCpuAddr, NULL);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -387,7 +387,7 @@ mrmEvgSetupPCI (
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, bus, BAR_evg);
+        evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
 
 		evg->getSeqRamMgr()->getSeqRam(0)->disable();
 		evg->getSeqRamMgr()->getSeqRam(1)->disable();
