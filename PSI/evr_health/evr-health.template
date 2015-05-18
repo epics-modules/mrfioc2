@@ -1,0 +1,179 @@
+# Health monitoring recodrds for PSI EVR. 
+#
+# Macros:
+#  SYS = System name
+#  EVR = EVR devObj name
+#
+record(calc, "$(SYS)-$(EVR)-HEALTH:Sts-I"){
+	field(DESC, "Global EVR status, 0 = ok, != err")
+
+	field(SCAN,".1 second")
+
+	field(INPA, "$(SYS)-$(EVR)-HEALTH:Cnt-LinkTimo-I.SEVR")
+	field(INPB, "$(SYS)-$(EVR)-HEALTH:Link-Sts.SEVR")
+	field(INPC, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-I.SEVR")
+	field(INPD, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-Rate-I.SEVR")
+	field(INPE, "$(SYS)-$(EVR)-HEALTH:Cnt-HwOflw-I.SEVR")  
+	field(INPF, "$(SYS)-$(EVR)-HEALTH:Cnt-SwOflw-I.SEVR") 
+	field(INPG, "$(SYS)-$(EVR)-HEALTH:Pll-Sts.SEVR") 
+	field(INPH, "$(SYS)-$(EVR)-HEALTH:SFP-T-I.SEVR") 
+	field(INPI, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-TX-I.SEVR")
+	field(INPJ, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-RX-I.SEVR")
+	
+	field(CALC, "A+B+C+D+E+F+G+H+I+J")
+
+	field(HIGH,"1")
+	field(HSV,"MAJOR")
+
+} 
+
+record(calc, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-calc_"){
+	field(DESC, "Reason calculator, used internally...")
+
+	field(SCAN,".1 second")
+
+	field(INPA, "$(SYS)-$(EVR)-HEALTH:Cnt-LinkTimo-I.SEVR")
+	field(INPB, "$(SYS)-$(EVR)-HEALTH:Link-Sts.SEVR")
+	field(INPC, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-I.SEVR")
+	field(INPD, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-Rate-I.SEVR")
+	field(INPE, "$(SYS)-$(EVR)-HEALTH:Cnt-HwOflw-I.SEVR")  
+	field(INPF, "$(SYS)-$(EVR)-HEALTH:Cnt-SwOflw-I.SEVR") 
+	field(INPG, "$(SYS)-$(EVR)-HEALTH:Pll-Sts.SEVR") 
+	field(INPH, "$(SYS)-$(EVR)-HEALTH:SFP-T-I.SEVR") 
+	field(INPI, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-TX-I.SEVR")
+	field(INPJ, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-RX-I.SEVR")
+	
+	field(CALC, "(B>=1)?1:(D>=1?2:( (H+I+J) >= 1?3):0)")
+	field(FLNK, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-I")
+} 
+
+
+
+record(mbbi, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-I"){
+	field(INP, "$(SYS)-$(EVR)-HEALTH:Sts-Reason-calc_")
+
+	field(ZRVL, "0")
+	field(ZRST,	"OK")
+
+	field(ONVL,"1")
+	field(ONST,"Link error")
+
+	field(TWVL,"2")
+	field(TWST, "RX cnt error")
+
+	field(THVL, "3")
+	field(THST, "SFP error")
+}
+
+
+
+record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-LinkTimo-I") {
+  field(INP , "$(SYS)-$(EVR):Cnt-LinkTimo-I CP")
+  field(TSEL , "$(SYS)-$(EVR):Cnt-LinkTimo-I.TIME")
+  
+  field(DESC, "# of heartbeat timeout")
+}
+
+record(bi, "$(SYS)-$(EVR)-HEALTH:Link-Sts") {
+  field(INP , "$(SYS)-$(EVR):Link-Sts CP")
+  field(TSEL , "$(SYS)-$(EVR):Link-Sts.TIME")
+  
+  field(DESC, "Status of event link")
+  field(ZNAM, "Fail")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")  
+}
+
+record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-I") {
+  field(INP , "$(SYS)-$(EVR):Cnt-RxErr-I CP")
+  field(TSEL , "$(SYS)-$(EVR):Cnt-RxErr-I.TIME")
+  field(HIGH, "10")
+  field(HSV, "MINOR")
+  field(DESC, "Receive Error Count")
+}
+
+record(ai, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-Rate-I") {
+  field(INP,"$(SYS)-$(EVR):Cnt-RxErr-Rate_ CP")
+  field(TSEL,"$(SYS)-$(EVR):Cnt-RxErr-Rate_.TIME")
+  
+  field(DESC, "Counts errors in time interval")  
+  field(HIHI, "1")
+  field(HHSV, "MAJOR")
+  field(LOLO, "-1")	#invalid
+  field(LLSV, "MAJOR")  
+}
+
+record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-HwOflw-I") {
+  field(INP , "$(SYS)-$(EVR):Cnt-HwOflw-I CP")
+  field(TSEL , "$(SYS)-$(EVR):Cnt-HwOflw-I.TIME")
+    
+  field(DESC, "FIFO Hw Overflow Count")  
+  field(HIGH, "1")
+  field(HSV,  "MAJOR")
+}
+
+record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-SwOflw-I") {
+  field(INP , "$(SYS)-$(EVR):Cnt-SwOflw-I CP")
+  field(TSEL, "$(SYS)-$(EVR):Cnt-SwOflw-I.TIME")  
+
+  field(DESC, "FIFO Sw Overrate Count")    
+  field(HIGH, "1")
+  field(HSV,  "MAJOR")
+}
+
+record(bi, "$(SYS)-$(EVR)-HEALTH:Pll-Sts") {
+  field(INP , "$(SYS)-$(EVR):Pll-Sts CP")
+  field(TSEL , "$(SYS)-$(EVR):Pll-Sts.TIME")
+  
+  field(DESC, "Status of PLL")
+  field(ZNAM, "Error")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")
+}
+
+
+##SFP records
+record(ai, "$(SYS)-$(EVR)-HEALTH:SFP-T-I") {
+  field(INP , "$(SYS)-$(EVR):SFP-T-I CP")
+  field(TSEL , "$(SYS)-$(EVR):SFP-T-I.TIME")
+  
+  field(DESC, "Tranceiver Temperature")  
+  field(HIGH, "40")
+  field(HSV , "MINOR")
+  field(HIHI, "50")
+  field(HHSV, "MAJOR")
+  field(LOW , "0")
+  field(LSV , "INVALID")
+  field(EGU , "C")
+  field(PREC, "2")
+}
+
+record(ai, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-TX-I") {
+  field(INP , "$(SYS)-$(EVR):SFP-Pwr-TX-I CP")
+  field(TSEL , "$(SYS)-$(EVR):SFP-Pwr-TX-I.TIME")
+  
+  field(DESC, "Tranceiver Output Power")
+  field(HIGH, "400")
+  field(HSV , "MINOR")
+  field(LOW , "200")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")
+  field(PREC, "2")
+}
+
+record(ai, "$(SYS)-$(EVR)-HEALTH:SFP-Pwr-RX-I") {
+  field(INP , "$(SYS)-$(EVR):SFP-Pwr-RX-I CP")
+  field(TSEL , "$(SYS)-$(EVR):SFP-Pwr-RX-I.TIME")
+  
+  field(DESC, "Tranceiver Input Power")  
+  field(HIGH, "600")
+  field(HSV , "MINOR")
+  field(LOW , "100")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")  
+  field(PREC, "1")  
+}
