@@ -1,0 +1,3476 @@
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Enable-Sel") {
+    field( DESC, "EVG Master Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive), PROP=Enable")
+    field( UDF,  "0")
+    field( PINI, "RUNNING")
+    field( VAL,  "1")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Enable-RB") {
+    field( DESC, "EVG Master Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):FwVer-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(EVG,recursive), PROP=Version")
+  field(PINI, "YES")
+  field(DESC, "Firmware version")
+}
+
+record(stringin, "$(SYS,recursive)-$(EVG,recursive):SwVer-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(EVG,recursive), PROP=Sw Version")
+  field(PINI, "YES")
+  field(DESC, "Software version")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd") {
+    field( DTYP, "EVG")
+    field( DESC, "EVG Reset MXC")
+    field( OUT,  "#C S @$(EVG,recursive)")
+    field( PINI, "YES")
+    field( VAL, "1")
+    field( UDF, "0")
+}
+
+record(stringin, "$(SYS,recursive)-$(EVG,recursive):Timestamp-RB") {
+    field( DTYP, "EVG TIMESTAMP")
+    field( DESC, "EVG TimeStamp")
+    field( INP , "#C S @$(EVG,recursive)")
+    field( SCAN, "I/O Intr")
+}
+
+record(bo,"$(SYS,recursive)-$(EVG,recursive):SyncTimestamp-Cmd" ) {
+    field( DTYP, "EVG TIMESTAMP")
+    field( DESC, "EVG Sync TimeStamp")
+    field( OUT,  "#C S @$(EVG,recursive)")
+}
+
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):DbusStatus-RB" ) {
+    field( DESC, "EVG Dbus Status")
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive), PROP=DbusStatus")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-Enable-Sel") {
+    field( DESC, "EVG Soft Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):SoftEvt, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-Enable-RB") {
+    field( DESC, "EVG Soft Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):SoftEvt, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-EvtCode-SP") {
+    field( DESC, "EVG Software Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):SoftEvt, PROP=EvtCode")
+    field( UDF,  "0")
+    field( PINI, "YES")
+    field( VAL,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-EvtCode-RB")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):SoftEvt-EvtCode-RB") {
+    field( DESC, "EVG Software Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):SoftEvt, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(longout, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Divider-SP") {
+    field( DESC, "EVG AC Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Divider")
+    field( PINI, "YES")
+    field( VAL,  "$(AcTrig-Divider-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Divider-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Divider-RB") {
+    field( DESC, "EVG AC Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Divider")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Phase-SP") {
+    field( DESC, "EVG AC Phase Shifter")
+    field( DTYP, "Obj Prop double")
+    field( OUT,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Phase")
+    field( PINI, "YES")
+    field( VAL,  "$(AcTrig-Phase-SP=0.0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "25.6")
+    field( LOLO, "-0.1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "msec")
+    field( HOPR, "25.5")
+    field( LOPR, "0")
+    field( DRVH, "25.5")
+    field( DRVL, "0")
+    field( PREC, "1")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Phase-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Phase-RB") {
+    field( DESC, "EVG AC Phase Shifter")
+    field( DTYP, "Obj Prop double")
+    field( INP,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Phase")
+    field( HIHI, "25.6")
+    field( LOLO, "-0.1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "msec")
+    field( PREC, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Bypass-Sel") {
+    field( DESC, "Bypass AC divider and Phase shifter")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Bypass")
+    field( PINI, "YES")
+    field( VAL , "$(AcTrig-Bypass-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Off")
+    field( ONAM, "On")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Bypass-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):AcTrig-Bypass-RB") {
+    field( DESC, "Bypass AC divider and Phase shifter")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):AcTrig, PROP=Bypass")
+    field( ZNAM, "Off")
+    field( ONAM, "On")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-SyncSrc-Sel") {
+    field( DESC, "Sync to Event Clock or Mxc7")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):AcTrig, PROP=SyncSrc")
+    field( PINI, "YES")
+    field( VAL , "$(AcTrig-SyncSrc-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Event Clk")
+    field( ONAM, "Mxc7")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):AcTrig-SyncSrc-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):AcTrig-SyncSrc-RB") {
+    field( DESC, "Sync to Event Clock or Mxc7")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):AcTrig, PROP=SyncSrc")
+    field( ZNAM, "Event Clk")
+    field( ONAM, "Mxc7")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S0 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S1 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S2 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S3 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S4 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S5 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S6 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):AcTrig-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C S7 @$(EVG,recursive):AcTrig")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(AcTrig-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Source-Sel") {
+    field( DESC, "EVG Evt Clk Source")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):EvtClk, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(EvtClk-Source-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "FracSyn")
+    field( ONAM, "RF")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Source-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Source-RB") {
+    field( DESC, "EVG Evt Clk Source")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):EvtClk, PROP=Source")
+    field( ZNAM, "FracSyn")
+    field( ONAM, "RF")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Frequency-RB")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFFreq-SP") {
+    field( DESC, "EVG RF Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT,  "@OBJ=$(EVG,recursive):EvtClk, PROP=RFFreq")
+    field( PINI, "YES")
+    field( VAL,  "$(EvtClk-RFFreq-SP=500,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "1600")
+    field( LOLO, "50")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "MHz")
+    field( HOPR, "1600")
+    field( LOPR, "50")
+    field( DRVH, "1600")
+    field( DRVL, "50")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFFreq-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFFreq-RB") {
+    field( DESC, "EVG RF Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP,  "@OBJ=$(EVG,recursive):EvtClk, PROP=RFFreq")
+    field( HIHI, "1600")
+    field( LOLO, "50")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( EGU,  "MHz")
+    field( HOPR, "1600")
+    field( LOPR, "50")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Frequency-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFDiv-SP") {
+    field( DESC, "RF Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):EvtClk, PROP=RFDiv")
+    field( PINI, "YES")
+    field( VAL,  "$(EvtClk-RFDiv-SP=4,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "33")
+    field( LOLO, "0")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFDiv-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):EvtClk-RFDiv-RB") {
+    field( DESC, "RF Divider")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):EvtClk, PROP=RFDiv")
+    field( HIHI, "33")
+    field( LOLO, "0")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Frequency-RB")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):EvtClk-FracSynFreq-SP") {
+    field( DESC, "Fractional Synthesizer Freq")
+    field( DTYP, "Obj Prop double")
+    field( OUT,  "@OBJ=$(EVG,recursive):EvtClk, PROP=FracSynFreq")
+    field( EGU,  "MHz")
+    field( PINI, "YES")
+    field( VAL,  "$(EvtClk-FracSynFreq-SP=124.920,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "125.5")
+    field( LOLO, "49.5")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( HOPR, "125")
+    field( LOPR, "50")
+    field( DRVH, "125")
+    field( DRVL, "50")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-FracSynFreq-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):EvtClk-FracSynFreq-RB") {
+    field( DESC, "Fractional Synthesizer Freq")
+    field( DTYP, "Obj Prop double")
+    field( INP,  "@OBJ=$(EVG,recursive):EvtClk, PROP=FracSynFreq")
+    field( EGU,  "MHz")
+    field( HIHI, "125.5")
+    field( LOLO, "49.5")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Frequency-RB")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):EvtClk-Frequency-RB") {
+    field( DESC, "EVG Event Clock Frequecny")
+    field( DTYP, "Obj Prop double")
+    field( INP,  "@OBJ=$(EVG,recursive):EvtClk, PROP=Frequency")
+    field( EGU,  "MHz")
+    field( PREC, "3")
+}
+
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus0-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus0, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus0-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc0")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus1-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus1, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus1-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc1")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus2-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus2, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus2-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc2")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus3-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus3, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus3-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc3")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus4-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus4, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus4-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc4")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus5-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus5, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus5-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc5")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus6-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus6, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus6-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc6")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):Dbus7-Map-Sel") {
+    field( DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):Dbus7, PROP=Source")
+    field( PINI, "YES")
+    field( VAL,  "$(Dbus7-Map-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "From Input")
+    field( TWST, "From Mxc7")
+    field( THST, "From upstream EVG")
+    field( ZRVL, 0)
+    field( ONVL, 1)
+    field( TWVL, 2)
+    field( THVL, 3)
+    field( FRSV, "INVALID")
+    field( FVSV, "INVALID")
+    field( SXSV, "INVALID")
+    field( SVSV, "INVALID")
+    field( EISV, "INVALID")
+    field( NISV, "INVALID")
+    field( TESV, "INVALID")
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-EnaIrq-Sel") {
+    field( DESC, "Enable 1 Pulse Per Second Input")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivInp0, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-EnaIrq-RB")
+    field( VAL, "$(UnivInp0-EnaIrq-Sel=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):UnivInp0, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+## DBus select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc0-SP") {
+    field( DESC, "Dbus 0")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc1-SP") {
+    field( DESC, "Dbus 1")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc2-SP") {
+    field( DESC, "Dbus 2")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc3-SP") {
+    field( DESC, "Dbus 3")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc4-SP") {
+    field( DESC, "Dbus 4")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc5-SP") {
+    field( DESC, "Dbus 5")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc6-SP") {
+    field( DESC, "Dbus 6")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp0-DbusSrc7-SP") {
+    field( DESC, "Dbus 7")
+    field( DTYP, "EVG Dbus UnivInp0")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp0-DbusSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-EnaIrq-Sel") {
+    field( DESC, "Enable 1 Pulse Per Second Input")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivInp1, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-EnaIrq-RB")
+    field( VAL, "$(UnivInp1-EnaIrq-Sel=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):UnivInp1, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+## DBus select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc0-SP") {
+    field( DESC, "Dbus 0")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc1-SP") {
+    field( DESC, "Dbus 1")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc2-SP") {
+    field( DESC, "Dbus 2")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc3-SP") {
+    field( DESC, "Dbus 3")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc4-SP") {
+    field( DESC, "Dbus 4")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc5-SP") {
+    field( DESC, "Dbus 5")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc6-SP") {
+    field( DESC, "Dbus 6")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp1-DbusSrc7-SP") {
+    field( DESC, "Dbus 7")
+    field( DTYP, "EVG Dbus UnivInp1")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp1-DbusSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-EnaIrq-Sel") {
+    field( DESC, "Enable 1 Pulse Per Second Input")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivInp2, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-EnaIrq-RB")
+    field( VAL, "$(UnivInp2-EnaIrq-Sel=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):UnivInp2, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+## DBus select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc0-SP") {
+    field( DESC, "Dbus 0")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc1-SP") {
+    field( DESC, "Dbus 1")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc2-SP") {
+    field( DESC, "Dbus 2")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc3-SP") {
+    field( DESC, "Dbus 3")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc4-SP") {
+    field( DESC, "Dbus 4")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc5-SP") {
+    field( DESC, "Dbus 5")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc6-SP") {
+    field( DESC, "Dbus 6")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp2-DbusSrc7-SP") {
+    field( DESC, "Dbus 7")
+    field( DTYP, "EVG Dbus UnivInp2")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp2-DbusSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-EnaIrq-Sel") {
+    field( DESC, "Enable 1 Pulse Per Second Input")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivInp3, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-EnaIrq-RB")
+    field( VAL, "$(UnivInp3-EnaIrq-Sel=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):UnivInp3, PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+## DBus select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc0-SP") {
+    field( DESC, "Dbus 0")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S0 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc1-SP") {
+    field( DESC, "Dbus 1")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S1 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc2-SP") {
+    field( DESC, "Dbus 2")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S2 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc3-SP") {
+    field( DESC, "Dbus 3")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S3 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc4-SP") {
+    field( DESC, "Dbus 4")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S4 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc5-SP") {
+    field( DESC, "Dbus 5")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S5 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc6-SP") {
+    field( DESC, "Dbus 6")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S6 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):UnivInp3-DbusSrc7-SP") {
+    field( DESC, "Dbus 7")
+    field( DTYP, "EVG Dbus UnivInp3")
+    field( OUT , "#C S7 @$(EVG,recursive):UnivInp3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(UnivInp3-DbusSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(mbbo, "$(SYS,recursive)-$(EVG,recursive):UnivOut0-Source-Sel") {
+    field(DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivOut0, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "$(UnivOut0-Source-Sel=0,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivOut0-Source-RB")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(SYS,recursive)-$(EVG,recursive):UnivOut0-Source-RB") {
+    field( DTYP, "Obj Prop uint16")
+    field( INP , "@OBJ=$(EVG,recursive):UnivOut0, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+}
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):UnivOut1-Source-Sel") {
+    field(DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivOut1, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "$(UnivOut1-Source-Sel=0,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivOut1-Source-RB")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(SYS,recursive)-$(EVG,recursive):UnivOut1-Source-RB") {
+    field( DTYP, "Obj Prop uint16")
+    field( INP , "@OBJ=$(EVG,recursive):UnivOut1, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+}
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):UnivOut2-Source-Sel") {
+    field(DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivOut2, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "$(UnivOut2-Source-Sel=0,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivOut2-Source-RB")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(SYS,recursive)-$(EVG,recursive):UnivOut2-Source-RB") {
+    field( DTYP, "Obj Prop uint16")
+    field( INP , "@OBJ=$(EVG,recursive):UnivOut2, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+}
+record(mbbo, "$(SYS,recursive)-$(EVG,recursive):UnivOut3-Source-Sel") {
+    field(DTYP, "Obj Prop uint16")
+    field( OUT , "@OBJ=$(EVG,recursive):UnivOut3, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+    field( ELSV, "INVALID")
+    field( TVSV, "INVALID")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    field( PINI, "YES")
+    field( UDF,  "0")
+    field( VAL,  "$(UnivOut3-Source-Sel=0,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):UnivOut3-Source-RB")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(SYS,recursive)-$(EVG,recursive):UnivOut3-Source-RB") {
+    field( DTYP, "Obj Prop uint16")
+    field( INP , "@OBJ=$(EVG,recursive):UnivOut3, PROP=Source")
+    field( ZRST, "Off")
+    field( ONST, "Dbus0")
+    field( TWST, "Dbus1")
+    field( THST, "Dbus2")
+    field( FRST, "Dbus3")
+    field( FVST, "Dbus4")
+    field( SXST, "Dbus5")
+    field( SVST, "Dbus6")
+    field( EIST, "Dbus7")
+    field( NIST, "High")
+    field( TEST, "Low")
+    field( ZRVL, 0)
+    field( ONVL, 32)
+    field( TWVL, 33)
+    field( THVL, 34)
+    field( FRVL, 35)
+    field( FVVL, 36)
+    field( SXVL, 37)
+    field( SVVL, 38)
+    field( EIVL, 39)
+    field( NIVL, 62)
+    field( TEVL, 63)
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt0, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt0-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt0, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt0, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt0-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt0-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt0, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt1, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt1-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt1, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt1, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt1-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt1-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt1, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt2, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt2-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt2, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt2, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt2-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt2-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt2, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt3, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt3-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt3, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt3, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt3-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt3-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt3, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt4, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt4-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt4, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt4, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt4-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt4-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt4, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt5, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt5-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt5, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt5, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt5-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt5-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt5, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt6, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt6-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt6, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt6, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt6-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt6-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt6, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bo, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt7, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt7-Enable-Sel=1,undefined)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt7, PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG,recursive):TrigEvt7, PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$(TrigEvt7-EvtCode-SP=0,undefined)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS,recursive)-$(EVG,recursive):TrigEvt7-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG,recursive):TrigEvt7, PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc0, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc0, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc0-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc0, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc0, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc0-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc0, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc0, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc0-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc0-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc0, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc0-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc0-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc0-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc0")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc0")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc0-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc1, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc1, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc1-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc1, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc1, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc1-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc1, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc1, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc1-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc1-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc1, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc1-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc1-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc1-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc1")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc1")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc1-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc2, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc2, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc2-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc2, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc2, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc2-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc2, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc2, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc2-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc2-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc2, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc2-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc2-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc2-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc2")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc2")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc2-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc3, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc3, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc3-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc3, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc3, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc3-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc3, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc3, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc3-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc3-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc3, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc3-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc3-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc3-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc3")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc3")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc3-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc4, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc4, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc4-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc4, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc4, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc4-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc4, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc4, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc4-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc4-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc4, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc4-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc4-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc4-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc4")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc4")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc4-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc5, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc5, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc5-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc5, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc5, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc5-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc5, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc5, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc5-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc5-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc5, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc5-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc5-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc5-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc5")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc5")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc5-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc6, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc6, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc6-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc6, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc6, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc6-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc6, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc6, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc6-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc6-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc6, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc6-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc6-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc6-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc6")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc6")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc6-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Status-RB") {
+    field( DESC, "EVG Mux Output Status")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc7, PROP=Status")
+    field( ZNAM, "0")
+    field( ONAM, "1")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Polarity-Sel") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc7, PROP=Polarity")
+    field( PINI, "YES")
+    field( VAL,  "$(Mxc7-Polarity-Sel=0,undefined)")
+    field( UDF,  "0")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Polarity-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Polarity-RB") {
+    field( DESC, "EVG Mux Output Polarity")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc7, PROP=Polarity")
+    field( ZNAM, "Orginal")
+    field( ONAM, "Inverted")
+}
+
+record(ao, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Frequency-SP") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc7, PROP=Frequency")
+    field( EGU , "Hz")
+    field( HOPR, "62500000")
+    field( LOPR, "0.029")
+    field( DRVH, "62500000")
+    field( DRVL, "0.029")
+    field( PREC, "3")
+    field( PINI, "YES")
+    field( VAL, "$(Mxc7-Frequency-SP=1,undefined)")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Frequency-RB") {
+    field( DESC, "EVG Mux Frequency")
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc7, PROP=Frequency")
+    field( EGU,  "Hz")
+    field( HIHI, "62500000")
+    field( LOLO, "0.029")
+    field( PREC, "3")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Prescaler-RB")
+}
+
+record(longout, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Prescaler-SP") {
+    field( DESC, "EVG Mux Prescaler")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG,recursive):Mxc7, PROP=Prescaler")
+    field( PINI, "NO")
+    field( VAL,  "$(Mxc7-Prescaler-SP=124920,undefined)")
+    field( UDF,  "0")
+    field( EGU, "Evt Clk Tick")
+    field( HOPR, "4294967295")
+    field( LOPR, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Frequency-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin , "$(SYS,recursive)-$(EVG,recursive):Mxc7-Prescaler-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(EVG,recursive):Mxc7, PROP=Prescaler")
+    field( DESC, "EVG Mux Prescaler RB")
+    field( EGU, "Evt Clk Tick")
+    field( HIHI, "4294967295")
+    field( LOLO, "2")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):ResetMxc-Cmd")
+}
+
+#
+# When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
+#
+record(ai, "$(SYS,recursive)-$(EVG,recursive):Mxc7-EvtClkFreq-RB_") {
+    field( INP,  "$(SYS,recursive){$(EVG,recursive)-EvtClk}Frequency-RB CP")
+    field( FLNK, "$(SYS,recursive)-$(EVG,recursive):Mxc7-Frequency-RB")
+}
+
+## Event trigger select
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S0 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc0-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S1 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc1-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S2 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc2-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S3 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc3-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S4 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc4-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S5 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc5-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S6 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc6-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS,recursive)-$(EVG,recursive):Mxc7-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG Trig Evt Mxc7")
+    field( OUT , "#C S7 @$(EVG,recursive):Mxc7")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$(Mxc7-TrigSrc7-SP=0,undefined)")
+    info( autosaveFields_pass0, "VAL")
+}
