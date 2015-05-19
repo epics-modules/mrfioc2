@@ -3,6 +3,7 @@ include $(TOP)/configure/CONFIG
 
 DB += evgSoftSeq.template
 DB += evg-vme.template
+DB += evg-cpci.template
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
