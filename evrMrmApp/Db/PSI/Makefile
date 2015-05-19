@@ -8,6 +8,7 @@ DB += evr-specialFunctionMap.template
 
 DB += evr-pcie-300.template
 DB += evr-vmerf230.template
+DB += evr-cpci-230.template
 
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
