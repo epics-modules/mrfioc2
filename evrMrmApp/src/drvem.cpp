@@ -209,7 +209,7 @@ try{
         kind=MRMCML::typeTG300;
         break;
     case formFactor_PCIe:
-        nOFPUV=8;
+        nOFPUV=16;
         break;
     default:
         printf("Unknown EVR variant %d\n",v);
