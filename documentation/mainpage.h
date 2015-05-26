@@ -9,8 +9,8 @@
 
 @section whatisit What is it?
 
-A driver for VME and PCI cards from Micro Research Finland for implementing a distributed
-timing system.
+A driver for VME and PCI cards from Micro Research Finland for
+event timing systems.
 
 @url http://www.mrf.fi/
 
@@ -47,9 +47,7 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 Event Generators.  Current only the VME-EVG-230
 
-Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300
-
-@note Support for the VME-EVR-230 (non-RF) is present, but has not been tested.
+Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300
 
 @section doc Documentation
 
@@ -65,13 +63,16 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v204 2.0.4 (Xyz 2020)
+@subsection v204 2.0.4 (May 2015)
 
 @subsubsection v204not Notices
 
 @li Requires devLib >= 2.6
+@li Builds against EPICS Base 3.15.1
+@li Workaround to support UIO in Linux kernel >=3.12 (debian kernel >=3.2.0)
+@li Default mrmEvrFIFOPeriod doubled to 1ms
 
-@subsubsection v204bug
+@subsubsection v204bug Bug fixes
 
 @li Fix incorrect firmware version warning message
 @li Linux only.  Rework interrupt handling to fully eliminate race in IRQ acknowledge.
@@ -80,6 +81,9 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @subsubsection v204feat Features
 
 @li Add sequence masker aSub (bit mask to replace event codes with zero)
+@li Add records to show statistics of interrupt and event FIFO processing
+@li Soft sequence loading stops at end of sequence event (0x7f).
+    Further delays/events are ignored.
 
 @subsection v203 2.0.3 (Aug 2014)
 
