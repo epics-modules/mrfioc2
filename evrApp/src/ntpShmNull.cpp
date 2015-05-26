@@ -45,7 +45,7 @@ static commonset devNtpShmAiDelta = {
 
 static void ntpShmReport(int)
 {
-    fprintf(stderr, "Not implemented for this target\n");
+    fprintf(stderr, "NTP: Not implemented for this target\n");
 }
 
 static drvet ntpShared = {

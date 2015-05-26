@@ -112,14 +112,14 @@ MRMInput::extMode() const
     else if(!e && l)
         return TrigLevel;
     else
-        throw std::runtime_error("Input Ext has both Edge and Level at the same time??");
+        throw std::runtime_error("External mode cannot be set to both Edge and Level at the same time.");
 }
 
 void
 MRMInput::extEvtSet(epicsUInt32 e)
 {
     if(e>255)
-        throw std::out_of_range("Event code # out of range");
+        throw std::out_of_range("Event code # out of range. Range: 0 - 255");
 
     int key=epicsInterruptLock();
 
@@ -180,14 +180,14 @@ MRMInput::backMode() const
     else if(!e && l)
         return TrigLevel;
     else
-        throw std::runtime_error("Input Back has both Edge and Level at the same time??");
+        throw std::runtime_error("Backwards mode cannot be set to both Edge and Level at the same time.");
 }
 
 void
 MRMInput::backEvtSet(epicsUInt32 e)
 {
     if(e>255)
-        throw std::out_of_range("Event code # out of range");
+        throw std::out_of_range("Event code # out of range. Range: 0 - 255");
 
     int key=epicsInterruptLock();
 

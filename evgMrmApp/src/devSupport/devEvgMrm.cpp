@@ -108,7 +108,7 @@ read_si_ts(stringinRecord* psi) {
                 recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
-                errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");
+                errlogPrintf("ERROR: %s : Wrong Timestamp alarm Status\n", psi->name);
         }
 
         ret = 0;
@@ -127,7 +127,7 @@ static long
 get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
     evgMrm* evg = (evgMrm*)psi->dpvt;
     if(!evg) {
-        errlogPrintf("ERROR: Device pvt field not initialized\n");
+        errlogPrintf("ERROR: %s : Device pvt field not initialized\n", psi->name);
         return -1;
     }
 

@@ -55,29 +55,37 @@ void SFP::updateNow(bool)
 
 double SFP::linkSpeed() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1;
+    }
     return buffer[SFP_linkrate] * 100.0; // Gives MBits/s
 }
 
 double SFP::temperature() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -40;
+    }
     return read16(SFP_temp) / 256.0; // Gives degrees C
 }
 
 double SFP::powerTX() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1e-6;
+    }
     return read16(SFP_tx_pwr) * 0.1e-6; // Gives Watts
 }
 
 double SFP::powerRX() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1e-6;
+    }
     return read16(SFP_rx_pwr) * 0.1e-6; // Gives Watts
 }
 

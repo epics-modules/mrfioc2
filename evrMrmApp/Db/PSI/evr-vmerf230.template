@@ -56,7 +56,7 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-I") {
   field(FLNK, "$(SYS,recursive)-$(EVR,recursive):Cnt-HwOflw-I")
 }
 
-record(calc, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Rate_") {
+record(calc, "$(SYS,recursive)-$(EVR,recursive):Cnt-RxErr-Rate-I") {
   field(DESC, "Counts errors in time interval")
   field(SCAN, "10 second")
   field(CALC, "A-B")
@@ -308,18 +308,18 @@ record(bo, "$(SYS,recursive)-$(EVR,recursive):Link-RxMode-Sel") {
 
 
 
-record(bo, "$(SYS,recursive)-$(EVR,undefined):SFP-Update-Cmd") {
+record(bo, "$(SYS,recursive)-$(EVR,recursive):SFP-Update-Cmd") {
   field(DTYP, "Obj Prop bool")
   field(SCAN, "10 second")
-  field(OUT , "@OBJ=$(EVR,undefined):SFP, PROP=Update")
+  field(OUT , "@OBJ=$(EVR,recursive):SFP, PROP=Update")
   field(ZNAM, "Update")
   field(ONAM, "Update")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-T-I")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-T-I")
 }
 
-record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-T-I") {
+record(ai, "$(SYS,recursive)-$(EVR,recursive):SFP-T-I") {
   field(DTYP, "Obj Prop double")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Temperature")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Temperature")
   field(DESC, "Tranceiver Temperature")
   field(ADEL, "0.5")
   field(HIGH, "40")
@@ -330,12 +330,12 @@ record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-T-I") {
   field(LSV , "INVALID")
   field(EGU , "C")
   field(PREC, "1")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-TX-I")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Pwr-TX-I")
 }
 
-record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-TX-I") {
+record(ai, "$(SYS,recursive)-$(EVR,recursive):SFP-Pwr-TX-I") {
   field(DTYP, "Obj Prop double")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Power TX")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Power TX")
   field(DESC, "Tranceiver Output Power")
   field(ADEL, "5")
   field(HIGH, "400")
@@ -348,13 +348,13 @@ record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-TX-I") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "1")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-RX-I")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Pwr-RX-I")
   info(autosaveFields_pass0, "LOW")
 }
 
-record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-RX-I") {
+record(ai, "$(SYS,recursive)-$(EVR,recursive):SFP-Pwr-RX-I") {
   field(DTYP, "Obj Prop double")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Power RX")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Power RX")
   field(DESC, "Tranceiver Input Power")
   field(ADEL, "5")
   field(HIGH, "600")
@@ -367,13 +367,13 @@ record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Pwr-RX-I") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "1")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Speed-Link-I")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Speed-Link-I")
   info(autosaveFields_pass0, "LOW")
 }
 
-record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Speed-Link-I") {
+record(ai, "$(SYS,recursive)-$(EVR,recursive):SFP-Speed-Link-I") {
   field(DTYP, "Obj Prop double")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Link Speed")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Link Speed")
   field(DESC, "Tranceiver Line Rate")
   field(HIGH, "5000")
   field(HSV , "MAJOR")
@@ -383,41 +383,41 @@ record(ai, "$(SYS,recursive)-$(EVR,undefined):SFP-Speed-Link-I") {
   field(LLSV, "INVALID")
   field(EGU , "Mb/s")
   field(PREC, "0")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Vendor-I")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Vendor-I")
 }
 
-record(stringin, "$(SYS,recursive)-$(EVR,undefined):SFP-Vendor-I") {
+record(stringin, "$(SYS,recursive)-$(EVR,recursive):SFP-Vendor-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "Vendor name")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Vendor")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Part-I")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Vendor")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Part-I")
 }
 
-record(stringin, "$(SYS,recursive)-$(EVR,undefined):SFP-Part-I") {
+record(stringin, "$(SYS,recursive)-$(EVR,recursive):SFP-Part-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "Vendor part number")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Part")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Rev-I")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Part")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Rev-I")
 }
 
-record(stringin, "$(SYS,recursive)-$(EVR,undefined):SFP-Rev-I") {
+record(stringin, "$(SYS,recursive)-$(EVR,recursive):SFP-Rev-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "Vendor part revision")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Rev")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Serial-I")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Rev")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Serial-I")
 }
 
-record(stringin, "$(SYS,recursive)-$(EVR,undefined):SFP-Serial-I") {
+record(stringin, "$(SYS,recursive)-$(EVR,recursive):SFP-Serial-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "SFP serial number")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Serial")
-  field(FLNK, "$(SYS,recursive)-$(EVR,undefined):SFP-Date-Manu-I")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Serial")
+  field(FLNK, "$(SYS,recursive)-$(EVR,recursive):SFP-Date-Manu-I")
 }
 
-record(stringin, "$(SYS,recursive)-$(EVR,undefined):SFP-Date-Manu-I") {
+record(stringin, "$(SYS,recursive)-$(EVR,recursive):SFP-Date-Manu-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "Manufactored date")
-  field(INP , "@OBJ=$(EVR,undefined):SFP, PROP=Date")
+  field(INP , "@OBJ=$(EVR,recursive):SFP, PROP=Date")
 }
 # Record set for an EVR's programable frequency divider
 #

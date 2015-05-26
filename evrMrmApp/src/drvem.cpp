@@ -209,10 +209,10 @@ try{
         kind=MRMCML::typeTG300;
         break;
     case formFactor_PCIe:
-        nOFPUV=8;
+        nOFPUV=16;
         break;
     default:
-        printf("Unknown EVR variant %d\n",v);
+        printf("Unknown EVR form factor %d\n",v);
     }
     printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
            (unsigned int)nOFP,(unsigned int)nOFPUV,
@@ -573,11 +573,11 @@ bool
 EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
 {
     if(code>255)
-        throw std::out_of_range("Event code is out of range");
+        throw std::out_of_range("Event code is out of range (0-255)");
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        throw std::out_of_range("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range. Valid ranges: 96-101 and 122-127");
     }
 
     if(code==0)
@@ -593,14 +593,14 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 {
     if(code>255)
         throw std::out_of_range("Event code is out of range");
-    /* The special function codes are the range 96 to 127
+    /* The special function codes are the range 96 to 127, excluding 102 to 121
      */
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        errlogPrintf("EVR %s code %02x func %3d out of range\n",
+        errlogPrintf("EVR %s code %02x func %3d out of range. Code range is 0-255, where function rangs are 96-101 and 122-127\n",
             id.c_str(), code, func);
-        throw std::out_of_range("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range.  Valid ranges: 96-101 and 122-127");
     }
 
     if(code==0)
@@ -863,7 +863,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
          */
         epicsUInt32 ctrl2=READ32(base, Control);
         if (ctrl2!=ctrl) { // tsltch bit is write-only
-            printf("Control register write fault %08x %08x\n",ctrl,ctrl2);
+            printf("Get timestamp: control register write fault. Written: %08x, readback: %08x\n",ctrl,ctrl2);
             WRITE32(base, Control, ctrl);
         }
 
