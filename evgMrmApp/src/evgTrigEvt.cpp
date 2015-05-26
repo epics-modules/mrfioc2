@@ -41,7 +41,7 @@ evgTrigEvt::getEvtCode() const {
 void
 evgTrigEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
-        throw std::runtime_error("Event Code out of range.");
+        throw std::runtime_error("Event Code out of range. Valid range: 0 - 255");
 
     WRITE8(m_pReg, TrigEventCode(m_id), evtCode);
 }

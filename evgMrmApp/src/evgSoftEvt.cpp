@@ -35,7 +35,7 @@ evgSoftEvt::pend() const {
 void
 evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
-        throw std::runtime_error("Event Code out of range.");
+        throw std::runtime_error("Event Code out of range. Valid range: 0 - 255.");
     
     if(!enabled())
         throw std::runtime_error("Software Event Disabled");

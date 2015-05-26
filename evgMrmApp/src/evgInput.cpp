@@ -68,7 +68,7 @@ evgInput::getExtIrq() const {
 void
 evgInput::setDbusMap(epicsUInt16 dbus, bool ena) {
     if(dbus > 7)
-        throw std::runtime_error("EVG DBUS num out of range.");
+        throw std::runtime_error("EVG DBUS num out of range. Max: 7");
 
     epicsUInt32    mask = 0x10000 << dbus;
 
@@ -86,7 +86,7 @@ evgInput::setDbusMap(epicsUInt16 dbus, bool ena) {
 bool
 evgInput::getDbusMap(epicsUInt16 dbus) const {
     if(dbus > 7)
-        throw std::runtime_error("EVG DBUS num out of range.");
+        throw std::runtime_error("EVG DBUS num out of range. Max: 7");
 
     epicsUInt32 mask = 0x10000 << dbus;
     epicsUInt32 map = nat_ioread32(m_pInReg);
@@ -96,7 +96,7 @@ evgInput::getDbusMap(epicsUInt16 dbus) const {
 void
 evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
     if(seqTrigMap > 3)
-        throw std::runtime_error("Seq Trig Map out of range.");
+        throw std::runtime_error("Seq Trig Map out of range. Max: 3");
 
     //Read-Modify-Write
     epicsUInt32 map = nat_ioread32(m_pInReg);
@@ -118,7 +118,7 @@ evgInput::getSeqTrigMap() const {
 void
 evgInput::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
-        throw std::runtime_error("Trig Event num out of range.");
+        throw std::runtime_error("Trig Event num out of range. Max: 7");
 
     epicsUInt32    mask = 1 << trigEvt;
     //Read-Modify-Write
@@ -135,7 +135,7 @@ evgInput::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
 bool
 evgInput::getTrigEvtMap(epicsUInt16 trigEvt) const {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Trig Event num out of range.");
+        throw std::runtime_error("EVG Trig Event num out of range. Max: 7");
 
     epicsUInt32 mask = 0x1 << trigEvt;
     epicsUInt32 map = nat_ioread32(m_pInReg);

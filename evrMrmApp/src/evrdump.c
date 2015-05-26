@@ -43,7 +43,7 @@ int printevr(void* raw,const epicsPCIDevice* dev)
     devPCIShowDevice(2,dev);
 
     if (devPCIToLocalAddr(dev, a->bar, (volatile void**)(void *)&base, DEVLIB_MAP_UIO1TO1)) {
-        fprintf(stderr,"Failed to map bar\n");
+        fprintf(stderr,"Failed to map bar 0x%x\n", a->bar);
         return 0;
     }
 

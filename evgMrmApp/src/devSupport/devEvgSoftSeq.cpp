@@ -163,7 +163,7 @@ get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
 
     evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized correctly");
+        errlogPrintf("%s : Device pvt field not initialized correctly", pwf->name);
         return S_dev_noDevice;
     } else
         *ppvt = seq->ioscanpvt;
@@ -175,7 +175,7 @@ static long
 get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -187,7 +187,7 @@ static long
 get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -199,7 +199,7 @@ static long
 get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -211,7 +211,7 @@ static long
 get_ioint_info_startSeq(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized\n");
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -227,7 +227,9 @@ static long
 read_bi_startSeq(biRecord* pbi) {
     evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
     if(!seq) {
-        throw std::runtime_error("Device pvt field not initialized");
+        //throw std::runtime_error("Device pvt field not initialized");
+        errlogPrintf("ERROR: %s : %s\n", "Device pvt field not initialized", pbi->name);
+        return -1;
     }
 
     pbi->rval = 0;

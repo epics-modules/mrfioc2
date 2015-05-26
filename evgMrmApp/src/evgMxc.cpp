@@ -43,7 +43,7 @@ evgMxc::getPolarity() const {
 void
 evgMxc::setPrescaler(epicsUInt32 preScaler) {
     if(preScaler == 0 || preScaler == 1)
-        throw std::runtime_error("Invalid preScaler value in Multiplexed Counter");
+        throw std::runtime_error("Invalid preScaler value in Multiplexed Counter. Value should not be 0 or 1.");
 
     WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 }
@@ -74,7 +74,7 @@ evgMxc::getFrequency() const {
 void
 evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+        throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
     epicsUInt8    mask = 1 << trigEvt;
     //Read-Modify-Write
@@ -91,7 +91,7 @@ evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
 bool
 evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+        throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
     epicsUInt8 mask = 1 << trigEvt;
     epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));

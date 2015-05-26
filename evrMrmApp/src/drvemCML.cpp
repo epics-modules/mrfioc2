@@ -180,8 +180,10 @@ MRMCML::fineDelay() const
 void
 MRMCML::setFineDelay(double v)
 {
-    if(v>1024.0)
+    if(v>1024.0){
+        printf("Delay will be set to 1024 instead of %f\n", v);
         v=1024.0;
+    }
     WRITE32(base, GTXDelay(N), roundToUInt(v*1024.0));
 }
 
@@ -228,8 +230,9 @@ MRMCML::countInit () const
 void
 MRMCML::setCountHigh(epicsUInt32 v)
 {
-    if(v<=20 || v>=65535)
+    if(v<=20 || v>=65535){
         throw std::out_of_range("Invalid CML freq. count");
+    }
 
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_high_shft);
@@ -387,8 +390,10 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
 {
     // If we are given a length that is not a multiple of CML word size
     // then truncate.
-    if(blen%mult)
+    if(blen%mult){
+        printf("Given length is not a multiple of %u (CML word size). Truncating...\n", mult);
         blen-=blen%mult;
+    }
 
     if(blen>lenPatternMax(p))
         throw std::out_of_range("Pattern is too long");

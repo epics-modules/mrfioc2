@@ -93,7 +93,7 @@ evgSoftSeq::getTimestampResolution() {
 void
 evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
     if(size > 2047)
-        throw std::runtime_error("Too many Timestamps.");
+        throw std::runtime_error("Too many Timestamps. Max: 2047");
 
     m_timestamp.clear();
     m_timestamp.assign(timestamp, timestamp + size);
@@ -107,7 +107,7 @@ evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
 void
 evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
     if(size > 2047)
-        throw std::runtime_error("Too many EventCodes.");
+        throw std::runtime_error("Too many EventCodes. Max: 2047");
 	
     m_eventCode.clear();
     m_eventCode.assign(eventCode, eventCode + size);
@@ -475,7 +475,7 @@ evgSoftSeq::commitSoftSeq() {
     if(timestamp.size()!=eventCode.size())
         throw std::logic_error("SoftSeq, length of timestamp and eventCode doesn't match");
     else if(timestamp.size()>2047)
-        throw std::runtime_error("Sequence too long");
+        throw std::runtime_error("Sequence too long. Max: 2047");
 
     m_timestampCt = timestamp;
     m_eventCodeCt = eventCode;

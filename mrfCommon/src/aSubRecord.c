@@ -236,7 +236,7 @@ static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
         num = *pno * flen;
 
         if (num > MAX_ARRAY_SIZE) {
-            epicsPrintf("Link %s - Array too large! %d Bytes\n", fldnames[i], num);
+            epicsPrintf("Link %s - Array too large! %d Bytes (max: %d)\n", fldnames[i], num, MAX_ARRAY_SIZE);
             *pno = num = 0;
             status = S_db_errArg;
         } else

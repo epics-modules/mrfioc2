@@ -32,7 +32,7 @@ void
 evgEvtClk::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
         char err[80];
-        sprintf(err, "Cannot set RF frequency to %f MHz.", RFref);
+        sprintf(err, "Cannot set RF frequency to %f MHz. Valid range is 50 - 1600.", RFref);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
@@ -49,7 +49,7 @@ void
 evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
     if(rfDiv < 1    || rfDiv > 32) {
         char err[80];
-        sprintf(err, "Invalid RF Divider %d.", rfDiv);
+        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 32", rfDiv);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }

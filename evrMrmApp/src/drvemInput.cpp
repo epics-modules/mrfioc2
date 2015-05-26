@@ -112,7 +112,7 @@ MRMInput::extMode() const
     else if(!e && l)
         return TrigLevel;
     else
-        throw std::runtime_error("Input Ext has both Edge and Level at the same time??");
+        throw std::runtime_error("Input External mode cannot be both Edge and Level at the same time.");
 }
 
 void
@@ -180,7 +180,7 @@ MRMInput::backMode() const
     else if(!e && l)
         return TrigLevel;
     else
-        throw std::runtime_error("Input Back has both Edge and Level at the same time??");
+        throw std::runtime_error("Input Backwards mode cannot be both Edge and Level at the same time.");
 }
 
 void

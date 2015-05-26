@@ -296,17 +296,23 @@ int checkUIOVersion(int expect)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s\n", ifaceversion);
+        errlogPrintf("Can't open %s in order to read kernel module interface version. Is kernel module loaded?\n", ifaceversion);
         return 1;
     }
     if(fscanf(fd, "%d", &version)!=1) {
-        perror("checkUIOVersion fscanf");
+        errlogPrintf("Failed to read %s in order to get the kernel module interface version. Is kernel module loaded?\n", ifaceversion);
+        return 1;
     }
     fclose(fd);
-    if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n",version,expect);
+
+    if(version<expect) {
+        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+        return 1;
     }
-    return version!=expect;
+    if(version > expect){
+        errlogPrintf("Info: Expect MRF kernel module version %d, found %d.\n", version, expect);
+    }
+    return 0;
 }
 #else
 static int checkUIOVersion(int expect) {return 0;}
@@ -439,7 +445,7 @@ void mrmEvgSoftTime(void* pvt) {
 	evgMrm* evg = static_cast<evgMrm*>(pvt);
 
 	if (!evg) {
-		errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG1\n");
+		errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG!\n");
 	}
 
 	while (1) {

@@ -157,6 +157,6 @@ MRMOutput::sourceName(epicsUInt32 id) const
     case 2: return "Pulse generator 2";
     case 1: return "Pulse generator 1";
     case 0: return "Pulse generator 0";
-    default: return "Invalid";
+    default: return "Invalid output source";
     }
 }
