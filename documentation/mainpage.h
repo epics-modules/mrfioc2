@@ -18,12 +18,12 @@ event timing systems.
 
 Releases can be found at @url http://sourceforge.net/projects/epics/files/mrfioc2/
 
-This module is versioned with Mercurial and can be viewed at
-@url http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/
+This module is versioned with Git and can be viewed at
+@url https://github.com/epics-modules/mrfioc2/
 
 Or checked out with
 
-hg clone http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2
+git clone https://github.com/epics-modules/mrfioc2.git
 
 The canonical version of this page is @url http://epics.sourceforge.net/mrfioc2/
 

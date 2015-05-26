@@ -6,30 +6,26 @@ website http://www.mrf.fi/[http://www.mrf.fi/].
 The software discussed below can be found on the EPICS application
 project on SourceForge http://epics.sourceforge.net/mrfioc2[http://epics.sourceforge.net/mrfioc2]
 
-The latest developments can be found in the 'mrfioc2' Mercuial VCS repository.
+The latest developments can be found in the 'mrfioc2' VCS repository.
 
-http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary[http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary]
+https://github.com/epics-modules/mrfioc2[https://github.com/epics-modules/mrfioc2]
 
 === Prerequisites ===
 
-The required software is EPICS Base 3.14.x, devLib2, and the MSI tool.
+The required software is EPICS Base >= 3.14.8.2, devLib2 >= 2.6, and the MSI tool (included in Base >= 3.15.1).
 
 Base: http://www.aps.anl.gov/epics/base/R3-14/index.php[http://www.aps.anl.gov/epics/base/R3-14/index.php]
 
-devLib2: http://epics.hg.sourceforge.net/hgweb/epics/devlib2/
+devLib2: https://github.com/epics-modules/devlib2/
 
 MSI: http://www.aps.anl.gov/epics/extensions/msi/index.php[http://www.aps.anl.gov/epics/extensions/msi/index.php]
-
-The Mercurial VCS tool is needed to checkout the development repository.
-
-Mercuial: http://mercurial.selenic.com/[http://mercurial.selenic.com/]
 
 === The Source ===
 
 VCS Checkout
 
 -----------------------------------------------------------------------
-$ hg checkout http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2
+$ git clone https://github.com/epics-modules/mrfioc2.git
 -----------------------------------------------------------------------
 
 Edit 'configure/CONFIG_SITE' and run "make".

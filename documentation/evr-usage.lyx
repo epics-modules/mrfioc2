@@ -62,8 +62,8 @@ Michael Davidsaver <mdavidsaver@bnl.gov>
 
 \begin_layout Date
 August.
- 2012, Rev.
- 6
+ 2015, Rev.
+ 7
 \end_layout
 
 \begin_layout Standard
@@ -1218,7 +1218,7 @@ http://sourceforge.net/projects/epics/
 \end_layout
 
 \begin_layout Standard
-The latest developments can be found in the 'mrfioc2' Mercuial VCS repository.
+The latest developments can be found in the 'mrfioc2' Git VCS repository.
 \end_layout
 
 \begin_layout Standard
@@ -1227,7 +1227,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/summary
+https://github.com/epics-modules/mrfioc2
 \end_layout
 
 \end_inset
@@ -1256,7 +1256,7 @@ Base
 \begin_inset space ~
 \end_inset
 
-3.14.8.2
+3.14.8.2 EPICS Core
 \begin_inset Newline newline
 \end_inset
 
@@ -1312,7 +1312,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://epics.hg.sourceforge.net/hgweb/epics/devlib2/
+https://github.com/epics-modules/devlib2/
 \end_layout
 
 \end_inset
@@ -1404,22 +1404,6 @@ Source
 \end_layout
 
 \begin_layout Standard
-The Mercurial VCS tool is needed to checkout the development repository.
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://mercurial.selenic.com/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 VCS Checkout
 \end_layout
 
@@ -1431,7 +1415,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ hg checkout http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2 
+$ git clone https://github.com/epics-modules/mrfioc2.git
 \end_layout
 
 \end_inset
