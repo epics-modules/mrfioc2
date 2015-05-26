@@ -14,7 +14,7 @@ file "evr-base.template"
 
 file "sfp.template"
 {
-{SYS="$(SYS)", EV="$(EVR)", OBJ="SFP"}
+{SYS="$(SYS)", EVR="$(EVR)", OBJ="SFP"}
 }
 
 
