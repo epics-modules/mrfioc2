@@ -885,7 +885,6 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
 
     //Has it been initialized?
     if(ts->secPastEpoch==0 || ts->nsec==0){
-        //errlogPrintf("Timestamp not initialized\n");
         return false;
     }
 
@@ -895,7 +894,6 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         timestampValid=0;
         lastInvalidTimestamp=ts->secPastEpoch;
         scanIoRequest(timestampValidChange);
-        //errlogPrintf("The 1 second reset is late\n");
         return false;
     }
 
@@ -903,7 +901,6 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
     if(ts->secPastEpoch==lastInvalidTimestamp) {
         timestampValid=0;
         scanIoRequest(timestampValidChange);
-        //errlogPrintf("Invalid timestamp reoccured\n");
         return false;
     }
 

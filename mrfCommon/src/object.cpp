@@ -82,7 +82,7 @@ Object::~Object()
 
     objects_t::iterator it=objects->find(name());
     if(it==objects->end())
-        errlogPrintf("not deleting: Object '%s' not in global list?\n", name().c_str());
+        errlogPrintf("Can not remove object '%s' because it is not in global list.\n", name().c_str());
     else
         objects->erase(it);
 }

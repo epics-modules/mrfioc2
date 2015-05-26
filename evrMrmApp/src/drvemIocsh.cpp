@@ -285,7 +285,7 @@ int checkUIOVersion(int expect)
         return 1;
     }
     if(version > expect){
-        errlogPrintf("Info: Expect MRF kernel module version %d, found %d.\n", version, expect);
+        epicsPrintf("Info: Expect MRF kernel module version %d, found %d.\n", version, expect);
     }
     return 0;
 }
