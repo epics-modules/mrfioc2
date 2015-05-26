@@ -93,8 +93,8 @@ record(longin, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-I") {
 }
 
 record(ai, "$(SYS)-$(EVR)-HEALTH:Cnt-RxErr-Rate-I") {
-  field(INP,"$(SYS)-$(EVR):Cnt-RxErr-Rate_ CP")
-  field(TSEL,"$(SYS)-$(EVR):Cnt-RxErr-Rate_.TIME")
+  field(INP,"$(SYS)-$(EVR):Cnt-RxErr-Rate-I CP")
+  field(TSEL,"$(SYS)-$(EVR):Cnt-RxErr-Rate-I.TIME")
   
   field(DESC, "Counts errors in time interval")  
   field(HIHI, "1")
