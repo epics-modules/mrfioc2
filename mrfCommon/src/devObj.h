@@ -192,6 +192,8 @@ static inline
 long del_record_delete(dbCommon* prec)
 {
     DT *prop=static_cast<DT*>(prec->dpvt);
+    if (!prop)
+        return 0;
     prec->dpvt = 0;
     delete prop;
     return 0;
@@ -202,6 +204,8 @@ long del_record_property(dbCommon* prec)
 {
     using namespace mrf;
     addrBase *prop=static_cast<addrBase*>(prec->dpvt);
+    if (!prop)
+        return 0;
     prec->dpvt = 0;
     delete prop;
     return 0;

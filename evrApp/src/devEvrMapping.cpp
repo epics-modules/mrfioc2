@@ -121,6 +121,9 @@ long del_lo(dbCommon* praw)
 try {
     std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
+    if (!priv.get())
+        return -2;
+
     if(priv->last_code>0 && priv->last_code<=255)
         priv->card->specialSetMap(priv->last_code,priv->func,false);
 
