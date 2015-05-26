@@ -56,7 +56,7 @@ record(longin, "$(SYS)-$(EVR):Cnt-RxErr-I") {
   field(FLNK, "$(SYS)-$(EVR):Cnt-HwOflw-I")
 }
 
-record(calc, "$(SYS)-$(EVR):Cnt-RxErr-Rate_") {
+record(calc, "$(SYS)-$(EVR):Cnt-RxErr-Rate-I") {
   field(DESC, "Counts errors in time interval")
   field(SCAN, "10 second")
   field(CALC, "A-B")

@@ -146,7 +146,7 @@
     <item row="2" column="1">
      <widget class="caLineEdit" name="calineedit_11">
       <property name="channel" stdset="0">
-       <string notr="true">$(EVR):Cnt-RxErr-Rate_</string>
+       <string notr="true">$(EVR):Cnt-RxErr-Rate-I</string>
       </property>
       <property name="colorMode">
        <enum>caLineEdit::Alarm_Default</enum>

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o errexit
 
-SYS="MTEST-VME-BSREAD"
+SYS=""
 EVR="EVR0"
 FF="VME"
 
@@ -12,6 +12,7 @@ usage()
     echo "    -s <system name>     The system/project name"
     echo "    -r <EVR name>        Event Receiver name (default: $EVR)"
     echo "    -f <form factor>     EVR form factor (default: $FF)"
+    echo "                         Choices: VME, PCIe"
     echo "    -h                   This help"
 }
 
@@ -42,6 +43,17 @@ if [ $OPTIND -le 1 ]; then
     exit 1
 fi
 
+if [ -z $SYS ]; then
+    usage
+    exit 1
+fi
+
+if [ $FF != "VME" ] && [ $FF != "PCIe" ]; then
+    echo "Invalid form factor selected: $FF"
+    echo "        Available choices: VME, PCIe"
+    exit 1
+fi
+
 macro="EVR=$SYS-$EVR,FF=$FF"
 caqtdm -macro "$macro" G_EVR_master.ui &
-#echo caqtdm -macro "$macro" G_EVR_VME_master.ui &
+#echo caqtdm -macro "$macro" G_EVR_master.ui &
