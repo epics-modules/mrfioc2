@@ -3874,7 +3874,7 @@ $ cd urjtag/urjtags
 
 \begin_layout Plain Layout
 
-$ ./autogen.sh --disable-nls --prefix=$PWD/usr
+$ ./autogen.sh --disable-nls --disable-python --prefix=$PWD/usr
 \end_layout
 
 \begin_layout Plain Layout
@@ -3905,7 +3905,7 @@ $ sudo modprobe uio
 
 \begin_layout Plain Layout
 
-$ sudo modprobe parport_pc
+$ sudo modprobe parport
 \end_layout
 
 \begin_layout Plain Layout
