@@ -31,7 +31,14 @@ struct dbCommon;
 class epicsShareClass IOStatus
 {
 public:
-  virtual IOSCANPVT statusChange(bool up=true){return 0;};
+
+  /**
+   * Added cast to void for 'up' function parameter in order to
+   * remove the unused parameter warning.
+   *
+   * Change by: jkrasna
+   */
+  virtual IOSCANPVT statusChange(bool up=true){(void)up;return 0;};
   virtual ~IOStatus () {};
 };
 
