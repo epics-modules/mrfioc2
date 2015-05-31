@@ -38,6 +38,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     irqExtInp_queued(0),
     m_syncTimestamp(false),
     m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+    m_pciDevice(pciDevice),
     m_id(id),
     m_pReg(pReg),
     busConfiguration(busConfig),
@@ -45,8 +46,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_evtClk(id+":EvtClk", pReg),
     m_softEvt(id+":SoftEvt", pReg),
     m_seqRamMgr(this),
-    m_softSeqMgr(this),
-    m_pciDevice(pciDevice)
+    m_softSeqMgr(this)
 {
     try{
         for(int i = 0; i < evgNumEvtTrig; i++) {
