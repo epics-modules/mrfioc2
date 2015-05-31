@@ -42,7 +42,7 @@ m_numOfRuns(0) {
     scanIoInit(&iostartscan);
 }
 
-const epicsUInt32
+epicsUInt32
 evgSoftSeq::getId() const {
     return m_id;
 }
