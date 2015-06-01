@@ -48,7 +48,7 @@ void SFP::updateNow(bool)
     epicsUInt32* p32=(epicsUInt32*)&buffer[0];
 
     for(unsigned int i=0; i<SFPMEM_SIZE/4; i++)
-        p32[i] = nat_ioread32(base+ i*4);
+        p32[i] = be_ioread32(base+ i*4);
 
     valid = buffer[0]==3 && buffer[2]==7;
 }
@@ -146,7 +146,7 @@ void SFP::report() const
             linkSpeed(),
             powerTX()*1e6,
             powerRX()*1e6);
-    printf(" Vendor:%s\n Model: %s\n Rev: %s\n Manufacture data: %s\n Serial: %s\n",
+    printf(" Vendor:%s\n Model: %s\n Rev: %s\n Manufacture date: %s\n Serial: %s\n",
            vendorName().c_str(),
            vendorPart().c_str(),
            vendorRev().c_str(),
