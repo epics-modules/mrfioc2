@@ -168,55 +168,79 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		# CML outputs
 		FrontOut4-Ena-SP=1, 		# Default to enabled
 		FrontOut4-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-		CML0-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML0-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML0-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML0-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML0-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML0-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML0-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML0-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML0-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML0-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculator enabled
-		CML0-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML0-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML0-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML0-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
+		CML0-Ena-Sel=0, 			# 0 = Output disabled, 1 = Output enabled
+		CML0-Pwr-Sel=0, 			# 0 = Outputs powered down, 1 = Normal operation
+		CML0-Rst-Sel=0, 			# 0 = Normal operation, 1 = Reset CML output
+		CML0-Mode-Sel=0, 			# 0 = Pulse mode, 1 = Frequency mode, 2 = Waveform mode
+		CML0-Pat:Rise00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode rising pattern
+		CML0-Pat:Rise16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode rising pattern
+		CML0-Pat:High00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode high pattern
+		CML0-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
+		CML0-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
+		CML0-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
+		CML0-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML0-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML0-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
+		CML0-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML0-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML0-Freq:Low-SP=10, 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
+		CML0-Pat:WfCycle-SP=0, 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		CML0-WfCalc:Ena-SP=0, 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculator enabled
+		CML0-WfCalc:Delay-SP=16, 	# For waveform mode: Delay of the square wave pattern in ns
+		CML0-WfCalc:Width-SP=50, 	# For waveform mode: Width of the square wave pattern in ns
+		CML0-BunchTrain:Ena-SP=0, 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		CML0-BunchTrain:Size-SP=1, 	# For waveform mode: Number of bunches in the bunch train
 
 		FrontOut5-Ena-SP=1, 		# Default to enabled
 		FrontOut5-Src-SP=63, 		# Defaults to Force low (if enabled -> Ena-SP)
-		CML1-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML1-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML1-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML1-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML1-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML1-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML1-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML1-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML1-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML1-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square wave pattern calculator enabled
-		CML1-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML1-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML1-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML1-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
+		CML1-Ena-Sel=0, 			# 0 = Output disabled, 1 = Output enabled
+		CML1-Pwr-Sel=0, 			# 0 = Outputs powered down, 1 = Normal operation
+		CML1-Rst-Sel=0, 			# 0 = Normal operation, 1 = Reset CML output
+		CML1-Mode-Sel=0, 			# 0 = Pulse mode, 1 = Frequency mode, 2 = Waveform mode
+		CML2-Pat:Rise00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode rising pattern
+		CML2-Pat:Rise16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode rising pattern
+		CML2-Pat:High00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode high pattern
+		CML2-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
+		CML2-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
+		CML2-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
+		CML2-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML2-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML1-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
+		CML1-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML1-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML1-Freq:Low-SP=10, 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
+		CML1-Pat:WfCycle-SP=0, 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		CML1-WfCalc:Ena-SP=0, 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square wave pattern calculator enabled
+		CML1-WfCalc:Delay-SP=16, 	# For waveform mode: Delay of the square wave pattern in ns
+		CML1-WfCalc:Width-SP=50, 	# For waveform mode: Width of the square wave pattern in ns
+		CML1-BunchTrain:Ena-SP=0, 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		CML1-BunchTrain:Size-SP=1, 	# For waveform mode: Number of bunches in the bunch train
 
 
 		FrontOut6-Ena-SP=1, 		# Default to enabled
 		FrontOut6-Src-SP=63,  		# Defaults to Force low (if enabled -> Ena-SP)
-		CML2-Ena-Sel=0 				# 0 = Output disabled, 1 = Output enabled
-		CML2-Pwr-Sel=0 				# 0 = Outputs powered down, 1 = Normal operation
-		CML2-Rst-Sel=0 				# 0 = Normal operation, 1 = Reset CML output
-		CML2-Mode-Sel=0 			# 0 = Pattern mode, 1 = Frequency mode, 2 = Waveform mode
-		CML2-Freq:Lvl-SP=0 			# For frequency mode: 0 = Active high, 1 = Active low
-		CML2-Freq:Init-SP=0 		# For frequency mode: Delay in ns (max 65535 clock periods)
-		CML2-Freq:High-SP=10 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
-		CML2-Freq:Low-SP=10 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
-		CML2-Pat:WfCycle-SP=0 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
-		CML2-WfCalc:Ena-SP=0 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculat2r enabled
-		CML2-WfCalc:Delay-SP=16 	# For waveform mode: Delay of the square wave pattern in ns
-		CML2-WfCalc:Width-SP=50 	# For waveform mode: Width of the square wave pattern in ns
-		CML2-BunchTrain:Ena-SP=0 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
-		CML2-BunchTrain:Size-SP=1 	# For waveform mode: Number of bunches in the bunch train
+		CML2-Ena-Sel=0, 			# 0 = Output disabled, 1 = Output enabled
+		CML2-Pwr-Sel=0, 			# 0 = Outputs powered down, 1 = Normal operation
+		CML2-Rst-Sel=0, 			# 0 = Normal operation, 1 = Reset CML output
+		CML2-Mode-Sel=0, 			# 0 = Pulse mode, 1 = Frequency mode, 2 = Waveform mode
+		CML2-Pat:Rise00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode rising pattern
+		CML2-Pat:Rise16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode rising pattern
+		CML2-Pat:High00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode high pattern
+		CML2-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
+		CML2-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
+		CML2-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
+		CML2-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML2-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML2-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
+		CML2-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
+		CML2-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
+		CML2-Freq:Low-SP=10, 		# For frequency mode: Width of inactive signal in ns (max 65535 clock periods)
+		CML2-Pat:WfCycle-SP=0, 		# For waveform mode: 0 = Waveform is transmitted once per trigger, 1 = Waveform is repeated in a loop
+		CML2-WfCalc:Ena-SP=0, 		# For waveform mode: 0 = Square wave pattern calculator disabled, 1 = Square pattern calculat2r enabled
+		CML2-WfCalc:Delay-SP=16, 	# For waveform mode: Delay of the square wave pattern in ns
+		CML2-WfCalc:Width-SP=50, 	# For waveform mode: Width of the square wave pattern in ns
+		CML2-BunchTrain:Ena-SP=0, 	# For waveform mode: 0 = Bunch train calculator disabled, 1 = Bunch train calculator enabled
+		CML2-BunchTrain:Size-SP=1, 	# For waveform mode: Number of bunches in the bunch train
 
 
 		# Universal outputs, Slot 0

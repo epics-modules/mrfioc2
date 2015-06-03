@@ -10038,7 +10038,7 @@ record(mbbo, "$(SYS,recursive)-$(EVR,recursive):CML0-Mode-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(EVR,recursive):CML0, PROP=Mode")
   field( PINI, "YES")
-  field( VAL, "$($(EVR,recursive):CML0-Mode-Sel=0,undefined)")
+  field( VAL, "$(CML0-Mode-Sel=0,undefined)")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
   field( TWST, "Waveform")
@@ -10100,6 +10100,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Rise00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Rise00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10109,6 +10110,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Rise16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Rise16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10152,6 +10154,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:High00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:High-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:High00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10161,6 +10164,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:High16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:High-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:High16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10204,6 +10208,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Fall00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Fall00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10213,6 +10218,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Fall16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Fall16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10256,6 +10262,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Low00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Low-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Low00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10265,6 +10272,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Low16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-Pat:Low-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML0-Pat:Low16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10572,7 +10580,7 @@ record(mbbo, "$(SYS,recursive)-$(EVR,recursive):CML1-Mode-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(EVR,recursive):CML1, PROP=Mode")
   field( PINI, "YES")
-  field( VAL, "$($(EVR,recursive):CML1-Mode-Sel=0,undefined)")
+  field( VAL, "$(CML1-Mode-Sel=0,undefined)")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
   field( TWST, "Waveform")
@@ -10634,6 +10642,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Rise00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Rise00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10643,6 +10652,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Rise16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Rise16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10686,6 +10696,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:High00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:High-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:High00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10695,6 +10706,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:High16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:High-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:High16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10738,6 +10750,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Fall00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Fall00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10747,6 +10760,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Fall16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Fall16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10790,6 +10804,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Low00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Low-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Low00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -10799,6 +10814,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Low16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-Pat:Low-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML1-Pat:Low16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11106,7 +11122,7 @@ record(mbbo, "$(SYS,recursive)-$(EVR,recursive):CML2-Mode-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(EVR,recursive):CML2, PROP=Mode")
   field( PINI, "YES")
-  field( VAL, "$($(EVR,recursive):CML2-Mode-Sel=0,undefined)")
+  field( VAL, "$(CML2-Mode-Sel=0,undefined)")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
   field( TWST, "Waveform")
@@ -11168,6 +11184,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Rise00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Rise00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11177,6 +11194,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Rise16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Rise16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11220,6 +11238,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:High00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:High-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:High00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11229,6 +11248,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:High16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:High-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:High16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11272,6 +11292,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Fall00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Fall00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11281,6 +11302,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Fall16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Fall16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11324,6 +11346,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Low00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Low-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Low00_15-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -11333,6 +11356,7 @@ record(mbboDirect, "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Low16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-Pat:Low-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$(CML2-Pat:Low16_31-SP=0,undefined)")
   info(autosaveFields_pass0, "VAL")
 }
 

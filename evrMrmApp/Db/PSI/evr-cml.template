@@ -43,7 +43,7 @@ record(mbbo, "$(SYS)-$(EVR):$(OBJ)$(ID)-Mode-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Mode")
   field( PINI, "YES")
-  field( VAL, "$($(EVR):$(OBJ)$(ID)-Mode-Sel\=0)")
+  field( VAL, "$($(OBJ)$(ID)-Mode-Sel\=0)")
   field( ZRST, "4x Pattern")
   field( ONST, "Frequency")
   field( TWST, "Waveform")
@@ -105,6 +105,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Rise00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Rise-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Rise00_15-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -114,6 +115,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Rise16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Rise-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Rise16_31-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -157,6 +159,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:High00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:High-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:High00_15-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -166,6 +169,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:High16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:High-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:High16_31-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -209,6 +213,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Fall00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Fall-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Fall00_15-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -218,6 +223,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Fall16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Fall-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Fall16_31-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -261,6 +267,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Low00_15-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Low-ASub_.A PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Low00_15-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -270,6 +277,7 @@ record(mbboDirect, "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Low16_31-SP") {
   field(NOBT, "16")
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-Pat:Low-ASub_.B PP")
   field(PINI, "YES")
+  field(VAL, "$($(OBJ)$(ID)-Pat:Low16_31-SP\=0)")
   info(autosaveFields_pass0, "VAL")
 }
 
