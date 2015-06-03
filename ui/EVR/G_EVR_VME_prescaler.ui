@@ -16,9 +16,9 @@
   <widget class="caInclude" name="cainclude_8">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>230</x>
      <y>120</y>
-     <width>195</width>
+     <width>221</width>
      <height>95</height>
     </rect>
    </property>
@@ -38,9 +38,9 @@
   <widget class="caInclude" name="cainclude_10">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>230</x>
      <y>20</y>
-     <width>195</width>
+     <width>221</width>
      <height>95</height>
     </rect>
    </property>
@@ -60,9 +60,9 @@
   <widget class="caInclude" name="cainclude_9">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>230</x>
      <y>220</y>
-     <width>195</width>
+     <width>221</width>
      <height>95</height>
     </rect>
    </property>

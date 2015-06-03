@@ -483,7 +483,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>654</width>
+         <width>651</width>
          <height>1900</height>
         </rect>
        </property>
@@ -3340,7 +3340,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>654</width>
+         <width>651</width>
          <height>1900</height>
         </rect>
        </property>
@@ -5916,9 +5916,43 @@
      </widget>
     </widget>
    </widget>
+   <widget class="caRelatedDisplay" name="carelateddisplay_3">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>5</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Detailed SFP information</string>
+    </property>
+    <property name="background">
+     <color>
+      <red>183</red>
+      <green>157</green>
+      <blue>92</blue>
+     </color>
+    </property>
+    <property name="labels">
+     <string notr="true">Expert</string>
+    </property>
+    <property name="files">
+     <string notr="true">G_EVR_expert.ui</string>
+    </property>
+    <property name="args">
+     <string notr="true">EVR=$(EVR)</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>caRelatedDisplay</class>
+   <extends>QWidget</extends>
+   <header>caRelatedDisplay</header>
+  </customwidget>
   <customwidget>
    <class>caLabel</class>
    <extends>QLabel</extends>
