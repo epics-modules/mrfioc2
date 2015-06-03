@@ -1053,13 +1053,16 @@ There is a caQtDM~\cite{caqtdm} GUI for the Event Generator and Event Receiver a
 
 \paragraph{EVR GUI script options:}
 \begin{verbatim}
-	-r <event receiver name> ..... set the event receiver name
-	                               (default:EVR0).
-	-h                       ..... shows the options and usage
+	-r <EVR name> ......... set the event receiver name 
+	                        (default:EVR0)
+	-f <form factor> ...... choose the event receiver form factor 
+	                        (default: VME)
+	                        Choices: VME, PCIe
+	-h    ................. shows the options and usage
 \end{verbatim}
 
 
-\paragraph{Example:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
+\paragraph{Example:} Open the GUI for the EVR-VME-230RF event receiver named \texttt{EVR0}, using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
 	cd mrfioc2/ui/EVR
 	./start_EVR.sh -s MTEST-VME-EVRTEST
