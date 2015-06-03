@@ -81,8 +81,8 @@ SOURCES+=../mrfCommon/src/objectTest.cpp
 SOURCES+=../mrfCommon/src/devObjMBB.cpp
 #SOURCES+=../mrmtestApp/src/mrfMain.cpp
 
-SOURCES+=./evrMrmApp/src/mrmGpio.cpp
-SOURCES+=./evrMrmApp/src/delayModule.cpp
+SOURCES+=../evrMrmApp/src/mrmGpio.cpp
+SOURCES+=../evrMrmApp/src/delayModule.cpp
 
 DBDS+=../mrmShared/src/mrmShared.dbd
 DBDS+=../evrApp/src/evrSupport.dbd
