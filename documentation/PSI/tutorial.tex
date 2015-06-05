@@ -50,7 +50,7 @@ Here are a few examples of the \texttt{\$(TEMPLATES)} variable:
 \item \texttt{/fin/devl/iocBoot/templates}.
 \item \texttt{/trfcb/work/iocBoot/templates}
 \end{itemize}
-The following steps demonstrate how to prepare such a SWIT compatible IOC application:
+The following steps demonstrate how to prepare a SWIT compatible IOC application that utilizes EVR:
 \begin{enumerate}
 
 	\item Create a project folder, eg. \texttt{MTEST-VME-EVRTEST} and a sub-folder named \texttt{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
@@ -60,6 +60,12 @@ The following steps demonstrate how to prepare such a SWIT compatible IOC applic
 	mkdir cfg
 \end{verbatim}
 
+	\item Create a substitution file for your project (can be empty), named \texttt{MTEST-VME-EVRTEST\_main.subs} using the following command: 
+\begin{verbatim}
+	touch MTEST-VME-EVRTEST_main.subs
+\end{verbatim}	
+	This substitution file can be used to load custom templates that are not directly connected to the basic functionality of the EVR.
+	
 	\item Copy the startup script \newline \texttt{\$(TEMPLATES)/EVR/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
 	cp $INSTBASE/iocBoot/templates/EVR/example.startup 
@@ -105,9 +111,10 @@ Line \texttt{$<$ \$(TEMPLATES)/EVR\_VME.startup} includes a generic EVR startup 
 \begin{verbatim}
 	cp $INSTBASE/iocBoot/templates/EVR/EVR.subs cfg/
 \end{verbatim}
+The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
 \end{enumerate}
 
-The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
+
 
 %\paragraph{Command summary} for creating a new IOC application:
 %\begin{verbatim}
@@ -349,13 +356,11 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
 \section{Data buffer}\label{sec:data_buffer}
-The timing system supports deterministic data transmission. Data buffer enables the event receivers to accept this data. The data can be written and read from through EPICS records.
+The timing system supports deterministic data transmission. Data buffer enables the event receivers to accept this data. The data can be written and read from through EPICS records, which access the buffer in the EVR.
 
-When using the EVR as described in this tutorial, the data and the records to access this data are predefined\footnote{Methods for sending and receiving custom data using the data buffer are out of the scope of this document.}. 
-
-The following records are available:
+When using the EVR as described in this tutorial, the following data/records are already available:
 \begin{itemize}
-\item The data regarding the beam synchronous readouts~\cite{bsread}:
+\item Data regarding the beam synchronous readouts~\cite{bsread}:
 	\begin{itemize}
 	\item \texttt{\$(SYS)-\$(EVR):BunchIdRx-I}: The pulse ID,
 	\item \texttt{\$(SYS)-\$(EVR):BunchIdRx-MASTER-TS-SEC}: Seconds part of the pulse time-stamp,
@@ -363,6 +368,56 @@ The following records are available:
 	\end{itemize}
 \end{itemize}
 where \texttt{\$(SYS)} is the system name (\textit{MTEST-VME-EVRTEST}) and \texttt{\$(EVR)} is the event receiver name (\textit{EVR0}).
+
+\begin{quote}
+\textbf{Adding data to the buffer should be coordinated with the entire team. Special care should be taken in order to avoid destroying existing data in the buffer.}
+\end{quote}
+
+The following instructions show how to use a combination of analogue in and analogue out records to read and write custom data in the data buffer:
+\begin{enumerate}
+\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
+\item Create a new template file named \texttt{customData.template} with the following content in the project folder \textit{MTEST-VME-EVRTEST}:
+	\begin{verbatim}
+		record(ao, "$(SYS)-$(EVR):customData$(ID)-SP") {
+		  field(DTYP, "regDev")
+		  field(OUT, "@EVRDBUFF:$(OFFSET) T=double")
+		}
+		
+		record(ai, "$(SYS):$(EVR)-customData$(ID)-RB") {
+		  field(DTYP, "regDev")
+		  field(INP, "@EVRDBUFF:$(OFFSET) T=double")
+		  field(SCAN, "I/O Intr")
+		}
+	\end{verbatim}
+	The \texttt{\$(SYS)-\$(EVR):customData\$(ID)-SP} record is used to write the data at the specified offset in the data buffer. Once the data is written, it can be read from any EVR in the timing system which has the counterpart \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record.
+	\begin{itemize}
+		\item 
+			\texttt{\$(SYS)} is the system name, and \texttt{\$(EVR)} is the event receiver name. The \texttt{\$(ID)} is a unique identification of the record.
+		\item 
+			In order to use records for reading and writing data to the data buffer, device type must be set to \texttt{regDev}~\cite{regDev}.
+		\item 
+			\texttt{INP} and \texttt{OUT} fields of the record specify the type of the data (\texttt{T=double}), the buffer name and the buffer offset(\texttt{\$(OFFSET)}) to read/write. When using the EVR as described in this tutorial, the buffer name is always \texttt{EVRDBUFF}. Offset is in range of \texttt{0x04 - 0x7FC}.
+		\item 
+			When new data is available to read, an interrupt is fired. The \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record gets processed on each interrupt, and the record's value is updated with the new data.
+	\end{itemize}
+
+\item Add the following to the \texttt{MTEST-VME-EVRTEST\_main.subs} file:
+	\begin{verbatim}
+	file "customData.template"{
+	pattern {  SYS,                    EVR,    ID, OFFSET }
+	        { "MTEST-VME-EVRTEST",    "EVR0",  0,  0x50}
+	        { "MTEST-VME-EVRTEST",    "EVR0",  1,  0x60}
+	}
+	\end{verbatim}
+	The above substitution creates the following records:
+	\begin{itemize}
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData0-SP}: Used to write a value of type double to buffer offset \texttt{0x50}.
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData1-SP}: Used to write a value of type double to buffer offset \texttt{0x60}.
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData0-RB}: Used to read a value of type double from the buffer offset \texttt{0x50}
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData1-RB}: Used to read a value of type double from the buffer offset \texttt{0x60}
+	\end{itemize}
+\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+\end{enumerate}
 
 \section{GUI}\label{sec:gui} 
 There is a caQtDM~\cite{caqtdm} GUI for the Event Receiver available. It can be used to further configure the EVR or simply check the running configuration. The GUI is launched using the following command:
