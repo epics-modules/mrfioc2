@@ -36,12 +36,21 @@ This document contains step-by-step instructions to configuring some of the basi
 \section{Quick start}\label{sec:Quick start}
 To set up a timing system we need a VME crate, a Single Board Computer (SBC) and an EVR. A VME crate has a number of slots where SBC, EVR and other components can be inserted. Slot numbering should be checked with the VME crate documentation. The tutorials in this document are written for the following setup:
 \begin{itemize}
-	 \item a VME64x IFC 1210 Single Board Computer inserted into VME crate slot 1 (how to set up IFC 1210~\cite{ifc}),
+	\item a VME64x IFC 1210 Single Board Computer inserted into VME crate slot 1 (how to set up IFC 1210~\cite{ifc}),
 	\item VME-EVR-230RF event receiver inserted in slot 2,
 	\item the EVR connected to the timing network through an optical cable.
 \end{itemize}
 
-To set up an IOC application for EVR we need to set up a startup script and a substitution file. The following steps demonstrate how to prepare such a SWIT compatible IOC application:
+To set up an IOC application for EVR we need to set up a startup script and a substitution file. Suitable ones are available in \texttt{\$(TEMPLATES)/EVR} folder. The \texttt{\$(TEMPLATES)} variable is set automatically by the system like so: 
+\begin{verbatim}
+$(TEMPLATES) = $INSTBASE/iocBoot/templates
+\end{verbatim}
+Here are a few examples of the \texttt{\$(TEMPLATES)} variable:
+\begin{itemize}
+\item \texttt{/fin/devl/iocBoot/templates}.
+\item \texttt{/trfcb/work/iocBoot/templates}
+\end{itemize}
+The following steps demonstrate how to prepare a SWIT compatible IOC application that utilizes EVR:
 \begin{enumerate}
 
 	\item Create a project folder, eg. \texttt{MTEST-VME-EVRTEST} and a sub-folder named \texttt{cfg} in your project folder: \texttt{MTEST-VME-EVRTEST/cfg/}
@@ -51,38 +60,40 @@ To set up an IOC application for EVR we need to set up a startup script and a su
 	mkdir cfg
 \end{verbatim}
 
-	\item Copy the startup script \newline \texttt{/fin/devl/iocBoot/templates/EVR/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
+	\item Create a substitution file for your project (can be empty), named \texttt{MTEST-VME-EVRTEST\_main.subs} using the following command: 
 \begin{verbatim}
-	cp /fin/devl/iocBoot/templates/EVR/example.startup 
+	touch MTEST-VME-EVRTEST_main.subs
+\end{verbatim}	
+	This substitution file can be used to load custom templates. % that are not directly connected to the basic functionality of the EVR.
+	
+	\item Copy the startup script \newline \texttt{\$(TEMPLATES)/EVR/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
+\begin{verbatim}
+	cp $INSTBASE/iocBoot/templates/EVR/example.startup 
 	    MTEST-VME-EVRTEST_startup.script
 \end{verbatim}
 
 	The startup script should look similar to:
 \begin{verbatim}
-	## This will be set automatically from 
-	   INSTBASE + MRFIOC2 version in the future
-	epicsEnvSet TEMPLATE_DIR "/fin/devl/iocBoot/templates/EVR"
-	
-	##System configuration
+	## System configuration
 	epicsEnvSet SYS MTEST-VME-EVRTEST
 	
 	### EVR configuration
-	#epicsEnvSet EVR EVR0 ##EVR name (default EVR0)
-	#epicsEnvSet EVR_SLOT 3 ##EVR slot (default slot 2)
-	#epicsEnvSet EVR_MEMOFFSET 0xfffff ## A24 base address 
-	                                      (default value 0x3000000)
-	#epicsEvnSet EVR_IRQLINE 0xff ## IRQ level (default value 5)
-	#epicsEnvSet EVR_IRQVECT 0xff ## IRQ vector (default value 0x26)
+	#epicsEnvSet EVR EVR0 ##EVR name (default: EVR0)
+	#epicsEnvSet EVR_SLOT 3 ##EVR SLOT (default: 2)
+	#epicsEnvSet EVR_MEMOFFSET 0xfffff ## A24 base address
+	#                                     (default: 0x3000000)
+	#epicsEvnSet EVR_IRQLINE 0xff ## IRQ level (default: 0x5)
+	#epicsEvnSet EVR_IRQVECT 0xff ## IRQ vector (default: 0x26)
 	
-	< $(TEMPLATE_DIR)/EVR_VME.startup
+	< $(TEMPLATES)/EVR/EVR_VME.startup
 	
 	## END OF EVR configuration
 \end{verbatim}
 
 The configurable variables in the startup script are:
 \begin{itemize}
-	\item 
-		\texttt{TEMPLATE\_DIR} is the location of the template files, and must not be changed by the user.
+%	\item 
+%		\texttt{TEMPLATES} is the location of the template files. It is automatically set based on \texttt{INSTBASE}.
 	\item
 		\texttt{SYS} is the system name. \textbf{This variable is mandatory.}
 	\item 
@@ -94,15 +105,16 @@ The configurable variables in the startup script are:
 \end{itemize}
 Using the above startup script, the system name is set to \textit{MTEST-VME-EVRTEST}, and the event receiver named \textit{EVR0} is placed in the physical slot 2 of the VME crate. It uses default A24 address and interrupt configuration.
 
-Line \texttt{$<$ \$(TEMPLATE\_DIR)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
+Line \texttt{$<$ \$(TEMPLATES)/EVR\_VME.startup} includes a generic EVR startup script, and must not be changed by the user.
 
-	\item Copy the substitution file \texttt{/fin/devl/iocBoot/templates/EVR/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
+	\item Copy the substitution file \texttt{\$INSTBASE/iocBoot/templates/EVR/EVR.subs} to \texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}. This substitution file can always be used as a starting point for new applications. Use the following command in your project folder: 
 \begin{verbatim}
-	cp /fin/devl/iocBoot/templates/EVR/EVR.subs cfg/
+	cp $INSTBASE/iocBoot/templates/EVR/EVR.subs cfg/
 \end{verbatim}
+The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
 \end{enumerate}
 
-The macro definitions in the substitution file are used to configure the EVR. All the available macros are already present in the substitution file and set to their default values, so the user can simply change the desired values. Detailed description of the substitution file is available in the EVR manual~\cite{evr_manual}.
+
 
 %\paragraph{Command summary} for creating a new IOC application:
 %\begin{verbatim}
@@ -134,7 +146,7 @@ The pulse in this tutorial is generated using pulser 3 and outputted through the
 	\label{fig:pulser}
 \end{figure}
 
-\subsection{Instructions:}
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
@@ -159,7 +171,7 @@ The pulse in this tutorial is generated using pulser 3 and outputted through the
 	        ...
 	}
 \end{verbatim}
-
+	The above macro substitution of the \texttt{evr-pulserMap.template} creates a record named \texttt{MTEST-VME-EVRTEST-EVR0:Pul\$(PID)-Evt-\$(F)\$(ID)-SP}.
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
@@ -171,7 +183,7 @@ First we set up the pulse generator 3 (Pul3):
 	\item \texttt{Pul3-Width-SP}=80: Set the pulse width (time between the pulse rising and falling edge) for pulser 3 to 80 ns.
 \end{itemize}
 
-Then the value of the output source macro \texttt{FrontOut0-Src-SP} is set to 3, which configures the front panel output 0 (FrontOut0) to use pulser 3 as its source. Macro values 0-15 correspond to pulsers 0-15. A complete list of available values is available in the EVR manual~\cite{evr_manual}.
+Then the value of the output source macro \texttt{FrontOut0-Src-SP} is set to 3, which configures the front panel output 0 (FrontOut0) to use pulser 3 as its source. Macro values 0-15 correspond to pulsers 0-15. A complete list of available values can be found in the EVR manual~\cite{evr_manual}.
 
 Finally, the Pulser 3 is set to trigger on reception of the event 4:
 \begin{itemize}
@@ -182,14 +194,14 @@ Finally, the Pulser 3 is set to trigger on reception of the event 4:
 \end{itemize}
 
 In order to use different pulser simply change the pulser number, eg. using \texttt{Pul5-Delay-SP} instead of \texttt{Pul3-Delay-SP} sets the delay of pulser 5 instead of pulser 3.
-Similar is for outputs, eg. using \texttt{FrontOut1-Src-SP} instead of \texttt{FrontOut0-Src-SP} sets the output source signal of front panel output 1 instead of front panel output 0.
+Similar is for outputs, eg. using \texttt{FrontOut1-Src-SP} instead of \texttt{FrontOut0-Src-SP} sets the output source signal of front panel output 1 instead of front panel output 0. In order to set a different event mapped to Pulser 3 Trig function, simply set a new value of the record \texttt{MTEST-VME-EVRTEST-EVR0:Pul3-Evt-Trig0-SP}. To disable the mapping, set the record value to \texttt{0}.
 
 \section{Trigger an EPICS event upon receiving an event from the timing system}
 Using the macros in the substitution file it is possible to configure triggering of the EPICS events. Each event from the timing system can be configured to trigger an EPICS event.
 
 This tutorial demonstrates how to trigger an EPICS event number 1 upon reception of event 1 from the timing system.
 
-\subsection{Instructions:}
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 	
@@ -214,7 +226,7 @@ It is suggested that macros \texttt{EVT} and \texttt{CODE} are set to the same v
 
 \section{Generate a clock signal}
 
-Event receivers have synchronized event clock across the timing system (the same phase and frequency). The event clock can be prescaled and mapped to the EVR output. 
+Event receivers have synchronized event clock across the timing system (the same phase and frequency). The event clock can be prescaled and mapped to the EVR output. The minimum prescale factor is 2, so a clock signal with the same phase and frequency as the event clock cannot be generated this way (Section~\ref{sec:generate_event_clock} describes how to generate the event clock).
 
 This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the event clock frequency by 2, and output it through the front panel output 1 (FrontOut1), as seen in Figure~\ref{fig:prescaler}. 
 %This can be achieved by setting the prescaler macro \texttt{PS0-Div-SP} to 2, and the output source macro \texttt{FrontOut1-Src-SP} to 40. The latter configures the front panel output 1 (FrontOut1) to use prescaler 0 as its source.
@@ -226,7 +238,7 @@ This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the 
 	\label{fig:prescaler}
 \end{figure}
 
-\subsection{Instructions:}
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
@@ -257,6 +269,54 @@ This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the 
 In order to use different prescaler, simply change the prescaler number, eg. using \texttt{PS2-Div-SP} instead of \texttt{PS0-Div-SP} sets the divider of prescaler 2 instead of prescaler 0.
 Similar is for outputs, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
+\section{Generate the event clock}\label{sec:generate_event_clock}
+Signals with frequency greater or equal to the frequency of the event clock can only be generated using the CML outputs. More about the operation of the CML outputs and their modes is available in the EVR manual~\cite{evr_manual}. Note, that not all event receiver form factors have CML outputs. The EVR-VME-230RF form factor has outputs FrontOut4 (CML0), FrontOut5 (CML1) and FrontOut6 (CML2) capable of CML output. This tutorial demonstrates how to configure CML0 output (corresponds to FrontOut4 output) to generate a clock signal, that has the same phase and frequency as the event clock. To achieve this, the FrontOut4 output source is set to \texttt{logic low} and the CML outputs are enabled. This causes the logic low pattern of the CML pulse mode to be continuously outputted. The configurable pattern, as seen in Figure~\ref{fig:gen_evt_clk}, is 20 bits long and is sent out with a bit rate of 20 times the event clock rate. It is configured to replicate the event clock phase and frequency.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\columnwidth]{./img/gen_evt_clk}
+	\caption{Generate the event clock}
+	\label{fig:gen_evt_clk}
+\end{figure}
+
+\subsection{Instructions}
+\begin{enumerate}
+	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
+	
+	\item Set the macro values in the substitution file (\texttt{MTEST-VME-EVRTEST/cfg/EVR.subs}) according to this snippet (explained in~\ref{sec:explain_cml}):
+\begin{verbatim}
+	file "$(TEMPLATE_DIR)/evr-vmerf230.template"
+	{
+	  {
+	    ...
+	    FrontOut4-Ena-SP=1,
+	    FrontOut4-Src-SP=63,
+	    CML0-Ena-Sel=1,
+	    CML0-Pwr-Sel=1,
+	    CML0-Mode-Sel=0,
+	    CML0-Pat:Low00_15-SP=0xFFC0,
+	    CML0-Pat:Low16_31-SP=0, 
+	    ...
+	  }
+	}
+\end{verbatim}
+
+	\item Optionally, you can remove all the macros whose values you did not change. 
+	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+\end{enumerate}
+
+\subsection{Substitution snippet explanation:}\label{sec:explain_cml}
+\begin{itemize}
+	\item \texttt{FrontOut4-Ena-SP}=1: Enable the front panel output 4.
+	\item \texttt{FrontOut4-Src-SP}=63: Set the source of the front panel output 4 to logic low. A complete list of settable values is available in the EVR manual~\cite{evr_manual}.
+	\item \texttt{CML0-Ena-Sel}=1: Enable the CML0 output, which corresponds to the front panel output 4.
+	\item \texttt{CML0-Pwr-Sel}=1: Power on the CML0 output.
+	\item \texttt{CML0-Mode-Sel}=0: Select the pulse mode. Because the output source signal of the front panel output 4 is set to logic low, this mode will continuously output logic low pattern.
+	\item \texttt{CML0-Pat:Low00\_15-SP}=0xFFC0: Set logic low pattern bits 0-15. The Figure~\ref{fig:gen_evt_clk} shows that the bits 15-0 must be set as follows: \texttt{1111 1111 1100 0000}, which translates to \texttt{0xFFC0}. Each bit represents $1/20$ of the event clock period.
+	\item \texttt{CML0-Pat:Low16\_31-SP}=0: Set signal low pattern bits 16-31, as seen in Figure~\ref{fig:gen_evt_clk}. Note, that only bits 31-28 (top 4 bits) can be used.
+\end{itemize}
+
+
 \section{Output a Distributed Bus bit}
 A custom distributed bus (DBus) bit can be outputted through desired EVR outputs. This tutorial demonstrates how to set up the DBus bit 0 as a source of an EVR front panel output 1, as seen in Figure~\ref{fig:dbus}. 
 %To achieve this, the front panel output 0 should be mapped to the distributed bus bit (signal) 0. This is configured by setting the value of the output source macro \texttt{FrontOut1-Src-Sp} to 32. Mapping 32 corresponds to the DBus bit 0.
@@ -268,7 +328,7 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 	\label{fig:dbus}
 \end{figure}
 
-\subsection{Instructions:}
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 	
@@ -295,6 +355,70 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
+\section{Data buffer}\label{sec:data_buffer}
+The timing system supports deterministic data transmission. Data buffer enables the event receivers to accept the transmitted data in a buffer. The data can be written and read from through EPICS records, which access the buffer in the EVR.
+
+When using the EVR as described in Section~\ref{sec:Quick start}, the following data/records are already available:
+\begin{itemize}
+\item Data regarding the beam synchronous readouts~\cite{bsread}:
+	\begin{itemize}
+	\item \texttt{\$(SYS)-\$(EVR):BunchIdRx-I}: The pulse ID,
+	\item \texttt{\$(SYS)-\$(EVR):BunchIdRx-MASTER-TS-SEC}: Seconds part of the pulse time-stamp,
+	\item \texttt{\$(SYS)-\$(EVR):BunchIdRx-MASTER-TS-NSEC}: Nanoseconds part of the pulse time-stamp,
+	\end{itemize}
+\end{itemize}
+where \texttt{\$(SYS)} is the system name (\textit{MTEST-VME-EVRTEST}) and \texttt{\$(EVR)} is the event receiver name (\textit{EVR0}).
+
+\begin{quote}
+\textbf{Adding data to the buffer should be coordinated with the entire team. Special care should be taken in order to avoid destroying existing data in the buffer.}
+\end{quote}
+
+The following instructions show how to use a combination of analogue in and analogue out records to read and write custom data in the data buffer:
+\begin{enumerate}
+\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
+\item Create a new template file named \texttt{customData.template} with the following content in the project folder \textit{MTEST-VME-EVRTEST}:
+	\begin{verbatim}
+		record(ao, "$(SYS)-$(EVR):customData$(ID)-SP") {
+		  field(DTYP, "regDev")
+		  field(OUT, "@EVRDBUFF:$(OFFSET) T=double")
+		}
+		
+		record(ai, "$(SYS):$(EVR)-customData$(ID)-RB") {
+		  field(DTYP, "regDev")
+		  field(INP, "@EVRDBUFF:$(OFFSET) T=double")
+		  field(SCAN, "I/O Intr")
+		}
+	\end{verbatim}
+	The \texttt{\$(SYS)-\$(EVR):customData\$(ID)-SP} record is used to write the data at the specified offset in the data buffer. Once the data is written, it can be read from any EVR in the timing system, which has the counterpart \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record (an analogue in record with the same offset).
+	\begin{itemize}
+		\item 
+			\texttt{\$(SYS)} is the system name, and \texttt{\$(EVR)} is the event receiver name. The \texttt{\$(ID)} is a unique identification of the record.
+		\item 
+			In order to use records for reading and writing data to the data buffer, device type must be set to \texttt{regDev}~\cite{regDev}.
+		\item 
+			\texttt{INP} and \texttt{OUT} fields of the record specify the type of the data (\texttt{T=double}), the buffer name and the buffer offset(\texttt{\$(OFFSET)}) to read/write. When using the EVR as described in Section~\ref{sec:Quick start}, the buffer name is always \texttt{EVRDBUFF}. Offset is in range of \texttt{0x04 - 0x7FC} bytes.
+		\item 
+			When new data is available to read, an interrupt is fired. The \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record gets processed on each interrupt (\texttt{field(SCAN, "I/O Intr")}), thus the record's value is updated with the new data.
+	\end{itemize}
+
+\item Add the following to the \texttt{MTEST-VME-EVRTEST\_main.subs} file:
+	\begin{verbatim}
+	file "customData.template"{
+	pattern {  SYS,                    EVR,    ID, OFFSET }
+	        { "MTEST-VME-EVRTEST",    "EVR0",  0,  0x50}
+	        { "MTEST-VME-EVRTEST",    "EVR0",  1,  0x60}
+	}
+	\end{verbatim}
+	The above substitution creates the following records:
+	\begin{itemize}
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData0-SP}: Used to write a value of type double to buffer offset \texttt{0x50}.
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData1-SP}: Used to write a value of type double to buffer offset \texttt{0x60}.
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData0-RB}: Used to read a value of type double from the buffer offset \texttt{0x50}
+		\item \texttt{MTEST-VME-EVRTEST:EVR0-customData1-RB}: Used to read a value of type double from the buffer offset \texttt{0x60}
+	\end{itemize}
+\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
+\end{enumerate}
+
 \section{GUI}\label{sec:gui} 
 There is a caQtDM~\cite{caqtdm} GUI for the Event Receiver available. It can be used to further configure the EVR or simply check the running configuration. The GUI is launched using the following command:
 
@@ -303,20 +427,28 @@ There is a caQtDM~\cite{caqtdm} GUI for the Event Receiver available. It can be 
 \end{verbatim}
 where the \texttt{SYS} represents a \textbf{mandatory} system name, and \texttt{[options]} are as follows:
 \begin{verbatim}
-	-r <event receiver name> ..... set the event receiver name 
-	                                (default:EVR0).
-	-h    ........................ shows the options and usage
+	-r <EVR name> ......... set the event receiver name 
+	                        (default:EVR0)
+	-f <form factor> ...... choose the event receiver form factor 
+	                        (default: VME)
+	                        Choices: VME, PCIe
+	-h    ................. shows the options and usage
 \end{verbatim}
 
 
-\paragraph{Example 1:} Open the GUI for the event receiver \texttt{EVR0}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
+\paragraph{Example 1:} Open the GUI for the EVR-VME-230RF event receiver named \texttt{EVR0}, using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
 	start_EVR.sh -s MTEST-VME-EVRTEST
 \end{verbatim}
 
-\paragraph{Example 2:} Open the GUI for the event receiver \texttt{EVR3}, \newline using system name \texttt{MTEST-VME-EVRTEST}.
+\paragraph{Example 2:} Open the GUI for the EVR-VME-230RF event receiver named \texttt{EVR3}, using system name \texttt{MTEST-VME-EVRTEST}.
 \begin{verbatim}
 	start_EVR.sh -s MTEST-VME-EVRTEST -r EVR3
+\end{verbatim}
+
+\paragraph{Example 2:} Open the GUI for the EVR-PCIe-300 event receiver named \texttt{EVR0}, using system name \texttt{MTEST-VME-EVRTEST}.
+\begin{verbatim}
+	start_EVR.sh -s MTEST-VME-EVRTEST -f PCIe
 \end{verbatim}
 
 \paragraph{Example 3:} Shows options and usage.

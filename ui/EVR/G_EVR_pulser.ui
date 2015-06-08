@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>651</width>
-     <height>101</height>
+     <height>115</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -31,9 +31,9 @@
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>151</width>
+      <x>5</x>
+      <y>45</y>
+      <width>101</width>
       <height>20</height>
      </rect>
     </property>
@@ -47,8 +47,8 @@
    <widget class="caToggleButton" name="catogglebutton">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>1</y>
+      <x>10</x>
+      <y>20</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -106,10 +106,10 @@
    <widget class="caChoice" name="cachoice">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>60</y>
-      <width>151</width>
-      <height>20</height>
+      <x>10</x>
+      <y>64</y>
+      <width>91</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -143,7 +143,7 @@
      <enum>caChoice::Static</enum>
     </property>
     <property name="stackingMode" stdset="0">
-     <enum>caChoice::Column</enum>
+     <enum>caChoice::Row</enum>
     </property>
     <property name="endBit">
      <number>1</number>
@@ -152,10 +152,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>320</x>
       <y>2</y>
-      <width>155</width>
-      <height>91</height>
+      <width>191</width>
+      <height>105</height>
      </rect>
     </property>
     <property name="title">
@@ -166,8 +166,8 @@
       <rect>
        <x>5</x>
        <y>20</y>
-       <width>125</width>
-       <height>20</height>
+       <width>161</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -191,7 +191,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>50</y>
+       <y>60</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -207,7 +207,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>80</y>
        <width>28</width>
        <height>16</height>
       </rect>
@@ -223,7 +223,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>50</y>
+       <y>60</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -239,7 +239,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>70</y>
+       <y>80</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -251,10 +251,10 @@
     <widget class="caLineEdit" name="calineedit_15">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>166</x>
        <y>20</y>
        <width>20</width>
-       <height>20</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="channel" stdset="0">
@@ -265,10 +265,10 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>120</x>
       <y>2</y>
-      <width>155</width>
-      <height>91</height>
+      <width>191</width>
+      <height>105</height>
      </rect>
     </property>
     <property name="title">
@@ -278,7 +278,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>50</y>
+       <y>60</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -294,7 +294,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>50</y>
+       <y>60</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -313,7 +313,7 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>70</y>
+       <y>80</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -329,7 +329,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>70</y>
+       <y>80</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -346,8 +346,8 @@
       <rect>
        <x>5</x>
        <y>20</y>
-       <width>125</width>
-       <height>20</height>
+       <width>161</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -370,10 +370,10 @@
     <widget class="caLineEdit" name="calineedit_14">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>166</x>
        <y>20</y>
        <width>20</width>
-       <height>20</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="channel" stdset="0">
@@ -387,7 +387,7 @@
       <x>520</x>
       <y>2</y>
       <width>125</width>
-      <height>93</height>
+      <height>110</height>
      </rect>
     </property>
     <property name="visibility">
@@ -402,7 +402,7 @@
        <x>1</x>
        <y>0</y>
        <width>123</width>
-       <height>92</height>
+       <height>105</height>
       </rect>
      </property>
      <property name="title">
@@ -412,7 +412,7 @@
       <property name="geometry">
        <rect>
         <x>75</x>
-        <y>66</y>
+        <y>80</y>
         <width>45</width>
         <height>20</height>
        </rect>
@@ -421,27 +421,11 @@
        <string notr="true">$(EVR):Pul$(ID)-Res-I</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_23">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Set</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
      <widget class="caLineEdit" name="calineedit_10">
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>43</y>
+        <y>57</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -454,7 +438,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>43</y>
+        <y>57</y>
         <width>31</width>
         <height>20</height>
        </rect>
@@ -470,7 +454,7 @@
       <property name="geometry">
        <rect>
         <x>1</x>
-        <y>66</y>
+        <y>80</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -485,10 +469,10 @@
      <widget class="caSpinbox" name="caspinbox_3">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>5</x>
         <y>20</y>
-        <width>71</width>
-        <height>20</height>
+        <width>111</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="toolTip">

@@ -479,6 +479,20 @@
          d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
          transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
     </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Lend-28"
+       style="overflow:visible">
+      <path
+         id="path4852-55"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -487,9 +501,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="268.88859"
-     inkscape:cy="86.403292"
+     inkscape:zoom="1.979899"
+     inkscape:cx="296.61076"
+     inkscape:cy="66.077265"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -820,13 +834,13 @@
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="200.04608"
-       y="838.86713"
+       y="828.86713"
        id="text2989-7-7-9-1-0-0-3-1-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan2991-2-4-6-43-7-2-7-7-8"
          x="200.04608"
-         y="838.86713"
+         y="828.86713"
          style="font-size:10px">Event Clock</tspan></text>
     <text
        xml:space="preserve"
@@ -870,5 +884,29 @@
        d="m 77.142021,805.7332 0.12871,56.73178 59.742119,0"
        id="path3331-4-2-7"
        inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="191.08563"
+       y="840.4306"
+       id="text2989-7-7-9-1-0-2-8-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2991-2-4-6-43-7-5-2-3"
+         x="191.08563"
+         y="840.4306"
+         style="font-size:10px">(eg. 142.8 MHz)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="450.02649"
+       y="840.8244"
+       id="text2989-7-7-9-1-0-2-8-9-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2991-2-4-6-43-7-5-2-3-0"
+         x="450.02649"
+         y="840.8244"
+         style="font-size:10px">(71.4 MHz)</tspan></text>
   </g>
 </svg>

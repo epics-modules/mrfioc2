@@ -12,3 +12,9 @@ rtf
 .project
 .cproject
 .settings
+
+*.config
+*.creator
+*.creator.user
+*.files
+*.includes
