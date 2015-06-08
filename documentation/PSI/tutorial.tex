@@ -41,7 +41,7 @@ To set up a timing system we need a VME crate, a Single Board Computer (SBC) and
 	\item the EVR connected to the timing network through an optical cable.
 \end{itemize}
 
-To set up an IOC application for EVR we need to set up a startup script and a substitution file. These are available in \texttt{\$(TEMPLATES)/EVR} folder, where the \texttt{\$(TEMPLATES)} variable is automatically set like so: 
+To set up an IOC application for EVR we need to set up a startup script and a substitution file. Suitable ones are available in \texttt{\$(TEMPLATES)/EVR} folder. The \texttt{\$(TEMPLATES)} variable is set automatically by the system like so: 
 \begin{verbatim}
 $(TEMPLATES) = $INSTBASE/iocBoot/templates
 \end{verbatim}
@@ -64,7 +64,7 @@ The following steps demonstrate how to prepare a SWIT compatible IOC application
 \begin{verbatim}
 	touch MTEST-VME-EVRTEST_main.subs
 \end{verbatim}	
-	This substitution file can be used to load custom templates that are not directly connected to the basic functionality of the EVR.
+	This substitution file can be used to load custom templates. % that are not directly connected to the basic functionality of the EVR.
 	
 	\item Copy the startup script \newline \texttt{\$(TEMPLATES)/EVR/example.startup} to your project and rename it to \texttt{MTEST-VME-EVRTEST\_startup.script} using the following command in your project folder:
 \begin{verbatim}
@@ -146,7 +146,7 @@ The pulse in this tutorial is generated using pulser 3 and outputted through the
 	\label{fig:pulser}
 \end{figure}
 
-\subsection{Instructions}:
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
@@ -201,7 +201,7 @@ Using the macros in the substitution file it is possible to configure triggering
 
 This tutorial demonstrates how to trigger an EPICS event number 1 upon reception of event 1 from the timing system.
 
-\subsection{Instructions}:
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 	
@@ -238,7 +238,7 @@ This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the 
 	\label{fig:prescaler}
 \end{figure}
 
-\subsection{Instructions}:
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 
@@ -270,7 +270,7 @@ In order to use different prescaler, simply change the prescaler number, eg. usi
 Similar is for outputs, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
 \section{Generate the event clock}\label{sec:generate_event_clock}
-Signals with frequency greater or equal of the event clock frequency can only be generated using the CML outputs of the EVR. More about the operation of the CML outputs and their modes is available in the EVR manual~\cite{evr_manual}. Note, that not all event receiver form factors have CML outputs. This tutorial thus focuses on the EVR-VME-230RF form factor, which has outputs FrontOut4 (CML0), FrontOut5 (CML1) and FrontOut6 (CML2) capable of CML output. It demonstrates how to configure CML0 output (corresponds to FrontOut4 output) to generate a clock signal, that has the same phase and frequency as the event clock. To achieve this, the CML0 output source is set to \texttt{logic low}, which causes the logic low pattern of the CML pulse mode to be continuously outputted. The configurable pattern is 20 bits long and is sent out with a bit rate of 20 times the event clock rate, as seen in Figure~\ref{fig:gen_evt_clk}.
+Signals with frequency greater or equal to the frequency of the event clock can only be generated using the CML outputs. More about the operation of the CML outputs and their modes is available in the EVR manual~\cite{evr_manual}. Note, that not all event receiver form factors have CML outputs. The EVR-VME-230RF form factor has outputs FrontOut4 (CML0), FrontOut5 (CML1) and FrontOut6 (CML2) capable of CML output. This tutorial demonstrates how to configure CML0 output (corresponds to FrontOut4 output) to generate a clock signal, that has the same phase and frequency as the event clock. To achieve this, the FrontOut4 output source is set to \texttt{logic low} and the CML outputs are enabled. This causes the logic low pattern of the CML pulse mode to be continuously outputted. The configurable pattern, as seen in Figure~\ref{fig:gen_evt_clk}, is 20 bits long and is sent out with a bit rate of 20 times the event clock rate. It is configured to replicate the event clock phase and frequency.
 
 \begin{figure}[H]
 	\centering
@@ -279,7 +279,7 @@ Signals with frequency greater or equal of the event clock frequency can only be
 	\label{fig:gen_evt_clk}
 \end{figure}
 
-\subsection{Instructions}:
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 	
@@ -313,7 +313,7 @@ Signals with frequency greater or equal of the event clock frequency can only be
 	\item \texttt{CML0-Pwr-Sel}=1: Power on the CML0 output.
 	\item \texttt{CML0-Mode-Sel}=0: Select the pulse mode. Because the output source signal of the front panel output 4 is set to logic low, this mode will continuously output logic low pattern.
 	\item \texttt{CML0-Pat:Low00\_15-SP}=0xFFC0: Set logic low pattern bits 0-15. The Figure~\ref{fig:gen_evt_clk} shows that the bits 15-0 must be set as follows: \texttt{1111 1111 1100 0000}, which translates to \texttt{0xFFC0}. Each bit represents $1/20$ of the event clock period.
-	\item \texttt{CML0-Pat:Low16\_31-SP}=0: Set signal low pattern bits 16-31, as seen in Figure~\ref{fig:gen_evt_clk}. Each bit represents $1/20$ of the event clock period. Note, that only bits 31-28 (top 4 bits) can be used.
+	\item \texttt{CML0-Pat:Low16\_31-SP}=0: Set signal low pattern bits 16-31, as seen in Figure~\ref{fig:gen_evt_clk}. Note, that only bits 31-28 (top 4 bits) can be used.
 \end{itemize}
 
 
@@ -328,7 +328,7 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 	\label{fig:dbus}
 \end{figure}
 
-\subsection{Instructions}:
+\subsection{Instructions}
 \begin{enumerate}
 	\item If starting a new IOC application, consult the quick start in Section~\ref{sec:Quick start}.
 	
@@ -356,9 +356,9 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 In order to use different front panel output, simply change the front panel output number, eg. using \texttt{FrontOut0-Src-SP} instead of \texttt{FrontOut1-Src-SP} sets the output source signal of front panel output 0 instead of front panel output 1.
 
 \section{Data buffer}\label{sec:data_buffer}
-The timing system supports deterministic data transmission. Data buffer enables the event receivers to accept this data. The data can be written and read from through EPICS records, which access the buffer in the EVR.
+The timing system supports deterministic data transmission. Data buffer enables the event receivers to accept the transmitted data in a buffer. The data can be written and read from through EPICS records, which access the buffer in the EVR.
 
-When using the EVR as described in this tutorial, the following data/records are already available:
+When using the EVR as described in Section~\ref{sec:Quick start}, the following data/records are already available:
 \begin{itemize}
 \item Data regarding the beam synchronous readouts~\cite{bsread}:
 	\begin{itemize}
@@ -389,16 +389,16 @@ The following instructions show how to use a combination of analogue in and anal
 		  field(SCAN, "I/O Intr")
 		}
 	\end{verbatim}
-	The \texttt{\$(SYS)-\$(EVR):customData\$(ID)-SP} record is used to write the data at the specified offset in the data buffer. Once the data is written, it can be read from any EVR in the timing system which has the counterpart \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record.
+	The \texttt{\$(SYS)-\$(EVR):customData\$(ID)-SP} record is used to write the data at the specified offset in the data buffer. Once the data is written, it can be read from any EVR in the timing system, which has the counterpart \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record (an analogue in record with the same offset).
 	\begin{itemize}
 		\item 
 			\texttt{\$(SYS)} is the system name, and \texttt{\$(EVR)} is the event receiver name. The \texttt{\$(ID)} is a unique identification of the record.
 		\item 
 			In order to use records for reading and writing data to the data buffer, device type must be set to \texttt{regDev}~\cite{regDev}.
 		\item 
-			\texttt{INP} and \texttt{OUT} fields of the record specify the type of the data (\texttt{T=double}), the buffer name and the buffer offset(\texttt{\$(OFFSET)}) to read/write. When using the EVR as described in this tutorial, the buffer name is always \texttt{EVRDBUFF}. Offset is in range of \texttt{0x04 - 0x7FC}.
+			\texttt{INP} and \texttt{OUT} fields of the record specify the type of the data (\texttt{T=double}), the buffer name and the buffer offset(\texttt{\$(OFFSET)}) to read/write. When using the EVR as described in Section~\ref{sec:Quick start}, the buffer name is always \texttt{EVRDBUFF}. Offset is in range of \texttt{0x04 - 0x7FC} bytes.
 		\item 
-			When new data is available to read, an interrupt is fired. The \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record gets processed on each interrupt, and the record's value is updated with the new data.
+			When new data is available to read, an interrupt is fired. The \texttt{\$(SYS):\$(EVR)-customData\$(ID)-RB} record gets processed on each interrupt (\texttt{field(SCAN, "I/O Intr")}), thus the record's value is updated with the new data.
 	\end{itemize}
 
 \item Add the following to the \texttt{MTEST-VME-EVRTEST\_main.subs} file:
