@@ -57,7 +57,7 @@ mrmBufferInfo_t epicsShareFunc *mrmBufInit(const char *dev_name);
  *
  * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
  */
-epicsStatus mrmBufRxSupported(mrmBufferInfo_t *data);
+epicsStatus epicsShareFunc mrmBufRxSupported(mrmBufferInfo_t *data);
 
 /**
  * @brief Checks whether transferring buffer is supported.
@@ -70,7 +70,7 @@ epicsStatus mrmBufRxSupported(mrmBufferInfo_t *data);
  *
  * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
  */
-epicsStatus mrmBufTxSupported(mrmBufferInfo_t *data);
+epicsStatus epicsShareFunc mrmBufTxSupported(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
