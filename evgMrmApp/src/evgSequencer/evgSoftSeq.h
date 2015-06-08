@@ -92,7 +92,14 @@ public:
     evgSoftSeq(const epicsUInt32, evgMrm* const);
     ~evgSoftSeq();
 
-    const epicsUInt32 getId() const;	
+    /**
+     * Removing first const modifier since the value is copied and
+     * modifiable in any case. The first const is superfluous in this
+     * case and also causes a warning.
+     *
+     * Change by: jkrasna
+     */
+    epicsUInt32 getId() const;
 
     void setDescription(const char*);
     const char* getDescription();

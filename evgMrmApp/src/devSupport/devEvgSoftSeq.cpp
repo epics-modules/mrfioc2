@@ -157,6 +157,14 @@ init_li(longinRecord* pli) {
 /**        Read/Write Function        **/
 static long
 get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     Pvt* dpvt = (Pvt*)pwf->dpvt;
     if(!dpvt)
         return S_dev_noDevice;
@@ -173,6 +181,14 @@ get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
 
 static long 
 get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
         errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
@@ -185,6 +201,14 @@ get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 
 static long 
 get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
         errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
@@ -197,6 +221,14 @@ get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 
 static long
 get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
         errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
@@ -209,6 +241,14 @@ get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 
 static long
 get_ioint_info_startSeq(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
         errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);

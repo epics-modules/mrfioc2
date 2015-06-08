@@ -38,6 +38,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     irqExtInp_queued(0),
     m_syncTimestamp(false),
     m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+    m_pciDevice(pciDevice),
     m_id(id),
     m_pReg(pReg),
     busConfiguration(busConfig),
@@ -45,8 +46,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_evtClk(id+":EvtClk", pReg),
     m_softEvt(id+":SoftEvt", pReg),
     m_seqRamMgr(this),
-    m_softSeqMgr(this),
-    m_pciDevice(pciDevice)
+    m_softSeqMgr(this)
 {
     try{
         for(int i = 0; i < evgNumEvtTrig; i++) {
@@ -200,7 +200,15 @@ evgMrm::getFormFactor(){
     form &= FPGAVersion_FORM_MASK;
     form >>= FPGAVersion_FORM_SHIFT;
 
-    if(formFactor_CPCI <= form && form <= formFactor_PCIe) return (formFactor)form;
+    /**
+     * Removing 'formFactor_CPCI <= form' from the if condition since
+     * 'form' is unsigned and 'formFactor_CPCI' is 0. 'form' can never
+     * be less than 0 which makes this comparison always true and
+     * therefore superfluous.
+     *
+     * Changed by: jkrasna
+     */
+    if(form <= formFactor_PCIe) return (formFactor)form;
     else return formFactor_unknown;
 }
 

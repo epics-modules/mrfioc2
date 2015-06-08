@@ -209,6 +209,14 @@ long del_record_property(dbCommon* prec)
 
 static inline long get_ioint_info_property(int dir,dbCommon* prec,IOSCANPVT* io)
 {
+
+    /**
+     * Added cast to void for 'dir' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)dir;
     using namespace mrf;
 if (!prec->dpvt) return -1;
 try {
