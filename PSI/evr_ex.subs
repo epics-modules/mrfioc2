@@ -178,8 +178,8 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		CML0-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
 		CML0-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
 		CML0-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
-		CML0-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
-		CML0-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML0-Pat:Low00_15-SP=0,		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML0-Pat:Low16_31-SP=0,		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
 		CML0-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
 		CML0-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
 		CML0-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
@@ -203,8 +203,8 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		CML2-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
 		CML2-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
 		CML2-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
-		CML2-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
-		CML2-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML2-Pat:Low00_15-SP=0,		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML2-Pat:Low16_31-SP=0,		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
 		CML1-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
 		CML1-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
 		CML1-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
@@ -229,8 +229,8 @@ file "$(TEMPLATE_DIR)/evr-vmerf230.template"
 		CML2-Pat:High16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode high pattern
 		CML2-Pat:Fall00_15-SP=0x0,	# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode falling pattern
 		CML2-Pat:Fall16_31-SP=0x0,	# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode falling pattern
-		CML2-Pat:Low00_15-SP=0		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
-		CML2-Pat:Low16_31-SP=0		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
+		CML2-Pat:Low00_15-SP=0,		# 0x0 - 0xFFFF : Bits 15-0 of the pulse mode low pattern
+		CML2-Pat:Low16_31-SP=0,		# 0x0 - 0xFFFF : Bits 31-16 of the pulse mode low pattern
 		CML2-Freq:Lvl-SP=0, 		# For frequency mode: 0 = Active high, 1 = Active low
 		CML2-Freq:Init-SP=0, 		# For frequency mode: Delay in ns (max 65535 clock periods)
 		CML2-Freq:High-SP=10, 		# For frequency mode: Width of active signal in ns (max 65535 clock periods)
