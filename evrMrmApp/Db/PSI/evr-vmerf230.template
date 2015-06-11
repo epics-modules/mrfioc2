@@ -10328,7 +10328,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML0-Freq:Init-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML0, PROP=Counts Init")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML0-Freq:Init-SP=0,undefined)")
+  field(VAL , "$(CML0-Freq:Init-SP=0,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -10353,7 +10353,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML0-Freq:High-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML0, PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML0-Freq:High-SP=10,undefined)")
+  field(VAL , "$(CML0-Freq:High-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -10377,7 +10377,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML0-Freq:Low-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML0, PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML0-Freq:Low-SP=10,undefined)")
+  field(VAL , "$(CML0-Freq:Low-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -10474,7 +10474,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML0-WfCalc:Delay-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-WfCalc-ASub_.A PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML0-WfCalc:Delay-SP=16,undefined)")
+  field(VAL , "$(CML0-WfCalc:Delay-SP=16,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -10483,7 +10483,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML0-WfCalc:Width-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML0-WfCalc-ASub_.B PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML0-WfCalc:Width-SP=50,undefined)")
+  field(VAL , "$(CML0-WfCalc:Width-SP=50,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -10870,7 +10870,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML1-Freq:Init-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML1, PROP=Counts Init")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML1-Freq:Init-SP=0,undefined)")
+  field(VAL , "$(CML1-Freq:Init-SP=0,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -10895,7 +10895,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML1-Freq:High-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML1, PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML1-Freq:High-SP=10,undefined)")
+  field(VAL , "$(CML1-Freq:High-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -10919,7 +10919,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML1-Freq:Low-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML1, PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML1-Freq:Low-SP=10,undefined)")
+  field(VAL , "$(CML1-Freq:Low-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -11016,7 +11016,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML1-WfCalc:Delay-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-WfCalc-ASub_.A PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML1-WfCalc:Delay-SP=16,undefined)")
+  field(VAL , "$(CML1-WfCalc:Delay-SP=16,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -11025,7 +11025,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML1-WfCalc:Width-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML1-WfCalc-ASub_.B PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML1-WfCalc:Width-SP=50,undefined)")
+  field(VAL , "$(CML1-WfCalc:Width-SP=50,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -11412,7 +11412,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML2-Freq:Init-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML2, PROP=Counts Init")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML2-Freq:Init-SP=0,undefined)")
+  field(VAL , "$(CML2-Freq:Init-SP=0,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -11437,7 +11437,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML2-Freq:High-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML2, PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML2-Freq:High-SP=10,undefined)")
+  field(VAL , "$(CML2-Freq:High-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -11461,7 +11461,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML2-Freq:Low-SP") {
   field(OUT, "@OBJ=$(EVR,recursive):CML2, PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML2-Freq:Low-SP=10,undefined)")
+  field(VAL , "$(CML2-Freq:Low-SP=10,undefined)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -11558,7 +11558,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML2-WfCalc:Delay-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-WfCalc-ASub_.A PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML2-WfCalc:Delay-SP=16,undefined)")
+  field(VAL , "$(CML2-WfCalc:Delay-SP=16,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -11567,7 +11567,7 @@ record(ao, "$(SYS,recursive)-$(EVR,recursive):CML2-WfCalc:Width-SP") {
   field(OUT , "$(SYS,recursive)-$(EVR,recursive):CML2-WfCalc-ASub_.B PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR,recursive):CML2-WfCalc:Width-SP=50,undefined)")
+  field(VAL , "$(CML2-WfCalc:Width-SP=50,undefined)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 

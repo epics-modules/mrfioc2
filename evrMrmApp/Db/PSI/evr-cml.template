@@ -333,7 +333,7 @@ record(ao, "$(SYS)-$(EVR):$(OBJ)$(ID)-Freq:Init-SP") {
   field(OUT, "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Counts Init")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-Freq:Init-SP\=0)")
+  field(VAL , "$($(OBJ)$(ID)-Freq:Init-SP\=0)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -358,7 +358,7 @@ record(ao, "$(SYS)-$(EVR):$(OBJ)$(ID)-Freq:High-SP") {
   field(OUT, "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Counts High")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-Freq:High-SP\=10)")
+  field(VAL , "$($(OBJ)$(ID)-Freq:High-SP\=10)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -382,7 +382,7 @@ record(ao, "$(SYS)-$(EVR):$(OBJ)$(ID)-Freq:Low-SP") {
   field(OUT, "@OBJ=$(EVR):$(OBJ)$(ID), PROP=Counts Low")
   field(PINI, "YES")
   field(UDF , "0")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-Freq:Low-SP\=10)")
+  field(VAL , "$($(OBJ)$(ID)-Freq:Low-SP\=10)")
   field(EGU , "ns")
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
@@ -479,7 +479,7 @@ record(ao, "$(SYS)-$(EVR):$(OBJ)$(ID)-WfCalc:Delay-SP") {
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-WfCalc-ASub_.A PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-WfCalc:Delay-SP\=16)")
+  field(VAL , "$($(OBJ)$(ID)-WfCalc:Delay-SP\=16)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -488,7 +488,7 @@ record(ao, "$(SYS)-$(EVR):$(OBJ)$(ID)-WfCalc:Width-SP") {
   field(OUT , "$(SYS)-$(EVR):$(OBJ)$(ID)-WfCalc-ASub_.B PP")
   field(EGU , "ns")
   field(UDF , "0")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-WfCalc:Width-SP\=50)")
+  field(VAL , "$($(OBJ)$(ID)-WfCalc:Width-SP\=50)")
   info(autosaveFields_pass0, "VAL EGU")
 }
 
@@ -526,7 +526,7 @@ record(longout, "$(SYS)-$(EVR):$(OBJ)$(ID)-BunchTrain:Size-SP") {
   field(UDF , "0")
   field(HOPR, "150")
   field(LOPR, "1")
-  field(VAL , "$($(EVR):$(OBJ)$(ID)-BunchTrain:Size-SP=\1)")
+  field(VAL , "$($(OBJ)$(ID)-BunchTrain:Size-SP=\1)")
   info(autosaveFields_pass0, "VAL")
 }
 
