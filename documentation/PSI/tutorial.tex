@@ -47,8 +47,9 @@ $(TEMPLATES) = $INSTBASE/iocBoot/templates
 \end{verbatim}
 Here are a few examples of the \texttt{\$(TEMPLATES)} variable:
 \begin{itemize}
-\item \texttt{/fin/devl/iocBoot/templates}.
-\item \texttt{/trfcb/work/iocBoot/templates}
+	\item \texttt{/fin/devl/iocBoot/templates}
+	\item \texttt{/work/iocBoot/templates}
+	\item \texttt{/trfcb/work/iocBoot/templates}
 \end{itemize}
 The following steps demonstrate how to prepare a SWIT compatible IOC application that utilizes EVR:
 \begin{enumerate}
@@ -171,6 +172,12 @@ The pulse in this tutorial is generated using pulser 3 and outputted through the
 	        ...
 	}
 \end{verbatim}
+	The above macro substitution of the \texttt{evr-vmerf230.template} sets the values of the following records:
+	\begin{itemize}
+	\item \texttt{MTEST-VME-EVRTEST-EVR0:Pul3-Delay-SP}
+	\item \texttt{MTEST-VME-EVRTEST-EVR0:Pul3-Width-SP}
+	\item \texttt{MTEST-VME-EVRTEST-EVR0:FrontOut0-Src-SP}
+	\end{itemize}
 	The above macro substitution of the \texttt{evr-pulserMap.template} creates a record named \texttt{MTEST-VME-EVRTEST-EVR0:Pul\$(PID)-Evt-\$(F)\$(ID)-SP}.
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
@@ -255,7 +262,12 @@ This tutorial demonstrates how to configure the prescaler 0 (PS0) to divide the 
 	  }
 	}
 \end{verbatim}
-
+	The above macro substitution of the \texttt{evr-vmerf230.template} sets the values of the following records:
+	\begin{itemize}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:PS0-Div-SP}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:FrontOut1-Src-SP}
+	\end{itemize}
+	
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
 \end{enumerate}
@@ -300,6 +312,16 @@ Signals with frequency greater or equal to the frequency of the event clock can 
 	  }
 	}
 \end{verbatim}
+	The above macro substitution of the \texttt{evr-vmerf230.template} sets the values of the following records:
+	\begin{itemize}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:FrontOut4-Ena-SP}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:FrontOut4-Src-SP}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:CML0-Ena-Sel}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:CML0-Pwr-Sel}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:CML0-Mode-Sel}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:CML0-Pat:Low00\_15-SP}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:CML0-Pat:Low16\_31-SP}
+	\end{itemize}
 
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
@@ -343,6 +365,10 @@ A custom distributed bus (DBus) bit can be outputted through desired EVR outputs
 	  }
 	}
 \end{verbatim}
+	The above macro substitution of the \texttt{evr-vmerf230.template} sets the values of the following record:
+	\begin{itemize}
+		\item \texttt{MTEST-VME-EVRTEST-EVR0:FrontOut1-Src-SP}
+	\end{itemize}
 
 	\item Optionally, you can remove all the macros whose values you did not change. 
 	\item Install the prepared IOC by running command \texttt{swit -V} from your project folder \textit{MTEST-VME-EVRTEST}.
