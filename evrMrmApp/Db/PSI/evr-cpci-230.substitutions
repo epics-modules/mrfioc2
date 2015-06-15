@@ -23,25 +23,25 @@ file "sfp.template"
 file "evr-prescaler.template"
 {pattern
 { SYS,      EVR,      OBJ, ID, MAX}
-{"$(SYS)", "$(EVR)", "PS", 0, "0xffffff"}
-{"$(SYS)", "$(EVR)", "PS", 1, "0xffffff"}
-{"$(SYS)", "$(EVR)", "PS", 2, "0xffffff"}
+{"$(SYS)", "$(EVR)", "PS", 0, "0xffffffff"}
+{"$(SYS)", "$(EVR)", "PS", 1, "0xffffffff"}
+{"$(SYS)", "$(EVR)", "PS", 2, "0xffffffff"}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
 file "evr-pulser.template"
 {pattern
-{ SYS,      EVR,      OBJ,  ID,  DMAX,       WMAX,       PMAX,    NOPS}
-{"$(SYS)", "$(EVR)", "Pul", 0,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 1,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 2,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 3,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 4,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 5,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 6,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 7,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 8,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 9,  "0xffffff", "0xffff",   "1",      1}
+{ SYS,      EVR,      OBJ,  ID,  DMAX,       WMAX,          PMAX,    NOPS}
+{"$(SYS)", "$(EVR)", "Pul", 0,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 1,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 2,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 3,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 4,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 5,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 6,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 7,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 8,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 9,  "0xffffffff", "0xffff",     "1",      1}
 }
 
 file "evr-in.template"

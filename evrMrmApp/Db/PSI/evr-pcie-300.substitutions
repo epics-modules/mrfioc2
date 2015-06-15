@@ -29,24 +29,24 @@ file "evr-prescaler.template"
 # Pulse generators w/o a prescaler set NOPS=1
 file "evr-pulser.template"
 {pattern
-{ SYS,      EVR,      OBJ,  ID,  DMAX,       WMAX,     PMAX,  NOPS}
-{"$(SYS)", "$(EVR)", "Pul", 0,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 1,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 2,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 3,  "0xffffff", "0xffffff", "0xffff", 0}
-{"$(SYS)", "$(EVR)", "Pul", 4,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 5,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 6,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 7,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 8,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 9,  "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 10, "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 11, "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 12, "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 13, "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 14, "0xffffff", "0xffff",   "1",      1}
-{"$(SYS)", "$(EVR)", "Pul", 15, "0xffffff", "0xffff",   "1",      1}
-}
+{ SYS,      EVR,      OBJ,  ID,  DMAX,       WMAX,          PMAX,  NOPS}
+{"$(SYS)", "$(EVR)", "Pul", 0,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 1,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 2,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 3,  "0xffffffff", "0xffffffff", "0xffff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 4,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 5,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 6,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 7,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 8,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 9,  "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 10, "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 11, "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 12, "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 13, "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 14, "0xffffffff", "0xffff",     "1",      1}
+{"$(SYS)", "$(EVR)", "Pul", 15, "0xffffffff", "0xffff",     "1",      1}
+}  
 
 file "evr-out.template"
 {pattern
@@ -61,10 +61,10 @@ file "evr-out.template"
 {"$(SYS)", "$(EVR)", "FrontUnivOut", 	7,   "UNIV7"}
 {"$(SYS)", "$(EVR)", "FrontUnivOut", 	8,   "UNIV8"}
 {"$(SYS)", "$(EVR)", "FrontUnivOut", 	9,   "UNIV9"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	10,   "UNIV10"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	11,   "UNIV11"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	12,   "UNIV12"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	13,   "UNIV13"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	14,   "UNIV14"}
-{"$(SYS)", "$(EVR)", "FrontUnivOut", 	15,   "UNIV15"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	10,  "UNIV10"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	11,  "UNIV11"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	12,  "UNIV12"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	13,  "UNIV13"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	14,  "UNIV14"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	15,  "UNIV15"}
 }
