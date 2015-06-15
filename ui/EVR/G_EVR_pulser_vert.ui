@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>672</width>
-    <height>150</height>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>651</width>
-     <height>115</height>
+     <y>1</y>
+     <width>648</width>
+     <height>201</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -28,28 +28,12 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>45</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Polarity select</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="caToggleButton" name="catogglebutton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>1</x>
       <y>20</y>
-      <width>81</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
@@ -71,7 +55,7 @@
      <rect>
       <x>1</x>
       <y>1</y>
-      <width>110</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
@@ -103,59 +87,13 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="caChoice" name="cachoice">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>64</y>
-      <width>91</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Reverses the output polarity. When set, changes the output from normally low to normally high.</string>
-    </property>
-    <property name="channel" stdset="0">
-     <string notr="true">$(EVR):Pul$(ID)-Polarity-Sel</string>
-    </property>
-    <property name="foreground">
-     <color>
-      <red>0</red>
-      <green>0</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="background">
-     <color>
-      <red>212</red>
-      <green>219</green>
-      <blue>157</blue>
-     </color>
-    </property>
-    <property name="bordercolor">
-     <color>
-      <red>0</red>
-      <green>0</green>
-      <blue>0</blue>
-     </color>
-    </property>
-    <property name="colorMode">
-     <enum>caChoice::Static</enum>
-    </property>
-    <property name="stackingMode" stdset="0">
-     <enum>caChoice::Row</enum>
-    </property>
-    <property name="endBit">
-     <number>1</number>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>2</y>
-      <width>191</width>
-      <height>105</height>
+      <x>150</x>
+      <y>133</y>
+      <width>491</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
@@ -166,7 +104,7 @@
       <rect>
        <x>5</x>
        <y>20</y>
-       <width>161</width>
+       <width>261</width>
        <height>31</height>
       </rect>
      </property>
@@ -199,10 +137,10 @@
     <widget class="QLabel" name="label_31">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>60</y>
+       <x>310</x>
+       <y>10</y>
        <width>31</width>
-       <height>16</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -215,10 +153,10 @@
     <widget class="QLabel" name="label_32">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>80</y>
+       <x>310</x>
+       <y>40</y>
        <width>28</width>
-       <height>16</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -231,10 +169,10 @@
     <widget class="caLineEdit" name="calineedit_12">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>60</y>
-       <width>91</width>
-       <height>16</height>
+       <x>350</x>
+       <y>10</y>
+       <width>131</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="channel" stdset="0">
@@ -247,10 +185,10 @@
     <widget class="caLineEdit" name="calineedit_13">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>80</y>
-       <width>91</width>
-       <height>16</height>
+       <x>350</x>
+       <y>40</y>
+       <width>131</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="channel" stdset="0">
@@ -260,9 +198,9 @@
     <widget class="caLineEdit" name="calineedit_15">
      <property name="geometry">
       <rect>
-       <x>166</x>
+       <x>270</x>
        <y>20</y>
-       <width>20</width>
+       <width>21</width>
        <height>31</height>
       </rect>
      </property>
@@ -274,10 +212,10 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>2</y>
-      <width>191</width>
-      <height>105</height>
+      <x>150</x>
+      <y>63</y>
+      <width>491</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
@@ -286,10 +224,10 @@
     <widget class="QLabel" name="label_29">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>60</y>
+       <x>310</x>
+       <y>10</y>
        <width>31</width>
-       <height>16</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -302,10 +240,10 @@
     <widget class="caLineEdit" name="calineedit_8">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>60</y>
-       <width>91</width>
-       <height>16</height>
+       <x>350</x>
+       <y>10</y>
+       <width>131</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="alignment">
@@ -321,10 +259,10 @@
     <widget class="caLineEdit" name="calineedit_9">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>80</y>
-       <width>91</width>
-       <height>16</height>
+       <x>350</x>
+       <y>40</y>
+       <width>131</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="alignment">
@@ -337,10 +275,10 @@
     <widget class="QLabel" name="label_30">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>80</y>
+       <x>310</x>
+       <y>40</y>
        <width>31</width>
-       <height>16</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -355,7 +293,7 @@
       <rect>
        <x>5</x>
        <y>20</y>
-       <width>161</width>
+       <width>261</width>
        <height>31</height>
       </rect>
      </property>
@@ -388,9 +326,9 @@
     <widget class="caLineEdit" name="calineedit_14">
      <property name="geometry">
       <rect>
-       <x>166</x>
+       <x>270</x>
        <y>20</y>
-       <width>20</width>
+       <width>21</width>
        <height>31</height>
       </rect>
      </property>
@@ -402,8 +340,8 @@
    <widget class="caFrame" name="caframe">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>2</y>
+      <x>10</x>
+      <y>70</y>
       <width>125</width>
       <height>110</height>
      </rect>
@@ -510,6 +448,65 @@
        <bool>false</bool>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>4</y>
+      <width>491</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Polarity select</string>
+    </property>
+    <widget class="caChoice" name="cachoice">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>251</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Reverses the output polarity. When set, changes the output from normally low to normally high.</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string notr="true">$(EVR):Pul$(ID)-Polarity-Sel</string>
+     </property>
+     <property name="foreground">
+      <color>
+       <red>0</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="background">
+      <color>
+       <red>212</red>
+       <green>219</green>
+       <blue>157</blue>
+      </color>
+     </property>
+     <property name="bordercolor">
+      <color>
+       <red>0</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colorMode">
+      <enum>caChoice::Static</enum>
+     </property>
+     <property name="stackingMode" stdset="0">
+      <enum>caChoice::Column</enum>
+     </property>
+     <property name="endBit">
+      <number>1</number>
+     </property>
     </widget>
    </widget>
   </widget>

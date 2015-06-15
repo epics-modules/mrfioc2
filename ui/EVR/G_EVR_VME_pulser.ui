@@ -32,15 +32,15 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1591</y>
+      <y>0</y>
       <width>651</width>
-      <height>2000</height>
+      <height>3500</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>0</width>
-      <height>2000</height>
+      <height>3500</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -55,7 +55,7 @@
        <x>0</x>
        <y>0</y>
        <width>661</width>
-       <height>1991</height>
+       <height>3500</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -74,7 +74,7 @@
          <string notr="true">EVR=$(EVR),ID=0</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -84,7 +84,7 @@
          <string notr="true">EVR=$(EVR),ID=1</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -94,7 +94,7 @@
          <string notr="true">EVR=$(EVR),ID=2</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -104,7 +104,7 @@
          <string notr="true">EVR=$(EVR),ID=3</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -114,7 +114,7 @@
          <string notr="true">EVR=$(EVR),ID=4</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -124,7 +124,7 @@
          <string notr="true">EVR=$(EVR),ID=5</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -134,7 +134,7 @@
          <string notr="true">EVR=$(EVR),ID=6</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -144,7 +144,7 @@
          <string notr="true">EVR=$(EVR),ID=7</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -154,7 +154,7 @@
          <string notr="true">EVR=$(EVR),ID=8</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -164,7 +164,7 @@
          <string notr="true">EVR=$(EVR),ID=9</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -174,7 +174,7 @@
          <string notr="true">EVR=$(EVR),ID=10</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -184,7 +184,7 @@
          <string notr="true">EVR=$(EVR),ID=11</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -194,7 +194,7 @@
          <string notr="true">EVR=$(EVR),ID=12</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -204,7 +204,7 @@
          <string notr="true">EVR=$(EVR),ID=13</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -214,7 +214,7 @@
          <string notr="true">EVR=$(EVR),ID=14</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
@@ -224,7 +224,7 @@
          <string notr="true">EVR=$(EVR),ID=15</string>
         </property>
         <property name="filename" stdset="0">
-         <string notr="true">G_EVR_pulser.ui</string>
+         <string notr="true">G_EVR_pulser_vert.ui</string>
         </property>
        </widget>
       </item>
