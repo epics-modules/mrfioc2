@@ -576,9 +576,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul0-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul0, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -722,9 +722,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul1-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul1, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -868,9 +868,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul2-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul2, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1014,9 +1014,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul3-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul3, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1160,9 +1160,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul4-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul4, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1306,9 +1306,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul5-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul5, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1452,9 +1452,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul6-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul6, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1598,9 +1598,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul7-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul7, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1744,9 +1744,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul8-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul8, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -1890,9 +1890,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul9-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul9, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2036,9 +2036,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul10-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul10, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2182,9 +2182,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul11-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul11, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2328,9 +2328,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul12-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul12, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2474,9 +2474,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul13-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul13, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2620,9 +2620,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul14-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul14, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
@@ -2766,9 +2766,9 @@ record(longin, "$(SYS,recursive)-$(EVR,recursive):Pul15-Delay-Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVR,recursive):Pul15, PROP=Delay")
   field(EGU , "cnts")
-  field(HOPR, "0xffffff")
+  field(HOPR, "0xffffffff")
   field(LOPR, "0")
-  field(HIGH, "0xffffff")
+  field(HIGH, "0xffffffff")
   field( HSV, "MAJOR")
 }
 
