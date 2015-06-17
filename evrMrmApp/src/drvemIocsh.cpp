@@ -844,6 +844,43 @@ static void mrmEvrForwardCallFunc(const iocshArgBuf *args)
     mrmEvrForward(args[0].sval,args[1].sval);
 }
 
+extern "C"
+void
+mrmEvrLoopback(const char* id, int rxLoopback, int txLoopback)
+{
+try {
+    mrf::Object *obj=mrf::Object::getObject(id);
+    if(!obj)
+        throw std::runtime_error("Object not found");
+    EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
+    if(!card){
+        throw std::runtime_error("Not a MRM EVR");
+    }
+
+    epicsUInt32 control = NAT_READ32(card->base,Control);
+    control &= ~(Control_txloop|Control_rxloop);
+    if (rxLoopback) control |= Control_rxloop;
+    if (txLoopback) control |= Control_txloop;
+    NAT_WRITE32(card->base,Control, control);
+
+} catch(std::exception& e) {
+    printf("Error: %s\n",e.what());
+}
+}
+
+static const iocshArg mrmEvrLoopbackArg0 = { "name",iocshArgString};
+static const iocshArg mrmEvrLoopbackArg1 = { "RX-loopback",iocshArgInt};
+static const iocshArg mrmEvrLoopbackArg2 = { "TX-loopback",iocshArgInt};
+static const iocshArg * const mrmEvrLoopbackArgs[3] =
+    {&mrmEvrLoopbackArg0,&mrmEvrLoopbackArg1,&mrmEvrLoopbackArg2};
+static const iocshFuncDef mrmEvrLoopbackFuncDef =
+    {"mrmEvrLoopback",3,mrmEvrLoopbackArgs};
+
+static void mrmEvrLoopbackCallFunc(const iocshArgBuf *args)
+{
+    mrmEvrLoopback(args[0].sval,args[1].ival,args[2].ival);
+}
+
 /*extern "C"
 void
 mrmEvrGpioDirection(const char* id, int val)
@@ -1005,6 +1042,7 @@ void mrmsetupreg()
     iocshRegister(&mrmEvrSetupVMEFuncDef,mrmEvrSetupVMECallFunc);
     iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
     iocshRegister(&mrmEvrForwardFuncDef,mrmEvrForwardCallFunc);
+    iocshRegister(&mrmEvrLoopbackFuncDef,mrmEvrLoopbackCallFunc);
     /*iocshRegister(&mrmEvrGpioDirectionFuncDef,mrmEvrGpioDirectionCallFunc);
      *
     iocshRegister(&mrmEvrDelaySetFuncDef,mrmEvrDelaySetCallFunc);
