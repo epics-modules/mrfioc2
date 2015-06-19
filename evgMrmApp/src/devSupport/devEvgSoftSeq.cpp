@@ -460,10 +460,10 @@ write_mbbo_runMode(mbboRecord* pmbbo) {
     return ret;
 }
 
-/*returns: (0, !0)=>(success, fail)*/
+/*returns: (0,2)=>(success,success no convert)*/
 static long
 read_mbbi_runMode(mbbiRecord* pmbbi) {
-    long ret = 0;
+    long ret = 2;
 
     try {
         evgSoftSeq* seq = (evgSoftSeq*)pmbbi->dpvt;
