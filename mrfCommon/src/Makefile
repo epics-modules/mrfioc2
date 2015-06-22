@@ -4,6 +4,8 @@ include $(TOP)/configure/CONFIG
 USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
+MRF_VERSION = 2.0.4
+
 #---------------------
 # Install include files
 #
@@ -18,8 +20,6 @@ INC += mrf/databuf.h
 INC += mrf/object.h
 
 INC += mrf/version.h
-INC += mrf/version-hg.h
-INC += mrf/version-git.h
 
 INC += devObj.h
 
@@ -91,20 +91,8 @@ PROD_LIBS += Com
 #
 include $(TOP)/configure/RULES
 
-$(COMMON_DIR)/mrf/version-git.h::
-	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-ifneq ($(wildcard $(TOP)/.git),)
-	printf '#define GIT_VERSION "%s"\n' `git describe --tags` > $@
-else
-	touch $@
-endif
+version.h::
+	$(PERL) ../genVersionHeader.pl -t "$(TOP)" -V "$(MRF_VERSION)" -N MRF_VERSION $@
 
-$(COMMON_DIR)/mrf/version-hg.h::
-	[ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-ifneq ($(wildcard $(TOP)/.hg),)
-	printf '#define HG_VERSION "%s"\n' `hg tip|sed -n -e '/changeset/ s/changeset:\W*//p'` > $@
-else
-	touch $@
-endif
-
-../mrf/version.h: $(COMMON_DIR)/mrf/version-git.h $(COMMON_DIR)/mrf/version-hg.h
+../O.Common/mrf/version.h: version.h
+	$(INSTALL) -d $< ../O.Common/mrf/
