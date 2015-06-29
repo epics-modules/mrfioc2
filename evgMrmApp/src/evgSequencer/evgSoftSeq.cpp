@@ -417,10 +417,7 @@ evgSoftSeq::finishSync()
 
 void
 evgSoftSeq::commitSoftSeq() {
-    epicsInt64 tsUInt64;
-    epicsUInt8 ecUInt8;
     epicsUInt64 preTs = 0;
-    epicsUInt64 curTs = 0;
 
     std::vector<epicsUInt64> timestamp;
     std::vector<epicsUInt8> eventCode;
@@ -436,13 +433,14 @@ evgSoftSeq::commitSoftSeq() {
     std::vector<epicsUInt64>::iterator itTS = m_timestamp.begin();
     std::vector<epicsUInt8>::iterator itEC = m_eventCode.begin();
     for(; itTS < m_timestamp.end() && itEC < m_eventCode.end(); itTS++, itEC++) {
-        ecUInt8 = *itEC;
+        const epicsUInt8 ecUInt8 = *itEC;
 
-        curTs = *itTS;
-        tsUInt64 = curTs - preTs;
+        const epicsUInt64 curTs = *itTS;
+        int64_t tsUInt64 = curTs - preTs; /* relative ticks since last input event */
         if(timestamp.size())
-            tsUInt64 += timestamp.back();
+            tsUInt64 += timestamp.back(); /* abs. output ticks wrt. start or last continuation */
 
+        /* inject continuation event(s) when output time would overflow */
         for(;tsUInt64 > 0xffffffff; tsUInt64 -= 0xffffffff) {
             timestamp.push_back(0xffffffff);
             eventCode.push_back(0);
@@ -451,6 +449,8 @@ evgSoftSeq::commitSoftSeq() {
 
         timestamp.push_back(tsUInt64);
         eventCode.push_back(ecUInt8);
+        if(ecUInt8==0x7f)
+            break; /* User provided end of sequence event */
     }
 
     /*
@@ -467,22 +467,34 @@ evgSoftSeq::commitSoftSeq() {
         }
     }
 
-    /*
-     * If not already present append 'End of Sequence' event code(0x7f) and
-     * timestamp.
-     */
-    if(eventCode[eventCode.size()-1] != 0x7f) {
+    if(eventCode.size()==0 && timestamp.size()==0) {
+        /* empty sequence.  Not very useful, but not an error */
         eventCode.push_back(0x7f);
-        if(timestamp.size() == 0)
+        timestamp.push_back(evgEndOfSeqBuf);
+
+    } if(timestamp.size()!=eventCode.size()) {
+        throw std::logic_error("SoftSeq, length of timestamp and eventCode don't match");
+
+    } else if(timestamp.size()>2047) {
+        throw std::runtime_error("Sequence too long (>2047)");
+
+    } else if(eventCode.back()!=0x7f) {
+        /*
+         * If not already present append 'End of Sequence' event code(0x7f) and
+         * timestamp.
+         */
+        if(timestamp.back()+evgEndOfSeqBuf>=0xffffffff) {
+            eventCode.push_back(0);
+            timestamp.push_back(0xffffffff);
+            eventCode.push_back(0x7f);
             timestamp.push_back(evgEndOfSeqBuf);
-        else
-            timestamp.push_back(timestamp[timestamp.size()-1] + evgEndOfSeqBuf);
+        } else {
+            eventCode.push_back(0x7f);
+            timestamp.push_back(timestamp.back() + evgEndOfSeqBuf);
+        }
     }
 
-    if(timestamp.size()!=eventCode.size())
-        throw std::logic_error("SoftSeq, length of timestamp and eventCode doesn't match");
-    else if(timestamp.size()>2047)
-        throw std::runtime_error("Sequence too long. Max: 2047");
+
 
     m_timestampCt = timestamp;
     m_eventCodeCt = eventCode;

@@ -63,7 +63,7 @@ static long read_wf(waveformRecord *prec)
     } else {
         /* If "armed" then get */
         if (prec->inp.type != CONSTANT)
-            dbGetLinkValue(&prec->inp, prec->ftvl, prec->bptr, 0, &nRequest);
+            (void)dbGetLink(&prec->inp, prec->ftvl, prec->bptr, 0, &nRequest);
         if (nRequest > 0) {
             prec->nord = nRequest;
             if (prec->tsel.type == CONSTANT &&

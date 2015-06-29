@@ -1,12 +1,11 @@
 *~
-O.*
-bin
-db
-dbd
-include
-lib
-envPaths
-html
+/bin/
+/db/
+/dbd/
+/include/
+/lib/
+O.*/
+html/
 rtf
 
 .project

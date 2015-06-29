@@ -35,7 +35,6 @@ evr_SRCS += devEvrPulserMapping.cpp
 evr_SRCS += asub.c
 evr_SRCS += devWfMailbox.c
 
-evr_SRCS += evrSupport_registerRecordDeviceDriver.cpp
 
 evr_SRCS_Linux += ntpShm.cpp
 evr_SRCS_DEFAULT += ntpShmNull.cpp
@@ -50,7 +49,11 @@ endif
 PROD_IOC += evrtest
 
 evrtest_SRCS += evrMain.cpp
+evrtest_SRCS += evrtest_registerRecordDeviceDriver.cpp
 evrtest_LIBS += evr mrfCommon
+
+evrtest_DBD += base.dbd
+evrtest_DBD += evrSupport.dbd
 
 ifneq ($(GENERAL_TIME),)
 evrtest_LIBS += generalTime

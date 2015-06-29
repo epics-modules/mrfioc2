@@ -63,6 +63,47 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 }
 #endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0)
+/** Linux 3.12 adds a size test when mapping UIO_MEM_PHYS ranges
+ *  to fix an clear security issue.  7314e613d5ff9f0934f7a0f74ed7973b903315d1
+ *
+ *  Unfortunately this makes it impossible to map ranges less than a page,
+ *  such as the control registers for the PLX bridges (128 bytes).
+ *  A further change in b65502879556d041b45104c6a35abbbba28c8f2d
+ *  prevents mapping of ranges which don't start on a page boundary,
+ *  which is also true of the PLX chips (offset 0xc00 on my test system).
+ *
+ *  This remains the case though the present (4.1 in May 2015).
+ *
+ *  These patches have been applied to the Debian 3.2.0 kernel.
+ *
+ *  The following is based uio_mmap_physical() from 3.2.0.
+ */
+static
+int mrf_mmap_physical(struct uio_info *info, struct vm_area_struct *vma)
+{
+    struct pci_dev *dev = info->priv;
+    int mi = vma->vm_pgoff; /* bounds check already done in uio_mmap() */
+
+    if (vma->vm_end - vma->vm_start > PAGE_ALIGN(info->mem[mi].size)) {
+        dev_err(&dev->dev, "mmap alignment/size test fails %lx %lx %u\n",
+                vma->vm_start, vma->vm_end, (unsigned)PAGE_ALIGN(info->mem[mi].size));
+        return -EINVAL;
+    }
+
+    vma->vm_flags |= VM_IO | VM_RESERVED;
+    vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+
+    return remap_pfn_range(vma,
+                           vma->vm_start,
+                           info->mem[mi].addr >> PAGE_SHIFT,
+                           vma->vm_end - vma->vm_start,
+                           vma->vm_page_prot);
+}
+
+#define USE_CUSTOM_MMAP
+#endif
+
 /******************** PCI interrupt handler ***********************/
 
 /* original ISR behavior which manipulates the EVR's
@@ -410,6 +451,9 @@ mrf_probe(struct pci_dev *dev,
         info->irq_flags = IRQF_SHARED;
         info->handler = mrf_handler;
         info->irqcontrol = mrf_irqcontrol;
+#ifdef USE_CUSTOM_MMAP
+        info->mmap = mrf_mmap_physical;
+#endif
 
         info->name = DRV_NAME;
         info->version = DRV_VERSION;

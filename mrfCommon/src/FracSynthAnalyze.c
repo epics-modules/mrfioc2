@@ -106,7 +106,7 @@ int main (int argc, char *argv[]) {
    /*---------------------
     * Local Variables
     */
-    epicsBoolean   badArgs = epicsTrue;         /* True if we could not parse the argument list   */
+    int   badArgs = 1;         /* True if we could not parse the argument list   */
     epicsUInt32    controlWord;                 /* SY87739L control word to analyze               */
     char          *tailPtr;                     /* Pointer to tail of parsed control word string  */
 
@@ -123,7 +123,7 @@ int main (int argc, char *argv[]) {
         */
         if ((errno == OK) && (tailPtr != argv[1])) {
             FracSynthAnalyze (controlWord, MRF_FRAC_SYNTH_REF, DP_DEBUG);
-            badArgs = epicsFalse;
+            badArgs = 0;
         }/*end if control word parse was successful*/
 
     }/*end if we had the right number of arguments*/

@@ -192,7 +192,7 @@ try {
 
   if (!paddr->buf && paddr->blen) {
       // Error condition set INVALID_ALARM
-     (void) recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
+      (void)recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
 
   } else if(paddr->buf) {
 
@@ -201,7 +201,7 @@ try {
 
       if (paddr->blen > capacity) {
           paddr->blen=capacity;
-          (void) recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+          (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
       }
 
       if(esize==1 || esize>8) // char or string

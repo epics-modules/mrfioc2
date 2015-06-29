@@ -9,8 +9,8 @@
 
 @section whatisit What is it?
 
-A driver for VME and PCI cards from Micro Research Finland for implementing a distributed
-timing system.
+A driver for VME and PCI cards from Micro Research Finland for
+event timing systems.
 
 @url http://www.mrf.fi/
 
@@ -18,12 +18,12 @@ timing system.
 
 Releases can be found at @url http://sourceforge.net/projects/epics/files/mrfioc2/
 
-This module is versioned with Mercurial and can be viewed at
-@url http://epics.hg.sourceforge.net/hgweb/epics/mrfioc2/
+This module is versioned with Git and can be viewed at
+@url https://github.com/epics-modules/mrfioc2/
 
 Or checked out with
 
-hg clone http://epics.hg.sourceforge.net:8000/hgroot/epics/mrfioc2
+git clone https://github.com/epics-modules/mrfioc2.git
 
 The canonical version of this page is @url http://epics.sourceforge.net/mrfioc2/
 
@@ -47,11 +47,9 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 Event Generators.  Current only the VME-EVG-230
 
-Event Receivers.  VME-EVR-230RF, PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
+Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
 
-@note Support for the VME-EVR-230 (non-RF) is present, but has not been tested.
 @note Support for the PCI-EVRTG-300e is present, but has not been tested
-
 @section doc Documentation
 
 User documentation can be found in the form of usage manuals for both the
@@ -66,28 +64,42 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v204 2.0.4 (Jan 2015)
+@subsection v21X 2.1.X (UNRELEASED)
+
+@subsubsection v21Xnot Notices
+
+@li EVR GTP is currently disabled
+@li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
+@li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
+@li Renamed records in Db/PSI to conform to PSI naming convention
+
+@subsubsection v21Xfeat Features
+
+@li Added support for PCI-EVRTG-300e (interrupts are not tested)
+@li Added start of sequence interrupt device support
+@li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
+
+@subsection v204 2.0.4 (May 2015)
 
 @subsubsection v204not Notices
 
 @li Requires devLib >= 2.6l
-@li EVR GTP is currently disabled
-@li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
-@li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
+@li Builds against EPICS Base 3.15.1
+@li Workaround to support UIO in Linux kernel >=3.12 (debian kernel >=3.2.0)
+@li Default mrmEvrFIFOPeriod doubled to 1ms
 
 @subsubsection v204bug Bug fixes
 
-@li Fixed incorrect firmware version warning message
-@li Reworked interrupt handling to fully eliminate race in IRQ acknowledge.
-    requires new kernel module (linux only).
+@li Fix incorrect firmware version warning message
+@li Linux only.  Rework interrupt handling to fully eliminate race in IRQ acknowledge.
+    Requires new kernel module.
 
 @subsubsection v204feat Features
 
-@li Added support for PCI-EVRTG-300e (interrupts are not tested)
 @li Added sequence masker aSub (bit mask to replace event codes with zero)
-@li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
-@li Added start of sequence interrupt device support
-@li Renamed records in Db/PSI to conform to PSI naming convention
+@li Add records to show statistics of interrupt and event FIFO processing
+@li Soft sequence loading stops at end of sequence event (0x7f).
+    Further delays/events are ignored.
 
 @subsection v203 2.0.3 (Aug 2014)
 
@@ -195,7 +207,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @author Jayesh Shah <jshah@bnl.gov>
 
-@author Eric Björklund <bjorklund@lanl.gov>
+@author Eric Bjï¿½rklund <bjorklund@lanl.gov>
 
 */
 

@@ -119,7 +119,7 @@ long del_lo(dbCommon* praw)
     } catch(std::exception& e) {
         recGblRecordError(S_db_noMemory, (void*)praw, e.what());
     }
-    recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 
@@ -141,7 +141,7 @@ static long write_lo(longoutRecord* plo)
          * Changed by: jkrasna
          */
         if(code > 255) {
-            recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+            (void)recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
             return 0;
         }
 
@@ -162,7 +162,7 @@ static long write_lo(longoutRecord* plo)
     } catch(std::exception& e) {
         plo->val=0;
         priv->last_code=0;
-        recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+        (void)recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
         recGblRecordError(S_db_noMemory, (void*)plo, e.what());
         return S_db_noMemory;
     }

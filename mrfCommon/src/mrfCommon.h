@@ -241,6 +241,7 @@ epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_
  * then EPICS 64-bit integer types have already been defined by the epicsTypes.h file.
  * We can quit now.
  */
+#if (EPICS_VERSION_INT < VERSION_INT(3,15,0,2))
 #if (__STDC_VERSION__ < 19990L) || (EPICS_VERSION_INT < VERSION_INT(3,14,9,0))
 
   /*---------------------
@@ -265,6 +266,7 @@ epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_
 #  endif
 
 #endif /*EPICS 64-bit integer types need defining*/
+#endif
 
 
 #endif

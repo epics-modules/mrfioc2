@@ -4,6 +4,8 @@ include $(TOP)/configure/CONFIG
 USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
+MRF_VERSION = 2.0.4
+
 #---------------------
 # Install include files
 #
@@ -18,8 +20,6 @@ INC += mrf/databuf.h
 INC += mrf/object.h
 
 INC += mrf/version.h
-INC += mrf/version-hg.h
-INC += mrf/version-git.h
 
 INC += devObj.h
 
@@ -91,38 +91,8 @@ PROD_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 #
 include $(TOP)/configure/RULES
 
-# $(COMMON_DIR)/mrf/version-git.h::
-	# mkdir $(subst,/,\,$(COMMON_DIR))\mrf
-# ifeq ($(OS),Windows_NT)
-# else
-	# [ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-# endif
-# ifneq ($(wildcard $(TOP)/.git),)
-	# #printf '#define GIT_VERSION "%s"\n' `git describe --tags` > $@
-	# printf '#define GIT_VERSION "2.0.4-win"\n' > $@
-# else
-# ifeq ($(OS),Windows_NT)
-	# echo $$null >> $@
-# else
-	# touch $@
-# endif
-# endif
+version.h::
+	$(PERL) ../genVersionHeader.pl -t "$(TOP)" -V "$(MRF_VERSION)" -N MRF_VERSION $@
 
-# $(COMMON_DIR)/mrf/version-hg.h::
-# ifeq ($(OS),Windows_NT)
-	# mkdir $(subst,/,\,$(COMMON_DIR))\mrf
-# else
-	# [ -d $(COMMON_DIR)/mrf ] || install -d $(COMMON_DIR)/mrf
-# endif
-# ifneq ($(wildcard $(TOP)/.hg),)
-	# #printf '#define HG_VERSION "%s"\n' `hg tip|sed -n -e '/changeset/ s/changeset:\W*//p'` > $@
-	# printf '#define HG_VERSION "2.0.4-win"\n' > $@
-# else
-# ifeq ($(OS),Windows_NT)
-	# echo $$null >> $@
-# else
-	# touch $@
-# endif
-# endif
-
-#../mrf/version.h: $(COMMON_DIR)/mrf/version-git.h $(COMMON_DIR)/mrf/version-hg.h
+../O.Common/mrf/version.h: version.h
+	$(INSTALL) -d $< ../O.Common/mrf/

@@ -102,10 +102,10 @@ read_si_ts(stringinRecord* psi) {
             case TS_ALARM_NONE:
                 break;
             case TS_ALARM_MINOR:
-                recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
+                (void)recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
                 break;
             case TS_ALARM_MAJOR:
-                recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
+                (void)recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
                 errlogPrintf("ERROR: %s : Wrong Timestamp alarm Status\n", psi->name);

@@ -110,7 +110,7 @@ static long add_lo(dbCommon* praw)
 
     } catch(std::exception& e) {
         recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-        recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+        (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
         return S_db_noMemory;
     }
 }
@@ -121,6 +121,9 @@ long del_lo(dbCommon* praw)
     try {
         std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
+    if (!priv.get())
+        return -2;
+
         if(priv->last_code>0 && priv->last_code<=255)
             priv->card->specialSetMap(priv->last_code,priv->func,false);
 
@@ -128,7 +131,7 @@ long del_lo(dbCommon* praw)
     } catch(std::exception& e) {
         recGblRecordError(S_db_noMemory, (void*)praw, e.what());
     }
-    recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+    (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 
@@ -152,7 +155,7 @@ static long write_lo(longoutRecord* prec)
          * Changed by: jkrasna
          */
         if(code > 255) {
-            recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+            (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
             return 0;
         }
 
@@ -172,7 +175,7 @@ static long write_lo(longoutRecord* prec)
     } catch(std::exception& e) {
         prec->val=0;
         recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-        recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+        (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
         return S_db_noMemory;
     }
 }
