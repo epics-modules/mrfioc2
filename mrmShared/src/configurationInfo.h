@@ -1,3 +1,8 @@
+/*************************************************************************\
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #ifndef CONFIGURATIONINFO_H
 #define CONFIGURATIONINFO_H
 

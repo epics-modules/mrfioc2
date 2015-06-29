@@ -1,3 +1,8 @@
+/*************************************************************************\
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "devObj.h"
 #include "mrf/object.h"
 #include "mrf/databuf.h"

@@ -1,7 +1,10 @@
-/* Copyright (C) 2014 Brookhaven National Lab
- * All rights reserved.
- * See file LICENSE for terms.
- */
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 
 #ifndef MRF_H
 #define MRF_H
