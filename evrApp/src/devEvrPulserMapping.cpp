@@ -109,16 +109,16 @@ long del_lo(dbCommon* praw)
 {
     if(!praw->dpvt)
         return 0;
-try {
-    std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+    try {
+        std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
-    if(priv->last_code>0 && priv->last_code<=255)
-        priv->pulser->sourceSetMap(priv->last_code,MapType::None);
+        if(priv->last_code>0 && priv->last_code<=255)
+            priv->pulser->sourceSetMap(priv->last_code,MapType::None);
 
-    return 0;
-} catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)praw, e.what());
-}
+        return 0;
+    } catch(std::exception& e) {
+        recGblRecordError(S_db_noMemory, (void*)praw, e.what());
+    }
     (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
@@ -126,38 +126,46 @@ try {
 static long write_lo(longoutRecord* plo)
 {
     map_priv* priv=static_cast<map_priv*>(plo->dpvt);
-try {
+    try {
 
-    if (!priv)
-        return -2;
+        if (!priv)
+            return -2;
 
-    epicsUInt32 code=plo->val;
-    if(code<0 || code>255) {
+        epicsUInt32 code=plo->val;
+
+        /**
+         * Removing 'code < 0' from if condition since variable 'code' is
+         * unsigned and can never be less than 0 - this comparison is always
+         * true and therefore superfluous.
+         *
+         * Changed by: jkrasna
+         */
+        if(code > 255) {
+            (void)recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
+            return 0;
+        }
+
+        if( code==priv->last_code )
+            return 0;
+
+        //TODO: sanity check to catch overloaded mappings
+
+        priv->pulser->sourceSetMap(priv->last_code,MapType::None);
+
+        if(code!=0)
+            priv->pulser->sourceSetMap(code,priv->func);
+
+        priv->last_code=code;
+
+        return 0;
+
+    } catch(std::exception& e) {
+        plo->val=0;
+        priv->last_code=0;
         (void)recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
-        return 0;
+        recGblRecordError(S_db_noMemory, (void*)plo, e.what());
+        return S_db_noMemory;
     }
-
-    if( code==priv->last_code )
-        return 0;
-
-    //TODO: sanity check to catch overloaded mappings
-
-    priv->pulser->sourceSetMap(priv->last_code,MapType::None);
-
-    if(code!=0)
-        priv->pulser->sourceSetMap(code,priv->func);
-
-    priv->last_code=code;
-
-    return 0;
-
-} catch(std::exception& e) {
-    plo->val=0;
-    priv->last_code=0;
-    (void)recGblSetSevr((dbCommon *)plo, WRITE_ALARM, INVALID_ALARM);
-    recGblRecordError(S_db_noMemory, (void*)plo, e.what());
-    return S_db_noMemory;
-}
 }
 
 /********************** DSETs ***********************/

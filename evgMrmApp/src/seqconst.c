@@ -60,7 +60,6 @@ menuFtype seq_repeat_ftv[] = {
  *@param VALC Period event code waveform
  *@type  VALB UCHAR
  */
-static
 long seq_repeat(aSubRecord *prec)
 {
     unsigned int N,i;
@@ -188,7 +187,6 @@ fail:
  *@param VALB Output code waveform
  *@type  VALB UCHAR
  */
-static
 long seq_merge(aSubRecord *prec)
 {
     unsigned int i;
@@ -361,7 +359,6 @@ alarm:
  *@param VALA Output time waveform
  *@type  VALA DOUBLE
  */
-static
 long seq_shift(aSubRecord *prec)
 {
     double delay;
@@ -407,7 +404,6 @@ fail:
  *@param VALA Output code waveform
  *@type  VALA UCHAR
  */
-static
 long seq_mask(aSubRecord *prec)
 {
     const epicsUInt8 *inp = (const epicsUInt8*)prec->a;

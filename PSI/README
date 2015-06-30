@@ -1,0 +1,43 @@
+COMPILATION
+===========
+
+To complile to a PSI style module (loadable with require) run make in this folder.
+
+Compilation will only work on a PSI infrastructure where the correct applications and environment variables are already configured.
+
+
+DATABASES
+=========
+
+PSI databases should be prepared separately using the provided script:
+
+cd mrfioc2/PSI
+./make_databases.sh
+
+The script should be executed in the PSI folder otherwise you need to specify the top folder of mrfioc2 with the -t switch:
+
+cd /tmp
+<top_mrfioc2_folder>/PSI/make_databases.sh -t <top_mrfioc2_folder>
+
+Databases are automatically expanded in the ./db folder but you can also change the output folder with the -o switch:
+
+cd mrfioc2/PSI
+./make_databases.sh -o /home/johndoe/workspace/PSI/databases
+
+
+EXAMPLE STARTUP SCRIPT
+======================
+
+PSI folder contains an example st.cmd file for the VME platform named example_st.cmd.
+
+
+DOCUMENTATION
+=============
+
+Documentation is located in the documentation folder and be expanded into HTML using Doxygen:
+
+cd mrfioc2/documentation
+Doxygen
+
+A folder named html is created in the documentation folder. Open the index.html file in that folder. The first page contains the changelog as well as links to other pages.
+

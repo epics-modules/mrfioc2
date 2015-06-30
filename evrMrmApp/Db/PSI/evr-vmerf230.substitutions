@@ -1,0 +1,98 @@
+# Record set for a VME-EVRRF-230
+#
+# Macros:
+#  EVR = Card name (same as mrmEvrSetupVME())
+#  SYS = System name (ie SR-TM)
+#
+
+file "evr-base.template"
+{pattern
+{ SYS,      EVR,     EVNT1HZ}
+{"$(SYS)", "$(EVR)", 125}
+}
+
+
+file "sfp.template"
+{
+{SYS="$(SYS)", EVR="$(EVR)", OBJ="SFP"}
+}
+
+
+file "evr-prescaler.template"
+{pattern
+{ SYS,      EVR,      OBJ, ID, MAX}
+{"$(SYS)", "$(EVR)", "PS", 0, "0xffff"}
+{"$(SYS)", "$(EVR)", "PS", 1, "0xffff"}
+{"$(SYS)", "$(EVR)", "PS", 2, "0xffff"}
+}
+
+# Pulse generators w/o a prescaler set NOPS=1
+file "evr-pulser.template"
+{pattern
+{ SYS,      EVR,      OBJ,  ID,  DMAX,       WMAX,     PMAX,  NOPS}
+{"$(SYS)", "$(EVR)", "Pul", 0,  "0xffffffff", "0xffff", "0xff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 1,  "0xffffffff", "0xffff", "0xff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 2,  "0xffffffff", "0xffff", "0xff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 3,  "0xffffffff", "0xffff", "0xff", 0}
+{"$(SYS)", "$(EVR)", "Pul", 4,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 5,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 6,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 7,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 8,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 9,  "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 10, "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 11, "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 12, "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 13, "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 14, "0xffffffff", "0xffff", "1",    1}
+{"$(SYS)", "$(EVR)", "Pul", 15, "0xffffffff", "0xffff", "1",    1}
+}
+
+## Form factor specific
+
+file "evr-in.template"
+{pattern
+{ SYS,      EVR,      OBJ,   ID,  DESC}
+{"$(SYS)", "$(EVR)", "FPIn", 0,  "IN0 (TTL)"}
+{"$(SYS)", "$(EVR)", "FPIn", 1,  "IN1 (TTL)"}
+}
+
+file "evr-out.template"
+{pattern
+{ SYS,      EVR,      OBJ,    		 	ID,   DESC}
+{"$(SYS)", "$(EVR)", "FrontOut", 		0,   "OUT0 (TTL)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		1,   "OUT1 (TTL)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		2,   "OUT2 (TTL)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		3,   "OUT3 (TTL)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		4,   "OUT4 (CML)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		5,   "OUT5 (CML)"}
+{"$(SYS)", "$(EVR)", "FrontOut", 		6,   "OUT6 (CML)"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	0,   "UNIV0"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	1,   "UNIV1"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	2,   "UNIV2"}
+{"$(SYS)", "$(EVR)", "FrontUnivOut", 	3,   "UNIV3"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		0,   "TRANSITION 0"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		1,   "TRANSITION 1"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		2,   "TRANSITION 2"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		3,   "TRANSITION 3"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		4,   "TRANSITION 4"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		5,   "TRANSITION 5"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		6,   "TRANSITION 6"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		7,   "TRANSITION 7"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		8,   "TRANSITION 8"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		9,   "TRANSITION 9"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		10,  "TRANSITION 10"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		11,  "TRANSITION 11"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		12,  "TRANSITION 12"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		13,  "TRANSITION 13"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		14,  "TRANSITION 14"}
+{"$(SYS)", "$(EVR)", "RearUniv", 		15,  "TRANSITION 15"}
+}
+
+file "evr-cml.template"
+{pattern
+{ SYS,      EVR,      OBJ   ID}
+{"$(SYS)", "$(EVR)", "CML", 0 }
+{"$(SYS)", "$(EVR)", "CML", 1 }
+{"$(SYS)", "$(EVR)", "CML", 2 }
+}

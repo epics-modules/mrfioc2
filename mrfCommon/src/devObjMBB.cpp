@@ -13,6 +13,7 @@
 
 #include "devObj.h"
 
+#include <epicsExport.h>
 using namespace mrf;
 
 /************** mbbi *************/
@@ -97,8 +98,9 @@ OBJECT_DSET(MBBOFromUINT16,
             NULL);
 
 #include <epicsExport.h>
-
-OBJECT_DSET_EXPORT(MBBIFromUINT32);
-OBJECT_DSET_EXPORT(MBBIFromUINT16);
-OBJECT_DSET_EXPORT(MBBOFromUINT32);
-OBJECT_DSET_EXPORT(MBBOFromUINT16);
+extern "C" {
+ OBJECT_DSET_EXPORT(MBBIFromUINT32);
+ OBJECT_DSET_EXPORT(MBBIFromUINT16);
+ OBJECT_DSET_EXPORT(MBBOFromUINT32);
+ OBJECT_DSET_EXPORT(MBBOFromUINT16);
+}

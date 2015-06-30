@@ -1,3 +1,13 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
+#ifndef EVGREGMAP_H
+#define EVGREGMAP_H
+
 #include "epicsTypes.h"
 
 /**************************************************************************************************/
@@ -174,8 +184,12 @@
 
 #define FPGAVersion_ZERO_MASK   0x00FFFF00
 #define FPGAVersion_TYPE_MASK   0xF0000000
+#define FPGAVersion_FORM_MASK   0x0f000000
+#define FPGAVersion_FORM_SHIFT  24
 #define FPGAVersion_TYPE_SHIFT  28
 #define FPGAVersion_VER_MASK    0x000000FF
+
+
 
 /**************************************************************************************************/
 /*    AC Trigger Register Bit Assignmen                                                           */
@@ -189,6 +203,7 @@
 /**************************************************************************************************/
 
 #define  EVG_IRQ_ENABLE         0x80000000  // Master Interrupt Enable Bit
+#define  EVG_IRQ_PCIIE          0x40000000
 #define  EVG_IRQ_STOP_RAM_BASE  0x00001000  // Sequence RAM Stop Interrupt Bit
 #define  EVG_IRQ_STOP_RAM(N)    (EVG_IRQ_STOP_RAM_BASE<<N)
 #define  EVG_IRQ_START_RAM_BASE 0x00000100  // Sequence RAM Start Interrupt Bit
@@ -261,3 +276,4 @@ const epicsUInt16 evgEndOfSeqBuf = 5;
 
 #endif
 
+#endif /* EVGREGMAP_H */

@@ -1,0 +1,113 @@
+
+
+record(bo, "$(SYS)-$(EVR):$(OBJ)-Update-Cmd") {
+  field(DTYP, "Obj Prop bool")
+  field(SCAN, "10 second")
+  field(OUT , "@OBJ=$(EVR):$(OBJ), PROP=Update")
+  field(ZNAM, "Update")
+  field(ONAM, "Update")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-T-I")
+}
+
+record(ai, "$(SYS)-$(EVR):$(OBJ)-T-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Temperature")
+  field(DESC, "Tranceiver Temperature")
+  field(ADEL, "0.5")
+  field(HIGH, "40")
+  field(HSV , "MINOR")
+  field(HIHI, "50")
+  field(HHSV, "MAJOR")
+  field(LOW , "0")
+  field(LSV , "INVALID")
+  field(EGU , "C")
+  field(PREC, "1")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Pwr-TX-I")
+}
+
+record(ai, "$(SYS)-$(EVR):$(OBJ)-Pwr-TX-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Power TX")
+  field(DESC, "Tranceiver Output Power")
+  field(ADEL, "5")
+  field(HIGH, "400")
+  field(HSV , "MINOR")
+  field(LOW , "200")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "1")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Pwr-RX-I")
+  info(autosaveFields_pass0, "LOW")
+}
+
+record(ai, "$(SYS)-$(EVR):$(OBJ)-Pwr-RX-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Power RX")
+  field(DESC, "Tranceiver Input Power")
+  field(ADEL, "5")
+  field(HIGH, "600")
+  field(HSV , "MINOR")
+  field(LOW , "100")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1") # SFP module removed
+  field(LLSV, "INVALID")
+  field(EGU , "uW")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "1")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Speed-Link-I")
+  info(autosaveFields_pass0, "LOW")
+}
+
+record(ai, "$(SYS)-$(EVR):$(OBJ)-Speed-Link-I") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Link Speed")
+  field(DESC, "Tranceiver Line Rate")
+  field(HIGH, "5000")
+  field(HSV , "MAJOR")
+  field(LOW , "3000")
+  field(LSV , "MAJOR")
+  field(LOLO, "-0.1")
+  field(LLSV, "INVALID")
+  field(EGU , "Mb/s")
+  field(PREC, "0")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Vendor-I")
+}
+
+record(stringin, "$(SYS)-$(EVR):$(OBJ)-Vendor-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor name")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Vendor")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Part-I")
+}
+
+record(stringin, "$(SYS)-$(EVR):$(OBJ)-Part-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor part number")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Part")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Rev-I")
+}
+
+record(stringin, "$(SYS)-$(EVR):$(OBJ)-Rev-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Vendor part revision")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Rev")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Serial-I")
+}
+
+record(stringin, "$(SYS)-$(EVR):$(OBJ)-Serial-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "SFP serial number")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Serial")
+  field(FLNK, "$(SYS)-$(EVR):$(OBJ)-Date-Manu-I")
+}
+
+record(stringin, "$(SYS)-$(EVR):$(OBJ)-Date-Manu-I") {
+  field(DTYP, "Obj Prop string")
+  field(DESC, "Manufactored date")
+  field(INP , "@OBJ=$(EVR):$(OBJ), PROP=Date")
+}

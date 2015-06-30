@@ -1,0 +1,40 @@
+# Record set for an EVR's physical output
+#
+# Macros:
+#  ON = record name prefix
+#  OBJ = devObj name
+#  DESC = Physical label found on output jack
+
+record(longout, "$(ON)Src-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Output $(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Map")
+  field( PINI, "YES")
+  field( FLNK, "$(ON)Src-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(ON)Src-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( INP , "@OBJ=$(OBJ), PROP=Map")
+}
+
+record(bo, "$(ON)Ena-SP") {
+  field( DTYP, "Obj Prop bool")
+  field( DESC, "Output $(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Enable")
+  field( PINI, "YES")
+  field( ZNAM, "Disabled")
+  field( ONAM, "Enabled")
+  info(autosaveFields_pass0, "VAL")
+}
+
+# Place for user provided note of what is
+# connected to this output.
+record(waveform, "$(ON)User-SP") {
+  field( DESC, "Desc. of user or purpose")
+  field( FTVL, "CHAR")
+  field( NELM, "128")
+  field( NORD, "1") # default include null termination
+  info(autosaveFields_pass1, "VAL")
+}

@@ -1,0 +1,197 @@
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-EnaIrq-Sel") {
+    field( DESC, "Enable 1 Pulse Per Second Input")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-EnaIrq-RB")
+    field( VAL, "$($(OBJ)$(ID)-EnaIrq-Sel\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS)-$(EVG):$(OBJ)$(ID)-EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(EVG):$(OBJ)$(ID), PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+
+## Event trigger select
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc0-SP") {
+    field( DESC, "Event trigger 0")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S0 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc0-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc1-SP") {
+    field( DESC, "Event trigger 1")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S1 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc1-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc2-SP") {
+    field( DESC, "Event trigger 2")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S2 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc2-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc3-SP") {
+    field( DESC, "Event trigger 3")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S3 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc3-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc4-SP") {
+    field( DESC, "Event trigger 4")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S4 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc4-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc5-SP") {
+    field( DESC, "Event trigger 5")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S5 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc5-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc6-SP") {
+    field( DESC, "Event trigger 6")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S6 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc6-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-TrigSrc7-SP") {
+    field( DESC, "Event trigger 7")
+    field( DTYP, "EVG TrigEvt $(OBJ)$(ID)")
+    field( OUT , "#C S7 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-TrigSrc7-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+## DBus select
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc0-SP") {
+    field( DESC, "Dbus 0")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S0 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc0-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc1-SP") {
+    field( DESC, "Dbus 1")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S1 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc1-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc2-SP") {
+    field( DESC, "Dbus 2")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S2 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc2-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc3-SP") {
+    field( DESC, "Dbus 3")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S3 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc3-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc4-SP") {
+    field( DESC, "Dbus 4")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S4 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc4-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc5-SP") {
+    field( DESC, "Dbus 5")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S5 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc5-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc6-SP") {
+    field( DESC, "Dbus 6")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S6 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc6-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-DbusSrc7-SP") {
+    field( DESC, "Dbus 7")
+    field( DTYP, "EVG Dbus $(OBJ)$(ID)")
+    field( OUT , "#C S7 @$(EVG):$(OBJ)$(ID)")
+    field( PINI, "YES")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( VAL, "$($(OBJ)$(ID)-DbusSrc7-SP\=0)")
+    info( autosaveFields_pass0, "VAL")
+}

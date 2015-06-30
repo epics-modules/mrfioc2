@@ -23,7 +23,7 @@ enum OutputType {
   OutputRB=3 //!< Rear Breakout
 };
 
-class Output : public mrf::ObjectInst<Output>, public IOStatus
+class epicsShareClass Output : public mrf::ObjectInst<Output>, public IOStatus
 {
 public:
   Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}

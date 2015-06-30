@@ -47,8 +47,9 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 Event Generators.  Current only the VME-EVG-230
 
-Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300
+Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
 
+@note Support for the PCI-EVRTG-300e is present, but has not been tested
 @section doc Documentation
 
 User documentation can be found in the form of usage manuals for both the
@@ -63,11 +64,26 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
+@subsection v21X 2.1.X (UNRELEASED)
+
+@subsubsection v21Xnot Notices
+
+@li EVR GTP is currently disabled
+@li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
+@li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
+@li Renamed records in Db/PSI to conform to PSI naming convention
+
+@subsubsection v21Xfeat Features
+
+@li Added support for PCI-EVRTG-300e (interrupts are not tested)
+@li Added start of sequence interrupt device support
+@li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
+
 @subsection v204 2.0.4 (May 2015)
 
 @subsubsection v204not Notices
 
-@li Requires devLib >= 2.6
+@li Requires devLib >= 2.6l
 @li Builds against EPICS Base 3.15.1
 @li Workaround to support UIO in Linux kernel >=3.12 (debian kernel >=3.2.0)
 @li Default mrmEvrFIFOPeriod doubled to 1ms
@@ -80,7 +96,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsubsection v204feat Features
 
-@li Add sequence masker aSub (bit mask to replace event codes with zero)
+@li Added sequence masker aSub (bit mask to replace event codes with zero)
 @li Add records to show statistics of interrupt and event FIFO processing
 @li Soft sequence loading stops at end of sequence event (0x7f).
     Further delays/events are ignored.
@@ -191,7 +207,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @author Jayesh Shah <jshah@bnl.gov>
 
-@author Eric Björklund <bjorklund@lanl.gov>
+@author Eric Bjï¿½rklund <bjorklund@lanl.gov>
 
 */
 

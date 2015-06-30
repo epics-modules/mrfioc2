@@ -12,9 +12,6 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
-#include "mrf/object.h"
-#include "evr/evr.h"
-
 #include <stdexcept>
 #include <errlog.h>
 #include <epicsMutex.h>
@@ -22,7 +19,10 @@
 #include <epicsTime.h>
 #include <epicsVersion.h>
 
-#define epicsExportSharedSymbols
+#include <epicsExport.h>
+
+#include "mrf/object.h"
+#include "evr/evr.h"
 #include "evrGTIF.h"
 
 struct priv {
@@ -101,12 +101,12 @@ int EVRCurrentTime(epicsTimeStamp *pDest)
 extern "C"
 void EVRTime_Registrar()
 {
-    int ret=0;
-    ret|=EVRInitTime();
-    ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
-    ret|=generalTimeEventTpRegister  ("EVR", ER_PROVIDER_PRIORITY, &EVREventTime);
-    if (ret)
-        epicsPrintf("Failed to register EVR time provider\n");
+    // int ret=0;
+    // ret|=EVRInitTime();
+    // ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
+    // ret|=generalTimeEventTpRegister  ("EVR", ER_PROVIDER_PRIORITY, &EVREventTime);
+    // if (ret)
+    //     epicsPrintf("Failed to register EVR time provider\n");
 }
 
 #else
@@ -116,5 +116,6 @@ void EVRTime_Registrar() {}
 #endif
 
 #include <epicsExport.h>
-
-epicsExportRegistrar(EVRTime_Registrar);
+extern "C"{
+ epicsExportRegistrar(EVRTime_Registrar);
+}

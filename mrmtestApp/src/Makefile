@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
-PROD_IOC = mrf
+LIBRARY = mrf
 # mrf.dbd will be created and installed
 DBD += mrf.dbd
 
@@ -24,7 +24,7 @@ mrf_DBD += epicsvme.dbd
 mrf_DBD += epicspci.dbd
 
 # Add all the support libraries needed by this IOC
-mrf_LIBS += evgmrm evrMrm mrmShared epicspci epicsvme evr mrfCommon
+mrf_LIBS += evgmrm evrMrm evr mrmShared mrfCommon epicspci epicsvme
 
 # mrf_registerRecordDeviceDriver.cpp derives from mrf.dbd
 mrf_SRCS += mrf_registerRecordDeviceDriver.cpp

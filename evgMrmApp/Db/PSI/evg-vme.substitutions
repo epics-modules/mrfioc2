@@ -1,0 +1,93 @@
+file evgMrm.db {
+pattern { SYS,      EVG}
+        {"$(SYS)", "$(EVG)"}
+}
+
+file evgSoftEvt.db {
+pattern { SYS,      EVG,      OBJ }
+        {"$(SYS)", "$(EVG)", "SoftEvt" }
+}
+
+file evgAcTrig.db {
+pattern { SYS,      EVG,      OBJ }
+        {"$(SYS)", "$(EVG)", "AcTrig" }
+}
+
+file evgEvtClk.db {
+pattern { SYS,      EVG,      OBJ }
+        {"$(SYS)", "$(EVG)", "EvtClk" }
+}
+
+file evgDbus.db {
+pattern { SYS,      EVG,      OBJ,    ID }
+        {"$(SYS)", "$(EVG)", "Dbus",  0  }
+        {"$(SYS)", "$(EVG)", "Dbus",  1  }
+        {"$(SYS)", "$(EVG)", "Dbus",  2  }
+        {"$(SYS)", "$(EVG)", "Dbus",  3  }
+        {"$(SYS)", "$(EVG)", "Dbus",  4  }
+        {"$(SYS)", "$(EVG)", "Dbus",  5  }
+        {"$(SYS)", "$(EVG)", "Dbus",  6  }
+        {"$(SYS)", "$(EVG)", "Dbus",  7  }
+
+}
+
+file evgInput.db {
+pattern { SYS,      EVG,      OBJ,       ID,  PPS,  DBUSOBJ}
+        {"$(SYS)", "$(EVG)", "FrontInp", 0,   1,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "FrontInp", 1,   2,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "UnivInp",  0,   3,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "UnivInp",  1,   4,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "UnivInp",  2,   5,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "UnivInp",  3,   6,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  1,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  2,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  3,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  4,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  5,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  6,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  7,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  8,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  9,   0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  10,  0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  11,  0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  12,  0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  13,  0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  14,  0,    "Dbus"}
+        {"$(SYS)", "$(EVG)", "RearInp",  15,  0,    "Dbus"}
+}
+
+file evgOutput.db {
+pattern { SYS,      EVG,      OBJ,        ID }
+        {"$(SYS)", "$(EVG)", "FrontOut",  0  }
+        {"$(SYS)", "$(EVG)", "FrontOut",  1  }
+        {"$(SYS)", "$(EVG)", "FrontOut",  2  }
+        {"$(SYS)", "$(EVG)", "FrontOut",  3  }
+        {"$(SYS)", "$(EVG)", "UnivOut",   0  }
+        {"$(SYS)", "$(EVG)", "UnivOut",   1  }
+        {"$(SYS)", "$(EVG)", "UnivOut",   2  }
+        {"$(SYS)", "$(EVG)", "UnivOut",   3  }
+}
+
+file evgTrigEvt.db {
+pattern { SYS,      EVG,      OBJ,       ID }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  0  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  1  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  2  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  3  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  4  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  5  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  6  }
+        {"$(SYS)", "$(EVG)", "TrigEvt",  7  }
+}
+
+file evgMxc.db {
+pattern { SYS,      EVG,      OBJ,   ID }
+        {"$(SYS)", "$(EVG)", "Mxc",  0  }
+        {"$(SYS)", "$(EVG)", "Mxc",  1  }
+        {"$(SYS)", "$(EVG)", "Mxc",  2  }
+        {"$(SYS)", "$(EVG)", "Mxc",  3  }
+        {"$(SYS)", "$(EVG)", "Mxc",  4  }
+        {"$(SYS)", "$(EVG)", "Mxc",  5  }
+        {"$(SYS)", "$(EVG)", "Mxc",  6  }
+        {"$(SYS)", "$(EVG)", "Mxc",  7  }
+}

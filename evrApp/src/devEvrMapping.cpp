@@ -80,97 +80,104 @@ linkOptionDef eventdef[] =
 static long add_lo(dbCommon* praw)
 {
     longoutRecord *prec=(longoutRecord*)praw;
-try {
-    assert(prec->out.type==INST_IO);
+    try {
+        assert(prec->out.type==INST_IO);
 
-    std::auto_ptr<map_priv> priv(new map_priv);
+        std::auto_ptr<map_priv> priv(new map_priv);
 
-    if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
-        throw std::runtime_error("Couldn't parse link string");
+        if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
+            throw std::runtime_error("Couldn't parse link string");
 
-    priv->last_code=prec->val;
+        priv->last_code=prec->val;
 
-    mrf::Object *O=mrf::Object::getObject(priv->obj);
-    if(!O) {
-        errlogPrintf("%s: failed to find object '%s'\n", praw->name, priv->obj);
-        return S_db_errArg;
+        mrf::Object *O=mrf::Object::getObject(priv->obj);
+        if(!O) {
+            errlogPrintf("%s: failed to find object '%s'\n", praw->name, priv->obj);
+            return S_db_errArg;
+        }
+        priv->card=dynamic_cast<EVR*>(O);
+        if(!priv->card) {
+            errlogPrintf("%s: object '%s' is not an EVR\n", praw->name, priv->obj);
+            return S_db_errArg;
+        }
+
+        if(priv->last_code>0 && priv->last_code<=255)
+            priv->card->specialSetMap(priv->last_code,priv->func,true);
+
+        praw->dpvt = (void*)priv.release();
+
+        return 0;
+
+    } catch(std::exception& e) {
+        recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+        (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
+        return S_db_noMemory;
     }
-    priv->card=dynamic_cast<EVR*>(O);
-    if(!priv->card) {
-        errlogPrintf("%s: object '%s' is not an EVR\n", praw->name, priv->obj);
-        return S_db_errArg;
-    }
-
-    if(priv->last_code>0 && priv->last_code<=255)
-        priv->card->specialSetMap(priv->last_code,priv->func,true);
-
-    praw->dpvt = (void*)priv.release();
-
-    return 0;
-
-} catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
-    return S_db_noMemory;
-}
 }
 
 static inline
 long del_lo(dbCommon* praw)
 {
-try {
-    std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+    try {
+        std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
     if (!priv.get())
         return -2;
 
-    if(priv->last_code>0 && priv->last_code<=255)
-        priv->card->specialSetMap(priv->last_code,priv->func,false);
+        if(priv->last_code>0 && priv->last_code<=255)
+            priv->card->specialSetMap(priv->last_code,priv->func,false);
 
-    return 0;
-} catch(std::exception& e) {
-    recGblRecordError(S_db_noMemory, (void*)praw, e.what());
-}
+        return 0;
+    } catch(std::exception& e) {
+        recGblRecordError(S_db_noMemory, (void*)praw, e.what());
+    }
     (void)recGblSetSevr(praw, WRITE_ALARM, INVALID_ALARM);
     return S_db_noMemory;
 }
 
 static long write_lo(longoutRecord* prec)
 {
-try {
-    map_priv* priv=static_cast<map_priv*>(prec->dpvt);
+    try {
+        map_priv* priv=static_cast<map_priv*>(prec->dpvt);
 
-    if (!priv)
-        return -2;
+        if (!priv)
+            return -2;
 
-    epicsUInt32 func=priv->func;
+        epicsUInt32 func=priv->func;
 
-    epicsUInt32 code=prec->val;
+        epicsUInt32 code=prec->val;
 
-    if(code<0 && code>255) {
+        /**
+         * Removing 'code < 0' from if condition since variable 'code' is
+         * unsigned and can never be less than 0 - this comparison is always
+         * true and therefore superfluous.
+         *
+         * Changed by: jkrasna
+         */
+        if(code > 255) {
+            (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
+            return 0;
+        }
+
+        if( code==priv->last_code )
+            return 0;
+
+        if(priv->last_code>0 && priv->last_code<=255)
+            priv->card->specialSetMap(priv->last_code,func,false);
+
+        priv->card->specialSetMap(code,func,true);
+
+
+        priv->last_code=code;
+
+        return 0;
+
+    } catch(std::exception& e) {
+        prec->val=0;
+        recGblRecordError(S_db_noMemory, (void*)prec, e.what());
         (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
-        return 0;
+        return S_db_noMemory;
     }
-
-    if( code==priv->last_code )
-        return 0;
-
-    if(priv->last_code>0 && priv->last_code<=255)
-        priv->card->specialSetMap(priv->last_code,func,false);
-
-    priv->card->specialSetMap(code,func,true);
-
-
-    priv->last_code=code;
-
-    return 0;
-
-} catch(std::exception& e) {
-    prec->val=0;
-    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
-    (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
-    return S_db_noMemory;
-}
 }
 
 /********************** DSETs ***********************/

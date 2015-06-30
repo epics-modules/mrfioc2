@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgAcTrig.h"
 
 #include <iostream>
@@ -19,7 +26,7 @@ evgAcTrig::~evgAcTrig() {
 void
 evgAcTrig::setDivider(epicsUInt32 divider) {
     if(divider > 255)
-        throw std::runtime_error("EVG AC Trigger divider out of range.");
+        throw std::runtime_error("EVG AC Trigger divider out of range. Range: 0 - 255"); // 0: divide by 1, 1: divide by 2, ... 255: divide by 256
 
     WRITE8(m_pReg, AcTrigDivider, divider);
 }
@@ -32,9 +39,9 @@ evgAcTrig::getDivider() const {
 void
 evgAcTrig::setPhase(epicsFloat64 phase) {
     if(phase < 0 || phase > 25.5)
-        throw std::runtime_error("EVG AC Trigger phase out of range.");
+        throw std::runtime_error("EVG AC Trigger phase out of range. Delay range 0 ms - 25.5 ms in 0.1 ms steps");
 
-    WRITE8(m_pReg, AcTrigPhase, phase);
+    WRITE8(m_pReg, AcTrigPhase, (epicsUInt8)phase);
 }
 
 epicsFloat64
@@ -52,7 +59,7 @@ evgAcTrig::setBypass(bool byp) {
 
 bool
 evgAcTrig::getBypass() const {
-    return READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_BYP;
+    return (READ8(m_pReg, AcTrigControl) & EVG_AC_TRIG_BYP) != 0;
 }
 
 
@@ -72,7 +79,7 @@ evgAcTrig::getSyncSrc() const {
 void
 evgAcTrig::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Trig Event ID too large.");
+        throw std::runtime_error("EVG Trig Event ID too large. Max : 7");
 
     epicsUInt8    mask = 1 << trigEvt;
     //Read-Modify-Write

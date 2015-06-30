@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgSeqRam.h"
 
 #include <iostream>
@@ -224,17 +231,29 @@ evgSeqRam::dealloc() {
 
 bool 
 evgSeqRam::isEnabled() const {
-    return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED; 
+    return (READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_ENABLED) != 0;
 }
 
 bool 
 evgSeqRam::isRunning() const {
-    return READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING; 
+    return (READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RUNNING) != 0;
 }
 
 bool
 evgSeqRam::isAllocated() const {
-    return m_softSeq;
+    return m_softSeq != NULL;
+}
+
+void
+evgSeqRam::process_sos() {
+    evgSoftSeq* softSeq = getSoftSeq();
+    if(!softSeq)
+        return;
+    epicsGuard<epicsMutex> g(softSeq->m_lock);
+    if(softSeq->getSeqRam()!=this)
+        return;
+
+    softSeq->process_sos();
 }
 
 void

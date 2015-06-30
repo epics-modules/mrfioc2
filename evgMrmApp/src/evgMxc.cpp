@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgMxc.h"
 
 #include <iostream>
@@ -24,7 +31,7 @@ evgMxc::~evgMxc() {
 
 bool 
 evgMxc::getStatus() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS) != 0;
 }
 
 void
@@ -37,13 +44,13 @@ evgMxc::setPolarity(bool polarity) {
 
 bool
 evgMxc::getPolarity() const {
-    return READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY;
+    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY) != 0;
 }
 
 void
 evgMxc::setPrescaler(epicsUInt32 preScaler) {
     if(preScaler == 0 || preScaler == 1)
-        throw std::runtime_error("Invalid preScaler value in Multiplexed Counter");
+        throw std::runtime_error("Invalid preScaler value in Multiplexed Counter. Value should not be 0 or 1.");
 
     WRITE32(m_pReg, MuxPrescaler(m_id), preScaler);
 }
@@ -57,7 +64,7 @@ evgMxc::getPrescaler() const {
 void
 evgMxc::setFrequency(epicsFloat64 freq) {
     epicsUInt32 clkSpeed = (epicsUInt32)(m_owner->getEvtClk()->getFrequency() *
-                            pow(10, 6));
+                            pow(10.0, 6));
     epicsUInt32 preScaler = (epicsUInt32)((epicsFloat64)clkSpeed / freq);
     
     setPrescaler(preScaler);
@@ -66,7 +73,7 @@ evgMxc::setFrequency(epicsFloat64 freq) {
 epicsFloat64 
 evgMxc::getFrequency() const {
     epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getEvtClk()->getFrequency()
-                             * pow(10, 6);
+                             * pow(10.0, 6);
     epicsFloat64 preScaler = (epicsFloat64)getPrescaler();
     return clkSpeed/preScaler;    
 }
@@ -74,7 +81,7 @@ evgMxc::getFrequency() const {
 void
 evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+        throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
     epicsUInt8    mask = 1 << trigEvt;
     //Read-Modify-Write
@@ -91,10 +98,10 @@ evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
 bool
 evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
     if(trigEvt > 7)
-        throw std::runtime_error("EVG Mxc Trig Event ID too large.");
+        throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
     epicsUInt8 mask = 1 << trigEvt;
     epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
-    return mask & map;
+    return (mask & map) != 0;
 }
 

@@ -26,7 +26,8 @@ device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
 device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
 
 # '@C=$(C), Code=hweventnum'
-device(longout,    INST_IO, devEventEVR, "EVR Event")
+device(longout,    INST_IO, devLOEventEVR, "EVR Event")
+device(event,    INST_IO, devEVEventEVR, "EVR Event")
 
 # '@C=$(C), Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
@@ -39,6 +40,6 @@ device(longin, CONSTANT, devNtpShmLiFail, "EVR NTP Fail")
 device(ai, CONSTANT, devNtpShmAiDelta, "EVR NTP Delta")
 
 registrar(asub_evr)
-registrar(EVRTime_Registrar)
-registrar(ntpShmRegister)
-driver(ntpShared)
+#registrar(EVRTime_Registrar)
+#registrar(ntpShmRegister)
+#driver(ntpShared)

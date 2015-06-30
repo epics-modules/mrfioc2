@@ -1,0 +1,14 @@
+# Record set for a VME-EVRRF-230
+#
+# Macros:
+#  EVR = Card name (same as mrmEvrSetupVME())
+#  SYS = System name (ie SR-TM)
+#  EVNT = Soft event to be emitted when event with CODE is received
+#  CODE = 
+
+
+file "evrevent.db"
+{pattern
+{EN, OBJ, CODE, EVNT}
+{"$(SYS):$(EVR)-Event-$(CODE)", "$(EVR)", "$(CODE)", $(EVNT)}
+}

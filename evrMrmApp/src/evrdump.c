@@ -18,12 +18,20 @@
 
 #include "mrmpci.h"
 
+#ifndef _WIN32
+epicsShareFunc void devLibPCIRegisterBaseDefault(void);
+#endif
+
 static const epicsPCIID mrmevrs[] = {
-   DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
-                              PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
-  ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
-                              PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
-  ,DEVPCI_END
+    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
+                               PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
+                                PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9056,    PCI_VENDOR_ID_PLX,
+                                PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
+                                PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_END
 };
 
 typedef struct {
@@ -32,18 +40,21 @@ typedef struct {
 
 int printevr(void* raw,const epicsPCIDevice* dev)
 {
-    epicsUInt32 i;
+    epicsUInt32 i, offset, length;
     args *a=raw;
     volatile epicsUInt32 *base;
 
     devPCIShowDevice(2,dev);
 
     if (devPCIToLocalAddr(dev, a->bar, (volatile void**)(void *)&base, DEVLIB_MAP_UIO1TO1)) {
-        fprintf(stderr,"Failed to map bar\n");
+        fprintf(stderr,"Failed to map bar 0x%x\n", a->bar);
         return 0;
     }
 
-    for (i=a->offset/4; i<(a->offset+a->len)/4; i++) {
+    offset = (epicsUInt32)a->offset;
+    length = (epicsUInt32)a->len;
+
+    for (i=offset/4; i < (offset + length)/4; i++) {
         if(i%4==0)
             printf("\n%08x : ", 4*i);
 
@@ -56,11 +67,13 @@ int printevr(void* raw,const epicsPCIDevice* dev)
 
 int main(int argc, char* argv[])
 {
-    extern void devLibPCIRegisterBaseDefault(void);
+    args a = {0,0x80,0};
+
+#ifndef _WIN32
     devLibPCIRegisterBaseDefault();
+#endif
 
     fprintf(stderr,"Usage: evrdump [BAR#] [Length] [offset]\n");
-    args a = {0,0x80,0};
 
     if (argc>=2) a.bar=atoi(argv[1]);
     if (argc>=3) a.len=atoi(argv[2]);

@@ -13,6 +13,8 @@
 #include <dbAccess.h>
 #include <recGbl.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
+
 #include <epicsExport.h>
 
 #include "devObj.h"
@@ -70,7 +72,7 @@ write_bo_resetMxc(boRecord* pbo) {
         if(!evg)
             throw std::runtime_error("Device pvt field not initialized");
 
-        evg->resetMxc(pbo->val);
+        evg->resetMxc(pbo->val != 0);
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
         ret = S_dev_noDevice;
@@ -106,7 +108,7 @@ read_si_ts(stringinRecord* psi) {
                 (void)recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
-                errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");
+                errlogPrintf("ERROR: %s : Wrong Timestamp alarm Status\n", psi->name);
         }
 
         ret = 0;
@@ -123,9 +125,17 @@ read_si_ts(stringinRecord* psi) {
 
 static long 
 get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
+
+    /**
+     * Added cast to void for 'cmd' function parameter in order to
+     * remove the unused parameter warning.
+     *
+     * Change by: jkrasna
+     */
+    (void)cmd;
     evgMrm* evg = (evgMrm*)psi->dpvt;
     if(!evg) {
-        errlogPrintf("ERROR: Device pvt field not initialized\n");
+        errlogPrintf("ERROR: %s : Device pvt field not initialized\n", psi->name);
         return -1;
     }
 

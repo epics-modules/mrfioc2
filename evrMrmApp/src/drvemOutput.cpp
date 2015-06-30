@@ -8,9 +8,8 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemOutput.h"
 
-#include <epicsMMIO.h>
+//#include <epicsMMIO.h>
 #include "evrRegMap.h"
 #include "drvem.h"
 
@@ -19,6 +18,7 @@
 #include <mrfBitOps.h>
 
 #include <stdexcept>
+#include "drvemOutput.h"
 
 MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int idx)
     :Output(n)
@@ -157,6 +157,6 @@ MRMOutput::sourceName(epicsUInt32 id) const
     case 2: return "Pulse generator 2";
     case 1: return "Pulse generator 1";
     case 0: return "Pulse generator 0";
-    default: return "Invalid";
+    default: return "Invalid output source";
     }
 }

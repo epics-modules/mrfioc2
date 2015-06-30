@@ -8,8 +8,7 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemPulser.h"
-
+#include "evrRegMap.h"
 #include "drvem.h"
 
 #include <stdexcept>
@@ -19,11 +18,14 @@
 #include <dbDefs.h>
 #include <epicsMath.h>
 
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
-#include "evrRegMap.h"
+#include "mrfCommonIO.h"
+#include "mrfBitOps.h"
 
-MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)
+
+
+#include "drvemPulser.h"
+
+MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i, EVRMRM& o)
   :Pulser(n)
   ,id(i)
   ,owner(o)
@@ -139,7 +141,7 @@ MRMPulser::setPrescaler(epicsUInt32 v)
 bool
 MRMPulser::polarityInvert() const
 {
-    return READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol;
+    return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol) != 0;
 }
 
 void

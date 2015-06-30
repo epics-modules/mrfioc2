@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>609</width>
+    <height>97</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>561</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="caToggleButton" name="catogglebutton_17">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>7</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc7-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_9">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>6</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc6-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_16">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>6</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc6-SP</string>
+    </property>
+   </widget>
+   <widget class="caLabel" name="calabel">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>1</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(236, 236, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>$(ID)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_8">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>5</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc5-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_4">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc1-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_5">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc2-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_6">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>3</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc3-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_12">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc2-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_3">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc0-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_14">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>4</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc4-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_2">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc0-SP</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>55</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Map to DBus bit</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_15">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>5</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc5-SP</string>
+    </property>
+   </widget>
+   <widget class="caLed" name="caled">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>6</y>
+      <width>10</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="rectangular">
+     <bool>false</bool>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-EnaIrq-RB</string>
+    </property>
+    <property name="falseColor">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="trueColor">
+     <color>
+      <red>0</red>
+      <green>205</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="undefinedColor">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>1</y>
+      <width>231</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enable 1 Pulse Per Second Input</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-EnaIrq-Sel</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_13">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>3</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc3-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_10">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>7</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc7-SP</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Map to event trigger</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_11">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>55</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-DbusSrc1-SP</string>
+    </property>
+   </widget>
+   <widget class="caToggleButton" name="catogglebutton_7">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>30</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>4</string>
+    </property>
+    <property name="channel" stdset="0">
+     <string notr="true">$(EVG):$(ID)-TrigSrc4-SP</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caToggleButton</class>
+   <extends>QCheckBox</extends>
+   <header>caToggleButton</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caLed</class>
+   <extends>QWidget</extends>
+   <header>caLed</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

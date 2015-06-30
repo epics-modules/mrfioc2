@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>703</width>
+    <height>465</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QScrollArea" name="scrollArea_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>671</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-1591</y>
+      <width>651</width>
+      <height>3500</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>3500</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>661</width>
+       <height>3500</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="caInclude" name="cainclude_17">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=0</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_18">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=1</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_19">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=2</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_20">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=3</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_21">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=4</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_292">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=5</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_549">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=6</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_550">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=7</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_551">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=8</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_552">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=9</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_553">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=10</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_554">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=11</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_555">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=12</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_556">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=13</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_557">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=14</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="caInclude" name="cainclude_558">
+        <property name="macro">
+         <string notr="true">EVR=$(EVR),ID=15</string>
+        </property>
+        <property name="filename" stdset="0">
+         <string notr="true">G_EVR_pulser_vert.ui</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

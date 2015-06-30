@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #ifndef EVGSEQRAM_H
 #define EVGSEQRAM_H
 
@@ -17,7 +24,14 @@ public:
     evgSeqRam(const epicsUInt32, evgMrm* const);
     ~evgSeqRam();
 
-    const epicsUInt32 getId() const{return m_id;}
+    /**
+     * Removing first const modifier since the value is copied and
+     * modifiable in any case. The first const is superfluous in this
+     * case and also causes a warning.
+     *
+     * Change by: jkrasna
+     */
+    epicsUInt32 getId() const{return m_id;}
 
     void setEventCode(const std::vector<epicsUInt8>&);
     std::vector<epicsUInt8> getEventCode();
@@ -47,6 +61,7 @@ public:
     bool isRunning() const;
     bool isAllocated() const;
 
+    void process_sos();
     void process_eos();
 
     evgSoftSeq* getSoftSeq();

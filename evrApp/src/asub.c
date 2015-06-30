@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -17,6 +18,7 @@
 
 #include <menuFtype.h>
 #include <aSubRecord.h>
+#include <epicsExport.h>
 
 #define NINPUTS (aSubRecordU - aSubRecordA)
 
@@ -32,7 +34,6 @@
  *@param OUTA The output sequence
  *@type OUTA DOUBLE
  */
-static
 long gen_timeline(aSubRecord *prec)
 {
     double x0, dx;
@@ -95,7 +96,6 @@ long gen_timeline(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
-static
 long gen_delaygen(aSubRecord *prec)
 {
     double delay, width, egupertick;
@@ -130,13 +130,20 @@ long gen_delaygen(aSubRecord *prec)
     if(mult==0)
         mult=1;
 
-    idelay=0.5 + delay/egupertick;
-    iwidth=0.5 + width/egupertick;
+    idelay=(epicsInt32)(0.5 + delay/egupertick);
+    iwidth=(epicsInt32)(0.5 + width/egupertick);
 
-    if(idelay<0 || idelay>=count) {
+    /**
+     * Removing 'idelay < 0' and 'iwidth < 0' from if condition since variables
+     * 'idelay' and 'iwidth' are unsigned and can never be less than 0 - this
+     * comparison is always true and therefore superfluous.
+     *
+     * Changed by: jkrasna
+     */
+    if(idelay>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);
         return -1;
-    } else if(iwidth<0 || iwidth>=count) {
+    } else if(iwidth>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,iwidth);
         return -1;
     } else if(idelay+iwidth>=count) {
@@ -180,7 +187,6 @@ long gen_delaygen(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
-static
 long gen_bitarraygen(aSubRecord *prec)
 {
     epicsEnum16 *intype=&prec->fta;
@@ -226,9 +232,14 @@ long gen_bitarraygen(aSubRecord *prec)
     return 0;
 }
 
-static
 long gun_bunchTrain(aSubRecord *prec)
 {
+	int bunchPerTrain;
+	unsigned char *result;
+	epicsUInt32 count;
+	int i, j;
+
+
     if (prec->fta != menuFtypeULONG) {
         errlogPrintf("%s incorrect input type. A(ULONG)",
                      prec->name);
@@ -241,16 +252,16 @@ long gun_bunchTrain(aSubRecord *prec)
         return -1;
     }
 
-    int bunchPerTrain = *(int*)prec->a;
-    unsigned char *result = prec->vala;
+    bunchPerTrain = *(int*)prec->a;
+    result = prec->vala;
 
     if(bunchPerTrain<1 || bunchPerTrain>150) {
         errlogPrintf("%s : invalid number of bunches per train %d.\n",prec->name,bunchPerTrain);
         return -1;
     }
 
-    epicsUInt32 count = 0;
-    int i, j;
+    count = 0;
+
     for(i = 0; i < bunchPerTrain; i++) {
         for(j = 0; j < 10; j++) {
             count++;

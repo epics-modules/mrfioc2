@@ -1,6 +1,6 @@
 # Record set for an EVR's physical input
 #
-# Macros:
+# Macros-
 #  IN = record name prefix
 #  OBJ = devObj name
 #  DESC = Physical label found on output jack
@@ -26,7 +26,7 @@ record(bo, "$(IN)Edge-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(IN)Trig:Ext-Sel") {
+record(mbbo, "$(IN)Trig-Ext-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(OBJ), PROP=External Mode")
   field( PINI, "YES")
@@ -54,7 +54,7 @@ record(mbbo, "$(IN)Trig:Ext-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(IN)Code:Ext-SP") {
+record(longout, "$(IN)Code-Ext-SP") {
   field( DTYP, "Obj Prop uint32")
   field( OUT , "@OBJ=$(OBJ), PROP=External Code")
   field( PINI, "YES")
@@ -65,7 +65,7 @@ record(longout, "$(IN)Code:Ext-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(IN)Trig:Back-Sel") {
+record(mbbo, "$(IN)Trig-Back-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")
   field( PINI, "YES")
@@ -93,7 +93,7 @@ record(mbbo, "$(IN)Trig:Back-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(IN)Code:Back-SP") {
+record(longout, "$(IN)Code-Back-SP") {
   field( DTYP, "Obj Prop uint32")
   field( OUT , "@OBJ=$(OBJ), PROP=Backwards Code")
   field( PINI, "YES")

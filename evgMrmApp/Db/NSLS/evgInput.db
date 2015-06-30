@@ -1,0 +1,19 @@
+record(bo, "$(P)EnaIrq-Sel") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)1ppsInp-MbbiDir_.B$(Num) CP")
+    field( FLNK, "$(P)EnaIrq-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)EnaIrq-RB") {
+    field( DESC, "Enable External Input IRQ")
+    field( DTYP, "Obj Prop bool")
+    field( INP , "@OBJ=$(OBJ), PROP=IRQ")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}

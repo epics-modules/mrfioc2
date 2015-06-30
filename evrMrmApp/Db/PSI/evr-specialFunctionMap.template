@@ -1,0 +1,25 @@
+# Mapping between hardware event code and a special function of the EVR
+# Each event can be mapped only to one function!
+#
+# Macros:
+#  SYS = System name
+#  EVR = EVR devObj name
+#  EVT = Event code (hardware). Set EVNT=0 to disable.
+#  FUNC = Function to be mapped
+#    Choices are: "FIFO", "Latch TS", "Blink", "Forward",
+#                 "Stop Log", "Log", "Heartbeat", "Reset PS",
+#                 "TS reset", "TS tick", "Shift 1", "Shift 0",
+#
+
+record(longout, "$(SYS)-$(EVR):Evtmap-$(EVT)-DNC") {
+  field( DTYP, "EVR Mapping" )
+  field( OUT , "@OBJ=$(EVR), Func=$(FUNC)")
+  field( PINI, "YES")
+  field( DESC, "$(FUNC)")
+  field( VAL , $(EVT))
+  field( LOPR, "0")
+  field( HOPR, "255")
+  field( DRVL, "0")
+  field( DRVH, "255")
+  info(autosaveFields_pass0, "OUT VAL")
+}

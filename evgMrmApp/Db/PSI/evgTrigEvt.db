@@ -1,0 +1,45 @@
+record(bo, "$(SYS)-$(EVG):$(OBJ)$(ID)-Enable-Sel") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+    field( PINI, "YES")
+    field( VAL,  "$($(OBJ)$(ID)-Enable-Sel\=1)")
+    field( UDF,  "0")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-Enable-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(SYS)-$(EVG):$(OBJ)$(ID)-Enable-RB") {
+    field( DESC, "EVG Trigger Event Enable")
+    field( DTYP, "Obj Prop bool")
+    field( INP,  "@OBJ=$(EVG):$(OBJ)$(ID), PROP=Enable")
+    field( ZNAM, "Disabled")
+    field( ONAM, "Enabled")
+}
+
+record(longout, "$(SYS)-$(EVG):$(OBJ)$(ID)-EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(EVG):$(OBJ)$(ID), PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "$($(OBJ)$(ID)-EvtCode-SP\=0)")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(SYS)-$(EVG):$(OBJ)$(ID)-EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SYS)-$(EVG):$(OBJ)$(ID)-EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(EVG):$(OBJ)$(ID), PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
