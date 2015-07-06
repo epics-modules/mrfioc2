@@ -22,20 +22,6 @@ endif
 
 LIBRARY_IOC += evrMrm
 
-INC += drvem.h
-INC += devMrmBuf.h
-INC += drvemInput.h
-INC += drvemOutput.h
-INC += drvemPulser.h
-INC += drvemCML.h
-INC += drvemPrescaler.h
-INC += drvemRxBuf.h
-INC += evrRegMap.h
-INC += mrmGpio.h
-INC += mrmpci.h
-INC += delayModule.h
-INC += bufrxmgr.h
-
 evrMrm_SRCS += drvemIocsh.c
 evrMrm_SRCS += drvem.cpp
 evrMrm_SRCS += drvemOutput.cpp
