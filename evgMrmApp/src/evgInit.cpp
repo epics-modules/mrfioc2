@@ -120,14 +120,8 @@ inithooks(initHookState state) {
 }
 
 void checkVersion(volatile epicsUInt8 *base, unsigned int required,
-		unsigned int recommended) {
-#ifndef __linux__
-    epicsUInt32 junk;
-    if(devReadProbe(sizeof(junk), (volatile void*)(base+U32_FPGAVersion), (void*)&junk)) {
-        printf("Failed to read from MRM registers (but could read CSR registers)\n");
-        return;
-    }
-#endif
+                  unsigned int recommended)
+{
 	epicsUInt32 type, ver;
     epicsUInt32 v = READ32(base, FPGAVersion);
 
@@ -226,6 +220,13 @@ mrmEvgSetupVME (
             return -1;
         }
 
+        {
+            epicsUInt32 junk;
+            if(devReadProbe(sizeof(junk), (volatile void*)(regCpuAddr+U32_FPGAVersion), (void*)&junk)) {
+                printf("Failed to read from MRM registers (but could read CSR registers)\n");
+                return -1;
+            }
+        }
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
