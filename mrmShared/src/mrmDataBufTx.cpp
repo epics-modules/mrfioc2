@@ -29,12 +29,6 @@
 #define DataTxCtrl_len_mask 0x0007fc
 #define DataTxCtrl_len_max  DataTxCtrl_len_mask
 
-// If bottom 2 lines are removed, MSVC does not report warning C4273
-#ifndef _WIN32
-dataBufTx::~dataBufTx() {}
-dataBufRx::~dataBufRx() {}
-#endif
-
 mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
                  volatile epicsUInt8* buffer
