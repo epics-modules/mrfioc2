@@ -128,6 +128,13 @@ mrf_handler_evr(int irq, struct uio_info *info)
         plxctrl = ioread32(plx + BIGEND9056);
         end = plxctrl & BIGEND9056_BIG;
         break;
+    case PCI_DEVICE_ID_EC_30: {
+        static int flag = 0; /* don't spam! */
+        if(!flag) {
+            dev_err(&dev->dev, "EC30 ISR not supported in EVR mode");
+            flag = 1;
+        }
+    }
     default:
         return IRQ_NONE; /* hope this never happens :) */
     }
@@ -202,7 +209,10 @@ mrf_handler_plx(int irq, struct uio_info *info)
         break;
 
     case PCI_DEVICE_ID_EC_30:
-        // Check endianism
+        // there are no distict registers for this bridge.
+        // 'plx' holds the base address of FPGA registers
+
+        // Check endianness
         val = ioread32(plx + FPGAVersion);
         if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
             // little endian
@@ -284,11 +294,10 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
     void __iomem *plx = info->mem[0].internal_addr;
     u32 val, end;
 
-    // FIXME: Why not -EINVAL in both cases?
     if (onoff < 0) {
         return -EINVAL;
     } else if (onoff > 1) {
-        return 0;
+        return 0; /* onoff>1 is a no-op now, but may have other meaning in future */
     }
 
     switch (dev->device) {
@@ -316,6 +325,8 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         break;
 
     case PCI_DEVICE_ID_EC_30:
+        // there are no distict registers for this bridge.
+        // 'plx' holds the base address of FPGA registers
 	
         // Check endianism
         val = ioread32(plx + FPGAVersion);
