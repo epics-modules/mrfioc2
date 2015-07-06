@@ -412,7 +412,7 @@ mrmEvgSetupPCI (
 	return -1;
 } //mrmEvgSetupPCI
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__rtems__)
 /*
  * This function spawns additional thread that emulate PPS input. Function is used for
  * testing of timestamping functionality... DO NOT USE IN PRODUCTION!!!!!

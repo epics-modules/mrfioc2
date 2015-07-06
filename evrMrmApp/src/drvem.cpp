@@ -1005,9 +1005,11 @@ EVRMRM::isr_pci(void *arg) {
     // Calling the default platform-independent interrupt routine
     evr->isr(arg);
 
+#if defined(__linux__) || defined(_WIN32)
     if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
         printf("Failed to re-enable interrupt.  Stuck...\n");
     }
+#endif
 }
 
 void
