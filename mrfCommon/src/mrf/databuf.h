@@ -6,9 +6,6 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 #ifdef DATABUF_H_INC_LEVEL2
- #ifndef DATABUFL2_epicsExportSharedSymbols
-  //#undef DATABUF_H_INC
- #endif
  #ifdef epicsExportSharedSymbols
   #define DATABUFL2_epicsExportSharedSymbols
   #undef epicsExportSharedSymbols

@@ -9,7 +9,6 @@
  */
 
 
-//#include <epicsMMIO.h>
 #include "evrRegMap.h"
 #include "drvem.h"
 
