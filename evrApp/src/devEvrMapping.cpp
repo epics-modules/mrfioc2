@@ -147,13 +147,6 @@ static long write_lo(longoutRecord* prec)
 
         epicsUInt32 code=prec->val;
 
-        /**
-         * Removing 'code < 0' from if condition since variable 'code' is
-         * unsigned and can never be less than 0 - this comparison is always
-         * true and therefore superfluous.
-         *
-         * Changed by: jkrasna
-         */
         if(code > 255) {
             (void)recGblSetSevr((dbCommon *)prec, WRITE_ALARM, INVALID_ALARM);
             return 0;

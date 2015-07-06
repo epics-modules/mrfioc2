@@ -24,13 +24,6 @@ public:
     evgSeqRam(const epicsUInt32, evgMrm* const);
     ~evgSeqRam();
 
-    /**
-     * Removing first const modifier since the value is copied and
-     * modifiable in any case. The first const is superfluous in this
-     * case and also causes a warning.
-     *
-     * Change by: jkrasna
-     */
     epicsUInt32 getId() const{return m_id;}
 
     void setEventCode(const std::vector<epicsUInt8>&);

@@ -207,14 +207,6 @@ evgMrm::getFormFactor(){
     form &= FPGAVersion_FORM_MASK;
     form >>= FPGAVersion_FORM_SHIFT;
 
-    /**
-     * Removing 'formFactor_CPCI <= form' from the if condition since
-     * 'form' is unsigned and 'formFactor_CPCI' is 0. 'form' can never
-     * be less than 0 which makes this comparison always true and
-     * therefore superfluous.
-     *
-     * Changed by: jkrasna
-     */
     if(form <= formFactor_PCIe) return (formFactor)form;
     else return formFactor_unknown;
 }

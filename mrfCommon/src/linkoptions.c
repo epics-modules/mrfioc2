@@ -38,13 +38,6 @@ static
 int
 store_value(const linkOptionDef* opt, void* user, const char* val, int options)
 {
-    /**
-     * Added cast to void for 'options' function parameter in order to
-     * remove the unused parameter warning.
-     *
-     * Change by: jkrasna
-     */
-    (void)options;
     epicsUInt32 *ival;
     unsigned long int lival;
     int *eval;
@@ -52,6 +45,8 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
     double *dval;
     char *sval;
     char *end;
+
+    (void)options; /* unused */
 
     switch(opt->optType) {
     case linkOptionInt32:

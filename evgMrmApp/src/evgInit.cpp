@@ -60,12 +60,6 @@ enableIRQ(mrf::Object* obj, void*) {
     if(!evg)
         return true;
 
-	/**
-	 * Enable PCIe interrputs (1<<30)
-	 * 
-	 * Change by: tslejko
-	 * Reason: Support for cPCI EVG 
-	 */
 	WRITE32(evg->getRegAddr(), IrqEnable,
              EVG_IRQ_PCIIE          | //PCIe interrupt enable,
              EVG_IRQ_ENABLE         |
@@ -75,17 +69,6 @@ enableIRQ(mrf::Object* obj, void*) {
              EVG_IRQ_START_RAM(0)   |
              EVG_IRQ_START_RAM(1)
     );
-//     WRITE32(pReg, IrqEnable,
-//         EVG_IRQ_ENABLE        |
-//         EVG_IRQ_STOP_RAM1     |
-//         EVG_IRQ_STOP_RAM0     |
-//         EVG_IRQ_START_RAM1    |
-//         EVG_IRQ_START_RAM0    |
-//         EVG_IRQ_EXT_INP       |
-//         EVG_IRQ_DBUFF         |
-//         EVG_IRQ_FIFO          |
-//         EVG_IRQ_RXVIO             
-//    );
 
     return true;
 }
@@ -111,34 +94,29 @@ static void
 inithooks(initHookState state) {
     epicsUInt8 lvl;
     switch(state) {
-        case initHookAfterInterruptAccept:
-            epicsAtExit(&evgShutdown, NULL);
-            mrf::Object::visitObjects(&enableIRQ, 0);
-            for(lvl=1; lvl<=7; ++lvl) {
-                if (vme_level_mask&(1<<(lvl-1))) {
-                    if(devEnableInterruptLevelVME(lvl)) {
-                        printf("Failed to enable interrupt level %d\n",lvl);
-                        return;
-                    }
+    case initHookAfterInterruptAccept:
+        epicsAtExit(&evgShutdown, NULL);
+        mrf::Object::visitObjects(&enableIRQ, 0);
+        for(lvl=1; lvl<=7; ++lvl) {
+            if (vme_level_mask&(1<<(lvl-1))) {
+                if(devEnableInterruptLevelVME(lvl)) {
+                    printf("Failed to enable interrupt level %d\n",lvl);
+                    return;
                 }
             }
+        }
 
-		break;
+        break;
 
-	/*
-	 * Enable interrupts after IOC has been started (this is need for cPCI version) 
-	 * 
-	 * Change by: tslejko
-	 * Reason: cPCI EVG support
-	 */
-	case initHookAtIocRun:
-		epicsAtExit(&evgShutdown, NULL);
-		mrf::Object::visitObjects(&enableIRQ, 0);
-		break;
+        //Enable interrupts after IOC has been started (this is need for cPCI version)
+    case initHookAtIocRun:
+        epicsAtExit(&evgShutdown, NULL);
+        mrf::Object::visitObjects(&enableIRQ, 0);
+        break;
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 }
 
 void checkVersion(volatile epicsUInt8 *base, unsigned int required,

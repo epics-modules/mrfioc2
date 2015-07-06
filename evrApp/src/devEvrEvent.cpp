@@ -109,15 +109,8 @@ try {
 
 static
 long
-get_ioint_info(int dir,dbCommon* prec,IOSCANPVT* io)
+get_ioint_info(int, dbCommon* prec,IOSCANPVT* io)
 {
-    /**
-     * Added cast to void for 'dir' function parameter in order to
-     * remove the unused parameter warning.
-     *
-     * Change by: jkrasna
-     */
-    (void)dir;
     if(!prec->dpvt)
         return S_db_errArg;
     priv *p=static_cast<priv*>(prec->dpvt);

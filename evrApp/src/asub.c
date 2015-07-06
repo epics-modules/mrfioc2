@@ -133,13 +133,6 @@ long gen_delaygen(aSubRecord *prec)
     idelay=(epicsInt32)(0.5 + delay/egupertick);
     iwidth=(epicsInt32)(0.5 + width/egupertick);
 
-    /**
-     * Removing 'idelay < 0' and 'iwidth < 0' from if condition since variables
-     * 'idelay' and 'iwidth' are unsigned and can never be less than 0 - this
-     * comparison is always true and therefore superfluous.
-     *
-     * Changed by: jkrasna
-     */
     if(idelay>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);
         return -1;
