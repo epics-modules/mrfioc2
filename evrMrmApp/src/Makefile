@@ -31,11 +31,8 @@ INC += drvemCML.h
 INC += drvemPrescaler.h
 INC += drvemRxBuf.h
 INC += evrRegMap.h
-INC += latticeEC30.h
 INC += mrmGpio.h
 INC += mrmpci.h
-INC += plx9030.h
-INC += plx9056.h
 INC += delayModule.h
 INC += bufrxmgr.h
 
