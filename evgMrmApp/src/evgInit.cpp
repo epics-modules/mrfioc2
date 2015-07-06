@@ -273,33 +273,32 @@ mrmEvgSetupVME (
 static char ifaceversion[] = "/sys/module/mrf/parameters/interfaceversion";
 /* Check the interface version of the kernel module to ensure compatibility */
 static
-int checkUIOVersion(int expect)
+bool checkUIOVersion(int expect)
 {
     FILE *fd;
     int version = -1;
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s in order to read kernel module interface version. Is kernel module loaded?\n", ifaceversion);
-        return 1;
+        errlogPrintf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
+        return true;
     }
     if(fscanf(fd, "%d", &version)!=1) {
-        errlogPrintf("Failed to read %s in order to get the kernel module interface version. Is kernel module loaded?\n", ifaceversion);
-        return 1;
+        fclose(fd);
+        errlogPrintf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
+        return true;
     }
     fclose(fd);
 
-    if(version<expect) {
+    // Interface versions are *not* expected to be backwords or forwards compatible.
+    if(version!=expect) {
         errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
-        return 1;
+        return true;
     }
-    if(version > expect){
-        epicsPrintf("Info: Expect MRF kernel module version %d, found %d.\n", version, expect);
-    }
-    return 0;
+    return false;
 }
 #else
-static int checkUIOVersion(int expect) {return 0;}
+static bool checkUIOVersion(int) {return false;}
 #endif
 
 /**
