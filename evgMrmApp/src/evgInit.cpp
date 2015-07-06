@@ -302,14 +302,6 @@ bool checkUIOVersion(int expect)
 static bool checkUIOVersion(int) {return false;}
 #endif
 
-/**
- * This function and definitions add support for cPCI EVG. 
- * Function works similiar to that of EVR device support and reilies on devLib2 
- * + mrf_uio kernel module to map EVG address space. 
- * 
- * Change by: tslejko
- * Reason: cPCI EVG support
- */
 
 static const epicsPCIID
 mrmevgs[] = {
@@ -330,6 +322,10 @@ mrmEvgSetupPCI (
     bus.pci.bus = b;
     bus.pci.device = d;
     bus.pci.function = f;
+
+#if EPICS_BYTE_ORDER != EPICS_ENDIAN_LITTLE
+    printf("Warning: PCI EVG untested on bigendian hosts!\n");
+#endif
 
 	try {
 		if (mrf::Object::getObject(id)) {
@@ -365,15 +361,11 @@ mrmEvgSetupPCI (
 			return -1;
 		}
 
-		//Set LE mode on PLX bridge
-		//TODO: this limits cPCI EVG device support to LE architectures
-		//			At this point in time we do not have any BE PCI systems at hand so this is left as
-		//			unsported until we HW to test it on...
-
-		epicsUInt32 plxCtrl = LE_READ32(BAR_plx,LAS0BRD);
-		plxCtrl = plxCtrl & ~LAS0BRD_ENDIAN;
-		LE_WRITE32(BAR_plx,LAS0BRD,plxCtrl);
-
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+        BITSET(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
+#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+        BITCLR(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
+#endif
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
@@ -387,14 +379,17 @@ mrmEvgSetupPCI (
 		WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
 		WRITE32(BAR_evg, IrqEnable, 0);
 
+#if !defined(__linux__) && !defined(_WIN32)
 		/*
 		 * Enable active high interrupt1 through the PLX to the PCI bus.
-		 */
-//		LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
+         */
+        LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
+#else
         if(devPCIEnableInterrupt(cur)) {
             printf("Failed to enable interrupt\n");
             return -1;
         }
+#endif
 
 #ifdef __linux__
         evg->isrLinuxPvt = (void*) cur;
