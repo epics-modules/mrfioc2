@@ -1003,7 +1003,7 @@ EVRMRM::isr_pci(void *arg) {
     EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
     // Calling the default platform-independent interrupt routine
-    evr->isr(arg);
+    evr->isr(evr, true);
 
 #if defined(__linux__) || defined(_WIN32)
     if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
@@ -1017,7 +1017,7 @@ EVRMRM::isr_vme(void *arg) {
     EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
     // Calling the default platform-independent interrupt routine
-    evr->isr(arg);
+    evr->isr(evr, false);
 }
 
 // A place to write to which will keep the read
@@ -1026,16 +1026,30 @@ EVRMRM::isr_vme(void *arg) {
 volatile epicsUInt32 evrMrmIsrFlagsTrashCan;
 
 void
-EVRMRM::isr(void *arg)
+EVRMRM::isr(EVRMRM *evr, bool pci)
 {
-    EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     epicsUInt32 active=flags&evr->shadowIRQEna;
 
-    if(!active)
+#if defined(vxWorks) || defined(__rtems__)
+    if(!active) {
+#  ifdef __rtems__
+        if(!pci)
+            printk("EVRMRM::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, evr->shadowIRQEna);
+#else
+        (void)pci;
+#  endif
+        // this is a shared interrupt
         return;
+    }
+    // Note that VME devices do not normally shared interrupts
+#else
+    // for Linux, shared interrupts are detected by the kernel module
+    // so any notifications to userspace are real interrupts by this device
+    (void)pci;
+#endif
 
     if(active&IRQ_RXErr){
         evr->count_recv_error++;

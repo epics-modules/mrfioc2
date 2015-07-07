@@ -76,7 +76,7 @@ public:
     epicsUInt32 getDbusStatus() const;
 
     /**    Interrupt and Callback    **/
-    static void isr(void*);
+    static void isr(evgMrm *evg, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);

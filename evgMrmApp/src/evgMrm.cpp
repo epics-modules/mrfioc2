@@ -275,43 +275,54 @@ evgMrm::isr_pci(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
 
     // Call to the generic implementation
-    evg->isr(arg);
+    evg->isr(evg, true);
 
+#if defined(__linux__) || defined(_WIN32)
     /**
-     * On PCI veriant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
-     * Interrupts must therefore be renabled here.
+     * On PCI variant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
+     * Interrupts must therefore be re-enabled here.
      */
     if(devPCIEnableInterrupt(evg->m_pciDevice)) {
         printf("PCI: Failed to enable interrupt\n");
         return;
     }
+#endif
 }
 
 void
 evgMrm::isr_vme(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
 
-    epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
-    epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
-    epicsUInt32 active = flags & enable;
-
-    // This skips extra work with a shared interrupt.
-    if(!active)
-      return;
-
     // Call to the generic implementation
-    evg->isr(arg);
+    evg->isr(evg, false);
 }
 
 void
-evgMrm::isr(void* arg) {
-    evgMrm *evg = (evgMrm*)(arg);
+evgMrm::isr(evgMrm *evg, bool pci) {
 
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
 
-    #ifdef vxWorks
+#if defined(vxWorks) || defined(__rtems__)
+    if(!active) {
+#  ifdef __rtems__
+        if(!pci)
+            printk("evgMrm::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, enable);
+#else
+        (void)pci;
+#  endif
+        // this is a shared interrupt
+        return;
+    }
+    // Note that VME devices do not normally shared interrupts
+#else
+    // for Linux, shared interrupts are detected by the kernel module
+    // so any notifications to userspace are real interrupts by this device
+    (void)pci;
+#endif
+
+#if defined(vxWorks) || defined(__rtems__)
     /* actually: if isr runs in kernel mode */
 
         /*
@@ -377,7 +388,7 @@ evgMrm::isr(void* arg) {
          }
      }
 
-    #else
+#else
     
     /*
      * This is far far far far from proper solution

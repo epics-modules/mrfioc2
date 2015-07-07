@@ -198,7 +198,7 @@ public:
 
     void enableIRQ(void);
 
-    static void isr(void*);
+    static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
 #if defined(__linux__) || defined(_WIN32)
