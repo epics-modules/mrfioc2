@@ -108,20 +108,6 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
             m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
         }
-    
-        /*
-         * Swtiched order of creation for m_timerEvent and m_wdTimer.
-         *
-         * Reason:
-         * 		wdTimer thread that is started within wdTimer constructor
-         * 		access m_timerEvent. In certian configurations (PSI IFC1210 SBC +RT Linux)
-         * 		the wdTimer thread is executed sooner than m_timerEvent is created which
-         * 		leads to segementation fault.
-         *
-         * 	Changed by: tslejko
-         * 	Reason: Bug fix
-         *
-         */
 
         m_timerEvent = new epicsEvent();
         m_wdTimer = new wdTimer("Watch Dog Timer", this);
@@ -293,10 +279,7 @@ evgMrm::isr_pci(void* arg) {
 
     /**
      * On PCI veriant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
-     * Interrupts must therfore be renabled here.
-     *
-     * Change by: tslejko
-     * Reason: cPCI support
+     * Interrupts must therefore be renabled here.
      */
     if(devPCIEnableInterrupt(evg->m_pciDevice)) {
         printf("PCI: Failed to enable interrupt\n");
