@@ -36,6 +36,11 @@ void __iomem *pci_ioremap_bar(struct pci_dev* pdev,int bar)
 #endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0)
+
+#ifndef VM_RESERVED
+#define VM_RESERVED 0
+#endif
+
 /** Linux 3.12 adds a size test when mapping UIO_MEM_PHYS ranges
  *  to fix an clear security issue.  7314e613d5ff9f0934f7a0f74ed7973b903315d1
  *
@@ -238,7 +243,7 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 /************************* Initialization ***************************/
 
 static
-int __devinit
+int
 mrf_probe(struct pci_dev *dev,
           const struct pci_device_id *id)
 {
@@ -383,7 +388,7 @@ err_free:
 /* cPCI-EVRTG-300 */
 #define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
 
-static struct pci_device_id mrf_pci_ids[] __devinitdata = {
+static struct pci_device_id mrf_pci_ids[] = {
     {
         .vendor =       PCI_VENDOR_ID_PLX,
         .device =       PCI_DEVICE_ID_PLX_9030,
@@ -408,7 +413,7 @@ static struct pci_device_id mrf_pci_ids[] __devinitdata = {
 /************************** Module boilerplate ****************************/
 
 static
-void __devexit
+void
 mrf_remove(struct pci_dev *dev)
 {
         struct uio_info *info = pci_get_drvdata(dev);
@@ -448,16 +453,16 @@ static struct pci_driver mrf_driver = {
     .name    =DRV_NAME,
     .id_table=mrf_pci_ids,
     .probe   = mrf_probe,
-    .remove  = __devexit_p(mrf_remove),
+    .remove  = mrf_remove,
 };
 
-static int __init mrf_init_module(void)
+static int mrf_init_module(void)
 {
         return pci_register_driver(&mrf_driver);
 }
 module_init(mrf_init_module);
 
-static void __exit mrf_exit_module(void)
+static void mrf_exit_module(void)
 {
         pci_unregister_driver(&mrf_driver);
 }
