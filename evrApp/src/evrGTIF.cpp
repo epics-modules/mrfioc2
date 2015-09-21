@@ -25,11 +25,15 @@
 #define epicsExportSharedSymbols
 #include "evrGTIF.h"
 
+#ifndef M_time
+#define S_time_unsynchronized epicsTimeERROR
+#endif
+
 struct priv {
     int ok;
     epicsTimeStamp *ts;
     int event;
-    priv(epicsTimeStamp *t, int e) : ok(epicsTimeERROR), ts(t), event(e) {}
+    priv(epicsTimeStamp *t, int e) : ok(S_time_unsynchronized), ts(t), event(e) {}
 };
 
 static EVR* lastSrc = 0;
@@ -83,7 +87,7 @@ try {
 } catch (std::exception& e) {
     epicsMutexUnlock(lastLock);
     epicsPrintf("EVREventTime failed: %s\n", e.what());
-    return epicsTimeERROR;
+    return S_time_unsynchronized;
 }
 }
 
