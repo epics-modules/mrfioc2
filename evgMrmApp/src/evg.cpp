@@ -1,3 +1,11 @@
+#define DATABUF_H_INC_LEVEL2
+
+#include <epicsThread.h>
+#include <epicsTime.h>
+#include <generalTimeSup.h>
+
+#include <epicsExport.h>
+
 #include "evgOutput.h"
 #include "evgAcTrig.h"
 #include "evgDbus.h"

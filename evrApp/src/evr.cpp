@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -10,15 +11,17 @@
 
 #include "mrf/version.h"
 
+#include "dbCommon.h"
+#include <epicsExport.h>
+
 #include "evr/evr.h"
 #include "evr/pulser.h"
 #include "evr/output.h"
+#include "evr/delay.h"
 #include "evr/input.h"
 #include "evr/prescaler.h"
 #include "evr/cml.h"
 #include "evr/util.h"
-
-#include "dbCommon.h"
 
 /**@file evr.cpp
  *
@@ -38,9 +41,20 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
+
+bus_configuration *EVR::getBusConfiguration(){
+    return &busConfiguration;
+}
+
 std::string EVR::position() const
 {
-    return pos;
+    std::ostringstream position;
+
+    if(busConfiguration.busType == busType_pci) position << busConfiguration.pci.bus << ":" << busConfiguration.pci.device << "." << busConfiguration.pci.function;
+    else if(busConfiguration.busType == busType_vme) position << "Slot #" << busConfiguration.vme.slot;
+    else position << "Unknown position";
+
+    return position.str();
 }
 
 Pulser::~Pulser()
@@ -63,13 +77,17 @@ CML::~CML()
 {
 }
 
+DelayModuleEvr::~DelayModuleEvr()
+{
+}
+
 long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
 {
     IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
 
     if(!stat) return 1;
 
-    *io=stat->statusChange(dir);
+    *io=stat->statusChange((dir != 0));
 
     return 0;
 }
@@ -217,3 +235,11 @@ OBJECT_BEGIN(CML) {
                             &CML::setPattern<CML::patternLow>);
 
 } OBJECT_END(CML)
+
+OBJECT_BEGIN(DelayModuleEvr) {
+
+	OBJECT_PROP2("Enable", &DelayModuleEvr::enabled, &DelayModuleEvr::setState);
+	OBJECT_PROP2("Delay0", &DelayModuleEvr::getDelay0, &DelayModuleEvr::setDelay0);
+	OBJECT_PROP2("Delay1", &DelayModuleEvr::getDelay1, &DelayModuleEvr::setDelay1);
+
+} OBJECT_END(DelayModuleEvr)

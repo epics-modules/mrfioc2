@@ -51,7 +51,6 @@
  @param VALF Booster Stacking sequence rep. mask (bitmask)
  @type  VALF ULONG
  */
-static
 long seq_select(aSubRecord *prec)
 {
     int fail = 0;

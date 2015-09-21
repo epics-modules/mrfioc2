@@ -14,6 +14,7 @@ DBD += evrSupport.dbd
 INC += evr/util.h
 INC += evr/pulser.h
 INC += evr/output.h
+INC += evr/delay.h
 INC += evr/input.h
 INC += evr/prescaler.h
 INC += evr/evr.h
@@ -38,6 +39,10 @@ evr_SRCS += devWfMailbox.c
 evr_SRCS_Linux += ntpShm.cpp
 evr_SRCS_DEFAULT += ntpShmNull.cpp
 
+ifeq ($(OS),Windows_NT)
+evr_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
+endif
+
 # Note: evrtest is NOT a working ioc.
 #       it exists to ensure that libevr
 #       will link correctly.
@@ -60,4 +65,5 @@ evrtest_LIBS += $(EPICS_BASE_IOC_LIBS)
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
+
 

@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
@@ -15,6 +22,7 @@
 #include <devSup.h>
 #include <dbAccess.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
 #include <epicsExport.h>
 #include <errlog.h>
 
@@ -155,14 +163,15 @@ init_li(longinRecord* pli) {
 
 /**        Read/Write Function        **/
 static long
-get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
+get_ioint_info_pvt(int, dbCommon *pwf, IOSCANPVT *ppvt) {
+
     Pvt* dpvt = (Pvt*)pwf->dpvt;
     if(!dpvt)
         return S_dev_noDevice;
 
     evgSoftSeq* seq = (evgSoftSeq*)dpvt->seq;
     if(!seq) {
-        errlogPrintf("Device pvt field not initialized correctly");
+        errlogPrintf("%s : Device pvt field not initialized correctly", pwf->name);
         return S_dev_noDevice;
     } else
         *ppvt = seq->ioscanpvt;
@@ -171,9 +180,11 @@ get_ioint_info_pvt(int cmd, dbCommon *pwf, IOSCANPVT *ppvt) {
 }
 
 static long 
-get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+get_ioint_info(int, dbCommon *pRec, IOSCANPVT *ppvt) {
+
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -182,9 +193,11 @@ get_ioint_info(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 }
 
 static long 
-get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+get_ioint_info_err(int, dbCommon *pRec, IOSCANPVT *ppvt) {
+
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
@@ -193,13 +206,45 @@ get_ioint_info_err(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
 }
 
 static long
-get_ioint_info_run(int cmd, dbCommon *pRec, IOSCANPVT *ppvt) {
+get_ioint_info_run(int, dbCommon *pRec, IOSCANPVT *ppvt) {
+
     evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
     if(!seq) {
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
         return -1;
     }
 
     *ppvt = seq->iorunscan;
+    return 0;
+}
+
+static long
+get_ioint_info_startSeq(int, dbCommon *pRec, IOSCANPVT *ppvt) {
+
+    evgSoftSeq* seq = (evgSoftSeq*)pRec->dpvt;
+    if(!seq) {
+        errlogPrintf("%s : Device pvt field not initialized\n", pRec->name);
+        return -1;
+    }
+
+    *ppvt = seq->iostartscan;
+    return 0;
+}
+
+/**
+ * This is the read function for the start of sequence device support.
+ * There is no reasonable data to read so we set the value arbitrarily.
+ */
+static long
+read_bi_startSeq(biRecord* pbi) {
+    evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+    if(!seq) {
+        //throw std::runtime_error("Device pvt field not initialized");
+        errlogPrintf("ERROR: %s : %s\n", "Device pvt field not initialized", pbi->name);
+        return -1;
+    }
+
+    pbi->rval = 0;
     return 0;
 }
 
@@ -328,9 +373,9 @@ write_wf_timestamp(waveformRecord* pwf) {
             epicsFloat64 seconds;
             epicsUInt32 timeScaler = seq->getTimestampResolution() ;
             for(unsigned int i = 0; i < size; i++) {
-               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10, timeScaler);
+               seconds  = ((epicsFloat64*)pwf->bptr)[i] / pow(10.0,(int) timeScaler);
                ts[i] = (epicsUInt64)floor(seconds *
-                       evg->getEvtClk()->getFrequency() * pow(10,6) + 0.5);
+                       evg->getEvtClk()->getFrequency() * pow(10.0,6) + 0.5);
             }
         }
         seq->setTimestamp(&ts[0], size);
@@ -362,7 +407,7 @@ read_wf_timestamp(waveformRecord* pwf) {
 
         SCOPED_LOCK2(seq->m_lock, guard);
         std::vector<epicsUInt64> timestamp = seq->getTimestampCt();
-        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10,6);
+        epicsFloat64 evtClk = evg->getEvtClk()->getFrequency() * pow(10.0,6);
         epicsUInt32 timeScaler = seq->getTimestampResolution();
 
         epicsFloat64* bptr = (epicsFloat64*)pwf->bptr;
@@ -370,10 +415,10 @@ read_wf_timestamp(waveformRecord* pwf) {
             if(seq->getTimestampInpMode() == TICKS)
                  bptr[i] = (epicsFloat64)timestamp[i];
             else
-                bptr[i] = timestamp[i] * pow(10, timeScaler) / evtClk;
+                bptr[i] = timestamp[i] * pow(10.0,(int) timeScaler) / evtClk;
         }
 
-        pwf->nord = timestamp.size();
+		pwf->nord = (epicsUInt32)timestamp.size();
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
         ret = S_dev_noDevice;
@@ -424,7 +469,7 @@ read_wf_eventCode(waveformRecord* pwf) {
         for(unsigned int i = 0; i < eventCode.size(); i++)
             bptr[i] = eventCode[i];
 
-        pwf->nord = eventCode.size();
+		pwf->nord = (epicsUInt32)eventCode.size();
 
     } catch(std::runtime_error& e) {
         errlogPrintf("ERROR: %s : %s\n", e.what(), pwf->name);
@@ -695,7 +740,7 @@ write_bo_abortSeq(boRecord* pbo) {
             return S_dev_noDevice;
 
         SCOPED_LOCK2(seq->m_lock, guard);
-        seq->abort(pbo->val);
+        seq->abort(pbo->val != 0);
         seq->setErr("");
     } catch(std::runtime_error& e) {
         seq->setErr(e.what());
@@ -1197,6 +1242,16 @@ common_dset devSiErr = {
     (DEVSUPFUN)read_si_err,
 };
 epicsExportAddress(dset, devSiErr);
+
+common_dset devbiStartOfSeq = {
+    5,
+    NULL,
+    NULL,
+    (DEVSUPFUN)init_bi,
+    (DEVSUPFUN)get_ioint_info_startSeq,
+    (DEVSUPFUN)read_bi_startSeq,
+};
+epicsExportAddress(dset, devbiStartOfSeq);
 
 common_dset devLiNumOfRuns = {
     5,

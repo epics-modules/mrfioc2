@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #ifndef MRMDATABUFTX_H_INC
 #define MRMDATABUFTX_H_INC
 
@@ -9,7 +16,7 @@
  * With the MRM both the EVG and the EVR have
  * the exact same Tx control register
  */
-class mrmDataBufTx : public dataBufTx
+class epicsShareClass mrmDataBufTx : public dataBufTx
 {
 public:
 
@@ -29,7 +36,7 @@ public:
 
     virtual epicsUInt32 lenMax() const;
 
-    virtual void dataSend(epicsUInt8 id, epicsUInt32 len, const epicsUInt8 *buf);
+    virtual void dataSend(epicsUInt32 len, const epicsUInt8 *buf);
 
 private:
     volatile epicsUInt8 * const dataCtrl;

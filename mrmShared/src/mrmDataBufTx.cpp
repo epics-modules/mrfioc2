@@ -1,22 +1,25 @@
-
-#include "mrmDataBufTx.h"
-
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include <cstdio>
 #include <stdexcept>
+
+#include <epicsTypes.h>
 
 #include <epicsThread.h>
 #include <epicsInterrupt.h>
 
 #include <mrfCommonIO.h>
-#include <mrfBitOps.h>
 
-#ifndef bswap32
-#define bswap32(value) (  \
-        (((epicsUInt32)(value) & 0x000000ff) << 24)   |                \
-        (((epicsUInt32)(value) & 0x0000ff00) << 8)    |                \
-        (((epicsUInt32)(value) & 0x00ff0000) >> 8)    |                \
-        (((epicsUInt32)(value) & 0xff000000) >> 24))
-#endif
+#include "mrf/databuf.h"
+
+#include <epicsExport.h>
+
+#include "mrmDataBufTx.h"
 
 #define DataTxCtrl_done 0x100000
 #define DataTxCtrl_run  0x080000
@@ -24,11 +27,7 @@
 #define DataTxCtrl_ena  0x020000
 #define DataTxCtrl_mode 0x010000
 #define DataTxCtrl_len_mask 0x0007fc
-
-#define DataTxCtrl_len_max DataTxCtrl_len_mask
-
-dataBufTx::~dataBufTx() {}
-dataBufRx::~dataBufRx() {}
+#define DataTxCtrl_len_max  DataTxCtrl_len_mask
 
 mrmDataBufTx::mrmDataBufTx(const std::string& n,
                  volatile epicsUInt8* bufcontrol,
@@ -47,8 +46,8 @@ mrmDataBufTx::~mrmDataBufTx()
 bool
 mrmDataBufTx::dataTxEnabled() const
 {
-    return nat_ioread32(dataCtrl) &
-         (DataTxCtrl_ena|DataTxCtrl_mode);
+    return (nat_ioread32(dataCtrl) &
+         (DataTxCtrl_ena|DataTxCtrl_mode)) != 0;
 }
 
 void
@@ -84,64 +83,38 @@ mrmDataBufTx::dataRTS() const
 epicsUInt32
 mrmDataBufTx::lenMax() const
 {
-    return DataTxCtrl_len_max-1;
+    return DataTxCtrl_len_max;
 }
 
 void
-mrmDataBufTx::dataSend(epicsUInt8 id,
-                   epicsUInt32 len,
-                   const epicsUInt8 *ubuf
+mrmDataBufTx::dataSend(epicsUInt32 len,
+                       const epicsUInt8 *ubuf
 )
 {
-    static const double quantum=epicsThreadSleepQuantum();
-
-    if (len > DataTxCtrl_len_max-1)
-        throw std::out_of_range("Tx buffer is too long");
-
     STATIC_ASSERT(DataTxCtrl_len_max%4==0);
 
-    SCOPED_LOCK(dataGuard);
+    if (len > DataTxCtrl_len_max)
+        throw std::out_of_range("Tx buffer is too long");
+    
+    // len must be a multiple of 4
+    len &= DataTxCtrl_len_mask;
 
-    // TODO: Timeout needed?
-    while(!dataRTS()) epicsThreadSleep(quantum);
+    SCOPED_LOCK(dataGuard);
 
     // Zero length
     // Seems to be required?
     nat_iowrite32(dataCtrl, DataTxCtrl_ena|DataTxCtrl_mode);
 
-    // start with proto id
-    epicsUInt32 temp = id;
-    len++;
-
+    // Write 4 byte words over VME
     epicsUInt32 index;
-    for(index=1; index<len; index++) {
-        int byte=index%4;
-
-        if(byte==0)
-            temp=0;
-
-        temp <<= 8;
-        temp |= ubuf[index-1];
-
-        if(byte==3)
-            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
-    }
-	
-    for(; index%4; index++) {
-        temp <<= 8;
-        len++;
-
-        if(index%4==3)
-            nat_iowrite32(&dataBuf[index-3], bswap32(temp) );
+    for(index=0; index<len; index+=4) {
+        nat_iowrite32(&dataBuf[index], *(epicsUInt32*)(&ubuf[index]) );
     }
 
-    wbarr();
+    nat_iowrite32(dataCtrl, len|DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode);
 
-    epicsUInt32 reg=len&DataTxCtrl_len_mask;
-
-    reg |= DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode;
-
-    nat_iowrite32(dataCtrl, reg);
-
-    while(!dataRTS()) epicsThreadSleep(quantum);
+    // Reading flushes output queue of VME bridge
+    // Actual sending is so fast that we can use busy wait here
+    // Measurements showed that we loop up to 17 times
+    while(!(nat_ioread32(dataCtrl)&DataTxCtrl_done));
 }

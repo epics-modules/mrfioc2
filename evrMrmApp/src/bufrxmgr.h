@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -11,13 +12,16 @@
 #ifndef BUFRXMGR_H_INC
 #define BUFRXMGR_H_INC
 
+
 #include <ellLib.h>
 #include <callback.h>
-#include <epicsMutex.h>
+#include "mrf/databuf.h"
+
+
 
 #include "mrf/databuf.h"
 
-class bufRxManager : public dataBufRx
+class epicsShareClass bufRxManager : public dataBufRx
 {
 public:
     bufRxManager(const std::string&, unsigned int qdepth, unsigned int bsize=0);
@@ -46,11 +50,11 @@ public:
      *@param fptr[in] Function pointer invoken after Rx
      *@param arg[in] Arbitrary pointer passed to completion function
      */
-    virtual void dataRxAddReceive(epicsUInt16 id, dataBufComplete fptr, void* arg=0);
+    virtual void dataRxAddReceive(dataBufComplete fptr, void* arg=0);
 
     /**@brief Unregister
      */
-    virtual void dataRxDeleteReceive(epicsUInt16 id, dataBufComplete fptr, void* arg=0);
+    virtual void dataRxDeleteReceive(dataBufComplete fptr, void* arg=0);
 
 private:
     epicsMutex guard;
@@ -61,13 +65,13 @@ private:
         dataBufComplete fn;
         void *fnarg;
     };
-    ELLLIST dispatch[256]; //TODO: sparsely populated? consider std::map
+    ELLLIST dispatch;
 
     dataBufComplete onerror;
     void* onerror_arg;
 
 protected:
-    void haderror(epicsStatus e){onerror(onerror_arg,e,0xff,0,NULL);}
+    void haderror(epicsStatus e){onerror(onerror_arg,e,0,NULL);}
 
 private:
     ELLLIST freebufs;

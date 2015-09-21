@@ -45,7 +45,7 @@ static commonset devNtpShmAiDelta = {
 
 static void ntpShmReport(int)
 {
-    fprintf(stderr, "Not implemented for this target\n");
+    fprintf(stderr, "NTP: Not implemented for this target\n");
 }
 
 static drvet ntpShared = {
@@ -56,8 +56,10 @@ static drvet ntpShared = {
 
 #include <epicsExport.h>
 
-epicsExportAddress(drvet, ntpShared);
-epicsExportAddress(dset, devNtpShmLiOk);
-epicsExportAddress(dset, devNtpShmLiFail);
-epicsExportAddress(dset, devNtpShmAiDelta);
-epicsExportRegistrar(ntpShmRegister);
+extern "C"{
+ epicsExportAddress(drvet, ntpShared);
+ epicsExportAddress(dset, devNtpShmLiOk);
+ epicsExportAddress(dset, devNtpShmLiFail);
+ epicsExportAddress(dset, devNtpShmAiDelta);
+ epicsExportRegistrar(ntpShmRegister);
+}

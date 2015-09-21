@@ -36,7 +36,7 @@ struct MapType {
  * Gated mode has two event codes.  One is sets the output
  * high and the second resets the output low.
  */
-class Pulser : public mrf::ObjectInst<Pulser>, public IOStatus
+class epicsShareClass Pulser : public mrf::ObjectInst<Pulser>, public IOStatus
 {
 public:
   Pulser(const std::string& n) : mrf::ObjectInst<Pulser>(n) {}

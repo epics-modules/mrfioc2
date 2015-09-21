@@ -211,7 +211,7 @@ long del_record_property(dbCommon* prec)
     return 0;
 }
 
-static inline long get_ioint_info_property(int dir,dbCommon* prec,IOSCANPVT* io)
+static inline long get_ioint_info_property(int, dbCommon* prec, IOSCANPVT* io)
 {
     using namespace mrf;
 if (!prec->dpvt) return -1;
