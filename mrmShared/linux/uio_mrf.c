@@ -200,6 +200,11 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
     switch(dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
+        // Check if INT1 is active
+        val = ioread32(plx+INTCSR);
+        val &= INTCSR_INT1_Status|INTCSR_PCI_Enable;
+        if(val!=(INTCSR_INT1_Status|INTCSR_PCI_Enable))
+            return IRQ_NONE;
         // clear INTCSR_PCI_Enable
         iowrite32(INTCSR_INT1_Enable|INTCSR_INT1_Polarity, plx+INTCSR);
         val = ioread32(plx+INTCSR);
@@ -207,6 +212,11 @@ mrf_handler_plx(int irq, struct uio_info *info)
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
+        // check if local interrupt is active
+        val = ioread32(plx+INTCSR9056);
+        val &= INTCSR9056_LCL_Status|INTCSR9056_PCI_Enable;
+        if(val==(INTCSR9056_LCL_Status|INTCSR9056_PCI_Enable))
+            return IRQ_NONE;
         // clear INTCSR9056_PCI_Enable
         iowrite32(INTCSR9056_LCL_Enable, plx+INTCSR9056);
         val = ioread32(plx+INTCSR9056);
