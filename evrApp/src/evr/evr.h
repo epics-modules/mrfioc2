@@ -23,7 +23,6 @@
 #include "configurationInfo.h"
 
 class epicsShareClass Pulser;
-class epicsShareClass Output;
 class epicsShareClass PreScaler;
 class epicsShareClass Input;
 class epicsShareClass CML;
