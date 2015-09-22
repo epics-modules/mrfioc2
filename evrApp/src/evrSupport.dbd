@@ -16,19 +16,19 @@
 #
 
 
-# '@C=$(C), I=$(PULIDX), Func=FUNCTIONNAME'
+# '@C=..., I=..., Func=FUNCTIONNAME'
 device(longout,    INST_IO, devLOEVRPulserMap, "EVR Pulser Mapping")
 
-# '@C=$(C)'
+# '@C=...'
 # or
-# '@C=$(C), Code=hweventnum'
+# '@C=..., Code=hweventnum'
 # If omitted then the current wallclock time is given
 device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
 
-# '@C=$(C), Code=hweventnum'
+# '@C=..., Code=hweventnum'
 device(longout,    INST_IO, devEventEVR, "EVR Event")
 
-# '@C=$(C), Func=FUNCTIONNAME'
+# '@C=..., Func=FUNCTIONNAME'
 device(longout, INST_IO, devLOEVRMap, "EVR Mapping")
 
 device(waveform, CONSTANT, devWfMailbox, "Mailbox")
