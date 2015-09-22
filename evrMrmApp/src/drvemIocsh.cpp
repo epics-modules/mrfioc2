@@ -295,7 +295,7 @@ static bool checkUIOVersion(int) {return false;}
 
 extern "C"
 void
-mrmEvrSetupPCI(const char* id,int o,int b,int d,int f)
+mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
     bus_configuration bus;
@@ -314,7 +314,7 @@ try {
 
     const epicsPCIDevice *cur=0;
 
-    if( devPCIFindDBDF(mrmevrs,o,b,d,f,&cur,0) ){
+    if( devPCIFindDBDF(mrmevrs,0,b,d,f,&cur,0) ){
         printf("PCI Device not found on %d:%d.%d\n", b, d, f);
         return;
     }
@@ -555,17 +555,16 @@ void inithooks(initHookState state)
 
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
-static const iocshArg mrmEvrSetupPCIArg1 = { "Domain number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg2 = { "Bus number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg3 = { "Device number",iocshArgInt};
-static const iocshArg mrmEvrSetupPCIArg4 = { "Function number",iocshArgInt};
-static const iocshArg * const mrmEvrSetupPCIArgs[5] =
-{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2,&mrmEvrSetupPCIArg3,&mrmEvrSetupPCIArg4};
+static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg3 = { "Function number",iocshArgInt};
+static const iocshArg * const mrmEvrSetupPCIArgs[4] =
+{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2,&mrmEvrSetupPCIArg3};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =
-    {"mrmEvrSetupPCI",5,mrmEvrSetupPCIArgs};
+    {"mrmEvrSetupPCI",4,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival,args[4].ival);
+    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival);
 }
 
 extern "C"
