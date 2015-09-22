@@ -111,36 +111,26 @@
 /*---------------------
  * Synchronous Read Operations
  */
-#define READ8(base,offset)  NAT_READ8(base,offset)
-#define READ16(base,offset) NAT_READ16(base,offset)
 #define READ32(base,offset) NAT_READ32(base,offset)
 
 /*---------------------
  * Synchronous Write Operations
  */
-#define WRITE8(base,offset,value)  NAT_WRITE8(base,offset,value)
-#define WRITE16(base,offset,value) NAT_WRITE16(base,offset,value)
 #define WRITE32(base,offset,value) NAT_WRITE32(base,offset,value)
 
 /*---------------------
  * Bit Set Operations
  */
-#define BITSET8(base,offset,mask)   BITSET(NAT,8,base,offset,mask)
-#define BITSET16(base,offset,mask)  BITSET(NAT,16,base,offset,mask)
 #define BITSET32(base,offset,mask)  BITSET(NAT,32,base,offset,mask)
 
 /*---------------------
  * Bit Clear Operations
  */
-#define BITCLR8(base,offset,mask)   BITCLR(NAT,8,base,offset,mask)
-#define BITCLR16(base,offset,mask)  BITCLR(NAT,16,base,offset,mask)
 #define BITCLR32(base,offset,mask)  BITCLR(NAT,32,base,offset,mask)
 
 /*---------------------
  * Bit Flip Operations
  */
-#define BITFLIP8(base,offset,mask)   BITFLIP(NAT,8,base,offset,mask)
-#define BITFLIP16(base,offset,mask)  BITFLIP(NAT,16,base,offset,mask)
 #define BITFLIP32(base,offset,mask)  BITFLIP(NAT,32,base,offset,mask)
 
 /**************************************************************************************************/
@@ -152,117 +142,8 @@
 /* These will ultimately resolve into operating system dependent function or macro calls.         */
 /*================================================================================================*/
 
-/**********
- * Little Endian address hack
- *
- * Using mrmEvg on cPCI on LE architecture leads to alot of problems since BE->LE conversion that is
- * done in hardware simply flips that lowes 2 address bits. This not a problem when word access is
- * used, but leads to incorrect memory access when using byte access (e.g. accessing 0x0 will actually
- * access 0x3, 0x1 will be 0x2 and so on)...
- *
- * This does not affect the behaviour of EVR since only word access is used...
- *
- * Change by: tslejko
- * Reason: cPCI EVG support
- */
-
-/*---------------------
- * Synchronous Read Operations
- */
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-#define NAT_READ8(base,offset)  \
-        ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
-#else
-INLINE epicsUInt8 nat_read8_addrFlip(volatile void* addr) {
-	switch ((size_t)addr % 4) {
-	case 0:
-		return ioread8(((epicsUInt8 *)addr) + 3);
-	case 1:
-		return ioread8(((epicsUInt8 *)addr) + 1);
-	case 2:
-		return ioread8(((epicsUInt8 *)addr) - 1);
-	case 3:
-		return ioread8(((epicsUInt8 *)addr) - 3);
-
-    default:
-        throw std::invalid_argument("Requested address not alligned for 8bit read.");
-	}
-
-	// To remove a warning on Windows
-	return 0;
-}
-#define NAT_READ8(base,offset)  \
-		nat_read8_addrFlip  ((epicsUInt8 *)(base) + U8_  ## offset)
-#endif
-
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-#define NAT_READ16(base,offset) \
-        nat_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
-#else
-INLINE epicsUInt16 nat_ioread16_addrFlip(volatile void* addr){
-  	switch ((size_t)addr % 4) {
-  	case 0:
-  		return nat_ioread16(((epicsUInt8 *)addr) + 2);
-  	case 2:
-  		return nat_ioread16(((epicsUInt8 *)addr) - 2);
-
-    default:
-        throw std::invalid_argument("Requested address not alligned for 16bit read.");
-  	}
-
-  }
- #define NAT_READ16(base,offset) \
-		 nat_ioread16_addrFlip ((epicsUInt8 *)(base) + U16_ ## offset)
-#endif
-
-
 #define NAT_READ32(base,offset) \
         nat_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
-
-/*---------------------
- * Synchronous Write Operations
- */
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-#define NAT_WRITE8(base,offset,value) \
-        iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#else
-INLINE void nat_write8_addrFlip(volatile void* addr, epicsUInt8 val){
- 	switch ((size_t)addr % 4) {
- 	case 0:
- 		return iowrite8(((epicsUInt8 *)addr) + 3,val);
- 	case 1:
- 		return iowrite8(((epicsUInt8 *)addr) + 1,val);
- 	case 2:
- 		return iowrite8(((epicsUInt8 *)addr) - 1,val);
- 	case 3:
- 		return iowrite8(((epicsUInt8 *)addr) - 3,val);
-
-    default:
-        throw std::invalid_argument("Requested address not alligned for 8bit write.");
- 	}
- }
- #define NAT_WRITE8(base,offset,value) \
-		nat_write8_addrFlip  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#endif
-
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-#define NAT_WRITE16(base,offset,value) \
-        nat_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
-#else
-INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
- 	switch ((size_t)addr % 4) {
- 	case 0:
- 		return nat_iowrite16(((epicsUInt8 *)addr) + 2,val);
- 	case 2:
- 		return nat_iowrite16(((epicsUInt8 *)addr) - 2,val);
-
-    default:
-        throw std::invalid_argument("Requested address not alligned for 16bit write.");
- 	}
- }
-#define NAT_WRITE16(base,offset,value) \
-		nat_iowrite16_addrFlip (((epicsUInt8 *)(base) + U16_ ## offset), value)
-#endif
 
 #define NAT_WRITE32(base,offset,value) \
         nat_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
@@ -280,20 +161,12 @@ INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
 /*---------------------
  * Synchronous Read Operations
  */
-#define BE_READ8(base,offset)  \
-        ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
-#define BE_READ16(base,offset) \
-        be_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
 #define BE_READ32(base,offset) \
         be_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
 /*---------------------
  * Synchronous Write Operations
  */
-#define BE_WRITE8(base,offset,value) \
-        iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#define BE_WRITE16(base,offset,value) \
-        be_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #define BE_WRITE32(base,offset,value) \
         be_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
@@ -313,8 +186,6 @@ INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
  */
 #define LE_READ8(base,offset)  \
         ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
-#define LE_READ16(base,offset) \
-        le_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
 #define LE_READ32(base,offset) \
         le_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
@@ -323,8 +194,6 @@ INLINE void nat_iowrite16_addrFlip(volatile void* addr, epicsUInt16 val){
  */
 #define LE_WRITE8(base,offset,value) \
         iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
-#define LE_WRITE16(base,offset,value) \
-        le_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #define LE_WRITE32(base,offset,value) \
         le_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 

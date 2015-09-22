@@ -35,7 +35,9 @@ evgTrigEvt::enabled() const {
 
 epicsUInt32
 evgTrigEvt::getEvtCode() const {
-    return READ8(m_pReg, TrigEventCode(m_id));
+    epicsUInt32 temp = READ32(m_pReg, TrigEventCtrl(m_id));
+    temp &= TrigEventCtrl_Code_MASK;
+    return temp>>TrigEventCtrl_Code_SHIFT;
 }
 
 void
@@ -43,5 +45,8 @@ evgTrigEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
         throw std::runtime_error("Event Code out of range. Valid range: 0 - 255");
 
-    WRITE8(m_pReg, TrigEventCode(m_id), evtCode);
+    epicsUInt32 temp = READ32(m_pReg, TrigEventCtrl(m_id));
+    temp &= ~TrigEventCtrl_Code_MASK;
+    temp |= evtCode<<TrigEventCtrl_Code_SHIFT;
+    WRITE32(m_pReg, TrigEventCtrl(m_id), evtCode);
 }

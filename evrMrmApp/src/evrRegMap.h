@@ -35,6 +35,10 @@
  * however, to support transparent operation for both
  * VME and PCI bus it is necessary to use only 32 bit
  * access.
+ *
+ * Bus bridge chips will transparently change the byte order.
+ * VME bridges do this for any data width.  The PLX and lattice bridges
+ * do this assuming 32-bit data width.
  */
 
 #define U32_Status      0x000

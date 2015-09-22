@@ -31,20 +31,20 @@ evgMxc::~evgMxc() {
 
 bool 
 evgMxc::getStatus() const {
-    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_STATUS) != 0;
+    return (READ32(m_pReg, MuxControl(m_id)) & MuxControl_Sts) != 0;
 }
 
 void
 evgMxc::setPolarity(bool polarity) {
     if(polarity)
-        BITSET32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
+        BITSET32(m_pReg, MuxControl(m_id), MuxControl_Pol);
     else
-        BITCLR32(m_pReg, MuxControl(m_id), EVG_MUX_POLARITY);
+        BITCLR32(m_pReg, MuxControl(m_id), MuxControl_Pol);
 }
 
 bool
 evgMxc::getPolarity() const {
-    return (READ32(m_pReg, MuxControl(m_id)) & EVG_MUX_POLARITY) != 0;
+    return (READ32(m_pReg, MuxControl(m_id)) & MuxControl_Pol) != 0;
 }
 
 void
@@ -83,16 +83,11 @@ evgMxc::setTrigEvtMap(epicsUInt16 trigEvt, bool ena) {
     if(trigEvt > 7)
         throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
-    epicsUInt8    mask = 1 << trigEvt;
-    //Read-Modify-Write
-    epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
-
+    epicsUInt32    mask = 1 << (trigEvt+MuxControl_TrigMap_SHIFT);
     if(ena)
-        map = map | mask;
+        BITSET32(m_pReg, MuxControl(m_id), mask);
     else
-        map = map & ~mask;
-
-    WRITE8(m_pReg, MuxTrigMap(m_id), map);
+        BITCLR32(m_pReg, MuxControl(m_id), mask);
 }
 
 bool
@@ -100,8 +95,7 @@ evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
     if(trigEvt > 7)
         throw std::runtime_error("EVG Mxc Trig Event ID too large. Max: 7");
 
-    epicsUInt8 mask = 1 << trigEvt;
-    epicsUInt8 map = READ8(m_pReg, MuxTrigMap(m_id));
-    return (mask & map) != 0;
+    epicsUInt32    mask = 1 << (trigEvt+MuxControl_TrigMap_SHIFT);
+    return READ32(m_pReg, MuxControl(m_id))&mask;
 }
 

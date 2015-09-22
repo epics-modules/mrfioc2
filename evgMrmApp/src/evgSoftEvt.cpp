@@ -15,42 +15,16 @@ m_lock() {
 }
 
 void
-evgSoftEvt::enable(bool ena) {
-    if(ena)
-         BITSET8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-    else
-         BITCLR8(m_pReg, SwEventControl, SW_EVT_ENABLE);
-}
-
-bool
-evgSoftEvt::enabled() const {
-    return READ8(m_pReg, SwEventControl) & SW_EVT_ENABLE;
-}
-
-bool 
-evgSoftEvt::pend() const {
-    return (READ8(m_pReg, SwEventControl) & SW_EVT_PEND) != 0;
-}
-    
-void
 evgSoftEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
         throw std::runtime_error("Event Code out of range. Valid range: 0 - 255.");
     
-    if(!enabled())
-        throw std::runtime_error("Software Event Disabled");
+    SCOPED_LOCK(m_lock);
 
-    int count = 0;
-    while(pend() == 1) {
-        count++;
-        if(count == 50)
-            throw std::runtime_error("Software Event Discarded.");
-    }
-    WRITE8(m_pReg, SwEventCode, evtCode);
-}
+    while(READ32(m_pReg, SwEvent) & SwEvent_Pend) {}
 
-epicsUInt32
-evgSoftEvt::getEvtCode() const {
-    return READ8(m_pReg, SwEventCode);
+    WRITE32(m_pReg, SwEvent,
+            (evtCode<<SwEvent_Code_SHIFT)
+            |SwEvent_Ena);
 }
 

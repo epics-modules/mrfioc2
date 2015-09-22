@@ -31,7 +31,7 @@ m_softSeq(0) {
 void
 evgSeqRam::setEventCode(const std::vector<epicsUInt8>& eventCode) {
     for(unsigned int i = 0; i < eventCode.size(); i++)
-        WRITE8(m_pReg, SeqRamEvent(m_id,i), eventCode[i]);
+        WRITE32(m_pReg, SeqRamEvent(m_id,i), (epicsUInt32)eventCode[i]);
 }
 
 std::vector<epicsUInt8>
@@ -39,7 +39,7 @@ evgSeqRam::getEventCode() {
      std::vector<epicsUInt8> eventCode(2048, 0);
 
     for(unsigned int i = 0; i < eventCode.size(); i++)
-        eventCode[i] = READ8(m_pReg, SeqRamEvent(m_id,i));
+        eventCode[i] = READ32(m_pReg, SeqRamEvent(m_id,i));
 
     return eventCode;
 }
@@ -120,7 +120,10 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
             trigSrc = ExtRam1;
     }
 
-    WRITE8(m_pReg, SeqTrigSrc(m_id), trigSrc);
+    epicsUInt32 temp = READ32(m_pReg, SeqControl(m_id));
+    temp &= ~SeqControl_TrigSrc_MASK;
+    temp |= (trigSrc&SeqControl_TrigSrc_MASK)<<SeqControl_TrigSrc_SHIFT;
+    WRITE32(m_pReg, SeqControl(m_id), temp);
 }
 
 evgInput*
@@ -134,7 +137,9 @@ evgSeqRam::findSeqExtTrig(evgInput* inp) const {
 
 SeqTrigSrc
 evgSeqRam::getTrigSrc() const {
-    SeqTrigSrc trigSrc = (SeqTrigSrc)READ8(m_pReg, SeqTrigSrc(m_id));
+    epicsUInt32 temp = READ32(m_pReg, SeqControl(m_id));
+    temp &= SeqControl_TrigSrc_MASK;
+    SeqTrigSrc trigSrc = (SeqTrigSrc)(temp>>SeqControl_TrigSrc_SHIFT);
 
     if(trigSrc == SoftRam0 || trigSrc == SoftRam1){
         trigSrc = Software;

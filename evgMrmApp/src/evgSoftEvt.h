@@ -11,16 +11,11 @@ public:
     evgSoftEvt(const std::string&, volatile epicsUInt8* const);
 
     /* locking done internally */
-    virtual void lock() const{};
-    virtual void unlock() const{};
-
-    void enable(bool);
-    bool enabled() const;
-
-    bool pend() const;
+    virtual void lock() const{}
+    virtual void unlock() const{}
 
     void setEvtCode(epicsUInt32);
-    epicsUInt32 getEvtCode() const;
+    epicsUInt32 getEvtCode() const {return 0;}
 
 private:
     volatile epicsUInt8* const m_pReg;

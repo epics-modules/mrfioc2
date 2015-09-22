@@ -10,15 +10,25 @@
 
 #include "epicsTypes.h"
 
-/**************************************************************************************************/
-/*    Series 2xx Event Generator Modular Register Map                                             */
-/*                                                                                                */
-/*    Note: The "Uxx_" tag at the beginning of each of definitions below should not be included   */
-/*          when the defined offset is passed to one of the I/O access macros. The macros will    */
-/*          append the appropriate suffix to the offset name based on the number of bits to be    */
-/*          read or written.    The purpose of this method is to produce a compiler error if you  */
-/*          attempt to use a macro that does not match the size of the register.                  */
-/**************************************************************************************************/
+/*
+ * Series 2xx Event Generator Modular Register Map
+ *
+ * For firmware version #6
+ * as documented in EVR-MRM-006.doc
+ * Jukka Pietarinen
+ * 06 Jul 2015
+ *
+ * Important note about data width
+ *
+ * All registers can be accessed with 8, 16, or 32 width
+ * however, to support transparent operation for both
+ * VME and PCI bus it is necessary to use only 32 bit
+ * access assuming MSB ordering.
+ *
+ * Bus bridge chips will transparently change the byte order.
+ * VME bridges do this for any data width.  The PLX and lattice bridges
+ * do this assuming 32-bit data width.
+ */
 
 //=====================
 // Status Registers
@@ -38,23 +48,45 @@
 #define  U32_IrqFlag            0x0008  // Interrupt Flag Register
 #define  U32_IrqEnable          0x000C  // Interrupt Enable Register
 
+#define  EVG_IRQ_ENABLE         0x80000000  // Master Interrupt Enable Bit
+#define  EVG_IRQ_PCIIE          0x40000000
+#define  EVG_IRQ_STOP_RAM_BASE  0x00001000  // Sequence RAM Stop Interrupt Bit
+#define  EVG_IRQ_STOP_RAM(N)    (EVG_IRQ_STOP_RAM_BASE<<N)
+#define  EVG_IRQ_START_RAM_BASE 0x00000100  // Sequence RAM Start Interrupt Bit
+#define  EVG_IRQ_START_RAM(N)   (EVG_IRQ_START_RAM_BASE<<N)
+#define  EVG_IRQ_EXT_INP        0x00000040  // External Input Interrupt Bit
+#define  EVG_IRQ_DBUFF          0x00000020  // Data Buffer Interrupt Bit
+#define  EVG_IRQ_FIFO           0x00000002  // Event FIFO Full Interrupt Bit
+#define  EVG_IRQ_RXVIO          0x00000001  // Receiver Violation Bit
+
 //=====================
 // AC Trigger Control Registers
 //
 #define  U32_AcTrigControl      0x0010
-#define  U8_AcTrigControl       0x0011  // AC Trigger Input Control Register
-#define  U8_AcTrigDivider       0x0012  // AC Trigger Input Divider
-#define  U8_AcTrigPhase         0x0013  // AC Trigger Input Phase Delay
-#define  U8_AcTrigEvtMap        0x0017  // AC Trigger Input To Trigger Event Mapping
+
+#define  AcTrigControl_Sync         0x00010000
+#define  AcTrigControl_Bypass       0x00020000
+#define  AcTrigControl_Divider_MASK 0x0000ff00
+#define  AcTrigControl_Divider_SHIFT 8
+#define  AcTrigControl_Phase_MASK   0x000000ff
+#define  AcTrigControl_Phase_SHIFT   0
+
+#define  U32_AcTrigMap          0x0014
+
+#define  AcTrigMap_EvtMASK 0xff000000
+#define  AcTrigMap_EvtSHIFT 24
 
 //=====================
 // Software Event Control Registers
 //
+#define  U32_SwEvent            0x0018
 #define  U8_SwEventControl      0x001A  // Software Event Control Register
 #define  U8_SwEventCode         0x001B  // Software Event Code Register
 
-#define  SW_EVT_ENABLE          0x01
-#define  SW_EVT_PEND            0x02    
+#define  SwEvent_Ena            0x00000100
+#define  SwEvent_Pend           0x00000200
+#define  SwEvent_Code_MASK      0x000000ff
+#define  SwEvent_Code_SHIFT     0
 
 //=====================
 // Data Buffer and Distributed Data Bus Control
@@ -67,10 +99,25 @@
 //
 #define  U32_FPGAVersion        0x002C  // FPGA Firmware Version
 
+#define FPGAVersion_ZERO_MASK   0x00FFFF00
+#define FPGAVersion_TYPE_MASK   0xF0000000
+#define FPGAVersion_FORM_MASK   0x0F000000
+#define FPGAVersion_FORM_SHIFT  24
+#define FPGAVersion_TYPE_SHIFT  28
+#define FPGAVersion_VER_MASK    0x000000FF
+
 //=====================
 // Event Clock Control
 //
-#define  U16_uSecDiv            0x004e  // Event Clock Freq Rounded to Nearest 1 MHz
+#define  U32_uSecDiv            0x004C  // Event Clock Freq Rounded to Nearest 1 MHz
+
+#define  U32_ClockControl       0x0050
+
+#define  ClockControl_Div_MASK  0x003f0000
+#define  ClockControl_Div_SHIFT 16
+#define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select
+
+
 #define  U8_ClockSource         0x0050  // Event Clock Source(Internal or RF Input)
 #define  U8_RfDiv               0x0051  // RF Input Divider
 #define  U16_ClockStatus        0x0052  // Event Clock Status
@@ -86,14 +133,11 @@
 //=====================
 // Sequence RAM Control Registers
 //
-#define  U32_Seq1Control        0x0070  // Sequencer 1 Control Register
-#define  U32_Seq2Control        0x0074  // Sequencer 2 Control Register
 #define  U32_SeqControl_base    0x0070  // Sequencer Control Register Array Base
 #define  U32_SeqControl(n)      (U32_SeqControl_base + (4*n))
 
-#define  U8_SeqTrigSrc_base     0x0073
-#define  U8_SeqTrigSrc(n)       (U8_SeqTrigSrc_base + (4*n))
-
+#define  SeqControl_TrigSrc_MASK 0x000000ff
+#define  SeqControl_TrigSrc_SHIFT 0
 
 //=====================
 // Fractional Synthesizer Control Word
@@ -111,6 +155,10 @@
 #define  U32_TrigEventCtrl_base 0x0100  // Trigger Event Control Register Array Base
 #define  U32_TrigEventCtrl(n)   (U32_TrigEventCtrl_base + (4*(n)))
 
+#define  TrigEventCtrl_Ena        0x00000100
+#define  TrigEventCtrl_Code_MASK  0x000000ff
+#define  TrigEventCtrl_Code_SHIFT 0
+
 #define  U8_TrigEventCode(n)    (U32_TrigEventCtrl(n) + 3)
 
 #define  EVG_TRIG_EVT_ENA       0x00000100
@@ -123,8 +171,12 @@
 
 #define  U32_MuxControl(n)      (U32_MuxControl_base + (8*(n)))
 
+#define  MuxControl_Pol          0x40000000
+#define  MuxControl_Sts          0x80000000
+#define  MuxControl_TrigMap_MASK 0x000000ff
+#define  MuxControl_TrigMap_SHIFT 0
+
 #define  U32_MuxPrescaler(n)    (U32_MuxPrescaler_base + (8*(n)))
-#define  U8_MuxTrigMap(n)       (U32_MuxControl(n) + 3)
 
 //=====================
 // Front Panel Output Mapping Register Array
@@ -169,55 +221,17 @@
 #define  U32_SeqRamTS_base      0x8000  // Sequence Ram Timestamp Array Base Offset
 #define  U32_SeqRamTS(n,m)      (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
 
-#define  U8_SeqRamEvent_base    0x8007  // Sequence Ram Event Code Array Base Offset
-#define  U8_SeqRamEvent(n,m)    (U8_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
+#define  U32_SeqRamEvent_base    0x8004  // Sequence Ram Event Code Array Base Offset
+#define  U32_SeqRamEvent(n,m)    (U32_SeqRamEvent_base + (0x4000*(n)) + (8*(m)))
+
+// Number of entrys in each ram
+#define  SeqRam_Length (0x4000/8)
 
 //=====================
 // Size of Event Generator Register Space
 //
 #define  EVG_REGMAP_SIZE        0x10000  // Register map size is 64K
 
-
-/**************************************************************************************************/
-/*    Status Register (0x0000) Bit Assignments                                                    */
-/**************************************************************************************************/
-
-#define FPGAVersion_ZERO_MASK   0x00FFFF00
-#define FPGAVersion_TYPE_MASK   0xF0000000
-#define FPGAVersion_FORM_MASK   0x0f000000
-#define FPGAVersion_FORM_SHIFT  24
-#define FPGAVersion_TYPE_SHIFT  28
-#define FPGAVersion_VER_MASK    0x000000FF
-
-
-
-/**************************************************************************************************/
-/*    AC Trigger Register Bit Assignmen                                                           */
-/**************************************************************************************************/
-
-#define  EVG_AC_TRIG_BYP        0x02
-#define  EVG_AC_TRIG_SYNC       0x01
-
-/**************************************************************************************************/
-/*    Interrupt Flag Register (0x0008) and Interrupt Enable Register (0x000c) Bit Assignments     */
-/**************************************************************************************************/
-
-#define  EVG_IRQ_ENABLE         0x80000000  // Master Interrupt Enable Bit
-#define  EVG_IRQ_PCIIE          0x40000000
-#define  EVG_IRQ_STOP_RAM_BASE  0x00001000  // Sequence RAM Stop Interrupt Bit
-#define  EVG_IRQ_STOP_RAM(N)    (EVG_IRQ_STOP_RAM_BASE<<N)
-#define  EVG_IRQ_START_RAM_BASE 0x00000100  // Sequence RAM Start Interrupt Bit
-#define  EVG_IRQ_START_RAM(N)   (EVG_IRQ_START_RAM_BASE<<N)
-#define  EVG_IRQ_EXT_INP        0x00000040  // External Input Interrupt Bit
-#define  EVG_IRQ_DBUFF          0x00000020  // Data Buffer Interrupt Bit
-#define  EVG_IRQ_FIFO           0x00000002  // Event FIFO Full Interrupt Bit
-#define  EVG_IRQ_RXVIO          0x00000001  // Receiver Violation Bit
-
-/**************************************************************************************************/
-/*    Outgoing Event Link Clock Source Register (0x0050) Bit Assignments                          */
-/**************************************************************************************************/
-
-#define  EVG_CLK_SRC_EXTRF      0x01  // External/Internal reference clock select
 
 /**************************************************************************************************/
 /*    Sequence RAM Control Register (0x0070, 0x0074) Bit Assignments                              */
@@ -235,14 +249,6 @@
 #define  EVG_SEQ_RAM_NORMAL     0x00000000  // Normal Mode: Repeat every trigger
 #define  EVG_SEQ_RAM_SINGLE     0x00100000  // Single-Shot Mode: Disable on completion
 #define  EVG_SEQ_RAM_RECYCLE    0x00080000  // Continuous Mode: Repeat on completion
-
-
-/**************************************************************************************************/
-/* Multiplexed Counter                                                                            */
-/**************************************************************************************************/
-
-#define  EVG_MUX_POLARITY       0x40000000 
-#define  EVG_MUX_STATUS         0x80000000 
 
 /**************************************************************************************************/
 /* Control Register flags                                                                         */
@@ -262,17 +268,17 @@
 #ifndef  EVG_CONSTANTS
 #define  EVG_CONSTANTS
 
-const epicsUInt16 evgNumMxc = 8;
-const epicsUInt16 evgNumEvtTrig = 8;
-const epicsUInt16 evgNumDbusBit = 8;
-const epicsUInt16 evgNumFrontOut = 6;
-const epicsUInt16 evgNumUnivOut = 4;
-const epicsUInt16 evgNumFrontInp = 2;
-const epicsUInt16 evgNumUnivInp = 4;
-const epicsUInt16 evgNumRearInp = 16;
-const epicsUInt16 evgNumSeqRam = 2;
-const epicsFloat32 evgAllowedTsGitter = 0.5f;
-const epicsUInt16 evgEndOfSeqBuf = 5;
+#define evgNumMxc 8
+#define evgNumEvtTrig 8
+#define evgNumDbusBit 8
+#define evgNumFrontOut 6
+#define evgNumUnivOut 4
+#define evgNumFrontInp 2
+#define evgNumUnivInp 4
+#define evgNumRearInp 16
+#define evgNumSeqRam 2
+#define evgAllowedTsGitter 0.5f
+#define evgEndOfSeqBuf 5
 
 #endif
 

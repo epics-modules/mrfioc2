@@ -51,7 +51,6 @@ OBJECT_BEGIN(evgOutput) {
 } OBJECT_END(evgOutput)
 
 OBJECT_BEGIN(evgSoftEvt) {
-    OBJECT_PROP2("Enable",  &evgSoftEvt::enabled,    &evgSoftEvt::enable);
     OBJECT_PROP2("EvtCode", &evgSoftEvt::getEvtCode, &evgSoftEvt::setEvtCode);
 } OBJECT_END(evgSoftEvt)
 
