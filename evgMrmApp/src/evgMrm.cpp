@@ -55,77 +55,82 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_seqRamMgr(this),
     m_softSeqMgr(this)
 {
-    try{
-        for(int i = 0; i < evgNumEvtTrig; i++) {
-            std::ostringstream name;
-            name<<id<<":TrigEvt"<<i;
-            m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg));
-        }
+    epicsUInt32 v, isevr;
 
-        for(int i = 0; i < evgNumMxc; i++) {
-            std::ostringstream name;
-            name<<id<<":Mxc"<<i;
-            m_muxCounter.push_back(new evgMxc(name.str(), i, this));
-        }
+    v = READ32(m_pReg, FPGAVersion);
+    isevr=v&FPGAVersion_TYPE_MASK;
+    isevr>>=FPGAVersion_TYPE_SHIFT;
 
-        for(int i = 0; i < evgNumDbusBit; i++) {
-            std::ostringstream name;
-            name<<id<<":Dbus"<<i;
-            m_dbus.push_back(new evgDbus(name.str(), i, pReg));
-        }
+    if(isevr!=0x2)
+        throw std::runtime_error("Address does not correspond to an EVG");
 
-        for(int i = 0; i < evgNumFrontInp; i++) {
-            std::ostringstream name;
-            name<<id<<":FrontInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, FrontInp) ] =
-                new evgInput(name.str(), i, FrontInp, pReg + U32_FrontInMap(i));
-        }
-
-        for(int i = 0; i < evgNumUnivInp; i++) {
-            std::ostringstream name;
-            name<<id<<":UnivInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, UnivInp) ] =
-                new evgInput(name.str(), i, UnivInp, pReg + U32_UnivInMap(i));
-        }
-
-        for(int i = 0; i < evgNumRearInp; i++) {
-            std::ostringstream name;
-            name<<id<<":RearInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, RearInp) ] =
-                new evgInput(name.str(), i, RearInp, pReg + U32_RearInMap(i));
-        }
-
-        for(int i = 0; i < evgNumFrontOut; i++) {
-            std::ostringstream name;
-            name<<id<<":FrontOut"<<i;
-            m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)] =
-                new evgOutput(name.str(), i, FrontOut, pReg + U16_FrontOutMap(i));
-        }
-
-        for(int i = 0; i < evgNumUnivOut; i++) {
-            std::ostringstream name;
-            name<<id<<":UnivOut"<<i;
-            m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
-                new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
-        }
-
-        m_timerEvent = new epicsEvent();
-        m_wdTimer = new wdTimer("Watch Dog Timer", this);
-        
-        init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
-                                            m_seqRamMgr.getSeqRam(0));
-        init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
-                                            m_seqRamMgr.getSeqRam(1));
-        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
-                                            m_seqRamMgr.getSeqRam(0));
-        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
-                                            m_seqRamMgr.getSeqRam(1));
-        init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
-    
-        scanIoInit(&ioScanTimestamp);
-    } catch(std::exception& e) {
-        errlogPrintf("Error: %s\n", e.what());
+    for(int i = 0; i < evgNumEvtTrig; i++) {
+        std::ostringstream name;
+        name<<id<<":TrigEvt"<<i;
+        m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg));
     }
+
+    for(int i = 0; i < evgNumMxc; i++) {
+        std::ostringstream name;
+        name<<id<<":Mxc"<<i;
+        m_muxCounter.push_back(new evgMxc(name.str(), i, this));
+    }
+
+    for(int i = 0; i < evgNumDbusBit; i++) {
+        std::ostringstream name;
+        name<<id<<":Dbus"<<i;
+        m_dbus.push_back(new evgDbus(name.str(), i, pReg));
+    }
+
+    for(int i = 0; i < evgNumFrontInp; i++) {
+        std::ostringstream name;
+        name<<id<<":FrontInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, FrontInp) ] =
+                new evgInput(name.str(), i, FrontInp, pReg + U32_FrontInMap(i));
+    }
+
+    for(int i = 0; i < evgNumUnivInp; i++) {
+        std::ostringstream name;
+        name<<id<<":UnivInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, UnivInp) ] =
+                new evgInput(name.str(), i, UnivInp, pReg + U32_UnivInMap(i));
+    }
+
+    for(int i = 0; i < evgNumRearInp; i++) {
+        std::ostringstream name;
+        name<<id<<":RearInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, RearInp) ] =
+                new evgInput(name.str(), i, RearInp, pReg + U32_RearInMap(i));
+    }
+
+    for(int i = 0; i < evgNumFrontOut; i++) {
+        std::ostringstream name;
+        name<<id<<":FrontOut"<<i;
+        m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)] =
+                new evgOutput(name.str(), i, FrontOut, pReg + U16_FrontOutMap(i));
+    }
+
+    for(int i = 0; i < evgNumUnivOut; i++) {
+        std::ostringstream name;
+        name<<id<<":UnivOut"<<i;
+        m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
+                new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
+    }
+
+    m_timerEvent = new epicsEvent();
+    m_wdTimer = new wdTimer("Watch Dog Timer", this);
+
+    init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
+            m_seqRamMgr.getSeqRam(0));
+    init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
+            m_seqRamMgr.getSeqRam(1));
+    init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
+            m_seqRamMgr.getSeqRam(0));
+    init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
+            m_seqRamMgr.getSeqRam(1));
+    init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
+    
+    scanIoInit(&ioScanTimestamp);
 }
 
 evgMrm::~evgMrm() {
