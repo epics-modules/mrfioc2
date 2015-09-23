@@ -72,6 +72,7 @@ public:
     void enable(bool);
     bool enabled() const;
 
+    bool getResetMxc() const {return true;}
     void resetMxc(bool reset);
     epicsUInt32 getDbusStatus() const;
 
@@ -90,7 +91,8 @@ public:
     epicsUInt32 sendTimestamp();
     epicsTimeStamp getTimestamp() const;
     void syncTimestamp();
-    void syncTsRequest();
+    bool getSyncTsRequest() const {return false;}
+    void syncTsRequest(bool=true);
     void incrTimestamp();
     
     /**    Access    functions     **/

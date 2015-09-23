@@ -621,7 +621,7 @@ evgMrm::syncTimestamp() {
 }
 
 void
-evgMrm::syncTsRequest() {
+evgMrm::syncTsRequest(bool) {
     m_syncTimestamp = true;
 }
 

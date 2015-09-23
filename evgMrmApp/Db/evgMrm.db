@@ -33,9 +33,9 @@ record(stringin, "$(P)SwVer-I") {
 }
 
 record(bo, "$(P)ResetMxc-Cmd") {
-    field( DTYP, "EVG")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=Reset MXC")
     field( DESC, "EVG Reset MXC")
-    field( OUT,  "#C0 S0 @$(EVG)")
     field( PINI, "YES")
     field( VAL, "1")
     field( UDF, "0")
@@ -49,9 +49,9 @@ record(stringin, "$(P)Timestamp-RB") {
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
-    field( DTYP, "EVG TIMESTAMP")
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=Sync TS")
     field( DESC, "EVG Sync TimeStamp")
-    field( OUT,  "#C0 S0 @$(EVG)")
 }
 
 record(mbbo, "$(P)1ppsInp-Sel") {

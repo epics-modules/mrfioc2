@@ -3,70 +3,19 @@ driver(drvEvgMrm)
 include "mrmShared.dbd"
 
 #evgMrm.db
-device( bo,      VME_IO,  devBoEvgResetMxc,    "EVG")
 device( stringin,VME_IO,  devSiTimeStamp,      "EVG TIMESTAMP")
-device( bo,      VME_IO,  devBoEvgSyncTS,      "EVG TIMESTAMP")
 
 
 #evgTrigEvt.db
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc0")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc1")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc2")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc3")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc4")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc5")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc6")
-device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc7")
+device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc")
 
 device( bo, VME_IO, devBoEvgTrigEvtAc, "EVG Trig Evt AC")
 
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt FrontInp0")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt FrontInp1")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp0")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp1")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp2")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt UnivInp3")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp0")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp1")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp2")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp3")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp4")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp5")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp6")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp7")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp8")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp9")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp10")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp11")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp12")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp13")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp14")
-device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt RearInp15")
+device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt")
 
 
 #evgDbus.db
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus FrontInp0")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus FrontInp1")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus UnivInp0")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus UnivInp1")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus UnivInp2")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus UnivInp3")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp0")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp1")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp2")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp3")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp4")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp5")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp6")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp7")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp8")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp9")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp10")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp11")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp12")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp13")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp14")
-device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus RearInp15")
+device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus")
 
 
 #evgSoftSeq.db

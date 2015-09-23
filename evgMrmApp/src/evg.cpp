@@ -61,6 +61,8 @@ OBJECT_BEGIN(evgTrigEvt) {
 
 OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP2("Enable",     &evgMrm::enabled,      &evgMrm::enable);
+    OBJECT_PROP2("Reset MXC",  &evgMrm::getResetMxc,  &evgMrm::resetMxc);
+    OBJECT_PROP2("Sync TS",    &evgMrm::getSyncTsRequest, &evgMrm::syncTsRequest);
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
     OBJECT_PROP1("Version", &evgMrm::getFwVersion);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);

@@ -93,7 +93,7 @@ record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc0-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc0")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -102,7 +102,7 @@ record(bo, "$(P)TrigSrc:Mxc0-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc1-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc1")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -111,7 +111,7 @@ record(bo, "$(P)TrigSrc:Mxc1-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc2-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc2")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc2")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -120,7 +120,7 @@ record(bo, "$(P)TrigSrc:Mxc2-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc3-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc3")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc3")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -129,7 +129,7 @@ record(bo, "$(P)TrigSrc:Mxc3-Sel") {
 } 
 
 record(bo, "$(P)TrigSrc:Mxc4-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc4")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc4")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -138,7 +138,7 @@ record(bo, "$(P)TrigSrc:Mxc4-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc5-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc5")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc5")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -147,7 +147,7 @@ record(bo, "$(P)TrigSrc:Mxc5-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc6-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc6")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc6")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -156,7 +156,7 @@ record(bo, "$(P)TrigSrc:Mxc6-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:Mxc7-Sel") {
-    field( DTYP, "EVG Trig Evt Mxc7")
+    field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc7")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -174,7 +174,7 @@ record(bo, "$(P)TrigSrc:AC-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:FrontInp0-Sel") {
-    field( DTYP, "EVG TrigEvt FrontInp0")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -183,7 +183,7 @@ record(bo, "$(P)TrigSrc:FrontInp0-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:FrontInp1-Sel") {
-    field( DTYP, "EVG TrigEvt FrontInp1")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -192,7 +192,7 @@ record(bo, "$(P)TrigSrc:FrontInp1-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:UnivInp0-Sel") {
-    field( DTYP, "EVG TrigEvt UnivInp0")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -200,7 +200,7 @@ record(bo, "$(P)TrigSrc:UnivInp0-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:UnivInp1-Sel") {
-    field( DTYP, "EVG TrigEvt UnivInp1")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -208,7 +208,7 @@ record(bo, "$(P)TrigSrc:UnivInp1-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:UnivInp2-Sel") {
-    field( DTYP, "EVG TrigEvt UnivInp2")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp2")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -216,7 +216,7 @@ record(bo, "$(P)TrigSrc:UnivInp2-Sel") {
 }
 
 record(bo, "$(P)TrigSrc:UnivInp3-Sel") {
-    field( DTYP, "EVG TrigEvt UnivInp3")
+    field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp3")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
