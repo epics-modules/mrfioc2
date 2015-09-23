@@ -323,10 +323,6 @@ mrmEvgSetupPCI (
     bus.pci.device = d;
     bus.pci.function = f;
 
-#if EPICS_BYTE_ORDER != EPICS_ENDIAN_LITTLE
-    printf("Warning: PCI EVG untested on bigendian hosts!\n");
-#endif
-
 	try {
 		if (mrf::Object::getObject(id)) {
 			errlogPrintf("ID %s already in use\n", id);
