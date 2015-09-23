@@ -35,7 +35,7 @@ record(stringin, "$(P)SwVer-I") {
 record(bo, "$(P)ResetMxc-Cmd") {
     field( DTYP, "EVG")
     field( DESC, "EVG Reset MXC")
-    field( OUT,  "#C S @$(EVG)")
+    field( OUT,  "#C0 S0 @$(EVG)")
     field( PINI, "YES")
     field( VAL, "1")
     field( UDF, "0")
@@ -44,14 +44,14 @@ record(bo, "$(P)ResetMxc-Cmd") {
 record(stringin, "$(P)Timestamp-RB") {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG TimeStamp")
-    field( INP , "#C S @$(EVG)")
+    field( INP , "#C0 S0 @$(EVG)")
     field( SCAN, "I/O Intr")
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG Sync TimeStamp")
-    field( OUT,  "#C S @$(EVG)")
+    field( OUT,  "#C0 S0 @$(EVG)")
 }
 
 record(mbbo, "$(P)1ppsInp-Sel") {
