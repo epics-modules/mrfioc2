@@ -338,26 +338,6 @@ evgMrm::isr(evgMrm *evg, bool pci) {
          * around ~10us
          */
 
-     if(active & EVG_IRQ_STOP_RAM(0)) {
-         if(evg->irqStop0_queued==0) {
-             callbackRequest(&evg->irqStop0_cb);
-             evg->irqStop0_queued=1;
-         } else if(evg->irqStop0_queued==1) {
-             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
-             evg->irqStop0_queued=2;
-         }
-     }
-
-     if(active & EVG_IRQ_STOP_RAM(1)) {
-         if(evg->irqStop1_queued==0) {
-             callbackRequest(&evg->irqStop1_cb);
-             evg->irqStop1_queued=1;
-         } else if(evg->irqStop1_queued==1) {
-             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
-             evg->irqStop1_queued=2;
-         }
-     }
-
     if(active & EVG_IRQ_START_RAM(0)) {
         if(evg->irqStart0_queued==0) {
             callbackRequest(&evg->irqStart0_cb);
@@ -378,15 +358,35 @@ evgMrm::isr(evgMrm *evg, bool pci) {
         }
     }
 
-     if(active & EVG_IRQ_EXT_INP) {
-         if(evg->irqExtInp_queued==0) {
-             callbackRequest(&evg->irqExtInp_cb);
-             evg->irqExtInp_queued=1;
-         } else if(evg->irqExtInp_queued==1) {
-             WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
-             evg->irqExtInp_queued=2;
-         }
-     }
+    if(active & EVG_IRQ_STOP_RAM(0)) {
+        if(evg->irqStop0_queued==0) {
+            callbackRequest(&evg->irqStop0_cb);
+            evg->irqStop0_queued=1;
+        } else if(evg->irqStop0_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
+            evg->irqStop0_queued=2;
+        }
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(1)) {
+        if(evg->irqStop1_queued==0) {
+            callbackRequest(&evg->irqStop1_cb);
+            evg->irqStop1_queued=1;
+        } else if(evg->irqStop1_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
+            evg->irqStop1_queued=2;
+        }
+    }
+
+    if(active & EVG_IRQ_EXT_INP) {
+        if(evg->irqExtInp_queued==0) {
+            callbackRequest(&evg->irqExtInp_cb);
+            evg->irqExtInp_queued=1;
+        } else if(evg->irqExtInp_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
+            evg->irqExtInp_queued=2;
+        }
+    }
 
 #else
     
@@ -398,20 +398,20 @@ evgMrm::isr(evgMrm *evg, bool pci) {
      * original driver, but care must be taken in order to
      * avoid race conditions.
      */
-    if(active & EVG_IRQ_STOP_RAM(0)) {
-        evg->getSeqRamMgr()->getSeqRam(0)->process_eos();
-    }
-
-    if(active & EVG_IRQ_STOP_RAM(1)) {
-        evg->getSeqRamMgr()->getSeqRam(1)->process_eos();
-    }
-
     if(active & EVG_IRQ_START_RAM(0)) {
         evg->getSeqRamMgr()->getSeqRam(0)->process_sos();
     }
 
     if(active & EVG_IRQ_START_RAM(1)) {
         evg->getSeqRamMgr()->getSeqRam(1)->process_sos();
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(0)) {
+        evg->getSeqRamMgr()->getSeqRam(0)->process_eos();
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(1)) {
+        evg->getSeqRamMgr()->getSeqRam(1)->process_eos();
     }
 
     if(active & EVG_IRQ_EXT_INP) {
