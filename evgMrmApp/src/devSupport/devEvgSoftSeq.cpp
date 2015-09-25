@@ -231,20 +231,16 @@ get_ioint_info_startSeq(int, dbCommon *pRec, IOSCANPVT *ppvt) {
     return 0;
 }
 
-/**
- * This is the read function for the start of sequence device support.
- * There is no reasonable data to read so we set the value arbitrarily.
- */
 static long
-read_bi_startSeq(biRecord* pbi) {
-    evgSoftSeq* seq = (evgSoftSeq*)pbi->dpvt;
+read_li_startSeq(longinRecord* prec) {
+    evgSoftSeq* seq = (evgSoftSeq*)prec->dpvt;
     if(!seq) {
         //throw std::runtime_error("Device pvt field not initialized");
-        errlogPrintf("ERROR: %s : %s\n", "Device pvt field not initialized", pbi->name);
+        errlogPrintf("ERROR: %s : %s\n", "Device pvt field not initialized", prec->name);
         return -1;
     }
 
-    pbi->rval = 0;
+    prec->val += 1;
     return 0;
 }
 
@@ -1243,15 +1239,15 @@ common_dset devSiErr = {
 };
 epicsExportAddress(dset, devSiErr);
 
-common_dset devbiStartOfSeq = {
+common_dset devliStartOfSeq = {
     5,
     NULL,
     NULL,
-    (DEVSUPFUN)init_bi,
+    (DEVSUPFUN)init_li,
     (DEVSUPFUN)get_ioint_info_startSeq,
-    (DEVSUPFUN)read_bi_startSeq,
+    (DEVSUPFUN)read_li_startSeq,
 };
-epicsExportAddress(dset, devbiStartOfSeq);
+epicsExportAddress(dset, devliStartOfSeq);
 
 common_dset devLiNumOfRuns = {
     5,

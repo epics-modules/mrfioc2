@@ -377,11 +377,19 @@ record(stringin, "$(P)Error-RB") {
     field( SCAN, "I/O Intr")
 }
 
+record(longin, "$(P)NumOfStarts-I") {
+    field( DTYP, "EVG START OF SEQ")
+    field( DESC, "# times soft sequence starts")
+    field( INP , "#C0 S$(seqNum) @$(EVG)")
+    field( SCAN, "I/O Intr") # on sequencer start
+    field( FLNK, "$(SOSLNK=)")
+}
+
 record(longin, "$(P)NumOfRuns-I") {
     field( DTYP, "EVG NUM OF RUNS")
     field( DESC, "# times soft sequence ran")
     field( INP,  "#C0 S$(seqNum) @$(EVG)")
-    field( SCAN, "I/O Intr")
+    field( SCAN, "I/O Intr") # on sequencer stop
 }
 
 #
