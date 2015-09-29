@@ -21,6 +21,7 @@
 
 #include "mrf/object.h"
 #include "mrf/databuf.h"
+#include "mrmpci.h"
 
 #include <devcsr.h>
 /* DZ: Does Win32 have a problem with devCSRTestSlot()? */
@@ -39,8 +40,6 @@
 #include "evgRegMap.h"
 
 #include "evgInit.h"
-
-#define PCI_DEVICE_ID_MRF_CPCIEVG300 0x252c
 
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvgSetupVME().  Levels are

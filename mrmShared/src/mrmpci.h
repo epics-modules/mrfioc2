@@ -31,4 +31,8 @@
 #define PCI_DEVICE_ID_MRF_EVRTG_300    0x192c   /* PCI Device ID for MRF PCI-EVRTG-300            */
 #define PCI_DEVICE_ID_MRF_EVRTG_300E   0x172c   /* PCI Device ID for MRF PCI-EVRTG-300            */
 
+
+#define PCI_DEVICE_ID_MRF_CPCIEVG300 0x252c
+#define PCI_DEVICE_ID_MRF_CPCIEVR300 0x152c
+
 #endif /* MRMPCI_H */

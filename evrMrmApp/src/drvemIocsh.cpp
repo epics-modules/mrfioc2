@@ -67,6 +67,7 @@ static const epicsPCIID mrmevrs[] = {
                                 PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
                                 PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVR300,    PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -325,39 +326,28 @@ try {
     volatile epicsUInt8 *plx = 0, *evr = 0;
     epicsUInt32 evrlen = 0;
 
-    /*
-     * The EC 30 device has only 1 bar (0) which we need to map to *evr.
-     */
-    if(cur->id.device == PCI_DEVICE_ID_EC_30) {
-        if(devPCIToLocalAddr(cur,0,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+    if(devPCIToLocalAddr(cur,0,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+    {
+        printf("PCI error: Failed to map BAR 0\n");
+        return;
+    }
+    if(!evr){
+        printf("PCI error: BAR 0 mapped to zero? (%08lx)\n", (unsigned long)evr);
+        return;
+    }
+
+    switch(cur->id.device) {
+    case PCI_DEVICE_ID_PLX_9030:
+    case PCI_DEVICE_ID_PLX_9056:
+        plx = evr;
+
+        if(devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
         {
-            printf("PCI error: Failed to map BARs 0 for EC 30\n");
+            printf("PCI error: Failed to map BAR 2\n");
             return;
         }
         if(!evr){
-            printf("PCI error: BAR mapped to zero? (%08lx)\n", (unsigned long)evr);
-            return;
-        }
-
-        if( devPCIBarLen(cur,0,&evrlen) ) {
-            printf("PCI error: Can't find BAR #0 length\n");
-            return;
-        }
-    } else {
-        if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
-            devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
-        {
-            printf("PCI error: Failed to map BARs 0 and 2\n");
-            return;
-        }
-        if(!plx || !evr){
-            printf("PCI error: BARs mapped to zero? (%08lx,%08lx)\n",
-                   (unsigned long)plx,(unsigned long)evr);
-            return;
-        }
-
-        if( devPCIBarLen(cur,2,&evrlen) ) {
-            printf("PCI error: Can't find BAR #2 length\n");
+            printf("PCI error: BAR 2 mapped to zero? (%08lx)\n", (unsigned long)evr);
             return;
         }
     }
@@ -365,6 +355,7 @@ try {
     // handle various PCI to local bus bridges
     switch(cur->id.device) {
     case PCI_DEVICE_ID_PLX_9030:
+        printf("Setup PLX PCI 9030\n");
         /* Use the PLX device on the EVR to swap access on
          * little endian systems so we don't have no worry about
          * byte order :)
@@ -417,12 +408,18 @@ try {
         break;
 
     case PCI_DEVICE_ID_EC_30:
-#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-        //BITCLR(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
-#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-        //BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
-        *(epicsUInt8 *)(evr+0x04) = 0x82; // unknown magic number
-        printf("Setting magic LE number!\n");
+    case PCI_DEVICE_ID_MRF_CPCIEVR300:
+        /* the endianness the 300 series devices w/o PLX bridge
+         * is a little tricky to setup.  byte order swapping is controlled
+         * through the EVR's Control register and access to this register
+         * is subject to byte order swapping...
+         */
+
+        // Disable EVR and set's byte order to big endian
+        NAT_WRITE32(evr, Control, 0);
+        // Denable byte order swapping if necessary
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+        BE_WRITE32(evr, Control, 0x02000000);
 #endif
 
         // Disable interrupts on device
