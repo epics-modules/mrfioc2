@@ -40,6 +40,8 @@
 
 #include "evgInit.h"
 
+#define PCI_DEVICE_ID_MRF_CPCIEVG300 0x252c
+
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvgSetupVME().  Levels are
  * enabled later during iocInit.
@@ -305,8 +307,10 @@ static bool checkUIOVersion(int) {return false;}
 
 static const epicsPCIID
 mrmevgs[] = {
-		DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_DEVICE_ID_MRF_PXIEVG230, PCI_VENDOR_ID_MRF),
-		DEVPCI_END };
+    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_DEVICE_ID_MRF_PXIEVG230, PCI_VENDOR_ID_MRF),
+    DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVG300, PCI_VENDOR_ID_MRF),
+    DEVPCI_END
+};
 
 extern "C"
 epicsStatus
@@ -346,22 +350,57 @@ mrmEvgSetupPCI (
 		/* MMap BAR0(plx) and BAR2(EVG)*/
 		volatile epicsUInt8 *BAR_plx, *BAR_evg;
 
-		if (devPCIToLocalAddr(cur, 0, (volatile void**) (void *) &BAR_plx, 0)
-				|| devPCIToLocalAddr(cur, 2, (volatile void**) (void *) &BAR_evg, 0)) {
-			errlogPrintf("Failed to map BARs 0 and 2\n");
+        if (devPCIToLocalAddr(cur, 0, (volatile void**) (void *) &BAR_plx, 0)) {
+            errlogPrintf("Failed to map BARs 0\n");
 			return -1;
 		}
-		if (!BAR_plx || !BAR_evg) {
-			errlogPrintf("BARs mapped to zero? (%08lx,%08lx)\n",
-					(unsigned long) BAR_plx, (unsigned long) BAR_evg);
+        if (!BAR_plx) {
+            errlogPrintf("BAR0 mapped to zero? (%08lx)\n",
+                    (unsigned long) BAR_plx);
 			return -1;
 		}
 
+        switch(cur->id.device) {
+        case PCI_DEVICE_ID_PLX_9030: /* cPCI-EVG-230 */
+            if (devPCIToLocalAddr(cur, 2, (volatile void**) (void *) &BAR_evg, 0)) {
+                errlogPrintf("Failed to map BARs 2\n");
+                return -1;
+            }
+            if (!BAR_evg) {
+                errlogPrintf("BAR2 mapped to zero? (%08lx)\n",
+                             (unsigned long) BAR_evg);
+                return -1;
+            }
+
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
-        BITSET(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
+            BITSET(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-        BITCLR(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
+            BITCLR(LE,32, BAR_plx, LAS0BRD, LAS0BRD_ENDIAN);
 #endif
+            break;
+        case PCI_DEVICE_ID_MRF_CPCIEVG300:
+            BAR_evg = BAR_plx;
+            /* the endianness the 300 series devices w/o PLX bridge
+             * is a little tricky to setup.  byte order swapping is controlled
+             * through the EVR's Control register and access to this register
+             * is subject to byte order swapping...
+             */
+
+            // Disable EVG and set's byte order to big endian
+            NAT_WRITE32(BAR_evg, Control, 0);
+            // Disable reception, and enable byte order swapping if necessary
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+            BE_WRITE32(BAR_evg, Control, 0x70000000);
+#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+            BE_WRITE32(BAR_evg, Control, 0x72000000);
+#endif
+
+            break;
+        default:
+            errlogPrintf("Unknown/unsupported PCI device 0x%04x\n", (unsigned)cur->device);
+            return -1;
+        }
+
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
 		checkVersion(BAR_evg, 3, 3);
 
