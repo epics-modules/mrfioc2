@@ -132,6 +132,7 @@
 struct mrf_priv {
     struct uio_info uio;
     struct pci_dev *pdev;
+    unsigned int version; /* MSB from version regsiter */
     unsigned int irqmode;
     unsigned int intrcount;
 
