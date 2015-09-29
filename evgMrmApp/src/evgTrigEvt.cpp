@@ -20,19 +20,6 @@ m_pReg(pReg) {
 evgTrigEvt::~evgTrigEvt() {
 } 
 
-void
-evgTrigEvt::enable(bool ena) {
-    if(ena)
-        BITSET32(m_pReg, TrigEventCtrl(m_id), EVG_TRIG_EVT_ENA);
-    else
-        BITCLR32(m_pReg, TrigEventCtrl(m_id), EVG_TRIG_EVT_ENA);
-}
-
-bool
-evgTrigEvt::enabled() const {
-    return (READ32(m_pReg, TrigEventCtrl(m_id)) & EVG_TRIG_EVT_ENA) != 0;
-}
-
 epicsUInt32
 evgTrigEvt::getEvtCode() const {
     epicsUInt32 temp = READ32(m_pReg, TrigEventCtrl(m_id));
@@ -45,8 +32,8 @@ evgTrigEvt::setEvtCode(epicsUInt32 evtCode) {
     if(evtCode > 255)
         throw std::runtime_error("Event Code out of range. Valid range: 0 - 255");
 
-    epicsUInt32 temp = READ32(m_pReg, TrigEventCtrl(m_id));
-    temp &= ~TrigEventCtrl_Code_MASK;
-    temp |= evtCode<<TrigEventCtrl_Code_SHIFT;
+    if(evtCode!=0)
+        evtCode |= TrigEventCtrl_Ena;
+
     WRITE32(m_pReg, TrigEventCtrl(m_id), evtCode);
 }
