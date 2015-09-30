@@ -108,7 +108,7 @@ mrmDataBufTx::dataSend(epicsUInt32 len,
     // Write 4 byte words over VME
     epicsUInt32 index;
     for(index=0; index<len; index+=4) {
-        nat_iowrite32(&dataBuf[index], *(epicsUInt32*)(&ubuf[index]) );
+        be_iowrite32(&dataBuf[index], *(epicsUInt32*)(&ubuf[index]) );
     }
 
     nat_iowrite32(dataCtrl, len|DataTxCtrl_trig|DataTxCtrl_ena|DataTxCtrl_mode);
