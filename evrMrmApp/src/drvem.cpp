@@ -346,12 +346,9 @@ EVRMRM::cleanup()
     printf("complete\n");
 }
 
-epicsUInt32
-EVRMRM::model() const
+string EVRMRM::model() const
 {
-    epicsUInt32 v = READ32(base, FWVersion);
-
-    return (v&FWVersion_form_mask)>>FWVersion_form_shift;
+    return conf->model;
 }
 
 epicsUInt32
@@ -369,7 +366,8 @@ EVRMRM::version() const
 
 formFactor
 EVRMRM::getFormFactor(){
-    epicsUInt32 form = model();
+    epicsUInt32 v = READ32(base, FWVersion);
+    epicsUInt32 form = (v&FWVersion_form_mask)>>FWVersion_form_shift;
 
     if(form <= formFactor_PCIe) return (formFactor)form;
     else return formFactor_unknown;

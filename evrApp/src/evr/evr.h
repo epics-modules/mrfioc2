@@ -50,7 +50,7 @@ public:
   virtual ~EVR()=0;
 
   //! Hardware model
-  virtual epicsUInt32 model() const=0;
+  virtual std::string model() const=0;
 
   //! Firmware Version
   virtual epicsUInt32 version() const=0;

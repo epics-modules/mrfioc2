@@ -128,7 +128,7 @@ public:
     virtual void lock() const{evrLock.lock();};
     virtual void unlock() const{evrLock.unlock();};
 
-    virtual epicsUInt32 model() const;
+    virtual std::string model() const;
     epicsUInt32 fpgaFirmware();
     formFactor getFormFactor();
     std::string formFactorStr();
