@@ -77,6 +77,97 @@ static const struct VMECSRID vmeevrs[] = {
     ,VMECSR_END
 };
 
+static const EVRMRM::Config cpci_evr_230 = {
+    "cPCI-EVR-230",
+    10, // pulse generators
+    3,  // prescalers
+    0,  // FP outputs
+    4,  // FPUV outputs
+    0,  // RB outputs
+    2,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeCML,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config pmc_evr_230 = {
+    "PMC-EVR-230",
+    10, // pulse generators
+    3,  // prescalers
+    3,  // FP outputs
+    0,  // FPUV outputs
+    10, // RB outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeCML,
+    1,  // FP inputs
+};
+
+static const EVRMRM::Config pcie_evr_230 = {
+    "PCIe-EVR-230",
+    10, // pulse generators
+    3,  // prescalers
+    0,  // FP outputs
+    16, // FPUV outputs
+    0,  // RB outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeCML,
+    0,  // FP inputs
+};
+
+static const EVRMRM::Config vme_evrrf_230 = { // no way to distinguish RF and non-RF variants
+    "VME-EVRRF-230",
+    16, // pulse generators
+    3,  // prescalers
+    8,  // FP outputs
+    4,  // FPUV outputs
+    16, // RB outputs
+    2,  // FP Delay outputs
+    3,  // CML/GTX outputs
+    MRMCML::typeCML,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config cpci_evrtg_300 = {
+    "cPCI-EVRTG-300",
+    10, // pulse generators
+    3,  // prescalers
+    0,  // FP outputs
+    4,  // FPUV outputs
+    0,  // RB outputs
+    0,  // FP Delay outputs
+    4,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    0,  // FP inputs
+};
+
+static const EVRMRM::Config cpci_evr_300 = {
+    "cPCI-EVR-300",
+    10, // pulse generators
+    3,  // prescalers
+    0,  // FP outputs
+    12, // FPUV outputs
+    0,  // RB outputs
+    0,  // FP Delay outputs
+    4,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config cpci_evr_unknown = {
+    "cPCI-EVR-???",
+    10, // pulse generators
+    3,  // prescalers
+    1,  // FP outputs
+    2,  // FPUV outputs
+    1,  // RB outputs
+    1,  // FP Delay outputs
+    1,  // CML/GTX outputs
+    MRMCML::typeCML,
+    1,  // FP inputs
+};
+
 static
 const
 struct printreg
@@ -300,6 +391,7 @@ mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
     bus_configuration bus;
+    const EVRMRM::Config *conf;
 
     bus.busType = busType_pci;
     bus.pci.bus = b;
@@ -322,6 +414,17 @@ try {
 
     printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
     printf("Using IRQ %u\n",cur->irq);
+
+    switch(cur->id.sub_device) {
+    case PCI_DEVICE_ID_MRF_PMCEVR_230: conf = &pmc_evr_230; break;
+    case PCI_DEVICE_ID_MRF_PXIEVR_230: conf = &cpci_evr_230; break;
+    case PCI_DEVICE_ID_MRF_EVRTG_300:
+    case PCI_DEVICE_ID_MRF_EVRTG_300E: conf = &cpci_evrtg_300; break;
+    case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
+    default:
+        printf("Unknown PCI EVR variant, making assumptions...\n");
+        conf = &cpci_evr_unknown;
+    }
 
     volatile epicsUInt8 *plx = 0, *evr = 0;
     epicsUInt32 evrlen = 0;
@@ -449,7 +552,7 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,bus,evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,bus,conf,evr,evrlen);
 
     void *arg=receiver;
 #ifdef __linux__
@@ -570,6 +673,7 @@ mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
     bus_configuration bus;
+    const EVRMRM::Config *conf = &vme_evrrf_230;
 
     bus.busType = busType_vme;
     bus.vme.slot = slot;
@@ -646,7 +750,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id, bus, evr, EVR_REGMAP_SIZE);
+    EVRMRM *receiver=new EVRMRM(id, bus, conf, evr, EVR_REGMAP_SIZE);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);

@@ -102,8 +102,23 @@ public:
    */
     mutable epicsMutex evrLock;
 
+    struct Config {
+        const char *model;
+        size_t nPul; // number of pulsers
+        size_t nPS;   // number of prescalers
+        // # of outputs (Front panel, FP Universal, Rear transition module)
+        size_t nOFP, nOFPUV, nORB;
+        size_t nOFPDly;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
+        // # of CML outputs
+        size_t nCML;
+        MRMCML::outkind kind;
+        // # of FP inputs
+        size_t nIFP;
+    };
 
-    EVRMRM(const std::string& n, bus_configuration& busConfig,volatile unsigned char*,epicsUInt32);
+    EVRMRM(const std::string& n, bus_configuration& busConfig,
+           const Config *c,
+           volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 private:
@@ -207,7 +222,7 @@ public:
     const void *isrLinuxPvt;
 #endif
 
-    const std::string id;
+    const Config * const conf;
     volatile unsigned char * const base;
     epicsUInt32 baselen;
     mrmDataBufTx buftx;

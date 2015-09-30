@@ -104,12 +104,12 @@ static
 const double fracref=24.0; // MHz
 
 EVRMRM::EVRMRM(const std::string& n,
-               bus_configuration& busConfig,
+               bus_configuration& busConfig, const Config *c,
                volatile unsigned char* b,
                epicsUInt32 bl)
   :EVR(n,busConfig)
   ,evrLock()
-  ,id(n)
+  ,conf(c)
   ,base(b)
   ,baselen(bl)
   ,buftx(n+":BUFTX", b+U32_DataTxCtrl, b+U32_DataTx_base)
@@ -164,7 +164,7 @@ try{
 
     if(ver>=5) {
         std::ostringstream name;
-        name<<id<<":SFP";
+        name<<n<<":SFP";
         sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
     }
 
@@ -174,98 +174,58 @@ try{
 
     formFactor form = getFormFactor();
 
-    size_t nPul=16; // number of pulsers
-    size_t nPS=3;   // number of prescalers
-    // # of outputs (Front panel, FP Universal, Rear transition module)
-    size_t nOFP=0, nOFPUV=0, nORB=0;
-    size_t nOFPDly=0;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
-    // # of CML outputs
-    size_t nCML=0;
-    MRMCML::outkind kind=MRMCML::typeCML;
-    // # of FP inputs
-    size_t nIFP=0;
-
     printf("%s: ", formFactorStr().c_str());
-    switch(form){
-    case formFactor_CPCI:
-        nOFPUV=4;
-        nOFPDly=2;
-        nIFP=2;
-        nORB=6;
-        break;
-    case formFactor_PMC:
-        nOFP=3;
-        nIFP=1;
-        break;
-    case formFactor_VME64:
-        nOFP=7;
-        nCML=3; // OFP 4-6 are CML
-        nOFPDly=2;
-        nOFPUV=4;
-        nORB=16;
-        nIFP=2;
-        break;
-    case formFactor_CPCIFULL:
-        nOFPUV=4;
-        kind=MRMCML::typeTG300;
-        break;
-    case formFactor_PCIe:
-        nOFPUV=16;
-        break;
-    default:
-        printf("Unknown EVR form factor %d\n",v);
-    }
     printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
-           (unsigned int)nOFP,(unsigned int)nOFPUV,
-           (unsigned int)nORB,(unsigned int)nIFP,
-           (unsigned int)nOFPDly);
+           (unsigned int)conf->nOFP,(unsigned int)conf->nOFPUV,
+           (unsigned int)conf->nORB,(unsigned int)conf->nIFP,
+           (unsigned int)conf->nOFPDly);
 
-    inputs.resize(nIFP);
-    for(size_t i=0; i<nIFP; i++){
+    inputs.resize(conf->nIFP);
+    for(size_t i=0; i<conf->nIFP; i++){
         std::ostringstream name;
-        name<<id<<":FPIn"<<i;
+        name<<n<<":FPIn"<<i;
         inputs[i]=new MRMInput(name.str(), base,i);
     }
 
     // Special output for mapping bus interrupt
-    outputs[std::make_pair(OutputInt,0)]=new MRMOutput(id+":Int", this, OutputInt, 0);
+    outputs[std::make_pair(OutputInt,0)]=new MRMOutput(n+":Int", this, OutputInt, 0);
 
-    for(unsigned int i=0; i<nOFP; i++){
+    for(unsigned int i=0; i<conf->nOFP; i++){
         std::ostringstream name;
-        name<<id<<":FrontOut"<<i;
+        name<<n<<":FrontOut"<<i;
         outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
     }
 
-    for(unsigned int i=0; i<nOFPUV; i++){
+    for(unsigned int i=0; i<conf->nOFPUV; i++){
         std::ostringstream name;
-        name<<id<<":FrontUnivOut"<<i;
+        name<<n<<":FrontUnivOut"<<i;
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
-    delays.resize(nOFPDly);
-    for(unsigned int i=0; i<nOFPDly; i++){
+    delays.resize(conf->nOFPDly);
+    for(unsigned int i=0; i<conf->nOFPDly; i++){
         std::ostringstream name;
-        name<<id<<":UnivDlyModule"<<i;
+        name<<n<<":UnivDlyModule"<<i;
         delays[i]=new DelayModule(name.str(), this, i);
     }
 
-    for(unsigned int i=0; i<nORB; i++){
+    for(unsigned int i=0; i<conf->nORB; i++){
         std::ostringstream name;
-        name<<id<<":RearUniv"<<i;
+        name<<n<<":RearUniv"<<i;
         outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
     }
 
-    prescalers.resize(nPS);
-    for(size_t i=0; i<nPS; i++){
+    prescalers.resize(conf->nPS);
+    for(size_t i=0; i<conf->nPS; i++){
         std::ostringstream name;
-        name<<id<<":PS"<<i;
+        name<<n<<":PS"<<i;
         prescalers[i]=new MRMPreScaler(name.str(), *this,base+U32_Scaler(i));
     }
 
-    pulsers.resize(nPul);
-    for(epicsUInt32 i=0; i<nPul; i++){
+    pulsers.resize(conf->nPul);
+    for(epicsUInt32 i=0; i<conf->nPul; i++){
         std::ostringstream name;
-        name<<id<<":Pul"<<i;
+        name<<n<<":Pul"<<i;
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
@@ -273,25 +233,25 @@ try{
         shortcmls.resize(8);
         for(unsigned int i=4; i<8; i++) {
             std::ostringstream name;
-            name<<id<<":FrontOut"<<i;
+            name<<n<<":FrontOut"<<i;
             outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
         }
         for(size_t i=0; i<4; i++)
             shortcmls[i]=0;
-        shortcmls[4]=new MRMCML(id+":CML4", 4,*this,MRMCML::typeCML,form);
-        shortcmls[5]=new MRMCML(id+":CML5", 5,*this,MRMCML::typeCML,form);
-        shortcmls[6]=new MRMCML(id+":CML6", 6,*this,MRMCML::typeTG300,form);
-        shortcmls[7]=new MRMCML(id+":CML7", 7,*this,MRMCML::typeTG300,form);
+        shortcmls[4]=new MRMCML(n+":CML4", 4,*this,MRMCML::typeCML,form);
+        shortcmls[5]=new MRMCML(n+":CML5", 5,*this,MRMCML::typeCML,form);
+        shortcmls[6]=new MRMCML(n+":CML6", 6,*this,MRMCML::typeTG300,form);
+        shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
 
-    } else if(nCML && ver>=4){
-        shortcmls.resize(nCML);
-        for(size_t i=0; i<nCML; i++){
+    } else if(conf->nCML && ver>=4){
+        shortcmls.resize(conf->nCML);
+        for(size_t i=0; i<conf->nCML; i++){
             std::ostringstream name;
-            name<<id<<":CML"<<i;
-            shortcmls[i]=new MRMCML(name.str(), (unsigned char)i,*this,kind,form);
+            name<<n<<":CML"<<i;
+            shortcmls[i]=new MRMCML(name.str(), (unsigned char)i,*this,conf->kind,form);
         }
 
-    }else if(nCML){
+    }else if(conf->nCML){
         printf("CML outputs not supported with this firmware\n");
     }
 
@@ -607,7 +567,7 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
         (func<=121 && func>=102) )
     {
         errlogPrintf("EVR %s code %02x func %3d out of range. Code range is 0-255, where function rangs are 96-101 and 122-127\n",
-            id.c_str(), code, func);
+            name().c_str(), code, func);
         throw std::out_of_range("Special function code is out of range.  Valid ranges: 96-101 and 122-127");
     }
 
@@ -990,7 +950,7 @@ EVRMRM::dbus() const
 void
 EVRMRM::enableIRQ(void)
 {
-    int key=epicsInterruptLock();
+    interruptLock I;
 
     shadowIRQEna =  IRQ_Enable
                    |IRQ_RXErr    |IRQ_BufFull
@@ -1001,8 +961,6 @@ EVRMRM::enableIRQ(void)
     shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
 
     WRITE32(base, IRQEnable, shadowIRQEna);
-
-    epicsInterruptUnlock(key);
 }
 
 void
