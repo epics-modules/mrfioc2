@@ -220,15 +220,15 @@ try{
            (unsigned int)nORB,(unsigned int)nIFP,
            (unsigned int)nOFPDly);
 
-    // Special output for mapping bus interrupt
-    //outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
-
     inputs.resize(nIFP);
     for(size_t i=0; i<nIFP; i++){
         std::ostringstream name;
         name<<id<<":FPIn"<<i;
         inputs[i]=new MRMInput(name.str(), base,i);
     }
+
+    // Special output for mapping bus interrupt
+    outputs[std::make_pair(OutputInt,0)]=new MRMOutput(id+":Int", this, OutputInt, 0);
 
     for(unsigned int i=0; i<nOFP; i++){
         std::ostringstream name;
@@ -508,6 +508,13 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return 0;
     else
         return it->second;
+}
+
+bool
+EVRMRM::mappedOutputState() const
+{
+    NAT_WRITE32(base, IRQFlag, IRQ_HWMapped);
+    return NAT_READ32(base, IRQFlag) & IRQ_HWMapped;
 }
 
 DelayModule*
@@ -987,7 +994,7 @@ EVRMRM::enableIRQ(void)
 
     shadowIRQEna =  IRQ_Enable
                    |IRQ_RXErr    |IRQ_BufFull
-                   |IRQ_Heartbeat|IRQ_HWMapped
+                   |IRQ_Heartbeat
                    |IRQ_Event    |IRQ_FIFOFull;
 
     // IRQ PCIe enable flag should not be changed. Possible RACER here

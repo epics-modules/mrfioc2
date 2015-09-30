@@ -129,6 +129,8 @@ public:
     virtual MRMOutput* output(OutputType,epicsUInt32 o);
     virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
+    virtual bool mappedOutputState() const;
+
     virtual DelayModule* delay(epicsUInt32 i);
 
     virtual MRMInput* input(epicsUInt32 idx);

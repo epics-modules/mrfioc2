@@ -137,6 +137,8 @@ OBJECT_BEGIN(EVR) {
     OBJECT_PROP1("Timestamp Valid", &EVR::TimeStampValid);
     OBJECT_PROP1("Timestamp Valid", &EVR::TimeStampValidEvent);
 
+    OBJECT_PROP1("SW Output status", &EVR::mappedOutputState);
+
 } OBJECT_END(EVR)
 
 
