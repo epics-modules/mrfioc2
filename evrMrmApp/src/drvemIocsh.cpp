@@ -144,7 +144,7 @@ static const EVRMRM::Config cpci_evrtg_300 = {
 
 static const EVRMRM::Config cpci_evr_300 = {
     "cPCI-EVR-300",
-    10, // pulse generators
+    14, // pulse generators
     3,  // prescalers
     0,  // FP outputs
     12, // FPUV outputs
