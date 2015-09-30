@@ -142,3 +142,10 @@ record(fanout, "$(PN)Res-FO_") {
   field(LNK1, "$(PN)Delay-SP")
   field(LNK2, "$(PN)Width-SP")
 }
+
+record(waveform, "$(PN)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
+}

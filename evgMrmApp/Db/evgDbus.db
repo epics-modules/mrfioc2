@@ -176,3 +176,10 @@ record(dfanout, "$(P)Omsl-FOut") {
     field( OUTF, "$(P)Src:UnivInp3-Sel.OMSL")
     info( autosaveFields_pass0, "VAL")
 }
+
+record(waveform, "$(P)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
+}
