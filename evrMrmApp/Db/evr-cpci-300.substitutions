@@ -71,6 +71,7 @@ file "evrscale.db"
 file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
+{"$(SYS){$(D)-Out:Int}", "$(EVR):Int", "Internal"}
 {"$(SYS){$(D)-Out:FPUV0}", "$(EVR):FrontUnivOut0", "UNIV0"}
 {"$(SYS){$(D)-Out:FPUV1}", "$(EVR):FrontUnivOut1", "UNIV1"}
 {"$(SYS){$(D)-Out:FPUV2}", "$(EVR):FrontUnivOut2", "UNIV2"}
@@ -84,6 +85,11 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:FPUV10}","$(EVR):FrontUnivOut10","UNIV10"}
 {"$(SYS){$(D)-Out:FPUV11}","$(EVR):FrontUnivOut11","UNIV11"}
 }
+
+file "mrmevroutint.db"
+{{
+    ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"
+}}
 
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"

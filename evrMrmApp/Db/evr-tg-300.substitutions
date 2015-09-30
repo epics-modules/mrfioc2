@@ -71,11 +71,17 @@ file "evrscale.db"
 file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
+{"$(SYS){$(D)-Out:Int}", "$(EVR):Int", "Internal"}
 {"$(SYS){$(D)-Out:FP0}", "$(EVR):FrontOut4", "LVPECL 0"}
 {"$(SYS){$(D)-Out:FP1}", "$(EVR):FrontOut5", "LVPECL 1"}
 {"$(SYS){$(D)-Out:FP2}", "$(EVR):FrontOut6", "CH 1 (GTX)"}
 {"$(SYS){$(D)-Out:FP3}", "$(EVR):FrontOut7", "CH 2 (GTX)"}
 }
+
+file "mrmevroutint.db"
+{{
+    ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"
+}}
 
 file "evrcml.db"
 {pattern
