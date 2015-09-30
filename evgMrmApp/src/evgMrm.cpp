@@ -249,7 +249,7 @@ evgMrm::getSwVersion() const {
 
 epicsUInt32
 evgMrm::getDbusStatus() const {
-    return READ32(m_pReg, Status);
+    return READ32(m_pReg, Status)>>16;
 }
 
 void

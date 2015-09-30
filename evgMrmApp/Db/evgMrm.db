@@ -100,5 +100,6 @@ record(longin, "$(P)DbusStatus-RB" ) {
     field( DESC, "EVG Dbus Status")
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(OBJ), PROP=DbusStatus")
+    info( autosaveFields_pass0, "SCAN")
 }
 
