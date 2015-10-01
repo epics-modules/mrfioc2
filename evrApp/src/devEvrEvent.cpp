@@ -20,7 +20,9 @@
 #include <errlog.h>
 
 #include <longoutRecord.h>
+#include <stringoutRecord.h>
 #include <eventRecord.h>
+#include <epicsVersion.h>
 
 #include "devObj.h"
 #include "evr/evr.h"
@@ -30,14 +32,22 @@
 #include <stdexcept>
 #include <string>
 
+#if defined(EPICS_VERSION_INT) && EPICS_VERSION_INT>=VERSION_INT(3,15,1,0)
+// Use new API allowing events to have name strings instead of just numbers
+#define USE_EVENT_NAMES
+#endif
+
 /***************** Event *****************/
 
 struct priv {
     EVR* evr;
     char obj[30];
     int event;
+#ifdef USE_EVENT_NAMES
+    EVENTPVT handle;
+    char prev[sizeof( ((stringoutRecord*)0)->val)];
+#endif
 };
-typedef struct priv priv;
 
 static const
 linkOptionDef eventdef[] =
@@ -157,6 +167,50 @@ try {
     return ret;
 }
 
+
+
+static long process_stringout(stringoutRecord *prec)
+{
+    priv *p=static_cast<priv*>(prec->dpvt);
+    long ret=0;
+try {
+    if(!prec->val[0]) return 0;
+
+#ifdef USE_EVENT_NAMES
+    if(!p->handle || strcmp(prec->val, p->prev)!=0) {
+        p->handle = eventNameToHandle(prec->val);
+        strcpy(p->prev, prec->val);
+    }
+
+    if(p->handle) postEvent(p->handle);
+#else
+    // for compatibility attempt to parse string to integer
+    {
+        char *end = prec->val;
+        unsigned evt = strtoul(prec->val, &end, 0);
+        if ( evt==ULONG_MAX || *end!='\0' || evt<0 ) {
+            (void)recGblSetSevr(prec, WRITE_ALARM, INVALID_ALARM);
+        } else {
+            post_event(evt);
+        }
+    }
+#endif
+
+    if(prec->tse==epicsTimeEventDeviceTime){
+        p->evr->getTimeStamp(&prec->time,p->event);
+    }
+
+    return 0;
+} catch(std::runtime_error& e) {
+    recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
+    ret=S_dev_noDevice;
+} catch(std::exception& e) {
+    recGblRecordError(S_db_noMemory, (void*)prec, e.what());
+    ret=S_db_noMemory;
+}
+    return ret;
+}
+
 static long process_event(eventRecord *prec)
 {
     priv *p=static_cast<priv*>(prec->dpvt);
@@ -184,6 +238,12 @@ long add_longout(struct dbCommon *precord)
 }
 
 static
+long add_stringout(struct dbCommon *precord)
+{
+    return add_record(precord, &((struct stringoutRecord*)precord)->out);
+}
+
+static
 long add_event(struct dbCommon *precord)
 {
     return add_record(precord, &((struct eventRecord*)precord)->inp);
@@ -198,6 +258,15 @@ static common_dset devLOEventEVR = {
   dset_cast(&process_longout),
   NULL };
 
+dsxt dxtSOEventEVR={add_stringout,del_record};
+static common_dset devSOEventEVR = {
+  6, NULL,
+  dset_cast(&init_dset<&dxtSOEventEVR>),
+  (DEVSUPFUN) init_record_empty,
+  (DEVSUPFUN) &get_ioint_info,
+  dset_cast(&process_stringout),
+  NULL };
+
 dsxt dxtEVEventEVR={add_event,del_record};
 static common_dset devEVEventEVR = {
   6, NULL,
@@ -210,6 +279,7 @@ static common_dset devEVEventEVR = {
 extern "C" {
 
 epicsExportAddress(dset,devLOEventEVR);
+epicsExportAddress(dset,devSOEventEVR);
 epicsExportAddress(dset,devEVEventEVR);
 
 }

@@ -27,6 +27,7 @@ device(stringin, INST_IO, devSIEVR, "EVR Timestamp")
 
 # '@C=..., Code=hweventnum'
 device(longout,    INST_IO, devLOEventEVR, "EVR Event")
+device(stringout,  INST_IO, devSOEventEVR, "EVR Event")
 device(event,    INST_IO, devEVEventEVR, "EVR Event")
 
 # '@C=..., Func=FUNCTIONNAME'
