@@ -10,9 +10,13 @@
  */
 
 #include <math.h>
+#include <string.h>
 
 #include <dbDefs.h>
 #include <errlog.h>
+#include <recGbl.h>
+#include <alarm.h>
+#include <dbAccess.h>
 
 #include <registryFunction.h>
 
@@ -21,6 +25,32 @@
 #include <epicsExport.h>
 
 #define NINPUTS (aSubRecordU - aSubRecordA)
+
+static
+long select_string(aSubRecord *prec)
+{
+    unsigned i;
+    char *out = prec->vala;
+    DBLINK *L = &prec->inpa;
+    const char **I = (const char**)&prec->a;
+
+    /* find the first input w/o an active alarm */
+    for(i=0; i<NINPUTS; i++) {
+        epicsEnum16 sevr, stat;
+        if(L[i].type==CONSTANT)
+            continue;
+        if(dbGetAlarm(&L[i], &sevr, &stat))
+            continue;
+        if(sevr!=NO_ALARM)
+            continue;
+        memcpy(out, I[i], MAX_STRING_SIZE);
+        return 0;
+    }
+
+    out[0] = '\0';
+    (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+    return 0;
+}
 
 /**@brief Generate a time series
  *
@@ -34,6 +64,7 @@
  *@param OUTA The output sequence
  *@type OUTA DOUBLE
  */
+static
 long gen_timeline(aSubRecord *prec)
 {
     double x0, dx;
@@ -96,6 +127,7 @@ long gen_timeline(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
+static
 long gen_delaygen(aSubRecord *prec)
 {
     double delay, width, egupertick;
@@ -180,6 +212,7 @@ long gen_delaygen(aSubRecord *prec)
  *@param OUTA The output sequence
  *@type OUTA UCHAR
  */
+static
 long gen_bitarraygen(aSubRecord *prec)
 {
     epicsEnum16 *intype=&prec->fta;
@@ -225,6 +258,7 @@ long gen_bitarraygen(aSubRecord *prec)
     return 0;
 }
 
+static
 long gun_bunchTrain(aSubRecord *prec)
 {
 	int bunchPerTrain;
@@ -273,6 +307,7 @@ long gun_bunchTrain(aSubRecord *prec)
 }
 
 static registryFunctionRef asub_seq[] = {
+    {"Select String", (REGISTRYFUNCTION) select_string},
     {"Timeline", (REGISTRYFUNCTION) gen_timeline},
     {"Bit Array Gen", (REGISTRYFUNCTION) gen_bitarraygen},
     {"Delay Gen", (REGISTRYFUNCTION) gen_delaygen},
