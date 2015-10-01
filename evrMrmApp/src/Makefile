@@ -23,6 +23,7 @@ endif
 LIBRARY_IOC += evrMrm
 
 evrMrm_SRCS += drvemIocsh.c
+evrMrm_SRCS += drvemSetup.c
 evrMrm_SRCS += drvem.cpp
 evrMrm_SRCS += drvemOutput.cpp
 evrMrm_SRCS += drvemInput.cpp

@@ -11,6 +11,7 @@
 #ifndef EVRMRMIOCSH_H
 #define EVRMRMIOCSH_H
 
+#include <initHooks.h>
 #include <shareLib.h>
 
 #ifdef __cplusplus
@@ -31,6 +32,27 @@ extern "C" {
  */
 epicsShareExtern int evrmrmVerb;
 
+
+void epicsShareFunc
+mrmEvrSetupPCI(const char* id,int b,int d,int f);
+void epicsShareFunc
+mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector);
+
+void epicsShareFunc
+mrmEvrDumpMap(const char* id,int evt,int ram);
+void epicsShareFunc
+mrmEvrForward(const char* id, const char* events_iocsh);
+void epicsShareFunc
+mrmEvrLoopback(const char* id, int rxLoopback, int txLoopback);
+
+void epicsShareFunc
+mrmEvrInithooks(initHookState state);
+
+long epicsShareFunc
+mrmEvrReport(int level);
+
+void epicsShareFunc
+mrmEvrProbe(const char *id);
 
 #ifdef __cplusplus
 }
