@@ -34,7 +34,7 @@ epicsShareExtern int evrmrmVerb;
 
 
 void epicsShareFunc
-mrmEvrSetupPCI(const char* id,int b,int d,int f);
+mrmEvrSetupPCI(const char* id,const char* pciid,int d,int f);
 void epicsShareFunc
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector);
 

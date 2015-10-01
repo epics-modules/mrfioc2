@@ -18,9 +18,13 @@ struct configuration_vme{
 
 // PCI
 struct configuration_pci{
+    int domain;
     int bus;        // Bus number
     int device;     // Device number
     int function;   // Function number
+    configuration_pci()
+        :domain(0), bus(0), device(0), function(0)
+    {}
 };
 
 enum busType{

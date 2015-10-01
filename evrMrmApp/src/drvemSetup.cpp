@@ -383,17 +383,53 @@ bool checkUIOVersion(int expect)
 static bool checkUIOVersion(int) {return false;}
 #endif
 
+static
+int parsePCI(const char *loc, int *dom, int *b, int *d, int *f)
+{
+    unsigned X, B, D, F;
+
+    if(sscanf(loc, "%x:%x:%x.%x", &X, &B, &D, &F)==4) {
+
+    } else if(sscanf(loc, "%x:%x.%x", &B, &D, &F)==3) {
+        X = 0;
+    } else if(sscanf(loc, "%x:%x", &B, &D)==2) {
+        X = 0;
+        F = 0;
+    } else if(sscanf(loc, "%x", &B)==1) {
+        X = 0;
+        F = 0;
+    } else {
+        return 1;
+    }
+    *dom = X;
+    *b = B;
+    *d = D;
+    *f = F;
+    return 0;
+}
+
 void
-mrmEvrSetupPCI(const char* id,int b,int d,int f)
+mrmEvrSetupPCI(const char* id,const char* pciid,int d,int f)
 {
 try {
     bus_configuration bus;
     const EVRMRM::Config *conf;
 
     bus.busType = busType_pci;
-    bus.pci.bus = b;
-    bus.pci.device = d;
-    bus.pci.function = f;
+
+    if(!pciid || parsePCI(pciid, &bus.pci.domain, &bus.pci.bus,
+                          &bus.pci.device, &bus.pci.function))
+        throw std::invalid_argument("Unable to parse PCI ID string");
+
+    if(d!=0 || f!=0) {
+        printf("Warning: deprecated invocation of mrmEvrSetupPCI\n"
+               "Replace with:\n"
+               " mrmEvrSetupPCI(\"%s\", \"%s:%d.%d\")\n",
+               id, pciid, d, f);
+        bus.pci.device = d;
+        bus.pci.function = f;
+    }
+
     if(mrf::Object::getObject(id)){
         printf("Object ID %s already in use\n",id);
         return;
@@ -404,8 +440,13 @@ try {
 
     const epicsPCIDevice *cur=0;
 
-    if( devPCIFindDBDF(mrmevrs,0,b,d,f,&cur,0) ){
-        printf("PCI Device not found on %d:%d.%d\n", b, d, f);
+    if( devPCIFindDBDF(mrmevrs,
+                       bus.pci.domain, bus.pci.bus,
+                       bus.pci.device, bus.pci.function,
+                       &cur,0) ){
+        printf("PCI Device not found on %d:%d:%d.%d\n",
+               bus.pci.domain, bus.pci.bus,
+               bus.pci.device, bus.pci.function);
         return;
     }
 

@@ -54,7 +54,7 @@
 
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
-static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
+static const iocshArg mrmEvrSetupPCIArg1 = { "PCI id or Bus number",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg3 = { "Function number",iocshArgInt};
 static const iocshArg * const mrmEvrSetupPCIArgs[4] =
@@ -63,7 +63,7 @@ static const iocshFuncDef mrmEvrSetupPCIFuncDef =
     {"mrmEvrSetupPCI",4,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].sval,args[1].ival,args[2].ival,args[3].ival);
+    mrmEvrSetupPCI(args[0].sval,args[1].sval,args[2].ival,args[3].ival);
 }
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "name",iocshArgString};
