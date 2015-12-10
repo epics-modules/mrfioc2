@@ -721,9 +721,10 @@ EVRMRM::TimeStampValid() const
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
+EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 {
-    if(!ts) throw std::runtime_error("Invalid argument");
+    if(!ret) throw std::runtime_error("Invalid argument");
+    epicsTimeStamp ts;
 
     SCOPED_LOCK(evrLock);
     if(timestampValid<TSValidThreshold) return false;
@@ -741,8 +742,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
             return false;
         }
 
-        ts->secPastEpoch=entry->last_sec;
-        ts->nsec=entry->last_evt;
+        ts.secPastEpoch=entry->last_sec;
+        ts.nsec=entry->last_evt;
 
 
     } else {
@@ -753,8 +754,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         // Latch timestamp
         WRITE32(base, Control, ctrl|Control_tsltch);
 
-        ts->secPastEpoch=READ32(base, TSSecLatch);
-        ts->nsec=READ32(base, TSEvtLatch);
+        ts.secPastEpoch=READ32(base, TSSecLatch);
+        ts.nsec=READ32(base, TSEvtLatch);
 
         /* BUG: There was a firmware bug which occasionally
          * causes the previous write to fail with a VME bus
@@ -771,9 +772,10 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 
     }
 
-    if(!convertTS(ts))
+    if(!convertTS(&ts))
         return false;
 
+    *ret = ts;
     return true;
 }
 
