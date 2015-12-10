@@ -790,15 +790,6 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         return false;
     }
 
-    // 1 sec. reset is late
-    if(ts->nsec>=1000000000) {
-        SCOPED_LOCK(evrLock);
-        timestampValid=0;
-        lastInvalidTimestamp=ts->secPastEpoch;
-        scanIoRequest(timestampValidChange);
-        return false;
-    }
-
     // recurrence of an invalid time
     if(ts->secPastEpoch==lastInvalidTimestamp) {
         timestampValid=0;
@@ -830,6 +821,15 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         return false;
 
     ts->nsec=(epicsUInt32)(ts->nsec*period);
+
+    // 1 sec. reset is late
+    if(ts->nsec>=1000000000) {
+        timestampValid=0;
+        lastInvalidTimestamp=ts->secPastEpoch;
+        scanIoRequest(timestampValidChange);
+        return false;
+    }
+
     return true;
 }
 
