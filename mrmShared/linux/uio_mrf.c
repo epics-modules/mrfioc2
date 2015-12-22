@@ -123,7 +123,7 @@ int mrf_mmap_physical(struct uio_info *info, struct vm_area_struct *vma)
 #endif
 
 static
-int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr, unsigned int *ver)
+int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr)
 {
     struct pci_dev *dev = priv->pdev;
     u32 val  = ioread32(evr + FPGAVersion),
@@ -136,11 +136,9 @@ int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr, unsigned int *ve
         return -1;
     } else if(high==priv->mrftype) {
         // little endian
-        if(ver) *ver = low;
         return 0;
     } else if(low==priv->mrftype) {
         // big endian
-        if(ver) *ver = high;
         return 1;
     } else {
         dev_err(&dev->dev, "no match for version 0x%08lu against %x\n",
@@ -273,9 +271,9 @@ mrf_handler_plx(int irq, struct uio_info *info)
         // there are no distict registers for this bridge.
         // 'plx' holds the base address of FPGA registers
 
-        if(priv->fwver<8) {
+        if(!priv->usemie) {
             u32 flags;
-            end = mrf_detect_endian(priv, plx, NULL);
+            end = mrf_detect_endian(priv, plx);
 
             if(end==1) {
                 val = ioread32be(plx + IRQEnable);
@@ -383,12 +381,12 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         // 'plx' holds the base address of FPGA registers
 	
         // Check endianism
-        end = mrf_detect_endian(priv, plx, NULL);
+        end = mrf_detect_endian(priv, plx);
 
         // With FW version >=8 the PCI master interrupt enable bit
         // moved to it's own register (PCIMIE), which userspace shouldn't touch
         // thus avoiding the race conditions inheirent in sharing IRQEnable
-        if(priv->fwver<8) {
+        if(!priv->usemie) {
 
             // Read current IRQ enable register
             if(end==1) {
@@ -528,15 +526,38 @@ mrf_probe(struct pci_dev *dev,
                 goto err_release;
             }
 
-            if(mrf_detect_endian(priv, info->mem[0].internal_addr, &priv->fwver)==-1) {
+        {
+            u32 mrfver = 0;
+            switch(mrf_detect_endian(priv, info->mem[0].internal_addr))
+            {
+            case 0: /* LSB */
+                mrfver = ioread32(info->mem[0].internal_addr + FPGAVersion);
+                break;
+            case 1:
+                mrfver = ioread32be(info->mem[0].internal_addr + FPGAVersion);
+                break;
+            case -1:
                 ret=-ENODEV;
                 goto err_unmap;
             }
 
-            if(priv->fwver<8) {
-                dev_warn(&dev->dev, "Consider update to firmware >=8 (currently %u) to avoid "
-                         "race condition in IRQ handling\n", priv->fwver);
+            switch(mrfver>>28) {
+            case 1: /* EVR */
+                priv->usemie = (mrfver&0xff)>=0xa;
+                break;
+            case 2: /* EVG */
+                priv->usemie = (mrfver&0xff)>=0x8;
+                break;
+            default:
+                dev_err(&dev->dev, "Unrecognized MRF device type %08x\n", (unsigned)mrfver);
+                ret=-ENODEV;
+                goto err_unmap;
             }
+            if(!priv->usemie) {
+                dev_warn(&dev->dev, "Consider update to firmware >=8 (currently %u) to avoid "
+                         "race condition in IRQ handling\n", (mrfver&0xff));
+            }
+        }
 
             /* 300 series only supported in "PLX" irq mode */
             priv->irqmode = 1;

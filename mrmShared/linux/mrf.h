@@ -137,9 +137,9 @@ struct mrf_priv {
     struct uio_info uio;
     struct pci_dev *pdev;
     unsigned int mrftype; /* MSB from version register */
-    unsigned int fwver;   /* LSB from version register */
     unsigned int irqmode;
     unsigned int intrcount;
+    unsigned int usemie:1;
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
     spinlock_t lock;
