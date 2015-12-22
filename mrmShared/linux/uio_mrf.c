@@ -20,8 +20,15 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
 
 /* something that userspace can test to see if we
  * are the kernel module its looking for.
+ * 0 - (implied if interfaceversion /sys file is missing)
+ *     Kernel and userspace both do RMW on the IRQEnable register, which allows race conditions
+ * 1 - Use of UIO irqcontrol callback to mask interrupts at the PLX bridge,
+ *     resolves race for devices w/ PLX bridge.
+ * 2 - EVG FW ver. 0x8, EVR FW ver. 0xA move the PCI master interrupt enable to a seperate (MRF) register
+ *     this allows the race to be avoided for devices w/o a PLX bridge.
+ *     For devices w/ a PLX bridge, interface versions 1 and 2 are equivalent.
  */
-static int modparam_iversion = 1;
+static int modparam_iversion = 2;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
 MODULE_PARM_DESC(interfaceversion, "User space interface version");
 
@@ -116,7 +123,7 @@ int mrf_mmap_physical(struct uio_info *info, struct vm_area_struct *vma)
 #endif
 
 static
-int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr)
+int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr, unsigned int *ver)
 {
     struct pci_dev *dev = priv->pdev;
     u32 val  = ioread32(evr + FPGAVersion),
@@ -127,15 +134,17 @@ int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr)
         dev_err(&dev->dev, "Can't detect endianness when high==low 0x%08lu\n",
                 (unsigned long)val);
         return -1;
-    } else if(high==priv->version) {
+    } else if(high==priv->mrftype) {
         // little endian
+        if(ver) *ver = low;
         return 0;
-    } else if(low==priv->version) {
+    } else if(low==priv->mrftype) {
         // big endian
+        if(ver) *ver = high;
         return 1;
     } else {
         dev_err(&dev->dev, "no match for version 0x%08lu against %x\n",
-                (unsigned long)val, priv->version);
+                (unsigned long)val, priv->mrftype);
         return -1;
     }
 }
@@ -261,42 +270,48 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
     default:
     {
-        u32 flags;
         // there are no distict registers for this bridge.
         // 'plx' holds the base address of FPGA registers
 
-        end = mrf_detect_endian(priv, plx);
+        if(priv->fwver<8) {
+            u32 flags;
+            end = mrf_detect_endian(priv, plx, NULL);
 
-        if(end==1) {
-            val = ioread32be(plx + IRQEnable);
-            flags= ioread32be(plx + IRQFlag);
-        } else if(end==0) {
-            val = ioread32(plx + IRQEnable);
-            flags= ioread32(plx + IRQFlag);
+            if(end==1) {
+                val = ioread32be(plx + IRQEnable);
+                flags= ioread32be(plx + IRQFlag);
+            } else if(end==0) {
+                val = ioread32(plx + IRQEnable);
+                flags= ioread32(plx + IRQFlag);
+            } else {
+                return IRQ_NONE; /* shouldn't happen since this condition is checked in mrf_probe() */
+            }
+
+            if(((flags & val)==0) || ((val & IRQ_Enable_ALL)!=IRQ_Enable_ALL)) {
+                return IRQ_NONE; /* not our interrupt */
+            }
+
+            // Disable interrupts on FPGA
+            if(end) {
+                iowrite32be(val & (~IRQ_PCIee), plx + IRQEnable);
+            } else {
+                iowrite32(val & (~IRQ_PCIee), plx + IRQEnable);
+            }
+
+            // Check if clear succeded
+            wmb();
+            if(end) {
+                val = ioread32be(plx + IRQEnable);
+            } else {
+                val = ioread32(plx + IRQEnable);
+            }
+
+            oops = val & IRQ_PCIee;
+
         } else {
-            return IRQ_NONE; /* shouldn't happen since this condition is checked in mrf_probe() */
+            iowrite32be(0, plx + PCIMIE);
+            oops = val = ioread32(plx + PCIMIE);
         }
-
-        if(((flags & val)==0) || ((val & IRQ_Enable_ALL)!=IRQ_Enable_ALL)) {
-            return IRQ_NONE; /* not our interrupt */
-        }
-
-        // Disable interrupts on FPGA
-        if(end) {
-            iowrite32be(val & (~IRQ_PCIee), plx + IRQEnable);
-        } else {
-            iowrite32(val & (~IRQ_PCIee), plx + IRQEnable);
-        }
-
-        // Check if clear succeded
-        wmb();
-        if(end) {
-            val = ioread32be(plx + IRQEnable);
-        } else {
-            val = ioread32(plx + IRQEnable);
-        }
-
-        oops = val & IRQ_PCIee;
     }
         break;
     }
@@ -350,7 +365,6 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 
         iowrite32(val, plx + INTCSR);
 
-        priv->irqmode = 1;
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
@@ -369,29 +383,48 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
         // 'plx' holds the base address of FPGA registers
 	
         // Check endianism
-        end = mrf_detect_endian(priv, plx);
+        end = mrf_detect_endian(priv, plx, NULL);
 
-        // Read current IRQ enable register
-        if(end==1) {
-            val = ioread32be(plx + IRQEnable);
-        } else if(end==0) {
-            val = ioread32(plx + IRQEnable);
-        } else {
-            return -EINVAL; /* shouldn't happen since this condition is checked in mrf_probe() */
-        }
+        // With FW version >=8 the PCI master interrupt enable bit
+        // moved to it's own register (PCIMIE), which userspace shouldn't touch
+        // thus avoiding the race conditions inheirent in sharing IRQEnable
+        if(priv->fwver<8) {
 
-        // Modify the IRQ enable bit
-        if (onoff == 1) {
-            val |= IRQ_PCIee;
-        } else {
-            val &= (~IRQ_PCIee);
-        }
+            // Read current IRQ enable register
+            if(end==1) {
+                val = ioread32be(plx + IRQEnable);
+            } else if(end==0) {
+                val = ioread32(plx + IRQEnable);
+            } else {
+                return -EINVAL; /* shouldn't happen since this condition is checked in mrf_probe() */
+            }
 
-        // Write the register back
-        if(end) {
-            iowrite32be(val, plx + IRQEnable);
+            // Modify the IRQ enable bit
+            if (onoff == 1) {
+                val |= IRQ_PCIee;
+            } else {
+                val &= (~IRQ_PCIee);
+            }
+
+            // Write the register back
+            if(end) {
+                iowrite32be(val, plx + IRQEnable);
+            } else {
+                iowrite32(val, plx + IRQEnable);
+            }
+
         } else {
-            iowrite32(val, plx + IRQEnable);
+            if (onoff == 1) {
+                val = IRQ_PCIee;
+            } else {
+                val = 0;
+            }
+
+            if(end) {
+                iowrite32be(val, plx + PCIMIE);
+            } else {
+                iowrite32(val, plx + PCIMIE);
+            }
         }
 
         break;
@@ -420,7 +453,7 @@ mrf_probe(struct pci_dev *dev,
         if (!priv) { return -ENOMEM; }
         info = &priv->uio;
         priv->pdev = dev;
-        priv->version = id->driver_data;
+        priv->mrftype = id->driver_data;
 
         ret = pci_enable_device(dev);
         if (ret) {
@@ -495,9 +528,14 @@ mrf_probe(struct pci_dev *dev,
                 goto err_release;
             }
 
-            if(mrf_detect_endian(priv, info->mem[0].internal_addr)==-1) {
+            if(mrf_detect_endian(priv, info->mem[0].internal_addr, &priv->fwver)==-1) {
                 ret=-ENODEV;
                 goto err_unmap;
+            }
+
+            if(priv->fwver<8) {
+                dev_warn(&dev->dev, "Consider update to firmware >=8 (currently %u) to avoid "
+                         "race condition in IRQ handling\n", priv->fwver);
             }
 
             /* 300 series only supported in "PLX" irq mode */

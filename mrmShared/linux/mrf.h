@@ -113,9 +113,13 @@
 #define IRQEnable   0x00c
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
+/* present for w/ FW version <8 */
 #  define IRQ_PCIee     0x40000000
 
 #define IRQ_Enable_ALL  (IRQ_Enable|IRQ_PCIee)
+
+#define PCIMIE      0x01c
+/* w/ FW version >=8, IRQ_PCIee moves to PCIMIE */
 
 /* The expected value (form factor and 0x1 for EVR) that is
  * stored in FPGA of EVR300 @ first byte of FPGAVersion register.
@@ -132,7 +136,8 @@
 struct mrf_priv {
     struct uio_info uio;
     struct pci_dev *pdev;
-    unsigned int version; /* MSB from version regsiter */
+    unsigned int mrftype; /* MSB from version register */
+    unsigned int fwver;   /* LSB from version register */
     unsigned int irqmode;
     unsigned int intrcount;
 
