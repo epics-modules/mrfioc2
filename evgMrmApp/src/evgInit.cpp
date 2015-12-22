@@ -275,7 +275,7 @@ mrmEvgSetupVME (
 static char ifaceversion[] = "/sys/module/mrf/parameters/interfaceversion";
 /* Check the interface version of the kernel module to ensure compatibility */
 static
-bool checkUIOVersion(int expect)
+bool checkUIOVersion(int vmin, int vmax, int *actual)
 {
     FILE *fd;
     int version = -1;
@@ -293,14 +293,16 @@ bool checkUIOVersion(int expect)
     fclose(fd);
 
     // Interface versions are *not* expected to be backwords or forwards compatible.
-    if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+    if(version<vmin || version>vmax) {
+        errlogPrintf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
         return true;
     }
+    if(actual)
+        *actual = version;
     return false;
 }
 #else
-static bool checkUIOVersion(int) {return false;}
+static bool checkUIOVersion(int,int,int*) {return false;}
 #endif
 
 
@@ -332,7 +334,14 @@ mrmEvgSetupPCI (
 			return -1;
 		}
 
-        if(checkUIOVersion(1))
+        /* Linux only
+         * kernel driver interface version.
+         * 0 - Broken
+         * 1 - Use of irqcontrol callback to avoid races for plx pci bridges
+         * 2 - Use of new PCI master enable register to avoid races for soft pci bridges
+         */
+        int kifacever = -1;
+        if(checkUIOVersion(1,2,&kifacever))
             return -1;
 
 		/* Find PCI device from devLib2 */
@@ -401,7 +410,7 @@ mrmEvgSetupPCI (
         }
 
 		printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
-		checkVersion(BAR_evg, 3, 3);
+        checkVersion(BAR_evg, 3, 8);
 
         evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
 
@@ -414,11 +423,33 @@ mrmEvgSetupPCI (
 		WRITE32(BAR_evg, IrqEnable, 0);
 
 #if !defined(__linux__) && !defined(_WIN32)
-		/*
-		 * Enable active high interrupt1 through the PLX to the PCI bus.
-         */
-        LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
+        if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
+            // Enable active high interrupt1 through the PLX to the PCI bus.
+            LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
+        }
+        if(evg->getFwVersionID()>=8) {
+            // RTOS doesn't need this, so always enable
+            WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
+        }
 #else
+        if(evg->getFwVersionID()>=8 && kifacever>=2) {
+            // PCI master enable supported by firmware and kernel module.
+            // the kernel will set this bit when devPCIEnableInterrupt() is called
+        } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
+            // PLX based devices work fine w/o this
+        } else if(evg->getFwVersionID()<8) {
+            // old firmware and (maybe) old kernel module.
+            // this will still work, so just complain
+            errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
+                         "         Please consider upgrading to FW version 8.\n");
+            if(kifacever<2)
+                errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
+        } else if(evg->getFwVersionID()>=8 && kifacever<2) {
+            // New firmware w/ old kernel module, this won't work
+            throw std::runtime_error("FW version 8 for this device requires a linux kernel module w/ interface version 2");
+        } else {
+            throw std::logic_error("logic error in FW/kernel module compatibility check.");
+        }
         if(devPCIEnableInterrupt(cur)) {
             printf("Failed to enable interrupt\n");
             return -1;

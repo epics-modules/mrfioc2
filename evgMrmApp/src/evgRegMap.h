@@ -13,10 +13,10 @@
 /*
  * Series 2xx Event Generator Modular Register Map
  *
- * For firmware version #6
- * as documented in EVR-MRM-006.doc
+ * For firmware version #8
+ * as documented in EVR-MRM-008.doc
  * Jukka Pietarinen
- * 06 Jul 2015
+ * 07 Dec 2015
  *
  * Important note about data width
  *
@@ -58,6 +58,10 @@
 #define  EVG_IRQ_DBUFF          0x00000020  // Data Buffer Interrupt Bit
 #define  EVG_IRQ_FIFO           0x00000002  // Event FIFO Full Interrupt Bit
 #define  EVG_IRQ_RXVIO          0x00000001  // Receiver Violation Bit
+
+// With Linux this bit should used by the kernel driver exclusively
+#define U32_PCI_MIE             0x001C
+#define EVG_MIE_ENABLE          0x40000000
 
 //=====================
 // AC Trigger Control Registers
