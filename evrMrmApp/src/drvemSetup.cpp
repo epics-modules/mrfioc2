@@ -355,7 +355,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
 static char ifaceversion[] = "/sys/module/mrf/parameters/interfaceversion";
 /* Check the interface version of the kernel module to ensure compatibility */
 static
-bool checkUIOVersion(int expect)
+bool checkUIOVersion(int vmin, int vmax, int *actual)
 {
     FILE *fd;
     int version = -1;
@@ -373,14 +373,16 @@ bool checkUIOVersion(int expect)
     fclose(fd);
 
     // Interface versions are *not* expected to be backwords or forwards compatible.
-    if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+    if(version<vmin || version>vmax) {
+        errlogPrintf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
         return true;
     }
+    if(actual)
+        *actual = version;
     return false;
 }
 #else
-static bool checkUIOVersion(int) {return false;}
+static bool checkUIOVersion(int,int,int*) {return false;}
 #endif
 
 static
@@ -435,7 +437,14 @@ try {
         return;
     }
 
-    if(checkUIOVersion(1))
+    /* Linux only
+     * kernel driver interface version.
+     * 0 - Broken
+     * 1 - Use of irqcontrol callback to avoid races for plx pci bridges
+     * 2 - Use of new PCI master enable register to avoid races for soft pci bridges
+     */
+    int kifacever = -1;
+    if(checkUIOVersion(1,2,&kifacever))
         return;
 
     const epicsPCIDevice *cur=0;
@@ -517,12 +526,6 @@ try {
         LE_WRITE16(plx, INTCSR, INTCSR_INT1_Enable|
                    INTCSR_INT1_Polarity|
                    INTCSR_PCI_Enable);
-#else
-        /* ask the kernel module to enable interrupts through the PLX bridge */
-        if(devPCIEnableInterrupt(cur)) {
-            printf("PLX 9030: Failed to enable interrupt\n");
-            return;
-        }
 #endif
         break;
 
@@ -539,12 +542,6 @@ try {
 
 #ifndef __linux__
         BITSET(LE,32,plx, INTCSR9056, INTCSR9056_PCI_Enable|INTCSR9056_LCL_Enable);
-#else
-        /* ask the kernel module to enable interrupts */
-        if(devPCIEnableInterrupt(cur)) {
-            printf("PLX 9056: Failed to enable interrupt\n");
-            return;
-        }
 #endif
         break;
 
@@ -556,9 +553,9 @@ try {
          * is subject to byte order swapping...
          */
 
-        // Disable EVR and set's byte order to big endian
+        // Disable EVR and set byte order to big endian
         NAT_WRITE32(evr, Control, 0);
-        // Denable byte order swapping if necessary
+        // Enable byte order swapping if necessary
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
         BE_WRITE32(evr, Control, 0x02000000);
 #endif
@@ -568,13 +565,6 @@ try {
 
 #ifndef __linux__
         BITSET32(evr, IRQEnable, IRQ_PCIee);
-#else
-        /* ask the kernel module to enable interrupts */
-        printf("EC 30: Enabling interrupts\n");
-        if(devPCIEnableInterrupt(cur)) {
-            printf("EC 30: Failed to enable interrupt\n");
-            return;
-        }
 #endif
         break;
     default:
@@ -603,6 +593,44 @@ try {
     }else{
         // Interrupts will be enabled during iocInit()
     }
+
+
+#ifndef __linux__
+    if(receiver->version()>=0xa) {
+        // RTOS doesn't need this, so always enable
+        WRITE32(evr, PCI_MIE, EVG_MIE_ENABLE);
+    }
+#else
+    if(receiver->version()>=0xa && kifacever>=2) {
+        // PCI master enable supported by firmware and kernel module.
+        // the kernel will set this bit when devPCIEnableInterrupt() is called
+    } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030 ||
+              cur->id.device==PCI_DEVICE_ID_PLX_9056) {
+        // PLX based devices don't need special handling
+        WRITE32(evr, PCI_MIE, EVG_MIE_ENABLE);
+    } else if(receiver->version()<0xa) {
+        // old firmware and (maybe) old kernel module.
+        // this will still work, so just complain
+        errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
+                     "         Please consider upgrading to FW version 0xA.\n");
+        if(kifacever<2)
+            errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
+    } else if(receiver->version()>=0xa && kifacever<2) {
+        // New firmware w/ old kernel module, this won't work
+        throw std::runtime_error("FW version 0xA for this device requires a linux kernel module w/ interface version 2");
+    } else {
+        throw std::logic_error("logic error in FW/kernel module compatibility check.");
+    }
+
+    /* ask the kernel module to enable interrupts */
+    printf("Enabling interrupts\n");
+    if(devPCIEnableInterrupt(cur)) {
+        printf("Failed to enable interrupt\n");
+        delete receiver;
+        return;
+    }
+#endif
+
 } catch(std::exception& e) {
     printf("Error: %s\n",e.what());
 }

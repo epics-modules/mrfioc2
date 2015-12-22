@@ -97,6 +97,10 @@
 
 #define U32_IRQPulseMap 0x010
 
+// With Linux this bit should used by the kernel driver exclusively
+#define U32_PCI_MIE             0x001C
+#define EVG_MIE_ENABLE          0x40000000
+
 #define U32_DataBufCtrl 0x020
 /* Write 1 to start, read for run status */
 #  define DataBufCtrl_rx     0x8000

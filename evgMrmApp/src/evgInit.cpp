@@ -436,7 +436,8 @@ mrmEvgSetupPCI (
             // PCI master enable supported by firmware and kernel module.
             // the kernel will set this bit when devPCIEnableInterrupt() is called
         } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
-            // PLX based devices work fine w/o this
+            // PLX based devices don't need special handling
+            WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
         } else if(evg->getFwVersionID()<8) {
             // old firmware and (maybe) old kernel module.
             // this will still work, so just complain
