@@ -426,7 +426,7 @@ try {
     if(d!=0 || f!=0) {
         printf("Warning: deprecated invocation of mrmEvrSetupPCI\n"
                "Replace with:\n"
-               " mrmEvrSetupPCI(\"%s\", \"%s:%d.%d\")\n",
+               " mrmEvrSetupPCI(\"%s\", \"%s:%x.%x\")\n",
                id, pciid, d, f);
         bus.pci.device = d;
         bus.pci.function = f;
