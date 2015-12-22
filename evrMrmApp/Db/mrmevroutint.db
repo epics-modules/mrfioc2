@@ -5,6 +5,4 @@ record(bi, "$(ON)State-Sts") {
   field( DESC, "Output State")
   field( INP , "@OBJ=$(OBJ), PROP=SW Output status")
   field( SCAN, ".1 second")
-  field( DISV, "63") # Disable scanForce low
-  field( SDIS, "$(ON)Src-RB NPP")
 }
