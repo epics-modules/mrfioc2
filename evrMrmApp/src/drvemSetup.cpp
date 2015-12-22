@@ -181,6 +181,7 @@ REGINFO("Control", Control, 32),
 REGINFO("Status",  Status, 32),
 REGINFO("IRQ Flag",IRQFlag, 32),
 REGINFO("IRQ Ena", IRQEnable, 32),
+REGINFO("PCIMIE", PCI_MIE, 32),
 REGINFO("IRQPlsmap",IRQPulseMap, 32),
 REGINFO("DBufCtrl",DataBufCtrl, 32),
 REGINFO("DBufTxCt",DataTxCtrl, 32),
@@ -485,6 +486,10 @@ try {
         printf("PCI error: BAR 0 mapped to zero? (%08lx)\n", (unsigned long)evr);
         return;
     }
+    if( devPCIBarLen(cur,0,&evrlen) ) {
+        printf("PCI error: Can't find BAR #0 length\n");
+        return;
+    }
 
     switch(cur->id.device) {
     case PCI_DEVICE_ID_PLX_9030:
@@ -498,6 +503,10 @@ try {
         }
         if(!evr){
             printf("PCI error: BAR 2 mapped to zero? (%08lx)\n", (unsigned long)evr);
+            return;
+        }
+        if( devPCIBarLen(cur,0,&evrlen) ) {
+            printf("PCI error: Can't find BAR #0 length\n");
             return;
         }
     }
