@@ -60,6 +60,7 @@
 #include  <dbAccess.h>          /* EPICS Database Access definitions                              */
 #include  <dbCommon.h>          /* EPICS Common record field definitions                          */
 #include  <devSup.h>            /* EPICS Device support messages and definitions                  */
+#include  <recGbl.h>            /* EPICS recGblRecordError function                               */
 #include  <menuYesNo.h>         /* EPICS Yes/No record-support menu                               */
 
 #include  <limits.h>            /* Standard C numeric limits                                      */
@@ -226,9 +227,9 @@ public:
 /* Round down and convert float to unsigned int
  * throws std::range_error for NaN and out of range inputs
  */
-epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
+epicsShareFunc epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
 
-char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_STYLE(2,3);
+epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_STYLE(2,3);
 #endif
 
 /**************************************************************************************************/

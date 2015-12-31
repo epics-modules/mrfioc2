@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -11,7 +12,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <epicsExport.h>
+#include <stdexcept>
+#include <string>
+#include <cfloat>
+
 #include <dbAccess.h>
 #include <devSup.h>
 #include <recSup.h>
@@ -24,16 +28,20 @@
 #include <callback.h>
 
 // for htons() et al.
-#include <netinet/in.h> // on rtems
-#include <arpa/inet.h> // on linux
+#ifdef _WIN32
+ #include <Winsock2.h>
+#else
+ // for htons() et al.
+ #include <netinet/in.h> // on rtems
+ #include <arpa/inet.h> // on linux
+#endif
 
+#define DATABUF_H_INC_LEVEL2
+#include <epicsExport.h>
 #include "mrf/databuf.h"
 #include "linkoptions.h"
 #include "devObj.h"
 
-#include <stdexcept>
-#include <string>
-#include <cfloat>
 
 /**
  * Note on record scanning.
@@ -43,12 +51,14 @@
  */
 
 static
-void datarx(void *, epicsStatus ,epicsUInt8 , epicsUInt32 , const epicsUInt8* );
+void datarx(void *, epicsStatus , epicsUInt32 , const epicsUInt8* );
 
-struct priv
+struct s_priv
 {
   char obj[40];
   epicsUInt32 proto;
+  epicsUInt32 proto16;
+  epicsUInt32 proto32;
   char prop[20];
 
   dataBufRx *priv;
@@ -60,9 +70,11 @@ struct priv
 static const
 linkOptionDef eventdef[] =
 {
-  linkString  (priv, obj , "OBJ"  , 1, 0),
-  linkInt32   (priv, proto, "Proto", 1, 0),
-  linkString  (priv, prop , "P", 1, 0),
+  linkString  (s_priv, obj , "OBJ"  , 1, 0),
+  linkInt32   (s_priv, proto, "Proto", 0, 0),
+  linkInt32   (s_priv, proto16, "Proto16", 0, 0),
+  linkInt32   (s_priv, proto32, "Proto32", 0, 0),
+  linkString  (s_priv, prop , "P", 1, 0),
   linkOptionEnd
 };
 
@@ -70,13 +82,16 @@ static long add_record_waveform(dbCommon *praw)
 {
   waveformRecord *prec=(waveformRecord*)praw;
   long ret=0;
-  priv *paddr=NULL;
+  s_priv *paddr=NULL;
 try {
   assert(prec->inp.type==INST_IO);
 
-  std::auto_ptr<priv> paddr(new priv);
+  std::auto_ptr<s_priv> paddr(new s_priv);
   paddr->buf=NULL;
   paddr->blen=0;
+  paddr->proto = 0xff00;
+  paddr->proto16 = 0;
+  paddr->proto32 = 0;
 
   if (linkOptionsStore(eventdef, paddr.get(), prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
@@ -90,7 +105,7 @@ try {
   if(!paddr->priv)
     throw std::runtime_error("Failed to lookup device");
 
-  paddr->priv->dataRxAddReceive(paddr->proto, datarx, praw);
+  paddr->priv->dataRxAddReceive(datarx, praw);
 
   // prec->dpvt is set again to indicate
   // This also serves to indicate successful
@@ -115,10 +130,10 @@ static long del_record_waveform(dbCommon *praw)
     long ret=0;
     if (!praw->dpvt) return 0;
     try {
-        std::auto_ptr<priv> paddr((priv*)praw->dpvt);
+        std::auto_ptr<s_priv> paddr((s_priv*)praw->dpvt);
         praw->dpvt = 0;
 
-        paddr->priv->dataRxDeleteReceive(paddr->proto, datarx, praw);
+        paddr->priv->dataRxDeleteReceive(datarx, praw);
 
     } catch(std::runtime_error& e) {
         recGblRecordError(S_dev_noDevice, (void*)praw, e.what());
@@ -131,11 +146,16 @@ static long del_record_waveform(dbCommon *praw)
 }
 
 static
-void datarx(void *arg, epicsStatus ok, epicsUInt8,
+void datarx(void *arg, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
-    //TODO: scan lock!
     waveformRecord* prec=(waveformRecord*)arg;
+    s_priv *paddr=(s_priv*)prec->dpvt;
+    
+    //check protocol id
+    if (paddr->proto != 0xff00 && paddr->proto != buf[0]) return;
+    if (paddr->proto16 && paddr->proto16 != ntohs(((epicsUInt16*)buf)[0])) return;
+    if (paddr->proto32 && paddr->proto32 != ntohl(((epicsUInt32*)buf)[0])) return;
 
     dbScanLock((dbCommon*)prec);
 
@@ -144,8 +164,6 @@ void datarx(void *arg, epicsStatus ok, epicsUInt8,
         return;
     }
 
-    rset *prset=(rset*)prec->rset;
-    priv *paddr=(priv*)prec->dpvt;
 
     if (ok) {
         // An error occured
@@ -157,6 +175,7 @@ void datarx(void *arg, epicsStatus ok, epicsUInt8,
         paddr->blen=len;
     }
 
+    rset *prset=(rset*)prec->rset;
     (*(long (*)(waveformRecord*))prset->process)(prec);
 
     paddr->buf=NULL;
@@ -169,7 +188,7 @@ static long write_waveform(waveformRecord* prec)
 {
   if (!prec->dpvt) return -1;
 try {
-  priv *paddr=static_cast<priv*>(prec->dpvt);
+  s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
 
   if (!paddr->buf && paddr->blen) {
       // Error condition set INVALID_ALARM

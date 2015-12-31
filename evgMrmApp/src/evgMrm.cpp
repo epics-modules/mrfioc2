@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgMrm.h"
 
 #include <iostream>
@@ -27,21 +34,27 @@
 
 #include "evgRegMap.h"
 
-evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgMrm>(id),
-irqStop0_queued(0),
-irqStop1_queued(0),
-irqExtInp_queued(0),
-m_syncTimestamp(false),
-m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
-m_id(id),
-m_pReg(pReg),
-m_acTrig(id+":AcTrig", pReg),
-m_evtClk(id+":EvtClk", pReg),
-m_softEvt(id+":SoftEvt", pReg),
-m_seqRamMgr(this),
-m_softSeqMgr(this) {
+#include <epicsExport.h>
 
+evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
+    mrf::ObjectInst<evgMrm>(id),
+    irqStop0_queued(0),
+    irqStop1_queued(0),
+    irqStart0_queued(0),
+    irqStart1_queued(0),
+    irqExtInp_queued(0),
+    m_syncTimestamp(false),
+    m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+    m_pciDevice(pciDevice),
+    m_id(id),
+    m_pReg(pReg),
+    busConfiguration(busConfig),
+    m_acTrig(id+":AcTrig", pReg),
+    m_evtClk(id+":EvtClk", pReg),
+    m_softEvt(id+":SoftEvt", pReg),
+    m_seqRamMgr(this),
+    m_softSeqMgr(this)
+{
     try{
         for(int i = 0; i < evgNumEvtTrig; i++) {
             std::ostringstream name;
@@ -95,10 +108,14 @@ m_softSeqMgr(this) {
             m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
         }
-    
-        m_wdTimer = new wdTimer("Watch Dog Timer", this);
-        m_timerEvent = new epicsEvent();
 
+        m_timerEvent = new epicsEvent();
+        m_wdTimer = new wdTimer("Watch Dog Timer", this);
+        
+        init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
+                                            m_seqRamMgr.getSeqRam(0));
+        init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
+                                            m_seqRamMgr.getSeqRam(1));
         init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
                                             m_seqRamMgr.getSeqRam(0));
         init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
@@ -160,6 +177,66 @@ evgMrm::getFwVersion() const {
     return READ32(m_pReg, FPGAVersion);
 }
 
+epicsUInt32
+evgMrm::getFwVersionID(){
+    epicsUInt32 ver = getFwVersion();
+
+    ver &= FPGAVersion_VER_MASK;
+
+    return ver;
+}
+
+formFactor
+evgMrm::getFormFactor(){
+    epicsUInt32 form = getFwVersion();
+
+    form &= FPGAVersion_FORM_MASK;
+    form >>= FPGAVersion_FORM_SHIFT;
+
+    if(form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+evgMrm::getFormFactorStr(){
+    std::string text;
+
+    switch(getFormFactor()){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
+}
+
 std::string
 evgMrm::getSwVersion() const {
     return MRF_VERSION;
@@ -184,7 +261,7 @@ evgMrm::enable(bool ena) {
 
 bool
 evgMrm::enabled() const {
-    return READ32(m_pReg, Control) & EVG_MASTER_ENA;
+    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
 }
 
 void
@@ -194,16 +271,93 @@ evgMrm::resetMxc(bool reset) {
 }
 
 void
-evgMrm::isr(void* arg) {
+evgMrm::isr_pci(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
+
+    // Call to the generic implementation
+    evg->isr(evg, true);
+
+#if defined(__linux__) || defined(_WIN32)
+    /**
+     * On PCI variant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
+     * Interrupts must therefore be re-enabled here.
+     */
+    if(devPCIEnableInterrupt(evg->m_pciDevice)) {
+        printf("PCI: Failed to enable interrupt\n");
+        return;
+    }
+#endif
+}
+
+void
+evgMrm::isr_vme(void* arg) {
+    evgMrm *evg = (evgMrm*)(arg);
+
+    // Call to the generic implementation
+    evg->isr(evg, false);
+}
+
+void
+evgMrm::isr(evgMrm *evg, bool pci) {
 
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
-    
-    if(!active)
+
+#if defined(vxWorks) || defined(__rtems__)
+    if(!active) {
+#  ifdef __rtems__
+        if(!pci)
+            printk("evgMrm::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, enable);
+#else
+        (void)pci;
+#  endif
+        // this is a shared interrupt
         return;
-    
+    }
+    // Note that VME devices do not normally shared interrupts
+#else
+    // for Linux, shared interrupts are detected by the kernel module
+    // so any notifications to userspace are real interrupts by this device
+    (void)pci;
+#endif
+
+#if defined(vxWorks) || defined(__rtems__)
+    /* actually: if isr runs in kernel mode */
+
+        /*
+         * For IFC1210 board this is useless
+         * and for SwissFEL_TIM it is dangerous, since
+         * in the unlikely event of queuing more than 2 IRQs the system
+         * will stop dropping them. For SwissFEL timing system this is
+         * unacceptable.
+         * Furthermore it is not thread safe!!!
+         * A race condition has been observed where
+         * x_queued is changed back to 0 without re-enabling interrupts.         *
+         * For PSI, this is now handled in the IRQ thread, avg ISR time is
+         * around ~10us
+         */
+
+    if(active & EVG_IRQ_START_RAM(0)) {
+        if(evg->irqStart0_queued==0) {
+            callbackRequest(&evg->irqStart0_cb);
+            evg->irqStart0_queued=1;
+        } else if(evg->irqStart0_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(0));
+            evg->irqStart0_queued=2;
+        }
+    }
+
+    if(active & EVG_IRQ_START_RAM(1)) {
+        if(evg->irqStart1_queued==0) {
+            callbackRequest(&evg->irqStart1_cb);
+            evg->irqStart1_queued=1;
+        } else if(evg->irqStart1_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(1));
+            evg->irqStart1_queued=2;
+        }
+    }
+
     if(active & EVG_IRQ_STOP_RAM(0)) {
         if(evg->irqStop0_queued==0) {
             callbackRequest(&evg->irqStop0_cb);
@@ -234,8 +388,48 @@ evgMrm::isr(void* arg) {
         }
     }
 
+#else
+    
+    /*
+     * This is far far far far from proper solution
+     * since it blocks IRQ thread. Luckily the whole ISR
+     * Executes in ~10us so it's not a big problem.
+     * A better solution would be to use epics callback like
+     * original driver, but care must be taken in order to
+     * avoid race conditions.
+     */
+    if(active & EVG_IRQ_START_RAM(0)) {
+        evg->getSeqRamMgr()->getSeqRam(0)->process_sos();
+    }
+
+    if(active & EVG_IRQ_START_RAM(1)) {
+        evg->getSeqRamMgr()->getSeqRam(1)->process_sos();
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(0)) {
+        evg->getSeqRamMgr()->getSeqRam(0)->process_eos();
+    }
+
+    if(active & EVG_IRQ_STOP_RAM(1)) {
+        evg->getSeqRamMgr()->getSeqRam(1)->process_eos();
+    }
+
+    if(active & EVG_IRQ_EXT_INP) {
+        if(evg->irqExtInp_queued==0) {
+            callbackRequest(&evg->irqExtInp_cb);
+            evg->irqExtInp_queued=1;
+        } else if(evg->irqExtInp_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
+            evg->irqExtInp_queued=2;
+        }
+    }
+#endif
+
+
+
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
+
     return;
 }
 
@@ -277,6 +471,46 @@ evgMrm::process_eos1_cb(CALLBACK *pCallback) {
     }
 
     seqRam->process_eos();
+}
+
+void
+evgMrm::process_sos0_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStart0_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(0));
+        seqRam->m_owner->irqStart0_queued=0;
+    }
+
+    seqRam->process_sos();
+}
+
+void
+evgMrm::process_sos1_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStart1_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(1));
+        seqRam->m_owner->irqStart1_queued=0;
+    }
+
+    seqRam->process_sos();
 }
 
 void
@@ -375,7 +609,7 @@ evgMrm::syncTimestamp() {
      *       26.996234643 should be rounded to 27.
      *  Also the nano second value can be assumed to be zero.
      */
-    if(m_timestamp.nsec > 500*pow(10,6))
+    if(m_timestamp.nsec > 500*pow(10.0,6))
         incrTimestamp();
     
     m_timestamp.nsec = 0;
@@ -461,6 +695,11 @@ evgMrm::getSoftSeqMgr() {
 epicsEvent* 
 evgMrm::getTimerEvent() {
     return m_timerEvent;
+}
+
+bus_configuration *evgMrm::getBusConfiguration()
+{
+    return &busConfiguration;
 }
 
 namespace {

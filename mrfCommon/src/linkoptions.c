@@ -39,11 +39,14 @@ int
 store_value(const linkOptionDef* opt, void* user, const char* val, int options)
 {
     epicsUInt32 *ival;
+    unsigned long int lival;
     int *eval;
     const linkOptionEnumType *emap;
     double *dval;
     char *sval;
     char *end;
+
+    (void)options; /* unused */
 
     switch(opt->optType) {
     case linkOptionInt32:
@@ -54,13 +57,16 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
         }
         ival=(epicsUInt32*)( (char*)user + opt->offset );
 
-        *ival = strtoul(val, &end, 0);
+        lival = strtoul(val, &end, 0);
         /* test for the myriad error conditions which strtol may use */
-        if ( *ival==ULONG_MAX || end==val )
+        if ( lival==ULONG_MAX || end==val )
         {
             fprintf(stderr,"value %s can't be converted for integer key %s\n",val,opt->name);
             return -1;
         }
+
+        *ival = (epicsUInt32)lival;
+
         break;
     case linkOptionDouble:
         if (opt->size<sizeof(double)) {

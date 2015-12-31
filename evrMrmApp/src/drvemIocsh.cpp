@@ -1,14 +1,13 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 /*
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
-
-#include "drvemIocsh.h"
 
 #include <cstdio>
 #include <cstring>
@@ -22,22 +21,36 @@
 #include <iocsh.h>
 #include <initHooks.h>
 #include <epicsExit.h>
-#include <epicsExport.h>
 
 #include <devLibPCI.h>
 #include <devcsr.h>
 #include <epicsInterrupt.h>
 #include <epicsThread.h>
-#include "mrmpci.h"
-#include "mrfcsr.h"
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
 
 #include "drvem.h"
+#include "mrfcsr.h"
+#include "mrmpci.h"
+
+#include <epicsExport.h>
+
+#include "drvemIocsh.h"
+
+// for htons() et al.
+#ifdef _WIN32
+ #include <Winsock2.h>
+#endif
+
 #include "evrRegMap.h"
 #include "plx9030.h"
 #include "plx9056.h"
+#include "latticeEC30.h"
 
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
+#ifdef _WIN32
+ #define strtok_r(strToken,strDelimit,lasts ) (*(lasts) = strtok((strToken),(strDelimit)))
+#endif
+
 
 /* Bit mask used to communicate which VME interrupt levels
  * are used.  Bits are set by mrmEvrSetupVME().  Levels are
@@ -52,6 +65,8 @@ static const epicsPCIID mrmevrs[] = {
                                 PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9056,    PCI_VENDOR_ID_PLX,
                                 PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
+                                PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -116,7 +131,7 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
 {
     size_t reg;
 
-    printf("EVR\n");
+    printf("EVR register dump\n");
     for(reg=0; reg<NELEMENTS(printreg); reg++){
 
         if(printreg[reg].offset+printreg[reg].rsize/8 > len)
@@ -150,11 +165,52 @@ bool reportCard(mrf::Object* obj, void* raw)
     if(!evr)
         return true;
 
-    printf("--- EVR %s ---\n",obj->name().c_str());
+    printf("EVR: %s\n",obj->name().c_str());
+    printf("\tFPGA Version: %08x (firmware: %x)\n", evr->fpgaFirmware(), evr->version());
+    printf("\tForm factor: %s\n", evr->formFactorStr().c_str());
+    printf("\tClock: %.6f MHz\n",evr->clock()*1e-6);
 
-    printf("Model: %08x  Version: %08x\n",evr->model(),evr->version());
+    bus_configuration *bus = evr->getBusConfiguration();
+    if(bus->busType == busType_vme){
+        struct VMECSRID vmeDev;
+        volatile unsigned char* csrAddr = devCSRTestSlot(vmeevrs, bus->vme.slot, &vmeDev);
+        if(csrAddr){
+            epicsUInt32 ader = CSRRead32(csrAddr + CSR_FN_ADER(2));
+            size_t user_offset=CSRRead24(csrAddr+CR_BEG_UCSR);
+            // Currently that value read from the UCSR pointer is
+            // actually little endian.
+            user_offset= (( user_offset & 0x00ff0000 ) >> 16 ) |
+                         (( user_offset & 0x0000ff00 )       ) |
+                         (( user_offset & 0x000000ff ) << 16 );
 
-    printf("Clock: %.6f MHz\n",evr->clock()*1e-6);
+            printf("\tVME configured slot: %d\n", bus->vme.slot);
+            printf("\tVME configured A24 address 0x%08x\n", bus->vme.address);
+            printf("\tVME ADER: base address=0x%x\taddress modifier=0x%x\n", ader>>8, (ader&0xFF)>>2);
+            printf("\tVME IRQ Level %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_LEVEL), bus->vme.irqLevel);
+            printf("\tVME IRQ Vector %d (configured to %d)\n", CSRRead8(csrAddr + user_offset + UCSR_IRQ_VECTOR), bus->vme.irqVector);
+            if(*level>1) printf("\tVME card vendor: 0x%08x\n", vmeDev.vendor);
+            if(*level>1) printf("\tVME card board: 0x%08x\n", vmeDev.board);
+            if(*level>1) printf("\tVME card revision: 0x%08x\n", vmeDev.revision);
+            if(*level>1) printf("\tVME CSR address: %p\n", csrAddr);
+        }else{
+            printf("\tCard not detected in configured slot %d\n", bus->vme.slot);
+        }
+    }
+    else if(bus->busType == busType_pci){
+        const epicsPCIDevice *pciDev;
+        if(!devPCIFindBDF(mrmevrs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
+            printf("\tPCI configured bus: 0x%08x\n", bus->pci.bus);
+            printf("\tPCI configured device: 0x%08x\n", bus->pci.device);
+            printf("\tPCI configured function: 0x%08x\n", bus->pci.function);
+            printf("\tPCI IRQ: %u\n", pciDev->irq);
+            if(*level>1) printf("\tPCI class: 0x%08x, revision: 0x%x, sub device: 0x%x, sub vendor: 0x%x\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+
+        }else{
+            printf("\tPCI Device not found\n");
+        }
+    }else{
+        printf("\tUnknown bus type\n");
+    }
 
     if(*level>=2){
         printregisters(evr->base, evr->baselen);
@@ -189,7 +245,7 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
-        throw std::runtime_error("Address does not correspond to an EVR");
+        throw std::runtime_error("Firmware does not correspond to an EVR");
 
     ver=v&FWVersion_ver_mask;
     ver>>=FWVersion_ver_shift;
@@ -209,27 +265,32 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
 static char ifaceversion[] = "/sys/module/mrf/parameters/interfaceversion";
 /* Check the interface version of the kernel module to ensure compatibility */
 static
-int checkUIOVersion(int expect)
+bool checkUIOVersion(int expect)
 {
     FILE *fd;
     int version = -1;
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s\n", ifaceversion);
-        return 1;
+        errlogPrintf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
+        return true;
     }
     if(fscanf(fd, "%d", &version)!=1) {
-        perror("checkUIOVersion fscanf");
+        fclose(fd);
+        errlogPrintf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
+        return true;
     }
     fclose(fd);
+
+    // Interface versions are *not* expected to be backwords or forwards compatible.
     if(version!=expect) {
-        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n",version,expect);
+        errlogPrintf("Error: Expect MRF kernel module version %d, found %d.\n", version, expect);
+        return true;
     }
-    return version!=expect;
+    return false;
 }
 #else
-static int checkUIOVersion(int expect) {return 0;}
+static bool checkUIOVersion(int) {return false;}
 #endif
 
 extern "C"
@@ -237,9 +298,14 @@ void
 mrmEvrSetupPCI(const char* id,int b,int d,int f)
 {
 try {
-    std::ostringstream position;
+    bus_configuration bus;
+
+    bus.busType = busType_pci;
+    bus.pci.bus = b;
+    bus.pci.device = d;
+    bus.pci.function = f;
     if(mrf::Object::getObject(id)){
-        printf("ID %s already in use\n",id);
+        printf("Object ID %s already in use\n",id);
         return;
     }
 
@@ -247,33 +313,53 @@ try {
         return;
 
     const epicsPCIDevice *cur=0;
-    if( devPCIFindBDF(mrmevrs,b,d,f,&cur,0) ){
-        printf("PCI Device not found\n");
+
+    if( devPCIFindDBDF(mrmevrs,0,b,d,f,&cur,0) ){
+        printf("PCI Device not found on %d:%d.%d\n", b, d, f);
         return;
     }
 
     printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
-    position<<cur->bus<<":"<<cur->device<<"."<<cur->function;
     printf("Using IRQ %u\n",cur->irq);
 
-    volatile epicsUInt8 *plx, *evr;
+    volatile epicsUInt8 *plx = 0, *evr = 0;
+    epicsUInt32 evrlen = 0;
 
-    if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
-        devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
-    {
-        printf("Failed to map BARs 0 and 2\n");
-        return;
-    }
-    if(!plx || !evr){
-        printf("BARs mapped to zero? (%08lx,%08lx)\n",
-               (unsigned long)plx,(unsigned long)evr);
-        return;
-    }
+    /*
+     * The EC 30 device has only 1 bar (0) which we need to map to *evr.
+     */
+    if(cur->id.device == PCI_DEVICE_ID_EC_30) {
+        if(devPCIToLocalAddr(cur,0,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+        {
+            printf("PCI error: Failed to map BARs 0 for EC 30\n");
+            return;
+        }
+        if(!evr){
+            printf("PCI error: BAR mapped to zero? (%08lx)\n", (unsigned long)evr);
+            return;
+        }
 
-    epicsUInt32 evrlen;
-    if( devPCIBarLen(cur,2,&evrlen) ) {
-        printf("Can't find BAR #2 length\n");
-        return;
+        if( devPCIBarLen(cur,0,&evrlen) ) {
+            printf("PCI error: Can't find BAR #0 length\n");
+            return;
+        }
+    } else {
+        if( devPCIToLocalAddr(cur,0,(volatile void**)(void *)&plx,DEVLIB_MAP_UIO1TO1) ||
+            devPCIToLocalAddr(cur,2,(volatile void**)(void *)&evr,DEVLIB_MAP_UIO1TO1))
+        {
+            printf("PCI error: Failed to map BARs 0 and 2\n");
+            return;
+        }
+        if(!plx || !evr){
+            printf("PCI error: BARs mapped to zero? (%08lx,%08lx)\n",
+                   (unsigned long)plx,(unsigned long)evr);
+            return;
+        }
+
+        if( devPCIBarLen(cur,2,&evrlen) ) {
+            printf("PCI error: Can't find BAR #2 length\n");
+            return;
+        }
     }
 
     // handle various PCI to local bus bridges
@@ -302,7 +388,7 @@ try {
 #else
         /* ask the kernel module to enable interrupts through the PLX bridge */
         if(devPCIEnableInterrupt(cur)) {
-            printf("Failed to enable interrupt\n");
+            printf("PLX 9030: Failed to enable interrupt\n");
             return;
         }
 #endif
@@ -322,14 +408,37 @@ try {
 #ifndef __linux__
         BITSET(LE,32,plx, INTCSR9056, INTCSR9056_PCI_Enable|INTCSR9056_LCL_Enable);
 #else
-        /* ask the kernel module to enable interrupts through the PLX bridge */
+        /* ask the kernel module to enable interrupts */
         if(devPCIEnableInterrupt(cur)) {
-            printf("Failed to enable interrupt\n");
+            printf("PLX 9056: Failed to enable interrupt\n");
             return;
         }
 #endif
         break;
 
+    case PCI_DEVICE_ID_EC_30:
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+        //BITCLR(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
+#elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
+        //BITSET(LE,32, evr, AC30CTRL, AC30CTRL_LEMDE);
+        *(epicsUInt8 *)(evr+0x04) = 0x82; // unknown magic number
+        printf("Setting magic LE number!\n");
+#endif
+
+        // Disable interrupts on device
+        NAT_WRITE32(evr, IRQEnable, 0);
+
+#ifndef __linux__
+        BITSET32(evr, IRQEnable, IRQ_PCIee);
+#else
+        /* ask the kernel module to enable interrupts */
+        printf("EC 30: Enabling interrupts\n");
+        if(devPCIEnableInterrupt(cur)) {
+            printf("EC 30: Failed to enable interrupt\n");
+            return;
+        }
+#endif
+        break;
     default:
         printf("Unknown PCI bridge %04x\n", cur->id.device);
         return;
@@ -343,14 +452,14 @@ try {
 
     // Install ISR
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,evrlen);
+    EVRMRM *receiver=new EVRMRM(id,bus,evr,evrlen);
 
     void *arg=receiver;
 #ifdef __linux__
     receiver->isrLinuxPvt = (void*)cur;
 #endif
 
-    if(devPCIConnectInterrupt(cur, &EVRMRM::isr, arg, 0)){
+    if(devPCIConnectInterrupt(cur, &EVRMRM::isr_pci, arg, 0)){
         printf("Failed to install ISR\n");
         delete receiver;
     }else{
@@ -444,6 +553,7 @@ void inithooks(initHookState state)
     }
 }
 
+
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "Bus number",iocshArgInt};
 static const iocshArg mrmEvrSetupPCIArg2 = { "Device number",iocshArgInt};
@@ -462,7 +572,14 @@ void
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
-    std::ostringstream position;
+    bus_configuration bus;
+
+    bus.busType = busType_vme;
+    bus.vme.slot = slot;
+    bus.vme.address = base;
+    bus.vme.irqLevel = level;
+    bus.vme.irqVector = vector;
+
     if(mrf::Object::getObject(id)){
         printf("ID %s already in use\n",id);
         return;
@@ -477,7 +594,6 @@ try {
     }
 
     printf("Setting up EVR in VME Slot %d\n",slot);
-    position<<"Slot #"<<slot;
 
     printf("Found vendor: %08x board: %08x rev.: %08x\n",
            info.vendor, info.board, info.revision);
@@ -533,7 +649,7 @@ try {
 
     NAT_WRITE32(evr, IRQEnable, 0); // Disable interrupts
 
-    EVRMRM *receiver=new EVRMRM(id,position.str(),evr,EVR_REGMAP_SIZE);
+    EVRMRM *receiver=new EVRMRM(id, bus, evr, EVR_REGMAP_SIZE);
 
     if(level>0 && vector>=0) {
         CSRWrite8(user_csr+UCSR_IRQ_LEVEL,  level&0x7);
@@ -552,7 +668,7 @@ try {
         // VME IRQ level will be enabled later during iocInit()
         vme_level_mask|=1<<(level-1);
 
-        if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr, receiver))
+        if(devConnectInterruptVME(vector&0xff, &EVRMRM::isr_vme, receiver))
         {
             printf("Failed to connection VME IRQ %d\n",vector&0xff);
             delete receiver;
@@ -728,6 +844,43 @@ static void mrmEvrForwardCallFunc(const iocshArgBuf *args)
     mrmEvrForward(args[0].sval,args[1].sval);
 }
 
+extern "C"
+void
+mrmEvrLoopback(const char* id, int rxLoopback, int txLoopback)
+{
+try {
+    mrf::Object *obj=mrf::Object::getObject(id);
+    if(!obj)
+        throw std::runtime_error("Object not found");
+    EVRMRM *card=dynamic_cast<EVRMRM*>(obj);
+    if(!card){
+        throw std::runtime_error("Not a MRM EVR");
+    }
+
+    epicsUInt32 control = NAT_READ32(card->base,Control);
+    control &= ~(Control_txloop|Control_rxloop);
+    if (rxLoopback) control |= Control_rxloop;
+    if (txLoopback) control |= Control_txloop;
+    NAT_WRITE32(card->base,Control, control);
+
+} catch(std::exception& e) {
+    printf("Error: %s\n",e.what());
+}
+}
+
+static const iocshArg mrmEvrLoopbackArg0 = { "name",iocshArgString};
+static const iocshArg mrmEvrLoopbackArg1 = { "RX-loopback",iocshArgInt};
+static const iocshArg mrmEvrLoopbackArg2 = { "TX-loopback",iocshArgInt};
+static const iocshArg * const mrmEvrLoopbackArgs[3] =
+    {&mrmEvrLoopbackArg0,&mrmEvrLoopbackArg1,&mrmEvrLoopbackArg2};
+static const iocshFuncDef mrmEvrLoopbackFuncDef =
+    {"mrmEvrLoopback",3,mrmEvrLoopbackArgs};
+
+static void mrmEvrLoopbackCallFunc(const iocshArgBuf *args)
+{
+    mrmEvrLoopback(args[0].sval,args[1].ival,args[2].ival);
+}
+
 static
 void mrmsetupreg()
 {
@@ -736,9 +889,9 @@ void mrmsetupreg()
     iocshRegister(&mrmEvrSetupVMEFuncDef,mrmEvrSetupVMECallFunc);
     iocshRegister(&mrmEvrDumpMapFuncDef,mrmEvrDumpMapCallFunc);
     iocshRegister(&mrmEvrForwardFuncDef,mrmEvrForwardCallFunc);
+    iocshRegister(&mrmEvrLoopbackFuncDef,mrmEvrLoopbackCallFunc);
 }
 
-epicsExportRegistrar(mrmsetupreg);
 
 static
 drvet drvEvrMrm = {
@@ -746,5 +899,7 @@ drvet drvEvrMrm = {
     (DRVSUPFUN)report,
     NULL
 };
-
+extern "C"{
+epicsExportRegistrar(mrmsetupreg);
 epicsExportAddress (drvet, drvEvrMrm);
+}

@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -8,10 +9,9 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvem.h"
-
 #include <cstdio>
 #include <cstring>
+#include <cmath>
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
@@ -19,24 +19,44 @@
 #include <epicsMath.h>
 #include <errlog.h>
 #include <epicsMath.h>
+#include <dbDefs.h>
+#include <dbScan.h>
+#include <epicsInterrupt.h>
 
-#include <mrfCommon.h>
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
-
-#ifdef __linux__
-#  include "devLibPCI.h"
-#endif
+#include "mrmDataBufTx.h"
+#include "sfp.h"
 
 #include "evrRegMap.h"
 
 #include "mrfFracSynth.h"
 
+#include <mrfCommon.h>
+#include <mrfCommonIO.h>
+#include <mrfBitOps.h>
+
 #include "drvemIocsh.h"
 
-#include <dbDefs.h>
-#include <dbScan.h>
-#include <epicsInterrupt.h>
+#include <evr/evr.h>
+#include <evr/pulser.h>
+#include <evr/cml.h>
+#include <evr/prescaler.h>
+#include <evr/input.h>
+#include <evr/delay.h>
+
+#if defined(__linux__) || defined(_WIN32)
+#  include "devLibPCI.h"
+#endif
+
+#include <epicsExport.h>
+
+#include "drvem.h"
+
+int evrDebug;
+extern "C" {
+ epicsExportAddress(int, evrDebug);
+}
+
+using namespace std;
 
 #define CBINIT(ptr, prio, fn, valptr) \
 do { \
@@ -72,6 +92,8 @@ extern "C" {
      * No point in making this shorter than the system tick
      */
     double mrmEvrFIFOPeriod = 1.0/ 1000.0; /* 1/rate in Hz */
+
+    epicsExportAddress(double,mrmEvrFIFOPeriod);
 }
 
 /* Number of good updates before the time is considered valid */
@@ -82,10 +104,10 @@ static
 const double fracref=24.0; // MHz
 
 EVRMRM::EVRMRM(const std::string& n,
-               const std::string& p,
+               bus_configuration& busConfig,
                volatile unsigned char* b,
                epicsUInt32 bl)
-  :EVR(n,p)
+  :EVR(n,busConfig)
   ,evrLock()
   ,id(n)
   ,base(b)
@@ -101,6 +123,7 @@ EVRMRM::EVRMRM(const std::string& n,
   ,prescalers()
   ,pulsers()
   ,shortcmls()
+  ,gpio_(*this)
   ,drain_fifo_method(*this)
   ,drain_fifo_task(drain_fifo_method, "EVRFIFO",
                    epicsThreadGetStackSize(epicsThreadStackBig),
@@ -116,16 +139,16 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
-    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
+    epicsUInt32 v, evr,ver;
 
+    v = fpgaFirmware();
     evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    ver=v&FWVersion_ver_mask;
-    ver>>=FWVersion_ver_shift;
+    ver = version();
     if(ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
@@ -149,51 +172,53 @@ try{
      * Create subunit instances
      */
 
-    v&=FWVersion_form_mask;
-    v>>=FWVersion_form_shift;
-    evrForm form=(evrForm)v;
+    formFactor form = getFormFactor();
 
     size_t nPul=16; // number of pulsers
     size_t nPS=3;   // number of prescalers
     // # of outputs (Front panel, FP Universal, Rear transition module)
     size_t nOFP=0, nOFPUV=0, nORB=0;
+    size_t nOFPDly=0;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
     // # of CML outputs
     size_t nCML=0;
     MRMCML::outkind kind=MRMCML::typeCML;
     // # of FP inputs
     size_t nIFP=0;
 
+    printf("%s: ", formFactorStr().c_str());
     switch(form){
-    case evrFormCPCI:
-        printf("CPCI ");
+    case formFactor_CPCI:
         nOFPUV=4;
+        nOFPDly=2;
         nIFP=2;
         nORB=6;
         break;
-    case evrFormPMC:
-        printf("PMC ");
+    case formFactor_PMC:
         nOFP=3;
         nIFP=1;
         break;
-    case evrFormVME64:
-        printf("VME64 ");
+    case formFactor_VME64:
         nOFP=7;
         nCML=3; // OFP 4-6 are CML
+        nOFPDly=2;
         nOFPUV=4;
         nORB=16;
         nIFP=2;
         break;
-    case evrFormCPCIFULL:
-        printf("TG ");
+    case formFactor_CPCIFULL:
         nOFPUV=4;
         kind=MRMCML::typeTG300;
         break;
+    case formFactor_PCIe:
+        nOFPUV=16;
+        break;
     default:
-        printf("Unknown EVR variant %d\n",v);
+        printf("Unknown EVR form factor %d\n",v);
     }
-    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u\n",
+    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
            (unsigned int)nOFP,(unsigned int)nOFPUV,
-           (unsigned int)nORB,(unsigned int)nIFP);
+           (unsigned int)nORB,(unsigned int)nIFP,
+           (unsigned int)nOFPDly);
 
     // Special output for mapping bus interrupt
     //outputs[std::make_pair(OutputInt,0)]=new MRMOutput(base+U16_IRQPulseMap);
@@ -205,19 +230,26 @@ try{
         inputs[i]=new MRMInput(name.str(), base,i);
     }
 
-    for(size_t i=0; i<nOFP; i++){
+    for(unsigned int i=0; i<nOFP; i++){
         std::ostringstream name;
         name<<id<<":FrontOut"<<i;
         outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
     }
 
-    for(size_t i=0; i<nOFPUV; i++){
+    for(unsigned int i=0; i<nOFPUV; i++){
         std::ostringstream name;
         name<<id<<":FrontUnivOut"<<i;
         outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
     }
 
-    for(size_t i=0; i<nORB; i++){
+    delays.resize(nOFPDly);
+    for(unsigned int i=0; i<nOFPDly; i++){
+        std::ostringstream name;
+        name<<id<<":UnivDlyModule"<<i;
+        delays[i]=new DelayModule(name.str(), this, i);
+    }
+
+    for(unsigned int i=0; i<nORB; i++){
         std::ostringstream name;
         name<<id<<":RearUniv"<<i;
         outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
@@ -231,15 +263,15 @@ try{
     }
 
     pulsers.resize(nPul);
-    for(size_t i=0; i<nPul; i++){
+    for(epicsUInt32 i=0; i<nPul; i++){
         std::ostringstream name;
         name<<id<<":Pul"<<i;
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
-    if(v==evrFormCPCIFULL) {
+    if(v==formFactor_CPCIFULL) {
         shortcmls.resize(8);
-        for(size_t i=4; i<8; i++) {
+        for(unsigned int i=4; i<8; i++) {
             std::ostringstream name;
             name<<id<<":FrontOut"<<i;
             outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
@@ -256,14 +288,14 @@ try{
         for(size_t i=0; i<nCML; i++){
             std::ostringstream name;
             name<<id<<":CML"<<i;
-            shortcmls[i]=new MRMCML(name.str(), i,*this,kind,form);
+            shortcmls[i]=new MRMCML(name.str(), (unsigned char)i,*this,kind,form);
         }
 
     }else if(nCML){
         printf("CML outputs not supported with this firmware\n");
     }
 
-    for(size_t i=0; i<NELEMENTS(this->events); i++) {
+    for(epicsUInt32 i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=i;
         events[i].owner=this;
         CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
@@ -302,7 +334,7 @@ try{
     if(tsDiv()!=0) {
         shadowSourceTS=TSSourceInternal;
     } else {
-        bool usedbus4=READ32(base, Control) & Control_tsdbus;
+        bool usedbus4=(READ32(base, Control) & Control_tsdbus) != 0;
 
         if(usedbus4)
             shadowSourceTS=TSSourceDBus4;
@@ -363,6 +395,11 @@ EVRMRM::model() const
 }
 
 epicsUInt32
+EVRMRM::fpgaFirmware(){
+    return READ32(base, FWVersion);
+}
+
+epicsUInt32
 EVRMRM::version() const
 {
     epicsUInt32 v = READ32(base, FWVersion);
@@ -370,11 +407,61 @@ EVRMRM::version() const
     return (v&FWVersion_ver_mask)>>FWVersion_ver_shift;
 }
 
+formFactor
+EVRMRM::getFormFactor(){
+    epicsUInt32 form = model();
+
+    if(form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+EVRMRM::formFactorStr(){
+    std::string text;
+    formFactor form;
+
+    form = getFormFactor();
+    switch(form){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
+}
+
 bool
 EVRMRM::enabled() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_enable;
+    return (v&Control_enable) != 0;
 }
 
 void
@@ -421,6 +508,13 @@ EVRMRM::output(OutputType otype,epicsUInt32 idx) const
         return 0;
     else
         return it->second;
+}
+
+DelayModule*
+EVRMRM::delay(epicsUInt32 i){
+    if(i>=delays.size())
+        throw std::out_of_range("Delay Module id is out of range.");
+    return delays[i];
 }
 
 MRMInput*
@@ -471,15 +565,20 @@ EVRMRM::cml(epicsUInt32 i) const
     return shortcmls[i];
 }
 
+MRMGpio*
+EVRMRM::gpio(){
+    return &gpio_;
+}
+
 bool
 EVRMRM::specialMapped(epicsUInt32 code, epicsUInt32 func) const
 {
     if(code>255)
-        throw std::out_of_range("Event code is out of range");
+        throw std::out_of_range("Event code is out of range (0-255)");
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        throw std::out_of_range("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range. Valid ranges: 96-101 and 122-127");
     }
 
     if(code==0)
@@ -495,14 +594,14 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
 {
     if(code>255)
         throw std::out_of_range("Event code is out of range");
-    /* The special function codes are the range 96 to 127
+    /* The special function codes are the range 96 to 127, excluding 102 to 121
      */
     if(func>127 || func<96 ||
         (func<=121 && func>=102) )
     {
-        errlogPrintf("EVR %s code %02x func %3d out of range\n",
+        errlogPrintf("EVR %s code %02x func %3d out of range. Code range is 0-255, where function rangs are 96-101 and 122-127\n",
             id.c_str(), code, func);
-        throw std::out_of_range("Special function code is out of range");
+        throw std::out_of_range("Special function code is out of range.  Valid ranges: 96-101 and 122-127");
     }
 
     if(code==0)
@@ -587,7 +686,7 @@ bool
 EVRMRM::extInhib() const
 {
     epicsUInt32 v = READ32(base, Control);
-    return v&Control_GTXio;
+    return (v&Control_GTXio) != 0;
 }
 
 void
@@ -603,7 +702,7 @@ EVRMRM::setExtInhib(bool v)
 bool
 EVRMRM::pllLocked() const
 {
-    return READ32(base, ClkCtrl) & ClkCtrl_cglock;
+    return (READ32(base, ClkCtrl) & ClkCtrl_cglock) != 0;
 }
 
 bool
@@ -766,7 +865,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
          */
         epicsUInt32 ctrl2=READ32(base, Control);
         if (ctrl2!=ctrl) { // tsltch bit is write-only
-            printf("Control register write fault %08x %08x\n",ctrl,ctrl2);
+            printf("Get timestamp: control register write fault. Written: %08x, readback: %08x\n",ctrl,ctrl2);
             WRITE32(base, Control, ctrl);
         }
 
@@ -888,14 +987,39 @@ EVRMRM::enableIRQ(void)
 {
     int key=epicsInterruptLock();
 
-    shadowIRQEna = IRQ_Enable
+    shadowIRQEna =  IRQ_Enable
                    |IRQ_RXErr    |IRQ_BufFull
                    |IRQ_Heartbeat|IRQ_HWMapped
                    |IRQ_Event    |IRQ_FIFOFull;
 
+    // IRQ PCIe enable flag should not be changed. Possible RACER here
+    shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
+
     WRITE32(base, IRQEnable, shadowIRQEna);
 
     epicsInterruptUnlock(key);
+}
+
+void
+EVRMRM::isr_pci(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(evr, true);
+
+#if defined(__linux__) || defined(_WIN32)
+    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
+        printf("Failed to re-enable interrupt.  Stuck...\n");
+    }
+#endif
+}
+
+void
+EVRMRM::isr_vme(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(evr, false);
 }
 
 // A place to write to which will keep the read
@@ -904,20 +1028,29 @@ EVRMRM::enableIRQ(void)
 volatile epicsUInt32 evrMrmIsrFlagsTrashCan;
 
 void
-EVRMRM::isr(void *arg)
+EVRMRM::isr(EVRMRM *evr, bool pci)
 {
-    EVRMRM *evr=static_cast<EVRMRM*>(arg);
 
     epicsUInt32 flags=READ32(evr->base, IRQFlag);
 
     epicsUInt32 active=flags&evr->shadowIRQEna;
 
-#ifndef __linux__
-    /* on RTEMS/vxWorks this skips extra work with a shared interrupt.
-     * on Linux this allows a race condtion which can leave interrupts disabled
-     */
-    if(!active)
-      return;
+#if defined(vxWorks) || defined(__rtems__)
+    if(!active) {
+#  ifdef __rtems__
+        if(!pci)
+            printk("EVRMRM::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, evr->shadowIRQEna);
+#else
+        (void)pci;
+#  endif
+        // this is a shared interrupt
+        return;
+    }
+    // Note that VME devices do not normally shared interrupts
+#else
+    // for Linux, shared interrupts are detected by the kernel module
+    // so any notifications to userspace are real interrupts by this device
+    (void)pci;
 #endif
 
     if(active&IRQ_RXErr){
@@ -956,16 +1089,13 @@ EVRMRM::isr(void *arg)
     }
     evr->count_hardware_irq++;
 
+    // IRQ PCIe enable flag should not be changed. Possible RACER here
+    evr->shadowIRQEna |= (IRQ_PCIee & (READ32(evr->base, IRQEnable)));
+
     WRITE32(evr->base, IRQFlag, flags);
     WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
     // Ensure IRQFlags is written before returning.
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
-
-#ifdef __linux__
-    if(devPCIEnableInterrupt((const epicsPCIDevice*)evr->isrLinuxPvt)) {
-        printf("Failed to re-enable interrupt.  Stuck...\n");
-    }
-#endif
 }
 
 
@@ -1079,7 +1209,11 @@ EVRMRM::drain_fifo()
 
         int iflags=epicsInterruptLock();
 
-        shadowIRQEna |= IRQ_Event|IRQ_FIFOFull;
+        //*
+        shadowIRQEna |= IRQ_Event | IRQ_FIFOFull;
+        // IRQ PCIe enable flag should not be changed. Possible RACER here
+        shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
+
         WRITE32(base, IRQEnable, shadowIRQEna);
 
         epicsInterruptUnlock(iflags);
@@ -1154,6 +1288,8 @@ try {
         scanIoRequest(evr->IRQrxError);
         int iflags=epicsInterruptLock();
         evr->shadowIRQEna |= IRQ_RXErr;
+        // IRQ PCIe enable flag should not be changed. Possible RACER here
+        evr->shadowIRQEna |= (IRQ_PCIee & (READ32(evr->base, IRQEnable)));
         WRITE32(evr->base, IRQEnable, evr->shadowIRQEna);
         epicsInterruptUnlock(iflags);
     }
@@ -1210,6 +1346,3 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 
 
 }
-
-#include <epicsExport.h>
-epicsExportAddress(double,mrmEvrFIFOPeriod);

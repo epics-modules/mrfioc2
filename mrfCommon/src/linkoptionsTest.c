@@ -41,6 +41,9 @@ const char two[]="BEE=2.4, Color=Blue, name=ralph";
 
 MAIN(linkoptionsTest)
 {
+    (void)argc;
+    (void)argv;
+
     struct adev X;
 
     testPlan(10);

@@ -8,8 +8,6 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemCML.h"
-
 #include <stdexcept>
 #include <algorithm>
 
@@ -18,12 +16,15 @@
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
-#include "drvem.h"
 
-MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, evrForm f)
+
+#include "drvem.h"
+#include "drvemCML.h"
+
+MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formFactor f)
   :CML(n)
-  ,mult(f==evrFormCPCIFULL ? 40 : 20) // CML word length
-  ,wordlen(f==evrFormCPCIFULL ? 2 : 1)// # of 32-bit dwords used to store 1 CML word
+  ,mult(f==formFactor_CPCIFULL ? 40 : 20) // CML word length
+  ,wordlen(f==formFactor_CPCIFULL ? 2 : 1)// # of 32-bit dwords used to store 1 CML word
                                       // 40 bits fit in 2 dwords, 20 bits fit in 1
   ,base(o.base)
   ,N(i)
@@ -137,7 +138,7 @@ MRMCML::enable(bool s)
 bool
 MRMCML::inReset() const
 {
-    return shadowEnable & OutputCMLEna_rst;
+    return (shadowEnable & OutputCMLEna_rst) != 0;
 }
 
 void
@@ -179,8 +180,10 @@ MRMCML::fineDelay() const
 void
 MRMCML::setFineDelay(double v)
 {
-    if(v>1024.0)
+    if(v>1024.0){
+        printf("Delay will be set to 1024 instead of %f\n", v);
         v=1024.0;
+    }
     WRITE32(base, GTXDelay(N), roundToUInt(v*1024.0));
 }
 
@@ -197,7 +200,7 @@ MRMCML::setPolarityInvert(bool s)
 bool
 MRMCML::polarityInvert() const
 {
-    return shadowEnable & OutputCMLEna_ftrg;
+    return (shadowEnable & OutputCMLEna_ftrg) != 0;
 }
 
 epicsUInt32
@@ -227,8 +230,9 @@ MRMCML::countInit () const
 void
 MRMCML::setCountHigh(epicsUInt32 v)
 {
-    if(v<=20 || v>=65535)
+    if(v<=20 || v>=65535){
         throw std::out_of_range("Invalid CML freq. count");
+    }
 
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_high_shft);
@@ -313,7 +317,7 @@ MRMCML::setTimeInit (double v)
 bool
 MRMCML::recyclePat() const
 {
-    return shadowEnable & OutputCMLEna_cycl;
+    return (shadowEnable & OutputCMLEna_cycl) != 0;
 }
 
 void
@@ -386,8 +390,10 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
 {
     // If we are given a length that is not a multiple of CML word size
     // then truncate.
-    if(blen%mult)
+    if(blen%mult){
+        printf("Given length is not a multiple of %u (CML word size). Truncating...\n", mult);
         blen-=blen%mult;
+    }
 
     if(blen>lenPatternMax(p))
         throw std::out_of_range("Pattern is too long");

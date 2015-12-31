@@ -1,5 +1,19 @@
-
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include <stdio.h>
+
+// for htons() et al.
+#ifdef _WIN32
+ #include <Winsock2.h>
+#endif
+
+#include <epicsExport.h>
+#include "mrf/object.h"
 #include "sfp.h"
 
 #include "mrfCommonIO.h"
@@ -40,36 +54,44 @@ void SFP::updateNow(bool)
     epicsUInt32* p32=(epicsUInt32*)&buffer[0];
 
     for(unsigned int i=0; i<SFPMEM_SIZE/4; i++)
-        p32[i] = nat_ioread32(base+ i*4);
+        p32[i] = be_ioread32(base+ i*4);
 
     valid = buffer[0]==3 && buffer[2]==7;
 }
 
 double SFP::linkSpeed() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1;
+    }
     return buffer[SFP_linkrate] * 100.0; // Gives MBits/s
 }
 
 double SFP::temperature() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -40;
+    }
     return read16(SFP_temp) / 256.0; // Gives degrees C
 }
 
 double SFP::powerTX() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1e-6;
+    }
     return read16(SFP_tx_pwr) * 0.1e-6; // Gives Watts
 }
 
 double SFP::powerRX() const
 {
-    if(!valid)
+    if(!valid){
+        fprintf(stderr, "SFP redout not valid\n");
         return -1e-6;
+    }
     return read16(SFP_rx_pwr) * 0.1e-6; // Gives Watts
 }
 
@@ -130,7 +152,7 @@ void SFP::report() const
             linkSpeed(),
             powerTX()*1e6,
             powerRX()*1e6);
-    printf(" Vendor:%s\n Model: %s\n Rev: %s\n Manufacture data: %s\n Serial: %s\n",
+    printf(" Vendor:%s\n Model: %s\n Rev: %s\n Manufacture date: %s\n Serial: %s\n",
            vendorName().c_str(),
            vendorPart().c_str(),
            vendorRev().c_str(),

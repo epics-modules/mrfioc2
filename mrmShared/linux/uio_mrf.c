@@ -1,9 +1,15 @@
-/* Copyright (C) 2014 Brookhaven National Lab
- * All rights reserved.
- * See file LICENSE for terms.
- */
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 
 #include "mrf.h"
+
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
 
 #define DRV_NAME "mrf-pci"
 #define DRV_VERSION "1"
@@ -17,7 +23,29 @@ MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
  */
 static int modparam_iversion = 1;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
-MODULE_PARM_DESC(gpiobase, "User space interface version");
+MODULE_PARM_DESC(interfaceversion, "User space interface version");
+
+/************************ PCI Device and vendor IDs ****************/
+
+#define PCI_SUBVENDOR_ID_MRF                0x1a3e
+
+#define PCI_VENDOR_ID_LATTICE               0x1204
+
+#define PCI_DEVICE_ID_EC_30                 0xEC30
+
+#define PCI_DEVICE_ID_PLX_9030              0x9030      /** PCI Device ID for PLX-9030 bridge chip */
+#define PCI_DEVICE_ID_PLX_9056              0x9056      /** PCI Device ID for PLX-9056 bridge chip */
+
+/* PMC-EVR-230 */
+#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230     0x11e6
+/* cPCI-EVR-230 */
+#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230     0x10e6
+/* cPCI-EVG-230 */
+#define PCI_SUBDEVICE_ID_MRF_PXIEVG_230     0x20E6
+/* cPCI-EVRTG-300 */
+#define PCI_SUBDEVICE_ID_MRF_EVRTG_300      0x192c
+/* PCIe-EVR-300 */
+#define PCI_SUBDEVICE_ID_PCIE_EVR_300       0x172c
 
 /************************ Compatability ****************************/
 
@@ -105,6 +133,13 @@ mrf_handler_evr(int irq, struct uio_info *info)
         plxctrl = ioread32(plx + BIGEND9056);
         end = plxctrl & BIGEND9056_BIG;
         break;
+    case PCI_DEVICE_ID_EC_30: {
+        static int flag = 0; /* don't spam! */
+        if(!flag) {
+            dev_err(&dev->dev, "EC30 ISR not supported in EVR mode");
+            flag = 1;
+        }
+    }
     default:
         return IRQ_NONE; /* hope this never happens :) */
     }
@@ -120,18 +155,22 @@ mrf_handler_evr(int irq, struct uio_info *info)
         enable = ioread32(base + IRQEnable);
     }
 
-    if (!(status & enable))
+    if (!(status & enable)) {
             return IRQ_NONE;
+    }
 
-    if(!(enable & IRQ_Enable))
+    if(!(enable & IRQ_Enable)) {
         dev_info(&dev->dev, "Interrupt when not enabled! 0x%08lx 0x%08lx\n",
                  (unsigned long)enable, (unsigned long)status);
+    }
 
     /* Disable interrupt */
-    if (end)
+    if (end) {
         iowrite32be(enable & ~IRQ_Enable, base + IRQEnable);
-    else
+    } else {
         iowrite32(enable & ~IRQ_Enable, base + IRQEnable);
+    }
+
     /* Ensure interrupts have really been disabled */
     wmb();
     if (end) {
@@ -139,9 +178,10 @@ mrf_handler_evr(int irq, struct uio_info *info)
     } else {
         enable = ioread32(base + IRQEnable);
     }
-    if(enable & IRQ_Enable)
-        dev_info(&dev->dev, "Interrupt not disabled!!!");
 
+    if(enable & IRQ_Enable) {
+        dev_info(&dev->dev, "Interrupt not disabled!!!");
+    }
 
     return IRQ_HANDLED;
 }
@@ -154,13 +194,12 @@ irqreturn_t
 mrf_handler_plx(int irq, struct uio_info *info)
 {
     struct pci_dev *dev = info->priv;
-    void __iomem *plx;
-    u32 val;
+    void __iomem *plx = info->mem[0].internal_addr;
+    u32 val, end;
     int oops;
 
     switch(dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
-        plx = info->mem[0].internal_addr;
         // clear INTCSR_PCI_Enable
         iowrite32(INTCSR_INT1_Enable|INTCSR_INT1_Polarity, plx+INTCSR);
         val = ioread32(plx+INTCSR);
@@ -168,19 +207,69 @@ mrf_handler_plx(int irq, struct uio_info *info)
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
-        plx = info->mem[0].internal_addr;
         // clear INTCSR9056_PCI_Enable
         iowrite32(INTCSR9056_LCL_Enable, plx+INTCSR9056);
         val = ioread32(plx+INTCSR9056);
         oops = val&INTCSR9056_PCI_Enable;
         break;
 
+    case PCI_DEVICE_ID_EC_30:
+        // there are no distict registers for this bridge.
+        // 'plx' holds the base address of FPGA registers
+
+        // Check endianness
+        val = ioread32(plx + FPGAVersion);
+        if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
+            // little endian
+            end = 0;
+        } else {
+            val = ioread32be(plx + FPGAVersion);
+            if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
+                // big endian
+                end = 1;
+            } else {
+                // This should never happen.
+                dev_info(&dev->dev, "ERROR: Unable to read form factor magic number.");
+                return IRQ_NONE;
+            }
+        }
+
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        if(!(val & IRQ_Enable_ALL)) {
+            dev_info(&dev->dev, "ERROR: Interrupt happening when not enabled!");
+            return IRQ_NONE;
+        }
+
+        // Clear interrupts on FPGA
+        if(end) {
+            iowrite32be(val & (~IRQ_PCIee), plx + IRQEnable);
+        } else {
+            iowrite32(val & (~IRQ_PCIee), plx + IRQEnable);
+        }
+
+        // Check if clear succeded
+        wmb();
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        oops = val & IRQ_PCIee;
+        break;
+
     default:
         return IRQ_NONE;
     }
 
-    if(oops)
+    if(oops) {
         dev_info(&dev->dev, "Interrupt not disabled %08x", (unsigned)val);
+    }
 
     return IRQ_HANDLED;
 }
@@ -191,11 +280,15 @@ mrf_handler(int irq, struct uio_info *info)
 {
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
 
+    // Count interrupt handler executions
+    priv->intrcount++;
+
     rmb();
-    if(priv->irqmode)
+    if(priv->irqmode) {
         return mrf_handler_plx(irq, info);
-    else
+    } else {
         return mrf_handler_evr(irq, info);
+    }
 }
 
 static
@@ -203,37 +296,86 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
 {
     struct pci_dev *dev = info->priv;
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
-    void __iomem *plx;
-    u32 val;
+    void __iomem *plx = info->mem[0].internal_addr;
+    u32 val, end;
 
-    if(onoff<0)
+    if (onoff < 0) {
         return -EINVAL;
-    else if(onoff>1)
-        return 0;
+    } else if (onoff > 1) {
+        return 0; /* onoff>1 is a no-op now, but may have other meaning in future */
+    }
 
-    switch(dev->device) {
+    switch (dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
-        plx = info->mem[0].internal_addr;
 
-        val = INTCSR_INT1_Enable|INTCSR_INT1_Polarity;
-        if(onoff==1)
+        val = INTCSR_INT1_Enable | INTCSR_INT1_Polarity;
+        if (onoff == 1) {
             val |= INTCSR_PCI_Enable;
+        }
 
-        iowrite32(val, plx+INTCSR);
+        iowrite32(val, plx + INTCSR);
+
+        priv->irqmode = 1;
         break;
 
     case PCI_DEVICE_ID_PLX_9056:
-        plx = info->mem[0].internal_addr;
 
         val = INTCSR9056_LCL_Enable;
-        if(onoff==1)
+        if (onoff == 1) {
             val |= INTCSR9056_PCI_Enable;
+        }
 
-        iowrite32(val, plx+INTCSR9056);
+        iowrite32(val, plx + INTCSR9056);
+
         break;
+
+    case PCI_DEVICE_ID_EC_30:
+        // there are no distict registers for this bridge.
+        // 'plx' holds the base address of FPGA registers
+	
+        // Check endianism
+        val = ioread32(plx + FPGAVersion);
+        if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
+            end = 0;
+        } else {
+            val = ioread32be(plx + FPGAVersion);
+            if(((val & FPGAVer_FF) >> 24) == FPGAVER_EVR300) {
+                end = 1;
+            } else {
+                dev_info(&dev->dev, "ERROR: Unable to read form factor magic number.");
+                return -EINVAL;
+            }
+        }
+
+        // Read current IRQ enable register
+        if(end) {
+            val = ioread32be(plx + IRQEnable);
+        } else {
+            val = ioread32(plx + IRQEnable);
+        }
+
+        // Modify the IRQ enable bit
+        if (onoff == 1) {
+            val |= IRQ_PCIee;
+        } else {
+            val &= (~IRQ_PCIee);
+        }
+
+        // Write the register back
+        if(end) {
+            iowrite32be(val, plx + IRQEnable);
+        } else {
+            iowrite32(val, plx + IRQEnable);
+        }
+
+        break;
+
     default:
         return -EINVAL;
     }
+
+    // Writing 0 or 1 to /dev/uioX selects switches
+    // interrupt handling to PLX mode
     priv->irqmode = 1;
     wmb();
 
@@ -252,7 +394,7 @@ mrf_probe(struct pci_dev *dev,
         struct uio_info *info;
 
         priv = kzalloc(sizeof(struct mrf_priv), GFP_KERNEL);
-        if (!priv) return -ENOMEM;
+        if (!priv) { return -ENOMEM; }
         info = &priv->uio;
         priv->pdev = dev;
 
@@ -267,32 +409,58 @@ mrf_probe(struct pci_dev *dev,
                 goto err_disable;
         }
 
-        if (pci_request_regions(dev, DRV_NAME))
+        if (pci_request_regions(dev, DRV_NAME)) {
                 goto err_disable;
+        }
 
-        /* BAR 0 is the PLX bridge */
-        info->mem[0].addr = pci_resource_start(dev, 0);
-        info->mem[0].size = pci_resource_len(dev,0);
-        info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
-        info->mem[0].memtype = UIO_MEM_PHYS;
+        /* PCIe EVR 300 has only 1 BAR so it must be treated differently.
+         * EVR memory space is mapped directly to uio0 region so that it
+         * matches windows version
+         */
+        if(dev->subsystem_device == PCI_SUBDEVICE_ID_PCIE_EVR_300){
+            dev_info(&dev->dev, "Attaching BAR0 of PCIe-EVR-300\n");
+            /* BAR 0 is the EVR */
+            info->mem[0].name = "EVR memory";
+            info->mem[0].addr = pci_resource_start(dev, 0);
+            info->mem[0].size = pci_resource_len(dev,0);
+            info->mem[0].internal_addr = pci_ioremap_bar(dev,0);
+            info->mem[0].memtype = UIO_MEM_PHYS;
 
-        /* Not used */
-        info->mem[1].memtype = UIO_MEM_NONE;
-        info->mem[1].size = 1; /* Otherwise UIO will stop searching... */
-
-        /* BAR 2 is the EVR */
-        info->mem[2].addr = pci_resource_start(dev, 2);
-        info->mem[2].size = pci_resource_len(dev,2);
-        info->mem[2].internal_addr =pci_ioremap_bar(dev,2);
-        info->mem[2].memtype = UIO_MEM_PHYS;
-
-        if (!info->mem[0].internal_addr ||
-            !info->mem[0].addr ||
-            !info->mem[2].internal_addr ||
-            !info->mem[2].addr) {
+            if(!info->mem[0].internal_addr || !info->mem[0].addr){
                 dev_err(&dev->dev, "Failed to map BARS!\n");
                 ret=-ENODEV;
                 goto err_release;
+            }
+
+        }
+        /* Other devices also have BAR 1 and 2 present (for PLX bridge).. */
+        else{
+            dev_info(&dev->dev, "Attaching BAR0,2,3 of MRF");
+
+            /* BAR 0 is the PLX bridge */
+            info->mem[0].addr = pci_resource_start(dev, 0);
+            info->mem[0].size = pci_resource_len(dev,0);
+            info->mem[0].internal_addr =pci_ioremap_bar(dev,0);
+            info->mem[0].memtype = UIO_MEM_PHYS;
+
+            /* Not used */
+            info->mem[1].memtype = UIO_MEM_NONE;
+            info->mem[1].size = 1; /* Otherwise UIO will stop searching... */
+
+            /* BAR 2 is the EVR */
+            info->mem[2].addr = pci_resource_start(dev, 2);
+            info->mem[2].size = pci_resource_len(dev,2);
+            info->mem[2].internal_addr =pci_ioremap_bar(dev,2);
+            info->mem[2].memtype = UIO_MEM_PHYS;
+
+            if (!info->mem[0].internal_addr ||
+                !info->mem[0].addr ||
+                !info->mem[2].internal_addr ||
+                !info->mem[2].addr) {
+                    dev_err(&dev->dev, "Failed to map BARS!\n");
+                    ret=-ENODEV;
+                    goto err_release;
+            }
         }
 
         info->irq = dev->irq;
@@ -310,11 +478,13 @@ mrf_probe(struct pci_dev *dev,
         pci_set_drvdata(dev, info);
 
         ret = uio_register_device(&dev->dev, info);
-        if (ret)
-                goto err_unmap;
+        if (ret) {
+            goto err_unmap;
+        }
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         spin_lock_init(&priv->lock);
+
         if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             u32 val;
             void __iomem *plx = info->mem[0].internal_addr;
@@ -357,8 +527,9 @@ mrf_probe(struct pci_dev *dev,
 #endif
         }
 #else
-        if (dev->device==PCI_DEVICE_ID_PLX_9030)
+        if (dev->device==PCI_DEVICE_ID_PLX_9030) {
             dev_info(&dev->dev, "GPIO support not built, JTAG unavailable\n");
+        }
 #endif /* defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC) */
 
         dev_info(&dev->dev, "MRF Setup complete\n");
@@ -379,21 +550,18 @@ err_free:
         return ret;
 }
 
-#define PCI_SUBVENDOR_ID_MRF             0x1a3e
-
-/* PMC-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PMCEVR_230   0x11e6
-/* cPCI-EVR-230 */
-#define PCI_SUBDEVICE_ID_MRF_PXIEVR_230   0x10e6
-/* cPCI-EVRTG-300 */
-#define PCI_SUBDEVICE_ID_MRF_EVRTG_300    0x192c
-
 static struct pci_device_id mrf_pci_ids[] = {
     {
         .vendor =       PCI_VENDOR_ID_PLX,
         .device =       PCI_DEVICE_ID_PLX_9030,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVR_230,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_PLX,
+        .device =       PCI_DEVICE_ID_PLX_9030,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVG_230,
     },
     {
         .vendor =       PCI_VENDOR_ID_PLX,
@@ -406,6 +574,12 @@ static struct pci_device_id mrf_pci_ids[] = {
         .device =       PCI_DEVICE_ID_PLX_9056,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_EVRTG_300,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_LATTICE,
+        .device =       PCI_DEVICE_ID_EC_30,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_PCIE_EVR_300,
     },
     { 0, }
 };
@@ -427,19 +601,25 @@ mrf_remove(struct pci_dev *dev)
 #endif
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         {
-            void __iomem *plx = info->mem[0].internal_addr;
-            u32 val = ioread32(plx + GPIOC);
-            // Disable output drivers for TCLK, TMS, and TDI
-            val &= ~GPIOC_pin_dir(0);
-            val &= ~GPIOC_pin_dir(1);
-            val &= ~GPIOC_pin_dir(3);
-            iowrite32(val, plx + GPIOC);
+            if(dev->subsystem_device != PCI_SUBDEVICE_ID_PCIE_EVR_300) {
+                void __iomem *plx = info->mem[0].internal_addr;
+                u32 val = ioread32(plx + GPIOC);
+                // Disable output drivers for TCLK, TMS, and TDI
+                val &= ~GPIOC_pin_dir(0);
+                val &= ~GPIOC_pin_dir(1);
+                val &= ~GPIOC_pin_dir(3);
+                iowrite32(val, plx + GPIOC);
+            }
         }
 #endif
         uio_unregister_device(info);
         pci_set_drvdata(dev, NULL);
         iounmap(info->mem[0].internal_addr);
-        iounmap(info->mem[2].internal_addr);
+
+        if(dev->subsystem_device != PCI_SUBDEVICE_ID_PCIE_EVR_300) {
+            iounmap(info->mem[2].internal_addr);
+        }
+
         pci_release_regions(dev);
         pci_disable_device(dev);
 
@@ -450,9 +630,9 @@ mrf_remove(struct pci_dev *dev)
 
 
 static struct pci_driver mrf_driver = {
-    .name    =DRV_NAME,
-    .id_table=mrf_pci_ids,
-    .probe   = mrf_probe,
+    .name     = DRV_NAME,
+    .id_table = mrf_pci_ids,
+    .probe    = mrf_probe,
     .remove  = mrf_remove,
 };
 

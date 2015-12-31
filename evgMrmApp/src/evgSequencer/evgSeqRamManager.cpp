@@ -28,7 +28,7 @@ evgSeqRamMgr::getSeqRam(epicsUInt32 seqRamId) {
 
 epicsUInt32
 evgSeqRamMgr::numOfRams() {
-    return m_seqRam.size();
+	return (epicsUInt32)m_seqRam.size();
 }
 
 
