@@ -29,3 +29,5 @@ $ git clone https://github.com/epics-modules/mrfioc2.git
 -----------------------------------------------------------------------
 
 Edit 'configure/CONFIG_SITE' and run "make".
+
+<a href="https://travis-ci.org/epics-modules/mrfioc2"><img src="https://travis-ci.org/epics-modules/mrfioc2.svg">CI Build Status</img></a>

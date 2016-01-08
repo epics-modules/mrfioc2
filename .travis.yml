@@ -1,0 +1,12 @@
+sudo: false
+language: c
+env:
+ - BASE=3.14 STATIC=shared
+ - BASE=3.14 STATIC=static
+ - BASE=3.15 STATIC=shared
+ - BASE=3.15 STATIC=static
+ - BASE=3.16 STATIC=shared
+ - BASE=3.16 STATIC=static
+install: ./build-deps.sh
+script:
+ - make -j2
