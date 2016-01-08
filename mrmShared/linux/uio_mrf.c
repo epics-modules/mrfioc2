@@ -131,7 +131,7 @@ int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr)
         low  = val & 0x000000ff;
     if(high==low) {
         /* the unfortunate case where the firmware version==the mrf type code */
-        dev_err(&dev->dev, "Can't detect endianness when high==low 0x%08lu\n",
+        dev_err(&dev->dev, "Can't detect endianness when high==low 0x%08lx\n",
                 (unsigned long)val);
         return -1;
     } else if(high==priv->mrftype) {
@@ -141,7 +141,7 @@ int mrf_detect_endian(struct mrf_priv *priv, void __iomem *evr)
         // big endian
         return 1;
     } else {
-        dev_err(&dev->dev, "no match for version 0x%08lu against %x\n",
+        dev_err(&dev->dev, "no match for version 0x%08lx against %x\n",
                 (unsigned long)val, priv->mrftype);
         return -1;
     }
@@ -239,7 +239,7 @@ mrf_handler_plx(int irq, struct uio_info *info)
     struct pci_dev *dev = info->priv;
     void __iomem *plx = info->mem[0].internal_addr;
     u32 val;
-    int end, oops;
+    int oops;
 
     switch(dev->device) {
     case PCI_DEVICE_ID_PLX_9030:
@@ -268,27 +268,31 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
     default:
     {
+        int end;
+        u32 flags;
         // there are no distict registers for this bridge.
         // 'plx' holds the base address of FPGA registers
 
+        end = mrf_detect_endian(priv, plx);
+
+        if(end==1) {
+            val = ioread32be(plx + IRQEnable);
+            flags= ioread32be(plx + IRQFlag);
+        } else if(end==0) {
+            val = ioread32(plx + IRQEnable);
+            flags= ioread32(plx + IRQFlag);
+        } else {
+            return IRQ_NONE; /* shouldn't happen since this condition is checked in mrf_probe() */
+        }
+        flags |= IRQ_Enable_ALL;
+
+        if((flags & val)==0) {
+            dev_info(&dev->dev, "reject %08x %08x\n", (unsigned)flags, (unsigned)val);
+            return IRQ_NONE; /* not our interrupt */
+        } else
+            dev_info(&dev->dev, "accept %08x %08x\n", (unsigned)flags, (unsigned)val);
+
         if(!priv->usemie) {
-            u32 flags;
-            end = mrf_detect_endian(priv, plx);
-
-            if(end==1) {
-                val = ioread32be(plx + IRQEnable);
-                flags= ioread32be(plx + IRQFlag);
-            } else if(end==0) {
-                val = ioread32(plx + IRQEnable);
-                flags= ioread32(plx + IRQFlag);
-            } else {
-                return IRQ_NONE; /* shouldn't happen since this condition is checked in mrf_probe() */
-            }
-
-            if(((flags & val)==0) || ((val & IRQ_Enable_ALL)!=IRQ_Enable_ALL)) {
-                return IRQ_NONE; /* not our interrupt */
-            }
-
             // Disable interrupts on FPGA
             if(end) {
                 iowrite32be(val & (~IRQ_PCIee), plx + IRQEnable);
@@ -308,6 +312,7 @@ mrf_handler_plx(int irq, struct uio_info *info)
 
         } else {
             iowrite32be(0, plx + PCIMIE);
+            wmb();
             oops = val = ioread32(plx + PCIMIE);
         }
     }
@@ -549,7 +554,7 @@ mrf_probe(struct pci_dev *dev,
                 priv->usemie = (mrfver&0xff)>=0x8;
                 break;
             default:
-                dev_err(&dev->dev, "Unrecognized MRF device type %08x\n", (unsigned)mrfver);
+                dev_err(&dev->dev, "Unrecognized MRF device type 0x%08x\n", (unsigned)mrfver);
                 ret=-ENODEV;
                 goto err_unmap;
             }
