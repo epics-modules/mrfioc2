@@ -4,6 +4,8 @@ include $(TOP)/configure/CONFIG
 USR_CFLAGS += -DDEBUG_PRINT
 USR_CPPFLAGS += -DDEBUG_PRINT
 
+export PERL5LIB=$(EPICS_BASE)/lib/perl
+
 MRF_VERSION = 2.0.4
 
 #---------------------
