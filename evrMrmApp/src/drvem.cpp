@@ -813,9 +813,6 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         return false;
     }
 
-    //Link seconds counter is POSIX time
-    ts->secPastEpoch-=POSIX_TIME_AT_EPICS_EPOCH;
-
     // Convert ticks to nanoseconds
     double period=1e9/clockTS(); // in nanoseconds
 
@@ -831,6 +828,9 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         scanIoRequest(timestampValidChange);
         return false;
     }
+
+    //Link seconds counter is POSIX time
+    ts->secPastEpoch-=POSIX_TIME_AT_EPICS_EPOCH;
 
     return true;
 }
