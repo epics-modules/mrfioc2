@@ -503,13 +503,13 @@ evgSoftSeq::process_eos()
 {
     incNumOfRuns();
 
-    if(isLoaded() && !m_isSynced)
-        finishSync();
-
     // In single shot mode, auto-disable after
     // each run.
     if(m_runModeCt==Single && m_isEnabled)
         disable();
+
+    if(isLoaded() && !m_isSynced)
+        finishSync();
 
     scanIoRequest(iorunscan);
 }
