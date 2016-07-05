@@ -657,13 +657,15 @@ EVRMRM::clockTS() const
     //Note: acquires evrLock 3 times.
 
     TSSource src=SourceTS();
+    double eclk=clock();
 
-    if(src!=TSSourceInternal)
+    if( (src!=TSSourceInternal) ||
+       ((src==TSSourceInternal) && (stampClock>eclk)))
         return stampClock;
 
     epicsUInt16 div=tsDiv();
 
-    return clock()/div;
+    return eclk/div;
 }
 
 void
@@ -675,7 +677,7 @@ EVRMRM::clockTSSet(double clk)
     TSSource src=SourceTS();
     double eclk=clock();
 
-    if(clk>eclk || clk==0.0)
+    if(clk>eclk*1.01 || clk==0.0)
         clk=eclk;
 
     SCOPED_LOCK(evrLock);
