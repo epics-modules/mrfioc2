@@ -18,6 +18,7 @@
 #include <map>
 
 #include <epicsString.h>
+#include <errlog.h>
 #include <drvSup.h>
 #include <iocsh.h>
 #include <initHooks.h>
