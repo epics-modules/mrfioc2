@@ -10,6 +10,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <stdio.h>
 
 #include <epicsMath.h>
 

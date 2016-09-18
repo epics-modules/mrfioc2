@@ -21,6 +21,7 @@
 #include <iocsh.h>
 #include <initHooks.h>
 #include <epicsExit.h>
+#include <errlog.h>
 
 #include <devLibPCI.h>
 #include <devcsr.h>
