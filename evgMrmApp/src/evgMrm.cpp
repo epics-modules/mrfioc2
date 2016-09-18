@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgMrm.h"
 
 #include <iostream>
@@ -27,88 +34,103 @@
 
 #include "evgRegMap.h"
 
-evgMrm::evgMrm(const std::string& id, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgMrm>(id),
-irqStop0_queued(0),
-irqStop1_queued(0),
-irqExtInp_queued(0),
-m_syncTimestamp(false),
-m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
-m_id(id),
-m_pReg(pReg),
-m_acTrig(id+":AcTrig", pReg),
-m_evtClk(id+":EvtClk", pReg),
-m_softEvt(id+":SoftEvt", pReg),
-m_seqRamMgr(this),
-m_softSeqMgr(this) {
+#include <epicsExport.h>
 
-    try{
-        for(int i = 0; i < evgNumEvtTrig; i++) {
-            std::ostringstream name;
-            name<<id<<":TrigEvt"<<i;
-            m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg));
-        }
+evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
+    mrf::ObjectInst<evgMrm>(id),
+    irqStop0_queued(0),
+    irqStop1_queued(0),
+    irqStart0_queued(0),
+    irqStart1_queued(0),
+    irqExtInp_queued(0),
+    m_syncTimestamp(false),
+    m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
+    m_pciDevice(pciDevice),
+    m_id(id),
+    m_pReg(pReg),
+    busConfiguration(busConfig),
+    m_acTrig(id+":AcTrig", pReg),
+    m_evtClk(id+":EvtClk", pReg),
+    m_softEvt(id+":SoftEvt", pReg),
+    m_seqRamMgr(this),
+    m_softSeqMgr(this)
+{
+    epicsUInt32 v, isevr;
 
-        for(int i = 0; i < evgNumMxc; i++) {
-            std::ostringstream name;
-            name<<id<<":Mxc"<<i;
-            m_muxCounter.push_back(new evgMxc(name.str(), i, this));
-        }
+    v = READ32(m_pReg, FPGAVersion);
+    isevr=v&FPGAVersion_TYPE_MASK;
+    isevr>>=FPGAVersion_TYPE_SHIFT;
 
-        for(int i = 0; i < evgNumDbusBit; i++) {
-            std::ostringstream name;
-            name<<id<<":Dbus"<<i;
-            m_dbus.push_back(new evgDbus(name.str(), i, pReg));
-        }
+    if(isevr!=0x2)
+        throw std::runtime_error("Address does not correspond to an EVG");
 
-        for(int i = 0; i < evgNumFrontInp; i++) {
-            std::ostringstream name;
-            name<<id<<":FrontInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, FrontInp) ] =
-                new evgInput(name.str(), i, FrontInp, pReg + U32_FrontInMap(i));
-        }
-
-        for(int i = 0; i < evgNumUnivInp; i++) {
-            std::ostringstream name;
-            name<<id<<":UnivInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, UnivInp) ] =
-                new evgInput(name.str(), i, UnivInp, pReg + U32_UnivInMap(i));
-        }
-
-        for(int i = 0; i < evgNumRearInp; i++) {
-            std::ostringstream name;
-            name<<id<<":RearInp"<<i;
-            m_input[ std::pair<epicsUInt32, InputType>(i, RearInp) ] =
-                new evgInput(name.str(), i, RearInp, pReg + U32_RearInMap(i));
-        }
-
-        for(int i = 0; i < evgNumFrontOut; i++) {
-            std::ostringstream name;
-            name<<id<<":FrontOut"<<i;
-            m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)] =
-                new evgOutput(name.str(), i, FrontOut, pReg + U16_FrontOutMap(i));
-        }
-
-        for(int i = 0; i < evgNumUnivOut; i++) {
-            std::ostringstream name;
-            name<<id<<":UnivOut"<<i;
-            m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
-                new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
-        }
-    
-        m_wdTimer = new wdTimer("Watch Dog Timer", this);
-        m_timerEvent = new epicsEvent();
-
-        init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
-                                            m_seqRamMgr.getSeqRam(0));
-        init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
-                                            m_seqRamMgr.getSeqRam(1));
-        init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
-    
-        scanIoInit(&ioScanTimestamp);
-    } catch(std::exception& e) {
-        errlogPrintf("Error: %s\n", e.what());
+    for(int i = 0; i < evgNumEvtTrig; i++) {
+        std::ostringstream name;
+        name<<id<<":TrigEvt"<<i;
+        m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg));
     }
+
+    for(int i = 0; i < evgNumMxc; i++) {
+        std::ostringstream name;
+        name<<id<<":Mxc"<<i;
+        m_muxCounter.push_back(new evgMxc(name.str(), i, this));
+    }
+
+    for(int i = 0; i < evgNumDbusBit; i++) {
+        std::ostringstream name;
+        name<<id<<":Dbus"<<i;
+        m_dbus.push_back(new evgDbus(name.str(), i, pReg));
+    }
+
+    for(int i = 0; i < evgNumFrontInp; i++) {
+        std::ostringstream name;
+        name<<id<<":FrontInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, FrontInp) ] =
+                new evgInput(name.str(), i, FrontInp, pReg + U32_FrontInMap(i));
+    }
+
+    for(int i = 0; i < evgNumUnivInp; i++) {
+        std::ostringstream name;
+        name<<id<<":UnivInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, UnivInp) ] =
+                new evgInput(name.str(), i, UnivInp, pReg + U32_UnivInMap(i));
+    }
+
+    for(int i = 0; i < evgNumRearInp; i++) {
+        std::ostringstream name;
+        name<<id<<":RearInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, RearInp) ] =
+                new evgInput(name.str(), i, RearInp, pReg + U32_RearInMap(i));
+    }
+
+    for(int i = 0; i < evgNumFrontOut; i++) {
+        std::ostringstream name;
+        name<<id<<":FrontOut"<<i;
+        m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)] =
+                new evgOutput(name.str(), i, FrontOut, pReg + U16_FrontOutMap(i));
+    }
+
+    for(int i = 0; i < evgNumUnivOut; i++) {
+        std::ostringstream name;
+        name<<id<<":UnivOut"<<i;
+        m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
+                new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
+    }
+
+    m_timerEvent = new epicsEvent();
+    m_wdTimer = new wdTimer("Watch Dog Timer", this);
+
+    init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
+            m_seqRamMgr.getSeqRam(0));
+    init_cb(&irqStart1_cb, priorityHigh, &evgMrm::process_sos1_cb,
+            m_seqRamMgr.getSeqRam(1));
+    init_cb(&irqStop0_cb, priorityHigh, &evgMrm::process_eos0_cb,
+            m_seqRamMgr.getSeqRam(0));
+    init_cb(&irqStop1_cb, priorityHigh, &evgMrm::process_eos1_cb,
+            m_seqRamMgr.getSeqRam(1));
+    init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
+    
+    scanIoInit(&ioScanTimestamp);
 }
 
 evgMrm::~evgMrm() {
@@ -160,6 +182,66 @@ evgMrm::getFwVersion() const {
     return READ32(m_pReg, FPGAVersion);
 }
 
+epicsUInt32
+evgMrm::getFwVersionID(){
+    epicsUInt32 ver = getFwVersion();
+
+    ver &= FPGAVersion_VER_MASK;
+
+    return ver;
+}
+
+formFactor
+evgMrm::getFormFactor(){
+    epicsUInt32 form = getFwVersion();
+
+    form &= FPGAVersion_FORM_MASK;
+    form >>= FPGAVersion_FORM_SHIFT;
+
+    if(form <= formFactor_PCIe) return (formFactor)form;
+    else return formFactor_unknown;
+}
+
+std::string
+evgMrm::getFormFactorStr(){
+    std::string text;
+
+    switch(getFormFactor()){
+    case formFactor_CPCI:
+        text = "CompactPCI 3U";
+        break;
+
+    case formFactor_CPCIFULL:
+        text = "CompactPCI 6U";
+        break;
+
+    case formFactor_CRIO:
+        text = "CompactRIO";
+        break;
+
+    case formFactor_PCIe:
+        text = "PCIe";
+        break;
+
+    case formFactor_PXIe:
+        text = "PXIe";
+        break;
+
+    case formFactor_PMC:
+        text = "PMC";
+        break;
+
+    case formFactor_VME64:
+        text = "VME 64";
+        break;
+
+    default:
+        text = "Unknown form factor";
+    }
+
+    return text;
+}
+
 std::string
 evgMrm::getSwVersion() const {
     return MRF_VERSION;
@@ -167,7 +249,7 @@ evgMrm::getSwVersion() const {
 
 epicsUInt32
 evgMrm::getDbusStatus() const {
-    return READ32(m_pReg, Status);
+    return READ32(m_pReg, Status)>>16;
 }
 
 void
@@ -184,7 +266,7 @@ evgMrm::enable(bool ena) {
 
 bool
 evgMrm::enabled() const {
-    return READ32(m_pReg, Control) & EVG_MASTER_ENA;
+    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
 }
 
 void
@@ -194,16 +276,77 @@ evgMrm::resetMxc(bool reset) {
 }
 
 void
-evgMrm::isr(void* arg) {
+evgMrm::isr_pci(void* arg) {
     evgMrm *evg = (evgMrm*)(arg);
+
+    // Call to the generic implementation
+    evg->isr(evg, true);
+
+#if defined(__linux__) || defined(_WIN32)
+    /**
+     * On PCI variant of EVG the interrupts get disabled in kernel (by uio_mrf module) since IRQ task is completed here (in userspace).
+     * Interrupts must therefore be re-enabled here.
+     */
+    if(devPCIEnableInterrupt(evg->m_pciDevice)) {
+        printf("PCI: Failed to enable interrupt\n");
+        return;
+    }
+#endif
+}
+
+void
+evgMrm::isr_vme(void* arg) {
+    evgMrm *evg = (evgMrm*)(arg);
+
+    // Call to the generic implementation
+    evg->isr(evg, false);
+}
+
+void
+evgMrm::isr(evgMrm *evg, bool pci) {
 
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
     epicsUInt32 active = flags & enable;
-    
-    if(!active)
+
+#if defined(vxWorks) || defined(__rtems__)
+    if(!active) {
+#  ifdef __rtems__
+        if(!pci)
+            printk("evgMrm::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, enable);
+#else
+        (void)pci;
+#  endif
+        // this is a shared interrupt
         return;
-    
+    }
+    // Note that VME devices do not normally shared interrupts
+#else
+    // for Linux, shared interrupts are detected by the kernel module
+    // so any notifications to userspace are real interrupts by this device
+    (void)pci;
+#endif
+
+    if(active & EVG_IRQ_START_RAM(0)) {
+        if(evg->irqStart0_queued==0) {
+            callbackRequest(&evg->irqStart0_cb);
+            evg->irqStart0_queued=1;
+        } else if(evg->irqStart0_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(0));
+            evg->irqStart0_queued=2;
+        }
+    }
+
+    if(active & EVG_IRQ_START_RAM(1)) {
+        if(evg->irqStart1_queued==0) {
+            callbackRequest(&evg->irqStart1_cb);
+            evg->irqStart1_queued=1;
+        } else if(evg->irqStart1_queued==1) {
+            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(1));
+            evg->irqStart1_queued=2;
+        }
+    }
+
     if(active & EVG_IRQ_STOP_RAM(0)) {
         if(evg->irqStop0_queued==0) {
             callbackRequest(&evg->irqStop0_cb);
@@ -236,6 +379,7 @@ evgMrm::isr(void* arg) {
 
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
+
     return;
 }
 
@@ -277,6 +421,46 @@ evgMrm::process_eos1_cb(CALLBACK *pCallback) {
     }
 
     seqRam->process_eos();
+}
+
+void
+evgMrm::process_sos0_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStart0_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(0));
+        seqRam->m_owner->irqStart0_queued=0;
+    }
+
+    seqRam->process_sos();
+}
+
+void
+evgMrm::process_sos1_cb(CALLBACK *pCallback) {
+    void* pVoid;
+    evgSeqRam* seqRam;
+
+    callbackGetUser(pVoid, pCallback);
+    seqRam = (evgSeqRam*)pVoid;
+    if(!seqRam)
+        return;
+
+    {
+        interruptLock ig;
+        if(seqRam->m_owner->irqStart1_queued==2)
+            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(1));
+        seqRam->m_owner->irqStart1_queued=0;
+    }
+
+    seqRam->process_sos();
 }
 
 void
@@ -375,14 +559,14 @@ evgMrm::syncTimestamp() {
      *       26.996234643 should be rounded to 27.
      *  Also the nano second value can be assumed to be zero.
      */
-    if(m_timestamp.nsec > 500*pow(10,6))
+    if(m_timestamp.nsec > 500*pow(10.0,6))
         incrTimestamp();
     
     m_timestamp.nsec = 0;
 }
 
 void
-evgMrm::syncTsRequest() {
+evgMrm::syncTsRequest(bool) {
     m_syncTimestamp = true;
 }
 
@@ -461,6 +645,11 @@ evgMrm::getSoftSeqMgr() {
 epicsEvent* 
 evgMrm::getTimerEvent() {
     return m_timerEvent;
+}
+
+bus_configuration *evgMrm::getBusConfiguration()
+{
+    return &busConfiguration;
 }
 
 namespace {

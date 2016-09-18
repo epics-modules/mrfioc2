@@ -12,17 +12,18 @@
 #include <epicsTypes.h>
 #include <epicsTime.h>
 
-#include "mrf/object.h"
-#include "evr/evr.h"
-
 #include <stdexcept>
 #include <errlog.h>
 #include <epicsMutex.h>
 #include <epicsGuard.h>
 #include <epicsTime.h>
 #include <epicsVersion.h>
+#include <initHooks.h>
 
-#define epicsExportSharedSymbols
+#include <epicsExport.h>
+
+#include "mrf/object.h"
+#include "evr/evr.h"
 #include "evrGTIF.h"
 
 #ifndef M_time
@@ -98,19 +99,37 @@ int EVRCurrentTime(epicsTimeStamp *pDest)
     return EVREventTime(pDest, epicsTimeEventCurrentTime);
 }
 
+int mrmGTIFEnable = 1;
+
 #if EPICS_VERSION==3 && ( EPICS_REVISION>14 || (EPICS_REVISION==14 && EPICS_MODIFICATION>=9) )
 
 #include <generalTimeSup.h>
 
-extern "C"
-void EVRTime_Registrar()
+static
+void EVRTime_Hooks(initHookState state)
 {
+    if(state!=initHookAtBeginning)
+        return;
+
     int ret=0;
     ret|=EVRInitTime();
-    ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
+    // conditionally register the current (aka wall clock) time provider.
+    // May be disabled to trade off accuracy and precision for execution speed
+    // since EPICS calls this a *lot*.
+    if(mrmGTIFEnable)
+        ret|=generalTimeCurrentTpRegister("EVR", ER_PROVIDER_PRIORITY, &EVRCurrentTime);
+    else
+        epicsPrintf("EVR Current time provider NOT register\n");
+    // always register the event time provider (no fallback, and not called by default)
     ret|=generalTimeEventTpRegister  ("EVR", ER_PROVIDER_PRIORITY, &EVREventTime);
     if (ret)
         epicsPrintf("Failed to register EVR time provider\n");
+}
+
+extern "C"
+void EVRTime_Registrar()
+{
+    initHookRegister(&EVRTime_Hooks);
 }
 
 #else
@@ -120,5 +139,7 @@ void EVRTime_Registrar() {}
 #endif
 
 #include <epicsExport.h>
-
-epicsExportRegistrar(EVRTime_Registrar);
+extern "C"{
+ epicsExportRegistrar(EVRTime_Registrar);
+ epicsExportAddress(int, mrmGTIFEnable);
+}

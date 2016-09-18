@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -9,16 +10,47 @@
  */
 
 #include <math.h>
+#include <string.h>
 
 #include <dbDefs.h>
 #include <errlog.h>
+#include <recGbl.h>
+#include <alarm.h>
+#include <dbAccess.h>
 
 #include <registryFunction.h>
 
 #include <menuFtype.h>
 #include <aSubRecord.h>
+#include <epicsExport.h>
 
 #define NINPUTS (aSubRecordU - aSubRecordA)
+
+static
+long select_string(aSubRecord *prec)
+{
+    unsigned i;
+    char *out = prec->vala;
+    DBLINK *L = &prec->inpa;
+    const char **I = (const char**)&prec->a;
+
+    /* find the first input w/o an active alarm */
+    for(i=0; i<NINPUTS; i++) {
+        epicsEnum16 sevr, stat;
+        if(L[i].type==CONSTANT)
+            continue;
+        if(dbGetAlarm(&L[i], &sevr, &stat))
+            continue;
+        if(sevr!=NO_ALARM)
+            continue;
+        memcpy(out, I[i], MAX_STRING_SIZE);
+        return 0;
+    }
+
+    out[0] = '\0';
+    (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+    return 0;
+}
 
 /**@brief Generate a time series
  *
@@ -130,13 +162,13 @@ long gen_delaygen(aSubRecord *prec)
     if(mult==0)
         mult=1;
 
-    idelay=0.5 + delay/egupertick;
-    iwidth=0.5 + width/egupertick;
+    idelay=(epicsInt32)(0.5 + delay/egupertick);
+    iwidth=(epicsInt32)(0.5 + width/egupertick);
 
-    if(idelay<0 || idelay>=count) {
+    if(idelay>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);
         return -1;
-    } else if(iwidth<0 || iwidth>=count) {
+    } else if(iwidth>=count) {
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,iwidth);
         return -1;
     } else if(idelay+iwidth>=count) {
@@ -229,6 +261,12 @@ long gen_bitarraygen(aSubRecord *prec)
 static
 long gun_bunchTrain(aSubRecord *prec)
 {
+	int bunchPerTrain;
+	unsigned char *result;
+	epicsUInt32 count;
+	int i, j;
+
+
     if (prec->fta != menuFtypeULONG) {
         errlogPrintf("%s incorrect input type. A(ULONG)",
                      prec->name);
@@ -241,16 +279,16 @@ long gun_bunchTrain(aSubRecord *prec)
         return -1;
     }
 
-    int bunchPerTrain = *(int*)prec->a;
-    unsigned char *result = prec->vala;
+    bunchPerTrain = *(int*)prec->a;
+    result = prec->vala;
 
     if(bunchPerTrain<1 || bunchPerTrain>150) {
         errlogPrintf("%s : invalid number of bunches per train %d.\n",prec->name,bunchPerTrain);
         return -1;
     }
 
-    epicsUInt32 count = 0;
-    int i, j;
+    count = 0;
+
     for(i = 0; i < bunchPerTrain; i++) {
         for(j = 0; j < 10; j++) {
             count++;
@@ -269,6 +307,7 @@ long gun_bunchTrain(aSubRecord *prec)
 }
 
 static registryFunctionRef asub_seq[] = {
+    {"Select String", (REGISTRYFUNCTION) select_string},
     {"Timeline", (REGISTRYFUNCTION) gen_timeline},
     {"Bit Array Gen", (REGISTRYFUNCTION) gen_bitarraygen},
     {"Delay Gen", (REGISTRYFUNCTION) gen_delaygen},

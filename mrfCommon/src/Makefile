@@ -86,7 +86,7 @@ PROD_HOST += FracSynthControlWord
 FracSynthAnalyze_SRCS += FracSynthAnalyze.c
 FracSynthControlWord_SRCS += FracSynthControlWord.c
 
-PROD_LIBS += Com
+PROD_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 
 #---------------------
 # Generic EPICS build rules

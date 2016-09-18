@@ -18,6 +18,10 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
+# The definitions shown below can also be placed in an untracked RELEASE.local
+-include $(TOP)/../RELEASE.local
+-include $(TOP)/configure/RELEASE.local
+
 ## Optional Modules ##
 # Comment out if not present
 
@@ -33,8 +37,7 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 ## Required Modules ##
 
 # PCI and VME64x support library
-DEVLIB2=$(TOP)/../devlib2
+#DEVLIB2=$(TOP)/../devlib2
 
 # EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE=/usr/lib/epics
-
+#EPICS_BASE=/usr/lib/epics

@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #ifndef EVG_MRM_H
 #define EVG_MRM_H
 
@@ -17,6 +24,8 @@
 #include <epicsEvent.h>
 #include <epicsMutex.h>
 
+#include <devLibPCI.h>
+
 #include "evgAcTrig.h"
 #include "evgEvtClk.h"
 #include "evgSoftEvt.h"
@@ -29,6 +38,7 @@
 #include "evgSequencer/evgSoftSeqManager.h"
 #include "mrmDataBufTx.h"
 #include "evgRegMap.h"
+#include "configurationInfo.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -43,7 +53,7 @@ enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm : public mrf::ObjectInst<evgMrm> {
 public:
-    evgMrm(const std::string& id, volatile epicsUInt8* const);
+    evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);
     ~evgMrm();
 
     /* locking done internally */
@@ -54,26 +64,35 @@ public:
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;
     epicsUInt32 getFwVersion() const;
+    epicsUInt32 getFwVersionID();
+    formFactor getFormFactor();
+    std::string getFormFactorStr();
     std::string getSwVersion() const;
 
     void enable(bool);
     bool enabled() const;
 
+    bool getResetMxc() const {return true;}
     void resetMxc(bool reset);
     epicsUInt32 getDbusStatus() const;
 
     /**    Interrupt and Callback    **/
-    static void isr(void*);
+    static void isr(evgMrm *evg, bool pci);
+    static void isr_pci(void*);
+    static void isr_vme(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
     static void process_eos0_cb(CALLBACK*);
     static void process_eos1_cb(CALLBACK*);
+    static void process_sos0_cb(CALLBACK*);
+    static void process_sos1_cb(CALLBACK*);
     static void process_inp_cb(CALLBACK*);
 
     /** TimeStamp    **/
     epicsUInt32 sendTimestamp();
     epicsTimeStamp getTimestamp() const;
     void syncTimestamp();
-    void syncTsRequest();
+    bool getSyncTsRequest() const {return false;}
+    void syncTsRequest(bool=true);
     void incrTimestamp();
     
     /**    Access    functions     **/
@@ -88,14 +107,22 @@ public:
     evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();
+    bus_configuration* getBusConfiguration();
 
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
+    CALLBACK                      irqStart0_cb;
+    CALLBACK                      irqStart1_cb;
     CALLBACK                      irqExtInp_cb;
 
+#ifdef __linux__
+    void* isrLinuxPvt;
+#endif
     // flags for CB rate limiting
     unsigned char irqStop0_queued;
     unsigned char irqStop1_queued;
+    unsigned char irqStart0_queued;
+    unsigned char irqStart1_queued;
     unsigned char irqExtInp_queued;
 
     IOSCANPVT                     ioScanTimestamp;
@@ -106,9 +133,12 @@ public:
 
     void show(int lvl);
 
+    const epicsPCIDevice*         m_pciDevice;
+
 private:
     const std::string             m_id;
     volatile epicsUInt8* const    m_pReg;
+    bus_configuration             busConfiguration;
 
     evgAcTrig                     m_acTrig;
     evgEvtClk                     m_evtClk;
@@ -184,7 +214,7 @@ public:
 
     bool getPilotCount() {
         SCOPED_LOCK(m_lock);
-        return m_pilotCount;
+        return m_pilotCount != 0;
     }
 
     epicsMutex  m_lock;

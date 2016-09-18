@@ -1,3 +1,10 @@
+/*************************************************************************\
+* Copyright (c) 2010 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #include "evgSoftSeq.h"
 
 #include <math.h>
@@ -39,9 +46,10 @@ m_numOfRuns(0) {
     scanIoInit(&ioscanpvt);
     scanIoInit(&ioScanPvtErr);
     scanIoInit(&iorunscan);
+    scanIoInit(&iostartscan);
 }
 
-const epicsUInt32
+epicsUInt32
 evgSoftSeq::getId() const {
     return m_id;
 }
@@ -92,7 +100,7 @@ evgSoftSeq::getTimestampResolution() {
 void
 evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
     if(size > 2047)
-        throw std::runtime_error("Too many Timestamps.");
+        throw std::runtime_error("Too many Timestamps. Max: 2047");
 
     m_timestamp.clear();
     m_timestamp.assign(timestamp, timestamp + size);
@@ -106,7 +114,7 @@ evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
 void
 evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
     if(size > 2047)
-        throw std::runtime_error("Too many EventCodes.");
+        throw std::runtime_error("Too many EventCodes. Max: 2047");
 	
     m_eventCode.clear();
     m_eventCode.assign(eventCode, eventCode + size);
@@ -177,7 +185,7 @@ evgSoftSeq::getSeqRam() {
 
 bool
 evgSoftSeq::isLoaded() {
-    return m_seqRam;
+    return m_seqRam != 0;
 }
 
 bool
@@ -333,10 +341,13 @@ evgSoftSeq::abort(bool callBack) {
              * Satisfy any callback request pending on irqStop0 or irqStop1
              * recList. As no 'End of sequence' Intrrupt will be generated. 
              */
-        if(m_seqRam->getId() == 0)
+        if(m_seqRam->getId() == 0) {
             callbackRequest(&m_owner->irqStop0_cb);
-        else
+            callbackRequest(&m_owner->irqStart0_cb);
+        } else {
             callbackRequest(&m_owner->irqStop1_cb);
+            callbackRequest(&m_owner->irqStart1_cb);
+        }
     }
 }
 
@@ -497,6 +508,11 @@ evgSoftSeq::commitSoftSeq() {
         fprintf(stderr, "SS%u: Commit complete, need sync\n",m_id);
 }
 
+void
+evgSoftSeq::process_sos()
+{
+    scanIoRequest(iostartscan);
+}
 
 void
 evgSoftSeq::process_eos()
@@ -534,5 +550,6 @@ void evgSoftSeq::show(int lvl)
 }
 
 #include <epicsExport.h>
-
-epicsExportAddress(int,mrmEVGSeqDebug);
+extern "C"{
+ epicsExportAddress(int,mrmEVGSeqDebug);
+}

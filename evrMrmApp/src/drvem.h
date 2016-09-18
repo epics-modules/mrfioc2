@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -32,14 +33,18 @@
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
 #include "drvemCML.h"
+#include "delayModule.h"
 #include "drvemRxBuf.h"
+
+#include "mrmGpio.h"
 
 #include "mrmDataBufTx.h"
 #include "sfp.h"
+#include "configurationInfo.h"
 
 //! @brief Helper to allow one class to have several runable methods
 template<class C,void (C::*Method)()>
-class epicsThreadRunableMethod : public epicsThreadRunable
+class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
 {
     C& owner;
 public:
@@ -55,7 +60,7 @@ public:
 
 class EVRMRM;
 
-struct eventCode {
+struct epicsShareClass eventCode {
     epicsUInt8 code; // constant
     EVRMRM* owner;
 
@@ -88,7 +93,7 @@ struct eventCode {
  *
  * 
  */
-class EVRMRM : public EVR
+class epicsShareClass EVRMRM : public EVR
 {
 public:    
     /** @brief Guards access to instance
@@ -97,8 +102,23 @@ public:
    */
     mutable epicsMutex evrLock;
 
+    struct Config {
+        const char *model;
+        size_t nPul; // number of pulsers
+        size_t nPS;   // number of prescalers
+        // # of outputs (Front panel, FP Universal, Rear transition module)
+        size_t nOFP, nOFPUV, nORB;
+        size_t nOFPDly;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
+        // # of CML outputs
+        size_t nCML;
+        MRMCML::outkind kind;
+        // # of FP inputs
+        size_t nIFP;
+    };
 
-    EVRMRM(const std::string& n, const std::string& p,volatile unsigned char*,epicsUInt32);
+    EVRMRM(const std::string& n, bus_configuration& busConfig,
+           const Config *c,
+           volatile unsigned char*,epicsUInt32);
 
     virtual ~EVRMRM();
 private:
@@ -108,9 +128,12 @@ public:
     virtual void lock() const{evrLock.lock();};
     virtual void unlock() const{evrLock.unlock();};
 
-    virtual epicsUInt32 model() const;
-
+    virtual std::string model() const;
+    epicsUInt32 fpgaFirmware();
+    formFactor getFormFactor();
+    std::string formFactorStr();
     virtual epicsUInt32 version() const;
+
 
     virtual bool enabled() const;
     virtual void enable(bool v);
@@ -121,6 +144,10 @@ public:
     virtual MRMOutput* output(OutputType,epicsUInt32 o);
     virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
 
+    virtual bool mappedOutputState() const;
+
+    virtual DelayModule* delay(epicsUInt32 i);
+
     virtual MRMInput* input(epicsUInt32 idx);
     virtual const MRMInput* input(epicsUInt32) const;
 
@@ -129,6 +156,8 @@ public:
 
     virtual MRMCML* cml(epicsUInt32 idx);
     virtual const MRMCML* cml(epicsUInt32) const;
+
+    MRMGpio* gpio();
 
     virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
     virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
@@ -186,12 +215,14 @@ public:
 
     void enableIRQ(void);
 
-    static void isr(void*);
-#ifdef __linux__
+    static void isr(EVRMRM *evr, bool pci);
+    static void isr_pci(void*);
+    static void isr_vme(void*);
+#if defined(__linux__) || defined(_WIN32)
     const void *isrLinuxPvt;
 #endif
 
-    const std::string id;
+    const Config * const conf;
     volatile unsigned char * const base;
     epicsUInt32 baselen;
     mrmDataBufTx buftx;
@@ -228,6 +259,8 @@ private:
     typedef std::map<std::pair<OutputType,epicsUInt32>,MRMOutput*> outputs_t;
     outputs_t outputs;
 
+    std::vector<DelayModule*> delays;
+
     typedef std::vector<MRMPreScaler*> prescalers_t;
     prescalers_t prescalers;
 
@@ -236,6 +269,8 @@ private:
 
     typedef std::vector<MRMCML*> shortcmls_t;
     shortcmls_t shortcmls;
+
+    MRMGpio gpio_;
 
     // run when FIFO not-full IRQ is received
     void drain_fifo();
@@ -276,7 +311,7 @@ private:
 
     void _map(epicsUInt8 evt, epicsUInt8 func)   { _mapped[evt] |=    1<<(func);  }
     void _unmap(epicsUInt8 evt, epicsUInt8 func) { _mapped[evt] &= ~( 1<<(func) );}
-    bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return _mapped[evt] & 1<<(func); }
+    bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return (_mapped[evt] & 1<<(func)) != 0; }
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

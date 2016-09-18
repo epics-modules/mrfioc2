@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include <epicsStdio.h>
-
+#include <epicsExport.h>
 #include "mrfCommon.h"
 
 epicsUInt32 roundToUInt(double val, epicsUInt32 max)

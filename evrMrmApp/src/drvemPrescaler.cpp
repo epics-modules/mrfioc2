@@ -8,12 +8,17 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemPrescaler.h"
 
-#include <epicsMMIO.h>
+#include "mrf/databuf.h"
+#include <mrfCommonIO.h>
 #include "evrRegMap.h"
 
 #include <stdexcept>
+#include <evr/prescaler.h>
+
+#include <epicsExport.h>
+#include "drvemPrescaler.h"
+
 
 epicsUInt32
 MRMPreScaler::prescaler() const
@@ -24,8 +29,5 @@ MRMPreScaler::prescaler() const
 void
 MRMPreScaler::setPrescaler(epicsUInt32 v)
 {
-    if(v>0xffff)
-        throw std::out_of_range("prescaler setting is out of range");
-
     nat_iowrite32(base, v);
 }

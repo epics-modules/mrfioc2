@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2011 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -23,7 +24,36 @@
 #ifndef MRFOBJECT_H
 #define MRFOBJECT_H
 
-#include <ostream>
+#ifdef _WIN32
+/*
+ * The warnings C4251 and C4275 happen because all objects have a DLL
+ * interface when compiled on VC++ but derive from standard STL objects
+ * that don't have a DLL interface. This can be safely ignored when
+ * deriving from STL objects but not otherwise. See [1] and [2] for
+ * more information.
+ *
+ * [1]: https://msdn.microsoft.com/en-us/library/3tdb471s.aspx
+ * [2]: https://msdn.microsoft.com/en-us/library/esew7y1w.aspx
+ */
+#pragma warning( disable: 4251 )
+#pragma warning( disable: 4275 )
+/*
+ * The warning C4661 is happening due to separate code instantiation
+ * that happens with macros defined in this file (OBJECT_START,
+ * OBJECT_PROP1, OBJECT_PROP2 and OBJECT_END). The objects define
+ * custom instances of generic templates which means that in some code
+ * files where these macros are missing the compiler assumes that
+ * specific instances of functions are missing.
+ */
+#pragma warning( disable: 4661 )
+#endif
+
+// dmm: the old gcc v2.96 appears to have problems to find the "new" version of <ostream>
+#if (defined __GNUC__ && __GNUC__ < 3)
+	#include <ostream.h>
+#else
+	#include <ostream>
+#endif
 #include <sstream>
 #include <map>
 #include <set>
@@ -41,7 +71,7 @@
 namespace mrf {
 
 //! @brief Requested operation is not implemented by the property
-class opNotImplemented : public std::runtime_error
+class epicsShareClass opNotImplemented : public std::runtime_error
 {
 public:
     opNotImplemented(const std::string& m) : std::runtime_error(m) {}
@@ -53,7 +83,7 @@ public:
  * There is no way other then to up-cast in ObjectInst<C>
  * and then down-cast in getProperty<P>().
  */
-struct propertyBase
+struct epicsShareClass propertyBase
 {
     virtual ~propertyBase()=0;
     virtual const char* name() const=0;
@@ -120,7 +150,7 @@ struct unboundPropertyBase
 
 //! @brief An un-bound, typed scalar property
 template<class C, typename P>
-class unboundProperty : public unboundPropertyBase<C>
+class epicsShareClass unboundProperty : public unboundPropertyBase<C>
 {
 public:
     typedef void (C::*setter_t)(P);
@@ -147,7 +177,7 @@ makeUnboundProperty(const char* n, P (C::*g)() const, void (C::*s)(P)=0)
 
 //! @brief An un-bound, typed array property
 template<class C, typename P>
-class unboundProperty<C,P[1]> : public unboundPropertyBase<C>
+class epicsShareClass unboundProperty<C,P[1]> : public unboundPropertyBase<C>
 {
 public:
     typedef void   (C::*setter_t)(const P*, epicsUInt32);
@@ -176,7 +206,7 @@ makeUnboundProperty(const char* n,
 
 //! @brief final scalar implementation
 template<class C, typename P>
-class propertyInstance : public property<P>
+class epicsShareClass  propertyInstance : public property<P>
 {
   C *inst;
   unboundProperty<C,P> prop;
@@ -216,7 +246,7 @@ unboundProperty<C,P>::bind(C* inst)
 
 //! @brief final array implementation
 template<class C, typename P>
-class propertyInstance<C,P[1]> : public property<P[1]>
+class epicsShareClass propertyInstance<C,P[1]> : public property<P[1]>
 {
   C *inst;
   unboundProperty<C,P[1]> prop;
@@ -250,7 +280,8 @@ unboundProperty<C,P[1]>::bind(C* inst)
  * Interface for introspection operations.  Allows access
  * to properties.
  */
-class Object
+
+class epicsShareClass Object
 {
 public:
     struct _compName {
@@ -368,6 +399,7 @@ public:
 };
 
 #define OBJECT_BEGIN(klass) namespace mrf {\
+template class ObjectInst<klass>;\
 template<> ObjectInst<klass>::m_props_t* ObjectInst<klass>::m_props = 0; \
 template<> epicsThreadOnceId ObjectInst<klass>::initId = EPICS_THREAD_ONCE_INIT; \
 template<> void ObjectInst<klass>::initObject(void * rmsg) { \
@@ -375,10 +407,10 @@ template<> void ObjectInst<klass>::initObject(void * rmsg) { \
     try { std::auto_ptr<m_props_t> props(new m_props_t); {
 
 #define OBJECT_PROP1(NAME, GET) \
-    props->insert(std::make_pair(NAME, detail::makeUnboundProperty(NAME, GET) ))
+    props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET) ))
 
 #define OBJECT_PROP2(NAME, GET, SET) \
-    props->insert(std::make_pair(NAME, detail::makeUnboundProperty(NAME, GET, SET) ))
+    props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET, SET) ))
 
 #define OBJECT_END(klass) \
 } m_props = props.release(); \

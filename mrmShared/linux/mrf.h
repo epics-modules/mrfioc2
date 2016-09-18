@@ -1,7 +1,10 @@
-/* Copyright (C) 2014 Brookhaven National Lab
- * All rights reserved.
- * See file LICENSE for terms.
- */
+/*************************************************************************\
+* Copyright (c) 2014 Brookhaven Science Associates, as Operator of
+*     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 
 #ifndef MRF_H
 #define MRF_H
@@ -91,7 +94,12 @@
     INTCSR9056_DM0_Status|INTCSR9056_DM1_Status)
 
 /* For MRM EVR 230 and 300 series
+ * FPGA register and flag values
  */
+
+#define CTRLMain    0x004
+#  define CTRL_BeEnd   0x02000000
+#  define CTRL_LeEnd   0x00000040
 
 #define IRQFlag     0x008
 #  define IRQ_LinkChg   0x40
@@ -105,13 +113,33 @@
 #define IRQEnable   0x00c
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
+/* present for w/ FW version <8 */
+#  define IRQ_PCIee     0x40000000
+
+#define IRQ_Enable_ALL  (IRQ_Enable|IRQ_PCIee)
+
+#define PCIMIE      0x01c
+/* w/ FW version >=8, IRQ_PCIee moves to PCIMIE */
+
+/* The expected value (form factor and 0x1 for EVR) that is
+ * stored in FPGA of EVR300 @ first byte of FPGAVersion register.
+ *
+ * This value is used to test enianness of the EVR 300 PCIe card.
+ */
+#define FPGAVER_EVR300  0x17
+
+#define FPGAVersion 0x02c
+#  define FPGAVer_FF    0xff000000
 
 /* driver private struct */
 
 struct mrf_priv {
     struct uio_info uio;
     struct pci_dev *pdev;
+    unsigned int mrftype; /* MSB from version register */
     unsigned int irqmode;
+    unsigned int intrcount;
+    unsigned int usemie:1;
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
     spinlock_t lock;

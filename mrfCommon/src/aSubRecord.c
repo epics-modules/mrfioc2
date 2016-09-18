@@ -84,7 +84,7 @@ rset aSubRSET = {
 };
 epicsExportAddress(rset, aSubRSET);
 
-static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
+static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
     const char **fldnames, void **pval, void **povl);
 static long fetch_values(aSubRecord *prec);
 static void monitor(aSubRecord *);
@@ -216,7 +216,7 @@ static long init_record(aSubRecord *prec, int pass)
 }
 
 
-static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
+static long initFields(epicsEnum16 *pft, epicsUInt32 *pno, epicsUInt32 *pne,
     const char **fldnames, void **pval, void **povl)
 {
     int i;
@@ -236,7 +236,7 @@ static long initFields(epicsEnum16 *pft, unsigned long *pno, unsigned long *pne,
         num = *pno * flen;
 
         if (num > MAX_ARRAY_SIZE) {
-            epicsPrintf("Link %s - Array too large! %d Bytes\n", fldnames[i], num);
+            epicsPrintf("Link %s - Array too large! %d Bytes (max: %d)\n", fldnames[i], num, MAX_ARRAY_SIZE);
             *pno = num = 0;
             status = S_db_errArg;
         } else
@@ -319,7 +319,7 @@ static long fetch_values(aSubRecord *prec)
     /* Get the input link values */
     for (i = 0; i < NUM_ARGS; i++) {
         long nRequest = (&prec->noa)[i];
-        status = dbGetLink(&(&prec->inpa)[i], (&prec->fta)[i], (&prec->a)[i], 0,
+        status = dbGetLinkValue(&(&prec->inpa)[i], (&prec->fta)[i], (&prec->a)[i], 0,
             &nRequest);
         if (nRequest > 0)
             (&prec->nea)[i] = nRequest;

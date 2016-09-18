@@ -29,12 +29,11 @@ record(bo, "$(ON)Ena-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-# Place for user provided note of what is
-# connected to this output.
-record(waveform, "$(ON)User-SP") {
-  field( DESC, "Desc. of user or purpose")
-  field( FTVL, "CHAR")
-  field( NELM, "128")
-  field( NORD, "1") # default include null termination
+
+record(waveform, "$(ON)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
   info(autosaveFields_pass1, "VAL")
+  alias("$(ON)User-SP")
 }

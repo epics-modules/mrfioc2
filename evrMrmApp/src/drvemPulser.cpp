@@ -8,8 +8,7 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "drvemPulser.h"
-
+#include "evrRegMap.h"
 #include "drvem.h"
 
 #include <stdexcept>
@@ -19,11 +18,14 @@
 #include <dbDefs.h>
 #include <epicsMath.h>
 
-#include <mrfCommonIO.h>
-#include <mrfBitOps.h>
-#include "evrRegMap.h"
+#include "mrfCommonIO.h"
+#include "mrfBitOps.h"
 
-MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i,EVRMRM& o)
+
+
+#include "drvemPulser.h"
+
+MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i, EVRMRM& o)
   :Pulser(n)
   ,id(i)
   ,owner(o)
@@ -139,7 +141,7 @@ MRMPulser::setPrescaler(epicsUInt32 v)
 bool
 MRMPulser::polarityInvert() const
 {
-    return READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol;
+    return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_pol) != 0;
 }
 
 void
@@ -184,12 +186,12 @@ MRMPulser::mappedSource(epicsUInt32 evt) const
     }
     if(insanity>1){
         errlogPrintf("EVR %s pulser #%d code %02x maps too many actions %08x %08x %08x\n",
-            owner.id.c_str(),id,evt,map[0],map[1],map[2]);
+            owner.name().c_str(),id,evt,map[0],map[1],map[2]);
     }
 
     if( (ret==MapType::None) ^ _ismap(evt) ){
         errlogPrintf("EVR %s pulser #%d code %02x mapping (%08x %08x %08x) is out of sync with view (%d)\n",
-            owner.id.c_str(),id,evt,map[0],map[1],map[2],_ismap(evt));
+            owner.name().c_str(),id,evt,map[0],map[1],map[2],_ismap(evt));
     }
 
     return ret;

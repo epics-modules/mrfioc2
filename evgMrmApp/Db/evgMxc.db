@@ -78,3 +78,10 @@ record(ai, "$(P)EvtClkFreq-RB_") {
     field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
     field( FLNK, "$(P)Frequency-RB")
 }
+
+record(waveform, "$(P)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
+}

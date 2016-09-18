@@ -81,7 +81,13 @@ nat_iowrite32(volatile void* addr, epicsUInt32 val)
 
 #elif EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
 
-#include <arpa/inet.h>
+#ifdef _WIN32
+ #include <Winsock2.h>
+#else
+ // for htons() et al.
+ #include <netinet/in.h> // on rtems
+ #include <arpa/inet.h> // on linux
+#endif
 
 /* hton* is optimized or a builtin for most compilers
  * so use it if possible

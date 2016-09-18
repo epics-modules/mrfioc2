@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -8,7 +9,7 @@
  * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
  */
 
-#include "bufrxmgr.h"
+
 
 #include <cstdlib>
 #include <cstdio>
@@ -18,6 +19,11 @@
 #include <epicsTypes.h>
 #include <cantProceed.h>
 #include <dbDefs.h>
+#include "mrf/databuf.h"
+
+
+#include <epicsExport.h>
+#include "bufrxmgr.h"
 
 /* Subtract member byte offset, returning pointer to parent object */
 #ifndef CONTAINER
@@ -40,7 +46,7 @@ do { \
   (ptr)->timer=NULL;              \
 } while(0)
 
-void defaulterr(void *, epicsStatus err, epicsUInt8,
+void defaulterr(void *, epicsStatus err,
                 epicsUInt32 , const epicsUInt8* )
 {
     switch(err) {
@@ -56,11 +62,9 @@ bufRxManager::bufRxManager(const std::string& n, unsigned int qdepth, unsigned i
   ,guard()
   ,onerror(defaulterr)
   ,onerror_arg(NULL)
-  ,m_bsize(bsize ? bsize : 2046)
+  ,m_bsize(bsize ? bsize : 2048)
 {
-    for(unsigned int i=0; i<NELEMENTS(dispatch); i++)
-        ellInit(&dispatch[i]);
-
+    ellInit(&dispatch);
     ellInit(&freebufs);
     ellInit(&usedbufs);
 
@@ -153,14 +157,11 @@ bufRxManager::received(CALLBACK* cb)
             break;
         buffer *buf=CONTAINER(node, buffer, node);
 
-        epicsUInt8 proto=buf->data[0];
-        ELLLIST *actions=&self.dispatch[proto];
-
         G.unlock();
 
-        for(ELLNODE *cur=ellFirst(actions); cur; cur=ellNext(cur)) {
+        for(ELLNODE *cur=ellFirst(&self.dispatch); cur; cur=ellNext(cur)) {
             listener *action=CONTAINER(cur, listener, node);
-            (action->fn)(action->fnarg, 0, proto, buf->used-1, &buf->data[1]);
+            (action->fn)(action->fnarg, 0, buf->used, buf->data);
         }
 
         G.lock();
@@ -178,21 +179,13 @@ bufRxManager::dataRxError(dataBufComplete fn, void* arg)
 }
 
 void
-bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
+bufRxManager::dataRxAddReceive(dataBufComplete fn,void* arg)
 {
     listener *l;
 
-    if(p==AllProtocol) {
-        for(epicsUInt16 i=0; i<=255; i++)
-            dataRxAddReceive(i, fn, arg);
-        return;
-    } else if(p>255)
-        throw std::invalid_argument("protocol id out of range");
-
     SCOPED_LOCK(guard);
-    ELLLIST *actions=&dispatch[p&0xff];
 
-    for(ELLNODE *node=ellFirst(actions); node; node=ellNext(node))
+    for(ELLNODE *node=ellFirst(&dispatch); node; node=ellNext(node))
     {
         l=CONTAINER(node, listener, node);
         // Don't add duplicates
@@ -205,29 +198,21 @@ bufRxManager::dataRxAddReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
     l->fn=fn;
     l->fnarg=arg;
 
-    ellAdd(actions, &l->node);
+    ellAdd(&dispatch, &l->node);
 }
 
 void
-bufRxManager::dataRxDeleteReceive(epicsUInt16 p,dataBufComplete fn,void* arg)
+bufRxManager::dataRxDeleteReceive(dataBufComplete fn,void* arg)
 {
     listener *l;
 
-    if(p==AllProtocol) {
-        for(epicsUInt16 i=0; i<=255; i++)
-            dataRxDeleteReceive(i, fn, arg);
-        return;
-    }
-
     SCOPED_LOCK(guard);
 
-    ELLLIST *actions=&dispatch[p&0xff];
-
-    for(ELLNODE *node=ellFirst(actions); node; node=ellNext(node))
+    for(ELLNODE *node=ellFirst(&dispatch); node; node=ellNext(node))
     {
         l=CONTAINER(node, listener, node);
         if (l->fn==fn && l->fnarg==arg) {
-            ellDelete(actions, node);
+            ellDelete(&dispatch, node);
             delete l;
             return;
         }

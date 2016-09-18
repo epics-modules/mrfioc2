@@ -147,6 +147,7 @@ OBJECT_DSET(WFOut,
             NULL);
 
 #include <epicsExport.h>
-
-OBJECT_DSET_EXPORT(WFIn);
-OBJECT_DSET_EXPORT(WFOut);
+extern "C" {
+ OBJECT_DSET_EXPORT(WFIn);
+ OBJECT_DSET_EXPORT(WFOut);
+}

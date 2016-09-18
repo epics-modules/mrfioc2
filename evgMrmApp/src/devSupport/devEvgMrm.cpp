@@ -13,6 +13,8 @@
 #include <dbAccess.h>
 #include <recGbl.h>
 #include <errlog.h>
+#include "mrf/databuf.h"
+
 #include <epicsExport.h>
 
 #include "devObj.h"
@@ -43,43 +45,10 @@ init_record(dbCommon *pRec, DBLINK* lnk) {
     return ret;
 }
 
-/**     Initialization     **/
-/*returns: (0,2)=>(success,success no convert) 0==2    */
-static long 
-init_bo(boRecord* pbo) {
-    long ret = init_record((dbCommon*)pbo, &pbo->out);
-    if(ret == 0)
-        ret = 2;
-
-    return ret;
-}
-
 /*returns: (-1,0)=>(failure,success)*/
 static long 
 init_si(stringinRecord* psi) {
     return init_record((dbCommon*)psi, &psi->inp);
-}
-
-/*returns: (-1,0)=>(failure,success)*/
-static long
-write_bo_resetMxc(boRecord* pbo) {
-    long ret = 0;
-
-    try {
-        evgMrm* evg = (evgMrm*)pbo->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        evg->resetMxc(pbo->val);
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
 }
 
 /*returns: (-1,0)=>(failure,success)*/
@@ -106,7 +75,7 @@ read_si_ts(stringinRecord* psi) {
                 (void)recGblSetSevr(psi, TIMEOUT_ALARM, MAJOR_ALARM);
                 break;
             default:
-                errlogPrintf("ERROR: Wrong Timestamp alarm Status\n");
+                errlogPrintf("ERROR: %s : Wrong Timestamp alarm Status\n", psi->name);
         }
 
         ret = 0;
@@ -122,10 +91,11 @@ read_si_ts(stringinRecord* psi) {
 }
 
 static long 
-get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
+get_ioint_info(int, stringinRecord *psi, IOSCANPVT *ppvt) {
+
     evgMrm* evg = (evgMrm*)psi->dpvt;
     if(!evg) {
-        errlogPrintf("ERROR: Device pvt field not initialized\n");
+        errlogPrintf("ERROR: %s : Device pvt field not initialized\n", psi->name);
         return -1;
     }
 
@@ -134,41 +104,9 @@ get_ioint_info(int cmd, stringinRecord *psi, IOSCANPVT *ppvt) {
     return 0;
 }
 
-/*returns: (-1,0)=>(failure,success)*/
-static long 
-write_bo_syncTS(boRecord* pbo) {
-    long ret = 0;
-
-    try {
-        evgMrm* evg = (evgMrm*)pbo->dpvt;
-        if(!evg)
-            throw std::runtime_error("Device pvt field not initialized");
-
-        evg->syncTsRequest();
-    } catch(std::runtime_error& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_dev_noDevice;
-    } catch(std::exception& e) {
-        errlogPrintf("ERROR: %s : %s\n", e.what(), pbo->name);
-        ret = S_db_noMemory;
-    }
-
-    return ret;
-}
-
 
 /**     device support entry table     **/
 extern "C" {
-
-common_dset devBoEvgResetMxc = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_resetMxc,
-};
-epicsExportAddress(dset, devBoEvgResetMxc);
 
 common_dset devSiTimeStamp = {
     5,
@@ -179,16 +117,6 @@ common_dset devSiTimeStamp = {
     (DEVSUPFUN)read_si_ts,
 };
 epicsExportAddress(dset, devSiTimeStamp);
-
-common_dset devBoEvgSyncTS = {
-    5,
-    NULL,
-    NULL,
-    (DEVSUPFUN)init_bo,
-    NULL,
-    (DEVSUPFUN)write_bo_syncTS,
-};
-epicsExportAddress(dset, devBoEvgSyncTS);
 
 };
 

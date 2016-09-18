@@ -13,9 +13,6 @@ public:
     virtual void lock() const{};
     virtual void unlock() const{};
 
-    void enable(bool);
-    bool enabled() const;
-
     void setEvtCode(epicsUInt32);
     epicsUInt32 getEvtCode() const;
 

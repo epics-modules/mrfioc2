@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -34,6 +35,10 @@
  * however, to support transparent operation for both
  * VME and PCI bus it is necessary to use only 32 bit
  * access.
+ *
+ * Bus bridge chips will transparently change the byte order.
+ * VME bridges do this for any data width.  The PLX and lattice bridges
+ * do this assuming 32-bit data width.
  */
 
 #define U32_Status      0x000
@@ -88,8 +93,13 @@
 #define U32_IRQEnable   0x00c
 /* Same bits as IRQFlag plus */
 #  define IRQ_Enable    0x80000000
+#  define IRQ_PCIee     0x40000000
 
 #define U32_IRQPulseMap 0x010
+
+// With Linux this bit should used by the kernel driver exclusively
+#define U32_PCI_MIE             0x001C
+#define EVG_MIE_ENABLE          0x40000000
 
 #define U32_DataBufCtrl 0x020
 /* Write 1 to start, read for run status */
@@ -116,14 +126,6 @@
 #  define FWVersion_ver_mask  0x000000ff
 #  define FWVersion_ver_shift  0
 #  define FWVersion_zero_mask 0x00ffff00
-
-enum evrForm {
-  evrFormCPCI=0, // 3U
-  evrFormPMC=1,
-  evrFormVME64=2,
-  evrFormCRIO=3,
-  evrFormCPCIFULL=4, // 6U
-};
 
 #define U32_CounterPS   0x040 /* Timestamp event counter prescaler */
 

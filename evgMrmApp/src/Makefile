@@ -61,6 +61,10 @@ evgmrm_SRCS += evgSeqRamManager.cpp
 evgmrm_SRCS += seqconst.c
 evgmrm_SRCS += seqnsls2.c
 
+ifeq ($(OS),Windows_NT)
+evgmrm_LIBS += mrfCommon mrmShared epicsvme epicspci $(EPICS_BASE_IOC_LIBS)
+endif
+
 DBD += evgInit.dbd
 #=============================
 # Build the IOC application
@@ -74,7 +78,7 @@ evgMrm_DBD += base.dbd
 evgMrm_DBD += evgInit.dbd
 
 # Add all the support libraries needed by this IOC
-evgMrm_LIBS += evgmrm epicsvme mrmShared mrfCommon 
+evgMrm_LIBS += evgmrm epicsvme epicspci mrmShared mrfCommon 
 
 # evgMrm_registerRecordDeviceDriver.cpp derives from evgMrm.dbd
 evgMrm_SRCS += evgMrm_registerRecordDeviceDriver.cpp

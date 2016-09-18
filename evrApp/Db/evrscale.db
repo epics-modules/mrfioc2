@@ -29,3 +29,10 @@ record(calc, "$(SN)Rate-I") {
   field(EGU, "MHz")
   field(PREC, "2")
 }
+
+record(waveform, "$(SN)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
+}

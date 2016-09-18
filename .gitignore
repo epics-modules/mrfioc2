@@ -6,3 +6,15 @@
 /lib/
 O.*/
 html/
+rtf
+*.local
+
+.project
+.cproject
+.settings
+
+*.config
+*.creator
+*.creator.user
+*.files
+*.includes

@@ -210,8 +210,8 @@ record(bi, "$(P)Pll-Sts") {
   field(ZSV , "MAJOR")
 }
 
-record(longin, "$(P)HwType-I") {
-  field(DTYP, "Obj Prop uint32")
+record(stringin, "$(P)HwType-I") {
+  field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Model")
   field(PINI, "YES")
   field(DESC, "Hardware type code")
@@ -347,3 +347,9 @@ record(bo, "$(P)Link:RxMode-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+record(waveform, "$(P)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
+}

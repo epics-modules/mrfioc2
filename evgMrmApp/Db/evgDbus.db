@@ -99,7 +99,7 @@ record(mbbiDirect, "$(P)Src-MbbiDir_") {
 
 record(bo, "$(P)Src:FrontInp0-Sel") {
     field( DESC, "Front Input0 on Dbus")
-    field( DTYP, "EVG Dbus FrontInp0")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -109,7 +109,7 @@ record(bo, "$(P)Src:FrontInp0-Sel") {
 
 record(bo, "$(P)Src:FrontInp1-Sel") {
     field( DESC, "Front Input1 on Dbus")
-    field( DTYP, "EVG Dbus FrontInp1")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -119,7 +119,7 @@ record(bo, "$(P)Src:FrontInp1-Sel") {
 
 record(bo, "$(P)Src:UnivInp0-Sel") {
     field( DESC, "Front Univ Input0 on Dbus")
-    field( DTYP, "EVG Dbus UnivInp0")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp0")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -129,7 +129,7 @@ record(bo, "$(P)Src:UnivInp0-Sel") {
 
 record(bo, "$(P)Src:UnivInp1-Sel") {
     field( DESC, "Front Univ Input1 on Dbus")
-    field( DTYP, "EVG Dbus UnivInp1")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp1")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -139,7 +139,7 @@ record(bo, "$(P)Src:UnivInp1-Sel") {
 
 record(bo, "$(P)Src:UnivInp2-Sel") {
     field( DESC, "Front Univ Input2 on Dbus")
-    field( DTYP, "EVG Dbus UnivInp2")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp2")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -149,7 +149,7 @@ record(bo, "$(P)Src:UnivInp2-Sel") {
 
 record(bo, "$(P)Src:UnivInp3-Sel") {
     field( DESC, "Front Univ Input3 on Dbus")
-    field( DTYP, "EVG Dbus UnivInp3")
+    field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp3")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
@@ -175,4 +175,11 @@ record(dfanout, "$(P)Omsl-FOut") {
     field( OUTE, "$(P)Src:UnivInp2-Sel.OMSL")
     field( OUTF, "$(P)Src:UnivInp3-Sel.OMSL")
     info( autosaveFields_pass0, "VAL")
+}
+
+record(waveform, "$(P)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
 }

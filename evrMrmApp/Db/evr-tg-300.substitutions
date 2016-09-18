@@ -63,19 +63,25 @@ file "evrevent.db"
 file "evrscale.db"
 {pattern
 {IDX, P, SN, OBJ, MAX}
-{0, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffff"}
-{1, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffff"}
-{2, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffff"}
+{0, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffffffff"}
+{1, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffffffff"}
+{2, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffffffff"}
 }
 
 file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
+{"$(SYS){$(D)-Out:Int}", "$(EVR):Int", "Internal"}
 {"$(SYS){$(D)-Out:FP0}", "$(EVR):FrontOut4", "LVPECL 0"}
 {"$(SYS){$(D)-Out:FP1}", "$(EVR):FrontOut5", "LVPECL 1"}
 {"$(SYS){$(D)-Out:FP2}", "$(EVR):FrontOut6", "CH 1 (GTX)"}
 {"$(SYS){$(D)-Out:FP3}", "$(EVR):FrontOut7", "CH 2 (GTX)"}
 }
+
+file "mrmevroutint.db"
+{{
+    ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"
+}}
 
 file "evrcml.db"
 {pattern
@@ -109,12 +115,6 @@ file "evrpulser.db"
 {7, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 {8, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 {9, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{10,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{11,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{12,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{13,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{14,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
-{15,"$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xff", 0}
 }
 
 # Default to 3 possible trigger mappings per pulser
@@ -151,22 +151,4 @@ file "evrpulsermap.db"
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {9, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{10,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{11,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{12,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{13,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{14,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{15,"$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
 }

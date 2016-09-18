@@ -32,7 +32,7 @@ void
 evgEvtClk::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
         char err[80];
-        sprintf(err, "Cannot set RF frequency to %f MHz.", RFref);
+        sprintf(err, "Cannot set RF frequency to %f MHz. Valid range is 50 - 1600.", RFref);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
@@ -49,17 +49,21 @@ void
 evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
     if(rfDiv < 1    || rfDiv > 32) {
         char err[80];
-        sprintf(err, "Invalid RF Divider %d.", rfDiv);
+        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 32", rfDiv);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
     
-    WRITE8(m_pReg, RfDiv, rfDiv-1);
+    epicsUInt32 temp = READ32(m_pReg, ClockControl);
+    temp &= ~ClockControl_Div_MASK;
+    temp |= (rfDiv-1)<<ClockControl_Div_SHIFT;
+
+    WRITE32(m_pReg, ClockControl, temp);
 }
 
 epicsUInt32
 evgEvtClk::getRFDiv() const {
-    return READ8(m_pReg, RfDiv) + 1;
+    return (READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT;
 }
 
 void
@@ -81,8 +85,8 @@ evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
      which will cause a glitch. Don't change the control word unless needed.*/
     if(controlWord != oldControlWord){
         WRITE32(m_pReg, FracSynthWord, controlWord);
-        epicsUInt16 uSecDivider = (epicsUInt16)freq;
-        WRITE16(m_pReg, uSecDiv, uSecDivider);
+        epicsUInt32 uSecDivider = (epicsUInt16)freq;
+        WRITE32(m_pReg, uSecDiv, uSecDivider);
     }
 
     m_fracSynFreq = FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
@@ -96,14 +100,14 @@ evgEvtClk::getFracSynFreq() const {
 void
 evgEvtClk::setSource (bool clkSrc) {
     if(clkSrc)
-        BITSET8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+        BITSET32 (m_pReg, ClockControl, ClockControl_EXTRF);
     else 
-        BITCLR8 (m_pReg, ClockSource, EVG_CLK_SRC_EXTRF);
+        BITCLR32 (m_pReg, ClockControl, ClockControl_EXTRF);
 }
 
 bool
 evgEvtClk::getSource() const {
-    epicsUInt8 clkReg = READ8(m_pReg, ClockSource);
-    return clkReg & EVG_CLK_SRC_EXTRF;
+    epicsUInt32 clkReg = READ32(m_pReg, ClockControl);
+    return clkReg & ClockControl_EXTRF;
 }
 

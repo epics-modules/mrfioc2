@@ -1,3 +1,11 @@
+
+== cross compiling ==
+
+make ARCH=powerpc CROSS_COMPILER=powerpc-linux-gnu- KERNELDIR=/path/to/headers
+
+
+== udev ==
+
 udev rules to automatically set permissions for approprieate /dev/uio*
 
 Leaves ownership with the root user, but sets the group permissions to
