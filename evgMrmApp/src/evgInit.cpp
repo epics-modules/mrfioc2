@@ -484,7 +484,8 @@ mrmEvgSetupPCI (
  * 
  * Author: tslejko
  */
-void mrmEvgSoftTime(void* pvt) {
+static
+void mrmEvgSoftTimeThread(void* pvt) {
     evgMrm* evg = static_cast<evgMrm*>(pvt);
 
     if (!evg) {
@@ -523,8 +524,26 @@ void mrmEvgSoftTime(void* pvt) {
     }
 }
 #else
-void mrmEvgSoftTime(void* pvt) {}
+static
+void mrmEvgSoftTimeThread(void* pvt) {}
 #endif
+
+void mrmEvgSoftTime(const char *obj) {
+    try {
+        printf("Starting EVG Software based time provider...\n");
+
+        if(!obj) return;
+
+        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(obj));
+        if(!evg){
+            errlogPrintf("EVG '%s' does not exist!\n", obj);
+        }
+
+        epicsThreadCreate("EVG_TimestampTestThread",90, epicsThreadStackSmall,mrmEvgSoftTimeThread,static_cast<void*>(evg));
+    } catch(std::exception& e){
+        fprintf(stderr, "Error: %s\n", e.what());
+    }
+}
 
 /*
  *    EPICS Registrar Function for this Module
@@ -534,16 +553,7 @@ static const iocshArg * const mrmEvgSoftTimeArgs[1] = { &mrmEvgSoftTimeArg0};
 static const iocshFuncDef mrmEvgSoftTimeFuncDef = { "mrmEvgSoftTime", 1, mrmEvgSoftTimeArgs };
 
 static void mrmEvgSoftTimeFunc(const iocshArgBuf *args) {
-	printf("Starting EVG Software based time provider...\n");
-
-	if(!args[0].sval) return;
-
-	evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(args[0].sval));
-	if(!evg){
-		errlogPrintf("EVG <%s> does not exist!\n",args[0].sval);
-	}
-
-	epicsThreadCreate("EVG_TimestampTestThread",90, epicsThreadStackSmall,mrmEvgSoftTime,static_cast<void*>(evg));
+    mrmEvgSoftTime(args[0].sval);
 }
 
 
