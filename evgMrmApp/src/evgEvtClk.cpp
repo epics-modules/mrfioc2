@@ -63,7 +63,8 @@ evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
 
 epicsUInt32
 evgEvtClk::getRFDiv() const {
-    return (READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT;
+    // read 0 -> divide by 1
+    return 1+((READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT);
 }
 
 void
