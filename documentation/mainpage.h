@@ -45,11 +45,10 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 @section hardware Supported Hardware
 
-Event Generators.  Current only the VME-EVG-230
+Event Generators.  VME-EVG-230 and cPCI-EVG-300
 
-Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCI-EVRTG-300e
+Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCIe-EVR-300
 
-@note Support for the PCI-EVRTG-300e is present, but has not been tested
 @section doc Documentation
 
 User documentation can be found in the form of usage manuals for both the
@@ -64,20 +63,24 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v21X 2.1.X (UNRELEASED)
+@subsection v210 2.1.0 (UNRELEASED)
 
-@subsubsection v21Xnot Notices
+@subsubsection v210change Incompatible changes
 
-@li EVR GTP is currently disabled
-@li VME EVG and EVR are loosely tested (IRQs are working OK, hardware inputs/outputs are not yet tested but expected to work O.K.)
-@li EVG databases fixed (in ..App/Db/PSI), originals moved to NSLS folder
-@li Renamed records in Db/PSI to conform to PSI naming convention
+@li EVG Enable control removed.  Now always enabled.
+@li Incompatible changes to data buffer TX/RX APIs
 
-@subsubsection v21Xfeat Features
+@subsubsection v210add Addtions
 
-@li Added support for PCI-EVRTG-300e (interrupts are not tested)
-@li Added start of sequence interrupt device support
-@li Created interrupt handler functions for PCI and VME to handle platform-specific interrupt configuration
+@li CS-Studio BOY .opi files for EVG
+@li Support for EVG on little endian targets (eg. linux x86)
+@li Support for additional devices: cPCI-EVG-300, cPCI-EVR-230, PCIe-EVR-300
+@li Add mrmEvgSoftTime() for software only time stamp distribution.
+@li Support for Fine delay for UNIV I/O daughter cards.
+@li Expose EVG Start of Sequence IRQ as with End of Sequence w/ a counter record.
+@li Add *Label-I charactor waveform to support long form description strings.
+@li Support named Events with Base >= 3.15 (SCAN=Event)
+@li Add global flag mrmGTIFEnable to allow generalTime current time provider to be disabled.
 
 @subsection v204 2.0.4 (May 2015)
 
