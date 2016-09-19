@@ -159,17 +159,10 @@ void datarx(void *arg, epicsStatus ok,
 
     dbScanLock((dbCommon*)prec);
 
-    if (!prec->dpvt) {
-        dbScanUnlock((dbCommon*)prec);
-        return;
-    }
-
-
-    if (ok) {
+    if (ok || !prec->dpvt) {
         // An error occured
         paddr->buf=NULL;
-        paddr->blen=ok;
-        return;
+        paddr->blen=0;
     } else {
         paddr->buf=buf;
         paddr->blen=len;
@@ -190,11 +183,11 @@ static long write_waveform(waveformRecord* prec)
 try {
   s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
 
-  if (!paddr->buf && paddr->blen) {
+  if (!paddr->buf) {
       // Error condition set INVALID_ALARM
       (void)recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
 
-  } else if(paddr->buf) {
+  } else {
 
       long esize = dbValueSize(prec->ftvl);
       epicsUInt32 capacity=prec->nelm*esize;
