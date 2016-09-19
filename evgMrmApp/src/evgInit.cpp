@@ -480,50 +480,47 @@ mrmEvgSetupPCI (
 
 #if !defined(_WIN32) && !defined(__rtems__)
 /*
- * This function spawns additional thread that emulate PPS input. Function is used for
- * testing of timestamping functionality... DO NOT USE IN PRODUCTION!!!!!
+ * Fake timestamp source for testing without real hardware timestamp source (eg. GPS recevier)
  * 
- * Change by: tslejko
- * Reason: testing utilities 
+ * Author: tslejko
  */
 void mrmEvgSoftTime(void* pvt) {
-	evgMrm* evg = static_cast<evgMrm*>(pvt);
+    evgMrm* evg = static_cast<evgMrm*>(pvt);
 
-	if (!evg) {
-		errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG!\n");
-	}
+    if (!evg) {
+        errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG!\n");
+    }
+    evgSoftEvt *sevt = evg->getSoftEvt();
 
-	while (1) {
-		epicsUInt32 data = evg->sendTimestamp();
-		if (!data){
-			errlogPrintf("mrmEvgSoftTimestamp: Could not retrive timestamp...\n");
-			epicsThreadSleep(1);
-			continue;
-		}
+    while (1) {
+        // fetch time of next second to be shifted
+        epicsUInt32 data = evg->sendTimestamp();
+        if (!data){
+            errlogPrintf("mrmEvgSoftTimestamp: Could not retrive timestamp...\n");
+            epicsThreadSleep(1);
+            continue;
+        }
 
-		//Send out event reset
-		evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
+        //Send out event reset to latch previously shifted timestamp
+        sevt->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
 
-		//Clock out data...
-		for (int i = 0; i < 32; data <<= 1, i++) {
-			if (data & 0x80000000)
-				evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_1);
-			else
-				evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_0);
-		}
+        //Shift out next time
+        for (int i = 0; i < 32; data <<= 1, i++) {
+            if (data & 0x80000000)
+                sevt->setEvtCode(MRF_EVENT_TS_SHIFT_1);
+            else
+                sevt->setEvtCode(MRF_EVENT_TS_SHIFT_0);
+        }
 
-		struct timespec sleep_until_t;
+        struct timespec sleep_until_t;
 
-		clock_gettime(CLOCK_REALTIME,&sleep_until_t); //Get current time
-		/* Sleep until next full second */
-		sleep_until_t.tv_nsec=0;
-		sleep_until_t.tv_sec++;
+        clock_gettime(CLOCK_REALTIME,&sleep_until_t); //Get current time
+        /* Sleep until next full second */
+        sleep_until_t.tv_nsec=0;
+        sleep_until_t.tv_sec++;
 
-		clock_nanosleep(CLOCK_REALTIME,TIMER_ABSTIME,&sleep_until_t,0);
-
-
-//		sleep(1);
-	}
+        clock_nanosleep(CLOCK_REALTIME,TIMER_ABSTIME,&sleep_until_t,0);
+    }
 }
 #else
 void mrmEvgSoftTime(void* pvt) {}
