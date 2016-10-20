@@ -24,3 +24,4 @@
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+#STATIC_BUILD=NO
