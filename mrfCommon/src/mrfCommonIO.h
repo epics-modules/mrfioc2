@@ -186,6 +186,8 @@
  */
 #define LE_READ8(base,offset)  \
         ioread8  ((epicsUInt8 *)(base) + U8_  ## offset)
+#define LE_READ16(base,offset) \
+        le_ioread16 ((epicsUInt8 *)(base) + U16_ ## offset)
 #define LE_READ32(base,offset) \
         le_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
@@ -194,6 +196,8 @@
  */
 #define LE_WRITE8(base,offset,value) \
         iowrite8  (((epicsUInt8 *)(base) + U8_  ## offset),  value)
+#define LE_WRITE16(base,offset,value) \
+        le_iowrite16 (((epicsUInt8 *)(base) + U16_ ## offset), value)
 #define LE_WRITE32(base,offset,value) \
         le_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
