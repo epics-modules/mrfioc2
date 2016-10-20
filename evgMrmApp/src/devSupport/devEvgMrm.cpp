@@ -67,6 +67,9 @@ read_si_ts(stringinRecord* psi) {
 
         switch(evg->m_alarmTimestamp) {
             case TS_ALARM_NONE:
+                if (psi->tsel.type == CONSTANT &&
+                    psi->tse == epicsTimeEventDeviceTime)
+                    psi->time = ts;
                 break;
             case TS_ALARM_MINOR:
                 (void)recGblSetSevr(psi, SOFT_ALARM, MINOR_ALARM);
