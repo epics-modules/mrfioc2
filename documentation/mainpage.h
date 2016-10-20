@@ -63,6 +63,15 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
+@subsection v205 2.0.5 (Oct 2016)
+
+@li Support for EPICS Base 3.15
+@li Support for Linux kernel 3.16
+@li Fix bug with time validation not detecting nanoseconds overflow.
+@li Fix race where sequence ram is written while running (Fixed by Anton Derbenev)
+@li Relax validation to allow manually specified timestamp clock rate to be slightly higher than event clock rate.
+@li EVG current time display record (stringin) also set .TIME (Andrew Johnson)
+
 @subsection v204 2.0.4 (May 2015)
 
 @subsubsection v204not Notices
