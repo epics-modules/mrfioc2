@@ -47,7 +47,7 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 Event Generators.  VME-EVG-230 and cPCI-EVG-300
 
-Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, PCIe-EVR-300
+Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, cPCI-EVR-300, PCIe-EVR-300
 
 @section doc Documentation
 
@@ -74,7 +74,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @li CS-Studio BOY .opi files for EVG
 @li Support for EVG on little endian targets (eg. linux x86)
-@li Support for additional devices: cPCI-EVG-300, cPCI-EVR-230, PCIe-EVR-300
+@li Support for additional devices: cPCI-EVG-300, cPCI-EVR-300, and PCIe-EVR-300
 @li Add mrmEvgSoftTime() for software only time stamp distribution.
 @li Support for Fine delay for UNIV I/O daughter cards.
 @li Expose EVG Start of Sequence IRQ as with End of Sequence w/ a counter record.
@@ -86,7 +86,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsubsection v204not Notices
 
-@li Requires devLib >= 2.6l
+@li Requires devLib >= 2.6
 @li Builds against EPICS Base 3.15.1
 @li Workaround to support UIO in Linux kernel >=3.12 (debian kernel >=3.2.0)
 @li Default mrmEvrFIFOPeriod doubled to 1ms
