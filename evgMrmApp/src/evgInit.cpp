@@ -539,7 +539,9 @@ void mrmEvgSoftTime(const char *obj) {
             errlogPrintf("EVG '%s' does not exist!\n", obj);
         }
 
-        epicsThreadCreate("EVG_TimestampTestThread",90, epicsThreadStackSmall,mrmEvgSoftTimeThread,static_cast<void*>(evg));
+        epicsThreadCreate("EVG_TimestampTestThread",90,
+                           epicsThreadGetStackSize(epicsThreadStackSmall),
+                           mrmEvgSoftTimeThread,static_cast<void*>(evg));
     } catch(std::exception& e){
         fprintf(stderr, "Error: %s\n", e.what());
     }
