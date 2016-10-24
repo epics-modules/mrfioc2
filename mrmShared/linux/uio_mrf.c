@@ -16,7 +16,7 @@
 
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
-MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@bnl.gov>");
+MODULE_AUTHOR("Michael Davidsaver <mdavidsaver@gmail.com>");
 
 /* something that userspace can test to see if we
  * are the kernel module its looking for.

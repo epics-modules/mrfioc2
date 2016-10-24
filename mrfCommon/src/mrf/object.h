@@ -6,7 +6,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 /**
- * @author Michael Davidsaver <mdavidsaver@bnl.gov>
+ * @author Michael Davidsaver <mdavidsaver@gmail.com>
  *
  * Defines a scheme for working with "properties".
  * A property being a pair of setter and getter methods

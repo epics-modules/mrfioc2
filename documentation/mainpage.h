@@ -128,7 +128,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 - I am considering removal of the EVR interface class.  This was originally
   intended to allow "similar" hardware (pre-MRM cards from MRF).  However,
   to my knowledge this has not been done.  If anyone is using this feature
-  please contact me (mdavidsaver@bnl.gov) or it will likely be removed
+  please contact me (mdavidsaver@gmail.com) or it will likely be removed
   in the next (2.1) release.
 
 @subsubsection v202bug Bug fixes
@@ -206,7 +206,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @li Initial release.
 
-@author Michael Davidsaver <mdavidsaver@bnl.gov>
+@author Michael Davidsaver <mdavidsaver@gmail.com>
 
 @author Jayesh Shah <jshah@bnl.gov>
 

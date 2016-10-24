@@ -6,7 +6,7 @@
 \*************************************************************************/
 /* EVR GeneralTime InterFace
  *
- * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
+ * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
 
 #include <epicsTypes.h>

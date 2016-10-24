@@ -9,7 +9,7 @@
  *
  * cf. http://www.eecis.udel.edu/~mills/ntp/html/drivers/driver28.html
  *
- * Author: Michael Davidsaver <mdavidsaver@bnl.gov>
+ * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  *
  * To use, add to init script.  Where 0<=N<=4.  To use 0 or 1 the IOC
  * must run as root.
