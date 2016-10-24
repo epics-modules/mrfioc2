@@ -63,7 +63,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v210 2.1.0 (UNRELEASED)
+@subsection v210 2.1.0 (Oct. 2016)
 
 @subsubsection v210change Incompatible changes
 
@@ -210,7 +210,17 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @author Jayesh Shah <jshah@bnl.gov>
 
-@author Eric Bj�rklund <bjorklund@lanl.gov>
+@author Eric Björklund <bjorklund@lanl.gov>
+
+@author Slejko Tom <tom.slejko@psi.ch>
+
+@author Helge Brands <helge.brands@psi.ch>
+
+@author Saso Skube <saso.skube@psi.ch>
+
+@author Jure Krasna <jure.krasna@cosylab.com>
+
+@author Dirk Zimoch <dirk.zimoch@psi.ch>
 
 */
 

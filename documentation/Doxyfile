@@ -31,7 +31,7 @@ PROJECT_NAME           = mrfioc2
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 2.0.4
+PROJECT_NUMBER         = 2.1.0
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -604,7 +604,7 @@ INPUT                  = ../mrfCommon \
 # into libc) for the transcoding. See http://www.gnu.org/software/libiconv for 
 # the list of possible encodings.
 
-INPUT_ENCODING         = ISO-8859-1
+INPUT_ENCODING         = UTF-8
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
