@@ -6,8 +6,8 @@ die() {
     exit 1
 }
 
-[ -f "$1" ] || die "usage $0 <tarfile>"
+[ -f "$1" ] || die "usage $0 <tarfile> ..."
 
 [ "$USER" ] || die "USER not set"
 
-scp "$1" $USER,epics@frs.sourceforge.net:/home/frs/project/epics/mrfioc2/
+scp "$@" $USER,epics@frs.sourceforge.net:/home/frs/project/epics/mrfioc2/
