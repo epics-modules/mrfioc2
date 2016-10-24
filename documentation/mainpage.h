@@ -222,6 +222,8 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @author Dirk Zimoch <dirk.zimoch@psi.ch>
 
+@author Anton Derbenev <aderbenev@bnl.gov>
+
 */
 
 #endif // MAINPAGE_H
