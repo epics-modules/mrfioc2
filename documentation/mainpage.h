@@ -63,6 +63,8 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
+@subsection v211 2.1.1 (UNRELEASED)
+
 @subsection v210 2.1.0 (Oct. 2016)
 
 @subsubsection v210change Incompatible changes
