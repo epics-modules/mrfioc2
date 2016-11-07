@@ -20,6 +20,7 @@ DB += evgUserEvt.db
 DB += evgTrigEvt.db
 DB += evgMxc.db
 DB += evgDbus.db
+DB += evgAcTrig.db
 DB += evgInput.db
 DB += evgOutput.db
 DB += evgSoftSeq.db
