@@ -287,10 +287,10 @@ mrf_handler_plx(int irq, struct uio_info *info)
         flags |= IRQ_Enable_ALL;
 
         if((flags & val)==0) {
-            dev_info(&dev->dev, "reject %08x %08x\n", (unsigned)flags, (unsigned)val);
+            dev_dbg(&dev->dev, "reject %08x %08x\n", (unsigned)flags, (unsigned)val);
             return IRQ_NONE; /* not our interrupt */
         } else
-            dev_info(&dev->dev, "accept %08x %08x\n", (unsigned)flags, (unsigned)val);
+            dev_dbg(&dev->dev, "accept %08x %08x\n", (unsigned)flags, (unsigned)val);
 
         if(!priv->usemie) {
             // Disable interrupts on FPGA
