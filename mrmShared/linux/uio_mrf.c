@@ -704,6 +704,7 @@ static struct pci_device_id mrf_pci_ids[] = {
     },
     { 0, }
 };
+MODULE_DEVICE_TABLE(pci, mrf_pci_ids);
 
 /************************** Module boilerplate ****************************/
 
