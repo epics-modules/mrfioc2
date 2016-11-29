@@ -38,9 +38,9 @@ EOF
   EPICS_HOST_ARCH=`sh $EPICS_BASE/startup/EpicsHostArch`
 
   if [ "$BASE" = "3.14" ]; then
-    ( cd "$CDIR" && wget http://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz && tar -xzf extensionsTop_*.tar.gz)
+    ( cd "$CDIR" && wget https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz && tar -xzf extensionsTop_*.tar.gz)
 
-    ( cd "$CDIR" && wget http://www.aps.anl.gov/epics/download/extensions/msi1-7.tar.gz && tar -xzf msi1-7.tar.gz && mv msi1-7 extensions/src/msi)
+    ( cd "$CDIR" && wget https://www.aps.anl.gov/epics/download/extensions/msi1-7.tar.gz && tar -xzf msi1-7.tar.gz && mv msi1-7 extensions/src/msi)
 
     cat << EOF > "$CDIR/extensions/configure/RELEASE"
 EPICS_BASE=$EPICS_BASE
