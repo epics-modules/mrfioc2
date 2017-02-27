@@ -600,6 +600,7 @@ try {
     if(devPCIConnectInterrupt(cur, &EVRMRM::isr_pci, arg, 0)){
         printf("Failed to install ISR\n");
         delete receiver;
+        return;
     }else{
         // Interrupts will be enabled during iocInit()
     }
