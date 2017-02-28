@@ -68,27 +68,7 @@ public:
   virtual void enable(bool)=0;
   /*@}*/
 
-  //! Pulser id number is device specific
-  virtual Pulser* pulser(epicsUInt32)=0;
-  virtual const Pulser* pulser(epicsUInt32) const=0;
-
-  //! Output id number is device specific
-  virtual Output* output(OutputType otype,epicsUInt32 idx)=0;
-  virtual const Output* output(OutputType,epicsUInt32) const=0;
-
   virtual bool mappedOutputState() const=0;
-
-  //! Output id number is device specific
-  virtual Input* input(epicsUInt32 idx)=0;
-  virtual const Input* input(epicsUInt32) const=0;
-
-  //! Prescaler id number is device specific
-  virtual PreScaler* prescaler(epicsUInt32)=0;
-  virtual const PreScaler* prescaler(epicsUInt32) const=0;
-
-  //! CML Output id number is device specific
-  virtual CML* cml(epicsUInt32 idx)=0;
-  virtual const CML* cml(epicsUInt32) const=0;
 
   /** Hook to handle general event mapping table manipulation.
    *  Allows 'special' events only (ie heartbeat, log, led, etc)

@@ -432,102 +432,11 @@ EVRMRM::enable(bool v)
         BITCLR(NAT,32,base, Control, Control_enable|Control_mapena|Control_outena|Control_evtfwd);
 }
 
-MRMPulser*
-EVRMRM::pulser(epicsUInt32 i)
-{
-    if(i>=pulsers.size())
-        throw std::out_of_range("Pulser id is out of range");
-    return pulsers[i];
-}
-
-const MRMPulser*
-EVRMRM::pulser(epicsUInt32 i) const
-{
-    if(i>=pulsers.size())
-        throw std::out_of_range("Pulser id is out of range");
-    return pulsers[i];
-}
-
-MRMOutput*
-EVRMRM::output(OutputType otype,epicsUInt32 idx)
-{
-    outputs_t::iterator it=outputs.find(std::make_pair(otype,idx));
-    if(it==outputs.end())
-        return 0;
-    else
-        return it->second;
-}
-
-const MRMOutput*
-EVRMRM::output(OutputType otype,epicsUInt32 idx) const
-{
-    outputs_t::const_iterator it=outputs.find(std::make_pair(otype,idx));
-    if(it==outputs.end())
-        return 0;
-    else
-        return it->second;
-}
-
 bool
 EVRMRM::mappedOutputState() const
 {
     NAT_WRITE32(base, IRQFlag, IRQ_HWMapped);
     return NAT_READ32(base, IRQFlag) & IRQ_HWMapped;
-}
-
-DelayModule*
-EVRMRM::delay(epicsUInt32 i){
-    if(i>=delays.size())
-        throw std::out_of_range("Delay Module id is out of range.");
-    return delays[i];
-}
-
-MRMInput*
-EVRMRM::input(epicsUInt32 i)
-{
-    if(i>=inputs.size())
-        throw std::out_of_range("Input id is out of range");
-    return inputs[i];
-}
-
-const MRMInput*
-EVRMRM::input(epicsUInt32 i) const
-{
-    if(i>=inputs.size())
-        throw std::out_of_range("Input id is out of range");
-    return inputs[i];
-}
-
-MRMPreScaler*
-EVRMRM::prescaler(epicsUInt32 i)
-{
-    if(i>=prescalers.size())
-        throw std::out_of_range("PreScaler id is out of range");
-    return prescalers[i];
-}
-
-const MRMPreScaler*
-EVRMRM::prescaler(epicsUInt32 i) const
-{
-    if(i>=prescalers.size())
-        throw std::out_of_range("PreScaler id is out of range");
-    return prescalers[i];
-}
-
-MRMCML*
-EVRMRM::cml(epicsUInt32 i)
-{
-    if(i>=shortcmls.size() || !shortcmls[i])
-        throw std::out_of_range("CML Short id is out of range");
-    return shortcmls[i];
-}
-
-const MRMCML*
-EVRMRM::cml(epicsUInt32 i) const
-{
-    if(i>=shortcmls.size() || !shortcmls[i])
-        throw std::out_of_range("CML Short id is out of range");
-    return shortcmls[i];
 }
 
 MRMGpio*

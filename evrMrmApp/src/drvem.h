@@ -138,24 +138,7 @@ public:
     virtual bool enabled() const;
     virtual void enable(bool v);
 
-    virtual MRMPulser* pulser(epicsUInt32);
-    virtual const MRMPulser* pulser(epicsUInt32) const;
-
-    virtual MRMOutput* output(OutputType,epicsUInt32 o);
-    virtual const MRMOutput* output(OutputType,epicsUInt32 o) const;
-
     virtual bool mappedOutputState() const;
-
-    virtual DelayModule* delay(epicsUInt32 i);
-
-    virtual MRMInput* input(epicsUInt32 idx);
-    virtual const MRMInput* input(epicsUInt32) const;
-
-    virtual MRMPreScaler* prescaler(epicsUInt32);
-    virtual const MRMPreScaler* prescaler(epicsUInt32) const;
-
-    virtual MRMCML* cml(epicsUInt32 idx);
-    virtual const MRMCML* cml(epicsUInt32) const;
 
     MRMGpio* gpio();
 
