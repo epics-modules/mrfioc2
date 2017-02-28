@@ -7,6 +7,8 @@
 #include "epicsExport.h"
 
 #include "mrf/object.h"
+
+namespace {
 using namespace mrf;
 
 class mine : public ObjectInst<mine>
@@ -43,16 +45,18 @@ public:
     }
 };
 
-OBJECT_BEGIN(mine)
-OBJECT_PROP2("I",   &mine::getI,    &mine::setI);
-OBJECT_PROP2("val", &mine::getI,    &mine::setI);
-OBJECT_PROP2("val", &mine::val,     &mine::setVal);
-OBJECT_PROP2("darr",&mine::getdarr, &mine::setdarr);
-OBJECT_END(mine)
-
-MAIN(objectTest)
+class other : public ObjectInst<other, mine>
 {
-    testPlan(0);
+    typedef ObjectInst<other, mine> base_t;
+public:
+    other(const std::string& n) : base_t(n) {}
+    virtual ~other() {}
+
+    int getX() const { return 42;}
+};
+
+void testMine()
+{
     mine m("test");
 
     testOk1(m.getI()==0);
@@ -118,6 +122,66 @@ MAIN(objectTest)
     Object *p=Object::getObject("test");
     testOk1(p!=NULL);
     testOk1(p==o);
+}
 
+void testOther()
+{
+    other m("foo");
+
+    std::auto_ptr<property<double> > V=m.getProperty<double>("val");
+    testOk1(V.get()!=NULL);
+
+    std::auto_ptr<property<int> > I=m.getProperty<int>("I");
+    testOk1(I.get()!=NULL);
+
+    std::auto_ptr<property<double[1]> > A=m.getProperty<double[1]>("darr");
+    testOk1(A.get()!=NULL);
+
+    std::auto_ptr<property<int> > X=m.getProperty<int>("X");
+    testOk1(X.get()!=NULL);
+
+    if(X.get())
+        testOk1(X->get()==42);
+    else
+        testSkip(1, "NULL");
+}
+
+void testOther2()
+{
+    other m("foo");
+    Object *o = &m;
+
+    std::auto_ptr<property<double> > V=o->getProperty<double>("val");
+    testOk1(V.get()!=NULL);
+
+    std::auto_ptr<property<int> > I=o->getProperty<int>("I");
+    testOk1(I.get()!=NULL);
+
+    std::auto_ptr<property<double[1]> > A=o->getProperty<double[1]>("darr");
+    testOk1(A.get()!=NULL);
+
+    std::auto_ptr<property<int> > X=o->getProperty<int>("X");
+    testOk1(X.get()!=NULL);
+}
+
+} // namespace
+
+OBJECT_BEGIN(mine)
+OBJECT_PROP2("I",   &mine::getI,    &mine::setI);
+OBJECT_PROP2("val", &mine::getI,    &mine::setI);
+OBJECT_PROP2("val", &mine::val,     &mine::setVal);
+OBJECT_PROP2("darr",&mine::getdarr, &mine::setdarr);
+OBJECT_END(mine)
+
+OBJECT_BEGIN2(other, mine)
+OBJECT_PROP1("X", &other::getX);
+OBJECT_END(other)
+
+MAIN(objectTest)
+{
+    testPlan(30);
+    testMine();
+    testOther();
+    testOther2();
     return testDone();
 }

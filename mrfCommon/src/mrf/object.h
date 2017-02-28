@@ -349,15 +349,17 @@ public:
    OBJECT_END(mycls)
  @endcode
  */
-template<class C>
-class ObjectInst : public Object
+template<class C, typename Base = Object>
+class ObjectInst : public Base
 {
     typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
     static m_props_t *m_props;
     static void initObject(void*);
     static epicsThreadOnceId initId;
 protected:
-    ObjectInst(const std::string& n) : Object(n) {}
+    ObjectInst(const std::string& n) : Base(n) {}
+    template<typename A>
+    ObjectInst(const std::string& n, A a) : Base(n, a) {}
     virtual ~ObjectInst(){};
 public:
 
@@ -371,11 +373,10 @@ public:
                                           end=m_props->upper_bound(pname);
         for(;it!=end;++it) {
             if(it->second->type()==ptype)
-                break;
+                return it->second->bind(static_cast<C*>(this));
         }
-        if(it==end)
-            return 0;
-        return it->second->bind(static_cast<C*>(this));
+        // continue checking for Base class properties
+        return Base::getPropertyBase(pname, ptype);
     }
 
     void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
@@ -395,16 +396,19 @@ public:
             if(!(*cb)(cur.get(), arg))
                 break;
         }
+        Base::visitProperties(cb, arg);
     }
 };
 
-#define OBJECT_BEGIN(klass) namespace mrf {\
-template class ObjectInst<klass>;\
-template<> ObjectInst<klass>::m_props_t* ObjectInst<klass>::m_props = 0; \
-template<> epicsThreadOnceId ObjectInst<klass>::initId = EPICS_THREAD_ONCE_INIT; \
-template<> void ObjectInst<klass>::initObject(void * rmsg) { \
+#define OBJECT_BEGIN2(klass, Base) namespace mrf {\
+template class ObjectInst<klass, Base>;\
+template<> ObjectInst<klass, Base>::m_props_t* ObjectInst<klass, Base>::m_props = 0; \
+template<> epicsThreadOnceId ObjectInst<klass, Base>::initId = EPICS_THREAD_ONCE_INIT; \
+template<> void ObjectInst<klass, Base>::initObject(void * rmsg) { \
     std::string *emsg=static_cast<std::string*>(rmsg); \
     try { std::auto_ptr<m_props_t> props(new m_props_t); {
+
+#define OBJECT_BEGIN(klass) OBJECT_BEGIN2(klass, Object)
 
 #define OBJECT_PROP1(NAME, GET) \
     props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET) ))

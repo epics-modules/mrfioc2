@@ -87,6 +87,13 @@ Object::~Object()
         objects->erase(it);
 }
 
+propertyBase* Object::getPropertyBase(const char*, const std::type_info&)
+{
+    return 0;
+}
+
+void Object::visitProperties(bool (*)(propertyBase*, void*), void*) {}
+
 Object*
 Object::getObject(const std::string& n)
 {
