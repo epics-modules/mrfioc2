@@ -2,7 +2,7 @@
 #Makefile at top of application tree
 TOP = .
 include $(TOP)/configure/CONFIG
-DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmtestApp iocBoot
+DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmtestApp evrFRIBApp iocBoot
 
 # 3.14.10 style directory dependencies
 # previous versions will just ignore them
@@ -24,6 +24,9 @@ evgMrmApp_DEPEND_DIRS += mrmShared
 
 mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp
 
+# builds Linux only
+ifeq ($(BUILD_CLASS),HOST)
+evrFRIBApp_DEPEND_DIRS += evrApp mrmShared
+endif
+
 include $(TOP)/configure/RULES_TOP
-
-
