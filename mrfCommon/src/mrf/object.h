@@ -401,7 +401,6 @@ public:
 };
 
 #define OBJECT_BEGIN2(klass, Base) namespace mrf {\
-template class ObjectInst<klass, Base>;\
 template<> ObjectInst<klass, Base>::m_props_t* ObjectInst<klass, Base>::m_props = 0; \
 template<> epicsThreadOnceId ObjectInst<klass, Base>::initId = EPICS_THREAD_ONCE_INIT; \
 template<> void ObjectInst<klass, Base>::initObject(void * rmsg) { \
