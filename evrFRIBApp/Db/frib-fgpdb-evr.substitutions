@@ -21,7 +21,7 @@ file "evrscale.db"
 {0, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffff"}
 }
 
-file "mrmevrout.db"
+file "fribevrout.db"
 {pattern
 {ON, OBJ, DESC}
 {"$(SYS){$(D)-Out:FP0}", "$(EVR):OUT:CLK", "CLK"}
