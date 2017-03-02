@@ -46,6 +46,10 @@
 #ifndef MRF_COMMON_H
 #define MRF_COMMON_H
 
+#ifdef __cplusplus
+#include <sstream>
+#endif
+
 /**************************************************************************************************/
 /*  Include Header Files from the Common Utilities                                                */
 /**************************************************************************************************/
@@ -177,6 +181,17 @@ public:
     {}
     ~interruptLock()
     { epicsInterruptUnlock(key); }
+};
+
+
+// inline string builder
+//  std::string X(SB()<<"test "<<4);
+struct SB {
+    std::ostringstream strm;
+    SB() {}
+    operator std::string() const { return strm.str(); }
+    template<typename T>
+    SB& operator<<(T i) { strm<<i; return *this; }
 };
 
 #endif /* __cplusplus */
