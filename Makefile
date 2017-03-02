@@ -22,11 +22,8 @@ evrMrmApp_DEPEND_DIRS += evrApp mrmShared
 
 evgMrmApp_DEPEND_DIRS += mrmShared
 
-mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp
-
-# builds Linux only
-ifeq ($(BUILD_CLASS),HOST)
 evrFRIBApp_DEPEND_DIRS += evrApp mrmShared
-endif
+
+mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp evrFRIBApp
 
 include $(TOP)/configure/RULES_TOP

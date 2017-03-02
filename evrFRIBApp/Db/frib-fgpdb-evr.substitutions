@@ -1,0 +1,50 @@
+# Record set for a cPCI-EVR-230
+#
+# Macros:
+#  EVR = Card name (same as mrmEvrSetupPCI())
+#  SYS = System name (ie SR-TM)
+#  D = Device name (ie EVR:Diag2)
+#
+# Record names have the general forms:
+#  $(SYS){$(D)}Signal-SD
+#  $(SYS){$(D)-SubDev}Signal-SD
+
+file "evrbase.db"
+{pattern
+{P, OBJ, EVNT1HZ}
+{"$(SYS){$(D)}", $(EVR), 125}
+}
+
+file "evrscale.db"
+{pattern
+{IDX, P, SN, OBJ, MAX}
+{0, "$(SYS){$(D)}", "$(SYS){$(D)-PS:$(IDX)}", "$(EVR):PS$(IDX)", "0xffff"}
+}
+
+file "mrmevrout.db"
+{pattern
+{ON, OBJ, DESC}
+{"$(SYS){$(D)-Out:FP0}", "$(EVR):OUT:CLK", "CLK"}
+{"$(SYS){$(D)-Out:FP1}", "$(EVR):OUT:TR0", "TR0"}
+{"$(SYS){$(D)-Out:FP2}", "$(EVR):OUT:TR1", "TR1"}
+}
+
+# Pulse generators w/o a prescaler set NOPS=1
+file "evrpulser.db"
+{pattern
+{PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
+{0, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0", 1}
+{1, "$(SYS){$(D)}", "$(SYS){$(D)-DlyGen:$(PID)}", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0", 1}
+}
+
+# Default to 3 possible trigger mappings per pulser
+file "evrpulsermap.db"
+{pattern
+{PID, NAME, OBJ, F, EVT}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+}

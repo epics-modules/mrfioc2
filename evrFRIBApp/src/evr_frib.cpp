@@ -34,12 +34,12 @@ EVRFRIB::EVRFRIB(const std::string& s,
     ,base(base)
     ,clockFreq(80.5)
     ,timeoffset(POSIX_TIME_AT_EPICS_EPOCH)
-    ,divider(SB()<<s<<":DIV", *this)
-    ,pulse0(SB()<<s<<":PULSE"<<0, 0, this)
-    ,pulse1(SB()<<s<<":PULSE"<<1, 1, this)
-    ,out_divider(SB()<<s<<":DIV:OUT", 1, this)
-    ,out_pulse0(SB()<<s<<":PULSE"<<0<<":OUT", 2, this)
-    ,out_pulse1(SB()<<s<<":PULSE"<<1<<":OUT", 3, this)
+    ,divider(SB()<<s<<":PS0", *this)
+    ,pulse0(SB()<<s<<":Pul"<<0, 0, this)
+    ,pulse1(SB()<<s<<":Pul"<<1, 1, this)
+    ,out_divider(SB()<<s<<":OUT:CLK", 1, this)
+    ,out_pulse0(SB()<<s<<":OUT:TR"<<0, 2, this)
+    ,out_pulse1(SB()<<s<<":OUT:TR"<<1, 3, this)
 {
     epicsUInt32 info = READ32(base, FWInfo);
 
@@ -153,6 +153,20 @@ bool EVRFRIB::getTicks(epicsUInt32 *tks) {
     *tks = READ32(base, TimeFrac);
     return true;
 }
+
+IOSCANPVT EVRFRIB::eventOccurred(epicsUInt32 event) const
+{
+    return statusScan;
+}
+
+void EVRFRIB::eventNotifyAdd(epicsUInt32 event, eventCallback, void*)
+{
+}
+
+void EVRFRIB::eventNotifyDel(epicsUInt32 event, eventCallback, void*)
+{
+}
+
 
 bool EVRFRIB::linkStatus() const {
     return READ32(base, Status) & Status_Alive;

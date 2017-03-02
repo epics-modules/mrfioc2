@@ -6,6 +6,9 @@ include $(TOP)/configure/CONFIG
 # Omitted before 3.14.10
 USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 
+DB += fribevrout.db
+DB += frib-fgpdb-evr.db
+
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
