@@ -16,7 +16,8 @@
 #include "evrFRIBRegMap.h"
 
 static const epicsPCIID evr_frib_ids[] = {
-    DEVPCI_SUBDEVICE_SUBVENDOR(0xfdbe, 0x10ee, 1234, 0x10ee),
+    DEVPCI_SUBDEVICE_SUBVENDOR(0xfdbe, 0x10ee, 0x1234, 0x10ee),
+    DEVPCI_SUBDEVICE_SUBVENDOR(0xfbad, 0x10ee, 0x1234, 0x10ee),
     DEVPCI_END
 };
 
@@ -29,6 +30,7 @@ void fribEvrSetupPCI(const char *name, const char *pcispec)
             fprintf(stderr, "No such device: %s\n", pcispec);
             return;
         }
+        fprintf(stderr, "Found device\n");
 
         volatile unsigned char *base = NULL;
         if(devPCIToLocalAddr(dev, 0, (volatile void**)&base, 0)) {
@@ -61,6 +63,7 @@ void fribEvrSetupPCI(const char *name, const char *pcispec)
         // a pointer is retained in the global Objects list
         evr.release();
 
+        fprintf(stderr, "Ready\n");
     }catch(std::exception &e){
         fprintf(stderr, "Error: %s\n", e.what());
     }
