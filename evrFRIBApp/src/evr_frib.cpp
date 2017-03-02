@@ -41,7 +41,7 @@ EVRFRIB::EVRFRIB(const std::string& s,
     ,out_pulse0(SB()<<s<<":OUT:TR"<<0, 2, this)
     ,out_pulse1(SB()<<s<<":OUT:TR"<<1, 3, this)
 {
-    epicsUInt32 info = READ32(base, FWInfo);
+    epicsUInt32 info = LE_READ32(base, FWInfo);
 
     switch((info&FWInfo_Flavor_mask)>>FWInfo_Flavor_shift) {
     case FWInfo_Flavor_EVG:
@@ -49,29 +49,36 @@ EVRFRIB::EVRFRIB(const std::string& s,
         epicsTimeStamp now;
         if(epicsTimeOK == generalTimeGetExceptPriority(&now, 0, 50)) {
             // start simulated time from the present
-            timeoffset = POSIX_TIME_AT_EPICS_EPOCH + now.secPastEpoch - READ32(base, TimeSec);
+            timeoffset = POSIX_TIME_AT_EPICS_EPOCH + now.secPastEpoch - LE_READ32(base, TimeSec);
         }
+        fprintf(stderr, "%s: is FGPDB EVG\n", s.c_str());
         break;
     }
+    case FWInfo_Flavor_EVR:
+        fprintf(stderr, "%s: is FGPDB EVR\n", s.c_str());
+        break;
+    default:
+        fprintf(stderr, "%s: is Unknown! %08x\n", s.c_str(), (unsigned)info);
+        throw std::runtime_error("Invalid FW Flavor");
     }
 
     // disable FIFO
-    WRITE32(base, FIFOEna, 0);
+    LE_WRITE32(base, FIFOEna, 0);
 
     // disable simulation modes
-    WRITE32(base, Config, 0);
+    LE_WRITE32(base, Config, 0);
 
     // disable w/ divider==0 (/1)
-    WRITE32(base, OutSelect, 0);
+    LE_WRITE32(base, OutSelect, 0);
 
     // Partial reset and force FPS trip
-    WRITE32(base, Command, Command_ResetEVR|Command_NOKForce);
+    LE_WRITE32(base, Command, Command_ResetEVR|Command_NOKForce);
 
-    WRITE32(base, Command, 0);
+    LE_WRITE32(base, Command, 0);
 
     for(unsigned i=1; i<=255; i++) {
         // initially, disable all mappings and unmap from FIFO
-        WRITE32(base, EvtConfig(i), EvtConfig_FIFOUnMap);
+        LE_WRITE32(base, EvtConfig(i), EvtConfig_FIFOUnMap);
     }
 
     scanIoInit(&statusScan);
@@ -92,7 +99,7 @@ void EVRFRIB::unlock() const
 
 std::string EVRFRIB::model() const
 {
-    switch((READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift)
+    switch((LE_READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift)
     {
     case FWInfo_Flavor_EVR: return "EVR";
     case FWInfo_Flavor_EVG: return "EVG";
@@ -101,7 +108,7 @@ std::string EVRFRIB::model() const
 }
 
 epicsUInt32 EVRFRIB::version() const {
-    return (READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift;
+    return (LE_READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift;
 }
 
 double EVRFRIB::clock() const {return clockFreq;}
@@ -135,8 +142,8 @@ bool EVRFRIB::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         if(period<=0 || !isfinite(period))
             return false;
 
-        epicsUInt32 sec = READ32(base, TimeSec);
-        epicsUInt32 ns  = READ32(base, TimeFrac)*period;
+        epicsUInt32 sec = LE_READ32(base, TimeSec);
+        epicsUInt32 ns  = LE_READ32(base, TimeFrac)*period;
 
         if(ns>=1000000000) {
             return false;
@@ -150,7 +157,7 @@ bool EVRFRIB::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
 }
 
 bool EVRFRIB::getTicks(epicsUInt32 *tks) {
-    *tks = READ32(base, TimeFrac);
+    *tks = LE_READ32(base, TimeFrac);
     return true;
 }
 
@@ -169,7 +176,7 @@ void EVRFRIB::eventNotifyDel(epicsUInt32 event, eventCallback, void*)
 
 
 bool EVRFRIB::linkStatus() const {
-    return READ32(base, Status) & Status_Alive;
+    return LE_READ32(base, Status) & Status_Alive;
 }
 
 OBJECT_BEGIN2(EVRFRIB, EVR)
@@ -188,7 +195,7 @@ PulserFRIB::~PulserFRIB() {}
 
 void PulserFRIB::setDelayRaw(epicsUInt32 v)
 {
-    WRITE32(evr->base, PulserDelay(n), v);
+    LE_WRITE32(evr->base, PulserDelay(n), v);
 }
 
 void PulserFRIB::setDelay(double v)
@@ -202,7 +209,7 @@ void PulserFRIB::setDelay(double v)
 
 epicsUInt32 PulserFRIB::delayRaw() const
 {
-    return READ32(evr->base, PulserDelay(n));
+    return LE_READ32(evr->base, PulserDelay(n));
 }
 
 double PulserFRIB::delay() const
@@ -216,7 +223,7 @@ double PulserFRIB::delay() const
 
 void PulserFRIB::setWidthRaw(epicsUInt32 v)
 {
-    WRITE32(evr->base, PulserWidth(n), v);
+    LE_WRITE32(evr->base, PulserWidth(n), v);
 }
 
 void PulserFRIB::setWidth(double v)
@@ -230,7 +237,7 @@ void PulserFRIB::setWidth(double v)
 
 epicsUInt32 PulserFRIB::widthRaw() const
 {
-    return READ32(evr->base, PulserWidth(n));
+    return LE_READ32(evr->base, PulserWidth(n));
 }
 
 double PulserFRIB::width() const
@@ -249,7 +256,7 @@ MapType::type PulserFRIB::mappedSource(epicsUInt32 evt) const
     if(evt==0)
         return MapType::None;
 
-    epicsUInt32 map = READ32(evr->base, EvtConfig(evt));
+    epicsUInt32 map = LE_READ32(evr->base, EvtConfig(evt));
 
     bool pulses = map&EvtConfig_Pulse(n);
     bool sets   = map&EvtConfig_Set(n);
@@ -280,7 +287,7 @@ void PulserFRIB::sourceSetMap(epicsUInt32 evt, MapType::type action)
 
     const epicsUInt32 mask = EvtConfig_Pulse(n)|EvtConfig_Set(n)|EvtConfig_Clear(n);
 
-    epicsUInt32 map = READ32(evr->base, EvtConfig(evt));
+    epicsUInt32 map = LE_READ32(evr->base, EvtConfig(evt));
 
     map &= ~mask;
 
@@ -291,7 +298,7 @@ void PulserFRIB::sourceSetMap(epicsUInt32 evt, MapType::type action)
     case MapType::Reset: map |= EvtConfig_Clear(n); break;
     }
 
-    WRITE32(evr->base, EvtConfig(evt), map);
+    LE_WRITE32(evr->base, EvtConfig(evt), map);
 }
 
 void PulserFRIB::lock() const { evr->lock(); }
@@ -307,16 +314,16 @@ PreScalerFRIB::~PreScalerFRIB() {}
 epicsUInt32 PreScalerFRIB::prescaler() const
 {
     EVRFRIB& evr = static_cast<EVRFRIB&>(owner);
-    return (READ32(evr.base, OutSelect)&OutSelect_Divider_mask)>>OutSelect_Divider_shift;
+    return (LE_READ32(evr.base, OutSelect)&OutSelect_Divider_mask)>>OutSelect_Divider_shift;
 }
 
 void PreScalerFRIB::setPrescaler(epicsUInt32 v)
 {
     EVRFRIB& evr = static_cast<EVRFRIB&>(owner);
-    epicsUInt32 T = READ32(evr.base, OutSelect);
+    epicsUInt32 T = LE_READ32(evr.base, OutSelect);
     T &= ~OutSelect_Divider_mask;
     T |= (v<<OutSelect_Divider_shift)&OutSelect_Divider_mask;
-    WRITE32(evr.base, OutSelect, T);
+    LE_WRITE32(evr.base, OutSelect, T);
 }
 
 void PreScalerFRIB::lock() const { return owner.lock(); }
@@ -330,7 +337,7 @@ bool OutputFRIB::enabled() const
 {
     switch(src) {
     case 1:
-        return READ32(evr->base, OutSelect)&OutSelect_Enable;
+        return LE_READ32(evr->base, OutSelect)&OutSelect_Enable;
     case 2:
     case 3:
         return true;
