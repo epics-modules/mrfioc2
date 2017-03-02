@@ -99,7 +99,7 @@ void EVRFRIB::unlock() const
 
 std::string EVRFRIB::model() const
 {
-    switch((LE_READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift)
+    switch((LE_READ32(base, FWInfo)&FWInfo_Flavor_mask)>>FWInfo_Flavor_shift)
     {
     case FWInfo_Flavor_EVR: return "EVR";
     case FWInfo_Flavor_EVG: return "EVG";
@@ -145,7 +145,7 @@ bool EVRFRIB::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
         epicsUInt32 sec = LE_READ32(base, TimeSec);
         epicsUInt32 ns  = LE_READ32(base, TimeFrac)*period;
 
-        if(ns>=1000000000) {
+        if(ns>=1000000000 || sec < timeoffset) {
             return false;
         }
 
