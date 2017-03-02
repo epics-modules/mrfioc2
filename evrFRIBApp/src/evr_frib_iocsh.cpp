@@ -16,7 +16,7 @@
 #include "evrFRIBRegMap.h"
 
 static const epicsPCIID evr_frib_ids[] = {
-    DEVPCI_SUBDEVICE_SUBVENDOR(0x10ee, 0xfdbe, 0x10ee, 1234),
+    DEVPCI_SUBDEVICE_SUBVENDOR(0xfdbe, 0x10ee, 1234, 0x10ee),
     DEVPCI_END
 };
 
