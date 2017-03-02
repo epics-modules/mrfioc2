@@ -5,6 +5,8 @@
  * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
 
+#include <stdio.h>
+
 #include <errlog.h>
 #include <generalTimeSup.h>
 
