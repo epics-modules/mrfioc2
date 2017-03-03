@@ -17,7 +17,8 @@
 
 static const epicsPCIID evr_frib_ids[] = {
     DEVPCI_SUBDEVICE_SUBVENDOR(0xfdbe, 0x10ee, 0x1234, 0x10ee),
-    DEVPCI_SUBDEVICE_SUBVENDOR(0xfbad, 0x10ee, 0x1234, 0x10ee),
+//  BPM
+//    DEVPCI_SUBDEVICE_SUBVENDOR(0xfbad, 0x10ee, 0x1234, 0x10ee),
     DEVPCI_END
 };
 

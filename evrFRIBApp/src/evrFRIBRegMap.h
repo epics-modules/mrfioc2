@@ -22,7 +22,8 @@
 #  define FWInfo_Flavor_mask (0x0000ff00)
 #  define FWInfo_Flavor_shift 8
 #  define FWInfo_Flavor_EVR (0xe1)
-#  define FWInfo_Flavor_EVG (0xb1)
+#  define FWInfo_Flavor_EVG (0xe8)
+#  define FWInfo_Flavor_BPM (0xb1)
 
 // RO
 #define U32_Status (4*1)
