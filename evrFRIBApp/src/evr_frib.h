@@ -96,6 +96,8 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
 
     double clockFreq; // MHz
 
+    bool is_evg, internal_clk;
+
     // epicsTime = HWtime - timeoffset
     epicsUInt32 timeoffset;
 
@@ -112,19 +114,14 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
     EVRFRIB(const std::string& s, bus_configuration& busConfig, volatile unsigned char *base);
     virtual ~EVRFRIB();
 
-    bool simEVR() const;
-    void setSimEVR(bool);
-
-    bool simEVRBeamOn() const;
-    void setSimEVRBeamOn(bool);
-
-    bool simFPS() const;
-    void setSimFPS(bool);
-
+    // from Status
     epicsUInt32 machineCycles() const;
 
     epicsUInt32 Config() const;
     void setConfig(epicsUInt32 v);
+
+    // From Command
+
 
     // methods from Object
 

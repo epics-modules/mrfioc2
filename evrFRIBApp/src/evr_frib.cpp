@@ -35,6 +35,8 @@ EVRFRIB::EVRFRIB(const std::string& s,
     :base_t(s, busConfig)
     ,base(base)
     ,clockFreq(80.5)
+    ,is_evg(false)
+    ,internal_clk(false)
     ,timeoffset(POSIX_TIME_AT_EPICS_EPOCH)
     ,divider(SB()<<s<<":PS0", *this)
     ,pulse0(SB()<<s<<":Pul"<<0, 0, this)
@@ -54,6 +56,7 @@ EVRFRIB::EVRFRIB(const std::string& s,
             timeoffset = POSIX_TIME_AT_EPICS_EPOCH + now.secPastEpoch - LE_READ32(base, TimeSec);
         }
         fprintf(stderr, "%s: is FGPDB EVG\n", s.c_str());
+        is_evg = true;
         break;
     }
     case FWInfo_Flavor_EVR:
@@ -88,6 +91,21 @@ EVRFRIB::EVRFRIB(const std::string& s,
 
 EVRFRIB::~EVRFRIB() {}
 
+epicsUInt32 EVRFRIB::machineCycles() const
+{
+    return (LE_READ32(base, Status)&Status_CycleCnt_mask)>>Status_CycleCnt_shift;
+}
+
+epicsUInt32 EVRFRIB::Config() const
+{
+    return LE_READ32(base, Config);
+}
+
+void EVRFRIB::setConfig(epicsUInt32 v)
+{
+    internal_clk = !!(v&Config_EVGSim);
+    LE_WRITE32(base, Config, v);
+}
 
 void EVRFRIB::lock() const
 {
@@ -136,7 +154,7 @@ bool EVRFRIB::getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)
     bool ret = event==epicsTimeEventCurrentTime;
 
     if(ret)
-        ret = linkStatus();
+        ret = linkStatus() || (is_evg && internal_clk);
 
     if(ret && ts) {
         double period=1e9/clockTS();
@@ -182,6 +200,8 @@ bool EVRFRIB::linkStatus() const {
 }
 
 OBJECT_BEGIN2(EVRFRIB, EVR)
+  OBJECT_PROP1("machineCycles", &EVRFRIB::machineCycles);
+  OBJECT_PROP2("Config", &EVRFRIB::Config, &EVRFRIB::setConfig);
 OBJECT_END(EVRFRIB)
 
 

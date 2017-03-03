@@ -7,6 +7,7 @@ include $(TOP)/configure/CONFIG
 USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 
 DB += fribevrout.db
+DB += fribevrbase.db
 DB += frib-fgpdb-evr.db
 
 include $(TOP)/configure/RULES

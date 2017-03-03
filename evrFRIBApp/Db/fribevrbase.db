@@ -1,0 +1,11 @@
+record(longout, "$(P)Cnf-Sel") {
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=Config")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longout, "$(P)MCyc-I") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=machineCycles")
+  field(SCAN, "1 second")
+}

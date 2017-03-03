@@ -15,6 +15,12 @@ file "evrbase.db"
 {"$(SYS){$(D)}", $(EVR), 125}
 }
 
+file "fribevrbase.db"
+{pattern
+{P, OBJ}
+{"$(SYS){$(D)}", $(EVR)}
+}
+
 file "evrscale.db"
 {pattern
 {IDX, P, SN, OBJ, MAX}
