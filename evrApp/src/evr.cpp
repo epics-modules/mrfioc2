@@ -50,7 +50,10 @@ std::string EVR::position() const
 {
     std::ostringstream position;
 
-    if(busConfiguration.busType == busType_pci) position << busConfiguration.pci.bus << ":" << busConfiguration.pci.device << "." << busConfiguration.pci.function;
+    if(busConfiguration.busType == busType_pci)
+        position << std::hex << busConfiguration.pci.bus << ":"
+                 << std::hex << busConfiguration.pci.device << "."
+                 << std::hex << busConfiguration.pci.function;
     else if(busConfiguration.busType == busType_vme) position << "Slot #" << busConfiguration.vme.slot;
     else position << "Unknown position";
 
