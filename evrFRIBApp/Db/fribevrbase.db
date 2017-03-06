@@ -1,11 +1,35 @@
-record(longout, "$(P)Cnf-Sel") {
+record(longout, "$(P)Cnf_CSET") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Config")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longout, "$(P)MCyc-I") {
+record(longout, "$(P)Cmd_CSET") {
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=Command")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)MCyc_RD") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=machineCycles")
+  field(SCAN, "1 second")
+}
+
+record(longin, "$(P)FPSComm_RD") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=FPSCommCnt")
+  field(SCAN, "1 second")
+}
+
+record(longin, "$(P)FPSStatus_RD") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=FPSStatus")
+  field(SCAN, "1 second")
+}
+
+record(longin, "$(P)FPSSource_RD") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=FPSSource")
   field(SCAN, "1 second")
 }

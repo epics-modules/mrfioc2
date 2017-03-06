@@ -107,6 +107,34 @@ void EVRFRIB::setConfig(epicsUInt32 v)
     LE_WRITE32(base, Config, v);
 }
 
+epicsUInt32 EVRFRIB::Command() const
+{
+    return LE_READ32(base, Command);
+}
+
+void EVRFRIB::setCommand(epicsUInt32 v)
+{
+    const epicsUInt32 mask = (Command_ForceNPermit|Command_NOKClear|Command_NOKForce);
+    v &= mask;
+    v |= LE_READ32(base, Command)&(~mask);
+    LE_WRITE32(base, Command, v);
+}
+
+epicsUInt32 EVRFRIB::FPSCommCnt() const
+{
+    return LE_READ32(base, FPSComm);
+}
+
+epicsUInt32 EVRFRIB::FPSStatus() const
+{
+    return LE_READ32(base, FPSStatus);
+}
+
+epicsUInt32 EVRFRIB::FPSSource() const
+{
+    return LE_READ32(base, FPSSource);
+}
+
 void EVRFRIB::lock() const
 {
     mutex.lock();
@@ -200,8 +228,12 @@ bool EVRFRIB::linkStatus() const {
 }
 
 OBJECT_BEGIN2(EVRFRIB, EVR)
-  OBJECT_PROP1("machineCycles", &EVRFRIB::machineCycles);
   OBJECT_PROP2("Config", &EVRFRIB::Config, &EVRFRIB::setConfig);
+  OBJECT_PROP2("Command", &EVRFRIB::Command, &EVRFRIB::setCommand);
+  OBJECT_PROP1("machineCycles", &EVRFRIB::machineCycles);
+  OBJECT_PROP1("FPSCommCnt", &EVRFRIB::FPSCommCnt);
+  OBJECT_PROP1("FPSStatus", &EVRFRIB::FPSStatus);
+  OBJECT_PROP1("FPSSource", &EVRFRIB::FPSSource);
 OBJECT_END(EVRFRIB)
 
 

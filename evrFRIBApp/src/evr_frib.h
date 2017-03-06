@@ -121,7 +121,12 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
     void setConfig(epicsUInt32 v);
 
     // From Command
+    epicsUInt32 Command() const;
+    void setCommand(epicsUInt32 v);
 
+    epicsUInt32 FPSCommCnt() const;
+    epicsUInt32 FPSStatus() const;
+    epicsUInt32 FPSSource() const;
 
     // methods from Object
 
