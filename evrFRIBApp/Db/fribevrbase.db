@@ -2,6 +2,7 @@ record(bo, "$(P)SIMBON_CMD") {
   field(ZNAM, "Off")
   field(ONAM, "Beam On")
   field(OUT , "$(P)Cnf_CSET_.B3 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
@@ -11,6 +12,7 @@ record(bo, "$(P)SIMEVG_CMD") {
   field(ONAM, "Sim EVG")
   field(OSV , "MINOR")
   field(OUT , "$(P)Cnf_CSET_.B2 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
@@ -18,7 +20,9 @@ record(bo, "$(P)SIMEVG_CMD") {
 record(bo, "$(P)SIMFPS_CMD") {
   field(ZNAM, "Normal")
   field(ONAM, "Sim FPS")
+  field(OSV , "MINOR")
   field(OUT , "$(P)Cnf_CSET_.B1 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
@@ -46,7 +50,9 @@ record(longout, "$(P)Cnf_CSET") {
 record(bo, "$(P)FrcNOK_CMD") {
   field(ZNAM, "Idle")
   field(ONAM, "Force NOK")
+  field(HIGH, "0.1")
   field(OUT , "$(P)Cmd_CSET_.B4 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
@@ -54,7 +60,9 @@ record(bo, "$(P)FrcNOK_CMD") {
 record(bo, "$(P)ClrNOK_CMD") {
   field(ZNAM, "Idle")
   field(ONAM, "Clear NOK")
+  field(HIGH, "0.1")
   field(OUT , "$(P)Cmd_CSET_.B3 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
@@ -62,7 +70,9 @@ record(bo, "$(P)ClrNOK_CMD") {
 record(bo, "$(P)FrcNPMT_CMD") {
   field(ZNAM, "Idle")
   field(ONAM, "Force NPERMIT")
+  field(HIGH, "0.1")
   field(OUT , "$(P)Cmd_CSET_.B2 PP")
+  field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
