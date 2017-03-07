@@ -13,6 +13,8 @@ fribEvrSetupPCI("EVR", "slot=2-1")
 
 dbLoadRecords("../../db/frib-fgpdb-evr.db","SYS=TST, D=evr:1, EVR=EVR")
 
+dbLoadRecords("frib-flash.db","P=TST:evr:1:,DEV=slot=2-1,location=0x000000,NELM=8388608")
+
 #dbLoadRecords("db/iocAdminSoft.db", "IOC=mrftest")
 
 # Auto save/restore

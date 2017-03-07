@@ -10,6 +10,8 @@ DB += fribevrout.db
 DB += fribevrbase.db
 DB += frib-fgpdb-evr.db
 
+DB_INSTALLS += $(DEVLIB2)/db/frib-flash.db
+
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
