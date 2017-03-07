@@ -1,13 +1,80 @@
+record(bo, "$(P)SIMBON_CMD") {
+  field(ZNAM, "Off")
+  field(ONAM, "Beam On")
+  field(OUT , "$(P)Cnf_CSET_.B3 PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)SIMEVG_CMD") {
+  field(ZNAM, "Normal")
+  field(ONAM, "Sim EVG")
+  field(OSV , "MINOR")
+  field(OUT , "$(P)Cnf_CSET_.B2 PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)SIMFPS_CMD") {
+  field(ZNAM, "Normal")
+  field(ONAM, "Sim FPS")
+  field(OUT , "$(P)Cnf_CSET_.B1 PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)EVTBIST_CMD") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Run")
+  field(OUT , "$(P)Cnf_CSET_.B0 PP")
+  field(VAL , "1")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)Cnf_CSET_") {
+  field(OUT , "$(P)Cnf_CSET PP")
+  info(autosaveFields_pass0, "B0 B1 B2 B3")
+}
+
 record(longout, "$(P)Cnf_CSET") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Config")
+}
+
+
+record(bo, "$(P)FrcNOK_CMD") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Force NOK")
+  field(OUT , "$(P)Cmd_CSET_.B4 PP")
+  field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)ClrNOK_CMD") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Clear NOK")
+  field(OUT , "$(P)Cmd_CSET_.B3 PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bo, "$(P)FrcNPMT_CMD") {
+  field(ZNAM, "Idle")
+  field(ONAM, "Force NPERMIT")
+  field(OUT , "$(P)Cmd_CSET_.B2 PP")
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbboDirect, "$(P)Cmd_CSET_") {
+  field(OUT , "$(P)Cmd_CSET PP")
+  info(autosaveFields_pass0, "B2 B3 B4")
 }
 
 record(longout, "$(P)Cmd_CSET") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Command")
-  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)MCyc_RD") {

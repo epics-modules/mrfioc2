@@ -10,15 +10,13 @@
 #  $(SYS){$(D)-SubDev}Signal-SD
 
 file "evrbase.db"
-{pattern
-{P, OBJ, EVNT1HZ}
-{"$(SYS){$(D)}", $(EVR), 125}
+{
+{P="\$(SYS){\$(D)}", OBJ="\$(EVR)", FRF=80.5}
 }
 
 file "fribevrbase.db"
-{pattern
-{P, OBJ}
-{"$(SYS){$(D)}", $(EVR)}
+{
+{P="\$(SYS){\$(D)}", OBJ="\$(EVR)"}
 }
 
 file "evrscale.db"
