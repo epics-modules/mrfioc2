@@ -109,6 +109,17 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
                out_pulse0,
                out_pulse1;
 
+    struct PulseMap {
+        MapType::type active;
+        unsigned cnt;
+        PulseMap() :active(MapType::None), cnt(0u) {}
+    };
+    struct EvtMap {
+        PulseMap pulse[2];
+    };
+    typedef std::vector<EvtMap> mappings_t;
+    mappings_t mappings;
+
     // our methods
 
     EVRFRIB(const std::string& s, bus_configuration& busConfig, volatile unsigned char *base);

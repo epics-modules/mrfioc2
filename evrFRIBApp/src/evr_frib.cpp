@@ -44,6 +44,7 @@ EVRFRIB::EVRFRIB(const std::string& s,
     ,out_divider(SB()<<s<<":OUT:CLK", 1, this)
     ,out_pulse0(SB()<<s<<":OUT:TR"<<0, 2, this)
     ,out_pulse1(SB()<<s<<":OUT:TR"<<1, 3, this)
+    ,mappings(256)
 {
     epicsUInt32 info = LE_READ32(base, FWInfo);
 
@@ -307,28 +308,7 @@ MapType::type PulserFRIB::mappedSource(epicsUInt32 evt) const
     if(evt>255)
         throw std::out_of_range("Event code is out of range");
 
-    if(evt==0)
-        return MapType::None;
-
-    epicsUInt32 map = LE_READ32(evr->base, EvtConfig(evt));
-
-    bool pulses = map&EvtConfig_Pulse(n);
-    bool sets   = map&EvtConfig_Set(n);
-    bool clears = map&EvtConfig_Clear(n);
-
-    MapType::type ret = MapType::None;
-
-    unsigned c=0;
-    if(pulses) {c++; ret = MapType::Trigger; }
-    if(sets)   {c++; ret = MapType::Set; }
-    if(clears) {c++; ret = MapType::Reset; }
-
-    if(c>1) {
-        errlogPrintf("EVR %s pulser #%d code %02x maps too many actions %08x\n",
-            evr->name().c_str(), n, evt, map);
-    }
-
-    return ret;
+    return evr->mappings[evt].pulse[n].active;
 }
 
 void PulserFRIB::sourceSetMap(epicsUInt32 evt, MapType::type action)
@@ -339,20 +319,46 @@ void PulserFRIB::sourceSetMap(epicsUInt32 evt, MapType::type action)
     if(evt==0)
         return;
 
-    const epicsUInt32 mask = EvtConfig_Pulse(n)|EvtConfig_Set(n)|EvtConfig_Clear(n);
+    EVRFRIB::EvtMap& map = evr->mappings[evt];
+    EVRFRIB::PulseMap& pulse = map.pulse[n];
 
-    epicsUInt32 map = LE_READ32(evr->base, EvtConfig(evt));
+    bool writeout = false;
 
-    map &= ~mask;
-
-    switch(action) {
-    case MapType::None: break;
-    case MapType::Trigger: map |= EvtConfig_Pulse(n); break;
-    case MapType::Set: map |= EvtConfig_Set(n); break;
-    case MapType::Reset: map |= EvtConfig_Clear(n); break;
+    if(action==MapType::None) {
+        if(pulse.cnt==0u) {
+            errlogPrintf("%s: Warning: mapping ref count error evt=%u map=%u", name().c_str(), (unsigned)evt, (unsigned)n);
+        } else {
+            pulse.cnt--;
+            if(pulse.cnt==0) {
+                writeout = true;
+                pulse.active = action;
+            }
+        }
+    } else {
+        if(pulse.cnt==0) {
+            writeout = true;
+            pulse.active = action;
+        } else if(pulse.active!=action) {
+            throw std::runtime_error("Not allowed to map one pulse to more than one action for a single event");
+        }
+        pulse.cnt++;
     }
 
-    LE_WRITE32(evr->base, EvtConfig(evt), map);
+    if(!writeout) return;
+
+    epicsUInt32 out = EvtConfig_FIFOUnMap;
+
+    for(unsigned i=0; i<2; i++) {
+
+        switch(map.pulse[i].active) {
+        case MapType::None: break;
+        case MapType::Trigger: out |= EvtConfig_Pulse(n); break;
+        case MapType::Set: out |= EvtConfig_Set(n); break;
+        case MapType::Reset: out |= EvtConfig_Clear(n); break;
+        }
+    }
+
+    LE_WRITE32(evr->base, EvtConfig(evt), out);
 }
 
 void PulserFRIB::lock() const { evr->lock(); }

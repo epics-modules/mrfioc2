@@ -48,9 +48,9 @@ file "evrpulsermap.db"
 {pattern
 {PID, NAME, OBJ, F, EVT}
 {0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{0, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Reset, 0}
 {1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
-{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{1, "$(SYS){$(D)-DlyGen:$(PID)}Evt:Trig2-SP", "$(EVR):Pul$(PID)", Reset, 0}
 }
