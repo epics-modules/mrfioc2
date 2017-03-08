@@ -352,9 +352,9 @@ void PulserFRIB::sourceSetMap(epicsUInt32 evt, MapType::type action)
 
         switch(map.pulse[i].active) {
         case MapType::None: break;
-        case MapType::Trigger: out |= EvtConfig_Pulse(n); break;
-        case MapType::Set: out |= EvtConfig_Set(n); break;
-        case MapType::Reset: out |= EvtConfig_Clear(n); break;
+        case MapType::Trigger: out |= EvtConfig_Pulse(i); break;
+        case MapType::Set: out |= EvtConfig_Set(i); break;
+        case MapType::Reset: out |= EvtConfig_Clear(i); break;
         }
     }
 
