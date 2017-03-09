@@ -115,6 +115,9 @@ record(mbbiDirect, "$(P)FPSStatus_RD") {
 record(bi, "$(P)FPSNPMT_RD") {
   field(DESC, "NPERMIT")
   field(INP , "$(P)FPSStatus_RD.B0 NPP MSI")
+  field(ZNAM, "OK")
+  field(ONAM, "Error")
+  field(OSV , "MAJOR")
   field(TSEL, "$(P)FPSStatus_RD.TIME")
   field(FLNK, "$(P)FPSNOK_RD")
 }
@@ -122,6 +125,9 @@ record(bi, "$(P)FPSNPMT_RD") {
 record(bi, "$(P)FPSNOK_RD") {
   field(DESC, "Not OK out")
   field(INP , "$(P)FPSStatus_RD.B1 NPP MSI")
+  field(ZNAM, "OK")
+  field(ONAM, "Trip")
+  field(OSV , "MAJOR")
   field(TSEL, "$(P)FPSStatus_RD.TIME")
   field(FLNK, "$(P)FPSNOKL_RD")
 }
@@ -129,6 +135,9 @@ record(bi, "$(P)FPSNOK_RD") {
 record(bi, "$(P)FPSNOKL_RD") {
   field(DESC, "Not OK out latched")
   field(INP , "$(P)FPSStatus_RD.B2 NPP MSI")
+  field(ZNAM, "OK")
+  field(ONAM, "Trip")
+  field(OSV , "MAJOR")
   field(TSEL, "$(P)FPSStatus_RD.TIME")
   field(FLNK, "$(P)FPSNOKIN_RD")
 }
@@ -136,12 +145,18 @@ record(bi, "$(P)FPSNOKL_RD") {
 record(bi, "$(P)FPSNOKIN_RD") {
   field(DESC, "Not OK in")
   field(INP , "$(P)FPSStatus_RD.B3 NPP MSI")
+  field(ZNAM, "OK")
+  field(ONAM, "Trip")
+  field(OSV , "MAJOR")
   field(TSEL, "$(P)FPSStatus_RD.TIME")
   field(FLNK, "$(P)FPSPRSNT_RD")
 }
 
 record(bi, "$(P)FPSPRSNT_RD") {
   field(DESC, "Presense")
+  field(ZNAM, "Missing")
+  field(ONAM, "Present")
+  field(ZSV , "MAJOR")
   field(INP , "$(P)FPSStatus_RD.B4 NPP MSI")
   field(TSEL, "$(P)FPSStatus_RD.TIME")
   field(FLNK, "$(P)FPSSource_RD")
