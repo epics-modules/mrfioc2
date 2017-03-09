@@ -138,6 +138,7 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
     epicsUInt32 FPSCommCnt() const;
     epicsUInt32 FPSStatus() const;
     epicsUInt32 FPSSource() const;
+    epicsUInt32 BeamOnTime() const;
 
     // methods from Object
 

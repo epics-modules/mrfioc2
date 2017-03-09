@@ -136,6 +136,12 @@ epicsUInt32 EVRFRIB::FPSSource() const
     return LE_READ32(base, FPSSource);
 }
 
+epicsUInt32 EVRFRIB::BeamOnTime() const
+{
+    epicsUInt32 val = LE_READ32(base, BeamDuty);
+    return val/clock(); // micro-seconds
+}
+
 void EVRFRIB::lock() const
 {
     mutex.lock();
@@ -235,6 +241,7 @@ OBJECT_BEGIN2(EVRFRIB, EVR)
   OBJECT_PROP1("FPSCommCnt", &EVRFRIB::FPSCommCnt);
   OBJECT_PROP1("FPSStatus", &EVRFRIB::FPSStatus);
   OBJECT_PROP1("FPSSource", &EVRFRIB::FPSSource);
+  OBJECT_PROP1("BeamOnTime", &EVRFRIB::BeamOnTime);
 OBJECT_END(EVRFRIB)
 
 
