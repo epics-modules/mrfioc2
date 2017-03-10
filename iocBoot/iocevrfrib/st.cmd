@@ -32,6 +32,9 @@ set_pass0_restoreFile("mrf_values.sav")
 set_pass1_restoreFile("mrf_values.sav")
 set_pass1_restoreFile("mrf_waveforms.sav")
 
+# disable use of current time until validation is implemented
+var(mrmGTIFEnable, 0)
+
 iocInit()
 
 makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
