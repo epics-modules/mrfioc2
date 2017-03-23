@@ -1,4 +1,4 @@
-#!../../bin/linux-x86_64-debug/mrf
+#!../../bin/linux-x86_64/mrf
 
 ## Register all support components
 dbLoadDatabase("../../dbd/mrf.dbd")
