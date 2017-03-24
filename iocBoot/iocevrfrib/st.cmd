@@ -19,13 +19,13 @@ dbLoadRecords("../../db/iocAdminSoft.db", "IOC=DIAG_MTCA:EVR1-ADM:")
 
 # Auto save/restore
 save_restoreDebug(2)
-dbLoadRecords("db/save_restoreStatus.db", "P=DIAG_MTCA:EVR1-AS:")
+dbLoadRecords("../../db/save_restoreStatus.db", "P=DIAG_MTCA:EVR1-AS:")
 save_restoreSet_status_prefix("DIAG_MTCA:EVR1-AS:")
 
-set_savefile_path("${PWD}/as","/save")
-set_requestfile_path("${PWD}/as","/req")
-system("install -d ${PWD}/as/req")
-system("install -d ${PWD}/as/save")
+set_savefile_path("as","/save")
+set_requestfile_path("as","/req")
+system("install -d as/req")
+system("install -d as/save")
 
 set_pass0_restoreFile("mrf_settings.sav")
 set_pass0_restoreFile("mrf_values.sav")
@@ -41,6 +41,6 @@ makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
 makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields")
 makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
 
-#create_monitor_set("mrf_settings.req", 5 , "")
-#create_monitor_set("mrf_values.req", 5 , "")
-#create_monitor_set("mrf_waveforms.req", 30 , "")
+create_monitor_set("mrf_settings.req", 5 , "")
+create_monitor_set("mrf_values.req", 5 , "")
+create_monitor_set("mrf_waveforms.req", 30 , "")
