@@ -30,7 +30,7 @@ DB += vme-evg230-nsls2.db
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
-DB_INSTALLS += $(EPICS_BASE)/db/iocAdminRTEMS.db
+DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 endif
 endif
 

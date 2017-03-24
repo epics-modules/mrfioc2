@@ -15,6 +15,7 @@ DB += evr-tg-300.db
 
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
+DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminSoft.db
 endif
 
 # Omitted before 3.14.10

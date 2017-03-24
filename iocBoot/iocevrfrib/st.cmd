@@ -4,23 +4,23 @@
 dbLoadDatabase("../../dbd/mrf.dbd")
 mrf_registerRecordDeviceDriver(pdbbase)
 
-epicsEnvSet("ENGINEER","mdavidsaver x3698")
-epicsEnvSet("LOCATION","Blg 902 Rm 28")
+epicsEnvSet("ENGINEER","mdavidsaver x608")
+epicsEnvSet("LOCATION","FE-001.05")
 
-epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","1000000")
+epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","10000000")
 
 fribEvrSetupPCI("EVR", "slot=2-1")
 
-dbLoadRecords("../../db/frib-fgpdb-evr.db","SYS=TST, D=evr:1, EVR=EVR")
+dbLoadRecords("../../db/frib-fgpdb-evr.db","SYS=DIAG_MTCA, D=EVR1, EVR=EVR")
 
-dbLoadRecords("frib-flash.db","P=TST:evr:1:,DEV=slot=2-1,location=0x000000,NELM=8388608")
+dbLoadRecords("../../frib-flash.db","P=DIAG_MTCA:EVR1-FLSH:,DEV=slot=2-1,location=0x000000,NELM=8388608")
 
-#dbLoadRecords("db/iocAdminSoft.db", "IOC=mrftest")
+dbLoadRecords("../../db/iocAdminSoft.db", "IOC=DIAG_MTCA:EVR1-ADM:")
 
 # Auto save/restore
 save_restoreDebug(2)
-#dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:")
-#save_restoreSet_status_prefix("mrftest:")
+dbLoadRecords("db/save_restoreStatus.db", "P=DIAG_MTCA:EVR1-AS:")
+save_restoreSet_status_prefix("DIAG_MTCA:EVR1-AS:")
 
 set_savefile_path("${PWD}/as","/save")
 set_requestfile_path("${PWD}/as","/req")
