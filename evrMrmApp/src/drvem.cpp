@@ -230,18 +230,27 @@ try{
     }
 
     if(v==formFactor_CPCIFULL) {
-        shortcmls.resize(8);
         for(unsigned int i=4; i<8; i++) {
             std::ostringstream name;
             name<<n<<":FrontOut"<<i;
             outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
         }
-        for(size_t i=0; i<4; i++)
-            shortcmls[i]=0;
+        shortcmls.resize(8, 0);
         shortcmls[4]=new MRMCML(n+":CML4", 4,*this,MRMCML::typeCML,form);
         shortcmls[5]=new MRMCML(n+":CML5", 5,*this,MRMCML::typeCML,form);
         shortcmls[6]=new MRMCML(n+":CML6", 6,*this,MRMCML::typeTG300,form);
         shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
+
+    } else if(v==formFactor_mTCA) {
+
+        // mapping to TCLKA and TCLKB as UNIV16, 17
+        // we move down to UNIV0, 1
+        outputs[std::make_pair(OutputFPUniv,0)]=new MRMOutput(SB()<<n<<":FrontUnivOut0", this, OutputFPUniv, 16);
+        outputs[std::make_pair(OutputFPUniv,1)]=new MRMOutput(SB()<<n<<":FrontUnivOut1", this, OutputFPUniv, 17);
+
+        shortcmls.resize(2);
+        shortcmls[0]=new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
+        shortcmls[1]=new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
 
     } else if(conf->nCML && ver>=4){
         shortcmls.resize(conf->nCML);

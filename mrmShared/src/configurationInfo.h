@@ -48,6 +48,7 @@ enum formFactor {
   formFactor_CPCIFULL=4, // 6U
   formFactor_PXIe=6,
   formFactor_PCIe=7,
+  formFactor_mTCA=8,
 };
 
 #endif // CONFIGURATIONINFO_H

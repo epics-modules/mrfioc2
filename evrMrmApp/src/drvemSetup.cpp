@@ -68,6 +68,8 @@ static const epicsPCIID mrmevrs[] = {
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
                                 PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
     ,DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVR300,    PCI_VENDOR_ID_MRF)
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV,    PCI_VENDOR_ID_XILINX,
+                               PCI_DEVICE_ID_MRF_EVRMTCA300, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -151,6 +153,19 @@ static const EVRMRM::Config cpci_evr_300 = {
     0,  // RB outputs
     0,  // FP Delay outputs
     4,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config mtca_evr_300 = {
+    "mTCA-EVR-300",
+    16, // pulse generators
+    8,  // prescalers
+    4,  // FP outputs
+    0,  // FPUV outputs (really 2, handled specially)
+    16, // RB outputs  (via external IFB)
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
     MRMCML::typeTG300,
     2,  // FP inputs
 };
@@ -428,6 +443,7 @@ try {
     case PCI_DEVICE_ID_MRF_EVRTG_300:
     case PCI_DEVICE_ID_MRF_EVRTG_300E: conf = &cpci_evrtg_300; break;
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
+    case PCI_DEVICE_ID_MRF_EVRMTCA300: conf = &mtca_evr_300; break;
     default:
         printf("Unknown PCI EVR variant, making assumptions...\n");
         conf = &cpci_evr_unknown;
