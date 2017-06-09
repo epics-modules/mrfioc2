@@ -24,4 +24,9 @@
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+# we don't actually use 'rset' directly,
+# but want to suppress deprecation warnings
+USR_CPPFLAGS += -DUSE_TYPED_RSET
+
+
 #STATIC_BUILD=NO
