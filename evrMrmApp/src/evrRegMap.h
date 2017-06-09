@@ -54,8 +54,9 @@
 
 #  define Control_evtfwd  0x40000000
 
-/* Loopback 0 - normal, 1 - connects local tx to local rx */
+/* 0 - normal, 1 loop back in logic */
 #  define Control_txloop  0x20000000
+/* 0 - normal, 1 loop back in SFP */
 #  define Control_rxloop  0x10000000
 
 #  define Control_outena  0x08000000 /* cPCI-EVRTG-300 only */
@@ -65,6 +66,8 @@
 #  define Control_endian  0x02000000 /* 0 - MSB, 1 - LSB, 300 PCI devices only */
 
 #  define Control_GTXio   0x01000000 /* GTX use external inhibit */
+
+#  define Control_DCEna   0x00400000
 
 /*                        Timestamp clock on DBUS #4 */
 #  define Control_tsdbus  0x00004000
@@ -157,6 +160,12 @@
 
 #define U32_SPIDData    0x0A0
 #define U32_SPIDCtrl    0x0A4
+
+#define U32_DCTarget    0x0b0
+#define U32_DCRxVal     0x0b4
+#define U32_DCIntVal    0x0b8
+#define U32_DCStatus    0x0bc
+#define U32_TOPID       0x0c0
 
 #define U32_ScalerN     0x100
 #  define ScalerMax 3
