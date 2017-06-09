@@ -12,7 +12,7 @@ DB += nsls2-inj-seqs.db
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
-#DB += xxx.db
+
 DB += evgMrm.db
 DB += evgEvtClk.db
 DB += evgSoftEvt.db
@@ -34,7 +34,6 @@ DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 endif
 endif
 
-# Omitted before 3.14.10
 USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 
 #----------------------------------------------------

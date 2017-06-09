@@ -4,9 +4,6 @@ TOP = .
 include $(TOP)/configure/CONFIG
 DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmtestApp evrFRIBApp iocBoot
 
-# 3.14.10 style directory dependencies
-# previous versions will just ignore them
-
 define DIR_template
  $(1)_DEPEND_DIRS = configure
 endef

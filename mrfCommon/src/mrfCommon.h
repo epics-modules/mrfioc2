@@ -210,27 +210,6 @@ struct SB {
 #endif
 
 /*---------------------
- * Older versions (< 3.14.9) of recGblRecordError took a non-const string
- */
-#if EPICS_VERSION_INT < VERSION_INT(3,14,9,0)
-#  define recGblRecordError(ERR, REC, STR) recGblRecordError(ERR, REC, (char*)(STR))
-#endif
-
-/*---------------------
- * Older versions (< 3.14.10) do not define POSIX_TIME
- */
-#ifndef POSIX_TIME_AT_EPICS_EPOCH
-#  define POSIX_TIME_AT_EPICS_EPOCH 631152000u
-#endif
-
-/*---------------------
- * Older versions (< 3.14.10) use DBE_LOG instead of DBE_ARCHIVE
- */
-#ifndef DBE_ARCHIVE
-#  define DBE_ARCHIVE DBE_LOG
-#endif
-
-/*---------------------
  * epicsMath.h defines "finite()" for vxWorks, but "isfinite()" is the standard.
  * finite() does not appear to be supported in epicsMath.h for all architectures.
  */

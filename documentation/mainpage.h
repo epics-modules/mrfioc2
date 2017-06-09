@@ -29,7 +29,7 @@ The canonical version of this page is @url http://epics.sourceforge.net/mrfioc2/
 
 @subsection requires Requires
 
-EPICS Base >= 3.14.8.2
+EPICS Base >= 3.14.10
 
 @url http://www.aps.anl.gov/epics/
 
@@ -37,7 +37,7 @@ MSI (Macro expension tool)
 
 @url http://www.aps.anl.gov/epics/extensions/msi/index.php
 
-devLib2 >= 2.6
+devLib2 >= 2.8
 
 @url http://epics.sourceforge.net/devlib2/
 

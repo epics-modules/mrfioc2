@@ -13,13 +13,13 @@ The latest developments can be found in the 'mrfioc2' VCS repository.
 Prerequisites
 -------------
 
-The required software is EPICS Base >= 3.14.8.2, devLib2 >= 2.6, and the MSI tool (included in Base >= 3.15.1).
+The required software is EPICS Base >= 3.14.10, devLib2 >= 2.8, and the MSI tool (included in Base >= 3.15.1).
 
-Base: [http://www.aps.anl.gov/epics/base/R3-14/index.php](http://www.aps.anl.gov/epics/base/R3-14/index.php)
+Base: [http://www.aps.anl.gov/epics/base/R3-15/index.php](http://www.aps.anl.gov/epics/base/R3-15/index.php)
 
 devLib2: [https://github.com/epics-modules/devlib2/](https://github.com/epics-modules/devlib2/)
 
-MSI (Base <3.15 only): [http://www.aps.anl.gov/epics/extensions/msi/index.php](http://www.aps.anl.gov/epics/extensions/msi/index.php)
+MSI (Base < 3.15 only): [http://www.aps.anl.gov/epics/extensions/msi/index.php](http://www.aps.anl.gov/epics/extensions/msi/index.php)
 
 The Source
 ----------
