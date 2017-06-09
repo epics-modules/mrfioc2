@@ -88,6 +88,8 @@ FracSynthControlWord_SRCS += FracSynthControlWord.c
 
 PROD_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 
+TESTSCRIPTS_HOST += $(TESTS:%=%.t)
+
 #---------------------
 # Generic EPICS build rules
 #
