@@ -360,7 +360,7 @@ protected:
     ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
     ObjectInst(const std::string& n, A a) : Base(n, a) {}
-    virtual ~ObjectInst(){};
+    virtual ~ObjectInst(){}
 public:
 
     virtual propertyBase* getPropertyBase(const char* pname, const std::type_info& ptype)
@@ -379,7 +379,7 @@ public:
         return Base::getPropertyBase(pname, ptype);
     }
 
-    void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
+    virtual void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
     {
         std::string emsg;
         epicsThreadOnce(&initId, &initObject, (void*)&emsg);

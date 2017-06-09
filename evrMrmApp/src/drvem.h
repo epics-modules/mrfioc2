@@ -93,9 +93,10 @@ struct epicsShareClass eventCode {
  *
  * 
  */
-class epicsShareClass EVRMRM : public EVR
+class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>
 {
-public:    
+    typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
+public:
     /** @brief Guards access to instance
    *  All callers must take this lock before any operations on
    *  this object.
@@ -197,6 +198,17 @@ public:
     virtual epicsUInt32 FIFOLoopCount() const{return count_fifo_loops;}
 
     void enableIRQ(void);
+
+    bool dcEnabled() const;
+    void dcEnable(bool v);
+    double dcTarget() const;
+    void dcTargetSet(double);
+    //! Measured delay
+    double dcRx() const;
+    //! Delay compensation applied
+    double dcInternal() const;
+    epicsUInt32 dcStatusRaw() const;
+    epicsUInt32 topId() const;
 
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);

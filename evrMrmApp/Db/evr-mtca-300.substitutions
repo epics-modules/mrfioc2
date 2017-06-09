@@ -38,6 +38,11 @@ file "sfp.db"
 {P="$(SYS){$(D)-SFP}", OBJ="$(EVR):SFP"}
 }
 
+file "mrmevrdc.template"
+{
+{P="$(SYS){$(D)-DC}", OBJ="$(EVR)"}
+}
+
 file "evrmap.db"
 {pattern
 {NAME, OBJ, func, EVT}

@@ -4,6 +4,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 DB += mrmevrout.db
+DB += mrmevrdc.template
 DB += mrmevrbufrx.db
 DB += sequencedemo.db
 
@@ -12,6 +13,7 @@ DB += evr-cpci-230.db
 DB += evr-cpci-300.db
 DB += evr-vmerf-230.db
 DB += evr-tg-300.db
+DB += evr-mtca-300.db
 
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db

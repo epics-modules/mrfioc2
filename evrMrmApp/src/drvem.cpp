@@ -107,7 +107,7 @@ EVRMRM::EVRMRM(const std::string& n,
                bus_configuration& busConfig, const Config *c,
                volatile unsigned char* b,
                epicsUInt32 bl)
-  :EVR(n,busConfig)
+  :base_t(n,busConfig)
   ,evrLock()
   ,conf(c)
   ,base(b)
@@ -866,6 +866,73 @@ EVRMRM::dbus() const
 {
     return (READ32(base, Status) & Status_dbus_mask) >> Status_dbus_shift;
 }
+
+bool
+EVRMRM::dcEnabled() const
+{
+    return READ32(base, Control) & Control_DCEna;
+}
+
+void
+EVRMRM::dcEnable(bool v)
+{
+    if(v)
+        BITSET32(base, Control, Control_DCEna);
+    else
+        BITCLR32(base, Control, Control_DCEna);
+}
+
+double
+EVRMRM::dcTarget() const
+{
+    double period=1e9/clock(); // in nanoseconds
+    return double(READ32(base, DCTarget))/65536.0*period;
+}
+
+void
+EVRMRM::dcTargetSet(double val)
+{
+    double period=1e9/clock(); // in nanoseconds
+
+    val /= period;
+    val *= 65536.0;
+    WRITE32(base, DCTarget, val);
+}
+
+double
+EVRMRM::dcRx() const
+{
+    double period=1e9/clock(); // in nanoseconds
+    return double(READ32(base, DCRxVal))/65536.0*period;
+}
+
+double
+EVRMRM::dcInternal() const
+{
+    double period=1e9/clock(); // in nanoseconds
+    return double(READ32(base, DCIntVal))/65536.0*period;
+}
+
+epicsUInt32
+EVRMRM::dcStatusRaw() const
+{
+    return READ32(base, DCStatus);
+}
+
+epicsUInt32
+EVRMRM::topId() const
+{
+    return READ32(base, TOPID);
+}
+
+OBJECT_BEGIN2(EVRMRM, EVR)
+  OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
+  OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
+  OBJECT_PROP1("DCRx",     &EVRMRM::dcRx);
+  OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
+  OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
+OBJECT_END(EVRMRM)
+
 
 void
 EVRMRM::enableIRQ(void)

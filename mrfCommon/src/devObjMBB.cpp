@@ -28,6 +28,7 @@ try {
     {
         scopedLock<mrf::Object> g(*priv->O);
         prec->rval = priv->P->get();
+        if(prec->mask) prec->rval &= prec->mask;
     }
 
     return 0;
