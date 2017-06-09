@@ -387,52 +387,14 @@ bool checkUIOVersion(int vmin, int vmax, int *actual)
 static bool checkUIOVersion(int,int,int*) {return false;}
 #endif
 
-static
-int parsePCI(const char *loc, int *dom, int *b, int *d, int *f)
-{
-    unsigned X, B, D, F;
-
-    if(sscanf(loc, "%x:%x:%x.%x", &X, &B, &D, &F)==4) {
-
-    } else if(sscanf(loc, "%x:%x.%x", &B, &D, &F)==3) {
-        X = 0;
-    } else if(sscanf(loc, "%x:%x", &B, &D)==2) {
-        X = 0;
-        F = 0;
-    } else if(sscanf(loc, "%x", &B)==1) {
-        X = 0;
-        F = 0;
-    } else {
-        return 1;
-    }
-    *dom = X;
-    *b = B;
-    *d = D;
-    *f = F;
-    return 0;
-}
-
 void
-mrmEvrSetupPCI(const char* id,const char* pciid,int d,int f)
+mrmEvrSetupPCI(const char* id,const char* pcispec)
 {
 try {
     bus_configuration bus;
     const EVRMRM::Config *conf;
 
     bus.busType = busType_pci;
-
-    if(!pciid || parsePCI(pciid, &bus.pci.domain, &bus.pci.bus,
-                          &bus.pci.device, &bus.pci.function))
-        throw std::invalid_argument("Unable to parse PCI ID string");
-
-    if(d!=0 || f!=0) {
-        printf("Warning: deprecated invocation of mrmEvrSetupPCI\n"
-               "Replace with:\n"
-               " mrmEvrSetupPCI(\"%s\", \"%s:%x.%x\")\n",
-               id, pciid, d, f);
-        bus.pci.device = d;
-        bus.pci.function = f;
-    }
 
     if(mrf::Object::getObject(id)){
         printf("Object ID %s already in use\n",id);
@@ -451,17 +413,13 @@ try {
 
     const epicsPCIDevice *cur=0;
 
-    if( devPCIFindDBDF(mrmevrs,
-                       bus.pci.domain, bus.pci.bus,
-                       bus.pci.device, bus.pci.function,
-                       &cur,0) ){
-        printf("PCI Device not found on %d:%d:%d.%d\n",
-               bus.pci.domain, bus.pci.bus,
-               bus.pci.device, bus.pci.function);
+    if( devPCIFindSpec(mrmevrs, pcispec, &cur,0) ){
+        printf("PCI Device not found on %s\n",
+               pcispec);
         return;
     }
 
-    printf("Device %s  %u:%u.%u\n",id,cur->bus,cur->device,cur->function);
+    printf("Device %s  %u:%u.%u slot=\n",id,cur->bus,cur->device,cur->function,cur->slot);
     printf("Using IRQ %u\n",cur->irq);
 
     switch(cur->id.sub_device) {
