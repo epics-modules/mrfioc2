@@ -75,6 +75,8 @@ struct common_dset{
 struct addrBase {
     char obj[30];
     char prop[30];
+    char klass[30];
+    char parent[30];
     int rbv;
     mrf::Object *O;
 };
@@ -93,6 +95,8 @@ linkOptionDef objdef[] =
     linkString  (addrBase, obj , "OBJ"  , 1, 0),
     linkString  (addrBase, prop , "PROP"  , 1, 0),
     linkEnum    (addrBase, rbv, "RB"   , 0, 0, readbackEnum),
+    linkString  (addrBase, klass , "CLASS"  , 0, 0),
+    linkString  (addrBase, parent , "PARENT"  , 0, 0),
     linkOptionEnd
 };
 
@@ -140,6 +144,7 @@ try {
         a.reset(new addr<P>);
 
     a->rbv=0;
+    a->obj[0] = a->prop[0] = a->klass[0] = a->parent[0] = '\0';
 
     if(linkOptionsStore(objdef, (void*)(addrBase*)a.get(),
                         lnk->value.instio.string, 0)) {
@@ -147,9 +152,14 @@ try {
         return S_db_errArg;
     }
 
-    Object *o = Object::getObject(a->obj);
-    if(!o) {
-        errlogPrintf("%s: failed to find object '%s'\n", prec->name, a->obj);
+    Object *o;
+    try {
+        Object::create_args_t args;
+        args["PARENT"] = a->parent;
+        o = Object::getCreateObject(a->obj, a->klass, args);
+
+    } catch(std::exception& e) {
+        errlogPrintf("%s: failed to find/create object '%s' : %s\n", prec->name, a->obj, e.what());
         return S_db_errArg;
     }
 
