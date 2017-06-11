@@ -54,6 +54,7 @@
 #else
 	#include <ostream>
 #endif
+#include <iostream>
 #include <sstream>
 #include <map>
 #include <set>
@@ -321,7 +322,19 @@ public:
 
     virtual void visitProperties(bool (*)(propertyBase*, void*), void*)=0;
 
-    static Object* getObject(const std::string&);
+    //! Fetch named Object
+    //! returns NULL if not found
+    static Object* getObject(const std::string& name);
+
+    typedef std::map<std::string, std::string> create_args_t;
+
+    //! Fetch or or create named Object
+    //! Throws an exception if creation fails
+    static Object* getCreateObject(const std::string& name, const std::string& klass, const create_args_t& args = create_args_t());
+
+    typedef Object* (*create_factory_t)(const std::string& name, const std::string& klass, const create_args_t& args);
+
+    static void addFactory(const std::string& klass, create_factory_t fn);
 
     static void visitObjects(bool (*)(Object*, void*), void*);
 };
@@ -354,8 +367,8 @@ class ObjectInst : public Base
 {
     typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
     static m_props_t *m_props;
-    static void initObject(void*);
-    static epicsThreadOnceId initId;
+public:
+    static int initObject();
 protected:
     ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
@@ -366,7 +379,6 @@ public:
     virtual propertyBase* getPropertyBase(const char* pname, const std::type_info& ptype)
     {
         std::string emsg;
-        epicsThreadOnce(&initId, &initObject, (void*)&emsg);
         if(!m_props)
             throw std::runtime_error(emsg);
         typename m_props_t::const_iterator it=m_props->lower_bound(pname),
@@ -382,7 +394,6 @@ public:
     virtual void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
     {
         std::string emsg;
-        epicsThreadOnce(&initId, &initObject, (void*)&emsg);
         if(!m_props)
             throw std::runtime_error(emsg);
 
@@ -402,9 +413,8 @@ public:
 
 #define OBJECT_BEGIN2(klass, Base) namespace mrf {\
 template<> ObjectInst<klass, Base>::m_props_t* ObjectInst<klass, Base>::m_props = 0; \
-template<> epicsThreadOnceId ObjectInst<klass, Base>::initId = EPICS_THREAD_ONCE_INIT; \
-template<> void ObjectInst<klass, Base>::initObject(void * rmsg) { \
-    std::string *emsg=static_cast<std::string*>(rmsg); \
+template<> int ObjectInst<klass, Base>::initObject() { \
+    const char *klassname = #klass; (void)klassname; \
     try { std::auto_ptr<m_props_t> props(new m_props_t); {
 
 #define OBJECT_BEGIN(klass) OBJECT_BEGIN2(klass, Object)
@@ -415,13 +425,15 @@ template<> void ObjectInst<klass, Base>::initObject(void * rmsg) { \
 #define OBJECT_PROP2(NAME, GET, SET) \
     props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET, SET) ))
 
+#define OBJECT_FACTORY(FN) addFactory(klassname, FN)
+
 #define OBJECT_END(klass) \
-} m_props = props.release(); \
+} m_props = props.release(); return 1; \
 } catch(std::exception& e) { \
-std::ostringstream strm; \
-strm<<"Failed to build property table for "<<typeid(klass).name()<<"\n"<<e.what()<<"\n"; \
-*emsg=strm.str(); \
-  }}}
+std::cerr<<"Failed to build property table for "<<typeid(klass).name()<<"\n"<<e.what()<<"\n"; \
+throw std::runtime_error("Failed to build"); \
+  }}} \
+static int done_##klass EPICS_UNUSED = klass::initObject();
 
 } // namespace mrf
 

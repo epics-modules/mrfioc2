@@ -53,10 +53,20 @@ public:
     virtual ~other() {}
 
     int getX() const { return 42;}
+
+    static Object* buildOne(const std::string& name, const std::string& klass, const Object::create_args_t& args);
 };
+
+Object*
+other::buildOne(const std::string& name, const std::string& klass, const Object::create_args_t& args)
+{
+    return new other(name);
+}
+
 
 void testMine()
 {
+    testDiag("In testMine()");
     mine m("test");
 
     testOk1(m.getI()==0);
@@ -126,6 +136,7 @@ void testMine()
 
 void testOther()
 {
+    testDiag("In testOther()");
     other m("foo");
 
     std::auto_ptr<property<double> > V=m.getProperty<double>("val");
@@ -148,6 +159,7 @@ void testOther()
 
 void testOther2()
 {
+    testDiag("In testOther2()");
     other m("foo");
     Object *o = &m;
 
@@ -164,6 +176,23 @@ void testOther2()
     testOk1(X.get()!=NULL);
 }
 
+void testFactory()
+{
+    testDiag("In testFactory()");
+    other m("HelloWorld");
+
+    testOk1(Object::getObject("NoOnesHome")==NULL);
+    testOk1(Object::getObject("HelloWorld")==&m);
+
+    testOk1(Object::getCreateObject("HelloWorld", "other")==&m);
+
+    Object *built = Object::getCreateObject("AnotherOne", "other");
+    testOk1(built!=NULL);
+
+    testOk1(built==Object::getObject("AnotherOne"));
+    testOk1(built==Object::getCreateObject("AnotherOne", "other"));
+}
+
 } // namespace
 
 OBJECT_BEGIN(mine)
@@ -175,13 +204,15 @@ OBJECT_END(mine)
 
 OBJECT_BEGIN2(other, mine)
 OBJECT_PROP1("X", &other::getX);
+OBJECT_FACTORY(other::buildOne);
 OBJECT_END(other)
 
 MAIN(objectTest)
 {
-    testPlan(30);
+    testPlan(36);
     testMine();
     testOther();
     testOther2();
+    testFactory();
     return testDone();
 }

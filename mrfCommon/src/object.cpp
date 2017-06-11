@@ -10,7 +10,9 @@
 using namespace mrf;
 
 typedef std::map<const std::string, Object*> objects_t;
-static objects_t *objects=0;
+static objects_t *objects;
+typedef std::map<const std::string, Object::create_factory_t> factories_t;
+static factories_t *factories;
 
 static epicsMutex *objectsLock=0;
 
@@ -20,6 +22,7 @@ void initObjects(void* rmsg)
     std::string *emsg=(std::string*)rmsg;
     try{
         objects = new objects_t;
+        factories = new factories_t;
         objectsLock = new epicsMutex;
     } catch(std::exception& e) {
         objects=0;
@@ -100,9 +103,41 @@ Object::getObject(const std::string& n)
     initObjectsOnce();
     epicsGuard<epicsMutex> g(*objectsLock);
     objects_t::const_iterator it=objects->find(n);
-    if(it==objects->end())
-        return 0;
-    return it->second;
+    if(it!=objects->end())
+        return it->second;
+    return 0;
+}
+
+Object*
+Object::getCreateObject(const std::string& name, const std::string& klass, const create_args_t& args)
+{
+    initObjectsOnce();
+    epicsGuard<epicsMutex> g(*objectsLock);
+    {
+        objects_t::const_iterator it=objects->find(name);
+        if(it!=objects->end())
+            return it->second;
+    }
+    if(klass.empty())
+        throw std::runtime_error(SB()<<"Object not found : "<<name);
+    {
+        factories_t::const_iterator it=factories->find(klass);
+        if(it==factories->end())
+            throw std::runtime_error(SB()<<"No such Object factory: "<<klass);
+        return (it->second)(name, klass, args);
+    }
+}
+
+void
+Object::addFactory(const std::string& klass, create_factory_t fn)
+{
+    initObjectsOnce();
+    epicsGuard<epicsMutex> g(*objectsLock);
+
+    factories_t::const_iterator it=factories->find(klass);
+    if(it!=factories->end())
+        throw std::runtime_error(SB()<<"Can't replace Object factory: "<<klass);
+    (*factories)[klass] = fn;
 }
 
 void
