@@ -475,10 +475,12 @@ mrmEvgSetupPCI (
 #ifdef __linux__
         evg->isrLinuxPvt = (void*) cur;
 #endif
-
+        int ret;
         /*Connect Interrupt handler to isr thread*/
-        if (devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0)) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
-            errlogPrintf("ERROR:Failed to connect PCI interrupt\n");
+        if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+            char buf[80];
+            errSymLookup(ret, buf, sizeof(buf));
+            errlogPrintf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
             delete evg;
             return -1;
         } else {
