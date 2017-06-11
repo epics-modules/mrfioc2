@@ -13,6 +13,8 @@
 
 #include <epicsExit.h>
 #include <epicsThread.h>
+#include <epicsStdio.h>
+#include <epicsString.h>
 
 #include <iocsh.h>
 #include <drvSup.h>
@@ -317,16 +319,22 @@ extern "C"
 epicsStatus
 mrmEvgSetupPCI (
 		const char* id,         // Card Identifier
-		int b,       			// Bus number
+        const char *spec,   	// ID spec. or Bus number
 		int d, 					// Device number
 		int f)   				// Function number
 {
-    bus_configuration bus;
-
-    bus.busType = busType_pci;
-    bus.pci.bus = b;
-    bus.pci.device = d;
-    bus.pci.function = f;
+    if(d!=0 || f!=0) {
+        std::istringstream strm(spec);
+        unsigned B =0xf;
+        strm >> B;
+        char buf[40];
+        epicsSnprintf(buf, sizeof(buf), "%x:%x.%x", B, d, f);
+        buf[sizeof(buf)-1] = '\0';
+        spec = epicsStrDup(buf);
+        fprintf(stderr, "Deprecated call.  Replace with:\n"
+                        "  mrmEvgSetupPCI(\"%s\", \"%s\")\n",
+                id, spec);
+    }
 
 	try {
 		if (mrf::Object::getObject(id)) {
@@ -346,10 +354,17 @@ mrmEvgSetupPCI (
 
 		/* Find PCI device from devLib2 */
 		const epicsPCIDevice *cur = 0;
-		if (devPCIFindBDF(mrmevgs, b, d, f, &cur, 0)) {
+        if (devPCIFindSpec(mrmevgs, spec, &cur, 0)) {
 			printf("PCI Device not found\n");
 			return -1;
 		}
+
+        bus_configuration bus;
+
+        bus.busType = busType_pci;
+        bus.pci.bus = cur->bus;
+        bus.pci.device = cur->device;
+        bus.pci.function = cur->function;
 
 		printf("Device %s  %u:%u.%u\n", id, cur->bus, cur->device,
 				cur->function);
@@ -584,7 +599,7 @@ mrmEvgSetupVMECallFunc(const iocshArgBuf *args) {
 }
 
 static const iocshArg mrmEvgSetupPCIArg0 = { "Card ID", iocshArgString };
-static const iocshArg mrmEvgSetupPCIArg1 = { "B board", iocshArgInt };
+static const iocshArg mrmEvgSetupPCIArg1 = { "spec or B board", iocshArgString };
 static const iocshArg mrmEvgSetupPCIArg2 = { "D device", iocshArgInt };
 static const iocshArg mrmEvgSetupPCIArg3 = { "F function", iocshArgInt };
 
@@ -595,7 +610,7 @@ static const iocshFuncDef mrmEvgSetupPCIFuncDef = { "mrmEvgSetupPCI", 4,
 		mrmEvgSetupPCIArgs };
 
 static void mrmEvgSetupPCICallFunc(const iocshArgBuf *args) {
-	mrmEvgSetupPCI(args[0].sval, args[1].ival, args[2].ival, args[3].ival);
+    mrmEvgSetupPCI(args[0].sval, args[1].sval, args[2].ival, args[3].ival);
 
 }
 
