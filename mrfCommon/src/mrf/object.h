@@ -80,8 +80,13 @@
 #include <stdexcept>
 #include <typeinfo>
 
+#include <compilerDependencies.h>
 #include <epicsThread.h>
 #include <epicsTypes.h>
+
+#ifndef EPICS_UNUSED
+#  define EPICS_UNUSED
+#endif
 
 #include "mrfCommon.h"
 
