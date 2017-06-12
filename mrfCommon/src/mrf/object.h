@@ -85,6 +85,18 @@
 
 #include "mrfCommon.h"
 
+// when dset should signal alarm w/o printing a message
+class alarm_exception : public std::exception
+{
+    const short sevr, stat;
+public:
+    explicit alarm_exception(short sevr = INVALID_ALARM, short stat = COMM_ALARM) : sevr(sevr), stat(stat) {}
+    virtual ~alarm_exception() throw() {}
+    virtual const char *what() throw();
+    inline short severity() const { return sevr; }
+    inline short status() const { return stat; }
+};
+
 namespace mrf {
 
 //! @brief Requested operation is not implemented by the property

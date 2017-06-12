@@ -28,6 +28,15 @@
 #include <stdexcept>
 #include <string>
 
+#define CATCH(RET) catch(alarm_exception& e) {\
+    (void)recGblSetSevr(prec, e.status(), e.severity());\
+    return (RET);\
+    } catch(std::exception& e) {\
+    (void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM);\
+    epicsPrintf("%s: error: %s\n", prec->name, e.what());\
+    return (RET);\
+    }
+
 /* Device support related casting functions */
 
 template<typename REC>
@@ -81,24 +90,16 @@ struct addrBase {
     mrf::Object *O;
 };
 
-static const
-linkOptionEnumType readbackEnum[] = { {"No",0}, {"Yes",1} };
+epicsShareExtern const
+linkOptionEnumType readbackEnum[];
 
 template<typename T>
 struct addr : public addrBase {
     std::auto_ptr<mrf::property<T> > P;
 };
 
-static const
-linkOptionDef objdef[] =
-{
-    linkString  (addrBase, obj , "OBJ"  , 1, 0),
-    linkString  (addrBase, prop , "PROP"  , 1, 0),
-    linkEnum    (addrBase, rbv, "RB"   , 0, 0, readbackEnum),
-    linkString  (addrBase, klass , "CLASS"  , 0, 0),
-    linkString  (addrBase, parent , "PARENT"  , 0, 0),
-    linkOptionEnd
-};
+epicsShareExtern const
+linkOptionDef objdef[];
 
 template<dsxt* D>
 static inline

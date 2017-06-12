@@ -42,6 +42,12 @@ void initObjectsOnce()
         throw std::runtime_error(emsg);
 }
 
+const char*
+alarm_exception::what() throw()
+{
+    return "Alarm!";
+}
+
 epicsShareFunc
 propertyBase::~propertyBase() {}
 

@@ -48,6 +48,7 @@ LIBRARY_IOC += mrfCommon
 mrfCommon_SRCS += mrfFracSynth.c
 mrfCommon_SRCS += linkoptions.c
 mrfCommon_SRCS += object.cpp
+mrfCommon_SRCS += devObj.cpp
 mrfCommon_SRCS += devObjAnalog.cpp
 mrfCommon_SRCS += devObjLong.cpp
 mrfCommon_SRCS += devObjBinary.cpp

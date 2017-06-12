@@ -20,7 +20,7 @@
 
 using namespace mrf;
 
-/************** mbbi *************/
+/************** stringin *************/
 
 static long read_string(stringinRecord* prec)
 {
@@ -40,11 +40,7 @@ try {
     prec->val[len]=0;
 
     return 0;
-} catch(std::exception& e) {
-    (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
-    epicsPrintf("%s: read error: %s\n", prec->name, e.what());
-    return S_db_noMemory;
-}
+}CATCH(S_dev_badArgument)
 }
 
 OBJECT_DSET(SIFromString,
@@ -54,6 +50,7 @@ OBJECT_DSET(SIFromString,
             &read_string,
             NULL);
 
+/************ stringout *********/
 
 static long write_string(stringoutRecord* prec)
 {
@@ -67,11 +64,7 @@ try {
     }
 
     return 0;
-} catch(std::exception& e) {
-    (void)recGblSetSevr(prec, WRITE_ALARM, INVALID_ALARM);
-    epicsPrintf("%s: write error: %s\n", prec->name, e.what());
-    return S_db_noMemory;
-}
+}CATCH(S_dev_badArgument)
 }
 
 OBJECT_DSET(SOFromString,
