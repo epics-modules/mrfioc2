@@ -17,8 +17,9 @@ public:
     int ival;
     double dval;
     std::vector<double> darr;
+    unsigned count;
 
-    mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0)
+    mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0), count(0)
     {}
 
     /* no locking needed */
@@ -43,6 +44,8 @@ public:
         darr.resize(l);
         std::copy(v, v+l, darr.begin());
     }
+
+    void incr() { count++; }
 };
 
 class other : public ObjectInst<other, mine>
@@ -132,6 +135,16 @@ void testMine()
     Object *p=Object::getObject("test");
     testOk1(p!=NULL);
     testOk1(p==o);
+
+    {
+        testOk1(m.count==0);
+        std::auto_ptr<property<void> > incr(o->getProperty<void>("incr"));
+        testOk1(incr.get()!=NULL);
+        if(incr.get()) {
+            incr->exec();
+        }
+        testOk1(m.count==1);
+    }
 }
 
 void testOther()
@@ -200,6 +213,7 @@ OBJECT_PROP2("I",   &mine::getI,    &mine::setI);
 OBJECT_PROP2("val", &mine::getI,    &mine::setI);
 OBJECT_PROP2("val", &mine::val,     &mine::setVal);
 OBJECT_PROP2("darr",&mine::getdarr, &mine::setdarr);
+OBJECT_PROP1("incr", &mine::incr);
 OBJECT_END(mine)
 
 OBJECT_BEGIN2(other, mine)
@@ -209,7 +223,7 @@ OBJECT_END(other)
 
 MAIN(objectTest)
 {
-    testPlan(36);
+    testPlan(39);
     testMine();
     testOther();
     testOther2();

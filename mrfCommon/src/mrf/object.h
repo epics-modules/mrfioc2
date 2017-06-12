@@ -132,6 +132,14 @@ struct property<P[1]> : public propertyBase
     virtual epicsUInt32 get(P*, epicsUInt32) const=0;
 };
 
+//! @brief A momentary/command
+template<>
+struct property<void> : public propertyBase
+{
+    virtual ~property(){}
+    virtual void exec()=0;
+};
+
 namespace detail {
 
 /** @brief An un-typed, un-bound property for class C
@@ -205,6 +213,30 @@ makeUnboundProperty(const char* n,
     return new unboundProperty<C,P[1]>(n,g,s);
 }
 
+//! @brief An un-bound momentary/command
+template<class C>
+class epicsShareClass unboundProperty<C,void> : public unboundPropertyBase<C>
+{
+public:
+    typedef void (C::*exec_t)();
+
+    const char * const name;
+    exec_t const execer;
+
+    unboundProperty(const char *n, exec_t e) :name(n), execer(e) {}
+    virtual const std::type_info& type() const{return typeid(void);}
+    inline virtual property<void>* bind(C*);
+};
+
+template<class C>
+static inline
+unboundProperty<C,void>*
+makeUnboundProperty(const char* n,
+                    void (C::*e)())
+{
+    return new unboundProperty<C,void>(n,e);
+}
+
 //! @brief final scalar implementation
 template<class C, typename P>
 class epicsShareClass  propertyInstance : public property<P>
@@ -217,9 +249,10 @@ public:
     :inst(c)
     ,prop(p)
   {}
+  virtual ~propertyInstance() {}
 
   virtual const char* name() const{return prop.name;}
-  virtual const std::type_info& type() const{return typeid(P);}
+  virtual const std::type_info& type() const{return prop.type();}
   virtual void set(P v)
   {
       if(!prop.setter)
@@ -257,9 +290,10 @@ public:
     :inst(c)
     ,prop(p)
   {}
+  virtual ~propertyInstance() {}
 
   virtual const char* name() const{return prop.name;}
-  virtual const std::type_info& type() const{return typeid(P[1]);}
+  virtual const std::type_info& type() const{return prop.type();}
   virtual void   set(const P* a, epicsUInt32 l)
     { (inst->*(prop.setter))(a,l); }
   virtual epicsUInt32 get(P* a, epicsUInt32 l) const
@@ -272,6 +306,32 @@ property<P[1]>*
 unboundProperty<C,P[1]>::bind(C* inst)
 {
     return new propertyInstance<C,P[1]>(inst,*this);
+}
+
+template<class C>
+class epicsShareClass propertyInstance<C,void> : public property<void>
+{
+    C *inst;
+    unboundProperty<C,void> prop;
+public:
+
+    propertyInstance(C *c, const unboundProperty<C,void>& p)
+        :inst(c), prop(p) {}
+    virtual ~propertyInstance() {}
+
+    virtual const char* name() const{return prop.name;}
+    virtual const std::type_info& type() const{return prop.type();}
+    virtual void exec() {
+        (inst->*prop.execer)();
+    }
+};
+
+//! Binder for momentary/command instances
+template<class C>
+property<void>*
+unboundProperty<C,void>::bind(C* inst)
+{
+    return new propertyInstance<C,void>(inst,*this);
 }
 
 } // namespace detail
