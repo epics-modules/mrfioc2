@@ -33,6 +33,7 @@ try {
 
     return 0;
 } catch(std::exception& e) {
+    (void)recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
     epicsPrintf("%s: read error: %s\n", prec->name, e.what());
     return S_db_noMemory;
 }
@@ -75,6 +76,7 @@ try {
 
     return 0;
 } catch(std::exception& e) {
+    (void)recGblSetSevr(prec, WRITE_ALARM, INVALID_ALARM);
     epicsPrintf("%s: read error: %s\n", prec->name, e.what());
     return S_db_noMemory;
 }
