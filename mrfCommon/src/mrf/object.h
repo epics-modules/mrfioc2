@@ -9,12 +9,28 @@
  * @author Michael Davidsaver <mdavidsaver@gmail.com>
  *
  * Defines a scheme for working with "properties".
- * A property being a pair of setter and getter methods
+ * A property being a some methods (eg. pair of setter and getter)
  * used to move a value in and out of an otherwise opaque
  * object.
  *
  * Properties are associated with a class by a property name
  * which can be used to retrieve a property.
+ *
+ * Method signatures supported
+ *
+ * get/set of scalar value P
+ *
+ *   void klass::setter(P v);
+ *   P klass::getter() const;
+ *
+ * get/set of array value P
+ *
+ *   void klass::setter(const P* vals, epicsUInt32 nelem);
+ *   epicsUInt32 klass::getter(P* vals, epicsUInt32 maxelem); // returns nelem
+ *
+ * A momentery/command
+ *
+ *   void klass::execer();
  *
  @internal
  *
