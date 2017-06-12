@@ -32,8 +32,7 @@ public:
     void setTimestamp(const std::vector<epicsUInt64>&);
     std::vector<epicsUInt64> getTimestamp();
 
-    void setTrigSrc(SeqTrigSrc);
-    SeqTrigSrc getTrigSrc() const;
+    void setTrigSrc(epicsUInt32);
 
     void setRunMode(SeqRunMode);
     SeqRunMode getRunMode() const;

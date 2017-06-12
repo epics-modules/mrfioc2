@@ -62,6 +62,7 @@ evgSeqRam::getTimestamp() {
 
 void
 evgSeqRam::softTrig() {
+    interruptLock L;
     BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SW_TRIG);
 }
 
@@ -73,19 +74,23 @@ evgSeqRam::disableSeqExtTrig(evgInput* inp) {
 }
 
 void
-evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
-    if(trigSrc == Software){
+evgSeqRam::setTrigSrc(epicsUInt32 trigSrc) {
+    // special handling of trigger sources which are different
+    // between EVG and EVR sequencer implementations
+    if(trigSrc == SEQ_SRC_DISABLE) {
+        trigSrc = 31; // trigger disabled
+    } else if(trigSrc == SEQ_SRC_SW || trigSrc==19){
         if(!m_id)
-            trigSrc = SoftRam0;
+            trigSrc = 17; // use SEQ0 soft trigger
         else
-            trigSrc = SoftRam1;
+            trigSrc = 18; // use SEQ1 soft trigger
     }
 
     /*Here we allow only one external input at a time to act as a trigger source
      *for the Sequencer. In theory mutliple external input can act as a trigger
      *source simultaneously
      */
-    if(trigSrc > External) {
+    if(trigSrc > 40) {
        /*
         *When we set the trigger source to a new external input we should disable
         *the previous external input trigger. Since we dont keep track of the
@@ -115,11 +120,12 @@ evgSeqRam::setTrigSrc(SeqTrigSrc trigSrc) {
         inp->setSeqTrigMap(map);
 
         if(!m_id)
-            trigSrc = ExtRam0;
+            trigSrc = 24; // use mapped external trigger for SEQ0
         else
-            trigSrc = ExtRam1;
+            trigSrc = 25; // use mapped external trigger for SEQ1
     }
 
+    interruptLock L;
     epicsUInt32 temp = READ32(m_pReg, SeqControl(m_id));
     temp &= ~SeqControl_TrigSrc_MASK;
     temp |= (trigSrc&SeqControl_TrigSrc_MASK)<<SeqControl_TrigSrc_SHIFT;
@@ -135,38 +141,9 @@ evgSeqRam::findSeqExtTrig(evgInput* inp) const {
         return 0;
 }
 
-SeqTrigSrc
-evgSeqRam::getTrigSrc() const {
-    epicsUInt32 temp = READ32(m_pReg, SeqControl(m_id));
-    temp &= SeqControl_TrigSrc_MASK;
-    SeqTrigSrc trigSrc = (SeqTrigSrc)(temp>>SeqControl_TrigSrc_SHIFT);
-
-    if(trigSrc == SoftRam0 || trigSrc == SoftRam1){
-        trigSrc = Software;
-    }
-
-
-    if(trigSrc == ExtRam0 || trigSrc == ExtRam1) {
-        evgInput* inp = 0;
-
-        for(int i = 0; i < evgNumFrontInp && inp == 0; i++)
-            inp = findSeqExtTrig(m_owner->getInput(i, FrontInp));
-
-        for(int i = 0; i < evgNumUnivInp && inp == 0; i++)
-            inp = findSeqExtTrig(m_owner->getInput(i, UnivInp));
-
-        for(int i = 0; i < evgNumRearInp && inp == 0; i++)
-            inp = findSeqExtTrig(m_owner->getInput(i, RearInp));
-
-        if(inp != 0)
-            trigSrc = (SeqTrigSrc)
-                      ((inp->getNum()*4 + (epicsUInt32)inp->getType()) + 40);
-    }
-    return trigSrc;
-}
-
 void
 evgSeqRam::setRunMode(SeqRunMode mode) {
+    interruptLock L;
     switch (mode) {
         case(Normal):
             BITCLR32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_SINGLE);
@@ -186,9 +163,10 @@ evgSeqRam::setRunMode(SeqRunMode mode) {
 
 SeqRunMode
 evgSeqRam::getRunMode() const {
-    if(READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_SINGLE)
+    epicsUInt32 ctrl = READ32(m_pReg, SeqControl(m_id));
+    if(ctrl & EVG_SEQ_RAM_SINGLE)
         return Single;
-    if(READ32(m_pReg, SeqControl(m_id)) & EVG_SEQ_RAM_RECYCLE)
+    if(ctrl & EVG_SEQ_RAM_RECYCLE)
         return Auto;
     else
         return Normal;
@@ -197,6 +175,7 @@ evgSeqRam::getRunMode() const {
 void
 evgSeqRam::enable() {
     if(isAllocated()) {
+        interruptLock L;
         BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_ARM);
     } else 
         throw std::runtime_error("Trying to enable Unallocated seqRam");
@@ -204,12 +183,14 @@ evgSeqRam::enable() {
 
 void
 evgSeqRam::disable() {
+    interruptLock L;
     BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_DISABLE);
 }
 
 void
 evgSeqRam::reset() {
-    BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RESET);	
+    interruptLock L;
+    BITSET32(m_pReg, SeqControl(m_id), EVG_SEQ_RAM_RESET);
 }
 
 bool

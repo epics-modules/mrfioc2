@@ -18,39 +18,6 @@ device( bo, VME_IO, devBoEvgTrigEvtInp, "EVG TrigEvt")
 device( bo,   VME_IO, devBoEvgDbusSrcInp, "EVG Dbus")
 
 
-#evgSoftSeq.db
-device( bo,       VME_IO, devBoEvgTimestampInpMode, "EVG SEQ INPUT MODE")
-device( bi,       VME_IO, devBiEvgTimestampInpMode, "EVG SEQ INPUT MODE")
-device( mbbo,     VME_IO, devMbboEvgTimestampResolution, "EVG SEQ TS RES")
-device( mbbi,     VME_IO, devMbbiEvgTimestampResolution, "EVG SEQ TS RES")
-device( waveform, VME_IO, devWfEvgTimestamp,        "EVG SEQ TIMESTAMP")
-device( waveform, VME_IO, devWfEvgTimestampRB,      "EVG SEQ TIMESTAMP RB")
-device( waveform, VME_IO, devWfEvgEventCode,        "EVG SEQ EVENT CODE")
-device( waveform, VME_IO, devWfEvgEventCodeRB,      "EVG SEQ EVENT CODE RB")
-device( mbbo,     VME_IO, devMbboEvgRunMode,        "EVG SEQ RUN MODE")
-device( mbbi,     VME_IO, devMbbiEvgRunMode,        "EVG SEQ RUN MODE")
-device( mbbo,     VME_IO, devMbboEvgTrigSrc,        "EVG SEQ TRIG SRC")
-device( mbbi,     VME_IO, devMbbiEvgTrigSrc,        "EVG SEQ TRIG SRC")
-
-device( bo, VME_IO, devBoEvgSoftTrig, "EVG SOFT TRIG")
-
-device( bo, VME_IO, devBoEvgLoadSeq,      "EVG LOAD SEQ")
-device( bo, VME_IO, devBoEvgUnloadSeq,    "EVG UNLOAD SEQ")
-device( bo, VME_IO, devBoEvgCommitSeq,    "EVG COMMIT SEQ")
-device( bo, VME_IO, devBoEvgEnableSeq,    "EVG ENABLE SEQ")
-device( bo, VME_IO, devBoEvgDisableSeq,   "EVG DISABLE SEQ")
-device( bo, VME_IO, devBoEvgAbortSeq,     "EVG ABORT SEQ")
-device( bo, VME_IO, devBoEvgPauseSeq,     "EVG PAUSE SEQ")
-device( bi, VME_IO, devBiEvgLoadStatus,   "EVG LOAD STATUS")
-device( bi, VME_IO, devBiEvgEnaStatus,    "EVG ENA STATUS")
-device( bi, VME_IO, devBiEvgCommitStatus, "EVG COMMIT STATUS")
-
-device( stringin, VME_IO, devSiErr,          "EVG SEQ ERR")
-device( longin,   VME_IO, devLiNumOfRuns,    "EVG NUM OF RUNS")
-device( longin,   VME_IO, devliStartOfSeq,   "EVG START OF SEQ")
-device( waveform, VME_IO, devWfEvgLoadedSeq, "EVG LOADED SEQ")
-
-
 registrar(asub_evg)
 registrar(asub_nsls2_evg)
 

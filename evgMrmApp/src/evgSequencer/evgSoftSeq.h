@@ -41,104 +41,60 @@ enum SeqRunMode {
     Single
 };
 
-enum SeqTrigSrc {
-    None = 31,
-    Mxc0 = 0,
-    Mxc1 = 1,
-    Mxc2 = 2,
-    Mxc3 = 3,
-    Mxc4 = 4,
-    Mxc5 = 5,
-    Mxc6 = 6,
-    Mxc7 = 7,
-    AC = 16,
-
-    SoftRam0 = 17,
-    SoftRam1 = 18,
-    Software = 19,
-
-    ExtRam0 = 24,
-    ExtRam1 = 25,
-    External = 40,
-
-    //  Inputs
-    // input#=value
-    // (value-40) / 4 = type
-    // (value-40) % 4 = #
-    //Type = 1
-    FrontInp0 = 41,
-    FrontInp1 = 45,
-    //Type=2
-    UnivInp0 = 42,
-    UnivInp1 = 46,
-    UnivInp2 = 50,
-    UnivInp3 = 54,
-    //Type=3
-    RearInp0 = 43,
-    RearInp1 = 47,
-    RearInp2 = 51,
-    RearInp3 = 55,
-    RearInp4 = 59,
-    RearInp5 = 63,
-    RearInp6 = 67,
-    RearInp7 = 71,
-    RearInp8 = 75,
-    RearInp9 = 79,
-    RearInp10 = 83,
-    RearInp11 = 87,
-    RearInp12 = 91,
-    RearInp13 = 95,
-    RearInp14 = 99,
-    RearInp15 = 103
-};
+/* special "magic" trigger sources which are different
+ * in EVG vs. EVR
+ */
+#define SEQ_SRC_DISABLE 256
+#define SEQ_SRC_SW 257
 
 #define IrqStop(id) irqStop##id
 
-class evgSoftSeq {
+class evgSoftSeq : public mrf::ObjectInst<evgSoftSeq> {
+    typedef mrf::ObjectInst<evgSoftSeq> base_t;
 public:
-    evgSoftSeq(const epicsUInt32, evgMrm* const);
+    evgSoftSeq(const std::string&, evgMrm* const);
     ~evgSoftSeq();
+
+    static Object* build(const std::string& name, const std::string& klass, const create_args_t& args);
 
     epicsUInt32 getId() const;
 
-    void setDescription(const char*);
-    const char* getDescription();
+    std::string getErr() const;
+    IOSCANPVT  getErrScan() const { return ioScanPvtErr; }
 
-    void setErr(std::string);
-    std::string getErr();
+    void setTimestampInpMode(epicsUInt32 mode);
+    epicsUInt32 getTimestampInpMode() const;
 
-    void setTimestampInpMode(TimestampInpMode);
-    TimestampInpMode getTimestampInpMode();
+    void setTimestampResolution(epicsUInt32 res);
+    epicsUInt32 getTimestampResolution() const;
 
-    void setTimestampResolution(TimestampResolution);
-    TimestampResolution getTimestampResolution();
+    void setTimestamp(const double *, epicsUInt32);
+    epicsUInt32 getTimestamp(double*, epicsUInt32) const;
 
-    void setTimestamp(epicsUInt64*, epicsUInt32);
-    const std::vector<epicsUInt64>& getTimestampCt();
+    void setEventCode(const epicsUInt8*, epicsUInt32);
+    epicsUInt32 getEventCode(epicsUInt8*, epicsUInt32) const;
 
-    void setEventCode(epicsUInt8*, epicsUInt32);
-    const std::vector<epicsUInt8>& getEventCodeCt();
+    void setTrigSrc(epicsUInt32);
+    epicsUInt32 getTrigSrcCt() const;
 
-    void setTrigSrc(SeqTrigSrc);
-    SeqTrigSrc getTrigSrcCt();
-
-    void setRunMode(SeqRunMode);
-    SeqRunMode getRunModeCt();
+    void setRunMode(epicsUInt32);
+    epicsUInt32 getRunModeCt() const;
 
     void setSeqRam(evgSeqRam*);
     evgSeqRam* getSeqRam();
 
-    bool isLoaded();
-    bool isEnabled();
-    bool isCommited();
+    bool isLoaded() const;
+    bool isEnabled() const;
+    bool isCommited() const;
+    IOSCANPVT stateChange() const { return ioscanpvt; }
 
     void load();
     void unload();
     void commit();
     void enable();
     void disable();
-    void abort(bool);
-    void pause();
+    void softTrig();
+
     void sync();
     void finishSync();
     void commitSoftSeq();
@@ -146,9 +102,10 @@ public:
     void process_sos();
     void process_eos();
 
-    void incNumOfRuns();
-    void resetNumOfRuns();
-    epicsUInt32 getNumOfRuns() const;
+    epicsUInt32 getNumOfRuns() const { return m_numOfRuns; }
+    epicsUInt32 getNumOfStarts() const { return m_numOfStarts; }
+    IOSCANPVT getNumOfRunsScan() const { return iorunscan; }
+    IOSCANPVT getNumOfStartsScan() const { return iostartscan; }
 
     void show(int);
 
@@ -156,13 +113,15 @@ public:
     IOSCANPVT                  ioScanPvtErr;
     IOSCANPVT                  iostartscan;
     IOSCANPVT                  iorunscan;
-    epicsMutex                 m_lock;
+    mutable epicsMutex         m_lock;
+
+    virtual void lock() const {m_lock.lock();}
+    virtual void unlock() const {m_lock.unlock();}
 
 private:
     const epicsUInt32          m_id;
     evgMrm* const              m_owner;
     volatile epicsUInt8* const m_pReg;
-    std::string                m_desc;
     std::string                m_err;
 
     TimestampInpMode           m_timestampInpMode;
@@ -171,13 +130,13 @@ private:
     // scratch copy
     std::vector<epicsUInt64>   m_timestamp; //In Event Clock Ticks
     std::vector<epicsUInt8>    m_eventCode;
-    SeqTrigSrc                 m_trigSrc;
+    epicsUInt32                m_trigSrc;
     SeqRunMode                 m_runMode;   
 
     // commited copy
     std::vector<epicsUInt64>   m_timestampCt;
     std::vector<epicsUInt8>    m_eventCodeCt;
-    SeqTrigSrc                 m_trigSrcCt;
+    epicsUInt32                m_trigSrcCt;
     SeqRunMode                 m_runModeCt;
 
     evgSeqRam*                 m_seqRam;
@@ -188,6 +147,7 @@ private:
     bool                       m_isSynced;
 
     epicsUInt32                m_numOfRuns;
+    epicsUInt32                m_numOfStarts;
 };
 
 extern int mrmEVGSeqDebug;

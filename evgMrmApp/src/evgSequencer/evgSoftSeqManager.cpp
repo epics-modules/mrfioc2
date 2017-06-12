@@ -12,10 +12,5 @@ evgSoftSeqMgr::getSoftSeq(epicsUInt32 seqId) {
     SCOPED_LOCK(m_lock);
     evgSoftSeq* seq = m_softSeq[seqId];
 
-    if(!seq) {
-        seq = new evgSoftSeq(seqId, m_owner);
-        m_softSeq[seqId] = seq;
-    }
-
     return seq;
 }

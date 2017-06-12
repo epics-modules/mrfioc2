@@ -24,15 +24,19 @@
 
 int mrmEVGSeqDebug = 0;
 
-evgSoftSeq::evgSoftSeq(const epicsUInt32 id, evgMrm* const owner):
+static epicsUInt32 next_seq_id;
+
+// capture error message, then rethrow so that underlying dset will alarm
+#define RETHROW() catch(std::exception& e) { m_err = e.what(); scanIoRequest(ioScanPvtErr); throw; }
+
+evgSoftSeq::evgSoftSeq(const std::string &id, evgMrm* const owner)
+    :base_t(id),
 m_lock(),
-m_id(id),
+m_id(next_seq_id++),
 m_owner(owner),
 m_pReg(owner->getRegAddr()),
 m_timestampInpMode(EGU),
-m_trigSrc(None),
 m_runMode(Single),
-m_trigSrcCt(None),
 m_runModeCt(Single),
 m_seqRam(0),
 m_seqRamMgr(owner->getSeqRamMgr()),
@@ -43,76 +47,101 @@ m_numOfRuns(0) {
     m_eventCodeCt.push_back(0x7f);
     m_timestampCt.push_back(evgEndOfSeqBuf);
 
+    setTrigSrc(SEQ_SRC_DISABLE);
+    m_trigSrcCt = m_trigSrc;
+
     scanIoInit(&ioscanpvt);
     scanIoInit(&ioScanPvtErr);
     scanIoInit(&iorunscan);
     scanIoInit(&iostartscan);
 }
 
+evgSoftSeq::~evgSoftSeq() {}
+
 epicsUInt32
 evgSoftSeq::getId() const {
     return m_id;
 }
 
-void
-evgSoftSeq::setDescription(const char* desc) {
-    m_desc.assign(desc);
-}
-
-const char* 
-evgSoftSeq::getDescription() {
-    return m_desc.c_str();
-}
-
-void
-evgSoftSeq::setErr(std::string err) {
-    m_err = err;
-    scanIoRequest(ioScanPvtErr);
-}
-
-std::string
-evgSoftSeq::getErr() {
+std::string evgSoftSeq::getErr() const {
     return m_err;	
 }
 
 void
-evgSoftSeq::setTimestampInpMode(TimestampInpMode mode) {
-        m_timestampInpMode = mode;
-        scanIoRequest(ioscanpvt);
+evgSoftSeq::setTimestampInpMode(epicsUInt32 mode) {
+    switch(mode) {
+    case EGU:
+    case TICKS:
+        break;
+    default:
+        throw std::invalid_argument("Invalid Timestamp input mode");
+    }
+    m_timestampInpMode = (TimestampInpMode)mode;
+    scanIoRequest(ioscanpvt);
 }
 
-TimestampInpMode
-evgSoftSeq::getTimestampInpMode() {
+epicsUInt32
+evgSoftSeq::getTimestampInpMode() const {
     return m_timestampInpMode;
 }
 
 void
-evgSoftSeq::setTimestampResolution(TimestampResolution res) {
-        m_timestampResolution = res;
-        scanIoRequest(ioscanpvt);
+evgSoftSeq::setTimestampResolution(epicsUInt32 res) {
+    switch(res) {
+    case Seconds:
+    case MilliSeconds:
+    case MicroSeconds:
+    case NanoSeconds:
+        break;
+    default:
+        throw std::invalid_argument("Invalid Timestamp input resolution");
+    }
+    m_timestampResolution = (TimestampResolution)res;
+    scanIoRequest(ioscanpvt);
 }
 
-TimestampResolution
-evgSoftSeq::getTimestampResolution() {
+epicsUInt32
+evgSoftSeq::getTimestampResolution() const {
     return m_timestampResolution;
 }
 
 void
-evgSoftSeq::setTimestamp(epicsUInt64* timestamp, epicsUInt32 size) {
+evgSoftSeq::setTimestamp(const double* vals, epicsUInt32 size) {
     if(size > 2047)
         throw std::runtime_error("Too many Timestamps. Max: 2047");
+    try {
+        double scale = 1.0;
 
-    m_timestamp.clear();
-    m_timestamp.assign(timestamp, timestamp + size);
+        if(m_timestampInpMode!=TICKS) {
+            epicsFloat64 evtClk = m_owner->getEvtClk()->getFrequency() * pow(10.0,6);
+            scale = pow(10.0, (int)m_timestampResolution) / evtClk;
+        }
 
-    m_isCommited = false;
-    if(mrmEVGSeqDebug>1)
-        fprintf(stderr, "SS%u: Update TS\n",m_id);
-    scanIoRequest(ioscanpvt);
+        m_timestamp.resize(size);
+        for(epicsUInt32 i=0; i<size; i++)
+            m_timestamp[i] = vals[i] / scale;
+    } RETHROW()
+}
+
+epicsUInt32
+evgSoftSeq::getTimestamp(double* vals, epicsUInt32 max) const
+{
+    epicsUInt32 N = std::min(size_t(max), m_timestampCt.size());
+    double scale = 1.0;
+
+    if(m_timestampInpMode!=TICKS) {
+        epicsFloat64 evtClk = m_owner->getEvtClk()->getFrequency() * pow(10.0,6);
+        scale = pow(10.0, (int)m_timestampResolution) / evtClk;
+    }
+
+    for(epicsUInt32 i=0; i<N; i++)
+        vals[i] = m_timestampCt[i] * scale;
+    return N;
 }
 
 void
-evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {	
+evgSoftSeq::setEventCode(const epicsUInt8 *eventCode, epicsUInt32 size) {
+try {
     if(size > 2047)
         throw std::runtime_error("Too many EventCodes. Max: 2047");
 	
@@ -123,10 +152,24 @@ evgSoftSeq::setEventCode(epicsUInt8* eventCode, epicsUInt32 size) {
     if(mrmEVGSeqDebug>1)
         fprintf(stderr, "SS%u: Update Evt\n",m_id);
     scanIoRequest(ioscanpvt);
+} RETHROW()
+}
+
+epicsUInt32
+evgSoftSeq::getEventCode(epicsUInt8* vals, epicsUInt32 max) const
+{
+    epicsUInt32 N = std::min(size_t(max), m_eventCodeCt.size());
+    std::copy(m_eventCodeCt.begin(),
+              m_eventCodeCt.begin()+N,
+              vals);
+    return N;
 }
 
 void
-evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
+evgSoftSeq::setTrigSrc(epicsUInt32 trigSrc) {
+    if(trigSrc>SEQ_SRC_SW)
+        throw std::invalid_argument("Trigger source out of range");
+try {
     if(trigSrc != m_trigSrc) {
         m_trigSrc = trigSrc;
         m_isCommited = false;
@@ -134,40 +177,41 @@ evgSoftSeq::setTrigSrc(SeqTrigSrc trigSrc) {
             fprintf(stderr, "SS%u: Update Trig\n",m_id);
         scanIoRequest(ioscanpvt);
     }
+} RETHROW()
 }
 
 void
-evgSoftSeq::setRunMode(SeqRunMode runMode) {
-    if(runMode != m_runMode) {
-        m_runMode = runMode;
+evgSoftSeq::setRunMode(epicsUInt32 runMode) {
+    switch(runMode) {
+    case Normal:
+    case Auto:
+    case Single:
+        break;
+    default:
+        throw std::invalid_argument("Invalid run mode");
+    }
+
+try {
+    if((SeqRunMode)runMode != m_runMode) {
+        m_runMode = (SeqRunMode)runMode;
         m_isCommited = false;
         if(mrmEVGSeqDebug>1)
             fprintf(stderr, "SS%u: Update Mode\n",m_id);
         scanIoRequest(ioscanpvt);
     }
+} RETHROW()
 }
 
 /*
  * Retrive commited(Ct) data.
  */
 
-const std::vector<epicsUInt8>&
-evgSoftSeq::getEventCodeCt() {
-    return m_eventCodeCt;
-}
-
-const std::vector<epicsUInt64>&
-evgSoftSeq::getTimestampCt() {
-    return m_timestampCt;
-}
-
-SeqTrigSrc 
-evgSoftSeq::getTrigSrcCt() {
+epicsUInt32 evgSoftSeq::getTrigSrcCt() const {
     return m_trigSrcCt;
 }
 
-SeqRunMode 
-evgSoftSeq::getRunModeCt() {
+epicsUInt32
+evgSoftSeq::getRunModeCt() const {
     return m_runModeCt;
 }
 
@@ -184,37 +228,23 @@ evgSoftSeq::getSeqRam() {
 }
 
 bool
-evgSoftSeq::isLoaded() {
+evgSoftSeq::isLoaded() const {
     return m_seqRam != 0;
 }
 
 bool
-evgSoftSeq::isEnabled() {
+evgSoftSeq::isEnabled() const {
     return m_isEnabled;
 }
 
 bool
-evgSoftSeq::isCommited() {
+evgSoftSeq::isCommited() const {
     return m_isCommited;
 }
 
 void
-evgSoftSeq::incNumOfRuns() {
-    m_numOfRuns++;
-}
-
-void
-evgSoftSeq::resetNumOfRuns() {
-    m_numOfRuns = 0;
-}
-
-epicsUInt32
-evgSoftSeq::getNumOfRuns() const {
-    return m_numOfRuns;
-}
-
-void
 evgSoftSeq::load() {
+try {
     if(isLoaded())
         return;
 
@@ -241,16 +271,18 @@ evgSoftSeq::load() {
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
+} RETHROW()
 }
 	
 void
 evgSoftSeq::unload() {
+try {
     if(!isLoaded())
         return;
 
     // ensure we will stop soon
     m_seqRam->setRunMode(Single);
-    m_seqRam->setTrigSrc(None);
+    m_seqRam->setTrigSrc(SEQ_SRC_DISABLE);
     {
         interruptLock ig;
         m_seqRam->dealloc();
@@ -261,11 +293,13 @@ evgSoftSeq::unload() {
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Unload\n",m_id);
     scanIoRequest(ioscanpvt);
+} RETHROW()
 }
 
 
 void
 evgSoftSeq::commit() {
+try {
     if(isCommited())
         return;
     if(mrmEVGSeqDebug>1)
@@ -282,10 +316,12 @@ evgSoftSeq::commit() {
     }
 
     scanIoRequest(ioscanpvt);
+} RETHROW()
 }
 
 void
 evgSoftSeq::enable() {
+try {
     if(isEnabled())
         return;
 
@@ -294,8 +330,8 @@ evgSoftSeq::enable() {
          * RunMode and TrigSrc could be modified in the hardware. So it is 
          * necessary to sync them before enabling the sequence.
          */
-        m_seqRam->setTrigSrc(getTrigSrcCt());
-        m_seqRam->setRunMode(getRunModeCt());
+        m_seqRam->setTrigSrc(m_trigSrcCt);
+        m_seqRam->setRunMode(m_runModeCt);
         m_seqRam->enable();
     }
 
@@ -303,63 +339,41 @@ evgSoftSeq::enable() {
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Enable\n",m_id);
     scanIoRequest(ioscanpvt);
+} RETHROW()
 }
 
 void
 evgSoftSeq::disable() {
+try {
     if(!isEnabled())
         return;
 
     if(m_seqRam) {
         m_seqRam->setRunMode(Single);
-        m_seqRam->setTrigSrc(None);
+        m_seqRam->setTrigSrc(SEQ_SRC_DISABLE);
     }
 
     m_isEnabled = false;
     if(mrmEVGSeqDebug)
         fprintf(stderr, "SS%u: Disable\n",m_id);
     scanIoRequest(ioscanpvt);
+} RETHROW()
 }
 
 void
-evgSoftSeq::abort(bool callBack) {
-    if(!isLoaded() && !isEnabled())
-        return;
-
-    // Prevent re-trigger
-    m_seqRam->setRunMode(Single);
-    m_seqRam->setTrigSrc(None);
-
-    m_seqRam->reset();
-    m_isEnabled = false;
-    if(mrmEVGSeqDebug)
-        fprintf(stderr, "SS%u: Abort!\n",m_id);
-    scanIoRequest(ioscanpvt);
-
-    if(callBack) {
-        /*
-             * Satisfy any callback request pending on irqStop0 or irqStop1
-             * recList. As no 'End of sequence' Intrrupt will be generated. 
-             */
-        if(m_seqRam->getId() == 0) {
-            callbackRequest(&m_owner->irqStop0_cb);
-            callbackRequest(&m_owner->irqStart0_cb);
-        } else {
-            callbackRequest(&m_owner->irqStop1_cb);
-            callbackRequest(&m_owner->irqStart1_cb);
-        }
+evgSoftSeq::softTrig()
+{
+    evgSeqRam *ram = getSeqRam();
+    if(!ram) {
+        if(mrmEVGSeqDebug>1)
+            fprintf(stderr, "SS%u: No SW Trig (Not loaded)\n",m_id);
+        throw alarm_exception(INVALID_ALARM);
     }
-}
-
-void
-evgSoftSeq::pause() {
-    if( m_seqRam && m_seqRam->isEnabled() ) {
-        m_seqRam->disable();
-        m_isEnabled = false;
-        if(mrmEVGSeqDebug)
-            fprintf(stderr, "SS%u: Pause\n",m_id);
-        scanIoRequest(ioscanpvt);
-    }
+    try {
+        if(mrmEVGSeqDebug>1)
+            fprintf(stderr, "SS%u: SW Trig\n",m_id);
+        ram->softTrig();
+    }RETHROW()
 }
 
 void
@@ -370,7 +384,7 @@ evgSoftSeq::sync() {
     // Ensure the sequencer will stop at some point
     m_seqRam->setRunMode(Single);
     // Ensure the sequencer won't start if it hasn't already
-    m_seqRam->setTrigSrc(None);
+    m_seqRam->setTrigSrc(SEQ_SRC_DISABLE);
 
     // At this point, if the sequencer is not running
     // then we know that it will never run.
@@ -399,10 +413,10 @@ evgSoftSeq::finishSync()
         fprintf(stderr, "Syncing...\n Src: %d\n Mode: %d\n",
                 (int)getTrigSrcCt(), (int)getRunModeCt());
     }
-    m_seqRam->setEventCode(getEventCodeCt());
-    m_seqRam->setTimestamp(getTimestampCt());
-    m_seqRam->setTrigSrc(getTrigSrcCt());
-    m_seqRam->setRunMode(getRunModeCt());
+    m_seqRam->setEventCode(m_eventCodeCt);
+    m_seqRam->setTimestamp(m_timestampCt);
+    m_seqRam->setTrigSrc(m_trigSrcCt);
+    m_seqRam->setRunMode(m_runModeCt);
     if(m_isEnabled) {
         m_seqRam->enable();
         if(mrmEVGSeqDebug>1)
@@ -517,7 +531,7 @@ evgSoftSeq::process_sos()
 void
 evgSoftSeq::process_eos()
 {
-    incNumOfRuns();
+    m_numOfRuns++;
 
     // In single shot mode, auto-disable after
     // each run.
@@ -548,6 +562,57 @@ void evgSoftSeq::show(int lvl)
     fprintf(stderr, " Enabled: %d\n Committed: %d\n Synced: %d\n",
             isEnabled(), isCommited(), m_isSynced);
 }
+
+mrf::Object*
+evgSoftSeq::build(const std::string& name, const std::string& klass, const create_args_t& args)
+{
+    create_args_t::const_iterator it=args.find("PARENT");
+    if(it==args.end())
+        throw std::runtime_error("No PARENT= (EVG) specified");
+
+    mrf::Object *evgobj = mrf::Object::getObject(it->second);
+    if(!evgobj)
+        throw std::runtime_error("No such PARENT object");
+
+    evgMrm *evg = dynamic_cast<evgMrm*>(evgobj);
+    if(!evg)
+        throw std::runtime_error("PARENT is not an EVG");
+
+    return new evgSoftSeq(name, evg);
+}
+
+OBJECT_BEGIN(evgSoftSeq)
+  OBJECT_FACTORY(evgSoftSeq::build);
+  OBJECT_PROP1("ID", &evgSoftSeq::getId);
+  OBJECT_PROP1("ERROR", &evgSoftSeq::getErr);
+  OBJECT_PROP1("ERROR", &evgSoftSeq::getErrScan);
+  OBJECT_PROP1("LOADED", &evgSoftSeq::isLoaded);
+  OBJECT_PROP1("LOADED", &evgSoftSeq::stateChange);
+  OBJECT_PROP1("LOAD", &evgSoftSeq::load);
+  OBJECT_PROP1("UNLOAD", &evgSoftSeq::unload);
+  OBJECT_PROP1("ENABLED", &evgSoftSeq::isEnabled);
+  OBJECT_PROP1("ENABLED", &evgSoftSeq::stateChange);
+  OBJECT_PROP1("ENABLE", &evgSoftSeq::enable);
+  OBJECT_PROP1("DISABLE", &evgSoftSeq::disable);
+  OBJECT_PROP1("COMMITTED", &evgSoftSeq::isCommited);
+  OBJECT_PROP1("COMMITTED", &evgSoftSeq::stateChange);
+  OBJECT_PROP1("COMMIT", &evgSoftSeq::commit);
+  OBJECT_PROP1("SOFT_TRIG", &evgSoftSeq::softTrig);
+  OBJECT_PROP2("TIMES", &evgSoftSeq::getTimestamp, &evgSoftSeq::setTimestamp);
+  OBJECT_PROP1("TIMES", &evgSoftSeq::stateChange);
+  OBJECT_PROP2("CODES", &evgSoftSeq::getEventCode, &evgSoftSeq::setEventCode);
+  OBJECT_PROP1("CODES", &evgSoftSeq::stateChange);
+  OBJECT_PROP1("NUM_RUNS", &evgSoftSeq::getNumOfRuns);
+  OBJECT_PROP1("NUM_RUNS", &evgSoftSeq::getNumOfRunsScan);
+  OBJECT_PROP1("NUM_STARTS", &evgSoftSeq::getNumOfStarts);
+  OBJECT_PROP1("NUM_STARTS", &evgSoftSeq::getNumOfStartsScan);
+  OBJECT_PROP2("TIMEMODE", &evgSoftSeq::getTimestampInpMode, &evgSoftSeq::setTimestampInpMode);
+  OBJECT_PROP2("TIMEUNITS", &evgSoftSeq::getTimestampResolution, &evgSoftSeq::setTimestampResolution);
+  OBJECT_PROP2("TRIG_SRC", &evgSoftSeq::getTrigSrcCt, &evgSoftSeq::setTrigSrc);
+  OBJECT_PROP1("TRIG_SRC", &evgSoftSeq::stateChange);
+  OBJECT_PROP2("RUN_MODE", &evgSoftSeq::getRunModeCt, &evgSoftSeq::setRunMode);
+  OBJECT_PROP1("RUN_MODE", &evgSoftSeq::stateChange);
+OBJECT_END(evgSoftSeq)
 
 #include <epicsExport.h>
 extern "C"{
