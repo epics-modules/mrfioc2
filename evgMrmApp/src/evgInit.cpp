@@ -63,15 +63,7 @@ enableIRQ(mrf::Object* obj, void*) {
     if(!evg)
         return true;
 
-    WRITE32(evg->getRegAddr(), IrqEnable,
-            EVG_IRQ_PCIIE          | //PCIe interrupt enable,
-            EVG_IRQ_ENABLE         |
-            EVG_IRQ_EXT_INP        |
-            EVG_IRQ_STOP_RAM(0)    |
-            EVG_IRQ_STOP_RAM(1)    |
-            EVG_IRQ_START_RAM(0)   |
-            EVG_IRQ_START_RAM(1)
-            );
+    evg->enableIRQ();
 
     return true;
 }
@@ -427,15 +419,14 @@ mrmEvgSetupPCI (
         printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
         checkVersion(BAR_evg, 3, 8);
 
+        /*Disable the interrupts and enable them at the end of iocInit via initHooks*/
+        WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
+        WRITE32(BAR_evg, IrqEnable, 0);
+
         evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
 
         evg->getSeqRamMgr()->getSeqRam(0)->disable();
         evg->getSeqRamMgr()->getSeqRam(1)->disable();
-
-
-        /*Disable the interrupts and enable them at the end of iocInit via initHooks*/
-        WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
-        WRITE32(BAR_evg, IrqEnable, 0);
 
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {

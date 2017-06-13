@@ -55,6 +55,8 @@ public:
     evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);
     ~evgMrm();
 
+    void enableIRQ();
+
     /* locking done internally: TODO: not really... */
     virtual void lock() const{};
     virtual void unlock() const{};
@@ -168,6 +170,8 @@ private:
 
     wdTimer*                      m_wdTimer;
     epicsEvent                    m_timerEvent;
+
+    epicsUInt32                   shadowIrqEnable;
 };
 
 /*Creating a timer thread bcz epicsTimer uses epicsGeneralTime and when

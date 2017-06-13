@@ -54,6 +54,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_evtClk(id+":EvtClk", pReg),
     m_seqRamMgr(this),
     m_softSeqMgr(this)
+  ,shadowIrqEnable(READ32(m_pReg, IrqEnable))
 {
     epicsUInt32 v, isevr;
 
@@ -156,6 +157,19 @@ evgMrm::~evgMrm() {
 
     for(int i = 0; i < evgNumUnivOut; i++)
         delete m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)];
+}
+
+void evgMrm::enableIRQ()
+{
+    shadowIrqEnable |= EVG_IRQ_PCIIE          | //PCIe interrupt enable,
+                       EVG_IRQ_ENABLE         |
+                       EVG_IRQ_EXT_INP        |
+                       EVG_IRQ_STOP_RAM(0)    |
+                       EVG_IRQ_STOP_RAM(1)    |
+                       EVG_IRQ_START_RAM(0)   |
+                       EVG_IRQ_START_RAM(1);
+
+    WRITE32(m_pReg, IrqEnable, shadowIrqEnable);
 }
 
 void 
@@ -308,14 +322,13 @@ void
 evgMrm::isr(evgMrm *evg, bool pci) {
 
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
-    epicsUInt32 enable = READ32(evg->m_pReg, IrqEnable);
-    epicsUInt32 active = flags & enable;
+    epicsUInt32 active = flags & evg->shadowIrqEnable;
 
 #if defined(vxWorks) || defined(__rtems__)
     if(!active) {
 #  ifdef __rtems__
         if(!pci)
-            printk("evgMrm::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, enable);
+            printk("evgMrm::isr with no active VME IRQ 0x%08x 0x%08x\n", flags, evg->shadowIrqEnable);
 #else
         (void)pci;
 #  endif
@@ -334,7 +347,7 @@ evgMrm::isr(evgMrm *evg, bool pci) {
             callbackRequest(&evg->irqStart0_cb);
             evg->irqStart0_queued=1;
         } else if(evg->irqStart0_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(0));
+            evg->shadowIrqEnable &= ~EVG_IRQ_START_RAM(0);
             evg->irqStart0_queued=2;
         }
     }
@@ -344,7 +357,7 @@ evgMrm::isr(evgMrm *evg, bool pci) {
             callbackRequest(&evg->irqStart1_cb);
             evg->irqStart1_queued=1;
         } else if(evg->irqStart1_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_START_RAM(1));
+            evg->shadowIrqEnable &= ~EVG_IRQ_START_RAM(1);
             evg->irqStart1_queued=2;
         }
     }
@@ -354,7 +367,7 @@ evgMrm::isr(evgMrm *evg, bool pci) {
             callbackRequest(&evg->irqStop0_cb);
             evg->irqStop0_queued=1;
         } else if(evg->irqStop0_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(0));
+            evg->shadowIrqEnable &= ~EVG_IRQ_STOP_RAM(0);
             evg->irqStop0_queued=2;
         }
     }
@@ -364,7 +377,7 @@ evgMrm::isr(evgMrm *evg, bool pci) {
             callbackRequest(&evg->irqStop1_cb);
             evg->irqStop1_queued=1;
         } else if(evg->irqStop1_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_STOP_RAM(1));
+            evg->shadowIrqEnable &= ~EVG_IRQ_STOP_RAM(1);
             evg->irqStop1_queued=2;
         }
     }
@@ -374,11 +387,12 @@ evgMrm::isr(evgMrm *evg, bool pci) {
             callbackRequest(&evg->irqExtInp_cb);
             evg->irqExtInp_queued=1;
         } else if(evg->irqExtInp_queued==1) {
-            WRITE32(evg->getRegAddr(), IrqEnable, enable & ~EVG_IRQ_EXT_INP);
+            evg->shadowIrqEnable &= ~EVG_IRQ_EXT_INP;
             evg->irqExtInp_queued=2;
         }
     }
 
+    WRITE32(evg->getRegAddr(), IrqEnable, evg->shadowIrqEnable);
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
 
@@ -397,8 +411,10 @@ evgMrm::process_eos0_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStop0_queued==2)
-            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(0));
+        if(seqRam->m_owner->irqStop0_queued==2) {
+            seqRam->m_owner->shadowIrqEnable |= EVG_IRQ_STOP_RAM(0);
+            WRITE32(seqRam->m_owner->getRegAddr(), IrqEnable, seqRam->m_owner->shadowIrqEnable);
+        }
         seqRam->m_owner->irqStop0_queued=0;
     }
 
@@ -417,8 +433,10 @@ evgMrm::process_eos1_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStop1_queued==2)
-            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_STOP_RAM(1));
+        if(seqRam->m_owner->irqStop1_queued==2) {
+            seqRam->m_owner->shadowIrqEnable |= EVG_IRQ_STOP_RAM(1);
+            WRITE32(seqRam->m_owner->getRegAddr(), IrqEnable, seqRam->m_owner->shadowIrqEnable);
+        }
         seqRam->m_owner->irqStop1_queued=0;
     }
 
@@ -437,8 +455,10 @@ evgMrm::process_sos0_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStart0_queued==2)
-            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(0));
+        if(seqRam->m_owner->irqStart0_queued==2) {
+            seqRam->m_owner->shadowIrqEnable |= EVG_IRQ_START_RAM(0);
+            WRITE32(seqRam->m_owner->getRegAddr(), IrqEnable, seqRam->m_owner->shadowIrqEnable);
+        }
         seqRam->m_owner->irqStart0_queued=0;
     }
 
@@ -457,8 +477,10 @@ evgMrm::process_sos1_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(seqRam->m_owner->irqStart1_queued==2)
-            BITSET32(seqRam->m_owner->getRegAddr(), IrqEnable, EVG_IRQ_START_RAM(1));
+        if(seqRam->m_owner->irqStart1_queued==2) {
+            seqRam->m_owner->shadowIrqEnable |= EVG_IRQ_START_RAM(1);
+            WRITE32(seqRam->m_owner->getRegAddr(), IrqEnable, seqRam->m_owner->shadowIrqEnable);
+        }
         seqRam->m_owner->irqStart1_queued=0;
     }
 
@@ -473,8 +495,10 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
 
     {
         interruptLock ig;
-        if(evg->irqExtInp_queued==2)
-            BITSET32(evg->getRegAddr(), IrqEnable, EVG_IRQ_EXT_INP);
+        if(evg->irqExtInp_queued==2) {
+            evg->shadowIrqEnable |= EVG_IRQ_EXT_INP;
+            WRITE32(evg->getRegAddr(), IrqEnable, evg->shadowIrqEnable);
+        }
         evg->irqExtInp_queued=0;
     }
      
