@@ -91,7 +91,7 @@
 #include "mrfCommon.h"
 
 // when dset should signal alarm w/o printing a message
-class alarm_exception : public std::exception
+class epicsShareClass alarm_exception : public std::exception
 {
     const short sevr, stat;
 public:
