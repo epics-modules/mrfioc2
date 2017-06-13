@@ -253,6 +253,7 @@ evgMrm::getDbusStatus() const {
 
 void
 evgMrm::enable(bool ena) {
+    SCOPED_LOCK(m_lock);
     if(ena)
         BITSET32(m_pReg, Control, EVG_MASTER_ENA);
     else
@@ -270,8 +271,10 @@ evgMrm::enabled() const {
 
 void
 evgMrm::resetMxc(bool reset) {
-    if(reset)
+    if(reset) {
+        SCOPED_LOCK(m_lock);
         BITSET32(m_pReg, Control, EVG_MXC_RESET);
+    }
 }
 
 void
