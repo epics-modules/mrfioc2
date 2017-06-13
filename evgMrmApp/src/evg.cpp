@@ -10,7 +10,6 @@
 #include "evgAcTrig.h"
 #include "evgDbus.h"
 #include "evgInput.h"
-#include "evgSoftEvt.h"
 #include "evgTrigEvt.h"
 #include "evgMxc.h"
 #include "evgEvtClk.h"
@@ -50,10 +49,6 @@ OBJECT_BEGIN(evgOutput) {
     OBJECT_PROP2("Source", &evgOutput::getSource, &evgOutput::setSource);
 } OBJECT_END(evgOutput)
 
-OBJECT_BEGIN(evgSoftEvt) {
-    OBJECT_PROP2("EvtCode", &evgSoftEvt::getEvtCode, &evgSoftEvt::setEvtCode);
-} OBJECT_END(evgSoftEvt)
-
 OBJECT_BEGIN(evgTrigEvt) {
     OBJECT_PROP2("EvtCode", &evgTrigEvt::getEvtCode, &evgTrigEvt::setEvtCode);
 } OBJECT_END(evgTrigEvt)
@@ -67,6 +62,7 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
     OBJECT_PROP1("Time Error", &evgMrm::timeError);
     OBJECT_PROP1("Time Error", &evgMrm::timeErrorScan);
+    OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
 } OBJECT_END(evgMrm)
 
 

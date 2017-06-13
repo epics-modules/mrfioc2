@@ -41,6 +41,20 @@ record(bo, "$(P)ResetMxc-Cmd") {
     field( UDF, "0")
 }
 
+record(longout, "$(P)SendEvt-SP") {
+    field( DESC, "EVG Software Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(OBJ), PROP=EvtCode")
+    field( UDF,  "0")
+    field( PINI, "YES") # so users don't complain about INVALID/UDF.  Safe as long as VAL=0. aka never autosave!
+    field( VAL,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    alias("$(SOFTEVT)EvtCode-SP")
+}
+
 record(stringin, "$(P)Timestamp-RB") {
     field( DTYP, "EVG TIMESTAMP")
     field( DESC, "EVG TimeStamp")

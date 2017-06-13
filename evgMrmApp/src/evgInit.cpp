@@ -508,7 +508,6 @@ void mrmEvgSoftTimeThread(void* pvt) {
     if (!evg) {
         errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG!\n");
     }
-    evgSoftEvt *sevt = evg->getSoftEvt();
 
     while (1) {
         // fetch time of next second to be shifted
@@ -520,14 +519,14 @@ void mrmEvgSoftTimeThread(void* pvt) {
         }
 
         //Send out event reset to latch previously shifted timestamp
-        sevt->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
+        evg->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
 
         //Shift out next time
         for (int i = 0; i < 32; data <<= 1, i++) {
             if (data & 0x80000000)
-                sevt->setEvtCode(MRF_EVENT_TS_SHIFT_1);
+                evg->setEvtCode(MRF_EVENT_TS_SHIFT_1);
             else
-                sevt->setEvtCode(MRF_EVENT_TS_SHIFT_0);
+                evg->setEvtCode(MRF_EVENT_TS_SHIFT_0);
         }
 
         struct timespec sleep_until_t;

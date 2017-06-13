@@ -15,7 +15,6 @@ DB += nsls2-inj-seqs.db
 
 DB += evgMrm.db
 DB += evgEvtClk.db
-DB += evgSoftEvt.db
 DB += evgUserEvt.db
 DB += evgTrigEvt.db
 DB += evgMxc.db

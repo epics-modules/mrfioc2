@@ -52,7 +52,6 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     busConfiguration(busConfig),
     m_acTrig(id+":AcTrig", pReg),
     m_evtClk(id+":EvtClk", pReg),
-    m_softEvt(id+":SoftEvt", pReg),
     m_seqRamMgr(this),
     m_softSeqMgr(this)
 {
@@ -483,9 +482,9 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
 
     for(int i = 0; i < 32; data <<= 1, i++) {
         if( data & 0x80000000 )
-            evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_1);
+            evg->setEvtCode(MRF_EVENT_TS_SHIFT_1);
         else
-            evg->getSoftEvt()->setEvtCode(MRF_EVENT_TS_SHIFT_0);
+            evg->setEvtCode(MRF_EVENT_TS_SHIFT_0);
     }
 }
 
@@ -567,6 +566,20 @@ evgMrm::syncTsRequest(bool) {
     m_syncTimestamp = true;
 }
 
+void
+evgMrm::setEvtCode(epicsUInt32 evtCode) {
+    if(evtCode > 255)
+        throw std::runtime_error("Event Code out of range. Valid range: 0 - 255.");
+
+    SCOPED_LOCK(m_lock);
+
+    while(READ32(m_pReg, SwEvent) & SwEvent_Pend) {}
+
+    WRITE32(m_pReg, SwEvent,
+            (evtCode<<SwEvent_Code_SHIFT)
+            |SwEvent_Ena);
+}
+
 /**    Access    functions     **/
 
 evgEvtClk*
@@ -577,11 +590,6 @@ evgMrm::getEvtClk() {
 evgAcTrig*
 evgMrm::getAcTrig() {
     return &m_acTrig;
-}
-
-evgSoftEvt*
-evgMrm::getSoftEvt() {
-    return &m_softEvt;
 }
 
 evgTrigEvt*

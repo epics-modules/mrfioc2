@@ -31,8 +31,7 @@ pattern { P, OBJ, , SYS, D, Num }
 }
 
 file evgMrm.db {
-pattern { P, OBJ,  EVG }
-{ "$(SYS){$(D)}", $(EVG), $(EVG) }
+{ P="$(SYS){$(D)}", SOFTEVT="$(SYS){$(D)-SoftEvt}", OBJ="$(EVG)", EVG="$(EVG)" }
 }
 
 file evgMxc.db {
@@ -53,11 +52,6 @@ pattern { P, OBJ }
 { "$(SYS){$(D)-Out:Front1}", "$(EVG):FrontOut1" }
 { "$(SYS){$(D)-Out:Front2}", "$(EVG):FrontOut2" }
 { "$(SYS){$(D)-Out:Front3}", "$(EVG):FrontOut3" }
-}
-
-file evgSoftEvt.db {
-pattern { P, OBJ }
-{ "$(SYS){$(D)-SoftEvt}", "$(EVG):SoftEvt" }
 }
 
 file evgSoftSeq.db {

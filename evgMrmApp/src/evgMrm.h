@@ -28,7 +28,6 @@
 
 #include "evgAcTrig.h"
 #include "evgEvtClk.h"
-#include "evgSoftEvt.h"
 #include "evgTrigEvt.h"
 #include "evgMxc.h"
 #include "evgDbus.h"
@@ -56,9 +55,10 @@ public:
     evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);
     ~evgMrm();
 
-    /* locking done internally */
+    /* locking done internally: TODO: not really... */
     virtual void lock() const{};
     virtual void unlock() const{};
+    epicsMutex m_lock;
 
     /** EVG    **/
     const std::string getId() const;
@@ -97,11 +97,15 @@ public:
     bool getSyncTsRequest() const {return false;}
     void syncTsRequest(bool=true);
     void incrTimestamp();
-    
+
+    void setEvtCode(epicsUInt32);
+
+    // use w/ Object properties for which no getter is necessary
+    epicsUInt32 writeonly() const { return 0; }
+
     /**    Access    functions     **/
     evgAcTrig* getAcTrig();
     evgEvtClk* getEvtClk();
-    evgSoftEvt* getSoftEvt();
     evgTrigEvt* getTrigEvt(epicsUInt32);
     evgMxc* getMuxCounter(epicsUInt32);
     evgDbus* getDbus(epicsUInt32);
@@ -146,7 +150,6 @@ private:
 
     evgAcTrig                     m_acTrig;
     evgEvtClk                     m_evtClk;
-    evgSoftEvt                    m_softEvt;
 
     typedef std::vector<evgTrigEvt*> TrigEvt_t;
     TrigEvt_t                     m_trigEvt;
