@@ -104,13 +104,8 @@ public:
     epicsUInt32 writeonly() const { return 0; }
 
     /**    Access    functions     **/
-    evgAcTrig* getAcTrig();
     evgEvtClk* getEvtClk();
-    evgTrigEvt* getTrigEvt(epicsUInt32);
-    evgMxc* getMuxCounter(epicsUInt32);
-    evgDbus* getDbus(epicsUInt32);
     evgInput* getInput(epicsUInt32, InputType);
-    evgOutput* getOutput(epicsUInt32, evgOutputType);
     evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();

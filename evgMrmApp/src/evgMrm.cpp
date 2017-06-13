@@ -586,38 +586,6 @@ evgMrm::getEvtClk() {
     return &m_evtClk;
 }
 
-evgAcTrig*
-evgMrm::getAcTrig() {
-    return &m_acTrig;
-}
-
-evgTrigEvt*
-evgMrm::getTrigEvt(epicsUInt32 evtTrigNum) {
-    evgTrigEvt* trigEvt = m_trigEvt[evtTrigNum];
-    if(!trigEvt)
-        throw std::runtime_error("Event Trigger not initialized");
-
-    return trigEvt;
-}
-
-evgMxc* 
-evgMrm::getMuxCounter(epicsUInt32 muxNum) {
-    evgMxc* mxc =    m_muxCounter[muxNum];
-    if(!mxc)
-        throw std::runtime_error("Multiplexed Counter not initialized");
-
-    return mxc;
-}
-
-evgDbus*
-evgMrm::getDbus(epicsUInt32 dbusBit) {
-    evgDbus* dbus = m_dbus[dbusBit];
-    if(!dbus)
-        throw std::runtime_error("Event Dbus not initialized");
-
-    return dbus;
-}
-
 evgInput*
 evgMrm::getInput(epicsUInt32 inpNum, InputType type) {
     evgInput* inp = m_input[ std::pair<epicsUInt32, InputType>(inpNum, type) ];
@@ -625,15 +593,6 @@ evgMrm::getInput(epicsUInt32 inpNum, InputType type) {
         throw std::runtime_error("Input not initialized");
 
     return inp;
-}
-
-evgOutput*
-evgMrm::getOutput(epicsUInt32 outNum, evgOutputType type) {
-    evgOutput* out = m_output[ std::pair<epicsUInt32, evgOutputType>(outNum, type) ];
-    if(!out)
-        throw std::runtime_error("Output not initialized");
-
-    return out;
 }
 
 evgSeqRamMgr*
