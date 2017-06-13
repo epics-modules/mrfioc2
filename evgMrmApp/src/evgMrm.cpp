@@ -44,6 +44,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     irqStart1_queued(0),
     irqExtInp_queued(0),
     m_syncTimestamp(false),
+    m_errorTimestamp(0.0),
     m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
     m_pciDevice(pciDevice),
     m_id(id),
@@ -507,9 +508,6 @@ evgMrm::sendTimestamp() {
 
     m_alarmTimestamp = TS_ALARM_NONE;
 
-    incrTimestamp();
-    scanIoRequest(ioScanTimestamp);
-
     if(m_syncTimestamp) {
         syncTimestamp();
         m_syncTimestamp = false;
@@ -522,18 +520,17 @@ evgMrm::sendTimestamp() {
         storedTime = (epicsTime)getTimestamp();
 
         double errorTime = ntpTime - storedTime;
+        m_errorTimestamp = errorTime;
 
         /*If there is an error between storedTime and ntpTime then we just print
             the relevant information but we send out storedTime*/
         if(fabs(errorTime) > evgAllowedTsGitter) {
             m_alarmTimestamp = TS_ALARM_MINOR;
-            printf("NTP time:\n");
-            ntpTime.show(1);
-            printf("EVG time:\n");
-            storedTime.show(1);
-            printf("----Timestamping Error of %f Secs----\n", errorTime);
         } 
     }
+
+    incrTimestamp();
+    scanIoRequest(ioScanTimestamp);
 
     return getTimestamp().secPastEpoch + 1 + POSIX_TIME_AT_EPICS_EPOCH;
 }

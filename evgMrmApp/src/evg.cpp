@@ -65,6 +65,8 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
     OBJECT_PROP1("Version", &evgMrm::getFwVersion);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
+    OBJECT_PROP1("Time Error", &evgMrm::timeError);
+    OBJECT_PROP1("Time Error", &evgMrm::timeErrorScan);
 } OBJECT_END(evgMrm)
 
 

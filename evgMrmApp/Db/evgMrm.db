@@ -46,6 +46,12 @@ record(stringin, "$(P)Timestamp-RB") {
     field( DESC, "EVG TimeStamp")
     field( INP , "#C0 S0 @$(EVG)")
     field( SCAN, "I/O Intr")
+    field( FLNK, "$(P)TimeErr-I")
+}
+
+record(ai, "$(P)TimeErr-I") {
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=Time Error")
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {

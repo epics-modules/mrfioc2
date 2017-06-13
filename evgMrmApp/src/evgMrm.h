@@ -76,6 +76,9 @@ public:
     void resetMxc(bool reset);
     epicsUInt32 getDbusStatus() const;
 
+    double timeError() const { return m_errorTimestamp; }
+    IOSCANPVT timeErrorScan() const { return ioScanTimestamp; }
+
     /**    Interrupt and Callback    **/
     static void isr(evgMrm *evg, bool pci);
     static void isr_pci(void*);
@@ -128,6 +131,7 @@ public:
     IOSCANPVT                     ioScanTimestamp;
     bool                          m_syncTimestamp;
     ALARM_TS                      m_alarmTimestamp;
+    double                        m_errorTimestamp;
 
     mrmDataBufTx                  m_buftx;
 
