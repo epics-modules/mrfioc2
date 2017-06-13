@@ -114,7 +114,7 @@ public:
     evgSeqRamMgr* getSeqRamMgr();
     evgSoftSeqMgr* getSoftSeqMgr();
     epicsEvent* getTimerEvent();
-    bus_configuration* getBusConfiguration();
+    const bus_configuration* getBusConfiguration();
 
     CALLBACK                      irqStop0_cb;
     CALLBACK                      irqStop1_cb;
@@ -146,7 +146,7 @@ public:
 private:
     const std::string             m_id;
     volatile epicsUInt8* const    m_pReg;
-    bus_configuration             busConfiguration;
+    const bus_configuration       busConfiguration;
 
     evgAcTrig                     m_acTrig;
     evgEvtClk                     m_evtClk;
@@ -172,7 +172,7 @@ private:
     epicsTimeStamp                m_timestamp;
 
     wdTimer*                      m_wdTimer;
-    epicsEvent*                   m_timerEvent;
+    epicsEvent                    m_timerEvent;
 };
 
 /*Creating a timer thread bcz epicsTimer uses epicsGeneralTime and when

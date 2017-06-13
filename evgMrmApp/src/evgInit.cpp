@@ -748,7 +748,7 @@ reportCard(mrf::Object* obj, void* arg) {
     printf("\tFPGA Version: %08x (firmware: %x)\n", evg->getFwVersion(), evg->getFwVersionID());
     printf("\tForm factor: %s\n", evg->getFormFactorStr().c_str());
 
-    bus_configuration *bus = evg->getBusConfiguration();
+    const bus_configuration *bus = evg->getBusConfiguration();
     if(bus->busType == busType_vme){
         struct VMECSRID vmeDev;
         vmeDev.board = 0; vmeDev.revision = 0; vmeDev.vendor = 0;

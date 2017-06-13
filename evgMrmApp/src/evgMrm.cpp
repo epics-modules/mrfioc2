@@ -117,7 +117,6 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
     }
 
-    m_timerEvent = new epicsEvent();
     m_wdTimer = new wdTimer("Watch Dog Timer", this);
 
     init_cb(&irqStart0_cb, priorityHigh, &evgMrm::process_sos0_cb,
@@ -491,7 +490,7 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
 epicsUInt32
 evgMrm::sendTimestamp() {
     /*Start the timer*/
-    m_timerEvent->signal();
+    m_timerEvent.signal();
 
     /*If the time since last update is more than 1.5 secs(i.e. if wdTimer expires) 
     then we need to resync the time after 5 good pulses*/
@@ -649,10 +648,10 @@ evgMrm::getSoftSeqMgr() {
 
 epicsEvent* 
 evgMrm::getTimerEvent() {
-    return m_timerEvent;
+    return &m_timerEvent;
 }
 
-bus_configuration *evgMrm::getBusConfiguration()
+const bus_configuration *evgMrm::getBusConfiguration()
 {
     return &busConfiguration;
 }
