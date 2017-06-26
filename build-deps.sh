@@ -33,9 +33,30 @@ EOF
   *) ;;
   esac
 
-  make -C "$EPICS_BASE" -j2
-
   EPICS_HOST_ARCH=`sh $EPICS_BASE/startup/EpicsHostArch`
+
+  case "$CMPLR" in
+  clang)
+    echo "Host compiler is clang"
+    cat << EOF >> "$EPICS_BASE/configure/os/CONFIG_SITE.Common.$EPICS_HOST_ARCH"
+GNU         = NO
+CMPLR_CLASS = clang
+CC          = clang
+CCC         = clang++
+EOF
+
+    # hack
+    sed -i -e 's/CMPLR_CLASS = gcc/CMPLR_CLASS = clang/' "$EPICS_BASE/configure/CONFIG.gnuCommon"
+
+    clang --version
+    ;;
+  *)
+    echo "Host compiler is default"
+    gcc --version
+    ;;
+  esac
+
+  make -C "$EPICS_BASE" -j2
 
   if [ "$BASE" = "3.14" ]; then
     ( cd "$CDIR" && wget https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz && tar -xzf extensionsTop_*.tar.gz)
