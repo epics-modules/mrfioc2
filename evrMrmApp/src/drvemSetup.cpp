@@ -434,7 +434,7 @@ try {
         return;
     }
 
-    printf("Device %s  %u:%u.%u slot=\n",id,cur->bus,cur->device,cur->function,cur->slot);
+    printf("Device %s  %u:%u.%u slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
     printf("Using IRQ %u\n",cur->irq);
 
     switch(cur->id.sub_device) {
