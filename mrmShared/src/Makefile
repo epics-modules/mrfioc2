@@ -2,9 +2,6 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
-INC += plx9030.h
-INC += plx9056.h
-INC += latticeEC30.h
 INC += mrmDataBufTx.h
 INC += mrmpci.h
 INC += sfp.h
