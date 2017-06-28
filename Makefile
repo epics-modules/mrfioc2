@@ -2,7 +2,7 @@
 #Makefile at top of application tree
 TOP = .
 include $(TOP)/configure/CONFIG
-DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmtestApp evrFRIBApp iocBoot
+DIRS := configure mrfCommon evrApp mrmShared evgMrmApp evrMrmApp mrmApp evrFRIBApp iocBoot
 
 define DIR_template
  $(1)_DEPEND_DIRS = configure
@@ -21,6 +21,6 @@ evgMrmApp_DEPEND_DIRS += mrmShared
 
 evrFRIBApp_DEPEND_DIRS += evrApp mrmShared
 
-mrmtestApp_DEPEND_DIRS += evrMrmApp evgMrmApp evrFRIBApp
+mrmApp_DEPEND_DIRS += evrMrmApp evgMrmApp evrFRIBApp
 
 include $(TOP)/configure/RULES_TOP
