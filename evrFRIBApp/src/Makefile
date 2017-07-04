@@ -14,7 +14,7 @@ evrFRIB_SRCS_Linux += evr_frib_iocsh.cpp
 
 evrFRIB_SRCS_DEFAULT += dummy.c
 
-evrFRIB_LIBS += mrfCommon mrmShared evr epicspci
+evrFRIB_LIBS += evr mrfCommon epicspci
 evrFRIB_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================

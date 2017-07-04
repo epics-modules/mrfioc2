@@ -11,7 +11,7 @@ $(foreach dir, $(filter-out configure,$(DIRS)),$(eval $(call DIR_template,$(dir)
 
 iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 
-evrApp_DEPEND_DIRS += mrfCommon mrmShared
+evrApp_DEPEND_DIRS += mrfCommon
 
 mrmShared_DEPEND_DIRS += mrfCommon
 
@@ -19,7 +19,7 @@ evrMrmApp_DEPEND_DIRS += evrApp mrmShared
 
 evgMrmApp_DEPEND_DIRS += mrmShared
 
-evrFRIBApp_DEPEND_DIRS += evrApp mrmShared
+evrFRIBApp_DEPEND_DIRS += evrApp
 
 mrmApp_DEPEND_DIRS += evrMrmApp evgMrmApp evrFRIBApp
 
