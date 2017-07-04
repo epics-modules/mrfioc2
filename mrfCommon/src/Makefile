@@ -25,6 +25,7 @@ INC += mrf/version.h
 
 INC += devObj.h
 
+INC += configurationInfo.h
 INC += plx9030.h
 INC += plx9056.h
 INC += latticeEC30.h
