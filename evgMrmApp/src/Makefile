@@ -57,9 +57,7 @@ evgmrm_SRCS += evgSeqRamManager.cpp
 evgmrm_SRCS += seqconst.c
 evgmrm_SRCS += seqnsls2.c
 
-ifeq ($(OS),Windows_NT)
 evgmrm_LIBS += mrfCommon mrmShared epicsvme epicspci $(EPICS_BASE_IOC_LIBS)
-endif
 
 DBD += evgInit.dbd
 

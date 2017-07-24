@@ -39,9 +39,7 @@ evr_SRCS += devWfMailbox.c
 evr_SRCS_Linux += ntpShm.cpp
 evr_SRCS_DEFAULT += ntpShmNull.cpp
 
-ifeq ($(OS),Windows_NT)
 evr_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
-endif
 
 # Note: evrtest is NOT a working ioc.
 #       it exists to ensure that libevr

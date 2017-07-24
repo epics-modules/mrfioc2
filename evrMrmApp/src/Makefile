@@ -34,9 +34,7 @@ evrMrm_SRCS += irqHack.cpp
 
 evrMrm_SRCS += mrmGpio.cpp
 
-ifeq ($(OS),Windows_NT)
 evrMrm_LIBS += mrfCommon mrmShared evr epicspci epicsvme $(EPICS_BASE_IOC_LIBS)
-endif
 
 #=============================
 # Install the modular register map event receiver support dbd

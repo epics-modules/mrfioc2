@@ -58,6 +58,8 @@ endif
 # Finally link to the EPICS Base libraries
 mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
 
+mrf_SYS_LIBS_WIN32 = ws2_32
+
 #===========================
 
 include $(TOP)/configure/RULES
