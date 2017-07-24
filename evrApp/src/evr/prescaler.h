@@ -16,7 +16,7 @@
 #include <evr/util.h>
 #include "mrf/object.h"
 
-class epicsShareClass EVR;
+class EVR;
 
 class epicsShareClass PreScaler : public mrf::ObjectInst<PreScaler>, public IOStatus
 {

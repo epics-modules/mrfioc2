@@ -22,11 +22,11 @@
 
 #include "configurationInfo.h"
 
-class epicsShareClass Pulser;
-class epicsShareClass PreScaler;
-class epicsShareClass Input;
-class epicsShareClass CML;
-class epicsShareClass DelayModuleEvr;
+class Pulser;
+class PreScaler;
+class Input;
+class CML;
+class DelayModuleEvr;
 
 enum TSSource {
   TSSourceInternal=0,
