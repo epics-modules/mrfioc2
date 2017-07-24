@@ -57,7 +57,7 @@ static long add_record_waveform(dbCommon *praw)
 try {
   assert(prec->inp.type==INST_IO);
 
-  std::auto_ptr<s_priv> paddr(new s_priv);
+  mrf::auto_ptr<s_priv> paddr(new s_priv);
 
   if (linkOptionsStore(eventdef, paddr.get(), prec->inp.value.instio.string, 0))
     throw std::runtime_error("Couldn't parse link string");
@@ -99,7 +99,7 @@ static long del_record_waveform(dbCommon *praw)
     long ret=0;
     if (!praw->dpvt) return 0;
     try {
-        std::auto_ptr<s_priv> paddr((s_priv*)praw->dpvt);
+        mrf::auto_ptr<s_priv> paddr((s_priv*)praw->dpvt);
         praw->dpvt = 0;
         delete[] paddr->scratch;
 

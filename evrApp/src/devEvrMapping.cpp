@@ -83,7 +83,7 @@ static long add_lo(dbCommon* praw)
     try {
         assert(prec->out.type==INST_IO);
 
-        std::auto_ptr<map_priv> priv(new map_priv);
+        mrf::auto_ptr<map_priv> priv(new map_priv);
 
         if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
             throw std::runtime_error("Couldn't parse link string");
@@ -119,7 +119,7 @@ static inline
 long del_lo(dbCommon* praw)
 {
     try {
-        std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+        mrf::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
     if (!priv.get())
         return -2;

@@ -48,6 +48,20 @@
 
 #ifdef __cplusplus
 #include <sstream>
+#include <memory>
+
+// ugly hack to avoid copious deprecation warnings when building c++11
+namespace mrf {
+#if __cplusplus>=201103L
+template<typename T>
+using auto_ptr = std::unique_ptr<T>;
+#define PTRMOVE(AUTO) std::move(AUTO)
+#else
+using std::auto_ptr;
+#define PTRMOVE(AUTO) (AUTO)
+#endif
+}
+
 #endif
 
 /**************************************************************************************************/

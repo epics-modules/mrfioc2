@@ -402,15 +402,15 @@ public:
 
     virtual propertyBase* getPropertyBase(const char*, const std::type_info&)=0;
     template<typename P>
-    std::auto_ptr<property<P> > getProperty(const char* pname)
+    mrf::auto_ptr<property<P> > getProperty(const char* pname)
     {
         propertyBase *b=getPropertyBase(pname, typeid(P));
         if(!b)
-            return std::auto_ptr<property<P> >();
+            return mrf::auto_ptr<property<P> >();
         property<P> *p=dynamic_cast<property<P> *>(b);
         if(!p)
-            return std::auto_ptr<property<P> >();
-        return std::auto_ptr<property<P> >(p);
+            return mrf::auto_ptr<property<P> >();
+        return mrf::auto_ptr<property<P> >(p);
     }
 
     virtual void visitProperties(bool (*)(propertyBase*, void*), void*)=0;
@@ -490,7 +490,7 @@ public:
         if(!m_props)
             throw std::runtime_error(emsg);
 
-        std::auto_ptr<propertyBase> cur;
+        mrf::auto_ptr<propertyBase> cur;
         for(typename m_props_t::const_iterator it=m_props->begin();
             it!=m_props->end(); ++it)
         {
@@ -508,7 +508,7 @@ public:
 template<> ObjectInst<klass, Base>::m_props_t* ObjectInst<klass, Base>::m_props = 0; \
 template<> int ObjectInst<klass, Base>::initObject() { \
     const char *klassname = #klass; (void)klassname; \
-    try { std::auto_ptr<m_props_t> props(new m_props_t); {
+    try { mrf::auto_ptr<m_props_t> props(new m_props_t); {
 
 #define OBJECT_BEGIN(klass) OBJECT_BEGIN2(klass, Object)
 

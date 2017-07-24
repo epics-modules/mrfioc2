@@ -222,7 +222,7 @@ public:
     epicsUInt32 baselen;
     mrmDataBufTx buftx;
     mrmBufRx bufrx;
-    std::auto_ptr<SFP> sfp;
+    mrf::auto_ptr<SFP> sfp;
 private:
 
     // Set by ISR

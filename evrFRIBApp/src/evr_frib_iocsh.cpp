@@ -57,7 +57,7 @@ void fribEvrSetupPCI(const char *name, const char *pcispec)
         bconf.pci.device = dev->device;
         bconf.pci.function = dev->function;
 
-        std::auto_ptr<EVRFRIB> evr(new EVRFRIB(name, bconf, base));
+        mrf::auto_ptr<EVRFRIB> evr(new EVRFRIB(name, bconf, base));
 
 
         // lose our pointer

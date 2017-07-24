@@ -72,7 +72,7 @@ static long add_lo(dbCommon* praw)
 try {
     assert(prec->out.type==INST_IO);
 
-    std::auto_ptr<map_priv> priv(new map_priv);
+    mrf::auto_ptr<map_priv> priv(new map_priv);
     priv->last_code=prec->val;
 
     if (linkOptionsStore(eventdef, priv.get(), prec->out.value.instio.string, 0))
@@ -110,7 +110,7 @@ long del_lo(dbCommon* praw)
     if(!praw->dpvt)
         return 0;
     try {
-        std::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+        mrf::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
 
         if(priv->last_code>0 && priv->last_code<=255)
             priv->pulser->sourceSetMap(priv->last_code,MapType::None);

@@ -95,7 +95,7 @@ linkOptionEnumType readbackEnum[];
 
 template<typename T>
 struct addr : public addrBase {
-    std::auto_ptr<mrf::property<T> > P;
+    mrf::auto_ptr<mrf::property<T> > P;
 };
 
 epicsShareExtern const
@@ -137,7 +137,7 @@ try {
     if(lnk->type!=INST_IO)
         return S_db_errArg;
 
-    std::auto_ptr<addr<P> > a;
+    mrf::auto_ptr<addr<P> > a;
     if(prec->dpvt) {
         a.reset((addr<P>*)prec->dpvt);
         prec->dpvt=0;
@@ -164,14 +164,14 @@ try {
         return S_db_errArg;
     }
 
-    std::auto_ptr<property<P> > prop = o->getProperty<P>(a->prop);
+    mrf::auto_ptr<property<P> > prop = o->getProperty<P>(a->prop);
     if(!prop.get()) {
         errlogPrintf("%s: '%s' lacks property '%s' of required type\n", prec->name, o->name().c_str(), a->prop);
         return S_db_errArg;
     }
 
     a->O = o;
-    a->P = prop;
+    a->P = PTRMOVE(prop);
 
     prec->dpvt = (void*)a.release();
 
@@ -229,7 +229,7 @@ if (!prec->dpvt) return -1;
 try {
     addrBase *prop=static_cast<addrBase*>(prec->dpvt);
 
-    std::auto_ptr<property<IOSCANPVT> > up = prop->O->getProperty<IOSCANPVT>(prop->prop);
+    mrf::auto_ptr<property<IOSCANPVT> > up = prop->O->getProperty<IOSCANPVT>(prop->prop);
 
     if(up.get())
         *io = up->get();

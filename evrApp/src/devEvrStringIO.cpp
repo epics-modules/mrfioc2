@@ -51,7 +51,7 @@ long stringin_add(dbCommon *praw)
     long ret=0;
 try {
     assert(prec->inp.type==INST_IO);
-    std::auto_ptr<ts_priv> priv(new ts_priv);
+    mrf::auto_ptr<ts_priv> priv(new ts_priv);
     priv->code=0;
     priv->last_bad=0;
 

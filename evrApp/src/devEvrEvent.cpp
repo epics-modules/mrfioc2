@@ -64,7 +64,7 @@ long add_record(struct dbCommon *prec, struct link* link)
 try {
     assert(link->type==INST_IO);
 
-    std::auto_ptr<priv> p(new priv);
+    mrf::auto_ptr<priv> p(new priv);
     p->event=0;
 
     if (linkOptionsStore(eventdef, p.get(), link->value.instio.string, 0))
