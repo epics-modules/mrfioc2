@@ -17,12 +17,7 @@ INC += evgDbus.h
 INC += evgInput.h
 INC += evgOutput.h
 
-INC += evgSequencer/evgSoftSeqManager.h
-INC += evgSequencer/evgSoftSeq.h
-INC += evgSequencer/evgSeqRamManager.h
-INC += evgSequencer/evgSeqRam.h
-
-SRC_DIRS += ../evgSequencer ../devSupport 
+SRC_DIRS += ../devSupport 
 
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp
@@ -47,12 +42,6 @@ evgmrm_SRCS += devEvgDbus.cpp
 evgmrm_SRCS += evgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
-
-evgmrm_SRCS += evgSoftSeq.cpp
-evgmrm_SRCS += evgSoftSeqManager.cpp
-
-evgmrm_SRCS += evgSeqRam.cpp
-evgmrm_SRCS += evgSeqRamManager.cpp
 
 evgmrm_SRCS += seqconst.c
 evgmrm_SRCS += seqnsls2.c

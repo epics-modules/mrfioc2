@@ -425,9 +425,6 @@ mrmEvgSetupPCI (
 
         evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
 
-        evg->getSeqRamMgr()->getSeqRam(0)->disable();
-        evg->getSeqRamMgr()->getSeqRam(1)->disable();
-
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // Enable active high interrupt1 through the PLX to the PCI bus.
