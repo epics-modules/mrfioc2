@@ -139,16 +139,15 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
-    epicsUInt32 v, evr,ver;
+    const epicsUInt32 rawver = fpgaFirmware();
+    const epicsUInt32 boardtype = (rawver&FWVersion_type_mask)>>FWVersion_type_shift;
+    const epicsUInt32 formfactor = (rawver&FWVersion_form_mask)>>FWVersion_form_shift;
+    const epicsUInt32 fwid = (rawver&FWVersion_fw_mask)>>FWVersion_fw_shift;
+    const epicsUInt32 ver = (rawver&FWVersion_ver_mask)>>FWVersion_ver_shift;
 
-    v = fpgaFirmware();
-    evr=v&FWVersion_type_mask;
-    evr>>=FWVersion_type_shift;
-
-    if(evr!=0x1)
+    if(boardtype!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    ver = version();
     if(ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
@@ -166,6 +165,11 @@ try{
         std::ostringstream name;
         name<<n<<":SFP";
         sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
+    }
+
+    if(fwid==2) {
+        printf("DC firmware detected.\n");
+        seq.reset(new EvrSeqManager(this));
     }
 
     /*
@@ -229,7 +233,7 @@ try{
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
 
-    if(v==formFactor_CPCIFULL) {
+    if(formfactor==formFactor_CPCIFULL) {
         for(unsigned int i=4; i<8; i++) {
             std::ostringstream name;
             name<<n<<":FrontOut"<<i;
@@ -241,7 +245,7 @@ try{
         shortcmls[6]=new MRMCML(n+":CML6", 6,*this,MRMCML::typeTG300,form);
         shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
 
-    } else if(v==formFactor_mTCA) {
+    } else if(formfactor==formFactor_mTCA) {
 
         // mapping to TCLKA and TCLKB as UNIV16, 17
         // we move down to UNIV0, 1

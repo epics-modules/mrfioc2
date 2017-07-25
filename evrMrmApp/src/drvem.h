@@ -35,6 +35,7 @@
 #include "drvemCML.h"
 #include "delayModule.h"
 #include "drvemRxBuf.h"
+#include "mrmevrseq.h"
 
 #include "mrmGpio.h"
 
@@ -266,6 +267,8 @@ private:
     shortcmls_t shortcmls;
 
     MRMGpio gpio_;
+
+    mrf::auto_ptr<EvrSeqManager> seq;
 
     // run when FIFO not-full IRQ is received
     void drain_fifo();

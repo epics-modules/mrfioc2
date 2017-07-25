@@ -27,6 +27,8 @@ evrMrm_SRCS += delayModule.cpp
 evrMrm_SRCS += drvemRxBuf.cpp
 evrMrm_SRCS += devMrmBuf.cpp
 
+evrMrm_SRCS += mrmevrseq.cpp
+
 evrMrm_SRCS += bufrxmgr.cpp
 evrMrm_SRCS += devMrmBufRx.cpp
 

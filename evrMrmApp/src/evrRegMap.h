@@ -126,6 +126,8 @@
 #  define FWVersion_type_shift 28
 #  define FWVersion_form_mask 0x0f000000
 #  define FWVersion_form_shift 24
+#  define FWVersion_fw_mask  0x0000ff00
+#  define FWVersion_fw_shift  8
 #  define FWVersion_ver_mask  0x000000ff
 #  define FWVersion_ver_shift  0
 #  define FWVersion_zero_mask 0x00ffff00
@@ -166,6 +168,10 @@
 #define U32_DCIntVal    0x0b8
 #define U32_DCStatus    0x0bc
 #define U32_TOPID       0x0c0
+
+#define  U32_SeqControl_base    0x00e0
+#define  U32_SeqControl(n)      (U32_SeqControl_base + (4*n))
+
 
 #define U32_ScalerN     0x100
 #  define ScalerMax 3
@@ -330,6 +336,10 @@
 #define ActionLogSave  122
 #define ActionHeartBeat 101
 #define ActionPSRst    100
+
+// Sequence Ram Timestamp Array Base Offset
+#define  U32_SeqRamTS_base      0xc000
+#define  U32_SeqRamTS(n,m)      (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
 
 #define U32_SFPEEPROM_base 0x8200
 #define U32_SFPEEPROM(N) (U32_SFPEEPROM_base + (N))
