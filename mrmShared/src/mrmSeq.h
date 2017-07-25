@@ -45,6 +45,7 @@ public:
 
     //! Call from ISR
     void doStartOfSequence(unsigned i);
+    //! Call from ISR
     void doEndOfSequence(unsigned i);
 
     //! sub-class implement to provide scaling between time and frequency.
@@ -54,7 +55,10 @@ public:
 
     //! sub-class implement
     //! Setup (or clear w/ zero) the external trigger source
+    //! Called from interrupt context
     virtual void mapTriggerSrc(unsigned i, unsigned src) =0;
+
+    virtual epicsUInt32 testStartOfSeq() =0;
 
 protected:
     void addHW(unsigned i,

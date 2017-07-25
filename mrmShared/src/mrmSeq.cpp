@@ -16,6 +16,7 @@
 #define  EVG_SEQ_RAM_RUNNING    0x02000000  // Sequence RAM is Running (read only)
 #define  EVG_SEQ_RAM_ENABLED    0x01000000  // Sequence RAM is Enabled (read only)
 
+//TODO: external enable/trigger bits and hanlding?
 #define  EVG_SEQ_RAM_SW_TRIG    0x00200000  // Sequence RAM Software Trigger Bit
 #define  EVG_SEQ_RAM_RESET      0x00040000  // Sequence RAM Reset
 #define  EVG_SEQ_RAM_DISABLE    0x00020000  // Sequence RAM Disable
@@ -79,10 +80,18 @@ struct SeqHW
     {
         interruptLock I;
 
+        /** Interesting race conditions possible on non-RTOS where ISR don't preempt.
+         * It is then possible that disarm() can be called after a sequencer has finished
+         * running, but before the ISR runs for Start of Sequence interrupt.
+         * So we also test for SoS
+         */
+
         nat_iowrite32(ctrlreg, ctrlreg_shadow | EVG_SEQ_RAM_DISABLE);
         bool isrun = nat_ioread32(ctrlreg) & EVG_SEQ_RAM_RUNNING;
+        bool started = owner->testStartOfSeq() & (1u<<idx);
+        // TODO: test for start of sequence as well?
 
-        return isrun || running;
+        return isrun || started || running;
     }
 };
 
@@ -164,19 +173,19 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
         return ret;
     }
 
-    void setTrigSrc(epicsInt32 src)
+    void setTrigSrc(epicsUInt32 src)
     {
-        DEBUG(4, ("Setting trig src %d\n", (int)src));
+        DEBUG(4, ("Setting trig src %x\n", (unsigned)src));
         {
             SCOPED_LOCK(mutex);
             scratch.src = src;
             is_committed = false;
         }
-        DEBUG(4, ("Set trig src %d\n", (int)src));
+        DEBUG(4, ("Set trig src %x\n", (unsigned)src));
         scanIoRequest(changed);
     }
 
-    epicsInt32 getTrigSrcCt() const
+    epicsUInt32 getTrigSrcCt() const
     {
         SCOPED_LOCK(mutex);
         return committed.src;
@@ -248,7 +257,10 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
         codes_t codes;
         RunMode mode;
         epicsUInt32 src;
-        Config() :mode(Single), src(0x0100) {}
+        Config()
+            :mode(Single)
+            ,src(0x03000000) // code for Disable
+        {}
         void swap(Config& o)
         {
             std::swap(times, o.times);
@@ -326,12 +338,12 @@ SoftSequence::~SoftSequence() {}
 
 void SoftSequence::softTrig()
 {
-    DEBUG(3, ("SW Triggering") );
+    DEBUG(3, ("SW Triggering\n") );
     SCOPED_LOCK(mutex);
-    if(hw || !is_enabled) return;
+    if(!hw || !is_enabled) {DEBUG(3, ("Skip\n")); return;}
 
     nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_SW_TRIG);
-    DEBUG(2, ("SW Triggered") );
+    DEBUG(2, ("SW Triggered\n") );
 }
 
 void SoftSequence::load()
@@ -362,7 +374,8 @@ void SoftSequence::load()
         throw alarm_exception(MAJOR_ALARM, WRITE_ALARM);
     }
 
-    owner->mapTriggerSrc(hw->idx, 0);
+    // paranoia: disable any external trigger mappings
+    owner->mapTriggerSrc(hw->idx, 0x02000000);
 
     if(!hw->disarm()) {
         interruptLock L;
@@ -440,10 +453,8 @@ void SoftSequence::commit()
     }
     DEBUG(1, ("Committing 3\n") );
 
-    if(!hw) return;
-    assert(hw->loaded==this);
-
-    if(!hw->disarm()) {
+    if(hw && !hw->disarm()) {
+        assert(hw->loaded==this);
         interruptLock L;
         sync();
     }
@@ -461,9 +472,7 @@ void SoftSequence::enable()
 
     is_enabled = true;
 
-    if(!hw) return;
-
-    {
+    if(hw) {
         interruptLock I;
 
         nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_ARM);
@@ -481,9 +490,8 @@ void SoftSequence::disable()
 
     is_enabled = false;
 
-    if(!hw) return;
-
-    hw->disarm();
+    if(hw)
+        hw->disarm();
 
     scanIoRequest(changed);
     DEBUG(1, ("Disabled\n") );
@@ -529,7 +537,6 @@ void SoftSequence::sync()
         src = 63;
         break;
     default:
-        assert(0);
         return;
     }
 
@@ -537,14 +544,16 @@ void SoftSequence::sync()
     // MSB governs the type of mapping
     switch(committed.src>>24) {
     case 0: // raw mapping
+        DEBUG(5, ("  Raw mapping %x\n", committed.src));
         // LSB is code
         src = committed.src&0xff;
         break;
     case 1: // software trigger mapping
+        DEBUG(5, ("  SW mapping %x\n", committed.src));
         // ignore 0x00ffffff
         switch(owner->type) {
         case SeqManager::TypeEVG:
-            src = 1u<<(17+hw->idx);
+            src = 17+hw->idx;
             break;
         case SeqManager::TypeEVR:
             src = 62;
@@ -552,19 +561,22 @@ void SoftSequence::sync()
         }
         break;
     case 2: // external trigger
+        DEBUG(5, ("  EXT mapping %x\n", committed.src));
         if(owner->type==SeqManager::TypeEVG) {
             // pass through to sub-class
             owner->mapTriggerSrc(hw->idx, committed.src);
-            src = 1u<<(24+hw->idx);
+            src = 24+hw->idx;
         }
         break;
     case 3: // disable trigger
+        DEBUG(5, ("  NO mapping %x\n", committed.src));
         // use default
         break;
     default:
         DEBUG(0, ("unknown sequencer trigger code %08x\n", (unsigned)committed.src));
         break;
     }
+    DEBUG(5, ("  Trig Src %x\n", src));
 
     hw->ctrlreg_shadow |= src;
 
@@ -578,13 +590,16 @@ void SoftSequence::sync()
             break;
     }
 
-    epicsUInt32 ctrl = hw->ctrlreg_shadow;
-    if(is_enabled)
-        ctrl |= EVG_SEQ_RAM_ARM;
-    else
-        ctrl |= EVG_SEQ_RAM_DISABLE; // paranoia
+    {
+        epicsUInt32 ctrl = hw->ctrlreg_shadow;
+        if(is_enabled)
+            ctrl |= EVG_SEQ_RAM_ARM;
+        else
+            ctrl |= EVG_SEQ_RAM_DISABLE; // paranoia
 
-    nat_iowrite32(hw->ctrlreg, ctrl);
+        DEBUG(3, ("  SeqCtrl %x\n", ctrl));
+        nat_iowrite32(hw->ctrlreg, ctrl);
+    }
 
     is_insync = true;
     DEBUG(3, ("In Sync\n") );
@@ -594,7 +609,15 @@ void SoftSequence::sync()
 SeqManager::SeqManager(const std::string &name, Type t)
     :base_t(name)
     ,type(t)
-{}
+{
+    switch(type) {
+    case TypeEVG:
+    case TypeEVR:
+        break;
+    default:
+        throw std::invalid_argument("Bad SeqManager type");
+    }
+}
 
 SeqManager::~SeqManager() {}
 
@@ -656,6 +679,9 @@ void SeqManager::doEndOfSequence(unsigned i)
 
     if(!seq->is_insync)
         seq->sync();
+
+    if(seq->committed.mode==Single)
+        scanIoRequest(seq->changed);
 }
 
 void SeqManager::addHW(unsigned i,

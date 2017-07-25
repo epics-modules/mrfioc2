@@ -20,6 +20,8 @@ public:
 
     virtual void mapTriggerSrc(unsigned i, unsigned src);
 
+    virtual epicsUInt32 testStartOfSeq();
+
 private:
     evgMrm * const owner;
     volatile epicsUInt8 *base;

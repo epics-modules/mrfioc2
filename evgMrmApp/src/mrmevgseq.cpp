@@ -4,10 +4,20 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <mrfCommonIO.h>
+
 #include "mrmevgseq.h"
 #include "evgMrm.h"
 
 #include "evgRegMap.h"
+
+#if defined(__rtems__)
+#  define DEBUG(LVL, ARGS) do{if(SeqManagerDebug>=(LVL)) {printk ARGS ;}}while(0)
+#elif defined(vxWorks)
+#  define DEBUG(LVL, ARGS) do{}while(0)
+#else
+#  define DEBUG(LVL, ARGS) do{if(SeqManagerDebug>=(LVL)) {printf ARGS ;}}while(0)
+#endif
 
 EvgSeqManager::EvgSeqManager(evgMrm *owner, volatile epicsUInt8 *base)
     :SeqManager(owner->name()+":SEQMGR", TypeEVG)
@@ -25,6 +35,7 @@ double EvgSeqManager::getClkFreq() const
     return owner->getEvtClk()->getFrequency();
 }
 
+//! Called from ISR
 void EvgSeqManager::mapTriggerSrc(unsigned i, unsigned src)
 {
     assert(i<=1);
@@ -34,7 +45,11 @@ void EvgSeqManager::mapTriggerSrc(unsigned i, unsigned src)
      * 0x020200xx - UV in
      * 0x020300xx - TB in
      */
-    if((src&0xff000000)!=0x02000000) return;
+    if((src&0xff000000)!=0x02000000) {
+        DEBUG(0, ("EvgSeqManager::mapTriggerSrc unsupported %x\n", src));
+        return;
+    }
+
     InputType itype = (InputType)((src>>16)&0xff);
     unsigned idx = src&0xff;
 
@@ -51,4 +66,11 @@ void EvgSeqManager::mapTriggerSrc(unsigned i, unsigned src)
             map &= ~(1u<<i);
         inp->setSeqTrigMap(map);
     }
+}
+
+//! Called from ISR
+epicsUInt32 EvgSeqManager::testStartOfSeq()
+{
+    // SoS for sequencer 0 is bit 8
+    return (NAT_READ32(base, IrqFlag)>>8)&0x3;
 }
