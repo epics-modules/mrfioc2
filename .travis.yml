@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 language: c
 env:
  - BASE=3.16 STATIC=shared
