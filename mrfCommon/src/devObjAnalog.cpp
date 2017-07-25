@@ -25,7 +25,7 @@ using namespace mrf;
 template<typename T>
 static long read_ai_from_real(aiRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -61,7 +61,7 @@ OBJECT_DSET(AIFromDouble,
 template<typename T>
 static long read_ai_from_integer(aiRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -102,7 +102,7 @@ OBJECT_DSET(AIFromUINT16,
 template<typename T>
 static long write_ao_from_real(aoRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -154,7 +154,7 @@ OBJECT_DSET(AOFromDouble,
 template<typename T>
 static long write_ao_from_integer(aoRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 

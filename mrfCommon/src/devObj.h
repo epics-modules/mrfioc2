@@ -225,7 +225,7 @@ long del_record_property(dbCommon* prec)
 static inline long get_ioint_info_property(int, dbCommon* prec, IOSCANPVT* io)
 {
     using namespace mrf;
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addrBase *prop=static_cast<addrBase*>(prec->dpvt);
 

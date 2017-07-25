@@ -24,7 +24,7 @@ using namespace mrf;
 
 static long read_string(stringinRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<std::string> *priv=(addr<std::string>*)prec->dpvt;
 
@@ -54,7 +54,7 @@ OBJECT_DSET(SIFromString,
 
 static long write_string(stringoutRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<std::string> *priv=(addr<std::string>*)prec->dpvt;
 

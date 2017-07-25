@@ -21,7 +21,7 @@ using namespace mrf;
 template<typename T>
 static long read_mbbi_from_integer(mbbiRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -59,7 +59,7 @@ OBJECT_DSET(MBBIFromUINT16,
 template<typename I>
 static long write_mbbo_from_integer(mbboRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

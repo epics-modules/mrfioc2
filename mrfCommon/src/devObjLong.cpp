@@ -20,7 +20,7 @@ using namespace mrf;
 template<typename T>
 static long read_li_from_integer(longinRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -66,7 +66,7 @@ OBJECT_DSET(LIFromBool,
 template<typename I>
 static long write_lo_from_integer(longoutRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

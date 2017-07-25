@@ -20,7 +20,7 @@ using namespace mrf;
 template<typename T>
 static long read_bi_from_integer(biRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -67,7 +67,7 @@ OBJECT_DSET(BIFromBool,
 template<typename I>
 static long write_bo_from_integer(boRecord* prec)
 {
-if (!prec->dpvt) return -1;
+if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

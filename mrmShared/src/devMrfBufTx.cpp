@@ -115,7 +115,7 @@ static long del_record_waveform(dbCommon *praw)
 
 static long write_waveform(waveformRecord* prec)
 {
-  if (!prec->dpvt) return -1;
+  if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
 try {
   s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
 
