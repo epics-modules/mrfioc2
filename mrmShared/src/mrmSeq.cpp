@@ -1,9 +1,17 @@
+/*************************************************************************\
+* Copyright (c) 2016 Michael Davidsaver
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 
 #include <epicsMutex.h>
+#include <errlog.h>
 
 #include <mrfCommonIO.h>
 
 #include "mrmSeq.h"
+
+#include <epicsExport.h>
 
 #define  EVG_SEQ_RAM_RUNNING    0x02000000  // Sequence RAM is Running (read only)
 #define  EVG_SEQ_RAM_ENABLED    0x01000000  // Sequence RAM is Enabled (read only)
@@ -20,6 +28,14 @@
 #define  EVG_SEQ_RAM_RECYCLE    0x00080000  // Continuous Mode: Repeat on completion
 
 #define  EVG_SEQ_RAM_SRC_MASK 0x000000ff
+
+#if defined(__rtems__)
+#  define DEBUG(LVL, ARGS) do{if(SeqManagerDebug>=(LVL)) {printk ARGS ;}}while(0)
+#elif defined(vxWorks)
+#  define DEBUG(LVL, ARGS) do{}while(0)
+#else
+#  define DEBUG(LVL, ARGS) do{if(SeqManagerDebug>=(LVL)) {printf ARGS ;}}while(0)
+#endif
 
 namespace {
 
@@ -68,13 +84,6 @@ struct SeqHW
 
         return isrun || running;
     }
-
-    void enable()
-    {
-        interruptLock I;
-
-        nat_iowrite32(ctrlreg, ctrlreg_shadow | EVG_SEQ_RAM_ARM);
-    }
 };
 
 struct SoftSequence : public mrf::ObjectInst<SoftSequence>
@@ -116,6 +125,7 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
             scratch.times.swap(times);
             is_committed = false;
         }
+        DEBUG(4, ("Set times\n"));
         scanIoRequest(changed);
     }
 
@@ -140,6 +150,7 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
             scratch.codes.swap(codes);
             is_committed = false;
         }
+        DEBUG(4, ("Set events\n"));
         scanIoRequest(changed);
     }
 
@@ -155,11 +166,13 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
 
     void setTrigSrc(epicsInt32 src)
     {
+        DEBUG(4, ("Setting trig src %d\n", (int)src));
         {
             SCOPED_LOCK(mutex);
             scratch.src = src;
             is_committed = false;
         }
+        DEBUG(4, ("Set trig src %d\n", (int)src));
         scanIoRequest(changed);
     }
 
@@ -184,6 +197,7 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
             scratch.mode = (RunMode)mode;
             is_committed = false;
         }
+        DEBUG(4, ("Set run mode %u\n", (unsigned)mode));
         scanIoRequest(changed);
     }
 
@@ -262,7 +276,6 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
 };
 
 OBJECT_BEGIN(SoftSequence)
-  OBJECT_FACTORY(SeqManager::buildSW);
   OBJECT_PROP1("ERROR", &SoftSequence::getErr);
   OBJECT_PROP1("ERROR", &SoftSequence::getErrScan);
   OBJECT_PROP1("LOADED", &SoftSequence::isLoaded);
@@ -313,16 +326,19 @@ SoftSequence::~SoftSequence() {}
 
 void SoftSequence::softTrig()
 {
+    DEBUG(3, ("SW Triggering") );
     SCOPED_LOCK(mutex);
     if(hw || !is_enabled) return;
 
     nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_SW_TRIG);
+    DEBUG(2, ("SW Triggered") );
 }
 
 void SoftSequence::load()
 {
     SCOPED_LOCK(mutex);
-    if(hw) return;
+    DEBUG(3, ("Loading %c\n", hw ? 'L' : 'U') );
+    if(hw) {DEBUG(3, ("Skip\n")); return;}
 
     // find unused SeqHW
     {
@@ -354,13 +370,15 @@ void SoftSequence::load()
     }
 
     scanIoRequest(changed);
+    DEBUG(1, ("Loaded\n") );
 }
 
 void SoftSequence::unload()
 {
     SCOPED_LOCK(mutex);
+    DEBUG(3, ("Unloading %c\n", hw ? 'L' : 'U') );
 
-    if(!hw) return;
+    if(!hw) {DEBUG(3, ("Skip\n")); return;}
 
     hw->disarm();
 
@@ -375,13 +393,17 @@ void SoftSequence::unload()
     }
 
     scanIoRequest(changed);
+    DEBUG(1, ("Unloaded\n") );
+
 }
 
 void SoftSequence::commit()
 {
     SCOPED_LOCK(mutex);
+    DEBUG(3, ("Committing %c\n", is_committed ? 'Y' : 'N') );
 
-    if(is_committed) return;
+    if(is_committed) {DEBUG(3, ("Skip\n")); return;}
+    DEBUG(1, ("Committing 1\n") );
 
     // scratch.times already check for monotonic
 
@@ -392,6 +414,7 @@ void SoftSequence::commit()
     conf.codes.resize(buflen);
     conf.times.resize(buflen);
 
+    // ensure presence of trailing end of sequence marker event 0x7f
     if(conf.codes.empty() || conf.codes.back()!=0x7f)
     {
         if(!conf.times.empty() && conf.times.back()==0xffffffff)
@@ -404,6 +427,7 @@ void SoftSequence::commit()
         else
             conf.times.push_back(conf.times.back()+1);
     }
+    DEBUG(1, ("Committing 2\n") );
 
     if(conf.times.size()>2048)
         throw std::runtime_error("Sequence too long");
@@ -414,6 +438,7 @@ void SoftSequence::commit()
         is_committed = true;
         is_insync = false;
     }
+    DEBUG(1, ("Committing 3\n") );
 
     if(!hw) return;
     assert(hw->loaded==this);
@@ -424,47 +449,63 @@ void SoftSequence::commit()
     }
 
     scanIoRequest(changed);
+    DEBUG(1, ("Committed\n") );
 }
 
 void SoftSequence::enable()
 {
     SCOPED_LOCK(mutex);
+    DEBUG(3, ("Enabling %c\n", is_enabled ? 'Y' : 'N') );
     if(is_enabled)
-        return;
+        {DEBUG(3, ("Skip\n")); return;}
 
     is_enabled = true;
 
     if(!hw) return;
 
-    hw->enable();
+    {
+        interruptLock I;
+
+        nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_ARM);
+    }
+    scanIoRequest(changed);
+    DEBUG(1, ("Enabled\n") );
 }
 
 void SoftSequence::disable()
 {
     SCOPED_LOCK(mutex);
+    DEBUG(3, ("Disabling %c\n", is_enabled ? 'Y' : 'N') );
     if(!is_enabled)
-        return;
+        {DEBUG(3, ("Skip\n")); return;}
 
     is_enabled = false;
 
     if(!hw) return;
 
     hw->disarm();
+
+    scanIoRequest(changed);
+    DEBUG(1, ("Disabled\n") );
 }
 
 // Called from ISR context
 void SoftSequence::sync()
 {
+    DEBUG(3, ("Syncing %c\n", is_insync ? 'Y' : 'N') );
     if(is_insync)
-        return;
+        {DEBUG(3, ("Skip\n")); return;}
 
     assert(hw);
-    // At this point the sequencer is disabled and not running
 
     if(nat_ioread32(hw->ctrlreg)&0x03000000) {
         epicsInterruptContextMessage("SoftSequence::sync() while running/enabled");
         return;
     }
+
+    // At this point the sequencer is disabled and not running.
+    // From paranoia, reset it anyway
+    nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_RESET);
 
     hw->ctrlreg_shadow &= ~(EVG_SEQ_RAM_REPEAT_MASK|EVG_SEQ_RAM_SRC_MASK);
 
@@ -493,11 +534,14 @@ void SoftSequence::sync()
     }
 
     // map trigger source codes
-    switch(committed.src>>8) {
+    // MSB governs the type of mapping
+    switch(committed.src>>24) {
     case 0: // raw mapping
+        // LSB is code
         src = committed.src&0xff;
         break;
     case 1: // software trigger mapping
+        // ignore 0x00ffffff
         switch(owner->type) {
         case SeqManager::TypeEVG:
             src = 1u<<(17+hw->idx);
@@ -509,19 +553,29 @@ void SoftSequence::sync()
         break;
     case 2: // external trigger
         if(owner->type==SeqManager::TypeEVG) {
+            // pass through to sub-class
             owner->mapTriggerSrc(hw->idx, committed.src);
             src = 1u<<(24+hw->idx);
         }
+        break;
+    case 3: // disable trigger
+        // use default
+        break;
+    default:
+        DEBUG(0, ("unknown sequencer trigger code %08x\n", (unsigned)committed.src));
         break;
     }
 
     hw->ctrlreg_shadow |= src;
 
+    // write out the RAM
     volatile epicsUInt32 *ram = static_cast<volatile epicsUInt32 *>(hw->rambase);
     for(size_t i=0, N=committed.codes.size(); i<N; i++)
     {
         nat_iowrite32(ram++, committed.times[i]);
         nat_iowrite32(ram++, committed.codes[i]);
+        if(committed.codes[i]==0x7f)
+            break;
     }
 
     epicsUInt32 ctrl = hw->ctrlreg_shadow;
@@ -533,11 +587,13 @@ void SoftSequence::sync()
     nat_iowrite32(hw->ctrlreg, ctrl);
 
     is_insync = true;
+    DEBUG(3, ("In Sync\n") );
 }
 
 
-SeqManager::SeqManager(Type t)
-    :type(t)
+SeqManager::SeqManager(const std::string &name, Type t)
+    :base_t(name)
+    ,type(t)
 {}
 
 SeqManager::~SeqManager() {}
@@ -609,4 +665,14 @@ void SeqManager::addHW(unsigned i,
     hw.resize(std::max(hw.size(), size_t(i+1)), 0);
     assert(!hw[i]);
     hw[i] = new SeqHW(this, i, ctrl, ram);
+}
+
+int SeqManagerDebug;
+
+OBJECT_BEGIN(SeqManager)
+  OBJECT_FACTORY(SeqManager::buildSW);
+OBJECT_END(SeqManager)
+
+extern "C" {
+epicsExportAddress(int, SeqManagerDebug);
 }

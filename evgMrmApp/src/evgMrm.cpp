@@ -46,6 +46,7 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     m_id(id),
     m_pReg(pReg),
     busConfiguration(busConfig),
+    m_seq(this, pReg),
     m_acTrig(id+":AcTrig", pReg),
     m_evtClk(id+":EvtClk", pReg),
   shadowIrqEnable(READ32(m_pReg, IrqEnable))
@@ -306,7 +307,7 @@ evgMrm::isr_vme(void* arg) {
 
 void
 evgMrm::isr(evgMrm *evg, bool pci) {
-
+try{
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);
     epicsUInt32 active = flags & evg->shadowIrqEnable;
 
@@ -329,15 +330,19 @@ evgMrm::isr(evgMrm *evg, bool pci) {
 #endif
 
     if(active & EVG_IRQ_START_RAM(0)) {
+        evg->m_seq.doStartOfSequence(0);
     }
 
     if(active & EVG_IRQ_START_RAM(1)) {
+        evg->m_seq.doStartOfSequence(1);
     }
 
     if(active & EVG_IRQ_STOP_RAM(0)) {
+        evg->m_seq.doEndOfSequence(0);
     }
 
     if(active & EVG_IRQ_STOP_RAM(1)) {
+        evg->m_seq.doEndOfSequence(1);
     }
 
     if(active & EVG_IRQ_EXT_INP) {
@@ -354,7 +359,9 @@ evgMrm::isr(evgMrm *evg, bool pci) {
     WRITE32(evg->m_pReg, IrqFlag, flags);  // Clear the interrupt causes
     READ32(evg->m_pReg, IrqFlag);          // Make sure the clear completes before returning
 
-    return;
+}catch(...){
+    epicsInterruptContextMessage("c++ Exception in ISR!!!\n");
+}
 }
 
 void

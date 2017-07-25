@@ -16,6 +16,7 @@ INC += evgMxc.h
 INC += evgDbus.h
 INC += evgInput.h
 INC += evgOutput.h
+INC += mrmevgseq.h
 
 SRC_DIRS += ../devSupport 
 
@@ -42,6 +43,8 @@ evgmrm_SRCS += devEvgDbus.cpp
 evgmrm_SRCS += evgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
+
+evgmrm_SRCS += mrmevgseq.cpp
 
 evgmrm_SRCS += seqconst.c
 evgmrm_SRCS += seqnsls2.c

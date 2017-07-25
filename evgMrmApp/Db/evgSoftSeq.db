@@ -1,7 +1,7 @@
 record(bo, "$(P)TsInpMode-Sel") {
     field( DTYP, "Obj Prop uint32")
     field( DESC, "EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMEMODE")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEMODE")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "EGU")
@@ -13,14 +13,14 @@ record(bo, "$(P)TsInpMode-Sel") {
 record(bi, "$(P)TsInpMode-RB") {
     field( DTYP, "Obj Prop uint32")
     field( DESC, "EVG Sequence Input Mode")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMEMODE")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEMODE")
     field( ZNAM, "EGU")
     field( ONAM, "TICKS")
 }
 
 record(mbbo, "$(P)TsResolution-Sel") {
     field( DTYP, "Obj Prop uint32")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMEUNITS")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEUNITS")
     field( ZRST, "Sec")
     field( ONST, "mSec")
     field( TWST, "uSec")
@@ -49,7 +49,7 @@ record(mbbo, "$(P)TsResolution-Sel") {
 
 record(mbbi, "$(P)TsResolution-RB") {
     field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMEUNITS")
+    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEUNITS")
     field( ZRST, "Sec")
     field( ONST, "mSec")
     field( TWST, "uSec")
@@ -76,7 +76,7 @@ record(mbbi, "$(P)TsResolution-RB") {
 record(waveform, "$(P)EvtCode-SP") {
     field( DTYP, "Obj Prop waveform out")
     field( DESC, "Sequence event code array")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=CODES")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
     field( NELM, "$(NELM)")
     field( FTVL, "UCHAR")
     info( autosaveFields_pass1, "VAL")
@@ -85,7 +85,7 @@ record(waveform, "$(P)EvtCode-SP") {
 record(waveform, "$(P)EvtCode-RB") {
     field( DTYP, "Obj Prop waveform in")
     field( DESC, "Sequence event code readback")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=CODES")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM)")
     field( FTVL, "UCHAR")
@@ -94,7 +94,7 @@ record(waveform, "$(P)EvtCode-RB") {
 record(waveform, "$(P)Timestamp-SP") {
     field( DTYP, "Obj Prop waveform out")
     field( DESC, "Sequence timestamp array")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMES")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
     field( NELM, "$(NELM)")
     field( FTVL, "DOUBLE")
     info( autosaveFields_pass1, "VAL")
@@ -103,7 +103,7 @@ record(waveform, "$(P)Timestamp-SP") {
 record(waveform, "$(P)Timestamp-RB") {
     field( DTYP, "Obj Prop waveform in")
     field( DESC, "Sequence timestamp readback")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TIMES")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
     field( SCAN, "I/O Intr")
     field( NELM, "$(NELM)")
     field( FTVL, "DOUBLE")
@@ -111,7 +111,7 @@ record(waveform, "$(P)Timestamp-RB") {
 
 record(mbbo, "$(P)RunMode-Sel") {
     field( DTYP, "Obj Prop uint32")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=RUN_MODE")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
     field( UDF,  "0")
     field( ZRVL, "0")
     field( ONVL, "1")
@@ -139,7 +139,7 @@ record(mbbo, "$(P)RunMode-Sel") {
 
 record(mbbi, "$(P)RunMode-RB") {
     field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=RUN_MODE")
+    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
     field( SCAN, "I/O Intr")
     field( ZRVL, "0")
     field( ONVL, "1")
@@ -165,7 +165,7 @@ record(mbbi, "$(P)RunMode-RB") {
 
 record(mbbo, "$(P)TrigSrc-Sel") {
     field( DTYP, "Obj Prop uint32")
-    field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TRIG_SRC")
+    field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
     field( UDF,  "0")
     field( ZRST, "None")
     field( ONST, "Mxc0")
@@ -184,27 +184,27 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field( FTST, "Univ1")
     field( FFST, "Univ2")
     field( ZRVL, 256)
-    field( ONVL, 0)
-    field( TWVL, 1)
-    field( THVL, 2)
-    field( FRVL, 3)
-    field( FVVL, 4)
-    field( SXVL, 5)
-    field( SVVL, 6)
-    field( EIVL, 7)
-    field( NIVL, 16)
-    field( TEVL, 257)
-    field( ELVL, 41)
-    field( TVVL, 45)
-    field( TTVL, 42)
-    field( FTVL, 46)
-    field( FFVL, 50)
+    field( ONVL, "0x03000000")
+    field( TWVL, "1")
+    field( THVL, "2")
+    field( FRVL, "3")
+    field( FVVL, "4")
+    field( SXVL, "5")
+    field( SVVL, "6")
+    field( EIVL, "7")
+    field( NIVL, "16")
+    field( TEVL, "0x01000000")
+    field( ELVL, "0x02010000")
+    field( TVVL, "0x02010001")
+    field( TTVL, "0x02020000")
+    field( FTVL, "0x02020001")
+    field( FFVL, "0x02020002")
     info( autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P)TrigSrc-RB") {
     field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=TRIG_SRC")
+    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
     field( UDF,  "0")
     field( SCAN, "I/O Intr")
     field( ZRST, "None")
@@ -244,7 +244,7 @@ record(mbbi, "$(P)TrigSrc-RB") {
 record(bo, "$(P)Commit-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "Commit EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=COMMIT")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=COMMIT")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "Commit")
@@ -254,7 +254,7 @@ record(bo, "$(P)Commit-Cmd") {
 record(bo, "$(P)Load-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "ALLOC EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=LOAD")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=LOAD")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -264,7 +264,7 @@ record(bo, "$(P)Load-Cmd") {
 record(bo, "$(P)Unload-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "Dealloc EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=UNLOAD")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=UNLOAD")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -274,7 +274,7 @@ record(bo, "$(P)Unload-Cmd") {
 record(bo, "$(P)Enable-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "Enable EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=ENABLE")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLE")
     field( VAL,  "1")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -286,7 +286,7 @@ record(bo, "$(P)Enable-Cmd") {
 record(bo, "$(P)Disable-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "Disable EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=DISABLE")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=DISABLE")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -297,7 +297,7 @@ record(bo, "$(P)Disable-Cmd") {
 record(bo, "$(P)SoftTrig-Cmd") {
     field( DTYP, "Obj Prop command")
     field( DESC, "Sequence RAM soft trigger")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=SOFT_TRIG")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SOFT_TRIG")
     field( VAL,  "0")
     field( UDF,  "0")
     field( ZNAM, "0")
@@ -307,7 +307,7 @@ record(bo, "$(P)SoftTrig-Cmd") {
 record(bi, "$(P)Load-RB") {
     field( DTYP, "Obj Prop bool")
     field( DESC, "Soft Seq Load status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=LOADED")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=LOADED")
     field( SCAN, "I/O Intr")
     field( ZNAM, "Unloaded")
     field( ONAM, "Loaded")
@@ -317,7 +317,7 @@ record(bi, "$(P)Load-RB") {
 record(bi, "$(P)Commit-RB") {
     field( DTYP, "Obj Prop bool")
     field( DESC, "Soft Seq Commit status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=COMMITTED")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=COMMITTED")
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Uncommitted")
     field( ONAM, "Committed")
@@ -327,7 +327,7 @@ record(bi, "$(P)Commit-RB") {
 record(bi, "$(P)Enable-Sts") {
     field( DTYP, "Obj Prop bool")
     field( DESC, "Soft Seq Ena status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=ENABLED")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLED")
     field( SCAN, "I/O Intr")    
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
@@ -339,14 +339,14 @@ record(bi, "$(P)Enable-Sts") {
 record(stringin, "$(P)Error-RB") {
     field( DTYP, "Obj Prop string")
     field( DESC, "Sequence error msg.")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=ERROR")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ERROR")
     field( SCAN, "I/O Intr")
 }
 
 record(longin, "$(P)NumOfStarts-I") {
     field( DTYP, "Obj Prop uint32")
     field( DESC, "# times soft sequence starts")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=NUM_STARTS")
+    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=NUM_STARTS")
     field( SCAN, "I/O Intr") # on sequencer start
     field( FLNK, "$(SOSLNK=)")
 }
@@ -354,7 +354,7 @@ record(longin, "$(P)NumOfStarts-I") {
 record(longin, "$(P)NumOfRuns-I") {
     field( DTYP, "Obj Prop uint32")
     field( DESC, "# times soft sequence ran")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=evgSoftSeq, PARENT=$(EVG), PROP=NUM_RUNS")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=NUM_RUNS")
     field( SCAN, "I/O Intr") # on sequencer stop
 }
 

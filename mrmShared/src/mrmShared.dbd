@@ -1,2 +1,3 @@
 
 device(waveform,INST_IO, devwaveformoutdataBufTx, "MRF Data Buf Tx")
+variable(SeqManagerDebug,int)

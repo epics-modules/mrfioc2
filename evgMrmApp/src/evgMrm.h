@@ -34,6 +34,7 @@
 #include "evgInput.h"
 #include "evgOutput.h"
 #include "mrmDataBufTx.h"
+#include "mrmevgseq.h"
 #include "evgRegMap.h"
 #include "configurationInfo.h"
 
@@ -128,6 +129,8 @@ private:
     volatile epicsUInt8* const    m_pReg;
     const bus_configuration       busConfiguration;
 
+    EvgSeqManager                 m_seq;
+
     evgAcTrig                     m_acTrig;
     evgEvtClk                     m_evtClk;
 
@@ -142,6 +145,12 @@ private:
 
     typedef std::map< std::pair<epicsUInt32, InputType>, evgInput*> Input_t;
     Input_t                       m_input;
+
+public:
+    typedef Input_t::iterator inputs_iterator;
+    inputs_iterator beginInputs() { return m_input.begin(); }
+    inputs_iterator endInputs() { return m_input.end(); }
+private:
 
     typedef std::map< std::pair<epicsUInt32, evgOutputType>, evgOutput*> Output_t;
     Output_t                      m_output;

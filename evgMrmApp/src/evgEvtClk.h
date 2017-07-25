@@ -16,6 +16,8 @@ public:
     virtual void lock() const{};
     virtual void unlock() const{};
     
+    // all frequencies in MHz
+
     epicsFloat64 getFrequency() const;
 
     void setRFFreq(epicsFloat64);
@@ -27,6 +29,7 @@ public:
     void setFracSynFreq(epicsFloat64);
     epicsFloat64 getFracSynFreq() const;
 
+    // true == external, false == internal
     void setSource(bool);
     bool getSource() const;
 

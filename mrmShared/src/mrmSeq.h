@@ -1,3 +1,8 @@
+/*************************************************************************\
+* Copyright (c) 2016 Michael Davidsaver
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
 #ifndef MRMSEQ_H
 #define MRMSEQ_H
 
@@ -17,8 +22,9 @@
 struct SeqHW;
 struct SoftSequence;
 
-class SeqManager
+class SeqManager : public mrf::ObjectInst<SeqManager>
 {
+    typedef mrf::ObjectInst<SeqManager> base_t;
 public:
     // Which model card?
     // used handle external and software trigger source mapping
@@ -28,8 +34,12 @@ public:
     };
     const Type type;
 
-    SeqManager(Type t);
+    SeqManager(const std::string& name, Type t);
     virtual ~SeqManager();
+
+    // no locking needed.  our members are effectivly "const" after addHW() during sub-class ctor
+    virtual void lock() const {}
+    virtual void unlock() const {}
 
     static mrf::Object* buildSW(const std::string& name, const std::string& klass, const mrf::Object::create_args_t& args);
 
@@ -38,7 +48,7 @@ public:
     void doEndOfSequence(unsigned i);
 
     //! sub-class implement to provide scaling between time and frequency.
-    //! Units of Hz
+    //! Units of MHz
     //! called with a SoftSeq mutex held.
     virtual double getClkFreq() const =0;
 
@@ -46,9 +56,6 @@ public:
     //! Setup (or clear w/ zero) the external trigger source
     virtual void mapTriggerSrc(unsigned i, unsigned src) =0;
 
-#ifdef __linux__
-    virtual void pollISR() =0;
-#endif
 protected:
     void addHW(unsigned i,
                volatile void *ctrl,
@@ -58,5 +65,7 @@ private:
     hw_t hw;
     friend struct SoftSequence;
 };
+
+extern int SeqManagerDebug;
 
 #endif // MRMSEQ_H
