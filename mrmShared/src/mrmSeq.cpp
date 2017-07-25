@@ -4,6 +4,8 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <stdio.h>
+
 #include <epicsMutex.h>
 #include <errlog.h>
 
