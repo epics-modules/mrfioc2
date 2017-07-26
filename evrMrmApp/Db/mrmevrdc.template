@@ -4,40 +4,58 @@ record(bo, "$(P)Ena-Sel") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")
     field( OUT, "@OBJ=$(OBJ), PROP=DCEnable")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+    field(PINI, "YES")
+    field(PHAS, "1") # after Tgt-SP
     field(FLNK, "$(P)Ena-RB")
+    info(autosaveFields_pass0, "VAL")
 }
 record(bi, "$(P)Ena-RB") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")
     field( INP, "@OBJ=$(OBJ), PROP=DCEnable")
-    field(PINI, "YES")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
 }
 
 record(ao, "$(P)Tgt-SP") {
     field(DESC, "Desired total delay")
     field(DTYP, "Obj Prop double")
     field( OUT, "@OBJ=$(OBJ), PROP=DCTarget")
+    field( EGU, "ns")
+    field(PREC, "3")
+    field(PINI, "YES")
     field(FLNK, "$(P)Tgt-RB")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 record(ai, "$(P)Tgt-RB") {
     field(DESC, "Desired total delay")
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCTarget")
-    field(PINI, "YES")
+    field( EGU, "ns")
+    field(PREC, "3")
+    info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 
 record(ai, "$(P)Msrd-I") {
     field(DESC, "Measured total delay")
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCRx")
+    field( EGU, "ns")
+    field(PREC, "3")
     field(SCAN, "1 second")
-    field(FLNK, "$(P)Corr-RB")
+    field(FLNK, "$(P)Corr-I")
+    info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 record(ai, "$(P)Corr-I") {
     field(DESC, "delay correction")
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCInt")
+    field( EGU, "ns")
+    field(PREC, "3")
     field(FLNK, "$(P)Lck-Sts")
+    info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 record(bi, "$(P)Lck-Sts") {
     field(DTYP, "Obj Prop uint32")
@@ -84,4 +102,10 @@ record(mbbi, "$(P)LckDat-Sts") {
     field(ZRSV, "MAJOR")
     field(ONSV, "MINOR")
     field(TWSV, "INVALID")
+    field(FLNK, "$(P)ID-I")
+}
+record(longin, "$(P)ID-I") {
+    field(DESC, "Topology ID")
+    field(DTYP, "Obj Prop uint32")
+    field( INP, "@OBJ=$(OBJ), PROP=DCTOPID")
 }
