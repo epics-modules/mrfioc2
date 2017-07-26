@@ -54,7 +54,7 @@ pattern { P, OBJ }
 { "$(SYS){$(D)-Out:Front3}", "$(EVG):FrontOut3" }
 }
 
-file mrmSoftSeq.db {
+file evgSoftSeq.db {
 pattern { P, EVG, seqNum, NELM }
 { "$(SYS){$(D)-SoftSeq:0}", $(EVG), 0, 2047 }
 { "$(SYS){$(D)-SoftSeq:1}", $(EVG), 1, 2047 }
