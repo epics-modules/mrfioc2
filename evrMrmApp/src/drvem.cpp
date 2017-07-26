@@ -381,7 +381,7 @@ EVRMRM::getFormFactor(){
     epicsUInt32 v = READ32(base, FWVersion);
     epicsUInt32 form = (v&FWVersion_form_mask)>>FWVersion_form_shift;
 
-    if(form <= formFactor_PCIe) return (formFactor)form;
+    if(form <= formFactor_mTCA) return (formFactor)form;
     else return formFactor_unknown;
 }
 
@@ -406,6 +406,10 @@ EVRMRM::formFactorStr(){
 
     case formFactor_PCIe:
         text = "PCIe";
+        break;
+
+    case formFactor_mTCA:
+        text = "mTCA";
         break;
 
     case formFactor_PXIe:

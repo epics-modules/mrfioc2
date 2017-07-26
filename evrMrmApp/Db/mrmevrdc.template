@@ -46,7 +46,7 @@ record(bi, "$(P)Lck-Sts") {
     field(ZSV , "MAJOR")
     field(FLNK, "$(P)LckTrk-Sts")
 }
-record(mbbi, "$(P)LckTrk-Sts" {
+record(mbbi, "$(P)LckTrk-Sts") {
     field(DESC, "DC loop tracking")
     field(DTYP, "Obj Prop uint32")
     field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
@@ -65,7 +65,7 @@ record(mbbi, "$(P)LckTrk-Sts" {
     field(THSV, "INVALID")
     field(FLNK, "$(P)LckDat-Sts")
 }
-record(mbbi, "$(P)LckDat-Sts" {
+record(mbbi, "$(P)LckDat-Sts") {
     field(DESC, "DC data from master?")
     field(DTYP, "Obj Prop uint32")
     field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
