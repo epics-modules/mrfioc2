@@ -6,6 +6,7 @@ include $(TOP)/configure/CONFIG
 DB += databuftx.db
 DB += databuftxCtrl.db
 DB += sfp.db
+DB += mrmSoftSeq.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------
