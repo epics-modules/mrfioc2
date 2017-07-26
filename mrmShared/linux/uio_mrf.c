@@ -475,6 +475,7 @@ mrf_probe(struct pci_dev *dev,
         }
 
         if (pci_request_regions(dev, DRV_NAME)) {
+                ret=-ENODEV;
                 goto err_disable;
         }
 
@@ -515,11 +516,13 @@ mrf_probe(struct pci_dev *dev,
             switch(dev->vendor) {
             case PCI_VENDOR_ID_LATTICE:
             case PCI_VENDOR_ID_MRF:
+            case PCI_VENDOR_ID_XILINX:
                 dev_info(&dev->dev, "Attaching MRF device w/o PLX bridge (%08x)\n",
                          (unsigned)dev->device);
                 break;
             default:
                 dev_err(&dev->dev, "Unsupported vendor ID\n");
+                ret=-NODEV;
                 goto err_release;
             }
 
@@ -563,6 +566,9 @@ mrf_probe(struct pci_dev *dev,
                 ret=-ENODEV;
                 goto err_unmap;
             }
+            if((mrfver&0xff00)==0x0200)
+                priv->usemie = 1;
+
             if(!priv->usemie) {
                 dev_warn(&dev->dev, "Consider update to firmware >=8 (currently %u) to avoid "
                          "race condition in IRQ handling\n", (mrfver&0xff));
