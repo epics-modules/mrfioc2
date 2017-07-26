@@ -33,7 +33,7 @@ file "mrmevrbufrx.db"
 {"$(SYS){$(D)}", $(EVR):BUFRX, 0xff00}
 }
 
-file mrmSoftSeq.db {
+file evrSoftSeq.template {
 pattern { P, EVG, seqNum, NELM }
 { "$(SYS){$(D)-SoftSeq:0}", $(EVR), 0, 2047 }
 { "$(SYS){$(D)-SoftSeq:1}", $(EVR), 1, 2047 }
