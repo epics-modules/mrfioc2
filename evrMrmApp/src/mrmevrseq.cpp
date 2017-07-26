@@ -39,7 +39,10 @@ double EvrSeqManager::getClkFreq() const
 void EvrSeqManager::mapTriggerSrc(unsigned i, unsigned src)
 {
     assert(i==0);
-    DEBUG(0, ("EvrSeqManager::mapTriggerSrc external trigger mappings unsupported %x\n", src));
+    if((src&0xff000000)!=0x02000000) {
+        DEBUG(0, ("EvrSeqManager::mapTriggerSrc unsupported %x\n", src));
+        return;
+    }
 }
 
 //! Called from ISR

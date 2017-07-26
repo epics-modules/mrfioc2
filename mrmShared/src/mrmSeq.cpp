@@ -377,7 +377,7 @@ void SoftSequence::load()
     }
 
     // paranoia: disable any external trigger mappings
-    owner->mapTriggerSrc(hw->idx, 0x03000000);
+    owner->mapTriggerSrc(hw->idx, 0x02000000);
 
     if(!hw->disarm()) {
         interruptLock L;
@@ -541,6 +541,9 @@ void SoftSequence::sync()
     default:
         return;
     }
+
+    // paranoia: disable any external trigger mappings
+    owner->mapTriggerSrc(hw->idx, 0x02000000);
 
     // map trigger source codes
     // MSB governs the type of mapping

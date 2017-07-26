@@ -43,6 +43,7 @@ void EvgSeqManager::mapTriggerSrc(unsigned i, unsigned src)
     assert(i<=1);
     /* Input mapping special codes 0x02xxxxxx
      *
+     * 0x20000000 - Disable
      * 0x020100xx - Front panel in
      * 0x020200xx - UV in
      * 0x020300xx - TB in
