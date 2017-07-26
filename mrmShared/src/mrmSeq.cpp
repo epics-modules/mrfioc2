@@ -558,7 +558,7 @@ void SoftSequence::sync()
             src = 17+hw->idx;
             break;
         case SeqManager::TypeEVR:
-            src = 62;
+            src = 61;
             break;
         }
         break;
