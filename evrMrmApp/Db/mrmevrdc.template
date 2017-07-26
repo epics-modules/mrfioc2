@@ -1,6 +1,6 @@
 # Delay Compensation control/status
 
-record(bo, "$(P)Ena-SP") {
+record(bo, "$(P)Ena-Sel") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")
     field( OUT, "@OBJ=$(OBJ), PROP=DCEnable")
@@ -26,14 +26,14 @@ record(ai, "$(P)Tgt-RB") {
     field(PINI, "YES")
 }
 
-record(ai, "$(P)Msrd-RB") {
+record(ai, "$(P)Msrd-I") {
     field(DESC, "Measured total delay")
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCRx")
     field(SCAN, "1 second")
     field(FLNK, "$(P)Corr-RB")
 }
-record(ai, "$(P)Corr-RB") {
+record(ai, "$(P)Corr-I") {
     field(DESC, "delay correction")
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCInt")
@@ -44,6 +44,8 @@ record(bi, "$(P)Lck-Sts") {
     field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
     field(MASK, "1")
     field(ZSV , "MAJOR")
+    field(ZNAM, "Unlocked")
+    field(ONAM, "Locked")
     field(FLNK, "$(P)LckTrk-Sts")
 }
 record(mbbi, "$(P)LckTrk-Sts") {
@@ -77,9 +79,9 @@ record(mbbi, "$(P)LckDat-Sts") {
     field(THVL, "3")
     field(ZRST, "No Mstr")
     field(ONST, "Coarse")
-    field(TWST, "Fine")
-    field(THST, "Invalid")
+    field(TWST, "Invalid")
+    field(THST, "Fine")
     field(ZRSV, "MAJOR")
     field(ONSV, "MINOR")
-    field(THSV, "INVALID")
+    field(TWSV, "INVALID")
 }
