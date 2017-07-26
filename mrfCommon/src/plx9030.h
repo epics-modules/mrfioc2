@@ -35,12 +35,5 @@
 #  define INTCSR_SW_INTR       0x80
 
 #define PCI_VENDOR_ID_PLX             0x10b5   /* PCI Vendor ID for PLX Technology, Inc.          */
-#define PCI_VENDOR_ID_XILINX          0x10ee
-
-#define PCI_DEVICE_ID_PLX_9030        0x9030   /* PCI Device ID for PLX-9030 bridge chip          */
-#define PCI_DEVICE_ID_XILINX_DEV      0x7011
-#define PCI_VENDOR_ID_MRF             0x1a3e   /* PCI Vendor ID for Micro Research Finland, Oy    */
-#define PCI_DEVICE_ID_MRF_PXIEVG230   0x20E6
-#define PCI_DEVICE_ID_MRF_EVRMTCA300  0x132c
 
 #endif /* PLX9030_H */
