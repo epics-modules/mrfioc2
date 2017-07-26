@@ -33,6 +33,13 @@ file "mrmevrbufrx.db"
 {"$(SYS){$(D)}", $(EVR):BUFRX, 0xff00}
 }
 
+file mrmSoftSeq.db {
+pattern { P, EVG, seqNum, NELM }
+{ "$(SYS){$(D)-SoftSeq:0}", $(EVR), 0, 2047 }
+{ "$(SYS){$(D)-SoftSeq:1}", $(EVR), 1, 2047 }
+{ "$(SYS){$(D)-SoftSeq:2}", $(EVR), 2, 2047 }
+}
+
 file "sfp.db"
 {
 {P="$(SYS){$(D)-SFP}", OBJ="$(EVR):SFP"}
