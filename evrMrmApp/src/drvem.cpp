@@ -949,7 +949,8 @@ EVRMRM::enableIRQ(void)
     shadowIRQEna =  IRQ_Enable
                    |IRQ_RXErr    |IRQ_BufFull
                    |IRQ_Heartbeat
-                   |IRQ_Event    |IRQ_FIFOFull;
+                   |IRQ_Event    |IRQ_FIFOFull
+                   |IRQ_SoS      |IRQ_EoS;
 
     // IRQ PCIe enable flag should not be changed. Possible RACER here
     shadowIRQEna |= (IRQ_PCIee & (READ32(base, IRQEnable)));
@@ -1043,6 +1044,12 @@ EVRMRM::isr(EVRMRM *evr, bool pci)
         evr->drain_fifo_wakeup.trySend(&wakeup, sizeof(wakeup));
 
         scanIoRequest(evr->IRQfifofull);
+    }
+    if(active&IRQ_SoS && evr->seq.get()){
+        evr->seq->doStartOfSequence(0);
+    }
+    if(active&IRQ_EoS && evr->seq.get()){
+        evr->seq->doEndOfSequence(0);
     }
     evr->count_hardware_irq++;
 

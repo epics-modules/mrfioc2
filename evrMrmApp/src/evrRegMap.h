@@ -85,6 +85,8 @@
 #  define Control_fiforst 0x00000008
 
 #define U32_IRQFlag     0x008
+#  define IRQ_EoS       0x1000
+#  define IRQ_SoS       0x0100
 #  define IRQ_LinkChg   0x40
 #  define IRQ_BufFull   0x20
 #  define IRQ_HWMapped  0x10
