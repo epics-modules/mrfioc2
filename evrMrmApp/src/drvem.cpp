@@ -148,7 +148,7 @@ try{
     if(boardtype!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    if(ver<3)
+    if(fwid==0 && ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
     scanIoInit(&IRQmappedEvent);
@@ -161,14 +161,14 @@ try{
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
-    if(ver>=5) {
+    if(fwid==2 || ver>=5) {
         std::ostringstream name;
         name<<n<<":SFP";
         sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
     }
 
-    if(fwid==2) {
-        printf("DC firmware detected.\n");
+    if(fwid==2 && ver>=7) {
+        printf("Sequencer capability detected\n");
         seq.reset(new EvrSeqManager(this));
     }
 
@@ -256,7 +256,7 @@ try{
         shortcmls[0]=new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
         shortcmls[1]=new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
 
-    } else if(conf->nCML && ver>=4){
+    } else if(conf->nCML && (fwid==2 || ver>=4)){
         shortcmls.resize(conf->nCML);
         for(size_t i=0; i<conf->nCML; i++){
             std::ostringstream name;
