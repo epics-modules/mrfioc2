@@ -82,18 +82,10 @@ struct SeqHW
     {
         interruptLock I;
 
-        /** Interesting race conditions possible on non-RTOS where ISR don't preempt.
-         * It is then possible that disarm() can be called after a sequencer has finished
-         * running, but before the ISR runs for Start of Sequence interrupt.
-         * So we also test for SoS
-         */
-
         nat_iowrite32(ctrlreg, ctrlreg_shadow | EVG_SEQ_RAM_DISABLE);
         bool isrun = nat_ioread32(ctrlreg) & EVG_SEQ_RAM_RUNNING;
-        bool started = owner->testStartOfSeq() & (1u<<idx);
-        // TODO: test for start of sequence as well?
 
-        return isrun || started || running;
+        return isrun;
     }
 };
 
