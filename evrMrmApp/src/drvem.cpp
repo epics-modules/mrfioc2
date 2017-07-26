@@ -142,13 +142,12 @@ try{
     const epicsUInt32 rawver = fpgaFirmware();
     const epicsUInt32 boardtype = (rawver&FWVersion_type_mask)>>FWVersion_type_shift;
     const epicsUInt32 formfactor = (rawver&FWVersion_form_mask)>>FWVersion_form_shift;
-    const epicsUInt32 fwid = (rawver&FWVersion_fw_mask)>>FWVersion_fw_shift;
     const epicsUInt32 ver = (rawver&FWVersion_ver_mask)>>FWVersion_ver_shift;
 
     if(boardtype!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    if(fwid==0 && ver<3)
+    if(ver<3)
         throw std::runtime_error("Firmware versions < 3 not supported");
 
     scanIoInit(&IRQmappedEvent);
@@ -161,13 +160,13 @@ try{
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
-    if(fwid==2 || ver>=5) {
+    if(ver>=5) {
         std::ostringstream name;
         name<<n<<":SFP";
         sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
     }
 
-    if(fwid==2 && ver>=7) {
+    if(ver>=0x0207) {
         printf("Sequencer capability detected\n");
         seq.reset(new EvrSeqManager(this));
     }
@@ -256,7 +255,7 @@ try{
         shortcmls[0]=new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
         shortcmls[1]=new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
 
-    } else if(conf->nCML && (fwid==2 || ver>=4)){
+    } else if(conf->nCML && ver>=4){
         shortcmls.resize(conf->nCML);
         for(size_t i=0; i<conf->nCML; i++){
             std::ostringstream name;

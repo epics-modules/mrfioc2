@@ -342,20 +342,17 @@ long mrmEvrReport(int level)
 static
 void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int recommended)
 {
-    epicsUInt32 v = READ32(base, FWVersion),evr,ver;
+    epicsUInt32 v = READ32(base, FWVersion);
 
-    errlogPrintf("FWVersion 0x%08x\n", v);
-    if(v&FWVersion_zero_mask)
-        throw std::runtime_error("Invalid firmware version (HW or bus error)");
+    printf("FWVersion 0x%08x\n", v);
 
-    evr=v&FWVersion_type_mask;
+    epicsUInt32 evr=v&FWVersion_type_mask;
     evr>>=FWVersion_type_shift;
 
     if(evr!=0x1)
         throw std::runtime_error("Firmware does not correspond to an EVR");
 
-    ver=v&FWVersion_ver_mask;
-    ver>>=FWVersion_ver_shift;
+    epicsUInt32 ver=(v&FWVersion_ver_mask)>>FWVersion_ver_shift;
 
     errlogPrintf("Found version %u\n", ver);
 
@@ -531,6 +528,7 @@ try {
 
     case PCI_DEVICE_ID_EC_30:
     case PCI_DEVICE_ID_MRF_CPCIEVR300:
+    case PCI_DEVICE_ID_XILINX_DEV:
         /* the endianness the 300 series devices w/o PLX bridge
          * is a little tricky to setup.  byte order swapping is controlled
          * through the EVR's Control register and access to this register
