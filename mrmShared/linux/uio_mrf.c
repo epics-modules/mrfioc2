@@ -41,6 +41,8 @@ MODULE_PARM_DESC(interfaceversion, "User space interface version");
 
 #define PCI_DEVICE_ID_EC_30                 0xEC30
 
+#define PCI_DEVICE_ID_XILINX_DEV            0x7011
+
 #define PCI_DEVICE_ID_PLX_9030              0x9030      /** PCI Device ID for PLX-9030 bridge chip */
 #define PCI_DEVICE_ID_PLX_9056              0x9056      /** PCI Device ID for PLX-9056 bridge chip */
 
@@ -59,6 +61,9 @@ MODULE_PARM_DESC(interfaceversion, "User space interface version");
 #define PCI_DEVICE_ID_MRF_CPCI_EVG_300      0x252c
 /* cPCI-EVR-300 */
 #define PCI_DEVICE_ID_MRF_CPCI_EVR_300      0x152c
+/* mTCA-EVR-300 */
+#define PCI_DEVICE_ID_MRF_EVRMTCA300  0x132c
+
 
 /************************ Compatability ****************************/
 
@@ -701,6 +706,13 @@ static struct pci_device_id mrf_pci_ids[] = {
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_DEVICE_ID_MRF_CPCI_EVR_300,
         .driver_data =  0x14,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_XILINX,
+        .device =       PCI_DEVICE_ID_XILINX_DEV,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_DEVICE_ID_MRF_EVRMTCA300,
+        .driver_data =  0x18,
     },
     { 0, }
 };
