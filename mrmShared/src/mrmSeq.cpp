@@ -377,7 +377,7 @@ void SoftSequence::load()
     }
 
     // paranoia: disable any external trigger mappings
-    owner->mapTriggerSrc(hw->idx, 0x02000000);
+    owner->mapTriggerSrc(hw->idx, 0x03000000);
 
     if(!hw->disarm()) {
         interruptLock L;
@@ -544,13 +544,13 @@ void SoftSequence::sync()
 
     // map trigger source codes
     // MSB governs the type of mapping
-    switch(committed.src>>24) {
-    case 0: // raw mapping
+    switch(committed.src&0xff000000) {
+    case 0x00000000: // raw mapping
         DEBUG(5, ("  Raw mapping %x\n", committed.src));
         // LSB is code
         src = committed.src&0xff;
         break;
-    case 1: // software trigger mapping
+    case 0x01000000: // software trigger mapping
         DEBUG(5, ("  SW mapping %x\n", committed.src));
         // ignore 0x00ffffff
         switch(owner->type) {
@@ -562,7 +562,7 @@ void SoftSequence::sync()
             break;
         }
         break;
-    case 2: // external trigger
+    case 0x02000000: // external trigger
         DEBUG(5, ("  EXT mapping %x\n", committed.src));
         if(owner->type==SeqManager::TypeEVG) {
             // pass through to sub-class
@@ -570,7 +570,7 @@ void SoftSequence::sync()
             src = 24+hw->idx;
         }
         break;
-    case 3: // disable trigger
+    case 0x03000000: // disable trigger
         DEBUG(5, ("  NO mapping %x\n", committed.src));
         // use default
         break;

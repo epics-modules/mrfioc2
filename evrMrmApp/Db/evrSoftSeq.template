@@ -179,11 +179,6 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field( EIST, "Mxc7")
     field( NIST, "AC")
     field( TEST, "Software")
-    field( ELST, "Front0")
-    field( TVST, "Front1")
-    field( TTST, "Univ0")
-    field( FTST, "Univ1")
-    field( FFST, "Univ2")
     field( ZRVL, "0x03000000")
     field( ONVL, "0")
     field( TWVL, "1")
@@ -195,11 +190,6 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field( EIVL, "7")
     field( NIVL, "16")
     field( TEVL, "0x01000000")
-    field( ELVL, "0x02010000")
-    field( TVVL, "0x02010001")
-    field( TTVL, "0x02020000")
-    field( FTVL, "0x02020001")
-    field( FFVL, "0x02020002")
     info( autosaveFields_pass0, "VAL")
 }
 
