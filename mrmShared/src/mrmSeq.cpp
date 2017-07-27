@@ -15,20 +15,20 @@
 
 #include <epicsExport.h>
 
-#define  EVG_SEQ_RAM_RUNNING    0x02000000  // Sequence RAM is Running (read only)
-#define  EVG_SEQ_RAM_ENABLED    0x01000000  // Sequence RAM is Enabled (read only)
+#define  EVG_SEQ_RAM_RUNNING    0x02000000  /* Sequence RAM is Running (read only) */
+#define  EVG_SEQ_RAM_ENABLED    0x01000000  /* Sequence RAM is Enabled (read only) */
 
 //TODO: external enable/trigger bits and hanlding?
-#define  EVG_SEQ_RAM_SW_TRIG    0x00200000  // Sequence RAM Software Trigger Bit
-#define  EVG_SEQ_RAM_RESET      0x00040000  // Sequence RAM Reset
-#define  EVG_SEQ_RAM_DISABLE    0x00020000  // Sequence RAM Disable
-#define  EVG_SEQ_RAM_ARM        0x00010000  // Sequence RAM Enable/Arm
+#define  EVG_SEQ_RAM_SW_TRIG    0x00200000  /* Sequence RAM Software Trigger Bit */
+#define  EVG_SEQ_RAM_RESET      0x00040000  /* Sequence RAM Reset */
+#define  EVG_SEQ_RAM_DISABLE    0x00020000  /* Sequence RAM Disable (and stop) */
+#define  EVG_SEQ_RAM_ARM        0x00010000  /* Sequence RAM Enable/Arm */
 
 #define  EVG_SEQ_RAM_WRITABLE_MASK 0x00ffffff
-#define  EVG_SEQ_RAM_REPEAT_MASK 0x00180000 // Sequence RAM Repeat Mode Mask
-#define  EVG_SEQ_RAM_NORMAL     0x00000000  // Normal Mode: Repeat every trigger
-#define  EVG_SEQ_RAM_SINGLE     0x00100000  // Single-Shot Mode: Disable on completion
-#define  EVG_SEQ_RAM_RECYCLE    0x00080000  // Continuous Mode: Repeat on completion
+#define  EVG_SEQ_RAM_REPEAT_MASK 0x00180000 /* Sequence RAM Repeat Mode Mask */
+#define  EVG_SEQ_RAM_NORMAL     0x00000000  /* Normal Mode: Repeat every trigger */
+#define  EVG_SEQ_RAM_SINGLE     0x00100000  /* Single-Shot Mode: Disable on completion */
+#define  EVG_SEQ_RAM_RECYCLE    0x00080000  /* Continuous Mode: Repeat on completion */
 
 #define  EVG_SEQ_RAM_SRC_MASK 0x000000ff
 
@@ -61,7 +61,9 @@ struct SeqHW
     SoftSequence *loaded;
     //! between SoS and EoS
     bool running;
-    epicsUInt32 ctrlreg_shadow;
+
+    epicsUInt32 ctrlreg_user, //!< user requested (based on commited sequence)
+                ctrlreg_hw;   //!< current in HW.  either same as _user or trigger disabled
 
     SeqHW(SeqManager * o,
           unsigned i,
@@ -73,16 +75,50 @@ struct SeqHW
         ,rambase(ram)
         ,loaded(0)
         ,running(false)
-        ,ctrlreg_shadow(nat_ioread32(ctrlreg)&0x001800ff)
+        ,ctrlreg_user(0u)
+        ,ctrlreg_hw(0u)
     {
-        nat_iowrite32(ctrlreg, ctrlreg_shadow | EVG_SEQ_RAM_RESET);
+        switch(owner->type) {
+        case SeqManager::TypeEVG:
+            ctrlreg_user |= 31;
+            break;
+        case SeqManager::TypeEVR:
+            ctrlreg_user |= 63;
+            break;
+        default:
+            return;
+        }
+        ctrlreg_hw = ctrlreg_user;
+
+        nat_iowrite32(ctrlreg, ctrlreg_hw | EVG_SEQ_RAM_RESET);
     }
 
+    // call with interruptLock
+    void arm()
+    {
+        ctrlreg_hw = ctrlreg_user;
+        nat_iowrite32(ctrlreg, ctrlreg_hw | EVG_SEQ_RAM_ARM);
+    }
+
+    // call with interruptLock
     bool disarm()
     {
-        interruptLock I;
 
-        nat_iowrite32(ctrlreg, ctrlreg_shadow | EVG_SEQ_RAM_DISABLE);
+        // EVG_SEQ_RAM_DISABLE is really "stop"
+        // to avoid aborting a potentially running sequencer, switch the trigger source to disable
+
+        ctrlreg_hw &= ~(EVG_SEQ_RAM_SRC_MASK);
+
+        switch(owner->type) {
+        case SeqManager::TypeEVG:
+            ctrlreg_hw |= 31;
+            break;
+        case SeqManager::TypeEVR:
+            ctrlreg_hw |= 63;
+            break;
+        }
+
+        nat_iowrite32(ctrlreg, ctrlreg_hw);
         bool isrun = nat_ioread32(ctrlreg) & EVG_SEQ_RAM_RUNNING;
 
         return isrun;
@@ -336,7 +372,10 @@ void SoftSequence::softTrig()
     SCOPED_LOCK(mutex);
     if(!hw || !is_enabled) {DEBUG(3, ("Skip\n")); return;}
 
-    nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_SW_TRIG);
+    {
+        interruptLock L;
+        nat_iowrite32(hw->ctrlreg, hw->ctrlreg_hw | EVG_SEQ_RAM_SW_TRIG);
+    }
     DEBUG(2, ("SW Triggered\n") );
 }
 
@@ -360,20 +399,20 @@ void SoftSequence::load()
                 break;
             }
         }
+
+        if(hw) {
+            // paranoia: disable any external trigger mappings
+            owner->mapTriggerSrc(hw->idx, 0x02000000);
+
+            if(!hw->disarm())
+                sync();
+        }
     }
 
     if(!hw) {
         last_err = "All HW Seq. in use";
         scanIoRequest(onErr);
         throw alarm_exception(MAJOR_ALARM, WRITE_ALARM);
-    }
-
-    // paranoia: disable any external trigger mappings
-    owner->mapTriggerSrc(hw->idx, 0x02000000);
-
-    if(!hw->disarm()) {
-        interruptLock L;
-        sync();
     }
 
     scanIoRequest(changed);
@@ -387,13 +426,14 @@ void SoftSequence::unload()
 
     if(!hw) {DEBUG(3, ("Skip\n")); return;}
 
-    hw->disarm();
+    assert(hw->loaded=this);
 
     {
         interruptLock L;
-        assert(hw->loaded=this);
-        hw->loaded = NULL;
 
+        hw->disarm();
+
+        hw->loaded = NULL;
         hw = NULL;
 
         is_insync = false;
@@ -410,7 +450,6 @@ void SoftSequence::commit()
     DEBUG(3, ("Committing %c\n", is_committed ? 'Y' : 'N') );
 
     if(is_committed) {DEBUG(3, ("Skip\n")); return;}
-    DEBUG(1, ("Committing 1\n") );
 
     // scratch.times already check for monotonic
 
@@ -434,23 +473,20 @@ void SoftSequence::commit()
         else
             conf.times.push_back(conf.times.back()+1);
     }
-    DEBUG(1, ("Committing 2\n") );
 
     if(conf.times.size()>2048)
         throw std::runtime_error("Sequence too long");
+
+    assert(!hw || hw->loaded==this);
 
     {
         interruptLock L;
         committed.swap(conf);
         is_committed = true;
         is_insync = false;
-    }
-    DEBUG(1, ("Committing 3\n") );
 
-    if(hw && !hw->disarm()) {
-        assert(hw->loaded==this);
-        interruptLock L;
-        sync();
+        if(hw && !hw->disarm())
+            sync();
     }
 
     scanIoRequest(changed);
@@ -469,7 +505,7 @@ void SoftSequence::enable()
     if(hw) {
         interruptLock I;
 
-        nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_ARM);
+        hw->arm();
     }
     scanIoRequest(changed);
     DEBUG(1, ("Enabled\n") );
@@ -484,8 +520,10 @@ void SoftSequence::disable()
 
     is_enabled = false;
 
-    if(hw)
+    if(hw) {
+        interruptLock L;
         hw->disarm();
+    }
 
     scanIoRequest(changed);
     DEBUG(1, ("Disabled\n") );
@@ -500,23 +538,25 @@ void SoftSequence::sync()
 
     assert(hw);
 
-    if(nat_ioread32(hw->ctrlreg)&0x03000000) {
-        epicsInterruptContextMessage("SoftSequence::sync() while running/enabled");
+    if(nat_ioread32(hw->ctrlreg)&EVG_SEQ_RAM_RUNNING) {
+        // we may still be _ENABLED at this point, but the trigger source is set to
+        // Disabled, so this makes no difference.
+        epicsInterruptContextMessage("SoftSequence::sync() while running\n");
         return;
     }
 
-    // At this point the sequencer is disabled and not running.
+    // At this point the sequencer is not running and effectively disabled.
     // From paranoia, reset it anyway
-    nat_iowrite32(hw->ctrlreg, hw->ctrlreg_shadow | EVG_SEQ_RAM_RESET);
+    nat_iowrite32(hw->ctrlreg, hw->ctrlreg_hw | EVG_SEQ_RAM_RESET);
 
-    hw->ctrlreg_shadow &= ~(EVG_SEQ_RAM_REPEAT_MASK|EVG_SEQ_RAM_SRC_MASK);
+    hw->ctrlreg_user &= ~(EVG_SEQ_RAM_REPEAT_MASK|EVG_SEQ_RAM_SRC_MASK);
 
     switch(committed.mode) {
     case Single:
-        hw->ctrlreg_shadow |= EVG_SEQ_RAM_SINGLE;
+        hw->ctrlreg_user |= EVG_SEQ_RAM_SINGLE;
         break;
     case Normal:
-        hw->ctrlreg_shadow |= EVG_SEQ_RAM_NORMAL;
+        hw->ctrlreg_user |= EVG_SEQ_RAM_NORMAL;
         break;
     }
 
@@ -575,7 +615,7 @@ void SoftSequence::sync()
     }
     DEBUG(5, ("  Trig Src %x\n", src));
 
-    hw->ctrlreg_shadow |= src;
+    hw->ctrlreg_user |= src;
 
     // write out the RAM
     volatile epicsUInt32 *ram = static_cast<volatile epicsUInt32 *>(hw->rambase);
@@ -588,7 +628,7 @@ void SoftSequence::sync()
     }
 
     {
-        epicsUInt32 ctrl = hw->ctrlreg_shadow;
+        epicsUInt32 ctrl = hw->ctrlreg_hw = hw->ctrlreg_user;
         if(is_enabled)
             ctrl |= EVG_SEQ_RAM_ARM;
         else
