@@ -14,7 +14,7 @@ record(longout, "$(NAME)") {
   field( OUT , "@OBJ=$(OBJ), Func=$(func)")
   field( PINI, "YES")
   field( DESC, "Mapping for $(func)")
-  field( VAL , $(EVT))
+  field( VAL , "$(EVT)")
   field( LOPR, "0")
   field( HOPR, "255")
   field( DRVL, "0")
