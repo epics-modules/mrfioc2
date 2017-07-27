@@ -99,6 +99,12 @@ MRMOutput::sourceInternal() const
 void
 MRMOutput::setSourceInternal(epicsUInt32 v)
 {
+    /* DC firmware supports mapping out sources per output.
+     * These two are OR'd together.
+     * We only expose one and map the other to Force Low
+     */
+    v &= 0x00ff;
+    v |= 0x3f00;
 
     epicsUInt32 val=63;
     switch(type) {
