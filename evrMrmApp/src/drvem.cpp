@@ -932,6 +932,30 @@ EVRMRM::topId() const
     return READ32(base, TOPID);
 }
 
+void
+EVRMRM::sendSoftEvt(epicsUInt32 code)
+{
+    if(code==0) return;
+    else if(code>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    unsigned i;
+
+    // spin fast
+    for(i=0; i<100 && READ32(base, SwEvent) & SwEvent_Pend; i++) {}
+
+    if(i==100) {
+        // spin slow for <= 50ms
+        for(i=0; i<5 && READ32(base, SwEvent) & SwEvent_Pend; i++)
+            epicsThreadSleep(0.01);
+
+        if(i==5)
+            throw std::runtime_error("SwEvent timeout");
+    }
+
+    WRITE32(base, SwEvent, (code<<SwEvent_Code_SHIFT)|SwEvent_Ena);
+}
+
 OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
   OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
@@ -939,6 +963,7 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
+  OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::sendSoftEvt);
 OBJECT_END(EVRMRM)
 
 

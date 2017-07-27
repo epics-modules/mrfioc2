@@ -21,6 +21,11 @@ file "databuftx.db"
 {"$(SYS){$(D)}", "$(EVR):BUFTX", 1}
 }
 
+file "evrSoftEvt.template"
+{
+{P="$(SYS){$(D)}", OBJ="$(EVR)"}
+}
+
 file "databuftxCtrl.db"
 {pattern
 {P, OBJ}

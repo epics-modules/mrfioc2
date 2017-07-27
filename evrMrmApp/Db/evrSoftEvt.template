@@ -1,0 +1,7 @@
+record(longout, "$(P)EvtCode-SP") {
+  field(DESC, "Sent software event")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=EvtCode")
+  field(VAL , "0")
+  field(PINI, "YES") # send event 0 is a no-op
+}

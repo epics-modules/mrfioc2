@@ -102,6 +102,16 @@
 
 #define U32_IRQPulseMap 0x010
 
+//=====================
+// Software Event Control Registers
+//
+#define  U32_SwEvent            0x0018
+
+#define  SwEvent_Ena            0x00000100
+#define  SwEvent_Pend           0x00000200
+#define  SwEvent_Code_MASK      0x000000ff
+#define  SwEvent_Code_SHIFT     0
+
 // With Linux this bit should used by the kernel driver exclusively
 #define U32_PCI_MIE             0x001C
 #define EVG_MIE_ENABLE          0x40000000

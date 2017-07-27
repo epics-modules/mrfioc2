@@ -84,8 +84,6 @@
 // Software Event Control Registers
 //
 #define  U32_SwEvent            0x0018
-#define  U8_SwEventControl      0x001A  // Software Event Control Register
-#define  U8_SwEventCode         0x001B  // Software Event Code Register
 
 #define  SwEvent_Ena            0x00000100
 #define  SwEvent_Pend           0x00000200

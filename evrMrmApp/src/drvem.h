@@ -211,6 +211,9 @@ public:
     epicsUInt32 dcStatusRaw() const;
     epicsUInt32 topId() const;
 
+    epicsUInt32 dummy() const { return 0; }
+    void sendSoftEvt(epicsUInt32 code);
+
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
