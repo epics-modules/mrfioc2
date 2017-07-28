@@ -1,0 +1,17 @@
+record(mbboDirect, "$(PN)Mask-Sel") {
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=Masks")
+  field(PINI, "YES")
+  field(NOBT, "4")
+  field(VAL , "0")
+  field(FLNK, "$(PN)Mask-RB")
+  info(autosaveFields_pass0, "RVAL")
+}
+
+record(mbbiDirect, "$(PN)Mask-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Masks")
+  field(PINI, "YES")
+  field(NOBT, "4")
+  info(autosaveFields_pass0, "RVAL")
+}
