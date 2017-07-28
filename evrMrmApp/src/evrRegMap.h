@@ -240,6 +240,13 @@
 /* 0 <= N <= 31 */
 #define U32_OutputMapRB(N) (U32_OutputMapRBN + (2*( (N) & (~0x1) )))
 
+/* Backplane line outputs */
+#define U32_OutputMapBackplaneN 0x4C0
+#  define OutputMapBackplaneMax 8
+
+/* 0 <= N <= 7 */
+#define U32_OutputMapBackplane(N) (U32_OutputMapBackplaneN + (2*( (N) & (~0x1) )))
+
 /* Front panel inputs */
 #define U32_InputMapFPN  0x500
 #  define InputMapFP_lvl  0x20000000

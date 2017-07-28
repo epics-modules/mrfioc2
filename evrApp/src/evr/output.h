@@ -20,7 +20,8 @@ enum OutputType {
   OutputInt=0, //!< Internal
   OutputFP=1,  //!< Front Panel
   OutputFPUniv=2, //!< FP Universal
-  OutputRB=3 //!< Rear Breakout
+  OutputRB=3, //!< Rear Breakout
+  OutputBackplane=4, //!< Backplane lines
 };
 
 class epicsShareClass Output : public mrf::ObjectInst<Output>, public IOStatus

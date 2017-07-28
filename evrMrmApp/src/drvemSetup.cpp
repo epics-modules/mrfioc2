@@ -86,6 +86,7 @@ static const EVRMRM::Config cpci_evr_230 = {
     0,  // FP outputs
     4,  // FPUV outputs
     0,  // RB outputs
+    0,  // Backplane outputs
     2,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeCML,
@@ -99,6 +100,7 @@ static const EVRMRM::Config pmc_evr_230 = {
     3,  // FP outputs
     0,  // FPUV outputs
     10, // RB outputs
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeCML,
@@ -112,6 +114,7 @@ static const EVRMRM::Config pcie_evr_230 = {
     0,  // FP outputs
     16, // FPUV outputs
     0,  // RB outputs
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeCML,
@@ -125,6 +128,7 @@ static const EVRMRM::Config vme_evrrf_230 = { // no way to distinguish RF and no
     8,  // FP outputs
     4,  // FPUV outputs
     16, // RB outputs
+    0,  // Backplane outputs
     2,  // FP Delay outputs
     3,  // CML/GTX outputs
     MRMCML::typeCML,
@@ -138,6 +142,7 @@ static const EVRMRM::Config cpci_evrtg_300 = {
     0,  // FP outputs
     4,  // FPUV outputs
     0,  // RB outputs
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     4,  // CML/GTX outputs
     MRMCML::typeTG300,
@@ -151,6 +156,7 @@ static const EVRMRM::Config cpci_evr_300 = {
     0,  // FP outputs
     12, // FPUV outputs
     0,  // RB outputs
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     4,  // CML/GTX outputs
     MRMCML::typeTG300,
@@ -164,6 +170,7 @@ static const EVRMRM::Config mtca_evr_300 = {
     4,  // FP outputs
     0,  // FPUV outputs (really 2, handled specially)
     16, // RB outputs  (via external IFB)
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeTG300,
@@ -177,6 +184,7 @@ static const EVRMRM::Config cpci_evr_unknown = {
     1,  // FP outputs
     2,  // FPUV outputs
     1,  // RB outputs
+    1,  // Backplane outputs
     1,  // FP Delay outputs
     1,  // CML/GTX outputs
     MRMCML::typeCML,

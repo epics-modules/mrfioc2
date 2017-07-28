@@ -90,6 +90,8 @@ MRMOutput::sourceInternal() const
         val = READ32(owner->base, OutputMapFPUniv(N)); break;
     case OutputRB:
         val = READ32(owner->base, OutputMapRB(N)); break;
+    case OutputBackplane:
+        val = READ32(owner->base, OutputMapBackplane(N)); break;
     }
     val &= Output_mask(N);
     val >>= Output_shift(N);
@@ -116,6 +118,8 @@ MRMOutput::setSourceInternal(epicsUInt32 v)
         val = READ32(owner->base, OutputMapFPUniv(N)); break;
     case OutputRB:
         val = READ32(owner->base, OutputMapRB(N)); break;
+    case OutputBackplane:
+        val = READ32(owner->base, OutputMapBackplane(N)); break;
     }
 
     val &= ~Output_mask(N);
@@ -130,6 +134,8 @@ MRMOutput::setSourceInternal(epicsUInt32 v)
         WRITE32(owner->base, OutputMapFPUniv(N), val); break;
     case OutputRB:
         WRITE32(owner->base, OutputMapRB(N), val); break;
+    case OutputBackplane:
+        WRITE32(owner->base, OutputMapBackplane(N), val); break;
     }
 }
 

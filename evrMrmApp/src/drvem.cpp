@@ -218,6 +218,12 @@ try{
         outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
     }
 
+    for(unsigned int i=0; i<conf->nOBack; i++){
+        std::ostringstream name;
+        name<<n<<":Backplane"<<i;
+        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputBackplane, i);
+    }
+
     prescalers.resize(conf->nPS);
     for(size_t i=0; i<conf->nPS; i++){
         std::ostringstream name;

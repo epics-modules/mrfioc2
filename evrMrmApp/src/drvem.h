@@ -108,8 +108,8 @@ public:
         const char *model;
         size_t nPul; // number of pulsers
         size_t nPS;   // number of prescalers
-        // # of outputs (Front panel, FP Universal, Rear transition module)
-        size_t nOFP, nOFPUV, nORB;
+        // # of outputs (Front panel, FP Universal, Rear transition module, Backplane)
+        size_t nOFP, nOFPUV, nORB, nOBack;
         size_t nOFPDly;  // # of slots== # of delay modules. Some of the FP Universals have GPIOs. Each FPUV==2 GPIO pins, 2 FPUVs in one slot = 4 GPIO pins. One dly module uses 4 GPIO pins.
         // # of CML outputs
         size_t nCML;
