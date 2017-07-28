@@ -3,6 +3,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
+USR_DBFLAGS += -I$(TOP)/mrmShared/Db
+
 DB += mrmevrout.db
 DB += mrmevrdc.template
 DB += mrmevrbufrx.db

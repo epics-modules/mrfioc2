@@ -3,6 +3,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
+USR_DBFLAGS += -I$(TOP)/mrmShared/Db
+
 #----------------------------------------------------
 #  Optimization of db files using dbst (DEFAULT: NO)
 #DB_OPT = YES

@@ -1,440 +1,172 @@
-record(bo, "$(P)TsInpMode-Sel") {
-    field( DTYP, "Obj Prop uint32")
-    field( DESC, "EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEMODE")
-    field( VAL,  "1")
-    field( UDF,  "0")
-    field( ZNAM, "EGU")
-    field( ONAM, "TICKS")
-    field( FLNK, "$(P)TsInpMode-RB")
-    info(autosaveFields_pass0, "VAL")
+
+# EVR sequencer trigger sources in DC firmware
+# 0-31  DlyGen
+# 32-39 DBus
+# 40-47 Prescalars
+# 61 - SW
+# 62 - Continuous
+# 63 - Disable
+
+# linked from mrmSoftSeq.template
+# $(P)InitSeq:Cont-FOut_
+record(fanout, "$(P)TrigSrc:Init-FOut_") {
+    field( LNK1, "$(P)TrigSrc-Sel_")
 }
 
-record(bi, "$(P)TsInpMode-RB") {
-    field( DTYP, "Obj Prop uint32")
-    field( DESC, "EVG Sequence Input Mode")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEMODE")
-    field( ZNAM, "EGU")
-    field( ONAM, "TICKS")
-}
-
-record(mbbo, "$(P)TsResolution-Sel") {
-    field( DTYP, "Obj Prop uint32")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEUNITS")
-    field( ZRST, "Sec")
-    field( ONST, "mSec")
-    field( TWST, "uSec")
-    field( THST, "nSec")
-    field( ZRVL, "0")
-    field( ONVL, "3")
-    field( TWVL, "6")
-    field( THVL, "9")
-    field( FRSV, "INVALID")
-    field( FVSV, "INVALID")
-    field( SXSV, "INVALID")
-    field( SVSV, "INVALID")
-    field( EISV, "INVALID")
-    field( NISV, "INVALID")
-    field( TESV, "INVALID")
-    field( ELSV, "INVALID")
-    field( TVSV, "INVALID")
-    field( TTSV, "INVALID")
-    field( FTSV, "INVALID")
-    field( FFSV, "INVALID")
-    field( UNSV, "INVALID")
-    field( IVOA, "Don't drive outputs")
-    field( FLNK, "$(P)TsResolution-RB")
-    info(autosaveFields_pass0, "VAL")
-}
-
-record(mbbi, "$(P)TsResolution-RB") {
-    field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEUNITS")
-    field( ZRST, "Sec")
-    field( ONST, "mSec")
-    field( TWST, "uSec")
-    field( THST, "nSec")
-    field( ZRVL, "0")
-    field( ONVL, "3")
-    field( TWVL, "6")
-    field( THVL, "9")
-    field( FRSV, "INVALID")
-    field( FVSV, "INVALID")
-    field( SXSV, "INVALID")
-    field( SVSV, "INVALID")
-    field( EISV, "INVALID")
-    field( NISV, "INVALID")
-    field( TESV, "INVALID")
-    field( ELSV, "INVALID")
-    field( TVSV, "INVALID")
-    field( TTSV, "INVALID")
-    field( FTSV, "INVALID")
-    field( FFSV, "INVALID")
-    field( UNSV, "INVALID")
-}
-
-record(waveform, "$(P)EvtCode-SP") {
-    field( DTYP, "Obj Prop waveform out")
-    field( DESC, "Sequence event code array")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
-    field( NELM, "$(NELM)")
-    field( FTVL, "UCHAR")
-    info( autosaveFields_pass1, "VAL")
-}
-
-record(waveform, "$(P)EvtCode-RB") {
-    field( DTYP, "Obj Prop waveform in")
-    field( DESC, "Sequence event code readback")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
-    field( SCAN, "I/O Intr")
-    field( NELM, "$(NELM)")
-    field( FTVL, "UCHAR")
-}
-
-record(waveform, "$(P)Timestamp-SP") {
-    field( DTYP, "Obj Prop waveform out")
-    field( DESC, "Sequence timestamp array")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
-    field( NELM, "$(NELM)")
-    field( FTVL, "DOUBLE")
-    info( autosaveFields_pass1, "VAL")
-}
-
-record(waveform, "$(P)Timestamp-RB") {
-    field( DTYP, "Obj Prop waveform in")
-    field( DESC, "Sequence timestamp readback")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
-    field( SCAN, "I/O Intr")
-    field( NELM, "$(NELM)")
-    field( FTVL, "DOUBLE")
-}
-
-record(mbbo, "$(P)RunMode-Sel") {
-    field( DTYP, "Obj Prop uint32")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
-    field( UDF,  "0")
-    field( VAL,  "2") # default to Single
+record(mbbo, "$(P)TrigSrc:Pulse-Sel") {
+    field( DTYP, "Raw Soft Channel")
+    field( OUT , "$(P)TrigSrc-Sel_ PP")
+    field( ZRST, "Pulser 0")
+    field( ONST, "Pulser 1")
+    field( TWST, "Pulser 2")
+    field( THST, "Pulser 3")
+    field( FRST, "Pulser 4")
+    field( FVST, "Pulser 5")
+    field( SXST, "Pulser 6")
+    field( SVST, "Pulser 7")
+    field( EIST, "Pulser 8")
+    field( NIST, "Pulser 9")
+    field( TEST, "Pulser 10")
+    field( ELST, "Pulser 11")
+    field( TVST, "Pulser 12")
+    field( TTST, "Pulser 13")
+    field( FTST, "Pulser 14")
+    field( FFST, "Pulser 15")
     field( ZRVL, "0")
     field( ONVL, "1")
     field( TWVL, "2")
-    field( ZRST, "Normal")
-    field( ONST, "Automatic")
-    field( TWST, "Single")
-    field( THSV, "INVALID")
-    field( FRSV, "INVALID")
-    field( FVSV, "INVALID")
-    field( SXSV, "INVALID")
-    field( SVSV, "INVALID")
-    field( EISV, "INVALID")
-    field( NISV, "INVALID")
-    field( TESV, "INVALID")
-    field( ELSV, "INVALID")
-    field( TVSV, "INVALID")
-    field( TTSV, "INVALID")
-    field( FTSV, "INVALID")
-    field( FFSV, "INVALID")
-    field( UNSV, "INVALID")
-    field( IVOA, "Don't drive outputs")
-    info(autosaveFields_pass0, "VAL")
+    field( THVL, "3")
+    field( FRVL, "4")
+    field( FVVL, "5")
+    field( SXVL, "6")
+    field( SVVL, "7")
+    field( EIVL, "8")
+    field( NIVL, "9")
+    field( TEVL, "10")
+    field( ELVL, "11")
+    field( TVVL, "12")
+    field( TTVL, "13")
+    field( FTVL, "14")
+    field( FFVL, "15")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)TrigSrc:0-Sel")
 }
 
-record(mbbi, "$(P)RunMode-RB") {
-    field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
-    field( SCAN, "I/O Intr")
-    field( ZRVL, "0")
-    field( ONVL, "1")
-    field( TWVL, "2")
-    field( ZRST, "Normal")
-    field( ONST, "Automatic")
-    field( TWST, "Single")
-    field( THSV, "INVALID")
-    field( FRSV, "INVALID")
-    field( FVSV, "INVALID")
-    field( SXSV, "INVALID")
-    field( SVSV, "INVALID")
-    field( EISV, "INVALID")
-    field( NISV, "INVALID")
-    field( TESV, "INVALID")
-    field( ELSV, "INVALID")
-    field( TVSV, "INVALID")
-    field( TTSV, "INVALID")
-    field( FTSV, "INVALID")
-    field( FFSV, "INVALID")
-    field( UNSV, "INVALID")
+record(mbbo, "$(P)TrigSrc:DBus-Sel") {
+    field( DTYP, "Raw Soft Channel")
+    field( OUT , "$(P)TrigSrc-Sel_ PP")
+    field( ZRST, "DBus0")
+    field( ONST, "DBus1")
+    field( TWST, "DBus2")
+    field( THST, "DBus3")
+    field( FRST, "DBus4")
+    field( FVST, "DBus5")
+    field( SXST, "DBus6")
+    field( SVST, "DBus7")
+    field( ZRVL, "32")
+    field( ONVL, "33")
+    field( TWVL, "34")
+    field( THVL, "35")
+    field( FRVL, "36")
+    field( FVVL, "37")
+    field( SXVL, "38")
+    field( SVVL, "39")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)TrigSrc:1-Sel")
 }
 
-record(mbbo, "$(P)TrigSrc-Sel") {
-    field( DTYP, "Obj Prop uint32")
-    field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
-    field( UDF,  "0")
-    # Note: not all source are included
-    # 0-31  DlyGen
-    # 32-39 DBus
-    # 40-47 Prescalars
+record(mbbo, "$(P)TrigSrc:Scale-Sel") {
+    field( DTYP, "Raw Soft Channel")
+    field( OUT , "$(P)TrigSrc-Sel_ PP")
     field( ZRST, "None")
     field( ONST, "Software")
-    field( TWST, "Dlygen0")
-    field( THST, "Dlygen1")
-    field( FRST, "Dlygen2")
-    field( FVST, "Dlygen3")
-    field( SXST, "Dlygen4")
-    field( SVST, "Dlygen5")
-    field( EIST, "Dlygen6")
-    field( NIST, "PS0")
-    field( TEST, "PS1")
-    field( ELST, "PS2")
-    field( TVST, "PS3")
-    field( TTST, "DBus0")
-    field( FTST, "DBus1")
-    field( FFST, "DBus2")
+    field( TWST, "Prescaler 0")
+    field( THST, "Prescaler 1")
+    field( FRST, "Prescaler 2")
+    field( FVST, "Prescaler 3")
+    field( SXST, "Prescaler 4")
+    field( SVST, "Prescaler 5")
+    field( EIST, "Prescaler 6")
+    field( NIST, "Prescaler 7")
     field( ZRVL, "0x03000000")
     field( ONVL, "0x01000000")
-    field( TWVL, "0")
-    field( THVL, "1")
-    field( FRVL, "2")
-    field( FVVL, "3")
-    field( SXVL, "4")
-    field( SVVL, "5")
-    field( EIVL, "6")
-    field( NIVL, "40")
-    field( TEVL, "41")
-    field( ELVL, "42")
-    field( TVVL, "43")
-    field( TTVL, "32")
-    field( FTVL, "33")
-    field( FFVL, "34")
+    field( TWVL, "40")
+    field( THVL, "41")
+    field( FRVL, "42")
+    field( FVVL, "43")
+    field( SXVL, "44")
+    field( SVVL, "45")
+    field( EIVL, "46")
+    field( NIVL, "47")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)TrigSrc:2-Sel")
+}
+
+record(longout, "$(P)TrigSrc-Sel_") {
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
+    field( VAL , "0x03000000") # default to None
     info( autosaveFields_pass0, "VAL")
 }
 
-record(mbbi, "$(P)TrigSrc-RB") {
+record(longin, "$(P)TrigSrc-RB_") {
     field( DTYP, "Obj Prop uint32")
     field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
     field( UDF,  "0")
     field( SCAN, "I/O Intr")
-    field( ZRST, "None")
-    field( ONST, "Software")
-    field( TWST, "Dlygen0")
-    field( THST, "Dlygen1")
-    field( FRST, "Dlygen2")
-    field( FVST, "Dlygen3")
-    field( SXST, "Dlygen4")
-    field( SVST, "Dlygen5")
-    field( EIST, "Dlygen6")
-    field( NIST, "PS0")
-    field( TEST, "PS1")
-    field( ELST, "PS2")
-    field( TVST, "PS3")
-    field( TTST, "DBus0")
-    field( FTST, "DBus1")
-    field( FFST, "DBus2")
-    field( ZRVL, "0x03000000")
-    field( ONVL, "0x01000000")
-    field( TWVL, "0")
-    field( THVL, "1")
-    field( FRVL, "2")
-    field( FVVL, "3")
-    field( SXVL, "4")
-    field( SVVL, "5")
-    field( EIVL, "6")
-    field( NIVL, "40")
-    field( TEVL, "41")
-    field( ELVL, "42")
-    field( TVVL, "43")
-    field( TTVL, "32")
-    field( FTVL, "33")
-    field( FFVL, "34")
+    field( FLNK, "$(P)TrigSrc-RB")
 }
 
-record(bo, "$(P)Commit-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "Commit EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=COMMIT")
-    field( VAL,  "1")
-    field( UDF,  "0")
-    field( ZNAM, "Commit")
-    field( ONAM, "Commit")
+record(stringin, "$(P)TrigSrc-RB") {
+  field( DTYP, "LUT uint32 -> string")
+  field(  INP, "$(P)TrigSrc-RB_")
+  info(lut0 , " 0  = Pulser 0")
+  info(lut1 , " 1  = Pulser 1")
+  info(lut2 , " 2  = Pulser 2")
+  info(lut3 , " 3  = Pulser 3")
+  info(lut4 , " 4  = Pulser 4")
+  info(lut5 , " 5  = Pulser 5")
+  info(lut6 , " 6  = Pulser 6")
+  info(lut7 , " 7  = Pulser 7")
+  info(lut8 , " 8  = Pulser 8")
+  info(lut9 , " 9  = Pulser 9")
+  info(lutA , " 10 = Pulser 10")
+  info(lutB , " 11 = Pulser 11")
+  info(lutC , " 12 = Pulser 12")
+  info(lutD , " 13 = Pulser 13")
+  info(lutE , " 14 = Pulser 14")
+  info(lutF , " 15 = Pulser 15")
+  info(lutG , " 32 = DBus 0")
+  info(lutH , " 33 = DBus 1")
+  info(lutI , " 34 = DBus 2")
+  info(lutJ , " 35 = DBus 3")
+  info(lutK , " 36 = DBus 4")
+  info(lutL , " 37 = DBus 5")
+  info(lutM , " 38 = DBus 6")
+  info(lutN , " 39 = DBus 7")
+  info(lutO , " 40 = Prescaler 0")
+  info(lutP , " 41 = Prescaler 1")
+  info(lutQ , " 42 = Prescaler 2")
+  info(lutR , " 43 = Prescaler 3")
+  info(lutS , " 44 = Prescaler 4")
+  info(lutT , " 45 = Prescaler 5")
+  info(lutU , " 46 = Prescaler 6")
+  info(lutV , " 47 = Prescaler 7")
+  info(lutW , " 0x01000000 = Software")
+  info(lutY , " 0x03000000 = None")
 }
 
-record(bo, "$(P)Load-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "ALLOC EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=LOAD")
-    field( VAL,  "1")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-}
-
-record(bo, "$(P)Unload-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "Dealloc EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=UNLOAD")
-    field( VAL,  "0")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-}
-
-record(bo, "$(P)Enable-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "Enable EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLE")
-    field( VAL,  "1")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-    field( FLNK, "$(P)Enable-RB")
-    field( ASG , "$(ASGUSER=)")
-}
-
-record(bo, "$(P)Disable-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "Disable EVG Sequence")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=DISABLE")
-    field( VAL,  "0")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-    field( ASG , "$(ASGUSER=)")
-}
-
-record(bo, "$(P)SoftTrig-Cmd") {
-    field( DTYP, "Obj Prop command")
-    field( DESC, "Sequence RAM soft trigger")
-    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SOFT_TRIG")
-    field( VAL,  "0")
-    field( UDF,  "0")
-    field( ZNAM, "0")
-    field( ONAM, "1")
-}
-
-record(bi, "$(P)Load-RB") {
-    field( DTYP, "Obj Prop bool")
-    field( DESC, "Soft Seq Load status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=LOADED")
-    field( SCAN, "I/O Intr")
-    field( ZNAM, "Unloaded")
-    field( ONAM, "Loaded")
-    info( autosaveFields_pass0, "VAL")
-}
-
-record(bi, "$(P)Commit-RB") {
-    field( DTYP, "Obj Prop bool")
-    field( DESC, "Soft Seq Commit status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=COMMITTED")
-    field( SCAN, "I/O Intr")    
-    field( ZNAM, "Uncommitted")
-    field( ONAM, "Committed")
-    info( autosaveFields_pass0, "VAL")
-}
-
-record(bi, "$(P)Enable-Sts") {
-    field( DTYP, "Obj Prop bool")
-    field( DESC, "Soft Seq Ena status")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLED")
-    field( SCAN, "I/O Intr")    
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
-    field( FLNK, "$(ENALNK=)")
-    info( autosaveFields_pass0, "VAL")
-    alias("$(P)Enable-RB")
-}
-
-record(stringin, "$(P)Error-RB") {
-    field( DTYP, "Obj Prop string")
-    field( DESC, "Sequence error msg.")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ERROR")
-    field( SCAN, "I/O Intr")
-}
-
-record(longin, "$(P)NumOfStarts-I") {
-    field( DTYP, "Obj Prop uint32")
-    field( DESC, "# times soft sequence starts")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=NUM_STARTS")
-    field( SCAN, "I/O Intr") # on sequencer start
-    field( FLNK, "$(SOSLNK=)")
-}
-
-record(longin, "$(P)NumOfRuns-I") {
-    field( DTYP, "Obj Prop uint32")
-    field( DESC, "# times soft sequence ran")
-    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=NUM_RUNS")
-    field( SCAN, "I/O Intr") # on sequencer stop
-}
-
-#
-#Process Load-Cmd record if the sequence  was perviously in LOADED state
-#
-
-record(calcout, "$(P)Load-Calc_") {
-    field( CALC, "A")
-    field( INPA, "$(P)Load-RB NPP NMS")
-    field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)Load-Cmd PP")
-}
-
-#
-#Process Commit-Cmd record if the sequence was perviously in COMMITTED state
-#
-
-record(calcout, "$(P)Commit-Calc_") {
-    field( CALC, "A")
-    field( INPA, "$(P)Commit-RB NPP NMS")
-    field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)Commit-Cmd PP")
-}
-
-#
-#Process Enable-Cmd record if the sequence was perviously in ENABLED state
-#
-
-record(calcout, "$(P)Enable-Calc_") {
-    field( CALC, "A")
-    field( INPA, "$(P)Enable-RB NPP NMS")
-    field( OOPT, "When Non-zero")
-    field( OUT,  "$(P)Enable-Cmd PP")
-}
-
-record(fanout, "$(P)InitSeq-FOut_") {
-    field( DESC, "Boot of sequence for sequencer")
-    field( SELM, "All")
-    field( PINI, "RUNNING")
-    field( LNK1, "$(P)TsInpMode-Sel")
-    field( LNK2, "$(P)TsResolution-Sel")
-    field( LNK3, "$(P)EvtCode-SP")
-    field( LNK4, "$(P)Timestamp-SP")
-    field( LNK5, "$(P)RunMode-Sel")
-    field( LNK6, "$(P)InitSeq:Cont-FOut_")
-}
-
-record(fanout, "$(P)InitSeq:Cont-FOut_") {
-    field( DESC, "Boot of sequence for sequencer")
-    field( SELM, "All")
-    field( LNK1, "$(P)TrigSrc-Sel")
-    field( LNK2, "$(P)Commit-Calc_")
-    field( LNK3, "$(P)Load-Calc_")
-    field( LNK4, "$(P)Enable-Calc_")
-}
 
 #
 # When Evt Clock Frequency changes, Sequencer Timestamp changes
 #(only if TsInpMode = EGU).
 #
-record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
-}
-
-record(ao, "$(P)EvtClkFreq:Cont-RB_") {
-    field( OUT,  "$(P)Timestamp-RB.PROC")
-    field( VAL,  "1")
-}
-
-
-record(waveform, "$(P)Label-I") {
-  field(DESC, "Label")
-  field(FTVL, "CHAR")
-  field(NELM, "128")
-  info(autosaveFields_pass1, "VAL")
-}
+#record(ai, "$(P)EvtClkFreq-RB_") {
+#    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+#    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
+#}
+#
+#record(ao, "$(P)EvtClkFreq:Cont-RB_") {
+#    field( OUT,  "$(P)Timestamp-RB.PROC")
+#    field( VAL,  "1")
+#}

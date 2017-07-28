@@ -1,3 +1,10 @@
+# Macros
+#  P
+#  EVG
+#  seqNum
+#
+# Device indpendent parts of sequencer (excludes trigger source mapping)
+
 record(bo, "$(P)TsInpMode-Sel") {
     field( DTYP, "Obj Prop uint32")
     field( DESC, "EVG Sequence")
@@ -113,13 +120,12 @@ record(mbbo, "$(P)RunMode-Sel") {
     field( DTYP, "Obj Prop uint32")
     field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
     field( UDF,  "0")
-    field( VAL,  "2") # default to Single
+    field( VAL,  "1") # default to Single
     field( ZRVL, "0")
-    field( ONVL, "1")
-    field( TWVL, "2")
+    field( ONVL, "2")
     field( ZRST, "Normal")
-    field( ONST, "Automatic")
-    field( TWST, "Single")
+    field( ONST, "Single")
+    field( TWSV, "INVALID")
     field( THSV, "INVALID")
     field( FRSV, "INVALID")
     field( FVSV, "INVALID")
@@ -162,84 +168,6 @@ record(mbbi, "$(P)RunMode-RB") {
     field( FTSV, "INVALID")
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
-}
-
-record(mbbo, "$(P)TrigSrc-Sel") {
-    field( DTYP, "Obj Prop uint32")
-    field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
-    field( UDF,  "0")
-    field( ZRST, "None")
-    field( ONST, "Mxc0")
-    field( TWST, "Mxc1")
-    field( THST, "Mxc2")
-    field( FRST, "Mxc3")
-    field( FVST, "Mxc4")
-    field( SXST, "Mxc5")
-    field( SVST, "Mxc6")
-    field( EIST, "Mxc7")
-    field( NIST, "AC")
-    field( TEST, "Software")
-    field( ELST, "Front0")
-    field( TVST, "Front1")
-    field( TTST, "Univ0")
-    field( FTST, "Univ1")
-    field( FFST, "Univ2")
-    field( ZRVL, "0x03000000")
-    field( ONVL, "0")
-    field( TWVL, "1")
-    field( THVL, "2")
-    field( FRVL, "3")
-    field( FVVL, "4")
-    field( SXVL, "5")
-    field( SVVL, "6")
-    field( EIVL, "7")
-    field( NIVL, "16")
-    field( TEVL, "0x01000000")
-    field( ELVL, "0x02010000")
-    field( TVVL, "0x02010001")
-    field( TTVL, "0x02020000")
-    field( FTVL, "0x02020001")
-    field( FFVL, "0x02020002")
-    info( autosaveFields_pass0, "VAL")
-}
-
-record(mbbi, "$(P)TrigSrc-RB") {
-    field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
-    field( UDF,  "0")
-    field( SCAN, "I/O Intr")
-    field( ZRST, "None")
-    field( ONST, "Mxc0")
-    field( TWST, "Mxc1")
-    field( THST, "Mxc2")
-    field( FRST, "Mxc3")
-    field( FVST, "Mxc4")
-    field( SXST, "Mxc5")
-    field( SVST, "Mxc6")
-    field( EIST, "Mxc7")
-    field( NIST, "AC")
-    field( TEST, "Software")
-    field( ELST, "Front0")
-    field( TVST, "Front1")
-    field( TTST, "Univ0")
-    field( FTST, "Univ1")
-    field( FFST, "Univ2")
-    field( ZRVL, "0x03000000")
-    field( ONVL, "0")
-    field( TWVL, "1")
-    field( THVL, "2")
-    field( FRVL, "3")
-    field( FVVL, "4")
-    field( SXVL, "5")
-    field( SVVL, "6")
-    field( EIVL, "7")
-    field( NIVL, "16")
-    field( TEVL, "0x01000000")
-    field( ELVL, "0x02010000")
-    field( TVVL, "0x02010001")
-    field( TTVL, "0x02020000")
-    field( FTVL, "0x02020001")
-    field( FFVL, "0x02020002")
 }
 
 record(bo, "$(P)Commit-Cmd") {
@@ -407,26 +335,11 @@ record(fanout, "$(P)InitSeq-FOut_") {
 record(fanout, "$(P)InitSeq:Cont-FOut_") {
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
-    field( LNK1, "$(P)TrigSrc-Sel")
+    field( LNK1, "$(P)TrigSrc:Init-FOut_")
     field( LNK2, "$(P)Commit-Calc_")
     field( LNK3, "$(P)Load-Calc_")
     field( LNK4, "$(P)Enable-Calc_")
 }
-
-#
-# When Evt Clock Frequency changes, Sequencer Timestamp changes
-#(only if TsInpMode = EGU).
-#
-record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
-}
-
-record(ao, "$(P)EvtClkFreq:Cont-RB_") {
-    field( OUT,  "$(P)Timestamp-RB.PROC")
-    field( VAL,  "1")
-}
-
 
 record(waveform, "$(P)Label-I") {
   field(DESC, "Label")
