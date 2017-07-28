@@ -282,10 +282,14 @@ epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_
 #define S_stdlib_overflow     (M_stdlib | 4) /* Too large to represent */
 #define S_stdlib_badBase      (M_stdlib | 5) /* Number base not supported */
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 epicsShareFunc int
 epicsParseUInt32(const char *str, epicsUInt32 *to, int base, char **units);
+#ifdef __cplusplus
 }
+#endif
 
 #endif
 
