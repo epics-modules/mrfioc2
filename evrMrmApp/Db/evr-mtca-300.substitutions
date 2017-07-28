@@ -105,14 +105,14 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:FP1}", "$(EVR):FrontOut1", "OUT1 (TTL)"}
 {"$(SYS){$(D)-Out:FP2}", "$(EVR):FrontOut2", "OUT2 (TTL)"}
 {"$(SYS){$(D)-Out:FP3}", "$(EVR):FrontOut3", "OUT3 (TTL)"}
-{"$(SYS){$(D)-Out:Back0}", "$(EVR):Backplane0", "RX17"}
-{"$(SYS){$(D)-Out:Back1}", "$(EVR):Backplane1", "TX17"}
-{"$(SYS){$(D)-Out:Back2}", "$(EVR):Backplane2", "RX18"}
-{"$(SYS){$(D)-Out:Back3}", "$(EVR):Backplane3", "TX18"}
-{"$(SYS){$(D)-Out:Back4}", "$(EVR):Backplane4", "RX19"}
-{"$(SYS){$(D)-Out:Back5}", "$(EVR):Backplane5", "TX19"}
-{"$(SYS){$(D)-Out:Back6}", "$(EVR):Backplane6", "RX20"}
-{"$(SYS){$(D)-Out:Back7}", "$(EVR):Backplane7", "TX20"}
+{"$(SYS){$(D)-Out:Back0}", "$(EVR):Backplane0", "RX17 (0)"}
+{"$(SYS){$(D)-Out:Back1}", "$(EVR):Backplane1", "TX17 (1)"}
+{"$(SYS){$(D)-Out:Back2}", "$(EVR):Backplane2", "RX18 (2)"}
+{"$(SYS){$(D)-Out:Back3}", "$(EVR):Backplane3", "TX18 (3)"}
+{"$(SYS){$(D)-Out:Back4}", "$(EVR):Backplane4", "RX19 (4)"}
+{"$(SYS){$(D)-Out:Back5}", "$(EVR):Backplane5", "TX19 (5)"}
+{"$(SYS){$(D)-Out:Back6}", "$(EVR):Backplane6", "RX20 (6)"}
+{"$(SYS){$(D)-Out:Back7}", "$(EVR):Backplane7", "TX20 (7)"}
 {"$(SYS){$(D)-Out:FPUV0}", "$(EVR):FrontUnivOut0", "TCLKA"}
 {"$(SYS){$(D)-Out:FPUV1}", "$(EVR):FrontUnivOut1", "TCLKB"}
 }
