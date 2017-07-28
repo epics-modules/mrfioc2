@@ -276,6 +276,8 @@ epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_
 
 #endif /*EPICS 64-bit integer types need defining*/
 
+#define M_stdlib        (527 <<16) /*EPICS Standard library*/
+
 #define S_stdlib_noConversion (M_stdlib | 1) /* No digits to convert */
 #define S_stdlib_extraneous   (M_stdlib | 2) /* Extraneous characters */
 #define S_stdlib_underflow    (M_stdlib | 3) /* Too small to represent */

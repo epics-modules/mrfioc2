@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
 
@@ -45,6 +46,7 @@ char *allocSNPrintf(size_t N, const char *fmt, ...)
 #if (EPICS_VERSION_INT < VERSION_INT(3,15,0,2))
 
 static
+int
 epicsParseULong(const char *str, unsigned long *to, int base, char **units)
 {
     int c;
