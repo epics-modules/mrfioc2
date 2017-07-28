@@ -1,0 +1,11 @@
+record(longout, "input") {
+  field(FLNK, "output")
+}
+record(stringin, "output") {
+  field(DTYP, "LUT uint32 -> string")
+  field(INP , "input NPP MSI")
+  info(lutX , "unknown")
+  info(lut0 , "   0 = zero")
+  info(lut1 , " 0x5 = five")
+  field(TPRO, "2")
+}

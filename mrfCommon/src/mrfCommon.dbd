@@ -56,6 +56,8 @@ device(bo, INST_IO, devBOCommand, "Obj Prop command")
 device(waveform , INST_IO, devWFIn, "Obj Prop waveform in")
 device(waveform , INST_IO, devWFOut, "Obj Prop waveform out")
 
+# from devlutstring.cpp
+device(stringin , CONSTANT, devLUTSI, "LUT uint32 -> string")
 
 # Special version of normal mbboDirect soft dset which restores bit fields from VAL
 device(mbboDirect, CONSTANT, devMbboDirectRestore, "Soft and restore")

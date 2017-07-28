@@ -62,6 +62,7 @@ mrfCommon_SRCS += devObjString.cpp
 mrfCommon_SRCS += devObjCommand.cpp
 mrfCommon_SRCS += devObjWf.cpp
 mrfCommon_SRCS += devMbboDirectSoft.c
+mrfCommon_SRCS += devlutstring.cpp
 mrfCommon_SRCS += databuf.cpp
 mrfCommon_SRCS += mrfCommon.cpp
 
