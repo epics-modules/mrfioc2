@@ -45,7 +45,7 @@ MRMOutput::source() const
 void
 MRMOutput::setSource(epicsUInt32 v)
 {
-    if( ! ( (v<=63 && v>=62) ||
+    if( ! ( (v<=63 && v>=61) ||
             (v<=42 && v>=32) ||
             (v<=15) )
     )
@@ -106,7 +106,13 @@ MRMOutput::setSourceInternal(epicsUInt32 v)
      * We only expose one and map the other to Force Low
      */
     v &= 0x00ff;
-    v |= 0x3f00;
+    if(type==OutputBackplane) {
+        // for backplane outputs, tri-state
+        v |= 0x3d00;
+    } else {
+        // assume others are 2-state
+        v |= 0x3f00;
+    }
 
     epicsUInt32 val=63;
     switch(type) {

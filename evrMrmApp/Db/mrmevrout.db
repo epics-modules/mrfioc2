@@ -23,7 +23,7 @@ record(longout, "$(ON)Src-SP") {
   field( OUT , "@OBJ=$(OBJ), PROP=Map")
   field( FLNK, "$(ON)Src-RB_")
   field( PINI, "YES")
-  field( VAL , "63")
+  field( VAL , "$(DEFAULT=63)") # default DEFAULT is Force Low
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
@@ -108,15 +108,15 @@ record(mbbo, "$(ON)Src:Scale-SP") {
   field( ZRST, "Prescaler 0")
   field( ONST, "Prescaler 1")
   field( TWST, "Prescaler 2")
+  field( THST, "Force Low")
+  field( FRST, "Force High")
+  field( FVST, "Tri-state")
   field( ZRVL, "40")
   field( ONVL, "41")
   field( TWVL, "42")
-  field( THST, "Force Low")
-  field( FRST, "Force High")
   field( THVL, "63")
   field( FRVL, "62")
-  field( VAL , "3")
-  field( FVSV, "INVALID")
+  field( FVVL, "61")
   field( SXSV, "INVALID")
   field( SVSV, "INVALID")
   field( EISV, "INVALID")
@@ -172,8 +172,9 @@ record(stringin, "$(ON)Src-RB")
   info(lutO , " 40 = Prescaler 0")
   info(lutP , " 41 = Prescaler 1")
   info(lutQ , " 42 = Prescaler 2")
-  info(lutR , " 62 = Force high")
-  info(lutS , " 63 = Force low")
+  info(lutR , " 61 = Tri-state")
+  info(lutS , " 62 = Force high")
+  info(lutT , " 63 = Force low")
 }
 
 # Select which is displayed
