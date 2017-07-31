@@ -237,6 +237,15 @@ try{
         name<<n<<":Pul"<<i;
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
+    if(ver>=0x200) {
+        // masking pulsers
+        for(epicsUInt32 i=28; i<=31; i++){
+            std::ostringstream name;
+            name<<n<<":Pul"<<i;
+            pulsers[i]=new MRMPulser(name.str(), i,*this);
+        }
+
+    }
 
     if(formfactor==formFactor_CPCIFULL) {
         for(unsigned int i=4; i<8; i++) {
