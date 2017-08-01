@@ -12,7 +12,7 @@ die() {
   exit 1
 }
 
-[ "$BASE" ] || die "Set BASE"
+[ "$BASE" ] || exit 0
 
 CDIR="$HOME/.cache/base-$BASE-$STATIC"
 
