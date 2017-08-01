@@ -17,6 +17,7 @@
 #include <linux/io.h>
 #include <linux/interrupt.h>
 #include <linux/pci.h>
+#include <linux/msi.h>
 #include <linux/delay.h>
 #ifdef CONFIG_GENERIC_GPIO
 #  include <linux/gpio.h>
@@ -140,6 +141,7 @@ struct mrf_priv {
     unsigned int irqmode;
     unsigned int intrcount;
     unsigned int usemie:1;
+    unsigned int msienabled:1;
 
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
     spinlock_t lock;

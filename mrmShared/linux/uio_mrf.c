@@ -32,6 +32,11 @@ static int modparam_iversion = 2;
 module_param_named(interfaceversion, modparam_iversion, int, 0444);
 MODULE_PARM_DESC(interfaceversion, "User space interface version");
 
+/* Use MSI if present. */
+static unsigned modparam_usemsi = 1;
+module_param_named(use_msi, modparam_usemsi, uint, 0444);
+MODULE_PARM_DESC(use_msi, "Use MSI if present (default 1, yes)");
+
 /************************ PCI Device and vendor IDs ****************/
 
 #define PCI_VENDOR_ID_MRF                   0x1a3e
@@ -580,6 +585,18 @@ mrf_probe(struct pci_dev *dev,
             break;
         }
 
+        if(modparam_usemsi) {
+            int err = pci_enable_msi(dev);
+            if(!err) {
+                dev_info(&dev->dev, "Using MSI\n");
+                priv->msienabled = 1;
+                /* needed for MSI */
+                pci_set_master(dev);
+            } else {
+                dev_dbg(&dev->dev, "Error enabling MSI %d\n", err);
+            }
+        }
+
         info->irq = dev->irq;
         info->irq_flags = IRQF_SHARED;
         info->handler = mrf_handler;
@@ -658,6 +675,9 @@ mrf_probe(struct pci_dev *dev,
 err_unmap:
         iounmap(info->mem[0].internal_addr);
         iounmap(info->mem[2].internal_addr);
+        if(priv->msienabled) {
+            pci_disable_msi(dev);
+        }
 err_release:
         pci_release_regions(dev);
 err_disable:
@@ -762,6 +782,9 @@ mrf_remove(struct pci_dev *dev)
             iounmap(info->mem[2].internal_addr);
         }
 
+        if(priv->msienabled) {
+            pci_disable_msi(dev);
+        }
         pci_release_regions(dev);
         pci_disable_device(dev);
 
