@@ -522,7 +522,7 @@ mrf_probe(struct pci_dev *dev,
                 break;
             default:
                 dev_err(&dev->dev, "Unsupported vendor ID\n");
-                ret=-NODEV;
+                ret=-ENODEV;
                 goto err_release;
             }
 
