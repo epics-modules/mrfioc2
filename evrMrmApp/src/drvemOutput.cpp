@@ -20,7 +20,7 @@
 #include "drvemOutput.h"
 
 MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int idx)
-    :Output(n)
+    :base_t(n)
     ,owner(o)
     ,type(t)
     ,N(idx)
@@ -29,17 +29,21 @@ MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int
     shadowSource = sourceInternal();
 }
 
-MRMOutput::~MRMOutput()
-{
-}
+MRMOutput::~MRMOutput() {}
 
-void MRMOutput::lock() const{owner->lock();};
-void MRMOutput::unlock() const{owner->unlock();};
+void MRMOutput::lock() const{owner->lock();}
+void MRMOutput::unlock() const{owner->unlock();}
 
 epicsUInt32
 MRMOutput::source() const
 {
-    return shadowSource;
+    return shadowSource&0xff;
+}
+
+epicsUInt32
+MRMOutput::source2() const
+{
+    return (shadowSource>>8)&0xff;
 }
 
 void
@@ -51,10 +55,27 @@ MRMOutput::setSource(epicsUInt32 v)
     )
         throw std::out_of_range("Mapping code is out of range");
 
-    shadowSource = v;
+    shadowSource &= 0xff00;
+    shadowSource |= v;
 
     if(isEnabled)
-        setSourceInternal(v);
+        setSourceInternal();
+}
+
+void
+MRMOutput::setSource2(epicsUInt32 v)
+{
+    if( ! ( (v<=63 && v>=61) ||
+            (v<=42 && v>=32) ||
+            (v<=15) )
+    )
+        throw std::out_of_range("Mapping code is out of range");
+
+    shadowSource &= 0x00ff;
+    shadowSource |= v<<8;
+
+    if(isEnabled)
+        setSourceInternal();
 }
 
 bool
@@ -71,10 +92,7 @@ MRMOutput::enable(bool e)
 
     isEnabled = e;
 
-    if(isEnabled)
-        setSourceInternal(shadowSource);
-    else
-        setSourceInternal(63); // Force Off
+    setSourceInternal();
 }
 
 epicsUInt32
@@ -99,25 +117,16 @@ MRMOutput::sourceInternal() const
 }
 
 void
-MRMOutput::setSourceInternal(epicsUInt32 v)
+MRMOutput::setSourceInternal()
 {
-    /* DC firmware supports mapping out sources per output.
-     * These two are OR'd together.
-     * We only expose one and map the other to Force Low
-     */
-    v &= 0x00ff;
-    if(type==OutputBackplane) {
-        // for backplane outputs, tri-state
-        v |= 0x3d00;
-    } else {
-        // assume others are 2-state
-        v |= 0x3f00;
-    }
+    epicsUInt32 regval = shadowSource;
+    if(!isEnabled)
+        regval = 0x3f3f; // Force Low  (TODO: when to tri-state?)
 
     epicsUInt32 val=63;
     switch(type) {
     case OutputInt:
-        WRITE32(owner->base, IRQPulseMap, v); return;
+        WRITE32(owner->base, IRQPulseMap, regval); return;
     case OutputFP:
         val = READ32(owner->base, OutputMapFP(N)); break;
     case OutputFPUniv:
@@ -129,7 +138,7 @@ MRMOutput::setSourceInternal(epicsUInt32 v)
     }
 
     val &= ~Output_mask(N);
-    val |= v << Output_shift(N);
+    val |= regval << Output_shift(N);
 
     switch(type) {
     case OutputInt:
@@ -177,3 +186,7 @@ MRMOutput::sourceName(epicsUInt32 id) const
     default: return "Invalid output source";
     }
 }
+
+OBJECT_BEGIN2(MRMOutput, Output)
+  OBJECT_PROP2("Map2", &MRMOutput::source2, &MRMOutput::setSource2);
+OBJECT_END(MRMOutput)

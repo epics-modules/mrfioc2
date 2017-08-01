@@ -27,6 +27,16 @@ record(longout, "$(ON)Src-SP") {
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
+record(longout, "$(ON)Src2-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "$(DESC)")
+  field( OUT , "@OBJ=$(OBJ), PROP=Map2")
+  field( FLNK, "$(ON)Src-RB_")
+  field( PINI, "YES")
+  field( VAL , "$(DEFAULT=63)") # default DEFAULT is Force Low
+  info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
+}
+
 # Settings
 # Users use will set one of these at a time.
 
@@ -175,6 +185,13 @@ record(stringin, "$(ON)Src-RB")
   info(lutR , " 61 = Tri-state")
   info(lutS , " 62 = Force high")
   info(lutT , " 63 = Force low")
+}
+
+record(longin, "$(ON)Src2-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "$(DESC)")
+  field( INP , "@OBJ=$(OBJ), PROP=Map2")
+  field( FLNK, "$(ON)Src-RB")
 }
 
 # Select which is displayed

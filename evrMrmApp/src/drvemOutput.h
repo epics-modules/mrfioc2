@@ -23,8 +23,9 @@ class EVRMRM;
  * This class is reused by other subunits which
  * have identical mapping registers.
  */
-class MRMOutput : public Output
+class MRMOutput : public mrf::ObjectInst<MRMOutput, Output>
 {
+    typedef mrf::ObjectInst<MRMOutput, Output> base_t;
 public:
   MRMOutput(const std::string& n, EVRMRM* owner, OutputType t, unsigned int idx);
   virtual ~MRMOutput();
@@ -34,6 +35,9 @@ public:
 
   virtual epicsUInt32 source() const;
   virtual void setSource(epicsUInt32);
+
+  epicsUInt32 source2() const;
+  void setSource2(epicsUInt32);
 
   virtual bool enabled() const;
   virtual void enable(bool);
@@ -47,8 +51,8 @@ private:
   bool isEnabled;
   epicsUInt32 shadowSource;
 
-  virtual epicsUInt32 sourceInternal() const;
-  virtual void setSourceInternal(epicsUInt32);
+  epicsUInt32 sourceInternal() const;
+  void setSourceInternal();
 };
 
 

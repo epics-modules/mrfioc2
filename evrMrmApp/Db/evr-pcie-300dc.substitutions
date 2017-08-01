@@ -106,17 +106,17 @@ file "mrmevrout.db"
 pattern
 {ON, OBJ, DESC, DEFAULT}
 {"$(SYS){$(D)-Out:RB00}", "$(EVR):FrontUnivOut0", "UNIV0", 61}
-{"$(SYS){$(D)-Out:RB01}", "$(EVR):FrontUnivOut0", "UNIV1", 61}
-{"$(SYS){$(D)-Out:RB02}", "$(EVR):FrontUnivOut0", "UNIV2", 61}
-{"$(SYS){$(D)-Out:RB03}", "$(EVR):FrontUnivOut0", "UNIV3", 61}
-{"$(SYS){$(D)-Out:RB04}", "$(EVR):FrontUnivOut0", "UNIV4", 61}
-{"$(SYS){$(D)-Out:RB05}", "$(EVR):FrontUnivOut0", "UNIV5", 61}
-{"$(SYS){$(D)-Out:RB06}", "$(EVR):FrontUnivOut0", "UNIV6", 61}
-{"$(SYS){$(D)-Out:RB07}", "$(EVR):FrontUnivOut0", "UNIV7", 61}
-{"$(SYS){$(D)-Out:RB08}", "$(EVR):FrontUnivOut0", "UNIV8", 61}
-{"$(SYS){$(D)-Out:RB09}", "$(EVR):FrontUnivOut0", "UNIV9", 61}
-{"$(SYS){$(D)-Out:RB10}", "$(EVR):FrontUnivOut0", "UNIV10", 61}
-{"$(SYS){$(D)-Out:RB11}", "$(EVR):FrontUnivOut0", "UNIV11", 61}
+{"$(SYS){$(D)-Out:RB01}", "$(EVR):FrontUnivOut1", "UNIV1", 61}
+{"$(SYS){$(D)-Out:RB02}", "$(EVR):FrontUnivOut2", "UNIV2", 61}
+{"$(SYS){$(D)-Out:RB03}", "$(EVR):FrontUnivOut3", "UNIV3", 61}
+{"$(SYS){$(D)-Out:RB04}", "$(EVR):FrontUnivOut4", "UNIV4", 61}
+{"$(SYS){$(D)-Out:RB05}", "$(EVR):FrontUnivOut5", "UNIV5", 61}
+{"$(SYS){$(D)-Out:RB06}", "$(EVR):FrontUnivOut6", "UNIV6", 61}
+{"$(SYS){$(D)-Out:RB07}", "$(EVR):FrontUnivOut7", "UNIV7", 61}
+{"$(SYS){$(D)-Out:RB08}", "$(EVR):FrontUnivOut8", "UNIV8", 61}
+{"$(SYS){$(D)-Out:RB09}", "$(EVR):FrontUnivOut9", "UNIV9", 61}
+{"$(SYS){$(D)-Out:RB10}", "$(EVR):FrontUnivOut10","UNIV10", 61}
+{"$(SYS){$(D)-Out:RB11}", "$(EVR):FrontUnivOut11","UNIV11", 61}
 }
 
 file "mrmevroutint.db"
