@@ -34,7 +34,7 @@ EvgSeqManager::~EvgSeqManager() {}
 
 double EvgSeqManager::getClkFreq() const
 {
-    return owner->getEvtClk()->getFrequency();
+    return owner->getEvtClk()->getFrequency()*1e6;
 }
 
 //! Called from ISR

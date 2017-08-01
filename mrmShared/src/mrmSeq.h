@@ -49,7 +49,7 @@ public:
     void doEndOfSequence(unsigned i);
 
     //! sub-class implement to provide scaling between time and frequency.
-    //! Units of MHz
+    //! Units of Hz
     //! called with a SoftSeq mutex held.
     virtual double getClkFreq() const =0;
 

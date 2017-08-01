@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 
+#include <epicsMath.h>
 #include <epicsMutex.h>
 #include <errlog.h>
 
@@ -138,8 +139,37 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
     std::string getErr() const { SCOPED_LOCK(mutex); return last_err; }
     IOSCANPVT  getErrScan() const { return onErr; }
 
-//    void setTimestampResolution(epicsUInt32 res);
-//    epicsUInt32 getTimestampResolution() const;
+    epicsUInt32 getTimestampResolution() const
+    {
+        SCOPED_LOCK(mutex);
+        return timeScale;
+    }
+    void setTimestampResolution(epicsUInt32 val)
+    {
+        {
+            SCOPED_LOCK(mutex);
+            timeScale = val;
+        }
+        DEBUG(4, ("Set time scale\n"));
+        scanIoRequest(changed);
+    }
+
+private:
+    double getTimeScale() const
+    {
+        double tmult = 1.0;
+        SCOPED_LOCK(mutex);
+        if(timeScale) {
+            double freq = owner->getClkFreq(); // in ticks/sec
+            /* tscale==1 -> seconds
+             * tscale==1000 -> milliseconds
+             * ...
+             */
+            tmult = freq/timeScale;
+        }
+        return tmult;
+    }
+public:
 
     // dset actions
     // update scratch
@@ -147,13 +177,17 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
 
     void setTimestamp(const double *arr, epicsUInt32 count)
     {
+        const double tmult = getTimeScale();
         times_t times(count);
         // check for monotonic
         // TODO: not handling overflow (HW supports controlled rollover w/ special 0xffffffff times)
         for(epicsUInt32 i=0; i<count; i++)
         {
-            //TODO: unit conversion
-            times[i] = arr[i];
+            if(!finite(arr[i]) || arr[i]<0.0)
+                throw std::runtime_error("times must be finite >=0");
+
+            times[i] = (arr[i]*tmult)+0.5;
+
             if(i>0 && times[i]<=times[i-1])
                 throw std::runtime_error("Non-monotonic timestamp array");
             else if(times[i]==0xffffffff)
@@ -171,10 +205,11 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
     epicsUInt32 getTimestamp(double* arr, epicsUInt32 count) const
     {
         SCOPED_LOCK(mutex);
+        const double tmult = getTimeScale();
         epicsUInt32 ret = std::min(size_t(count), committed.times.size());
-        std::copy(committed.times.begin(),
-                  committed.times.begin()+ret,
-                  arr);
+        for(epicsUInt32 i=0; i<ret; i++) {
+            arr[i] = committed.times[i]/tmult;
+        }
         return ret;
     }
 
@@ -312,6 +347,8 @@ struct SoftSequence : public mrf::ObjectInst<SoftSequence>
     //! Guarded by interruptLock only
     epicsUInt32 numStart, numEnd;
 
+    epicsUInt32 timeScale;
+
     IOSCANPVT changed, onStart, onEnd, onErr;
 
     std::string last_err;
@@ -340,8 +377,7 @@ OBJECT_BEGIN(SoftSequence)
   OBJECT_PROP1("NUM_RUNS", &SoftSequence::counterEndScan);
   OBJECT_PROP1("NUM_STARTS", &SoftSequence::counterStart);
   OBJECT_PROP1("NUM_STARTS", &SoftSequence::counterStartScan);
-//  OBJECT_PROP2("TIMEMODE", &SoftSequence::getTimestampInpMode, &SoftSequence::setTimestampInpMode);
-//  OBJECT_PROP2("TIMEUNITS", &SoftSequence::getTimestampResolution, &SoftSequence::setTimestampResolution);
+  OBJECT_PROP2("TIMEUNITS", &SoftSequence::getTimestampResolution, &SoftSequence::setTimestampResolution);
   OBJECT_PROP2("TRIG_SRC", &SoftSequence::getTrigSrcCt, &SoftSequence::setTrigSrc);
   OBJECT_PROP1("TRIG_SRC", &SoftSequence::stateChange);
   OBJECT_PROP2("RUN_MODE", &SoftSequence::getRunModeCt, &SoftSequence::setRunMode);
@@ -357,6 +393,7 @@ SoftSequence::SoftSequence(SeqManager *o, const std::string& name)
     ,is_insync(false)
     ,numStart(0u)
     ,numEnd(0u)
+    ,timeScale(0u) // raw/ticks
 {
     scanIoInit(&changed);
     scanIoInit(&onStart);
