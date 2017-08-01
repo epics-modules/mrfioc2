@@ -1,4 +1,4 @@
-# Record set for a mTCA-EVR-300
+# Record set for a PCIe-EVR-300DC
 #
 # Macros:
 #  EVR = Card name (same as mrmEvrSetupPCI())
@@ -101,36 +101,28 @@ file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
 {"$(SYS){$(D)-Out:Int}", "$(EVR):Int", "Internal"}
-{"$(SYS){$(D)-Out:FP0}", "$(EVR):FrontOut0", "OUT0 (TTL)"}
-{"$(SYS){$(D)-Out:FP1}", "$(EVR):FrontOut1", "OUT1 (TTL)"}
-{"$(SYS){$(D)-Out:FP2}", "$(EVR):FrontOut2", "OUT2 (TTL)"}
-{"$(SYS){$(D)-Out:FP3}", "$(EVR):FrontOut3", "OUT3 (TTL)"}
-# default to tri-state for backplane lines
+# IFB appears in reg map as FPUV, by we name it as RTM
+# default to tri-state
 pattern
 {ON, OBJ, DESC, DEFAULT}
-{"$(SYS){$(D)-Out:Back0}", "$(EVR):Backplane0", "RX17 (0)", 61}
-{"$(SYS){$(D)-Out:Back1}", "$(EVR):Backplane1", "TX17 (1)", 61}
-{"$(SYS){$(D)-Out:Back2}", "$(EVR):Backplane2", "RX18 (2)", 61}
-{"$(SYS){$(D)-Out:Back3}", "$(EVR):Backplane3", "TX18 (3)", 61}
-{"$(SYS){$(D)-Out:Back4}", "$(EVR):Backplane4", "RX19 (4)", 61}
-{"$(SYS){$(D)-Out:Back5}", "$(EVR):Backplane5", "TX19 (5)", 61}
-{"$(SYS){$(D)-Out:Back6}", "$(EVR):Backplane6", "RX20 (6)", 61}
-{"$(SYS){$(D)-Out:Back7}", "$(EVR):Backplane7", "TX20 (7)", 61}
-{"$(SYS){$(D)-Out:FPUV0}", "$(EVR):FrontUnivOut0", "TCLKA", 61}
-{"$(SYS){$(D)-Out:FPUV1}", "$(EVR):FrontUnivOut1", "TCLKB", 61}
+{"$(SYS){$(D)-Out:RB00}", "$(EVR):FrontUnivOut0", "UNIV0", 61}
+{"$(SYS){$(D)-Out:RB01}", "$(EVR):FrontUnivOut0", "UNIV1", 61}
+{"$(SYS){$(D)-Out:RB02}", "$(EVR):FrontUnivOut0", "UNIV2", 61}
+{"$(SYS){$(D)-Out:RB03}", "$(EVR):FrontUnivOut0", "UNIV3", 61}
+{"$(SYS){$(D)-Out:RB04}", "$(EVR):FrontUnivOut0", "UNIV4", 61}
+{"$(SYS){$(D)-Out:RB05}", "$(EVR):FrontUnivOut0", "UNIV5", 61}
+{"$(SYS){$(D)-Out:RB06}", "$(EVR):FrontUnivOut0", "UNIV6", 61}
+{"$(SYS){$(D)-Out:RB07}", "$(EVR):FrontUnivOut0", "UNIV7", 61}
+{"$(SYS){$(D)-Out:RB08}", "$(EVR):FrontUnivOut0", "UNIV8", 61}
+{"$(SYS){$(D)-Out:RB09}", "$(EVR):FrontUnivOut0", "UNIV9", 61}
+{"$(SYS){$(D)-Out:RB10}", "$(EVR):FrontUnivOut0", "UNIV10", 61}
+{"$(SYS){$(D)-Out:RB11}", "$(EVR):FrontUnivOut0", "UNIV11", 61}
 }
 
 file "mrmevroutint.db"
 {{
     ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"
 }}
-
-file "evrcml.db"
-{pattern
-{P, ON, OBJ}
-{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FPUV0}", "$(EVR):CML0"}
-{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FPUV1}", "$(EVR):CML1"}
-}
 
 # Pulse generators w/o a prescaler set NOPS=1
 file "evrpulser.db"

@@ -59,22 +59,31 @@
 static epicsUInt8 vme_level_mask = 0;
 
 static const epicsPCIID mrmevrs[] = {
+    /* PMC-EVR-230 */
     DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
                                PCI_DEVICE_ID_MRF_PMCEVR_230, PCI_VENDOR_ID_MRF)
+    /* PXI-EVR-230 */
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030,    PCI_VENDOR_ID_PLX,
                                 PCI_DEVICE_ID_MRF_PXIEVR_230, PCI_VENDOR_ID_MRF)
+    /* cPCI-EVRTG-300 */
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9056,    PCI_VENDOR_ID_PLX,
                                 PCI_DEVICE_ID_MRF_EVRTG_300, PCI_VENDOR_ID_MRF)
+    /* cPCI-EVRTG-300E ?? PCIe-EVR-300 */
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_EC_30,    PCI_VENDOR_ID_LATTICE,
                                 PCI_DEVICE_ID_MRF_EVRTG_300E, PCI_VENDOR_ID_MRF)
+    /* cPCI-EVR-300 */
     ,DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVR300,    PCI_VENDOR_ID_MRF)
+    /* mTCA-EVR-300 */
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV,    PCI_VENDOR_ID_XILINX,
                                PCI_DEVICE_ID_MRF_EVRMTCA300, PCI_VENDOR_ID_MRF)
+    /* PCIe-EVR-300DC */
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV,    PCI_VENDOR_ID_XILINX,
+                               PCI_SUBDEVICE_ID_PCIE_EVR_300, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
 static const struct VMECSRID vmeevrs[] = {
-    // VME EVR RF 230
+    // VME-EVR-230 and VME-EVRRF-230
     {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
     ,VMECSR_END
 };
@@ -171,6 +180,20 @@ static const EVRMRM::Config mtca_evr_300 = {
     0,  // FPUV outputs (really 2, handled specially)
     16, // RB outputs  (via external IFB)
     8,  // Backplane outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config pcie_evr_300 = {
+    "PCIe-EVR-300DC",
+    16, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    16,  // FPUV outputs  (via external IFB)
+    0, // RB outputs
+    0,  // Backplane outputs
     0,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeTG300,
@@ -412,7 +435,6 @@ mrmEvrSetupPCI(const char* id,const char* pcispec)
 {
 try {
     bus_configuration bus;
-    const EVRMRM::Config *conf;
 
     bus.busType = busType_pci;
 
@@ -442,14 +464,23 @@ try {
     printf("Device %s  %u:%u.%u slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
     printf("Using IRQ %u\n",cur->irq);
 
+    const EVRMRM::Config *conf = NULL;
     switch(cur->id.sub_device) {
     case PCI_DEVICE_ID_MRF_PMCEVR_230: conf = &pmc_evr_230; break;
     case PCI_DEVICE_ID_MRF_PXIEVR_230: conf = &cpci_evr_230; break;
-    case PCI_DEVICE_ID_MRF_EVRTG_300:
-    case PCI_DEVICE_ID_MRF_EVRTG_300E: conf = &cpci_evrtg_300; break;
+    case PCI_DEVICE_ID_MRF_EVRTG_300:  conf = &cpci_evrtg_300; break;
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
     case PCI_DEVICE_ID_MRF_EVRMTCA300: conf = &mtca_evr_300; break;
-    default:
+        // ambiguity
+    case PCI_DEVICE_ID_MRF_EVRTG_300E: // aka PCI_SUBDEVICE_ID_PCIE_EVR_300
+        switch (cur->id.device) {
+        case PCI_DEVICE_ID_EC_30: conf = &cpci_evrtg_300; break;
+        case PCI_DEVICE_ID_XILINX_DEV: conf = &pcie_evr_300; break;
+        }
+        break;
+    }
+
+    if(!conf) {
         printf("Unknown PCI EVR variant, making assumptions...\n");
         conf = &cpci_evr_unknown;
     }
