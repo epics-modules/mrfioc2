@@ -761,7 +761,7 @@ mrf_remove(struct pci_dev *dev)
 #endif
 #if defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC)
         {
-            if(dev->subsystem_device != PCI_SUBDEVICE_ID_PCIE_EVR_300) {
+            if(dev->device==PCI_DEVICE_ID_PLX_9030) {
                 void __iomem *plx = info->mem[0].internal_addr;
                 u32 val = ioread32(plx + GPIOC);
                 // Disable output drivers for TCLK, TMS, and TDI
