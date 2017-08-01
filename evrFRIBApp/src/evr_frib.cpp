@@ -428,15 +428,5 @@ void OutputFRIB::enable(bool v)
     }
 }
 
-const char* OutputFRIB::sourceName(epicsUInt32 s) const
-{
-    switch(s) {
-    case 1: return "CLK";
-    case 2: return "TR0";
-    case 3: return "TR1";
-    default: return "???";
-    }
-}
-
 void OutputFRIB::lock() const { evr->lock(); }
 void OutputFRIB::unlock() const { evr->unlock(); }

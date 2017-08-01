@@ -42,8 +42,6 @@ public:
   virtual bool enabled() const;
   virtual void enable(bool);
 
-  virtual const char*sourceName(epicsUInt32) const;
-
 private:
   EVRMRM * const owner;
   const OutputType type;

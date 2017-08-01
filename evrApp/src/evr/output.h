@@ -47,8 +47,6 @@ public:
   virtual bool enabled() const=0;
   virtual void enable(bool)=0;
   /*@}*/
-
-  virtual const char*sourceName(epicsUInt32) const=0;
 };
 
 #endif // OUTPUT_HPP_INC

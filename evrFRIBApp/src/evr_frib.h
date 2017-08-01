@@ -34,8 +34,6 @@ struct OutputFRIB : public Output
     virtual bool enabled() const;
     virtual void enable(bool);
 
-    virtual const char*sourceName(epicsUInt32) const;
-
     virtual void lock() const;
     virtual void unlock() const;
 };
