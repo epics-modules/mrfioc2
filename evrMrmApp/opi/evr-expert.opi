@@ -1149,7 +1149,7 @@ $(pv_value)</tooltip>
       <foreground_color>
         <color red="0" green="0" blue="0" />
       </foreground_color>
-      <format_type>0</format_type>
+      <format_type>3</format_type>
       <height>19</height>
       <horizontal_alignment>1</horizontal_alignment>
       <name>Text Update_1</name>
