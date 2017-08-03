@@ -52,10 +52,7 @@ void fribEvrSetupPCI(const char *name, const char *pcispec)
 
         bus_configuration bconf;
         bconf.busType = busType_pci;
-        bconf.pci.domain = dev->domain;
-        bconf.pci.bus = dev->bus;
-        bconf.pci.device = dev->device;
-        bconf.pci.function = dev->function;
+        bconf.pci.dev = dev;
 
         mrf::auto_ptr<EVRFRIB> evr(new EVRFRIB(name, bconf, base));
 

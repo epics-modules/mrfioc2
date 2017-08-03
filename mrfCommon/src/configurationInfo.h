@@ -6,6 +6,8 @@
 #ifndef CONFIGURATIONINFO_H
 #define CONFIGURATIONINFO_H
 
+#include <devLibPCI.h>
+
 //VME
 struct configuration_vme{
     epicsInt32 slot;        // slot where the card is inserted
@@ -18,12 +20,9 @@ struct configuration_vme{
 
 // PCI
 struct configuration_pci{
-    int domain;
-    int bus;        // Bus number
-    int device;     // Device number
-    int function;   // Function number
+    const epicsPCIDevice *dev;
     configuration_pci()
-        :domain(0), bus(0), device(0), function(0)
+        :dev(0)
     {}
 };
 

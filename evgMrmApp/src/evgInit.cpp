@@ -354,9 +354,7 @@ mrmEvgSetupPCI (
         bus_configuration bus;
 
         bus.busType = busType_pci;
-        bus.pci.bus = cur->bus;
-        bus.pci.device = cur->device;
-        bus.pci.function = cur->function;
+        bus.pci.dev = cur;
 
         printf("Device %s  %u:%u.%u\n", id, cur->bus, cur->device,
                cur->function);
@@ -757,17 +755,13 @@ reportCard(mrf::Object* obj, void* arg) {
         }
     }
     else if(bus->busType == busType_pci){
-        const epicsPCIDevice *pciDev;
-        if(!devPCIFindBDF(mrmevgs, bus->pci.bus, bus->pci.device, bus->pci.function, &pciDev, 0)){
-            printf("\tPCI configured bus: 0x%08x\n", bus->pci.bus);
-            printf("\tPCI configured device: 0x%08x\n", bus->pci.device);
-            printf("\tPCI configured function: 0x%08x\n", bus->pci.function);
-            printf("\tPCI IRQ: %u\n", pciDev->irq);
-            if(*level>1) printf("\tPCI class: 0x%08x, revision: 0x%x, sub device: 0x%x, sub vendor: 0x%x\n", pciDev->id.pci_class, pciDev->id.revision, pciDev->id.sub_device, pciDev->id.sub_vendor);
+        const epicsPCIDevice *pciDev = bus->pci.dev;
+        printf("\tPCI configured bus: 0x%08x\n", pciDev->bus);
+        printf("\tPCI configured device: 0x%08x\n", pciDev->device);
+        printf("\tPCI configured function: 0x%08x\n", pciDev->function);
+        printf("\tPCI in slot: %s\n", pciDev->slot ? pciDev->slot : "<N/A>");
+        printf("\tPCI IRQ: %u\n", pciDev->irq);
 
-        }else{
-            printf("\tPCI Device not found\n");
-        }
     }else{
         printf("\tUnknown bus type\n");
     }
