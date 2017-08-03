@@ -4,17 +4,16 @@
 #  EVR = Card name (same as mrmEvrSetupPCI())
 #  SYS = System name (ie SR-TM)
 #  D = Device name (ie EVR:Diag2)
+#  FRF = Event link frequency (default 124.916 MHz)
 #
 # Record names have the general forms:
 #  $(SYS){$(D)}Signal-SD
 #  $(SYS){$(D)-SubDev}Signal-SD
 
 file "evrbase.db"
-{pattern
-{P, OBJ, EVNT1HZ}
-{"$(SYS){$(D)}", $(EVR), 125}
+{
+{P="$(SYS){$(D)}", OBJ="$(EVR)", EVNT1Hz="125", FRF="\$(FRF=124.916)"}
 }
-
 file "databuftx.db"
 {pattern
 {P, OBJ, PROTO}
