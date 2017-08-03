@@ -231,9 +231,7 @@ MRMCML::countInit () const
 void
 MRMCML::setCountHigh(epicsUInt32 v)
 {
-    if(v<=20 || v>=65535){
-        throw std::out_of_range("Invalid CML freq. count");
-    }
+    v = std::max(kind==typeTG300?40u:20u, std::min(v, 65535u));
 
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_high_shft);
@@ -244,8 +242,7 @@ MRMCML::setCountHigh(epicsUInt32 v)
 void
 MRMCML::setCountLow (epicsUInt32 v)
 {
-    if(v<=20 || v>=65535)
-        throw std::out_of_range("Invalid CML freq. count");
+    v = std::max(kind==typeTG300?40u:20u, std::min(v, 65535u));
 
     epicsUInt32 val = READ32(base, OutputCMLCount(N));
     val &= ~(OutputCMLCount_mask << OutputCMLCount_low_shft);
@@ -256,8 +253,7 @@ MRMCML::setCountLow (epicsUInt32 v)
 void
 MRMCML::setCountInit (epicsUInt32 v)
 {
-    if(v>=65535)
-        throw std::out_of_range("Invalid CML freq. count");
+    v = std::min(v, 65535u);
 
     v <<= OutputCMLEna_ftrig_shft;
     shadowEnable &= ~OutputCMLEna_ftrig_mask;
