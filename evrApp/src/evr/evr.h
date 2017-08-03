@@ -53,7 +53,8 @@ public:
   virtual std::string model() const=0;
 
   //! Firmware Version
-  virtual epicsUInt32 version() const=0;
+  virtual MRFVersion version() const=0;
+  std::string versionStr() const;
   //! Software Version
   virtual std::string versionSw() const;
 

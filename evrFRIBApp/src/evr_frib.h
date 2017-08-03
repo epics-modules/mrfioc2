@@ -146,7 +146,7 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
     // methods from EVR
 
     virtual std::string model() const;
-    virtual epicsUInt32 version() const;
+    virtual MRFVersion version() const;
 
     virtual bool enabled() const { return true; }
     virtual void enable(bool) {}

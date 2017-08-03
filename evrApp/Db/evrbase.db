@@ -217,8 +217,8 @@ record(stringin, "$(P)HwType-I") {
   field(DESC, "Hardware type code")
 }
 
-record(longin, "$(P)FwVer-I") {
-  field(DTYP, "Obj Prop uint32")
+record(stringin, "$(P)FwVer-I") {
+  field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Version")
   field(PINI, "YES")
   field(DESC, "Firmware version")

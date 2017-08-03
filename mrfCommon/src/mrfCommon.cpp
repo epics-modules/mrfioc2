@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <iomanip>
 
 #include <errno.h>
 #include <limits.h>
@@ -7,6 +8,37 @@
 #include <epicsStdio.h>
 #include <epicsExport.h>
 #include "mrfCommon.h"
+
+int MRFVersion::compare(const MRFVersion& o) const
+{
+    if(m_major<o.m_major)
+        return -1;
+    else if(m_major>o.m_major)
+        return 1;
+    else if(m_minor<o.m_minor)
+        return -1;
+    else if(m_minor>o.m_minor)
+        return 1;
+    else
+        return 0;
+}
+
+std::string MRFVersion::str() const
+{
+    std::ostringstream strm;
+    strm<<(*this);
+    return strm.str();
+}
+
+std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver)
+{
+    strm<<std::hex<<ver.firmware()
+        <<std::hex<<std::setfill('0')<<std::setw(2)<<ver.revision()
+        <<'.'
+        <<((ver.subrelease()<0) ? "-" : "")
+        <<abs(ver.subrelease());
+    return strm;
+}
 
 epicsUInt32 roundToUInt(double val, epicsUInt32 max)
 {

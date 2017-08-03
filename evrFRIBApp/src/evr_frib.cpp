@@ -162,8 +162,8 @@ std::string EVRFRIB::model() const
     }
 }
 
-epicsUInt32 EVRFRIB::version() const {
-    return (LE_READ32(base, FWInfo)&FWInfo_Version_mask)>>FWInfo_Version_shift;
+MRFVersion EVRFRIB::version() const {
+    return MRFVersion((LE_READ32(base, FWInfo)&0xffff)<<8);
 }
 
 double EVRFRIB::clock() const {return clockFreq;}

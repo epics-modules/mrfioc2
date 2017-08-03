@@ -305,7 +305,7 @@ bool reportCard(mrf::Object* obj, void* raw)
         return true;
 
     printf("EVR: %s\n",obj->name().c_str());
-    printf("\tFPGA Version: %08x (firmware: %x)\n", evr->fpgaFirmware(), evr->version());
+    printf("\tFPGA Version: %08x (firmware: %s)\n", evr->fpgaFirmware(), evr->versionStr().c_str());
     printf("\tForm factor: %s\n", evr->formFactorStr().c_str());
     printf("\tClock: %.6f MHz\n",evr->clock()*1e-6);
 
@@ -618,26 +618,26 @@ try {
 
 
 #ifndef __linux__
-    if(receiver->version()>=0xa) {
+    if(receiver->version()>=MRFVersion(0, 0xa)) {
         // RTOS doesn't need this, so always enable
         WRITE32(evr, PCI_MIE, EVG_MIE_ENABLE);
     }
 #else
-    if(receiver->version()>=0xa && kifacever>=2) {
+    if(receiver->version()>=MRFVersion(0, 0xa) && kifacever>=2) {
         // PCI master enable supported by firmware and kernel module.
         // the kernel will set this bit when devPCIEnableInterrupt() is called
     } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030 ||
               cur->id.device==PCI_DEVICE_ID_PLX_9056) {
         // PLX based devices don't need special handling
         WRITE32(evr, PCI_MIE, EVG_MIE_ENABLE);
-    } else if(receiver->version()<0xa) {
+    } else if(receiver->version()<MRFVersion(0, 0xa)) {
         // old firmware and (maybe) old kernel module.
         // this will still work, so just complain
         errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
                      "         Please consider upgrading to FW version 0xA.\n");
         if(kifacever<2)
             errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
-    } else if(receiver->version()>=0xa && kifacever<2) {
+    } else if(receiver->version()>=MRFVersion(0, 0xa) && kifacever<2) {
         // New firmware w/ old kernel module, this won't work
         throw std::runtime_error("FW version 0xA for this device requires a linux kernel module w/ interface version 2");
     } else {

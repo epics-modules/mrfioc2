@@ -134,7 +134,7 @@ public:
     epicsUInt32 fpgaFirmware();
     formFactor getFormFactor();
     std::string formFactorStr();
-    virtual epicsUInt32 version() const;
+    virtual MRFVersion version() const;
 
 
     virtual bool enabled() const;

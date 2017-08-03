@@ -47,7 +47,9 @@
 #define MRF_COMMON_H
 
 #ifdef __cplusplus
+#include <ostream>
 #include <sstream>
+#include <string>
 #include <memory>
 
 // ugly hack to avoid copious deprecation warnings when building c++11
@@ -208,6 +210,48 @@ struct SB {
     template<typename T>
     SB& operator<<(T i) { strm<<i; return *this; }
 };
+
+/* MRF firmware version numbers have become interesting.
+ *
+ * Storage is 0x__CCAABB
+ *   AA - Firmware ID
+ *   BB - Revision ID
+ *   CC - Subrelease ID
+ *
+ * To quote the manual:
+ *   Subrelease ID For production releases the subrelease ID counts up from 00.
+ *   For pre-releases this ID is used “backwards” counting down from ff i.e. when
+ *   approacing release 12000207, we have prereleases 12FF0206, 12FE0206,
+ *   12FD0206 etc. in this order.
+ */
+class MRFVersion
+{
+    const epicsUInt16 m_major;
+    const epicsInt8 m_minor;
+public:
+
+    explicit MRFVersion(epicsUInt32 regval)
+        :m_major(regval&0xffff) ,m_minor((regval>>16)&0xff)
+    {}
+    inline MRFVersion(unsigned fw, unsigned rev, unsigned sub=0)
+        :m_major((fw<<8)|rev), m_minor(sub)
+    {}
+
+    inline unsigned firmware() const { return m_major>>8; }
+    inline unsigned revision() const { return m_major&0xff; }
+    inline int subrelease() const { return m_minor; }
+
+    int compare(const MRFVersion& o) const;
+    inline bool operator>(const MRFVersion& o) const { return compare(o)==1; }
+    inline bool operator<(const MRFVersion& o) const { return compare(o)==-1; }
+    inline bool operator==(const MRFVersion& o) const { return compare(o)==0; }
+    inline bool operator>=(const MRFVersion& o) const { return compare(o)!=-1; }
+    inline bool operator<=(const MRFVersion& o) const { return compare(o)!=1; }
+
+    std::string str() const;
+};
+
+std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver);
 
 #endif /* __cplusplus */
 

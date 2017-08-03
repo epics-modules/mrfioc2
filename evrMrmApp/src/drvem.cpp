@@ -142,13 +142,21 @@ try{
     const epicsUInt32 rawver = fpgaFirmware();
     const epicsUInt32 boardtype = (rawver&FWVersion_type_mask)>>FWVersion_type_shift;
     const epicsUInt32 formfactor = (rawver&FWVersion_form_mask)>>FWVersion_form_shift;
-    const epicsUInt32 ver = (rawver&FWVersion_ver_mask)>>FWVersion_ver_shift;
+    const MRFVersion ver(rawver);
 
     if(boardtype!=0x1)
         throw std::runtime_error("Address does not correspond to an EVR");
 
-    if(ver<3)
-        throw std::runtime_error("Firmware versions < 3 not supported");
+    if(ver<MRFVersion(0,3))
+        throw std::runtime_error("Firmware 0 version < 3 not supported");
+    else if(ver.firmware()==2 && ver<MRFVersion(2,7))
+        throw std::runtime_error("Firmware 2 version < 207 not supported");
+
+    if(ver.firmware()==2 && ver<MRFVersion(2,7,6))
+        printf("Warning: Recommended minimum firmware 2 version is 207.6\n");
+
+    if(ver.firmware()!=0 && ver.firmware()!=2)
+        printf("Warning: Unknown firmware series %u.  Your milage may vary\n", ver.firmware());
 
     scanIoInit(&IRQmappedEvent);
     scanIoInit(&IRQheartbeat);
@@ -160,13 +168,13 @@ try{
     CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
-    if(ver>=5) {
+    if(ver>=MRFVersion(0, 5)) {
         std::ostringstream name;
         name<<n<<":SFP";
         sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
     }
 
-    if(ver>=0x0207) {
+    if(ver>=MRFVersion(2,7)) {
         printf("Sequencer capability detected\n");
         seq.reset(new EvrSeqManager(this));
     }
@@ -237,7 +245,7 @@ try{
         name<<n<<":Pul"<<i;
         pulsers[i]=new MRMPulser(name.str(), i,*this);
     }
-    if(ver>=0x200) {
+    if(ver>=MRFVersion(2,0)) {
         // masking pulsers
         for(epicsUInt32 i=28; i<=31; i++){
             std::ostringstream name;
@@ -270,7 +278,7 @@ try{
         shortcmls[0]=new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
         shortcmls[1]=new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
 
-    } else if(conf->nCML && ver>=4){
+    } else if(conf->nCML && ver>=MRFVersion(0,4)){
         shortcmls.resize(conf->nCML);
         for(size_t i=0; i<conf->nCML; i++){
             std::ostringstream name;
@@ -383,12 +391,9 @@ EVRMRM::fpgaFirmware(){
     return READ32(base, FWVersion);
 }
 
-epicsUInt32
-EVRMRM::version() const
+MRFVersion EVRMRM::version() const
 {
-    epicsUInt32 v = READ32(base, FWVersion);
-
-    return (v&FWVersion_ver_mask)>>FWVersion_ver_shift;
+    return MRFVersion(READ32(base, FWVersion));
 }
 
 formFactor

@@ -36,6 +36,11 @@ EVR::~EVR()
 {
 }
 
+std::string EVR::versionStr() const
+{
+    return version().str();
+}
+
 std::string EVR::versionSw() const
 {
     return MRF_VERSION;
@@ -99,7 +104,7 @@ OBJECT_BEGIN(EVR) {
 
     OBJECT_PROP1("Model", &EVR::model);
 
-    OBJECT_PROP1("Version", &EVR::version);
+    OBJECT_PROP1("Version", &EVR::versionStr);
     OBJECT_PROP1("Sw Version", &EVR::versionSw);
 
     OBJECT_PROP1("Position", &EVR::position);
