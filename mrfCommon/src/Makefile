@@ -65,6 +65,8 @@ mrfCommon_SRCS += devMbboDirectSoft.c
 mrfCommon_SRCS += devlutstring.cpp
 mrfCommon_SRCS += databuf.cpp
 mrfCommon_SRCS += mrfCommon.cpp
+mrfCommon_SRCS += spi.cpp
+mrfCommon_SRCS += flash.cpp
 
 mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 
