@@ -13,6 +13,7 @@
 #define EVRMRML_H_INC
 
 #include "evr/evr.h"
+#include "mrf/spi.h"
 
 #include <string>
 #include <vector>
@@ -94,7 +95,8 @@ struct epicsShareClass eventCode {
  *
  * 
  */
-class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>
+class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
+                                      mrf::SPIInterface
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
 public:
@@ -126,6 +128,10 @@ public:
 private:
     void cleanup();
 public:
+
+    // SPI access
+    virtual void select(unsigned id);
+    virtual epicsUInt8 cycle(epicsUInt8 in);
 
     virtual void lock() const{evrLock.lock();};
     virtual void unlock() const{evrLock.unlock();};

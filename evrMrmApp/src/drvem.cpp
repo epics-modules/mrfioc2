@@ -47,13 +47,15 @@
 #  include "devLibPCI.h"
 #endif
 
-#include <epicsExport.h>
-
 #include "drvem.h"
 
+#include <epicsExport.h>
+
+int evrMrmSPIDebug;
 int evrDebug;
 extern "C" {
  epicsExportAddress(int, evrDebug);
+ epicsExportAddress(int, evrMrmSPIDebug);
 }
 
 using namespace std;
@@ -341,6 +343,9 @@ try{
 
     drain_fifo_task.start();
 
+    if(busConfig.busType==busType_pci)
+        mrf::SPIDevice::registerDev(n+":FLASH", mrf::SPIDevice(this, 1));
+
 } catch (std::exception& e) {
     printf("Aborting EVR initializtion: %s\n", e.what());
     cleanup();
@@ -350,6 +355,8 @@ try{
 
 EVRMRM::~EVRMRM()
 {
+    if(getBusConfiguration()->busType==busType_pci)
+        mrf::SPIDevice::unregisterDev(name()+":FLASH");
     cleanup();
 }
 
@@ -379,6 +386,75 @@ EVRMRM::cleanup()
 
 #undef CLEANVEC
     printf("complete\n");
+}
+
+void EVRMRM::select(unsigned id)
+{
+    if(evrMrmSPIDebug)
+        printf("SPI: select %u\n", id);
+
+    if(id==0) {
+        // deselect
+        WRITE32(base, SPIDCtrl, SPIDCtrl_OE);
+        // wait a bit to ensure the chip sees deselect
+        epicsThreadSleep(0.001);
+        // disable drivers
+        WRITE32(base, SPIDCtrl, 0);
+    } else {
+        // drivers on w/ !SS
+        WRITE32(base, SPIDCtrl, SPIDCtrl_OE);
+        // wait a bit to ensure the chip sees deselect
+        epicsThreadSleep(0.001);
+        // select
+        WRITE32(base, SPIDCtrl, SPIDCtrl_OE|SPIDCtrl_SS);
+    }
+}
+
+epicsUInt8 EVRMRM::cycle(epicsUInt8 in)
+{
+    double timeout = this->timeout();
+    double wait = timeout/20;
+    unsigned i;
+
+    if(evrMrmSPIDebug)
+        printf("SPI %02x ", int(in));
+
+    // wait for send ready to be set
+    for(i=0; i<20 && !(READ32(base, SPIDCtrl)&SPIDCtrl_SendRdy); i++)
+        epicsThreadSleep(wait);
+
+    if(i==20)
+        throw std::runtime_error("SPI cycle timeout1");
+
+    if(evrMrmSPIDebug>1)
+        printf("(%u) ", i);
+
+    WRITE32(base, SPIDData, in);
+
+    if(evrMrmSPIDebug)
+        printf("-> ");
+
+    if(!(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy)) {
+        // optimistically try one "fast" wait
+        epicsThreadSleep(0.0);
+    }
+
+    // wait for recv ready to be set
+    for(i=0; i<20 && !(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy); i++)
+        epicsThreadSleep(wait);
+
+    if(i==20)
+        throw std::runtime_error("SPI cycle timeout2");
+
+    epicsUInt8 ret = READ32(base, SPIDData)&0xff;
+
+    if(evrMrmSPIDebug) {
+        printf("%02x", int(ret));
+        if(evrMrmSPIDebug>1)
+            printf(" (%u)", i);
+        printf("\n");
+    }
+    return ret;
 }
 
 string EVRMRM::model() const

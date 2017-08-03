@@ -9,3 +9,5 @@ device(waveform, INST_IO, devwaveformindataBufRx, "MRM EVR Buf Rx")
 registrar(registerISRHack)
 
 variable(mrmEvrFIFOPeriod,double)
+
+variable(evrMrmSPIDebug, int)

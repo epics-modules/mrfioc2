@@ -171,6 +171,14 @@
 
 #define U32_SPIDData    0x0A0
 #define U32_SPIDCtrl    0x0A4
+#define  SPIDCtrl_Overrun 0x80
+#define  SPIDCtrl_RecvRdy 0x40
+#define  SPIDCtrl_SendRdy 0x20
+#define  SPIDCtrl_SendEpt 0x10
+#define  SPIDCtrl_TxOver  0x08
+#define  SPIDCtrl_RxOver  0x04
+#define  SPIDCtrl_OE      0x02
+#define  SPIDCtrl_SS      0x01
 
 #define U32_DCTarget    0x0b0
 #define U32_DCRxVal     0x0b4
