@@ -78,10 +78,10 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsubsection v220_compat Incompatible changes
 
-@li Remaining EPICS Base < 3.14.10 compatibility code removed
 @li Requires devlib2 >=2.9
 @li Some software sequencer control records have changed to accommodate sequencer support in the 300DC series EVRs.  Updated cs-studio/BOY .opi files.
 @li Remove support for sequencer "Automatic" (continuous) trigger mode, also Pause and Abort actions.
+@li EDM files removed due to lack of maintenance.
 
 @subsubsection v220_add Additions
 
