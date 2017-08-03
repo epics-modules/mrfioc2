@@ -33,11 +33,11 @@ EPICS Base >= 3.14.10
 
 @url http://www.aps.anl.gov/epics/
 
-MSI (Macro expension tool)
+MSI (Macro expansion tool)  Required with Base < 3.15.1
 
 @url http://www.aps.anl.gov/epics/extensions/msi/index.php
 
-devLib2 >= 2.8
+devLib2 >= 2.9
 
 @url http://epics.sourceforge.net/devlib2/
 
@@ -45,9 +45,20 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 @section hardware Supported Hardware
 
-Event Generators.  VME-EVG-230 and cPCI-EVG-300
+- Event Generators
+ - VME-EVG-230
+ - cPCI-EVG-300
 
-Event Receivers.  VME-EVR-230RF, VME-EVR-230 (non-RF), PMC-EVR-230, cPCI-EVR-230, cPCI-EVRTG-300, cPCI-EVR-300, PCIe-EVR-300
+- Event Receivers
+ - VME-EVR-230RF
+ - VME-EVR-230 (non-RF)
+ - PMC-EVR-230
+ - cPCI-EVR-230
+ - cPCI-EVRTG-300
+ - cPCI-EVR-300
+ - PCIe-EVR-300DC
+ - mTCA-EVR-300
+ - FRIB EVR (not MRF product)
 
 @section doc Documentation
 
@@ -63,7 +74,21 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v211 2.1.1 (UNRELEASED)
+@subsection v220 2.2.0 (UNRELEASED)
+
+@subsubsection v220_compat Incompatible changes
+
+@li Remaining EPICS Base < 3.14.10 compatibility code removed
+@li Requires devlib2 >=2.9
+@li Some software sequencer control records have changed to accommodate sequencer support in the 300DC series EVRs.  Updated cs-studio/BOY .opi files.
+@li Remove support for sequencer "Automatic" (continuous) trigger mode, also Pause and Abort actions.
+
+@subsubsection v220_add Additions
+
+@li Add support for mTCA-EVR-300 and PCIe-EVR-300DC.  Requires firmware >=207.  Tested with firmware >=207.6.
+@li Add driver for FRIB developed mTCA EVR
+@li mrmEvrSetupPCI() accepts "slot=#" in addition to PCI geographic address
+@li linux: kernel module exports PCI ID table to enable automatic module loading
 
 @subsection v210 2.1.0 (Oct. 2016)
 

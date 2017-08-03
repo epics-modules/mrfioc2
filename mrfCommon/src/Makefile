@@ -6,7 +6,7 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 
 export PERL5LIB=$(EPICS_BASE)/lib/perl
 
-MRF_VERSION = 2.1.1
+MRF_VERSION = 2.2.0
 
 #---------------------
 # Install include files
