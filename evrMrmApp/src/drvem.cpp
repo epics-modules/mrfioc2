@@ -239,7 +239,7 @@ try{
         prescalers[i]=new MRMPreScaler(name.str(), *this,base+U32_Scaler(i));
     }
 
-    pulsers.resize(conf->nPul);
+    pulsers.resize(32);
     for(epicsUInt32 i=0; i<conf->nPul; i++){
         std::ostringstream name;
         name<<n<<":Pul"<<i;
