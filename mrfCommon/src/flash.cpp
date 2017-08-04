@@ -264,17 +264,70 @@ void CFIFlash::write(const epicsUInt32 start,
         throw std::runtime_error("FLASH readback error");
 }
 
+void CFIFlash::erase(epicsUInt32 start, epicsUInt32 count, bool strict)
+{
+    if((start&0xff000000) || (count&0xff000000) || ((start+count)&0xff000000))
+        std::runtime_error("start/count exceeds 24-bit addressing");
+
+    check();
+
+    if(strict && info.capacity==0)
+        throw std::runtime_error("Won't attempt to write when capacity isn't known");
+
+    else if(start>=info.capacity || (start+count)>info.capacity)
+        throw std::runtime_error("Can't write beyond capacity");
+
+    if(info.pageSize==0 || info.sectorSize==0)
+        throw std::runtime_error("Won't attempt to write to unsupported flash chip");
+
+    {
+        epicsUInt32 mask = (info.pageSize-1u) | (info.sectorSize-1u);
+        if(start&mask)
+            throw std::runtime_error("start address not aligned to page & sector sizes");
+
+        if(strict && ((start+count)&mask))
+            throw std::runtime_error("end address not aligned to page & sector sizes");
+    }
+
+    const epicsUInt32 end = start+count;
+
+    const double timeout = dev.interface()->timeout();
+
+    WriteEnabler WE(*this);
+
+    // erase necessary sectors
+
+    for(epicsUInt32 addr=start; addr<end; addr+=info.sectorSize)
+    {
+        busyWait(timeout);
+
+        WE.enable();
+
+        epicsUInt8 cmd[4];
+        cmd[0] = 0xd8; // SECTOR ERASE
+        cmd[1] = (addr>>16)&0xff;
+        cmd[2] = (addr>> 8)&0xff;
+        cmd[3] = (addr>> 0)&0xff;
+        SPIInterface::Operation op = {4, cmd, NULL};
+
+        {
+            SPIDevice::Selector S(dev);
+            dev.interface()->cycles(1, &op);
+        }
+    }
+}
+
 void CFIFlash::check()
 {
     if(!haveinfo) {
 
         readID(&info);
 
-        if(info.vendor==0xff)
-            throw std::runtime_error("Invalid Flash vendor ID");
-
         haveinfo = true;
     }
+
+    if(info.vendor==0xff)
+        throw std::runtime_error("Invalid Flash vendor ID");
 }
 
 unsigned CFIFlash::status()

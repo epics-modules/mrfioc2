@@ -54,6 +54,7 @@ public:
     void write(epicsUInt32 start, const std::vector<epicsUInt8>& out, bool strict = true)
     { write(start, out.size(), &out[0], strict); }
 
+    void erase(epicsUInt32 start, epicsUInt32 count, bool strict = true);
 private:
     SPIDevice dev;
     bool haveinfo;

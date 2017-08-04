@@ -209,6 +209,28 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 }
 }
 
+extern "C" {
+void flasherase(const char *name, int addrraw, int countraw)
+{
+    try {
+        mrf::SPIDevice dev;
+        if(!mrf::SPIDevice::lookupDev(name, &dev)) {
+            printf("No such device");
+            return;
+        }
+        epicsUInt32 addr = addrraw, count = countraw;
+
+        mrf::CFIFlash mem(dev);
+
+        mem.erase(addr, count);
+
+        printf("\nDone\n");
+
+    }catch(std::exception& e){
+        printf("Error: %s\n", e.what());
+    }
+}
+}
 
 static const iocshArg flashinfoArg0 = { "device",iocshArgString};
 static const iocshArg * const flashinfoArgs[1] =
@@ -248,10 +270,24 @@ static void flashwriteCall(const iocshArgBuf *args)
     flashwrite(args[0].sval, args[1].ival, args[2].sval);
 }
 
+static const iocshArg flasheraseArg0 = { "device",iocshArgString};
+static const iocshArg flasheraseArg1 = { "address",iocshArgInt};
+static const iocshArg flasheraseArg2 = { "count",iocshArgInt};
+static const iocshArg * const flasheraseArgs[3] =
+    {&flasheraseArg0,&flasheraseArg1,&flasheraseArg2};
+static const iocshFuncDef flasheraseFuncDef =
+    {"flasherase",3,flasheraseArgs};
+
+static void flasheraseCall(const iocshArgBuf *args)
+{
+    flasherase(args[0].sval, args[1].ival, args[2].ival);
+}
+
 static void registrarFlashOps()
 {
     iocshRegister(&flashinfoFuncDef, &flashinfoCall);
     iocshRegister(&flashreadFuncDef, &flashreadCall);
     iocshRegister(&flashwriteFuncDef, &flashwriteCall);
+    iocshRegister(&flasheraseFuncDef, &flasheraseCall);
 }
 epicsExportRegistrar(registrarFlashOps);
