@@ -40,6 +40,11 @@ linkoptionsTest_SRCS += linkoptionsTest.c
 linkoptionsTest_LIBS += mrfCommon
 TESTS += linkoptionsTest
 
+TESTPROD_HOST += flashtest
+flashtest_SRCS += flashtest.cpp
+flashtest_LIBS += mrfCommon
+TESTS += flashtest
+
 #---------------------
 # Install DBD files
 #

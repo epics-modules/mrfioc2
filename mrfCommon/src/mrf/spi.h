@@ -22,7 +22,7 @@ struct SPIInterface
     virtual ~SPIInterface();
 
     //! Select numbered device.  0 clears selection.
-    virtual void select(unsigned id);
+    virtual void select(unsigned id) =0;
 
     //! Perform a single SPI transaction
     //! @throws std::runtime_error on timeout
@@ -70,6 +70,30 @@ public:
     static bool lookupDev(const std::string& name, SPIDevice*);
     static void registerDev(const std::string& name, const SPIDevice& );
     static void unregisterDev(const std::string& name);
+};
+
+class TimeoutCalculator
+{
+    const double total;
+    const double factor;
+    const double initial;
+    double accumulated;
+    double next;
+public:
+    TimeoutCalculator(double total, double factor=2.0, double initial=0.01)
+        :total(total), factor(factor), initial(initial), accumulated(0.0), next(0.0)
+    {}
+    bool ok() const { return accumulated<total; }
+    double inc() {
+        double ret=next;
+        accumulated+=ret;
+        if(next)
+            next*=factor;
+        else
+            next=initial;
+        return ret;
+    }
+    double sofar() const { return accumulated; }
 };
 
 } // namespace mrf

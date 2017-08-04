@@ -4,7 +4,6 @@
 #include "epicsUnitTest.h"
 #include "epicsString.h"
 #include "testMain.h"
-#include "epicsExport.h"
 
 #include "mrf/object.h"
 

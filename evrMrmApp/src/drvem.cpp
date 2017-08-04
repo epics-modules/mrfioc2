@@ -413,46 +413,43 @@ void EVRMRM::select(unsigned id)
 epicsUInt8 EVRMRM::cycle(epicsUInt8 in)
 {
     double timeout = this->timeout();
-    double wait = timeout/20;
-    unsigned i;
 
     if(evrMrmSPIDebug)
         printf("SPI %02x ", int(in));
 
     // wait for send ready to be set
-    for(i=0; i<20 && !(READ32(base, SPIDCtrl)&SPIDCtrl_SendRdy); i++)
-        epicsThreadSleep(wait);
+    {
+        mrf::TimeoutCalculator T(timeout);
+        while(T.ok() && !(READ32(base, SPIDCtrl)&SPIDCtrl_SendRdy))
+            epicsThreadSleep(T.inc());
+        if(!T.ok())
+            throw std::runtime_error("SPI cycle timeout2");
 
-    if(i==20)
-        throw std::runtime_error("SPI cycle timeout1");
-
-    if(evrMrmSPIDebug>1)
-        printf("(%u) ", i);
+        if(evrMrmSPIDebug)
+            printf("(%f) ", T.sofar());
+    }
 
     WRITE32(base, SPIDData, in);
 
     if(evrMrmSPIDebug)
         printf("-> ");
 
-    if(!(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy)) {
-        // optimistically try one "fast" wait
-        epicsThreadSleep(0.0);
-    }
-
     // wait for recv ready to be set
-    for(i=0; i<20 && !(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy); i++)
-        epicsThreadSleep(wait);
+    {
+        mrf::TimeoutCalculator T(timeout);
+        while(T.ok() && !(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy))
+            epicsThreadSleep(T.inc());
+        if(!T.ok())
+            throw std::runtime_error("SPI cycle timeout2");
 
-    if(i==20)
-        throw std::runtime_error("SPI cycle timeout2");
+        if(evrMrmSPIDebug)
+            printf("(%f) ", T.sofar());
+    }
 
     epicsUInt8 ret = READ32(base, SPIDData)&0xff;
 
     if(evrMrmSPIDebug) {
-        printf("%02x", int(ret));
-        if(evrMrmSPIDebug>1)
-            printf(" (%u)", i);
-        printf("\n");
+        printf("%02x\n", int(ret));
     }
     return ret;
 }

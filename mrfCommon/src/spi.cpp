@@ -12,7 +12,7 @@
 namespace mrf {
 
 SPIInterface::SPIInterface()
-    :optimo(0.1)
+    :optimo(3.0)
 {}
 
 SPIInterface::~SPIInterface() {}
