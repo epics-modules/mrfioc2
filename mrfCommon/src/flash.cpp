@@ -29,13 +29,26 @@ CFIFlash::~CFIFlash() {}
 void
 CFIFlash::readID(ID *id)
 {
-    epicsUInt8 cmd[4] = {0x9f, 0u, 0u, 0u},
-               response[4];
-    SPIInterface::Operation op = {4, cmd, response};
+    epicsUInt8 cmd[7] = {0x9f, 0u, 0u, 0u},
+               response[7];
+    SPIInterface::Operation op[2] = {{4, cmd, response}};
+    op[0].ncycles = 4;
+    op[0].in = cmd;
+    op[0].out = response;
 
     {
         SPIDevice::Selector S(dev);
-        dev.interface()->cycles(1, &op);
+        dev.interface()->cycles(1, &op[0]);
+    }
+
+    if(id->vendor==0xff)
+    {
+        /* the first read after power up seems to fail.
+         * Presumably some missing initializtion on my part.
+         * A single re-try.
+         */
+        SPIDevice::Selector S(dev);
+        dev.interface()->cycles(1, &op[0]);
     }
 
     id->vendor = response[1];
@@ -46,7 +59,12 @@ CFIFlash::readID(ID *id)
     id->capacity = id->sectorSize = id->pageSize = 0u;
 
     if(id->vendor==0x20) { // Micron
+        /* Some Micron parts support the Serial Flash Discoverable Parameter (SFDP) spec.
+         * using command 0x5a (see tech note TN-25-06).
+         * However, so far there isn't anything so interesting.
+         */
         id->vendorName = "Micron";
+
         switch(id->dev_type) {
         case 0xba: // mt25q
         case 0xbb:
@@ -54,6 +72,38 @@ CFIFlash::readID(ID *id)
             id->sectorSize = 64*1024u;
             id->pageSize = 256;
             break;
+        }
+
+        /* Micron puts some extra info after the regular 0x9f payload,
+         * including a serial number.
+         * Byte 4 is the length of the additional payload
+         */
+        op[0].ncycles = 5;
+
+        {
+            SPIDevice::Selector S(dev);
+            dev.interface()->cycles(1, &op[0]);
+        }
+
+        if(response[4]>2) {
+            op[0].ncycles = 7;
+
+            id->SN.resize(response[4]-2);
+            op[1].ncycles = id->SN.size();
+            op[1].in = NULL;
+            op[1].out = &id->SN[0];
+
+            SPIDevice::Selector S(dev);
+            dev.interface()->cycles(2, &op[0]);
+
+            // if this byte isn't 0, then the spec isn't being followed
+            if(response[6]!=0)
+                id->SN.clear();
+
+            if((response[5]&0x3)!=0) {
+                // sector size not known
+                id->sectorSize = 0;
+            }
         }
     }
 }
@@ -130,6 +180,12 @@ void flashinfo(const char *name)
             printf("Sector: 0x%x\n", (unsigned)info.sectorSize);
         if(info.pageSize)
             printf("Page: 0x%x\n", (unsigned)info.pageSize);
+        if(!info.SN.empty()) {
+            printf("S/N: ");
+            for(size_t i=0; i<info.SN.size(); i++)
+                printf(" %02x", unsigned(info.SN[i]));
+            printf("\n");
+        }
 
     }catch(std::exception& e){
         printf("Error: %s\n", e.what());

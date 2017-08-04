@@ -6,6 +6,8 @@
 #ifndef FLASH_H
 #define FLASH_H
 
+#include <vector>
+
 #include <epicsTypes.h>
 
 namespace mrf {
@@ -32,6 +34,8 @@ public:
         epicsUInt32 capacity, //!< total capacity in bytes
                     sectorSize, //!< SECTOR ERASE (0xd8) size
                     pageSize;   //!< PAGE PROGRAM (0x02) size
+
+        std::vector<epicsUInt8> SN;
     };
 
     //! execute command 0x9f JEDEC-ID read
