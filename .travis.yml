@@ -17,3 +17,4 @@ install:
  - ./build-linux.sh
 script:
  - make -j2 $EXTRA
+ - ./test-epics.sh
