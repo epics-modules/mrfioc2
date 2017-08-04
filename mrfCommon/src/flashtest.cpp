@@ -73,7 +73,7 @@ struct TestDevice : public mrf::SPIInterface
 
         if(!select) {
             // some commands (eg. erase) clear WE on completion.
-            // as there is no function issue with sending ENABLE WRITE
+            // as there is no functional issue with sending ENABLE WRITE
             // too often, we pesemistically require this after all erase/program
             switch(command) {
             case 0xd8: // sector erase

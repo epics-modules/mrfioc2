@@ -128,7 +128,7 @@ void flashread(const char *name, int addrraw, int countraw, const char *outfile)
             out.open(fopen(outfile, "wb"));
 
         while(count) {
-            const epicsUInt32 N = std::min(count, 4096u);
+            const epicsUInt32 N = std::min(count, mem.blockSize());
             std::vector<epicsUInt8> buf(N);
 
             mem.read(addr, buf);
