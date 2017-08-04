@@ -199,6 +199,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
             pos += buf.size();
 
             mem.write(addr, buf, false);
+            addr += buf.size();
         }
 
         printf("\nDone\n");
