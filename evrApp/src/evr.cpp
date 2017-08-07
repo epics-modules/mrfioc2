@@ -55,13 +55,17 @@ std::string EVR::position() const
 {
     std::ostringstream position;
 
-    if(busConfiguration.busType == busType_pci)
+    if(busConfiguration.busType == busType_pci) {
         position << std::hex << busConfiguration.pci.dev->bus << ":"
                  << std::hex << busConfiguration.pci.dev->device << "."
-                 << std::hex << busConfiguration.pci.dev->function << " slot="
-                 << std::hex << (busConfiguration.pci.dev->slot ? busConfiguration.pci.dev->slot : "<N/A>");
-    else if(busConfiguration.busType == busType_vme) position << "Slot #" << busConfiguration.vme.slot;
-    else position << "Unknown position";
+                 << std::hex << busConfiguration.pci.dev->function;
+        if(busConfiguration.pci.dev->slot)
+            position << " slot=" << busConfiguration.pci.dev->slot;
+    } else if(busConfiguration.busType == busType_vme) {
+        position << "Slot #" << busConfiguration.vme.slot;
+    } else {
+        position << "Unknown position";
+    }
 
     return position.str();
 }
