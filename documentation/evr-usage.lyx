@@ -1,21 +1,31 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \use_default_options true
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
-\font_roman default
-\font_sans default
-\font_typewriter default
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
-
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -31,11 +41,29 @@
 \pdf_quoted_options "linkcolor=blue, urlcolor=blue, citecolor=blue"
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth 3
 \tocdepth 2
 \paragraph_separation skip
@@ -46,8 +74,9 @@
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -270,7 +299,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Two system configurations for the MRF Timing System
@@ -346,7 +375,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Two supported link allocation schemes
@@ -387,8 +416,10 @@ When discussing the MRF timing system there are three clocks.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-F_{bit}/20=F_{Event}=F_{Ext}/N_{Divide}\]
+\begin_inset Formula 
+\[
+F_{bit}/20=F_{Event}=F_{Ext}/N_{Divide}
+\]
 
 \end_inset
 
@@ -438,9 +469,9 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="9" columns="2">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -634,7 +665,7 @@ Use in other contexts is discouraged.
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Special Event codes
@@ -933,7 +964,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Logical connections inside an EVR
@@ -986,10 +1017,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -1345,7 +1382,7 @@ http://www.aps.anl.gov/bcda/synApps/autosave/autosave.html
 \end_layout
 
 \begin_layout Description
-iocstats Runtime IOC statistics (CPU load, \SpecialChar \ldots{}
+iocstats Runtime IOC statistics (CPU load, \SpecialChar ldots
 )
 \begin_inset Newline newline
 \end_inset
@@ -1522,21 +1559,27 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="5">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -2014,10 +2057,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -2043,10 +2092,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -2123,10 +2178,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -2329,10 +2390,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -3452,6 +3519,183 @@ Now a time latched by software when this record is processed.
 
 \begin_layout Section
 Firmware Update
+\end_layout
+
+\begin_layout Subsection
+PCIe-EVR-300DC, mTCA-EVR-300
+\end_layout
+
+\begin_layout Standard
+These devices support upgrade of firmware through PCIe register access.
+ As such, a failed upgrade will result in an unusable device.
+\end_layout
+
+\begin_layout Standard
+To test if a card may be upgrade with this mechanism, run 
+\shape italic
+flashinfo
+\shape default
+ and 
+\shape italic
+flashread
+\shape default
+ command.
+ The following shows a device which can be upgraded.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+epics> mrmEvrSetupPCI("EVR1", "03:00.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+epics> flashinfo("EVR1:FLASH")
+\end_layout
+
+\begin_layout Plain Layout
+
+Vendor: 20 (Micron)
+\end_layout
+
+\begin_layout Plain Layout
+
+Device: ba ID: 18
+\end_layout
+
+\begin_layout Plain Layout
+
+Capacity: 0x1000000
+\end_layout
+
+\begin_layout Plain Layout
+
+Sector: 0x10000
+\end_layout
+
+\begin_layout Plain Layout
+
+Page: 0x100
+\end_layout
+
+\begin_layout Plain Layout
+
+S/N:  23 51 61 31 16 00 14 00 31 26 05 15 ee 45
+\end_layout
+
+\begin_layout Plain Layout
+
+epics> flashread("EVR1:FLASH", 0, 64)
+\end_layout
+
+\begin_layout Plain Layout
+
+00090ff0 0ff00ff0 0ff00000 0161001f
+\end_layout
+
+\begin_layout Plain Layout
+
+70636965 65767233 30306463 3b557365
+\end_layout
+
+\begin_layout Plain Layout
+
+7249443d 30584646 46464646 46460062
+\end_layout
+
+\begin_layout Plain Layout
+
+000c376b 37307466 62673637 36006300
+\end_layout
+
+\begin_layout Plain Layout
+
+epics>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Before upgrading, it is suggested to backup the existing firmware.
+ If the size of the existing firmware is known, then this size can be used.
+ Otherwise, use the capacity reported by 
+\shape italic
+flashinfo
+\shape default
+.
+ All Xilinx bit files for a particular device typically have the same size.
+\end_layout
+
+\begin_layout Standard
+In this example of a PCIe-EVR-300DC with the 207.0 firmware, the exact size
+ is 3011417 bytes, which is arbitrarily rounded up to 3MB.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+epics> flashread("EVR1:FLASH", 0, 0x300000, "PCIe-EVR-300DC.207.0.backup.bit")
+\end_layout
+
+\begin_layout Plain Layout
+
+| 3080192
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now write the new firmware file.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+epics> flashwrite("EVR1:FLASH", 0, "PCIe-EVR-300DC.207.6.bit")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the update process is interrupted, do not power cycle! Re-run the update
+ process to completion.
+\end_layout
+
+\begin_layout Standard
+After the write completes successfully, power cycle the card to load the
+ new bit file.
 \end_layout
 
 \begin_layout Subsection
@@ -4812,10 +5056,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -4863,12 +5113,12 @@ See: evrApp/Db/evrbase.db
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="18" columns="5">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -5994,10 +6244,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -6269,11 +6525,11 @@ Information and status from the Small Form factor Plugable (SFP) transceiver
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="11" columns="4">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -6715,12 +6971,12 @@ See: evrApp/Db/evrpulser.db
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="5">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -7231,11 +7487,11 @@ For the MRM implimentation the following codes are valid.
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="17" columns="4">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -7924,12 +8180,12 @@ See: evrApp/Db/evrcml.db
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="16" columns="5">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -8876,12 +9132,12 @@ See: evrApp/Db/evrin.db
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="5">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -9740,10 +9996,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
@@ -9829,10 +10091,16 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
