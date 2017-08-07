@@ -91,8 +91,8 @@ Michael Davidsaver <mdavidsaver@gmail.com>
 
 \begin_layout Date
 August.
- 2015, Rev.
- 7
+ 2017, Rev.
+ 8
 \end_layout
 
 \begin_layout Standard
@@ -190,6 +190,836 @@ emph},
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+What is Available?
+\end_layout
+
+\begin_layout Standard
+More infomation on the Micro Research hardware can be found on their website
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.mrf.fi/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The software discussed below can be found on the EPICS application project
+ on SourceForge 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://sourceforge.net/projects/epics/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The latest developments can be found in the 'mrfioc2' Git VCS repository.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/epics-modules/mrfioc2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Prerequisites
+\end_layout
+
+\begin_layout Standard
+Build system required modules
+\end_layout
+
+\begin_layout Description
+EPICS
+\begin_inset space ~
+\end_inset
+
+Base
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+3.14.10 EPICS Core
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/epics/base/R3-14/index.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+MSI Macro expansion tool (Base <3.15.0 only)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/epics/extensions/msi/index.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+devLib2
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+2.9 PCI/VME64x Hardware access library
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/epics-modules/devlib2/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Build system optional modules.
+ Not required, but highly recommended.
+\end_layout
+
+\begin_layout Description
+autosave Automatic save and restore on boot 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.aps.anl.gov/bcda/synApps/autosave/autosave.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+iocstats Runtime IOC statistics (CPU load, \SpecialChar ldots
+)
+\begin_inset Newline newline
+\end_inset
+
+
+\size footnotesize
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.slac.stanford.edu/comp/unix/package/epics/site/devIocStats/
+\end_layout
+
+\end_inset
+
+
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://sourceforge.net/projects/epics/files/devIocStats/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Target operating system requirements
+\end_layout
+
+\begin_layout Description
+RTEMS >= 4.9.x
+\end_layout
+
+\begin_layout Description
+vxWorks >=6.7
+\end_layout
+
+\begin_layout Description
+Linux >= 3.2.1 (earlier versions may work)
+\end_layout
+
+\begin_layout Subsection
+Source
+\end_layout
+
+\begin_layout Standard
+VCS Checkout
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\scriptsize},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ git clone https://github.com/epics-modules/mrfioc2.git
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Edit 'configure/CONFIG_SITE' and 'configure/RELEASE' then run "make".
+\end_layout
+
+\begin_layout Standard
+The following is a brief tour of the important locations in the source tree
+ relating to the EVR.
+\end_layout
+
+\begin_layout Subsection
+Supported Hardware
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:supported"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following devices are supported.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel outputs (TTL)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP UNIV
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel universal output sockets
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+# FP Inputs
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Front panel inputs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RTM
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Supports Rear Transition Module
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+VME-EVR-230
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This device has not been tested
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+VME-EVR-230RF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Outputs 4,5,6 are CML
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PMC-EVR-230
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPCI-EVR-230
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Supports PCI side-by-side module
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cPCI-EVRTG-300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+GTX outputs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Special GTX interlock
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cPCI-EVR-300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PCIe-EVR-300DC
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mTCA-EVR-300
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Two hardware flavors exist, one with 2x UNIV I/O sockets, the other with
+ an IFB-300 connector,
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4/0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0/16
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1216,778 +2046,6 @@ A recipient can register callback functions for each Protocol ID.
 
 \begin_layout Standard
 A default recipient is provided which stores data in a waveform record.
-\end_layout
-
-\begin_layout Section
-What is Available?
-\end_layout
-
-\begin_layout Standard
-More infomation on the Micro Research hardware can be found on their website
- 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.mrf.fi/
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The software discussed below can be found on the EPICS application project
- on SourceForge 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://sourceforge.net/projects/epics/
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The latest developments can be found in the 'mrfioc2' Git VCS repository.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/epics-modules/mrfioc2
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Prerequisites
-\end_layout
-
-\begin_layout Standard
-Build system required modules
-\end_layout
-
-\begin_layout Description
-EPICS
-\begin_inset space ~
-\end_inset
-
-Base
-\begin_inset space ~
-\end_inset
-
->=
-\begin_inset space ~
-\end_inset
-
-3.14.8.2 EPICS Core
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.aps.anl.gov/epics/base/R3-14/index.php
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-MSI Macro expansion tool
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.aps.anl.gov/epics/extensions/msi/index.php
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-devLib2
-\begin_inset space ~
-\end_inset
-
->=
-\begin_inset space ~
-\end_inset
-
-2.6 PCI/VME64x Hardware access library
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/epics-modules/devlib2/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Build system optional modules.
- Not required, but highly recommended.
-\end_layout
-
-\begin_layout Description
-autosave Automatic save and restore on boot 
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.aps.anl.gov/bcda/synApps/autosave/autosave.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-iocstats Runtime IOC statistics (CPU load, \SpecialChar ldots
-)
-\begin_inset Newline newline
-\end_inset
-
-
-\size footnotesize
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.slac.stanford.edu/comp/unix/package/epics/site/devIocStats/
-\end_layout
-
-\end_inset
-
-
-\size default
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://sourceforge.net/projects/epics/files/devIocStats/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Target operating system requirements
-\end_layout
-
-\begin_layout Description
-RTEMS >= 4.9.x
-\end_layout
-
-\begin_layout Description
-vxWorks >=6.7
-\end_layout
-
-\begin_layout Description
-Linux >= 2.6.26.
-\end_layout
-
-\begin_layout Subsection
-Source
-\end_layout
-
-\begin_layout Standard
-VCS Checkout
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "basicstyle={\scriptsize},language=bash"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ git clone https://github.com/epics-modules/mrfioc2.git
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Edit 'configure/CONFIG_SITE' and 'configure/RELEASE' then run "make".
-\end_layout
-
-\begin_layout Standard
-The following is a brief tour of the important locations in the source tree
- relating to the EVR.
-\end_layout
-
-\begin_layout Section
-Supported Hardware
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:supported"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The following devices are supported.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="5">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Name
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-# FP
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Front panel outputs (TTL)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-# FP UNIV
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Front panel universal output sockets
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-# FP Inputs
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Front panel inputs
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-RTM
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Supports Rear Transition Module
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-VME-EVR-230
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-This device has not been tested
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Yes
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-VME-EVR-230RF
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-7
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Outputs 4,5,6 are CML
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Yes
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-PMC-EVR-230
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-No
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-CPCI-EVR-230
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Yes
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Supports PCI side-by-side module
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-CPCI-EVRTG-300
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-GTX outputs
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Special GTX interlock
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-No
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-PCIe-EVR-300DC
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-mTCA-EVR-300
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4/0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0/16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -3635,7 +3693,12 @@ Vendor: 20 (Micron)
 
 \begin_layout Plain Layout
 
-Device: ba ID: 18
+Device: ba
+\end_layout
+
+\begin_layout Plain Layout
+
+ID: 18
 \end_layout
 
 \begin_layout Plain Layout
