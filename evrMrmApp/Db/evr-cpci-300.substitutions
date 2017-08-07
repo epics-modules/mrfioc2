@@ -4,6 +4,7 @@
 #  EVR = Card name (same as mrmEvrSetupPCI())
 #  SYS = System name (ie SR-TM)
 #  D = Device name (ie EVR:Diag2)
+#  FRF = Event link frequency (default 124.916 MHz)
 #
 # Record names have the general forms:
 #  $(SYS){$(D)}Signal-SD
