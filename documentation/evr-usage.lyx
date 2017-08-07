@@ -1469,74 +1469,6 @@ The following is a brief tour of the important locations in the source tree
  relating to the EVR.
 \end_layout
 
-\begin_layout Subsubsection
-mrfCommon
-\end_layout
-
-\begin_layout Standard
-Some support functions.
- Contains 'mrfCommonIO.h' which devices macros for access to memory mapped
- IO.
- Also the support a library and CLI utilities for en/decoding the control
- word for the fractional synthesizer used on EVRs and EVGs.
-\end_layout
-
-\begin_layout Subsubsection
-mrmShared
-\end_layout
-
-\begin_layout Standard
-Contains code shared between the EVR and EVG.
- This includes data buffer transmission.
-\end_layout
-
-\begin_layout Standard
-Also contains the Linux kernel driver stub to allow userspace PCI operations.
-\end_layout
-
-\begin_layout Subsubsection
-evrApp
-\end_layout
-
-\begin_layout Standard
-The MRF IOC has a strong seperation between device and driver support.
- The device support and interface definition are in this module.
- The interface is defined by the C++ abstract base classes in 'evrApp/src/evr/'.
- A set of device support routines is found in 'evrApp/src/dev*.cpp'.
- Some generic database files are found in 'evrApp/Db/'.
-\end_layout
-
-\begin_layout Subsubsection
-evrMrmApp
-\end_layout
-
-\begin_layout Standard
-This is the driver for the Modular Register Map (MRM
-\begin_inset CommandInset nomenclature
-LatexCommand nomenclature
-symbol "MRM"
-description "Modular Register Map.  Name for the common register map for all 230 and 300 series EVRs or EVGs"
-
-\end_inset
-
-) firmware version for the Event Receiver.
- It provides a concrete implementation of the abstract classes defined in
- 'evrApp'.
- It also provides IOC shell functions to instantiate a device in 'evrMrmApp/src/
-drvemIocsh.cpp'.
- 'evrMrmApp/Db/evr-*.substitutions' will create a complete example database.
- An example IOC using the database is in 'iocBoot/iocevrmrm/'.
-\end_layout
-
-\begin_layout Subsubsection
-evgMrmApp
-\end_layout
-
-\begin_layout Standard
-Driver for the MRM version of the Event Generator.
- Sequencer management code can be found in the evgSequencer sub-directory.
-\end_layout
-
 \begin_layout Section
 Supported Hardware
 \begin_inset CommandInset label
@@ -1573,7 +1505,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="5">
+<lyxtabular version="3" rows="8" columns="5">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -1886,7 +1818,7 @@ Supports PCI side-by-side module
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1895,7 +1827,7 @@ CPCI-EVRTG-300
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1914,7 +1846,7 @@ GTX outputs
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1923,7 +1855,7 @@ GTX outputs
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1942,11 +1874,105 @@ Special GTX interlock
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PCIe-EVR-300DC
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mTCA-EVR-300
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4/0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0/16
 \end_layout
 
 \end_inset
@@ -2151,7 +2177,7 @@ status open
 
 \begin_layout Plain Layout
 
-mrmEvrSetupPCI("PMC", 1, 2, 0)
+mrmEvrSetupPCI("PMC", "1:2.0")
 \end_layout
 
 \end_inset
@@ -2169,6 +2195,37 @@ PMC
 \end_inset
 
  to be bus 1 device 2 function 0.
+\end_layout
+
+\begin_layout Standard
+Support for using mTCA slot number is available on some targets (Linux only
+ as of devlib2 2.9).
+ This does any automatic lookup of PCI address from slot number.
+ Be aware that PCIe 
+\begin_inset Quotes eld
+\end_inset
+
+slot
+\begin_inset Quotes erd
+\end_inset
+
+ numbers, while stable across reboots, may change with hardware configuration,
+ firmware, or OS upgrades.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mrmEvrSetupPCI("PMC", "slot=5")
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2312,8 +2369,9 @@ modules_install
 \begin_layout Standard
 Once the module is installed on the running target the special device file
  associated with each EVR must be created.
- If your target system is running UDEV this will happen automatically, if
- not then you must do the following.
+ If your target system is running UDEV this will happen automatically.
+ See mrmShared/linux/README for example UDEV config.
+ If UDEV is not present, then you must do the following.
 \end_layout
 
 \begin_layout Standard
@@ -2409,8 +2467,15 @@ Note:
 \series default
  UIO numbers are not considered during setup since these may change after
  a reboot.
- To ensure repeatability only PCI immutable ID fields and the address triplet
- (bus:device.function) are used.
+ To ensure repeatability only PCI immutable ID fields, PCIe 
+\begin_inset Quotes eld
+\end_inset
+
+slot
+\begin_inset Quotes erd
+\end_inset
+
+ numbers, the address triplet (bus:device.function) are used.
 \end_layout
 
 \end_inset
@@ -6040,21 +6105,8 @@ status open
 If disabled, an EVR will automatically enable when the event link becomes
  active.
  This allows for bumpless cold starts.
- For this reason the enable property should be included in any autosave
+ For this reason the enable property should not be included in any autosave
  request files.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Waiting on update to PMC firmware to enable this feature
 \end_layout
 
 \end_inset
@@ -6508,6 +6560,19 @@ Type(s): uint32
 
 \begin_layout Standard
 The number of event link errors which have occurred.
+\end_layout
+
+\begin_layout Subsection
+EVG functions (DC firmware)
+\end_layout
+
+\begin_layout Standard
+The PCIe-EVR-300DC and mTCA-EVR-300 provide one EVG style Sequencer RAM,
+ as well as sending software triggered events upstream.
+\end_layout
+
+\begin_layout Standard
+See EVG documentation for details.
 \end_layout
 
 \begin_layout Subsection
@@ -7611,7 +7676,7 @@ Pulse generator 14
 \begin_inset Text
 
 \begin_layout Plain Layout
-42
+61
 \end_layout
 
 \end_inset
@@ -7620,7 +7685,7 @@ Pulse generator 14
 \begin_inset Text
 
 \begin_layout Plain Layout
-Prescaler (Divider) 2
+Tri-state
 \end_layout
 
 \end_inset
@@ -7649,7 +7714,7 @@ Pulse generator 13
 \begin_inset Text
 
 \begin_layout Plain Layout
-41
+42
 \end_layout
 
 \end_inset
@@ -7658,7 +7723,7 @@ Pulse generator 13
 \begin_inset Text
 
 \begin_layout Plain Layout
-Prescaler (Divider) 1
+Prescaler (Divider) 2
 \end_layout
 
 \end_inset
@@ -7687,7 +7752,7 @@ Pulse generator 12
 \begin_inset Text
 
 \begin_layout Plain Layout
-40
+41
 \end_layout
 
 \end_inset
@@ -7696,7 +7761,7 @@ Pulse generator 12
 \begin_inset Text
 
 \begin_layout Plain Layout
-Prescaler (Divider) 0
+Prescaler (Divider) 1
 \end_layout
 
 \end_inset
@@ -7725,7 +7790,7 @@ Pulse generator 11
 \begin_inset Text
 
 \begin_layout Plain Layout
-39
+40
 \end_layout
 
 \end_inset
@@ -7734,7 +7799,7 @@ Pulse generator 11
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 7
+Prescaler (Divider) 0
 \end_layout
 
 \end_inset
@@ -7763,7 +7828,7 @@ Pulse generator 10
 \begin_inset Text
 
 \begin_layout Plain Layout
-38
+39
 \end_layout
 
 \end_inset
@@ -7772,7 +7837,7 @@ Pulse generator 10
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 6
+Distributed Bus Bit 7
 \end_layout
 
 \end_inset
@@ -7801,7 +7866,7 @@ Pulse generator 9
 \begin_inset Text
 
 \begin_layout Plain Layout
-37
+38
 \end_layout
 
 \end_inset
@@ -7810,7 +7875,7 @@ Pulse generator 9
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 5
+Distributed Bus Bit 6
 \end_layout
 
 \end_inset
@@ -7839,7 +7904,7 @@ Pulse generator 8
 \begin_inset Text
 
 \begin_layout Plain Layout
-36
+37
 \end_layout
 
 \end_inset
@@ -7848,7 +7913,7 @@ Pulse generator 8
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 4
+Distributed Bus Bit 5
 \end_layout
 
 \end_inset
@@ -7877,7 +7942,7 @@ Pulse generator 7
 \begin_inset Text
 
 \begin_layout Plain Layout
-35
+36
 \end_layout
 
 \end_inset
@@ -7886,7 +7951,7 @@ Pulse generator 7
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 3
+Distributed Bus Bit 4
 \end_layout
 
 \end_inset
@@ -7915,7 +7980,7 @@ Pulse generator 6
 \begin_inset Text
 
 \begin_layout Plain Layout
-34
+35
 \end_layout
 
 \end_inset
@@ -7924,7 +7989,7 @@ Pulse generator 6
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 2
+Distributed Bus Bit 3
 \end_layout
 
 \end_inset
@@ -7953,7 +8018,7 @@ Pulse generator 5
 \begin_inset Text
 
 \begin_layout Plain Layout
-33
+34
 \end_layout
 
 \end_inset
@@ -7962,7 +8027,7 @@ Pulse generator 5
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 1
+Distributed Bus Bit 2
 \end_layout
 
 \end_inset
@@ -7991,7 +8056,7 @@ Pulse generator 4
 \begin_inset Text
 
 \begin_layout Plain Layout
-32
+33
 \end_layout
 
 \end_inset
@@ -8000,7 +8065,7 @@ Pulse generator 4
 \begin_inset Text
 
 \begin_layout Plain Layout
-Distributed Bus Bit 0
+Distributed Bus Bit 1
 \end_layout
 
 \end_inset
@@ -8029,7 +8094,7 @@ Pulse generator 3
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+32
 \end_layout
 
 \end_inset
@@ -8038,7 +8103,7 @@ Pulse generator 3
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Distributed Bus Bit 0
 \end_layout
 
 \end_inset

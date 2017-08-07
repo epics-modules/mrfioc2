@@ -12,7 +12,7 @@ epicsEnvSet("LOCATION","Blg 902 Rm 28")
 
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES","1000000")
 
-mrmEvrSetupPCI("PMCEVR",0,5,0)
+mrmEvrSetupPCI("PMCEVR","0:5.0")
 
 dbLoadRecords("db/evr-pmc-230.db","SYS=TST, D=evr:1, EVR=PMCEVR")
 
