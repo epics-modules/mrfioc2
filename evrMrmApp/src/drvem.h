@@ -293,10 +293,6 @@ private:
     // Buffer received
     CALLBACK data_rx_cb;
 
-    // Called when the Event Log is stopped
-    CALLBACK drain_log_cb;
-    static void drain_log(CALLBACK*);
-
     // Periodic callback to detect when link state goes from down to up
     CALLBACK poll_link_cb;
     static void poll_link(CALLBACK*);

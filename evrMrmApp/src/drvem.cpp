@@ -174,7 +174,6 @@ try{
     scanIoInit(&timestampValidChange);
 
     CBINIT(&data_rx_cb   , priorityHigh, &mrmBufRx::drainbuf, &this->bufrx);
-    CBINIT(&drain_log_cb , priorityMedium, &EVRMRM::drain_log , this);
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
     if(ver>=MRFVersion(0, 5)) {
@@ -1355,12 +1354,6 @@ try {
 } catch(std::exception& e) {
     epicsPrintf("exception in sentinel_done callback: %s\n", e.what());
 }
-}
-
-
-void
-EVRMRM::drain_log(CALLBACK*)
-{
 }
 
 void
