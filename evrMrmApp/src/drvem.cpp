@@ -51,6 +51,13 @@
 
 #include <epicsExport.h>
 
+/* whether to use features introduced to support
+ * parallel handling of shared callback queues.
+ */
+#if EPICS_VERSION_INT>=VERSION_INT(3,15,0,2)
+#  define HAVE_PARALLEL_CB
+#endif
+
 int evrMrmSPIDebug;
 int evrDebug;
 extern "C" {
@@ -1181,12 +1188,15 @@ EVRMRM::isr(EVRMRM *evr, bool pci)
     evrMrmIsrFlagsTrashCan=READ32(evr->base, IRQFlag);
 }
 
-
 // Caller must hold evrLock
 static
 void
 eventInvoke(eventCode& event)
 {
+#ifdef HAVE_PARALLEL_CB
+    // bit mask of priorities for which scans have been queued
+    unsigned prio_queued =
+#endif
     scanIoRequest(event.occured);
 
     for(eventCode::notifiees_t::const_iterator it=event.notifiees.begin();
@@ -1194,6 +1204,17 @@ eventInvoke(eventCode& event)
         ++it)
     {
         (*it->first)(it->second, event.code);
+    }
+
+    event.waitingfor=0; // assume caller handles waitingfor>0
+    for(unsigned p=0; p<NUM_CALLBACK_PRIORITIES; p++) {
+#ifdef HAVE_PARALLEL_CB
+        // only sync priorities where work is queued
+        if((prio_queued&(1u<<p))==0) continue;
+#endif
+        event.waitingfor++;
+        event.done.priority=p;
+        callbackRequest(&event.done);
     }
 }
 
@@ -1264,19 +1285,14 @@ EVRMRM::drain_fifo()
             if (events[evt].again) {
                 // ignore extra events in buffer.
             } else if (events[evt].waitingfor>0) {
-                // already queued, but occured again before
-                // callbacks finished so disable event
+                // already queued, but received again before all
+                // callbacks finished.  Un-map event until complete
                 events[evt].again=true;
                 specialSetMap(evt, ActionFIFOSave, false);
                 count_FIFO_sw_overrate++;
             } else {
                 // needs to be queued
                 eventInvoke(events[evt]);
-                events[evt].waitingfor=NUM_CALLBACK_PRIORITIES;
-                for(int p=0; p<NUM_CALLBACK_PRIORITIES; p++) {
-                    events[evt].done.priority=p;
-                    callbackRequest(&events[evt].done);
-                }
             }
 
         }
