@@ -47,6 +47,8 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 - Event Generators
  - VME-EVG-230
+ - PXI-EVG-220
+ - PXI-EVG-230
  - cPCI-EVG-300
 
 - Event Receivers
@@ -86,6 +88,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @subsubsection v220_add Additions
 
 @li Add support for mTCA-EVR-300 and PCIe-EVR-300DC.  Requires firmware >=207.  Tested with firmware >=207.6.
+@li Add support for PXI-EVG-220.  Support for PXI-EVG-230 was added in 2.1.0, but not documented.
 @li Add driver for FRIB developed mTCA EVR
 @li mrmEvrSetupPCI() accepts "slot=#" in addition to PCI geographic address
 @li linux: kernel module exports PCI ID table to enable automatic module loading

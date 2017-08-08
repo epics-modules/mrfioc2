@@ -1,0 +1,24 @@
+16:0e.0 Signal processing controller: PLX Technology, Inc. PCI9030 32-bit 33MHz PCI <-> IOBus Bridge (rev 01)
+        Subsystem: Micro-Research Finland Oy CPCI Event Generator 220
+        Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR+ FastB2B- DisINTx-
+        Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+        Interrupt: pin A routed to IRQ 18
+        Region 0: Memory at f0921000 (32-bit, non-prefetchable) [size=128]
+        Region 2: Memory at f0910000 (32-bit, non-prefetchable) [size=64K]
+        Capabilities: [40] Power Management version 1
+                Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA PME(D0+,D1-,D2-,D3hot+,D3cold-)
+                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [48] CompactPCI hot-swap <?>
+        Capabilities: [4c] Vital Product Data
+                Unknown large resource type 35, will not decode more.
+        Kernel driver in use: mrf-pci
+
+16:0e.0 1180: 10b5:9030 (rev 01)
+        Subsystem: 1a3e:20dc
+        Flags: medium devsel, IRQ 18
+        Memory at f0921000 (32-bit, non-prefetchable) [size=128]
+        Memory at f0910000 (32-bit, non-prefetchable) [size=64K]
+        Capabilities: [40] Power Management version 1
+        Capabilities: [48] CompactPCI hot-swap <?>
+        Capabilities: [4c] Vital Product Data
+        Kernel driver in use: mrf-pci
