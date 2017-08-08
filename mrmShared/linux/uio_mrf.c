@@ -55,6 +55,8 @@ MODULE_PARM_DESC(use_msi, "Use MSI if present (default 1, yes)");
 #define PCI_SUBDEVICE_ID_MRF_PMCEVR_230     0x11e6
 /* cPCI-EVR-230 */
 #define PCI_SUBDEVICE_ID_MRF_PXIEVR_230     0x10e6
+/* cPCI-EVG-220 */
+#define PCI_SUBDEVICE_ID_MRF_PXIEVG_220     0x20dc
 /* cPCI-EVG-230 */
 #define PCI_SUBDEVICE_ID_MRF_PXIEVG_230     0x20E6
 /* cPCI-EVRTG-300 */
@@ -693,6 +695,12 @@ static struct pci_device_id mrf_pci_ids[] = {
         .device =       PCI_DEVICE_ID_PLX_9030,
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVR_230,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_PLX,
+        .device =       PCI_DEVICE_ID_PLX_9030,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_MRF_PXIEVG_220,
     },
     {
         .vendor =       PCI_VENDOR_ID_PLX,

@@ -302,6 +302,7 @@ static bool checkUIOVersion(int,int,int*) {return false;}
 
 static const epicsPCIID
 mrmevgs[] = {
+    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_SUBDEVICE_ID_MRF_PXIEVG_220, PCI_VENDOR_ID_MRF),
     DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_DEVICE_ID_MRF_PXIEVG230, PCI_VENDOR_ID_MRF),
     DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVG300, PCI_VENDOR_ID_MRF),
     DEVPCI_END
@@ -374,7 +375,7 @@ mrmEvgSetupPCI (
         }
 
         switch(cur->id.device) {
-        case PCI_DEVICE_ID_PLX_9030: /* cPCI-EVG-230 */
+        case PCI_DEVICE_ID_PLX_9030: /* cPCI-EVG-220 and cPCI-EVG-230 */
             if (devPCIToLocalAddr(cur, 2, (volatile void**) (void *) &BAR_evg, 0)) {
                 errlogPrintf("Failed to map BARs 2\n");
                 return -1;
