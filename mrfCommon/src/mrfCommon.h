@@ -123,6 +123,10 @@ using std::auto_ptr;
 #define MRF_EVENT_END_OF_SEQUENCE  0x7F
 
 
+/** @brief Priority given to EVR's timestamp/event provider
+ */
+#define ER_PROVIDER_PRIORITY 50
+
 /**************************************************************************************************/
 /*  MRF Supported Bus Types                                                                       */
 /**************************************************************************************************/

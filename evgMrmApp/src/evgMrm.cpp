@@ -417,7 +417,7 @@ evgMrm::sendTimestamp() {
 
     struct epicsTimeStamp ts;
     epicsTime ntpTime, storedTime;
-    if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
+    if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, ER_PROVIDER_PRIORITY)) {
         ntpTime = ts;
         storedTime = (epicsTime)getTimestamp();
 
@@ -449,7 +449,7 @@ evgMrm::incrTimestamp() {
 
 void
 evgMrm::syncTimestamp() {
-    if(epicsTimeOK != generalTimeGetExceptPriority(&m_timestamp, 0, 50))
+    if(epicsTimeOK != generalTimeGetExceptPriority(&m_timestamp, 0, ER_PROVIDER_PRIORITY))
         return;
     /*
      * Generally nano seconds should be close to zero.

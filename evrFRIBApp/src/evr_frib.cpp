@@ -52,7 +52,7 @@ EVRFRIB::EVRFRIB(const std::string& s,
     case FWInfo_Flavor_EVG:
     {
         epicsTimeStamp now;
-        if(epicsTimeOK == generalTimeGetExceptPriority(&now, 0, 50)) {
+        if(epicsTimeOK == generalTimeGetExceptPriority(&now, 0, ER_PROVIDER_PRIORITY)) {
             // start simulated time from the present
             timeoffset = POSIX_TIME_AT_EPICS_EPOCH + now.secPastEpoch - LE_READ32(base, TimeSec);
         }

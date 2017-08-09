@@ -25,10 +25,6 @@ extern "C" {
  * of the EVR interface for use with generalTime.
  */
 
-/** @brief Priority given to EVR's timestamp/event provider
- */
-#define ER_PROVIDER_PRIORITY 50
-
 /* Must be called before other functions.  Returns non-zero on error */
 epicsShareFunc
 int EVRInitTime();

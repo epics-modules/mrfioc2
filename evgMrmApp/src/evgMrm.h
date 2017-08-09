@@ -191,7 +191,7 @@ public:
              while(!timeout)
                  timeout = !m_evg->getTimerEvent()->wait(1 + evgAllowedTsGitter);
     
-             if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, 50)) {
+             if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, ER_PROVIDER_PRIORITY)) {
                  printf("Timestamping timeout\n");
                  ((epicsTime)ts).show(1);
              }
