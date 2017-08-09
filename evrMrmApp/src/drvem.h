@@ -133,76 +133,76 @@ public:
     virtual void select(unsigned id);
     virtual epicsUInt8 cycle(epicsUInt8 in);
 
-    virtual void lock() const{evrLock.lock();};
-    virtual void unlock() const{evrLock.unlock();};
+    virtual void lock() const OVERRIDE FINAL {evrLock.lock();}
+    virtual void unlock() const OVERRIDE FINAL {evrLock.unlock();};
 
-    virtual std::string model() const;
+    virtual std::string model() const OVERRIDE FINAL;
     epicsUInt32 fpgaFirmware();
     formFactor getFormFactor();
     std::string formFactorStr();
-    virtual MRFVersion version() const;
+    virtual MRFVersion version() const OVERRIDE FINAL;
 
 
-    virtual bool enabled() const;
-    virtual void enable(bool v);
+    virtual bool enabled() const OVERRIDE FINAL;
+    virtual void enable(bool v) OVERRIDE FINAL;
 
-    virtual bool mappedOutputState() const;
+    virtual bool mappedOutputState() const OVERRIDE FINAL;
 
     MRMGpio* gpio();
 
-    virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const;
-    virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool);
+    virtual bool specialMapped(epicsUInt32 code, epicsUInt32 func) const OVERRIDE FINAL;
+    virtual void specialSetMap(epicsUInt32 code, epicsUInt32 func,bool) OVERRIDE FINAL;
 
-    virtual double clock() const
+    virtual double clock() const OVERRIDE FINAL
         {SCOPED_LOCK(evrLock);return eventClock;}
-    virtual void clockSet(double);
+    virtual void clockSet(double) OVERRIDE FINAL;
 
-    virtual bool pllLocked() const;
+    virtual bool pllLocked() const OVERRIDE FINAL;
 
-    virtual epicsUInt32 irqCount() const{return count_hardware_irq;}
+    virtual epicsUInt32 irqCount() const OVERRIDE FINAL {return count_hardware_irq;}
 
-    virtual bool linkStatus() const;
-    virtual IOSCANPVT linkChanged() const{return IRQrxError;}
-    virtual epicsUInt32 recvErrorCount() const{return count_recv_error;}
+    virtual bool linkStatus() const OVERRIDE FINAL;
+    virtual IOSCANPVT linkChanged() const OVERRIDE FINAL{return IRQrxError;}
+    virtual epicsUInt32 recvErrorCount() const OVERRIDE FINAL{return count_recv_error;}
 
-    virtual epicsUInt32 uSecDiv() const;
+    virtual epicsUInt32 uSecDiv() const OVERRIDE FINAL;
 
     //! Using external hardware input for inhibit?
-    virtual bool extInhib() const;
-    virtual void setExtInhib(bool);
+    virtual bool extInhib() const OVERRIDE FINAL;
+    virtual void setExtInhib(bool) OVERRIDE FINAL;
 
-    virtual epicsUInt32 tsDiv() const
+    virtual epicsUInt32 tsDiv() const OVERRIDE FINAL
         {SCOPED_LOCK(evrLock);return shadowCounterPS;}
 
-    virtual void setSourceTS(TSSource);
-    virtual TSSource SourceTS() const
+    virtual void setSourceTS(TSSource) OVERRIDE FINAL;
+    virtual TSSource SourceTS() const OVERRIDE FINAL
         {SCOPED_LOCK(evrLock);return shadowSourceTS;}
-    virtual double clockTS() const;
-    virtual void clockTSSet(double);
-    virtual bool interestedInEvent(epicsUInt32 event,bool set);
+    virtual double clockTS() const OVERRIDE FINAL;
+    virtual void clockTSSet(double) OVERRIDE FINAL;
+    virtual bool interestedInEvent(epicsUInt32 event,bool set) OVERRIDE FINAL;
 
-    virtual bool TimeStampValid() const;
-    virtual IOSCANPVT TimeStampValidEvent() const{return timestampValidChange;}
+    virtual bool TimeStampValid() const OVERRIDE FINAL;
+    virtual IOSCANPVT TimeStampValidEvent() const OVERRIDE FINAL {return timestampValidChange;}
 
-    virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event);
-    virtual bool getTicks(epicsUInt32 *tks);
-    virtual IOSCANPVT eventOccurred(epicsUInt32 event) const;
-    virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*);
-    virtual void eventNotifyDel(epicsUInt32, eventCallback, void*);
+    virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event) OVERRIDE FINAL;
+    virtual bool getTicks(epicsUInt32 *tks) OVERRIDE FINAL;
+    virtual IOSCANPVT eventOccurred(epicsUInt32 event) const OVERRIDE FINAL;
+    virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
+    virtual void eventNotifyDel(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
 
     bool convertTS(epicsTimeStamp* ts);
 
-    virtual epicsUInt16 dbus() const;
+    virtual epicsUInt16 dbus() const OVERRIDE FINAL;
 
-    virtual epicsUInt32 heartbeatTIMOCount() const{return count_heartbeat;}
-    virtual IOSCANPVT heartbeatTIMOOccured() const{return IRQheartbeat;}
+    virtual epicsUInt32 heartbeatTIMOCount() const OVERRIDE FINAL {return count_heartbeat;}
+    virtual IOSCANPVT heartbeatTIMOOccured() const OVERRIDE FINAL {return IRQheartbeat;}
 
-    virtual epicsUInt32 FIFOFullCount() const
+    virtual epicsUInt32 FIFOFullCount() const OVERRIDE FINAL
     {SCOPED_LOCK(evrLock);return count_FIFO_overflow;}
-    virtual epicsUInt32 FIFOOverRate() const
+    virtual epicsUInt32 FIFOOverRate() const OVERRIDE FINAL
     {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
-    virtual epicsUInt32 FIFOEvtCount() const{return count_fifo_events;}
-    virtual epicsUInt32 FIFOLoopCount() const{return count_fifo_loops;}
+    virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
+    virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
 
     void enableIRQ(void);
 

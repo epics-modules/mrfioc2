@@ -173,6 +173,31 @@ using std::auto_ptr;
 
 #ifdef __cplusplus
 
+/* C++11 keywords
+ @code
+ struct Base {
+   virtual void foo();
+ };
+ struct Class : public Base {
+   virtual void foo() OVERRIDE FINAL;
+ };
+ @endcode
+ */
+#ifndef FINAL
+#  if __cplusplus>=201103L
+#    define FINAL final
+#  else
+#    define FINAL
+#  endif
+#endif
+#ifndef OVERRIDE
+#  if __cplusplus>=201103L
+#    define OVERRIDE override
+#  else
+#    define OVERRIDE
+#  endif
+#endif
+
 template<class Mutex>
 class scopedLock
 {
