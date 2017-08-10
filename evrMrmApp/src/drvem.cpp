@@ -61,10 +61,15 @@
 int evrMrmSPIDebug;
 int evrMrmTimeDebug;
 int evrDebug;
+//! value in nanoseconds above which a timestamp is considered invalid.
+//! below is truncated.  May be necessary when simulating timestamp
+//! source in software
+int evrMrmTimeNSOverflowThreshold;
 extern "C" {
  epicsExportAddress(int, evrDebug);
  epicsExportAddress(int, evrMrmSPIDebug);
  epicsExportAddress(int, evrMrmTimeDebug);
+ epicsExportAddress(int, evrMrmTimeNSOverflowThreshold);
 }
 
 using namespace std;
@@ -918,14 +923,22 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
     ts->nsec=(epicsUInt32)(ts->nsec*period);
 
     // 1 sec. reset is late
-    if(ts->nsec>=1000000000) {
-        timestampValid=0;
-        lastInvalidTimestamp=ts->secPastEpoch;
-        scanIoRequest(timestampValidChange);
+    if(ts->nsec>=1000000000u) {
         if(evrMrmTimeDebug>0)
-            errlogPrintf("TS convert NS overflow %08x %08x\n",
-                         (unsigned)ts->secPastEpoch, (unsigned)ts->nsec);
-        return false;
+            errlogPrintf("TS convert NS overflow %08x %08x oflow=%u\n",
+                         (unsigned)ts->secPastEpoch, (unsigned)ts->nsec,
+                         unsigned(ts->nsec-1000000000u));
+
+        // out of bounds
+        if(int(ts->nsec-1000000000u)>=evrMrmTimeNSOverflowThreshold) {
+            timestampValid=0;
+            lastInvalidTimestamp=ts->secPastEpoch;
+            scanIoRequest(timestampValidChange);
+
+            return false;
+        }
+        // otherwise, truncate
+        ts->nsec = 999999999u;
     }
 
     //Link seconds counter is POSIX time
