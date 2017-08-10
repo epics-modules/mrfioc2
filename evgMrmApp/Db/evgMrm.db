@@ -59,7 +59,12 @@ record (stringin, "$(P)Timestamp-RB") {
     field( DTYP, "Obj Prop string")
     field( INP , "@OBJ=$(OBJ), PROP=NextSecond")
     field( SCAN, "I/O Intr")
-    field( FLNK, "$(P)Timestamp-RB")
+    field( FLNK, "$(P)TimestampDelta-I")
+}
+
+record(ai, "$(P)TimestampDelta-I") {
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=TSDelta")
 }
 
 record(bo, "$(P)SimTimestamp-Sel") {

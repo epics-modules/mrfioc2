@@ -71,6 +71,10 @@ OBJECT_BEGIN(evgMrm) {
       std::string (evgMrm::*getter)() const = &evgMrm::nextSecond;
       OBJECT_PROP1("NextSecond", getter);
     }
+    {
+      double (evgMrm::*getter)() const = &evgMrm::deltaSeconds;
+      OBJECT_PROP1("TSDelta", getter);
+    }
     OBJECT_PROP1("NextSecond", &evgMrm::timeErrorScan);
     {
       void (evgMrm::*cmd)() = &evgMrm::resyncSecond;
