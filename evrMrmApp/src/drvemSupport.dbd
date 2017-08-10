@@ -11,3 +11,4 @@ registrar(registerISRHack)
 variable(mrmEvrFIFOPeriod,double)
 
 variable(evrMrmSPIDebug, int)
+variable(evrMrmTimeDebug, int)

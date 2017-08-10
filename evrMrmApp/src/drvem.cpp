@@ -59,10 +59,12 @@
 #endif
 
 int evrMrmSPIDebug;
+int evrMrmTimeDebug;
 int evrDebug;
 extern "C" {
  epicsExportAddress(int, evrDebug);
  epicsExportAddress(int, evrMrmSPIDebug);
+ epicsExportAddress(int, evrMrmTimeDebug);
 }
 
 using namespace std;
@@ -887,6 +889,9 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
     if(ts->secPastEpoch==lastInvalidTimestamp) {
         timestampValid=0;
         scanIoRequest(timestampValidChange);
+        if(evrMrmTimeDebug>0)
+            errlogPrintf("TS convert repeats known bad value new %08x bad %08x\n",
+                         (unsigned)ts->secPastEpoch, (unsigned)lastInvalidTimestamp);
         return false;
     }
 
@@ -917,6 +922,9 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
         timestampValid=0;
         lastInvalidTimestamp=ts->secPastEpoch;
         scanIoRequest(timestampValidChange);
+        if(evrMrmTimeDebug>0)
+            errlogPrintf("TS convert NS overflow %08x %08x\n",
+                         (unsigned)ts->secPastEpoch, (unsigned)ts->nsec);
         return false;
     }
 
@@ -1377,7 +1385,10 @@ try {
         callbackRequestDelayed(&evr->poll_link_cb, 0.1); // poll again in 100ms
         {
             SCOPED_LOCK2(evr->evrLock, guard);
+            if(evr->timestampValid && evrMrmTimeDebug>0)
+                errlogPrintf("TS invalid as link goes down\n");
             evr->timestampValid=0;
+
             evr->lastInvalidTimestamp=evr->lastValidTimestamp;
             scanIoRequest(evr->timestampValidChange);
         }
@@ -1409,38 +1420,56 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
     bool valid=true;
 
     /* Received a known bad value */
-    if(evr->lastInvalidTimestamp==newSec)
+    if(evr->lastInvalidTimestamp==newSec) {
         valid=false;
+        if(evrMrmTimeDebug>0)
+            errlogPrintf("TS reset repeats known bad value new %08x bad %08x\n",
+                         (unsigned)newSec, (unsigned)evr->lastInvalidTimestamp);
+    }
 
     /* Received a value which is inconsistent with a previous value */
     if(evr->timestampValid>0
-       &&  evr->lastValidTimestamp!=(newSec-1) )
+       &&  evr->lastValidTimestamp!=(newSec-1) ) {
         valid=false;
+        if(evrMrmTimeDebug>0)
+            errlogPrintf("TS reset with inconsistent value new %08x\n",
+                         (unsigned)newSec);
+    }
 
     /* received the previous value again */
-    else if(evr->lastValidTimestamp==newSec)
+    else if(evr->lastValidTimestamp==newSec) {
         valid=false;
+        if(evrMrmTimeDebug>0)
+            errlogPrintf("TS reset repeats previous value new %08x last %08x\n",
+                         (unsigned)newSec, (unsigned)evr->lastValidTimestamp);
+    }
 
 
     if (!valid)
     {
         if (evr->timestampValid>0) {
-            errlogPrintf("TS reset w/ old or invalid seconds %08x (%08x %08x)\n",
-                         newSec, evr->lastValidTimestamp, evr->lastInvalidTimestamp);
+            if(evrMrmTimeDebug>0)
+                errlogPrintf("TS reset w/ old or invalid seconds %08x (%08x %08x)\n",
+                             newSec, evr->lastValidTimestamp, evr->lastInvalidTimestamp);
             scanIoRequest(evr->timestampValidChange);
         }
         evr->timestampValid=0;
         evr->lastInvalidTimestamp=newSec;
+        if(evrMrmTimeDebug>2)
+            errlogPrintf("TS reset invalid new %08x\n", (unsigned)newSec);
 
     } else {
-        evr->timestampValid++;
+        if(evr->timestampValid<=TSValidThreshold) evr->timestampValid++;
         evr->lastValidTimestamp=newSec;
 
         if (evr->timestampValid == TSValidThreshold) {
-            errlogPrintf("TS becomes valid after fault %08x\n",newSec);
+            if(evrMrmTimeDebug>0)
+                errlogPrintf("TS becomes valid after fault %08x\n",newSec);
             scanIoRequest(evr->timestampValidChange);
+
+        } else if(evrMrmTimeDebug>2) {
+            errlogPrintf("TS reset valid new %08x %u\n",
+                         (unsigned)newSec, (unsigned)evr->timestampValid);
         }
     }
-
-
 }
