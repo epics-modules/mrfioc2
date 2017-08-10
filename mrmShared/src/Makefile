@@ -17,6 +17,7 @@ mrmShared_SRCS += mrmDataBufTx.cpp
 mrmShared_SRCS += mrmSeq.cpp
 mrmShared_SRCS += devMrfBufTx.cpp
 mrmShared_SRCS += sfp.cpp
+mrmShared_SRCS += mrmtimesrc.cpp
 
 mrmShared_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 

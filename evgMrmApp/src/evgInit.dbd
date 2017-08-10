@@ -2,10 +2,6 @@ registrar(evgMrmRegistrar)
 driver(drvEvgMrm)
 include "mrmShared.dbd"
 
-#evgMrm.db
-device( stringin,VME_IO,  devSiTimeStamp,      "EVG TIMESTAMP")
-
-
 #evgTrigEvt.db
 device( bo, VME_IO, devBoEvgTrigEvtMxc, "EVG Trig Evt Mxc")
 

@@ -482,86 +482,6 @@ mrmEvgSetupPCI (
     return -1;
 } //mrmEvgSetupPCI
 
-#if !defined(_WIN32) && !defined(__rtems__)
-/*
- * Fake timestamp source for testing without real hardware timestamp source (eg. GPS recevier)
- *
- * Author: tslejko
- */
-static
-void mrmEvgSoftTimeThread(void* pvt) {
-    evgMrm* evg = static_cast<evgMrm*>(pvt);
-
-    if (!evg) {
-        errlogPrintf("mrmEvgSoftTimestamp: Could not find EVG!\n");
-    }
-
-    while (1) {
-        // fetch time of next second to be shifted
-        epicsUInt32 data = evg->sendTimestamp();
-        if (!data){
-            errlogPrintf("mrmEvgSoftTimestamp: Could not retrive timestamp...\n");
-            epicsThreadSleep(1);
-            continue;
-        }
-
-        //Send out event reset to latch previously shifted timestamp
-        evg->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
-
-        //Shift out next time
-        for (int i = 0; i < 32; data <<= 1, i++) {
-            if (data & 0x80000000)
-                evg->setEvtCode(MRF_EVENT_TS_SHIFT_1);
-            else
-                evg->setEvtCode(MRF_EVENT_TS_SHIFT_0);
-        }
-
-        struct timespec sleep_until_t;
-
-        clock_gettime(CLOCK_REALTIME,&sleep_until_t); //Get current time
-        /* Sleep until next full second */
-        sleep_until_t.tv_nsec=0;
-        sleep_until_t.tv_sec++;
-
-        clock_nanosleep(CLOCK_REALTIME,TIMER_ABSTIME,&sleep_until_t,0);
-    }
-}
-#else
-static
-void mrmEvgSoftTimeThread(void* pvt) {}
-#endif
-
-void mrmEvgSoftTime(const char *obj) {
-    try {
-        printf("Starting EVG Software based time provider...\n");
-
-        if(!obj) return;
-
-        evgMrm* evg = dynamic_cast<evgMrm*>(mrf::Object::getObject(obj));
-        if(!evg){
-            errlogPrintf("EVG '%s' does not exist!\n", obj);
-        }
-
-        epicsThreadCreate("EVG_TimestampTestThread",90,
-                          epicsThreadGetStackSize(epicsThreadStackSmall),
-                          mrmEvgSoftTimeThread,static_cast<void*>(evg));
-    } catch(std::exception& e){
-        fprintf(stderr, "Error: %s\n", e.what());
-    }
-}
-
-/*
- *    EPICS Registrar Function for this Module
- */
-static const iocshArg mrmEvgSoftTimeArg0 = { "Card ID", iocshArgString};
-static const iocshArg * const mrmEvgSoftTimeArgs[1] = { &mrmEvgSoftTimeArg0};
-static const iocshFuncDef mrmEvgSoftTimeFuncDef = { "mrmEvgSoftTime", 1, mrmEvgSoftTimeArgs };
-
-static void mrmEvgSoftTimeFunc(const iocshArgBuf *args) {
-    mrmEvgSoftTime(args[0].sval);
-}
-
-
 static const iocshArg mrmEvgSetupVMEArg0 = { "Card ID", iocshArgString };
 static const iocshArg mrmEvgSetupVMEArg1 = { "Slot number", iocshArgInt };
 static const iocshArg mrmEvgSetupVMEArg2 = { "A24 base address", iocshArgInt };
@@ -607,8 +527,6 @@ static void evgMrmRegistrar() {
     initHookRegister(&inithooks);
     iocshRegister(&mrmEvgSetupVMEFuncDef, mrmEvgSetupVMECallFunc);
     iocshRegister(&mrmEvgSetupPCIFuncDef, mrmEvgSetupPCICallFunc);
-    iocshRegister(&mrmEvgSoftTimeFuncDef, mrmEvgSoftTimeFunc);
-
 }
 
 epicsExportRegistrar(evgMrmRegistrar);

@@ -76,6 +76,7 @@ using std::auto_ptr;
 #include  <epicsMath.h>         /* EPICS Common math functions & definitions                      */
 #include  <epicsInterrupt.h>
 #include  <epicsStdlib.h>
+#include  <epicsThread.h>
 
 #include  <alarm.h>             /* EPICS Alarm status and severity definitions                    */
 #include  <dbAccess.h>          /* EPICS Database Access definitions                              */
@@ -281,6 +282,23 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver);
+
+
+//! @brief Helper to allow one class to have several runable methods
+template<class C,void (C::*Method)()>
+class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
+{
+    C& owner;
+public:
+    epicsThreadRunableMethod(C& o)
+        :owner(o)
+    {}
+    virtual ~epicsThreadRunableMethod(){}
+    virtual void run()
+    {
+        (owner.*Method)();
+    }
+};
 
 #endif /* __cplusplus */
 

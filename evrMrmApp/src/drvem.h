@@ -39,26 +39,10 @@
 #include "mrmevrseq.h"
 
 #include "mrmGpio.h"
-
+#include "mrmtimesrc.h"
 #include "mrmDataBufTx.h"
 #include "sfp.h"
 #include "configurationInfo.h"
-
-//! @brief Helper to allow one class to have several runable methods
-template<class C,void (C::*Method)()>
-class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
-{
-    C& owner;
-public:
-    epicsThreadRunableMethod(C& o)
-        :owner(o)
-    {}
-    virtual ~epicsThreadRunableMethod(){}
-    virtual void run()
-    {
-        (owner.*Method)();
-    }
-};
 
 class EVRMRM;
 
@@ -96,7 +80,8 @@ struct epicsShareClass eventCode {
  * 
  */
 class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
-                                      mrf::SPIInterface
+                                      mrf::SPIInterface,
+                               public TimeStampSource
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
 public:
@@ -218,7 +203,7 @@ public:
     epicsUInt32 topId() const;
 
     epicsUInt32 dummy() const { return 0; }
-    void sendSoftEvt(epicsUInt32 code);
+    void setEvtCode(epicsUInt32 code) OVERRIDE FINAL;
 
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);

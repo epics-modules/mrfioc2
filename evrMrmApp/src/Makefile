@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+USR_INCLUDES += -I$(TOP)/mrmShared/src
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
 #=============================

@@ -38,6 +38,7 @@
 
 evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
     mrf::ObjectInst<evgMrm>(id),
+    TimeStampSource(1.0),
     irqExtInp_queued(0),
     m_syncTimestamp(false),
     m_errorTimestamp(0.0),
@@ -112,8 +113,6 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
         m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)] =
                 new evgOutput(name.str(), i, UnivOut, pReg + U16_UnivOutMap(i));
     }
-
-    m_wdTimer = new wdTimer("Watch Dog Timer", this);
 
     init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
     
@@ -379,94 +378,15 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
         evg->irqExtInp_queued=0;
     }
      
-    epicsUInt32 data = evg->sendTimestamp();
-    if(!data)
-        return;
-
-    for(int i = 0; i < 32; data <<= 1, i++) {
-        if( data & 0x80000000 )
-            evg->setEvtCode(MRF_EVENT_TS_SHIFT_1);
-        else
-            evg->setEvtCode(MRF_EVENT_TS_SHIFT_0);
-    }
+    evg->tickSecond();
+    scanIoRequest(evg->ioScanTimestamp);
 }
 
-epicsUInt32
-evgMrm::sendTimestamp() {
-    /*Start the timer*/
-    m_timerEvent.signal();
-
-    /*If the time since last update is more than 1.5 secs(i.e. if wdTimer expires) 
-    then we need to resync the time after 5 good pulses*/
-    if(m_wdTimer->getPilotCount()) {
-        m_wdTimer->decrPilotCount();
-        if(m_wdTimer->getPilotCount() == 0) {
-            syncTimestamp();
-            printf("Starting timestamping\n");
-            ((epicsTime)getTimestamp()).show(1);
-        }
-        return 0;
-    }
-
-    m_alarmTimestamp = TS_ALARM_NONE;
-
-    if(m_syncTimestamp) {
-        syncTimestamp();
-        m_syncTimestamp = false;
-    }
-
-    struct epicsTimeStamp ts;
-    epicsTime ntpTime, storedTime;
-    if(epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, ER_PROVIDER_PRIORITY)) {
-        ntpTime = ts;
-        storedTime = (epicsTime)getTimestamp();
-
-        double errorTime = ntpTime - storedTime;
-        m_errorTimestamp = errorTime;
-
-        /*If there is an error between storedTime and ntpTime then we just print
-            the relevant information but we send out storedTime*/
-        if(fabs(errorTime) > evgAllowedTsGitter) {
-            m_alarmTimestamp = TS_ALARM_MINOR;
-        } 
-    }
-
-    incrTimestamp();
+void
+evgMrm::postSoftSecondsSrc()
+{
+    tickSecond();
     scanIoRequest(ioScanTimestamp);
-
-    return getTimestamp().secPastEpoch + 1 + POSIX_TIME_AT_EPICS_EPOCH;
-}
-
-epicsTimeStamp
-evgMrm::getTimestamp() const {
-    return m_timestamp;
-}
-
-void
-evgMrm::incrTimestamp() {
-    m_timestamp.secPastEpoch++;
-}
-
-void
-evgMrm::syncTimestamp() {
-    if(epicsTimeOK != generalTimeGetExceptPriority(&m_timestamp, 0, ER_PROVIDER_PRIORITY))
-        return;
-    /*
-     * Generally nano seconds should be close to zero.
-     *  So the seconds value should be rounded to the nearest interger
-     *  e.g. 26.000001000 should be rounded to 26 and
-     *       26.996234643 should be rounded to 27.
-     *  Also the nano second value can be assumed to be zero.
-     */
-    if(m_timestamp.nsec > 500*pow(10.0,6))
-        incrTimestamp();
-    
-    m_timestamp.nsec = 0;
-}
-
-void
-evgMrm::syncTsRequest(bool) {
-    m_syncTimestamp = true;
 }
 
 void

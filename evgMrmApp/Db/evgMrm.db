@@ -55,12 +55,18 @@ record(longout, "$(P)SendEvt-SP") {
     alias("$(SOFTEVT)EvtCode-SP")
 }
 
-record(stringin, "$(P)Timestamp-RB") {
-    field( DTYP, "EVG TIMESTAMP")
-    field( DESC, "EVG TimeStamp")
-    field( INP , "#C0 S0 @$(EVG)")
+record (stringin, "$(P)Timestamp-RB") {
+    field( DTYP, "Obj Prop string")
+    field( INP , "@OBJ=$(OBJ), PROP=NextSecond")
     field( SCAN, "I/O Intr")
-    field( FLNK, "$(P)TimeErr-I")
+    field( FLNK, "$(P)Timestamp-RB")
+}
+
+record(bo, "$(P)SimTimestamp-Sel") {
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=SimTime")
+    field( ZNAM, "Normal")
+    field( ONAM, "Simulate")
 }
 
 record(ai, "$(P)TimeErr-I") {
@@ -69,7 +75,7 @@ record(ai, "$(P)TimeErr-I") {
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
-    field( DTYP, "Obj Prop bool")
+    field( DTYP, "Obj Prop command")
     field( OUT , "@OBJ=$(OBJ), PROP=Sync TS")
     field( DESC, "EVG Sync TimeStamp")
 }

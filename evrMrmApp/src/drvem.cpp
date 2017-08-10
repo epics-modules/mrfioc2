@@ -117,6 +117,7 @@ EVRMRM::EVRMRM(const std::string& n,
                volatile unsigned char* b,
                epicsUInt32 bl)
   :base_t(n,busConfig)
+  ,TimeStampSource(1.0)
   ,evrLock()
   ,conf(c)
   ,base(b)
@@ -1032,7 +1033,7 @@ EVRMRM::topId() const
 }
 
 void
-EVRMRM::sendSoftEvt(epicsUInt32 code)
+EVRMRM::setEvtCode(epicsUInt32 code)
 {
     if(code==0) return;
     else if(code>255) throw std::runtime_error("Event code out of range");
@@ -1062,7 +1063,12 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
-  OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::sendSoftEvt);
+  OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
+  {
+    bool (EVRMRM::*getter)() const = &EVRMRM::isSoftSeconds;
+    void (EVRMRM::*setter)(bool) = &EVRMRM::softSecondsSrc;
+    OBJECT_PROP2("SimTime", getter, setter);
+  }
 OBJECT_END(EVRMRM)
 
 

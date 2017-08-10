@@ -56,13 +56,26 @@ OBJECT_BEGIN(evgTrigEvt) {
 OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP2("Enable",     &evgMrm::enabled,      &evgMrm::enable);
     OBJECT_PROP2("Reset MXC",  &evgMrm::getResetMxc,  &evgMrm::resetMxc);
-    OBJECT_PROP2("Sync TS",    &evgMrm::getSyncTsRequest, &evgMrm::syncTsRequest);
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
     OBJECT_PROP1("Version", &evgMrm::getFwVersion);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
     OBJECT_PROP1("Time Error", &evgMrm::timeError);
     OBJECT_PROP1("Time Error", &evgMrm::timeErrorScan);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
+    {
+      bool (evgMrm::*getter)() const = &evgMrm::isSoftSeconds;
+      void (evgMrm::*setter)(bool) = &evgMrm::softSecondsSrc;
+      OBJECT_PROP2("SimTime", getter, setter);
+    }
+    {
+      std::string (evgMrm::*getter)() const = &evgMrm::nextSecond;
+      OBJECT_PROP1("NextSecond", getter);
+    }
+    OBJECT_PROP1("NextSecond", &evgMrm::timeErrorScan);
+    {
+      void (evgMrm::*cmd)() = &evgMrm::resyncSecond;
+      OBJECT_PROP1("Sync TS", cmd);
+    }
 } OBJECT_END(evgMrm)
 
 

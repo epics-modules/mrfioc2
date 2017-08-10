@@ -5,6 +5,8 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+USR_INCLUDES += -I$(TOP)/mrmShared/src
+
 LIBRARY_IOC += evgmrm
 
 INC += evgMrm.h
@@ -26,7 +28,6 @@ evgmrm_SRCS += evgInit.cpp
 evgmrm_SRCS += evg.cpp
 
 evgmrm_SRCS += evgMrm.cpp
-evgmrm_SRCS += devEvgMrm.cpp
 
 evgmrm_SRCS += evgAcTrig.cpp
 
