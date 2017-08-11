@@ -93,6 +93,8 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 @li mrmEvrSetupPCI() accepts "slot=#" in addition to PCI geographic address
 @li linux: kernel module exports PCI ID table to enable automatic module loading
 @li Firmware upgrade via PCIe flash access for mTCA-EVR-300 and PCIe-EVR-300DC.  See EVR manual for details.
+@li EVG add 1 PPS source option "Sys Clk" to simulate external HW clock using system clock.
+@li EVR add 1 PPS and timestamp source simulation.
 
 @subsection v210 2.1.0 (Oct. 2016)
 
