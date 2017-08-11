@@ -4,7 +4,7 @@
 #  EVR = Card name (same as mrmEvrSetupVME())
 #  SYS = System name (ie SR-TM)
 #  D = Device name (ie EVR:Diag2)
-#  FRF = Event link frequency (default 124.916 MHz)
+#  FEVT = Event link frequency (default 124.916 MHz)
 #
 # Record names have the general forms:
 #  $(SYS){$(D)}Signal-SD
@@ -12,7 +12,7 @@
 
 file "evrbase.db"
 {
-{P="$(SYS){$(D)}", OBJ="$(EVR)", EVNT1Hz="125", FRF="\$(FRF=124.916)"}
+{P="$(SYS){$(D)}", OBJ="$(EVR)", EVNT1Hz="125", FEVT="\$(FEVT=124.916)"}
 }
 
 file "databuftx.db"

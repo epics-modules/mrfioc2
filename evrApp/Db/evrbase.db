@@ -87,7 +87,7 @@ record(ao, "$(P)Link:Clk-SP") {
   field(OUT , "@OBJ=$(OBJ), PROP=Clock")
   field(PINI, "YES")
   field(DESC, "Event Link speed")
-  field(VAL , "$(FRF=124.916)")
+  field(VAL , "$(FEVT=124.916)")
   field(EGU , "MHz")
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
