@@ -80,7 +80,6 @@ public:
     void resetMxc(bool reset);
     epicsUInt32 getDbusStatus() const;
 
-    double timeError() const { return m_errorTimestamp; }
     IOSCANPVT timeErrorScan() const { return ioScanTimestamp; }
 
     virtual void postSoftSecondsSrc();
@@ -111,9 +110,6 @@ public:
     unsigned char irqExtInp_queued;
 
     IOSCANPVT                     ioScanTimestamp;
-    bool                          m_syncTimestamp;
-    ALARM_TS                      m_alarmTimestamp;
-    double                        m_errorTimestamp;
 
     mrmDataBufTx                  m_buftx;
 

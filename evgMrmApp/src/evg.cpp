@@ -59,8 +59,6 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
     OBJECT_PROP1("Version", &evgMrm::getFwVersion);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
-    OBJECT_PROP1("Time Error", &evgMrm::timeError);
-    OBJECT_PROP1("Time Error", &evgMrm::timeErrorScan);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
     {
       bool (evgMrm::*getter)() const = &evgMrm::isSoftSeconds;
@@ -73,8 +71,9 @@ OBJECT_BEGIN(evgMrm) {
     }
     {
       double (evgMrm::*getter)() const = &evgMrm::deltaSeconds;
-      OBJECT_PROP1("TSDelta", getter);
+      OBJECT_PROP1("Time Error", getter);
     }
+    OBJECT_PROP1("Time Error", &evgMrm::timeErrorScan);
     OBJECT_PROP1("NextSecond", &evgMrm::timeErrorScan);
     {
       void (evgMrm::*cmd)() = &evgMrm::resyncSecond;
