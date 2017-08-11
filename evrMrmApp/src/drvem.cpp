@@ -1085,11 +1085,23 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
-  {
-    bool (EVRMRM::*getter)() const = &EVRMRM::isSoftSeconds;
-    void (EVRMRM::*setter)(bool) = &EVRMRM::softSecondsSrc;
-    OBJECT_PROP2("SimTime", getter, setter);
-  }
+    {
+      bool (EVRMRM::*getter)() const = &EVRMRM::isSoftSeconds;
+      void (EVRMRM::*setter)(bool) = &EVRMRM::softSecondsSrc;
+      OBJECT_PROP2("SimTime", getter, setter);
+    }
+    {
+      std::string (EVRMRM::*getter)() const = &EVRMRM::nextSecond;
+      OBJECT_PROP1("NextSecond", getter);
+    }
+    {
+      double (EVRMRM::*getter)() const = &EVRMRM::deltaSeconds;
+      OBJECT_PROP1("Time Error", getter);
+    }
+    {
+      void (EVRMRM::*cmd)() = &EVRMRM::resyncSecond;
+      OBJECT_PROP1("Sync TS", cmd);
+    }
 OBJECT_END(EVRMRM)
 
 

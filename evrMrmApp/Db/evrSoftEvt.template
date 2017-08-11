@@ -5,3 +5,33 @@ record(longout, "$(P)EvtCode-SP") {
   field(VAL , "0")
   field(PINI, "YES") # send event 0 is a no-op
 }
+
+# software time source simulation
+# included here as it depends on SW event feature
+
+record (stringin, "$(P)Timestamp-RB") {
+    field( DTYP, "Obj Prop string")
+    field( INP , "@OBJ=$(OBJ), PROP=NextSecond")
+    field( SCAN, "1 second")
+    field( FLNK, "$(P)TimeErr-I")
+}
+
+record(ai, "$(P)TimeErr-I") {
+    field( DTYP, "Obj Prop double")
+    field( INP , "@OBJ=$(OBJ), PROP=Time Error")
+}
+
+record(bo, "$(P)SimTimestamp-Sel") {
+    field( DTYP, "Obj Prop bool")
+    field( OUT , "@OBJ=$(OBJ), PROP=SimTime")
+    field( OMSL, "closed_loop")
+    field( DOL , "$(P)1ppsInp-MbbiDir_.BF CP")
+    field( ZNAM, "Normal")
+    field( ONAM, "Simulate")
+}
+
+record(bo,"$(P)SyncTimestamp-Cmd" ) {
+    field( DTYP, "Obj Prop command")
+    field( OUT , "@OBJ=$(OBJ), PROP=Sync TS")
+    field( DESC, "EVG Sync TimeStamp")
+}

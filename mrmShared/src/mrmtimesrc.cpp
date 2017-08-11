@@ -13,6 +13,7 @@
 #  include <time.h>
 #endif
 
+#include <errlog.h>
 #include <epicsGuard.h>
 #include <epicsEvent.h>
 #include <epicsMutex.h>
@@ -104,7 +105,13 @@ struct TimeStampSource::Impl
                 continue;
             }
 
-            owner->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
+            try {
+                owner->setEvtCode(MRF_EVENT_TS_COUNTER_RST);
+            }catch(std::exception& e){
+                errlogPrintf("Soft timestamp source can't reset event: %s\n", e.what());
+                wakeupsrc.wait(10.0);
+                continue;
+            }
 
             owner->postSoftSecondsSrc();
         }
@@ -195,10 +202,15 @@ void TimeStampSource::tickSecond()
     if(!ok) return;
 
     for(unsigned i = 0; i < 32; tosend <<= 1, i++) {
-        if( tosend & 0x80000000 )
-            setEvtCode(MRF_EVENT_TS_SHIFT_1);
-        else
-            setEvtCode(MRF_EVENT_TS_SHIFT_0);
+        try {
+            if( tosend & 0x80000000 )
+                setEvtCode(MRF_EVENT_TS_SHIFT_1);
+            else
+                setEvtCode(MRF_EVENT_TS_SHIFT_0);
+        }catch(std::exception& e){
+            errlogPrintf("Soft timestamp source can't send shift event: %s\n", e.what());
+            return;
+        }
     }
 }
 
