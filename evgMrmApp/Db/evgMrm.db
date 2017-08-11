@@ -65,6 +65,8 @@ record (stringin, "$(P)Timestamp-RB") {
 record(bo, "$(P)SimTimestamp-Sel") {
     field( DTYP, "Obj Prop bool")
     field( OUT , "@OBJ=$(OBJ), PROP=SimTime")
+    field( OMSL, "closed_loop")
+    field( DOL , "$(P)1ppsInp-MbbiDir_.BF CP")
     field( ZNAM, "Normal")
     field( ONAM, "Simulate")
 }
@@ -92,6 +94,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
     field( FRST, "Univ1")
     field( FVST, "Univ2")
     field( SXST, "Univ3")
+    field( SVST, "Sys Clk")
     field( ZRVL, "0")
     field( ONVL, "1")
     field( TWVL, "2")
@@ -99,7 +102,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
     field( FRVL, "8")
     field( FVVL, "16")
     field( SXVL, "32")
-    field( SVSV, "INVALID")
+    field( SVVL, "0x8000")
     field( EISV, "INVALID")
     field( NISV, "INVALID")
     field( TESV, "INVALID")
@@ -110,6 +113,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)1ppsInp-MbbiDir_")
     info( autosaveFields_pass0, "VAL")
 }
 
@@ -119,7 +123,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
 #
 record(mbbiDirect, "$(P)1ppsInp-MbbiDir_") {
     field( DESC, "EVG 1PPS Input")
-    field( INP,  "$(P)1ppsInp-Sel.RVAL CP")
+    field( INP,  "$(P)1ppsInp-Sel.RVAL NPP")
 }
 
 record(longin, "$(P)DbusStatus-RB" ) {
