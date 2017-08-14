@@ -4,6 +4,10 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#if defined(__rtems__)
+#  include <rtems.h>
+#endif
+
 #include <stdio.h>
 
 #include <epicsMath.h>
