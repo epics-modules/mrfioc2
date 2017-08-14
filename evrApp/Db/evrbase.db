@@ -330,7 +330,7 @@ record(longin, "$(P)Time:Div-I") {
 
 record(stringin, "$(P)Time-I") {
   field(DTYP, "EVR Timestamp")
-  field(INP , "@OBJ=$(OBJ)")
+  field(INP , "@OBJ=$(OBJ), Code=$(EVNT1HZ=125)")
   field(SCAN, "Event")
   field(EVNT, "$(EVNT1HZ=125)")
   field(TSE , "-2")
