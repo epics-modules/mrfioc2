@@ -21,13 +21,15 @@ record(ai, "$(P)TimeErr-I") {
     field( INP , "@OBJ=$(OBJ), PROP=Time Error")
 }
 
-record(bo, "$(P)SimTimestamp-Sel") {
-    field( DTYP, "Obj Prop bool")
-    field( OUT , "@OBJ=$(OBJ), PROP=SimTime")
-    field( OMSL, "closed_loop")
-    field( DOL , "$(P)1ppsInp-MbbiDir_.BF CP")
-    field( ZNAM, "Normal")
-    field( ONAM, "Simulate")
+record(mbbo, "$(P)TimeSrc-Sel") {
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(OBJ), PROP=TimeSrc")
+    field( ZRST, "Disable (noop)")
+    field( ONST, "External clk")
+    field( TWST, "Sys. Clock")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "2")
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {

@@ -148,6 +148,7 @@ EVRMRM::EVRMRM(const std::string& n,
   // 3 because 2 IRQ events, and 1 shutdown event
   ,drain_fifo_wakeup(3,sizeof(int))
   ,count_FIFO_sw_overrate(0)
+  ,timeSrcMode(Disable)
   ,stampClock(0.0)
   ,shadowSourceTS(TSSourceInternal)
   ,shadowCounterPS(0)
@@ -1077,6 +1078,32 @@ EVRMRM::setEvtCode(epicsUInt32 code)
     WRITE32(base, SwEvent, (code<<SwEvent_Code_SHIFT)|SwEvent_Ena);
 }
 
+epicsUInt32 EVRMRM::timeSrc() const
+{
+    SCOPED_LOCK(evrLock);
+    return timeSrcMode;
+}
+
+void EVRMRM::setTimeSrc(epicsUInt32 raw)
+{
+    switch((timeSrcMode_t)raw) {
+    case Disable:
+    case External:
+    case SysClk:
+        break;
+    default:
+        throw std::runtime_error("Unsupported time source mode");
+    }
+    timeSrcMode_t mode((timeSrcMode_t)raw);
+
+    SCOPED_LOCK(evrLock);
+
+    if(timeSrcMode!=mode)
+        softSecondsSrc(mode==SysClk);
+
+    timeSrcMode = mode;
+}
+
 OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
   OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
@@ -1085,11 +1112,7 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
-    {
-      bool (EVRMRM::*getter)() const = &EVRMRM::isSoftSeconds;
-      void (EVRMRM::*setter)(bool) = &EVRMRM::softSecondsSrc;
-      OBJECT_PROP2("SimTime", getter, setter);
-    }
+  OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
     {
       std::string (EVRMRM::*getter)() const = &EVRMRM::nextSecond;
       OBJECT_PROP1("NextSecond", getter);
@@ -1432,6 +1455,16 @@ try {
 }
 }
 
+static
+void send_timestamp(CALLBACK *cb)
+{
+    void *raw;
+    callbackGetUser(raw, cb);
+    EVRMRM *evr=static_cast<EVRMRM*>(raw);
+
+    evr->tickSecond();
+}
+
 void
 EVRMRM::seconds_tick(void *raw, epicsUInt32)
 {
@@ -1496,5 +1529,13 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
             errlogPrintf("TS reset valid new %08x %u\n",
                          (unsigned)newSec, (unsigned)evr->timestampValid);
         }
+    }
+
+    if(evr->timeSrcMode==External) {
+        // avoid lock ordering problem with EVR lock and generalTime locks
+        callbackSetCallback(&send_timestamp, &evr->timeSrc_cb);
+        callbackSetUser(evr, &evr->timeSrc_cb);
+        callbackSetPriority(priorityMedium, &evr->timeSrc_cb);
+        callbackRequest(&evr->timeSrc_cb);
     }
 }

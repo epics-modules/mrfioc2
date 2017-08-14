@@ -205,6 +205,9 @@ public:
     epicsUInt32 dummy() const { return 0; }
     void setEvtCode(epicsUInt32 code) OVERRIDE FINAL;
 
+    epicsUInt32 timeSrc() const;
+    void setTimeSrc(epicsUInt32 mode);
+
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
@@ -281,6 +284,17 @@ private:
     // Periodic callback to detect when link state goes from down to up
     CALLBACK poll_link_cb;
     static void poll_link(CALLBACK*);
+
+    enum timeSrcMode_t {
+        Disable,  // do nothing
+        External, // shift out TS on upstream when reset (125) received on downstream
+        SysClk,   // generate reset (125) from software timer, shift out TS on upstream
+    } timeSrcMode;
+    /* in practice
+     *   timeSrcMode!=Disable -> listen for 125, react by sending shift 0/1 codes
+     *   timeSrcMode==SysClk  -> send soft 125 events
+     */
+    CALLBACK timeSrc_cb;
 
     // Set by clockTSSet() with IRQ disabled
     double stampClock;
