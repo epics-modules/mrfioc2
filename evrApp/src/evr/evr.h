@@ -12,13 +12,13 @@
 #ifndef EVR_HPP_INC
 #define EVR_HPP_INC
 
-#include "evr/util.h"
-#include "evr/output.h"
-#include "mrf/object.h"
-
 #include <epicsTypes.h>
 #include <epicsTime.h>
 #include <callback.h>
+#include <dbScan.h>
+
+#include "evr/output.h"
+#include "mrf/object.h"
 
 #include "configurationInfo.h"
 

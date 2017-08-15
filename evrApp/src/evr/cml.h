@@ -11,7 +11,6 @@
 #ifndef CMLSHORT_HPP_INC
 #define CMLSHORT_HPP_INC
 
-#include "evr/util.h"
 #include "mrf/object.h"
 
 #include <epicsTypes.h>
@@ -23,7 +22,7 @@ enum cmlMode {
   cmlModeInvalid
 };
 
-class epicsShareClass CML : public mrf::ObjectInst<CML>, public IOStatus
+class epicsShareClass CML : public mrf::ObjectInst<CML>
 {
 public:
   enum pattern {

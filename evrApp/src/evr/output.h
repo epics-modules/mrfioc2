@@ -11,7 +11,6 @@
 #ifndef OUTPUT_HPP_INC
 #define OUTPUT_HPP_INC
 
-#include "evr/util.h"
 #include "mrf/object.h"
 
 #include <epicsTypes.h>
@@ -24,7 +23,7 @@ enum OutputType {
   OutputBackplane=4, //!< Backplane lines
 };
 
-class epicsShareClass Output : public mrf::ObjectInst<Output>, public IOStatus
+class epicsShareClass Output : public mrf::ObjectInst<Output>
 {
 public:
   explicit Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}

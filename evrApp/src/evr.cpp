@@ -21,7 +21,6 @@
 #include "evr/input.h"
 #include "evr/prescaler.h"
 #include "evr/cml.h"
-#include "evr/util.h"
 
 /**@file evr.cpp
  *
@@ -92,17 +91,6 @@ CML::~CML()
 
 DelayModuleEvr::~DelayModuleEvr()
 {
-}
-
-long get_ioint_info_statusChange(int dir,dbCommon* prec,IOSCANPVT* io)
-{
-    IOStatus* stat=static_cast<IOStatus*>(prec->dpvt);
-
-    if(!stat) return 1;
-
-    *io=stat->statusChange((dir != 0));
-
-    return 0;
 }
 
 OBJECT_BEGIN(EVR) {

@@ -11,7 +11,6 @@
 #ifndef INPUT_HPP_INC
 #define INPUT_HPP_INC
 
-#include "evr/util.h"
 #include "mrf/object.h"
 
 #include <epicsTypes.h>
@@ -22,7 +21,7 @@ enum TrigMode {
   TrigEdge=2
 };
 
-class epicsShareClass Input : public mrf::ObjectInst<Input>, public IOStatus
+class epicsShareClass Input : public mrf::ObjectInst<Input>
 {
 public:
   explicit Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}
