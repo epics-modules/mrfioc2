@@ -27,7 +27,7 @@ enum OutputType {
 class epicsShareClass Output : public mrf::ObjectInst<Output>, public IOStatus
 {
 public:
-  Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}
+  explicit Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}
   virtual ~Output()=0;
 
   /**\defgroup src Control which source(s) effect this output.

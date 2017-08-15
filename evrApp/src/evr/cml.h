@@ -34,7 +34,7 @@ public:
     patternLow
   };
 
-  CML(const std::string& n) : mrf::ObjectInst<CML>(n) {}
+  explicit CML(const std::string& n) : mrf::ObjectInst<CML>(n) {}
   virtual ~CML()=0;
 
   virtual cmlMode mode() const=0;

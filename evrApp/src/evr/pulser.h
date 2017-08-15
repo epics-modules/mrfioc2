@@ -39,7 +39,7 @@ struct MapType {
 class epicsShareClass Pulser : public mrf::ObjectInst<Pulser>, public IOStatus
 {
 public:
-  Pulser(const std::string& n) : mrf::ObjectInst<Pulser>(n) {}
+  explicit Pulser(const std::string& n) : mrf::ObjectInst<Pulser>(n) {}
   virtual ~Pulser()=0;
 
   /**\defgroup ena Enable/disable pulser output.

@@ -169,7 +169,7 @@ struct propArgs {
 static
 bool showProp(propertyBase* prop, void* raw)
 {
-    propArgs *args=(propArgs*)raw;
+    propArgs *args=static_cast<propArgs*>(raw);
     args->strm <<args->indent <<prop->type().name() << " " <<prop->name() << " = ";
     try {
         prop->show(args->strm);

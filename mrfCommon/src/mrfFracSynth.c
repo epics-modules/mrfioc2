@@ -575,11 +575,9 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
     epicsFloat64         OldCorrectionErr;    /* Error value for previous correction factor       */
     epicsInt32           p;                   /* Integer part of fractional frequency             */
     epicsInt32           p1;                  /* Numerator of fractional frequency ratio          */
-    epicsFloat64         PostDivide;          /* Current post divider value                       */
     epicsInt32           Qp;                  /* Number of "P" pulses in the frac. div. circuit   */
     epicsInt32           Qpm1;                /* Number of "P-1" pulses in the frac. div. circuit */
     epicsFloat64         TestFreq;            /* Fractional frequency to try in correction loop   */
-    epicsFloat64         VcoFreq;             /* Desired VCO frequency                            */
 
    /*---------------------
     * Initialize the "Best Fractional Frequency So Far" parameters
@@ -602,12 +600,12 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
     */
     Best.Error = MAX_ERROR;
     for (i=0;  i < NUM_POST_DIVIDES;  i++) {
-        PostDivide = PostDivideList[i].Divisor;
+        epicsFloat64 PostDivide = PostDivideList[i].Divisor;
 
        /*---------------------
         * Compute the VCO frequency and make sure it is within the allowable range.
         */
-        VcoFreq = DesiredFreq * PostDivide;
+        epicsFloat64 VcoFreq = DesiredFreq * PostDivide;
 
         if (VcoFreq >= MAX_VCO_FREQ)
             break;
@@ -915,7 +913,7 @@ epicsShareExtern epicsFloat64 FracSynthAnalyze (
     * Check for fractional frequency denominator being zero.
     */
     if ((Qp + Qpm1) == 0) {
-        DEBUGPRINT (DP_FATAL, PrintFlag, (" *Error: Q(p) + Q(p-1) [%d + %d] is 0.\n", Qp, Qpm1));
+        DEBUGPRINT (DP_FATAL, PrintFlag, (" *Error: Q(p) + Q(p-1) [%u + %u] is 0.\n", Qp, Qpm1));
         Error = 1;
     }/*end if fractional denominator is zero*/
 
@@ -942,7 +940,7 @@ epicsShareExtern epicsFloat64 FracSynthAnalyze (
     */
     Error = 0;
     DEBUGPRINT (DP_DEBUG, PrintFlag,
-               ("  P = %d,  Q(p) = %d,  Q(p-1) = %d,  Post Divider = %d\n",
+               ("  P = %d,  Q(p) = %u,  Q(p-1) = %u,  Post Divider = %d\n",
                (int)PVal, Qp, Qpm1, (int)PostDivideVal));
     DEBUGPRINT (DP_DEBUG, PrintFlag,
                ("  Correction Term (N/M) = %d/%d = %f,  Reference Frequency = %3.1f MHz.\n",
@@ -988,7 +986,7 @@ epicsShareExtern epicsFloat64 FracSynthAnalyze (
         if ((Qp + Qpm1) > (MAX_FRAC_DIVISOR + 1))
             Error = 1;
         DEBUGPRINT (DP_ERROR, PrintFlag,
-                   (" *Error: Q(p) + Q(p-1) [%d + %d] is %d.\n", Qp, Qpm1, (Qp+Qpm1)));
+                   (" *Error: Q(p) + Q(p-1) [%u + %u] is %u.\n", Qp, Qpm1, (Qp+Qpm1)));
         DEBUGPRINT (DP_ERROR, PrintFlag,
                    ("         Sum should be less than or equal to %d.\n", MAX_FRAC_DIVISOR));
     }/*end if fractional divisor is too large*/

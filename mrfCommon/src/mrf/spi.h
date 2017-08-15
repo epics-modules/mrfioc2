@@ -61,7 +61,7 @@ public:
     class Selector {
         SPIDevice& dev;
     public:
-        Selector(SPIDevice& dev) :dev(dev)
+        explicit Selector(SPIDevice& dev) :dev(dev)
         { dev.spi->select(dev.id); }
         ~Selector()
         { dev.spi->select(0u); }

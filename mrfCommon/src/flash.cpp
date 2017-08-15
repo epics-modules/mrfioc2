@@ -332,7 +332,7 @@ void CFIFlash::check()
 
 unsigned CFIFlash::status()
 {
-    epicsUInt8 cmd[2] = {0x05, 0}, response[2];
+    epicsUInt8 cmd[2] = {0x05, 0}, response[2] = {0,0};
     SPIInterface::Operation op = {2, cmd, response};
 
     SPIDevice::Selector S(dev);

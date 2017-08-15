@@ -119,7 +119,7 @@ static inline
 long del_lo(dbCommon* praw)
 {
     try {
-        mrf::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+        mrf::auto_ptr<map_priv> priv(static_cast<map_priv*>(praw->dpvt));
 
         if (!priv.get())
             return -2;

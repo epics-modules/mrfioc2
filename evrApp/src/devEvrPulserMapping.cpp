@@ -87,7 +87,7 @@ try {
     if(!priv->pulser)
         throw std::runtime_error("Failed to lookup device");
 
-    if(priv->last_code>0 || priv->last_code<=255)
+    if(priv->last_code>0 && priv->last_code<=255)
         priv->pulser->sourceSetMap(priv->last_code,priv->func);
 
     prec->dpvt=(void*)priv.release();
@@ -110,7 +110,7 @@ long del_lo(dbCommon* praw)
     if(!praw->dpvt)
         return 0;
     try {
-        mrf::auto_ptr<map_priv> priv((map_priv*)praw->dpvt);
+        mrf::auto_ptr<map_priv> priv(static_cast<map_priv*>(praw->dpvt));
 
         if(priv->last_code>0 && priv->last_code<=255)
             priv->pulser->sourceSetMap(priv->last_code,MapType::None);

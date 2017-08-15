@@ -277,7 +277,7 @@ evgMrm::resetMxc(bool reset) {
 
 void
 evgMrm::isr_pci(void* arg) {
-    evgMrm *evg = (evgMrm*)(arg);
+    evgMrm *evg = static_cast<evgMrm*>(arg);
 
     // Call to the generic implementation
     evg->isr(evg, true);
@@ -296,7 +296,7 @@ evgMrm::isr_pci(void* arg) {
 
 void
 evgMrm::isr_vme(void* arg) {
-    evgMrm *evg = (evgMrm*)(arg);
+    evgMrm *evg = static_cast<evgMrm*>(arg);
 
     // Call to the generic implementation
     evg->isr(evg, false);
@@ -365,7 +365,7 @@ void
 evgMrm::process_inp_cb(CALLBACK *pCallback) {
     void* pVoid;
     callbackGetUser(pVoid, pCallback);
-    evgMrm* evg = (evgMrm*)pVoid;
+    evgMrm* evg = static_cast<evgMrm*>(pVoid);
 
     {
         interruptLock ig;

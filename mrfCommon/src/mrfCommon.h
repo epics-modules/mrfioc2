@@ -290,7 +290,7 @@ class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
 {
     C& owner;
 public:
-    epicsThreadRunableMethod(C& o)
+    explicit epicsThreadRunableMethod(C& o)
         :owner(o)
     {}
     virtual ~epicsThreadRunableMethod(){}

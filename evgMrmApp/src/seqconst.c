@@ -85,7 +85,7 @@ long seq_repeat(aSubRecord *prec)
             epicsPrintf("%s: Invalid type for FT%c\n", prec->name, 'A'+i);
             goto fail;
         }
-        if((&prec->nea)[i]<=0) {
+        if((&prec->nea)[i]==0) {
             epicsPrintf("%s.NE%c empty\n", prec->name, 'A'+i);
             goto fail;
         }
@@ -96,7 +96,7 @@ long seq_repeat(aSubRecord *prec)
             epicsPrintf("%s: Invalid type for FTV%c\n", prec->name, 'A'+i);
             goto fail;
         }
-        if((&prec->nova)[i]<=0) {
+        if((&prec->nova)[i]==0) {
             epicsPrintf("%s.NOV%c empty\n", prec->name, 'A'+i);
             goto fail;
         }
@@ -273,7 +273,7 @@ long seq_merge(aSubRecord *prec)
                        prec->name,
                        'A'+(2*found_element), in_pos[found_element]-1,
                        'A'+(2*N), in_pos[N]);
-                printf(" Found element: %u\n", found_element);
+                printf(" Found element: %d\n", found_element);
                 printf(" i=%u, N=%u, ninputs=%u\n", i, N, ninputs);
                 printf(" Out %u C=%u T=%f  [", i, out_C[i], out_T[i]);
                 for(N=0; N<ninputs; N++)

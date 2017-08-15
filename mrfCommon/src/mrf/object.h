@@ -108,7 +108,7 @@ namespace mrf {
 class epicsShareClass opNotImplemented : public std::runtime_error
 {
 public:
-    opNotImplemented(const std::string& m) : std::runtime_error(m) {}
+    explicit opNotImplemented(const std::string& m) : std::runtime_error(m) {}
 };
 
 /** @brief An un-typed property.
@@ -463,7 +463,7 @@ class ObjectInst : public Base
 public:
     static int initObject();
 protected:
-    ObjectInst(const std::string& n) : Base(n) {}
+    explicit ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
     ObjectInst(const std::string& n, A a) : Base(n, a) {}
     virtual ~ObjectInst(){}

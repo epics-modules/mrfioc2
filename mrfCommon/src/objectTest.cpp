@@ -18,7 +18,7 @@ public:
     std::vector<double> darr;
     unsigned count;
 
-    mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0), count(0)
+    explicit mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0), count(0)
     {}
 
     /* no locking needed */
@@ -51,7 +51,7 @@ class other : public ObjectInst<other, mine>
 {
     typedef ObjectInst<other, mine> base_t;
 public:
-    other(const std::string& n) : base_t(n) {}
+    explicit other(const std::string& n) : base_t(n) {}
     virtual ~other() {}
 
     int getX() const { return 42;}

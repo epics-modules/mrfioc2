@@ -188,7 +188,7 @@ try {
     {
         char *end = prec->val;
         unsigned evt = strtoul(prec->val, &end, 0);
-        if ( evt==ULONG_MAX || *end!='\0' || evt<0 ) {
+        if ( evt==ULONG_MAX || *end!='\0' ) {
             (void)recGblSetSevr(prec, WRITE_ALARM, INVALID_ALARM);
         } else {
             post_event(evt);

@@ -51,7 +51,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
     switch(opt->optType) {
     case linkOptionInt32:
         if (opt->size<sizeof(epicsUInt32)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for Int32 (%lu)\n",
+              fprintf(stderr, "Provide storage (%u bytes) is too small for Int32 (%lu)\n",
                               opt->size, (unsigned long)sizeof(epicsUInt32));
               return -1;
         }
@@ -70,7 +70,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
         break;
     case linkOptionDouble:
         if (opt->size<sizeof(double)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for double (%lu)\n",
+              fprintf(stderr, "Provide storage (%u bytes) is too small for double (%lu)\n",
                               opt->size, (unsigned long)sizeof(double));
               return -1;
         }
@@ -86,7 +86,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
         break;
     case linkOptionEnum:
         if (opt->size<sizeof(int)) {
-              fprintf(stderr, "Provide storage (%d bytes) is too small for enum (%lu)\n",
+              fprintf(stderr, "Provide storage (%u bytes) is too small for enum (%lu)\n",
                               opt->size, (unsigned long)sizeof(int));
               return -1;
         }
@@ -111,7 +111,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
               /* Catch if someone has given us a char* instead of a char[]
                * Also means that char buffers must be >4.
                */
-              fprintf(stderr, "Provide storage (%d bytes) is too small for string (>= %lu)\n",
+              fprintf(stderr, "Provide storage (%u bytes) is too small for string (>= %lu)\n",
                               opt->size, (unsigned long)sizeof(char*));
               return -1;
         }

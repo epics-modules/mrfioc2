@@ -25,7 +25,7 @@ enum TrigMode {
 class epicsShareClass Input : public mrf::ObjectInst<Input>, public IOStatus
 {
 public:
-  Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}
+  explicit Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}
   virtual ~Input()=0;
 
   //! Set mask of dbus bits are driven by this input

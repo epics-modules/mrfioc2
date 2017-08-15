@@ -14,7 +14,7 @@
 class epicsShareClass DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>
 {
 public:
-	DelayModuleEvr(const std::string& n) : mrf::ObjectInst<DelayModuleEvr>(n) {}
+    explicit DelayModuleEvr(const std::string& n) : mrf::ObjectInst<DelayModuleEvr>(n) {}
 	virtual ~DelayModuleEvr() = 0;
 
 	virtual void setDelay0(double val)=0;

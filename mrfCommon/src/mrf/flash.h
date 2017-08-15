@@ -18,7 +18,7 @@ struct SPIDevice;
 class CFIFlash
 {
 public:
-    CFIFlash(const SPIDevice& dev);
+    explicit CFIFlash(const SPIDevice& dev);
     ~CFIFlash();
 
     struct ID {
@@ -69,7 +69,7 @@ private:
     struct WriteEnabler
     {
         CFIFlash& dev;
-        WriteEnabler(CFIFlash& dev) : dev(dev)
+        explicit WriteEnabler(CFIFlash& dev) : dev(dev)
         {}
         void enable()
         { dev.writeEnable(true); }

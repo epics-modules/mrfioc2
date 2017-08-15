@@ -15,7 +15,7 @@ class TimeStampSource
     struct Impl;
     Impl * const impl;
 public:
-    TimeStampSource(double period);
+    explicit TimeStampSource(double period);
     virtual ~TimeStampSource();
 
     //! Call to re-initialize timestamp counter from system time
@@ -40,6 +40,10 @@ protected:
     virtual void setEvtCode(epicsUInt32 evtCode) =0;
 
     virtual void postSoftSecondsSrc() {tickSecond();}
+
+private:
+    TimeStampSource(const TimeStampSource&);
+    TimeStampSource& operator=(const TimeStampSource&);
 };
 
 #endif // MRMTIMESRC_H

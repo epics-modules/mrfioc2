@@ -130,7 +130,7 @@ static long del_record_waveform(dbCommon *praw)
     long ret=0;
     if (!praw->dpvt) return 0;
     try {
-        mrf::auto_ptr<s_priv> paddr((s_priv*)praw->dpvt);
+        mrf::auto_ptr<s_priv> paddr(static_cast<s_priv*>(praw->dpvt));
         praw->dpvt = 0;
 
         paddr->priv->dataRxDeleteReceive(datarx, praw);
@@ -150,7 +150,7 @@ void datarx(void *arg, epicsStatus ok,
             epicsUInt32 len, const epicsUInt8* buf)
 {
     waveformRecord* prec=(waveformRecord*)arg;
-    s_priv *paddr=(s_priv*)prec->dpvt;
+    s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
     
     //check protocol id
     if (paddr->proto != 0xff00 && paddr->proto != buf[0]) return;

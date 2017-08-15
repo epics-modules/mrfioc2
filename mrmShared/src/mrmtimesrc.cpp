@@ -43,6 +43,7 @@ struct TimeStampSource::Impl
         ,okCnt(0u)
         ,lastError(-1.0)
         ,period(period*1.1) // our timeout period is 10% longer than the expected reset period
+        ,next(0u)
     {}
     ~Impl()
     {
@@ -158,7 +159,7 @@ void TimeStampSource::resyncSecond()
 
 void TimeStampSource::tickSecond()
 {
-    epicsUInt32 tosend;
+    epicsUInt32 tosend=0;
     bool ok;
 
     epicsTimeStamp ts;

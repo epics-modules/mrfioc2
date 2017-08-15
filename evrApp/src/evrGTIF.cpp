@@ -69,7 +69,6 @@ bool visitTime(mrf::Object* obj, void* raw)
 }
 
 extern "C"
-epicsShareFunc
 int EVREventTime(epicsTimeStamp *pDest, int event)
 {
 try {
@@ -93,7 +92,6 @@ try {
 }
 
 extern "C"
-epicsShareFunc
 int EVRCurrentTime(epicsTimeStamp *pDest)
 {
     return EVREventTime(pDest, epicsTimeEventCurrentTime);

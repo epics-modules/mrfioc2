@@ -54,7 +54,7 @@ std::string strip(const std::string& inp)
 struct DBENT {
     DBENTRY entry;
     template<typename REC>
-    DBENT(REC *prec)
+    explicit DBENT(REC *prec)
     {
         dbInitEntry(pdbbase, &entry);
         if(dbFindRecord(&entry, prec->name))
