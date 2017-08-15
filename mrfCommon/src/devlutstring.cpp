@@ -172,7 +172,8 @@ common_dset devLUTSI = {
     0,
     (DEVSUPFUN)&init_record_lut,
     0,
-    (DEVSUPFUN)&read_lut
+    (DEVSUPFUN)&read_lut,
+    0
 };
 
 } // namespace

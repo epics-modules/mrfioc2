@@ -185,7 +185,8 @@ common_dset devLOEVRMap = {
     dset_cast(&init_dset<&dxtLOEVRMap>),
     (DEVSUPFUN) init_record_empty,
     NULL,
-    (DEVSUPFUN) write_lo
+    (DEVSUPFUN) write_lo,
+    NULL
 };
 epicsExportAddress(dset,devLOEVRMap);
 

@@ -108,7 +108,7 @@ typedef struct linkOptionDef {
 #define linkEnum(Struct, Member, Name, Req, Over, Enums) \
 {Name, linkOptionEnum, Req, Over, OFFSET(Struct, Member), sizeof( ((Struct*)0)->Member ), Enums}
 
-#define linkOptionEnd {0}
+#define linkOptionEnd {0,linkOptionInvalid,0,0,0,0,NULL}
 
 /* Extra output when parsing and converting */
 #define LINKOPTIONDEBUG 1

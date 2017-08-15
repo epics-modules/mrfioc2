@@ -173,7 +173,8 @@ common_dset devLOEVRPulserMap = {
     dset_cast(&init_dset<&dxtLOEVRPulserMap>),
     (DEVSUPFUN) &init_record_empty,
     NULL,
-    (DEVSUPFUN) &write_lo
+    (DEVSUPFUN) &write_lo,
+    NULL
 };
 epicsExportAddress(dset,devLOEVRPulserMap);
 

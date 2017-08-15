@@ -118,6 +118,7 @@ common_dset devBoEvgTrigEvtMxc = {
     (DEVSUPFUN)init_bo_trigSrc,
     NULL,
     (DEVSUPFUN)write_bo_trigSrc_mxc,
+    NULL,
 };
 epicsExportAddress(dset, devBoEvgTrigEvtMxc);
 
@@ -128,6 +129,7 @@ common_dset devBoEvgTrigEvtAc = {
     (DEVSUPFUN)init_bo_trigSrc,
     NULL,
     (DEVSUPFUN)write_bo_trigSrc_ac,
+    NULL,
 };
 epicsExportAddress(dset, devBoEvgTrigEvtAc);
 
@@ -138,6 +140,7 @@ common_dset devBoEvgTrigEvtInp = {
     (DEVSUPFUN)init_bo_trigSrc,
     NULL,
     (DEVSUPFUN)write_bo_trigSrc_inp,
+    NULL,
 };
 epicsExportAddress(dset, devBoEvgTrigEvtInp);
 

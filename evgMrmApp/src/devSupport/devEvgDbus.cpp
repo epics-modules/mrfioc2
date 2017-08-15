@@ -73,6 +73,7 @@ common_dset devBoEvgDbusSrcInp = {
     (DEVSUPFUN)init_bo_src_inp,
     NULL,
     (DEVSUPFUN)write_bo_src_inp,
+    NULL,
 };
 epicsExportAddress(dset, devBoEvgDbusSrcInp);
 

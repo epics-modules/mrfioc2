@@ -116,5 +116,5 @@ mrmDataBufTx::dataSend(epicsUInt32 len,
     // Reading flushes output queue of VME bridge
     // Actual sending is so fast that we can use busy wait here
     // Measurements showed that we loop up to 17 times
-    while(!(nat_ioread32(dataCtrl)&DataTxCtrl_done));
+    while(!(nat_ioread32(dataCtrl)&DataTxCtrl_done)) {};
 }

@@ -133,7 +133,8 @@ common_dset devSIEVR = {
     dset_cast(&init_dset<&dxtSIEVR>),
     (DEVSUPFUN) init_record_empty,
     NULL,
-    (DEVSUPFUN) read_si
+    (DEVSUPFUN) read_si,
+    NULL
 };
 epicsExportAddress(dset,devSIEVR);
 
