@@ -14,6 +14,7 @@
 #include <epicsMutex.h>
 #include <errlog.h>
 
+#include <epicsTypes.h>
 #include <mrfCommonIO.h>
 
 #include "mrmSeq.h"

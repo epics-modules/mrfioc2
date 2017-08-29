@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 
+#include <epicsTypes.h>
 #include <mrfCommonIO.h>
 
 #include "mrmevgseq.h"

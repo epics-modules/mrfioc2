@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <epicsInterrupt.h>
 
+#include <epicsTypes.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 

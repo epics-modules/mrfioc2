@@ -19,6 +19,7 @@
 	#pragma comment (lib, "Ws2_32.lib")
 #endif
 #include <callback.h>
+#include <epicsTypes.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include <epicsInterrupt.h>
