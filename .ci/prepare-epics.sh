@@ -15,13 +15,14 @@ die() {
 [ "$BASE" ] || exit 0
 
 CDIR="$HOME/.cache/base-$BASE-$STATIC"
+EPICS_BASE="$CDIR/base"
 
 if [ ! -e "$CDIR/built" ]
 then
   install -d "$CDIR"
   ( cd "$CDIR" && git clone --depth 50 --branch $BASE https://github.com/epics-base/epics-base.git base )
 
-  EPICS_BASE="$CDIR/base"
+  EPICS_HOST_ARCH=`sh $EPICS_BASE/startup/EpicsHostArch`
 
   case "$STATIC" in
   static)
@@ -32,8 +33,6 @@ EOF
     ;;
   *) ;;
   esac
-
-  EPICS_HOST_ARCH=`sh $EPICS_BASE/startup/EpicsHostArch`
 
   case "$CMPLR" in
   clang)
@@ -58,7 +57,8 @@ EOF
 
   make -C "$EPICS_BASE" -j2
 
-  if [ "$BASE" = "3.14" ]; then
+  case "$BASE" in
+  *3.14*)
     ( cd "$CDIR" && wget https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz && tar -xzf extensionsTop_*.tar.gz)
 
     ( cd "$CDIR" && wget https://www.aps.anl.gov/epics/download/extensions/msi1-7.tar.gz && tar -xzf msi1-7.tar.gz && mv msi1-7 extensions/src/msi)
@@ -73,7 +73,9 @@ EOF
     cp "$CDIR/extensions/bin/$EPICS_HOST_ARCH/msi" "$EPICS_BASE/bin/$EPICS_HOST_ARCH/"
 
     echo 'MSI:=$(EPICS_BASE)/bin/$(EPICS_HOST_ARCH)/msi' >> "$EPICS_BASE/configure/CONFIG_SITE"
-  fi
+    ;;
+  *) ;;
+  esac
 
   touch "$CDIR/built"
 fi

@@ -9,12 +9,13 @@ env:
  - BASE=3.15 STATIC=shared
  - BASE=3.14 STATIC=shared
  - BASE=3.14 STATIC=static
+ - BASE=R3.14.12.2 STATIC=shared TEST=NO
  - KSER=3.x KVER=3.2.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
  - KSER=3.x KVER=3.16.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
  - KSER=4.x KVER=4.9.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
 install:
- - ./build-epics.sh
- - ./build-linux.sh
+ - ./.ci/prepare-epics.sh
+ - ./.ci/prepare-linux.sh
 script:
- - make -j2 $EXTRA
- - ./test-epics.sh
+ - ./.ci/build-epics.sh
+ - ./.ci/build-linux.sh
