@@ -18,8 +18,8 @@ evrdump_LIBS += epicspci $(EPICS_BASE_IOC_LIBS)
 
 LIBRARY_IOC += evrMrm
 
-evrMrm_SRCS += drvemIocsh.c
-evrMrm_SRCS += drvemSetup.c
+evrMrm_SRCS += drvemIocsh.cpp
+evrMrm_SRCS += drvemSetup.cpp
 evrMrm_SRCS += drvem.cpp
 evrMrm_SRCS += drvemOutput.cpp
 evrMrm_SRCS += drvemInput.cpp
