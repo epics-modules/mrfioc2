@@ -14,6 +14,7 @@
 
 #include <epicsMath.h>
 
+#include <epicsTypes.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
