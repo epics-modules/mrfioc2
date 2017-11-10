@@ -94,7 +94,7 @@ record(mbbi, "$(P)TrigSrc-RB") {
 #(only if TsInpMode = EGU).
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
-    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+    field( INP,  "$(EVTCLKP)Frequency-RB CP")
     field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
 }
 
