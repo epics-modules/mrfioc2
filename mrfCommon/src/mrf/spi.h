@@ -12,11 +12,12 @@
 
 #include <epicsTypes.h>
 #include <epicsMutex.h>
+#include <shareLib.h>
 
 namespace mrf {
 
 //! Interface for SPI Master
-struct SPIInterface
+struct epicsShareClass SPIInterface
 {
     SPIInterface();
     virtual ~SPIInterface();
@@ -47,7 +48,7 @@ private:
     double optimo;
 };
 
-class SPIDevice
+class epicsShareClass SPIDevice
 {
     SPIInterface * spi;
     unsigned id;

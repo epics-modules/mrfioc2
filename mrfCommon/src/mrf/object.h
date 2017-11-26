@@ -456,7 +456,7 @@ public:
  @endcode
  */
 template<class C, typename Base = Object>
-class ObjectInst : public Base
+class epicsShareClass ObjectInst : public Base
 {
     typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
     static m_props_t *m_props;

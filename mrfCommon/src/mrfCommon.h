@@ -87,6 +87,8 @@ using std::auto_ptr;
 
 #include  <limits.h>            /* Standard C numeric limits                                      */
 
+#include <shareLib.h>
+
 /**************************************************************************************************/
 /*  MRF Event System Constants                                                                    */
 /**************************************************************************************************/
@@ -254,7 +256,7 @@ struct SB {
  *   approacing release 12000207, we have prereleases 12FF0206, 12FE0206,
  *   12FD0206 etc. in this order.
  */
-class MRFVersion
+class epicsShareClass MRFVersion
 {
     const epicsUInt16 m_major;
     const epicsInt8 m_minor;

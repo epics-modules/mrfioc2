@@ -8,9 +8,11 @@
 
 #include <string>
 
+#include <shareLib.h>
+
 /* Handles sending shirt 0/1 events after the start of each second.
  */
-class TimeStampSource
+class epicsShareClass TimeStampSource
 {
     struct Impl;
     Impl * const impl;

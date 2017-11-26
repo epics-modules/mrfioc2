@@ -11,6 +11,7 @@
 #include <string>
 
 #include <dbScan.h>
+#include <shareLib.h>
 
 #include <mrf/object.h>
 
@@ -22,7 +23,7 @@
 struct SeqHW;
 struct SoftSequence;
 
-class SeqManager : public mrf::ObjectInst<SeqManager>
+class epicsShareClass SeqManager : public mrf::ObjectInst<SeqManager>
 {
     typedef mrf::ObjectInst<SeqManager> base_t;
 public:
@@ -70,6 +71,6 @@ private:
     friend struct SoftSequence;
 };
 
-extern int SeqManagerDebug;
+epicsShareExtern int SeqManagerDebug;
 
 #endif // MRMSEQ_H

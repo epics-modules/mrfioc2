@@ -9,13 +9,14 @@
 #include <vector>
 
 #include <epicsTypes.h>
+#include <shareLib.h>
 
 namespace mrf {
 
 struct SPIDevice;
 
 //! Handling for Common Flash Interfafce compliant chips
-class CFIFlash
+class epicsShareClass CFIFlash
 {
 public:
     explicit CFIFlash(const SPIDevice& dev);
