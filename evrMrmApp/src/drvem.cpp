@@ -60,13 +60,13 @@
 
 int evrMrmSPIDebug;
 int evrMrmTimeDebug;
-int evrDebug;
+int evrMrmSeqRxDebug;
 //! value in nanoseconds above which a timestamp is considered invalid.
 //! below is truncated.  May be necessary when simulating timestamp
 //! source in software
 int evrMrmTimeNSOverflowThreshold;
 extern "C" {
- epicsExportAddress(int, evrDebug);
+ epicsExportAddress(int, evrMrmSeqRxDebug);
  epicsExportAddress(int, evrMrmSPIDebug);
  epicsExportAddress(int, evrMrmTimeDebug);
  epicsExportAddress(int, evrMrmTimeNSOverflowThreshold);

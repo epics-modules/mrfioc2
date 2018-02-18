@@ -68,7 +68,7 @@ mrmBufRx::dataRxEnable(bool v)
  * Further, since the DataBufCtrl and DataRx(i) registers are not used anywhere else
  * we can safely avoid locking while accessing them.
  */
-extern int evrDebug;
+extern int evrMrmSeqRxDebug;
 
 void
 mrmBufRx::drainbuf(CALLBACK* cb)
@@ -106,15 +106,14 @@ try {
                 rsize=bsize;
             }
             
-            if(evrDebug>2)
+            if(evrMrmSeqRxDebug>=1)
             {
-                printf("buffer %s: %02x %02x %02x %02x = %08x\n",
-                    self.name().c_str(),
-                    *(self.base+U32_DataRx(0)),
-                    *(self.base+U32_DataRx(1)),
-                    *(self.base+U32_DataRx(2)),
-                    *(self.base+U32_DataRx(3)),
-                    *(epicsUInt32*)(self.base+U32_DataRx(0)));
+                errlogPrintf("buffer %s: size=%u %08x %08x %08x %08x\n",
+                    self.name().c_str(), rsize,
+                    (unsigned)BE_READ32(self.base, DataRx(0)),
+                    (unsigned)BE_READ32(self.base, DataRx(4)),
+                    (unsigned)BE_READ32(self.base, DataRx(8)),
+                    (unsigned)BE_READ32(self.base, DataRx(12)));
             }
 
             /* keep buffer in big endian mode (as sent by EVG) */

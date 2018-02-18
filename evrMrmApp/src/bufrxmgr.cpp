@@ -46,6 +46,9 @@ do { \
   (ptr)->timer=NULL;              \
 } while(0)
 
+extern int evrMrmSeqRxDebug;
+
+static
 void defaulterr(void *, epicsStatus err,
                 epicsUInt32 , const epicsUInt8* )
 {
@@ -130,6 +133,9 @@ bufRxManager::receive(epicsUInt8* raw,unsigned int usedlen)
             SCOPED_LOCK(guard);
             ellAdd(&freebufs, &buf->node);
         }
+        if(evrMrmSeqRxDebug>=2) {
+            errlogPrintf("buffer ignored\n");
+        }
         return;
     }
 
@@ -161,6 +167,9 @@ bufRxManager::received(CALLBACK* cb)
 
         for(ELLNODE *cur=ellFirst(&self.dispatch); cur; cur=ellNext(cur)) {
             listener *action=CONTAINER(cur, listener, node);
+            if(evrMrmSeqRxDebug>=3) {
+                errlogPrintf("buffer listener %p\n", action);
+            }
             (action->fn)(action->fnarg, 0, buf->used, buf->data);
         }
 
