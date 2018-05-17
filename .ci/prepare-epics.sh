@@ -20,7 +20,7 @@ EPICS_BASE="$CDIR/base"
 if [ ! -e "$CDIR/built" ]
 then
   install -d "$CDIR"
-  ( cd "$CDIR" && git clone --depth 50 --branch $BASE https://github.com/epics-base/epics-base.git base )
+  ( cd "$CDIR" && git clone --depth 50 --recursive --branch $BASE https://github.com/epics-base/epics-base.git base )
 
   EPICS_HOST_ARCH=`sh $EPICS_BASE/startup/EpicsHostArch`
 
