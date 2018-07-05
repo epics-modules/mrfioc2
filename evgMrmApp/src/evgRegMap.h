@@ -101,7 +101,6 @@
 //
 #define  U32_FPGAVersion        0x002C  // FPGA Firmware Version
 
-#define FPGAVersion_ZERO_MASK   0x00FFFF00
 #define FPGAVersion_TYPE_MASK   0xF0000000
 #define FPGAVersion_FORM_MASK   0x0F000000
 #define FPGAVersion_FORM_SHIFT  24
