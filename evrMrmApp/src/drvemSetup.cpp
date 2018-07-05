@@ -457,7 +457,7 @@ try {
         return;
     }
 
-    printf("Device %s  %u:%u.%u slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
+    printf("Device %s  %x:%x.%x slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
     printf("Using IRQ %u\n",cur->irq);
 
     bus.pci.dev = cur;
