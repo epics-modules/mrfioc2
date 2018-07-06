@@ -17,6 +17,7 @@
 #define MRF_VME_EVG_BID      0x45470000 /* VME Event Generator */
 #define MRF_VME_EVR_BID      0x45520000 /* VME Event Receiver */
 #define MRF_VME_EVR_RF_BID   0x45524600 /* VME Event Receiver with RF Recovery */
+#define MRF_VME_EVM_BID      0x4547012c /* VME-EVM-300 */
 
 #define MRF_SERIES_200       0x000000C8 /* Series 200 Code */
 #define MRF_SERIES_220       0x000000DC /* Series 220 Code */

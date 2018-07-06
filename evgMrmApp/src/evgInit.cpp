@@ -51,8 +51,13 @@ static epicsUInt8 vme_level_mask = 0;
 
 static const
 struct VMECSRID vmeEvgIDs[] = {
+/* VME-EVG-230 */
 {MRF_VME_IEEE_OUI,
     MRF_VME_EVG_BID|MRF_SERIES_230,
+    VMECSRANY},
+/* VME-EVM-300 */
+{MRF_VME_IEEE_OUI,
+    MRF_VME_EVM_BID,
     VMECSRANY},
 VMECSR_END
 };
