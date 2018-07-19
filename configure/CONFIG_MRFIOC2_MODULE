@@ -1,0 +1,2 @@
+MRFIOC2_MRM_LIBS = evgmrm evrMrm evr mrmShared mrfCommon
+MRFIOC2_MRM_DBDS = evgInit.dbd drvemSupport.dbd

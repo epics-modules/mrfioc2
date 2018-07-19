@@ -1,4 +1,4 @@
 Change version number
   documentation/Doxyfile
   documentation/mainpage.h
-  mrfCommon/src/Makefile
+  configure/CONFIG_MRFIOC2_VERSION
