@@ -6,6 +6,7 @@ include $(TOP)/configure/CONFIG
 #=============================
 
 USR_INCLUDES += -I$(TOP)/mrmShared/src
+USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
 LIBRARY_IOC += evgmrm
 

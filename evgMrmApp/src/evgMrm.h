@@ -88,6 +88,7 @@ public:
     static void isr(evgMrm *evg, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
+    static void isr_poll(void*);
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
     static void process_inp_cb(CALLBACK*);
 
@@ -104,9 +105,6 @@ public:
 
     CALLBACK                      irqExtInp_cb;
 
-#ifdef __linux__
-    void* isrLinuxPvt;
-#endif
     unsigned char irqExtInp_queued;
 
     IOSCANPVT                     ioScanTimestamp;

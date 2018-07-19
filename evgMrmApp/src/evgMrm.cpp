@@ -303,6 +303,14 @@ evgMrm::isr_vme(void* arg) {
 }
 
 void
+evgMrm::isr_poll(void* arg) {
+    evgMrm *evg = static_cast<evgMrm*>(arg);
+
+    // Call to the generic implementation
+    evg->isr(evg, true);
+}
+
+void
 evgMrm::isr(evgMrm *evg, bool pci) {
 try{
     epicsUInt32 flags = READ32(evg->m_pReg, IrqFlag);

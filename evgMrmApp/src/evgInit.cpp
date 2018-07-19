@@ -23,6 +23,7 @@
 
 #include "mrf/object.h"
 #include "mrf/databuf.h"
+#include "mrf/pollirq.h"
 #include "mrmpci.h"
 
 #include <devcsr.h>
@@ -428,6 +429,9 @@ mrmEvgSetupPCI (
 
         evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
 
+        if(cur->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
+            // do nothing, we will poll
+        } else {
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // Enable active high interrupt1 through the PLX to the PCI bus.
@@ -462,12 +466,15 @@ mrmEvgSetupPCI (
             return -1;
         }
 #endif
+        }
 
-#ifdef __linux__
-        evg->isrLinuxPvt = (void*) cur;
-#endif
         int ret;
         /*Connect Interrupt handler to isr thread*/
+        if (cur->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
+            printf("Starting IRQ Poller\n");
+            new IRQPoller(&evgMrm::isr_poll, (void*) evg, 0.1);
+
+        } else
         if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
             char buf[80];
             errSymLookup(ret, buf, sizeof(buf));
