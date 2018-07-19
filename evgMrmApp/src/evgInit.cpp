@@ -13,7 +13,7 @@
 
 #include <epicsExit.h>
 #include <epicsThread.h>
-#include <epicsStdio.h>
+#include <epicsStdio.h> // redirects stdout/err
 #include <epicsString.h>
 
 #include <iocsh.h>
@@ -165,7 +165,7 @@ mrmEvgSetupVME (
 
     try {
         if(mrf::Object::getObject(id)){
-            errlogPrintf("ID %s already in use\n",id);
+            printf("ID %s already in use\n",id);
             return -1;
         }
 
@@ -174,7 +174,7 @@ mrmEvgSetupVME (
                 devCSRTestSlot(vmeEvgIDs,slot,&info);
 
         if(!csrCpuAddr) {
-            errlogPrintf("No EVG in slot %d\n",slot);
+            printf("No EVG in slot %d\n",slot);
             return -1;
         }
 
@@ -184,7 +184,7 @@ mrmEvgSetupVME (
         
         epicsUInt32 xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1));
         if(xxx)
-            errlogPrintf("Warning: EVG not in power on state! (%08x)\n", xxx);
+            printf("Warning: EVG not in power on state! (%08x)\n", xxx);
 
         /*Setting the base address of Register Map on VME Board (EVG)*/
         CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
@@ -213,7 +213,7 @@ mrmEvgSetupVME (
                     );
 
         if(status) {
-            errlogPrintf("Failed to map VME address %08x\n", vmeAddress);
+            printf("Failed to map VME address %08x\n", vmeAddress);
             return -1;
         }
 
@@ -251,7 +251,7 @@ mrmEvgSetupVME (
 
             /*Connect Interrupt handler to vector*/
             if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr_vme, evg)){
-                errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n"
+                printf("ERROR:Failed to connect VME IRQ vector %d\n"
                              ,irqVector&0xff);
                 delete evg;
                 return -1;
@@ -261,7 +261,7 @@ mrmEvgSetupVME (
         errlogFlush();
         return 0;
     } catch(std::exception& e) {
-        errlogPrintf("Error: %s\n",e.what());
+        printf("Error: %s\n",e.what());
     }
     errlogFlush();
     return -1;
@@ -278,19 +278,19 @@ bool checkUIOVersion(int vmin, int vmax, int *actual)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
+        printf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
         return true;
     }
     if(fscanf(fd, "%d", &version)!=1) {
         fclose(fd);
-        errlogPrintf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
+        printf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
         return true;
     }
     fclose(fd);
 
     // Interface versions are *not* expected to be backwords or forwards compatible.
     if(version<vmin || version>vmax) {
-        errlogPrintf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
+        printf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
         return true;
     }
     if(actual)
@@ -334,7 +334,7 @@ mrmEvgSetupPCI (
 
     try {
         if (mrf::Object::getObject(id)) {
-            errlogPrintf("ID %s already in use\n", id);
+            printf("ID %s already in use\n", id);
             return -1;
         }
 
@@ -368,11 +368,11 @@ mrmEvgSetupPCI (
         volatile epicsUInt8 *BAR_plx, *BAR_evg;
 
         if (devPCIToLocalAddr(cur, 0, (volatile void**) (void *) &BAR_plx, 0)) {
-            errlogPrintf("Failed to map BARs 0\n");
+            printf("Failed to map BARs 0\n");
             return -1;
         }
         if (!BAR_plx) {
-            errlogPrintf("BAR0 mapped to zero? (%08lx)\n",
+            printf("BAR0 mapped to zero? (%08lx)\n",
                          (unsigned long) BAR_plx);
             return -1;
         }
@@ -380,11 +380,11 @@ mrmEvgSetupPCI (
         switch(cur->id.device) {
         case PCI_DEVICE_ID_PLX_9030: /* cPCI-EVG-220 and cPCI-EVG-230 */
             if (devPCIToLocalAddr(cur, 2, (volatile void**) (void *) &BAR_evg, 0)) {
-                errlogPrintf("Failed to map BARs 2\n");
+                printf("Failed to map BARs 2\n");
                 return -1;
             }
             if (!BAR_evg) {
-                errlogPrintf("BAR2 mapped to zero? (%08lx)\n",
+                printf("BAR2 mapped to zero? (%08lx)\n",
                              (unsigned long) BAR_evg);
                 return -1;
             }
@@ -415,7 +415,7 @@ mrmEvgSetupPCI (
 
             break;
         default:
-            errlogPrintf("Unknown/unsupported PCI device 0x%04x\n", (unsigned)cur->device);
+            printf("Unknown/unsupported PCI device 0x%04x\n", (unsigned)cur->device);
             return -1;
         }
 
@@ -447,10 +447,10 @@ mrmEvgSetupPCI (
         } else if(evg->getFwVersionID()<8) {
             // old firmware and (maybe) old kernel module.
             // this will still work, so just complain
-            errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
+            printf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
                          "         Please consider upgrading to FW version 8.\n");
             if(kifacever<2)
-                errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
+                printf("         Also upgrade the linux kernel module to interface version 2.");
         } else if(evg->getFwVersionID()>=8 && kifacever<2) {
             // New firmware w/ old kernel module, this won't work
             throw std::runtime_error("FW version 8 for this device requires a linux kernel module w/ interface version 2");
@@ -471,7 +471,7 @@ mrmEvgSetupPCI (
         if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
             char buf[80];
             errSymLookup(ret, buf, sizeof(buf));
-            errlogPrintf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
+            printf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
             delete evg;
             return -1;
         } else {
@@ -481,7 +481,7 @@ mrmEvgSetupPCI (
         return 0;
 
     } catch (std::exception& e) {
-        errlogPrintf("Error: %s\n", e.what());
+        printf("Error: %s\n", e.what());
     }
     return -1;
 } //mrmEvgSetupPCI
