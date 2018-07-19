@@ -1167,6 +1167,14 @@ EVRMRM::isr_vme(void *arg) {
     evr->isr(evr, false);
 }
 
+void
+EVRMRM::isr_poll(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(evr, true);
+}
+
 // A place to write to which will keep the read
 // at the end of the ISR from being optimized out.
 // This value should never be used anywhere else.

@@ -211,6 +211,7 @@ public:
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
+    static void isr_poll(void*);
 #if defined(__linux__) || defined(_WIN32)
     const void *isrLinuxPvt;
 #endif
