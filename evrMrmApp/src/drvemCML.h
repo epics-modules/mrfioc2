@@ -13,7 +13,6 @@
 
 #include "evr/cml.h"
 
-#include "evrRegMap.h"
 #include "configurationInfo.h"
 
 class EVRMRM;

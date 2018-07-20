@@ -6,6 +6,7 @@
 
 #include "mrmGpio.h"
 #include "drvem.h"
+#include "evrRegMap.h"
 
 MRMGpio::MRMGpio(EVRMRM &o): owner_(o)
 {
