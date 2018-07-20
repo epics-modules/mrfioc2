@@ -4,6 +4,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 USR_DBFLAGS += -I$(TOP)/mrmShared/Db
+USR_DBFLAGS +=  -I$(TOP)/evrMrmApp/Db
 
 #----------------------------------------------------
 #  Optimization of db files using dbst (DEFAULT: NO)
@@ -28,6 +29,7 @@ DB += evgSoftSeq.db
 DB += cpci-evg-300.db
 DB += vme-evg230.db
 DB += vme-evg230-nsls2.db
+DB += mtca-evm-300.db
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
