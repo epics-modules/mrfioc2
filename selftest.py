@@ -21,7 +21,7 @@ from random import randrange
 
 import unittest, sys, time
 
-from cothread.catools import caget, caput as _caput
+from cothread.catools import caget as _caget, caput as _caput
 
 class MRFTest(unittest.TestCase):
     def evr(self, tmpl):
@@ -119,7 +119,13 @@ class MRFTest(unittest.TestCase):
 def caput(*args, **kws):
     K = {'wait':True}
     K.update(kws)
+    log.info('caput %s %s', args, kws)
     _caput(*args, **K)
+
+def caget(*args, **kws):
+    ret = _caget(*args, **kws)
+    log.info('caget %s %s -> %s', args, kws, ret)
+    return ret
 
 def getargs():
     from argparse import ArgumentParser
