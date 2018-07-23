@@ -102,11 +102,6 @@ file "evrbase.db"
 {P="$(SYS){$(D)U}", OBJ="$(EVG):EVRU", EVNT1Hz="125", FEVT="\$(FEVT=124.916)"}
 }
 
-file "sfp.db"
-{
-{P="$(SYS){$(D)U-SFP}", OBJ="$(EVG):EVRU:SFP"}
-}
-
 file "mrmevrdc.template"
 {
 {P="$(SYS){$(D)U-DC}", OBJ="$(EVG):EVRU"}
@@ -273,11 +268,6 @@ file "evrin.db"
 file "evrbase.db"
 {
 {P="$(SYS){$(D)D}", OBJ="$(EVG):EVRD", EVNT1Hz="125", FEVT="\$(FEVT=124.916)"}
-}
-
-file "sfp.db"
-{
-{P="$(SYS){$(D)D-SFP}", OBJ="$(EVG):EVRD:SFP"}
 }
 
 file "mrmevrdc.template"
