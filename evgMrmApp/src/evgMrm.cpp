@@ -39,6 +39,7 @@
 evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
     mrf::ObjectInst<evgMrm>(id),
     TimeStampSource(1.0),
+    MRMSPI(pReg+U32_SPIDData),
     irqExtInp_queued(0),
     m_buftx(id+":BUFTX",pReg+U32_DataBufferControl, pReg+U8_DataBuffer_base),
     m_pciDevice(pciDevice),
@@ -115,9 +116,15 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
     init_cb(&irqExtInp_cb, priorityHigh, &evgMrm::process_inp_cb, this);
     
     scanIoInit(&ioScanTimestamp);
+
+    if(busConfig.busType==busType_pci)
+        mrf::SPIDevice::registerDev(id+":FLASH", mrf::SPIDevice(this, 1));
 }
 
 evgMrm::~evgMrm() {
+    if(getBusConfiguration()->busType==busType_pci)
+        mrf::SPIDevice::unregisterDev(name()+":FLASH");
+
     for(int i = 0; i < evgNumEvtTrig; i++)
         delete m_trigEvt[i];
 

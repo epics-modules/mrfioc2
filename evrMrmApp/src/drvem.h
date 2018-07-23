@@ -13,7 +13,6 @@
 #define EVRMRML_H_INC
 
 #include "evr/evr.h"
-#include "mrf/spi.h"
 
 #include <string>
 #include <vector>
@@ -37,6 +36,7 @@
 #include "delayModule.h"
 #include "drvemRxBuf.h"
 #include "mrmevrseq.h"
+#include "mrmspi.h"
 
 #include "mrmGpio.h"
 #include "mrmtimesrc.h"
@@ -80,7 +80,7 @@ struct epicsShareClass eventCode {
  * 
  */
 class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
-                                      mrf::SPIInterface,
+                               public MRMSPI,
                                public TimeStampSource
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
@@ -113,10 +113,6 @@ public:
 private:
     void cleanup();
 public:
-
-    // SPI access
-    virtual void select(unsigned id);
-    virtual epicsUInt8 cycle(epicsUInt8 in);
 
     virtual void lock() const OVERRIDE FINAL {evrLock.lock();}
     virtual void unlock() const OVERRIDE FINAL {evrLock.unlock();};

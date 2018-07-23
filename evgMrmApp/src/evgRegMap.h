@@ -150,6 +150,10 @@
 //
 #define  U32_RxInitPS           0x0088  // Initial Value For RF Recovery DCM Phase
 
+// SPI device access (eg. FPGA configuration eeprom)
+#define U32_SPIDData    0x0A0
+#define U32_SPIDCtrl    0x0A4
+
 //=====================
 // Trigger Event Control Registers
 //

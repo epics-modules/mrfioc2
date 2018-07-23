@@ -36,6 +36,7 @@
 #include "mrmDataBufTx.h"
 #include "mrmtimesrc.h"
 #include "mrmevgseq.h"
+#include "mrmspi.h"
 #include "evgRegMap.h"
 #include "configurationInfo.h"
 
@@ -51,7 +52,8 @@ class wdTimer1;
 enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
 class evgMrm : public mrf::ObjectInst<evgMrm>,
-               public TimeStampSource
+               public TimeStampSource,
+               public MRMSPI
 {
 public:
     evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);

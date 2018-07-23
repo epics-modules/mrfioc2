@@ -11,6 +11,5 @@ registrar(registerISRHack)
 variable(mrmEvrFIFOPeriod,double)
 
 variable(evrMrmSeqRxDebug, int)
-variable(evrMrmSPIDebug, int)
 variable(evrMrmTimeDebug, int)
 variable(evrMrmTimeNSOverflowThreshold, int)
