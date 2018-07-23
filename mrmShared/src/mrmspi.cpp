@@ -9,6 +9,8 @@
  * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
 
+#include <stdio.h>
+
 #include <epicsThread.h>
 
 #include <mrfCommonIO.h>
