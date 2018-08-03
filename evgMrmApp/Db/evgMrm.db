@@ -1,21 +1,28 @@
-record(bo, "$(P)Enable-Sel") {
+record(mbbo, "$(P)Enable-Sel") {
     field( DESC, "EVG Master Enable")
-    field( DTYP, "Obj Prop bool")
+    field( DTYP, "Obj Prop uint16")
     field( OUT , "@OBJ=$(OBJ), PROP=Enable")
-    field( UDF,  "0")
+    field( ZRST, "Disabled")
+    field( ONST, "Enabled")
+    field( TWST, "Ena Master")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "2")
     field( PINI, "RUNNING")
     field( VAL,  "1")
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)Enable-RB") {
+record(mbbi, "$(P)Enable-RB") {
     field( DESC, "EVG Master Enable")
-    field( DTYP, "Obj Prop bool")
+    field( DTYP, "Obj Prop uint16")
     field( INP , "@OBJ=$(OBJ), PROP=Enable")
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
+    field( ZRST, "Disabled")
+    field( ONST, "Enabled")
+    field( TWST, "Ena Master")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "2")
 }
 
 record(longin, "$(P)FwVer-I") {

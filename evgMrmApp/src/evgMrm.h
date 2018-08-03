@@ -75,8 +75,8 @@ public:
     std::string getFormFactorStr();
     std::string getSwVersion() const;
 
-    void enable(bool);
-    bool enabled() const;
+    void enable(epicsUInt16);
+    epicsUInt16 enabled() const;
 
     bool getResetMxc() const {return true;}
     void resetMxc(bool reset);

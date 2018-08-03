@@ -257,21 +257,31 @@ evgMrm::getDbusStatus() const {
 }
 
 void
-evgMrm::enable(bool ena) {
-    SCOPED_LOCK(m_lock);
-    if(ena)
-        BITSET32(m_pReg, Control, EVG_MASTER_ENA);
-    else
-        BITCLR32(m_pReg, Control, EVG_MASTER_ENA);
+evgMrm::enable(epicsUInt16 mode) {
+    if(mode>2)
+        throw std::runtime_error("Unsupported mode");
 
-    BITSET32(m_pReg, Control, EVG_DIS_EVT_REC);
-    BITSET32(m_pReg, Control, EVG_REV_PWD_DOWN);
-    BITSET32(m_pReg, Control, EVG_MXC_RESET);
+    SCOPED_LOCK(m_lock);
+    epicsUInt32 ctrl = NAT_READ32(m_pReg, Control);
+    if(mode!=0)
+        ctrl |= EVG_MASTER_ENA;
+    else
+        ctrl &= ~EVG_MASTER_ENA;
+    if(mode==2)
+        ctrl |= EVG_BCGEN|EVG_DCMST;
+    else
+        ctrl &= ~(EVG_BCGEN|EVG_DCMST);
+
+    ctrl |= EVG_DIS_EVT_REC|EVG_REV_PWD_DOWN|EVG_MXC_RESET;
+
+    NAT_WRITE32(m_pReg, Control, ctrl);
 }
 
-bool
-evgMrm::enabled() const {
-    return (READ32(m_pReg, Control) & EVG_MASTER_ENA) != 0;
+epicsUInt16 evgMrm::enabled() const {
+    epicsUInt32 ctrl = NAT_READ32(m_pReg, Control);
+    if(!(ctrl&EVG_MASTER_ENA)) return 0;
+    else if(!(ctrl&EVG_BCGEN)) return 1;
+    else return 2;
 }
 
 void
