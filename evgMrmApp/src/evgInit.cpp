@@ -580,7 +580,7 @@ mrmEvgSetupPCI (
             (void)evru;
 
         } else
-        if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+        if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {
             char buf[80];
             errSymLookup(ret, buf, sizeof(buf));
             printf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
