@@ -39,6 +39,7 @@
 #include "mrmspi.h"
 #include "evgRegMap.h"
 #include "configurationInfo.h"
+#include "drvem.h"
 
 /*********
  * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
@@ -162,6 +163,9 @@ private:
     epicsEvent                    m_timerEvent;
 
     epicsUInt32                   shadowIrqEnable;
+
+    // EVM only
+    mrf::auto_ptr<EVRMRM> evru, evrd;
 };
 
 #endif //EVG_MRM_H

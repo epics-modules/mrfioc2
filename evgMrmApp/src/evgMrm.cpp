@@ -21,8 +21,11 @@
 #include <epicsInterrupt.h>
 #include <epicsTime.h>
 #include <generalTimeSup.h>
+#include <epicsStdio.h>
 
 #include <longoutRecord.h>
+
+#include "mrmpci.h"
 
 #include "mrf/version.h"
 #include <mrfCommonIO.h> 
@@ -35,6 +38,36 @@
 #include "evgRegMap.h"
 
 #include <epicsExport.h>
+
+static
+EVRMRM::Config evm_evru_conf = {
+    "mTCA-EVM-300 (EVRU)",
+    16, // pulse generators
+    3,  // prescalers
+    8,  // FP outputs
+    0,  // FPUV outputs
+    0,  // RB outputs
+    0,  // Backplane outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    8,  // FP inputs
+};
+
+static
+EVRMRM::Config evm_evrd_conf = {
+    "mTCA-EVM-300 (EVRD)",
+    16, // pulse generators
+    3,  // prescalers
+    8,  // FP outputs
+    0,  // FPUV outputs
+    0,  // RB outputs
+    0,  // Backplane outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    8,  // FP inputs
+};
 
 evgMrm::evgMrm(const std::string& id,
                const Config *conf,
@@ -123,6 +156,12 @@ evgMrm::evgMrm(const std::string& id,
 
     if(busConfig.busType==busType_pci)
         mrf::SPIDevice::registerDev(id+":FLASH", mrf::SPIDevice(this, 1));
+
+    if(pciDevice->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
+        printf("EVM automatically creating %s:EVRD and %s:EVRU\n", id.c_str(), id.c_str());
+        evrd.reset(new EVRMRM(id+":EVRD", busConfig, &evm_evrd_conf, pReg+0x20000, 0x10000));
+        evru.reset(new EVRMRM(id+":EVRU", busConfig, &evm_evru_conf, pReg+0x30000, 0x10000));
+    }
 }
 
 evgMrm::~evgMrm() {

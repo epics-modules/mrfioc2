@@ -24,7 +24,6 @@
 #include "mrf/object.h"
 #include "mrf/databuf.h"
 #include "mrf/pollirq.h"
-#include "drvem.h"
 #include "mrmpci.h"
 
 #include <devcsr.h>
@@ -360,36 +359,6 @@ mrmevgs[] = {
     DEVPCI_END
 };
 
-static
-EVRMRM::Config evm_evru_conf = {
-    "mTCA-EVM-300 (EVRU)",
-    16, // pulse generators
-    3,  // prescalers
-    8,  // FP outputs
-    0,  // FPUV outputs
-    0,  // RB outputs
-    0,  // Backplane outputs
-    0,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
-    8,  // FP inputs
-};
-
-static
-EVRMRM::Config evm_evrd_conf = {
-    "mTCA-EVM-300 (EVRD)",
-    16, // pulse generators
-    3,  // prescalers
-    8,  // FP outputs
-    0,  // FPUV outputs
-    0,  // RB outputs
-    0,  // Backplane outputs
-    0,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
-    8,  // FP inputs
-};
-
 extern "C"
 epicsStatus
 mrmEvgSetupPCI (
@@ -520,17 +489,6 @@ mrmEvgSetupPCI (
 
         evgMrm* evg = new evgMrm(id, conf, bus, BAR_evg, cur);
 
-        EVRMRM *evrd = 0, *evru = 0; // EVM only
-
-        if(cur->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
-            printf("EVM automatically creating %s:EVRD and %s:EVRU\n", id, id);
-            std::string base(id);
-
-            evrd = new EVRMRM(base+":EVRD", bus, &evm_evrd_conf, BAR_evg+0x20000, 0x10000);
-            evru = new EVRMRM(base+":EVRU", bus, &evm_evru_conf, BAR_evg+0x30000, 0x10000);
-
-            // do nothing, we will poll
-        } else {
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // Enable active high interrupt1 through the PLX to the PCI bus.
@@ -565,21 +523,9 @@ mrmEvgSetupPCI (
             return -1;
         }
 #endif
-        }
 
         int ret;
         /*Connect Interrupt handler to isr thread*/
-        if (cur->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
-            printf("Starting IRQ Poller\n");
-            new IRQPoller(&evgMrm::isr_poll, (void*) evg, 0.1);
-            // The EVRU and EVRD cores seem very cut down, and don't
-            // include eg. an event FIFO.  So no point in polling...
-            //new IRQPoller(&EVRMRM::isr_poll, (void*) evrd, 0.1);
-            //new IRQPoller(&EVRMRM::isr_poll, (void*) evru, 0.1);
-            (void)evrd;
-            (void)evru;
-
-        } else
         if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {
             char buf[80];
             errSymLookup(ret, buf, sizeof(buf));
