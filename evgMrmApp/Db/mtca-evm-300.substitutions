@@ -28,18 +28,18 @@ pattern { P, OBJ, , SYS, D, Num }
 # The $(Num) are not sequential to avoid breaking historical autosave files
 { "$(SYS){$(D)-Inp:Front0}", "$(EVG):FrontInp0", $(SYS), $(D), 0 }
 { "$(SYS){$(D)-Inp:Front1}", "$(EVG):FrontInp1", $(SYS), $(D), 1 }
-{ "$(SYS){$(D)-Inp:Front2}", "$(EVG):FrontInp2", $(SYS), $(D), 9 }
+{ "$(SYS){$(D)-Inp:Front2}", "$(EVG):FrontInp2", $(SYS), $(D), 6 }
 { "$(SYS){$(D)-Inp:Univ0}",  "$(EVG):UnivInp0",  $(SYS), $(D), 2 }
 { "$(SYS){$(D)-Inp:Univ1}",  "$(EVG):UnivInp1",  $(SYS), $(D), 3 }
 { "$(SYS){$(D)-Inp:Univ2}",  "$(EVG):UnivInp2",  $(SYS), $(D), 4 }
 { "$(SYS){$(D)-Inp:Univ3}",  "$(EVG):UnivInp3",  $(SYS), $(D), 5 }
-{ "$(SYS){$(D)-Inp:Univ4}",  "$(EVG):UnivInp4",  $(SYS), $(D), 9 }
-{ "$(SYS){$(D)-Inp:Univ5}",  "$(EVG):UnivInp5",  $(SYS), $(D), A }
-{ "$(SYS){$(D)-Inp:Univ6}",  "$(EVG):UnivInp6",  $(SYS), $(D), B }
-{ "$(SYS){$(D)-Inp:Univ7}",  "$(EVG):UnivInp7",  $(SYS), $(D), C }
-{ "$(SYS){$(D)-Inp:Univ8}",  "$(EVG):UnivInp8",  $(SYS), $(D), D }
-{ "$(SYS){$(D)-Inp:Univ9}",  "$(EVG):UnivInp9",  $(SYS), $(D), E }
-{ "$(SYS){$(D)-Inp:Univ10}",  "$(EVG):UnivInp10",  $(SYS), $(D), F }
+{ "$(SYS){$(D)-Inp:Univ4}",  "$(EVG):UnivInp4",  $(SYS), $(D), 7 }
+{ "$(SYS){$(D)-Inp:Univ5}",  "$(EVG):UnivInp5",  $(SYS), $(D), 8 }
+{ "$(SYS){$(D)-Inp:Univ6}",  "$(EVG):UnivInp6",  $(SYS), $(D), 9 }
+{ "$(SYS){$(D)-Inp:Univ7}",  "$(EVG):UnivInp7",  $(SYS), $(D), A }
+{ "$(SYS){$(D)-Inp:Univ8}",  "$(EVG):UnivInp8",  $(SYS), $(D), B }
+{ "$(SYS){$(D)-Inp:Univ9}",  "$(EVG):UnivInp9",  $(SYS), $(D), C }
+{ "$(SYS){$(D)-Inp:Univ10}",  "$(EVG):UnivInp10",  $(SYS), $(D), D }
 { "$(SYS){$(D)-Inp:Univ11}",  "$(EVG):UnivInp11",  $(SYS), $(D), X }
 { "$(SYS){$(D)-Inp:Univ12}",  "$(EVG):UnivInp12",  $(SYS), $(D), X }
 { "$(SYS){$(D)-Inp:Univ13}",  "$(EVG):UnivInp13",  $(SYS), $(D), X }
