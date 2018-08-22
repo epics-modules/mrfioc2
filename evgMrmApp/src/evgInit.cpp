@@ -572,8 +572,12 @@ mrmEvgSetupPCI (
         if (cur->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
             printf("Starting IRQ Poller\n");
             new IRQPoller(&evgMrm::isr_poll, (void*) evg, 0.1);
-            new IRQPoller(&EVRMRM::isr_poll, (void*) evrd, 0.1);
-            new IRQPoller(&EVRMRM::isr_poll, (void*) evru, 0.1);
+            // The EVRU and EVRD cores seem very cut down, and don't
+            // include eg. an event FIFO.  So no point in polling...
+            //new IRQPoller(&EVRMRM::isr_poll, (void*) evrd, 0.1);
+            //new IRQPoller(&EVRMRM::isr_poll, (void*) evru, 0.1);
+            (void)evrd;
+            (void)evru;
 
         } else
         if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
