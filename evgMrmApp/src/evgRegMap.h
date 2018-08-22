@@ -280,9 +280,6 @@
 #define evgNumDbusBit 8
 #define evgNumFrontOut 6
 #define evgNumUnivOut 4
-#define evgNumFrontInp 2
-#define evgNumUnivInp 4
-#define evgNumRearInp 16
 #define evgNumSeqRam 2
 #define evgAllowedTsGitter 0.5f
 #define evgEndOfSeqBuf 5

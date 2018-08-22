@@ -56,7 +56,18 @@ class evgMrm : public mrf::ObjectInst<evgMrm>,
                public MRMSPI
 {
 public:
-    evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const, const epicsPCIDevice* pciDevice);
+    struct Config {
+        const char *model;
+        unsigned numFrontInp,
+                 numUnivInp,
+                 numRearInp;
+    };
+
+    evgMrm(const std::string& id,
+           const Config *conf,
+           bus_configuration& busConfig,
+           volatile epicsUInt8* const base,
+           const epicsPCIDevice* pciDevice);
     ~evgMrm();
 
     void enableIRQ();

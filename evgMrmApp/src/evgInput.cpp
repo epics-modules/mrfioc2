@@ -11,31 +11,12 @@
 std::map<std::string, epicsUInt32> InpStrToEnum;
 
 evgInput::evgInput(const std::string& name, const epicsUInt32 num,
-                   const InputType type, volatile epicsUInt8* const pInReg):
-mrf::ObjectInst<evgInput>(name),
-m_num(num),
-m_type(type),
-m_pInReg(pInReg) {
-    switch(type) {
-        case(FrontInp):
-            if(num >= evgNumFrontInp)
-                throw std::runtime_error("Front Panel Input num out of range");
-            break;
-
-        case(UnivInp):
-            if(num >= evgNumUnivInp)
-                throw std::runtime_error("EVG Front Univ Input num out of range");
-            break;
-
-        case(RearInp):
-            if(num >= evgNumRearInp)
-                throw std::runtime_error("EVG Rear Univ Input num out of range");
-            break;
-
-        default:
-             throw std::runtime_error("Wrong EVG Input type");
-    }
-}
+                   const InputType type, volatile epicsUInt8* const pInReg)
+    :mrf::ObjectInst<evgInput>(name)
+    ,m_num(num)
+    ,m_type(type)
+    ,m_pInReg(pInReg)
+{}
 
 evgInput::~evgInput() {
 }

@@ -64,6 +64,48 @@ struct VMECSRID vmeEvgIDs[] = {
 VMECSR_END
 };
 
+static const evgMrm::Config conf_vme_evg_230 = {
+    "VME-EVG-230",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_pci_misc = {
+    "Unknown PCI",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_220 = {
+    "cPCI-EVG-220",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_230 = {
+    "cPCI-EVG-230",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_300 = {
+    "cPCI-EVG-300",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_mtca_evm_300 = {
+    "mTCA-EVM-300",
+    3,
+    16,
+    0,
+};
+
 static bool
 enableIRQ(mrf::Object* obj, void*) {
     evgMrm *evg=dynamic_cast<evgMrm*>(obj);
@@ -229,7 +271,12 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, 3, 3);
 
-        evgMrm* evg = new evgMrm(id, bus, regCpuAddr, NULL);
+        const evgMrm::Config *conf = &conf_vme_evg_230;
+
+        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp);
+
+        evgMrm* evg = new evgMrm(id, conf, bus, regCpuAddr, NULL);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -458,7 +505,20 @@ mrmEvgSetupPCI (
         WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
         WRITE32(BAR_evg, IrqEnable, 0);
 
-        evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
+        const evgMrm::Config *conf = &conf_pci_misc;
+
+        if(cur->id.device==PCI_DEVICE_ID_MRF_CPCIEVG300) {
+            conf = &conf_cpci_evg_300;
+        } else switch(cur->id.sub_device) {
+        case PCI_SUBDEVICE_ID_MRF_PXIEVG_220: conf = &conf_cpci_evg_220; break;
+        case PCI_DEVICE_ID_MRF_PXIEVG230: conf = &conf_cpci_evg_230; break;
+        case PCI_DEVICE_ID_MRF_MTCA_EVM_300: conf = &conf_mtca_evm_300; break;
+        }
+
+        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp);
+
+        evgMrm* evg = new evgMrm(id, conf, bus, BAR_evg, cur);
 
         EVRMRM *evrd = 0, *evru = 0; // EVM only
 

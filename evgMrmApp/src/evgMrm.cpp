@@ -36,7 +36,11 @@
 
 #include <epicsExport.h>
 
-evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epicsUInt8* const pReg, const epicsPCIDevice *pciDevice):
+evgMrm::evgMrm(const std::string& id,
+               const Config *conf,
+               bus_configuration& busConfig,
+               volatile epicsUInt8* const pReg,
+               const epicsPCIDevice *pciDevice):
     mrf::ObjectInst<evgMrm>(id),
     TimeStampSource(1.0),
     MRMSPI(pReg+U32_SPIDData),
@@ -78,21 +82,21 @@ evgMrm::evgMrm(const std::string& id, bus_configuration& busConfig, volatile epi
         m_dbus.push_back(new evgDbus(name.str(), i, pReg));
     }
 
-    for(int i = 0; i < evgNumFrontInp; i++) {
+    for(unsigned i = 0; i < conf->numFrontInp; i++) {
         std::ostringstream name;
         name<<id<<":FrontInp"<<i;
         m_input[ std::pair<epicsUInt32, InputType>(i, FrontInp) ] =
                 new evgInput(name.str(), i, FrontInp, pReg + U32_FrontInMap(i));
     }
 
-    for(int i = 0; i < evgNumUnivInp; i++) {
+    for(unsigned i = 0; i < conf->numUnivInp; i++) {
         std::ostringstream name;
         name<<id<<":UnivInp"<<i;
         m_input[ std::pair<epicsUInt32, InputType>(i, UnivInp) ] =
                 new evgInput(name.str(), i, UnivInp, pReg + U32_UnivInMap(i));
     }
 
-    for(int i = 0; i < evgNumRearInp; i++) {
+    for(unsigned i = 0; i < conf->numRearInp; i++) {
         std::ostringstream name;
         name<<id<<":RearInp"<<i;
         m_input[ std::pair<epicsUInt32, InputType>(i, RearInp) ] =
@@ -125,29 +129,20 @@ evgMrm::~evgMrm() {
     if(getBusConfiguration()->busType==busType_pci)
         mrf::SPIDevice::unregisterDev(name()+":FLASH");
 
-    for(int i = 0; i < evgNumEvtTrig; i++)
+    for(size_t i = 0; i < m_trigEvt.size(); i++)
         delete m_trigEvt[i];
 
-    for(int i = 0; i < evgNumMxc; i++)
+    for(size_t i = 0; i < m_muxCounter.size(); i++)
         delete m_muxCounter[i];
 
-    for(int i = 0; i < evgNumDbusBit; i++)
+    for(size_t i = 0; i < m_dbus.size(); i++)
         delete m_dbus[i];
 
-    for(int i = 0; i < evgNumFrontInp; i++)
-        delete m_input[std::pair<epicsUInt32, InputType>(i, FrontInp)];
+    while(!m_input.empty())
+        m_input.erase(m_input.begin());
 
-    for(int i = 0; i < evgNumUnivInp; i++)
-        delete m_input[std::pair<epicsUInt32, InputType>(i, UnivInp)];
-
-    for(int i = 0; i < evgNumRearInp; i++)
-        delete m_input[std::pair<epicsUInt32, InputType>(i, RearInp)];
-
-    for(int i = 0; i < evgNumFrontOut; i++)
-        delete m_output[std::pair<epicsUInt32, evgOutputType>(i, FrontOut)];
-
-    for(int i = 0; i < evgNumUnivOut; i++)
-        delete m_output[std::pair<epicsUInt32, evgOutputType>(i, UnivOut)];
+    while(!m_output.empty())
+        m_output.erase(m_output.begin());
 }
 
 void evgMrm::enableIRQ()
