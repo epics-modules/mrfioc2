@@ -1,4 +1,4 @@
-#include "evgEvtClk.h"
+#include "evgMrm.h"
 
 #include <stdio.h>
 #include <errlog.h> 
@@ -10,18 +10,8 @@
 
 #include "evgRegMap.h"
 
-evgEvtClk::evgEvtClk(const std::string& name, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgEvtClk>(name),
-m_pReg(pReg),
-m_RFref(0.0f),
-m_fracSynFreq(0.0f) {
-}
-
-evgEvtClk::~evgEvtClk() {
-}
-
 epicsFloat64
-evgEvtClk::getFrequency() const {
+evgMrm::getFrequency() const {
     if(getSource() == ClkSrcInternal)
         return m_fracSynFreq;
     else
@@ -29,7 +19,7 @@ evgEvtClk::getFrequency() const {
 }
 
 void
-evgEvtClk::setRFFreq (epicsFloat64 RFref) {
+evgMrm::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
         char err[80];
         sprintf(err, "Cannot set RF frequency to %f MHz. Valid range is 50 - 1600.", RFref);
@@ -41,12 +31,12 @@ evgEvtClk::setRFFreq (epicsFloat64 RFref) {
 }
 
 epicsFloat64
-evgEvtClk::getRFFreq() const {
+evgMrm::getRFFreq() const {
     return m_RFref;    
 }
 
 void
-evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
+evgMrm::setRFDiv(epicsUInt32 rfDiv) {
     if(rfDiv < 1    || rfDiv > 32) {
         char err[80];
         sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 32", rfDiv);
@@ -62,13 +52,13 @@ evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
 }
 
 epicsUInt32
-evgEvtClk::getRFDiv() const {
+evgMrm::getRFDiv() const {
     // read 0 -> divide by 1
     return 1+((READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT);
 }
 
 void
-evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
+evgMrm::setFracSynFreq(epicsFloat64 freq) {
     epicsUInt32 controlWord, oldControlWord;
     epicsFloat64 error;
 
@@ -94,25 +84,25 @@ evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
 }
 
 epicsFloat64
-evgEvtClk::getFracSynFreq() const {
+evgMrm::getFracSynFreq() const {
     return FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
 }
 
 void
-evgEvtClk::setSource (epicsUInt16 clkSrc) {
+evgMrm::setSource (epicsUInt16 clkSrc) {
     epicsUInt32 cur = READ32(m_pReg, ClockControl);
     cur &= ~ClockControl_Sel_MASK;
     cur |= (epicsUInt32(clkSrc)<<ClockControl_Sel_SHIFT)&ClockControl_Sel_MASK;
     WRITE32(m_pReg, ClockControl, cur);
 }
 
-epicsUInt16 evgEvtClk::getSource() const {
+epicsUInt16 evgMrm::getSource() const {
     epicsUInt32 cur = READ32(m_pReg, ClockControl);
     cur &= ClockControl_Sel_MASK;
     return cur >> ClockControl_Sel_SHIFT;
 }
 
-bool evgEvtClk::pllLocked() const
+bool evgMrm::pllLocked() const
 {
     epicsUInt32 cur = READ32(m_pReg, ClockControl);
     epicsUInt32 mask = 0;

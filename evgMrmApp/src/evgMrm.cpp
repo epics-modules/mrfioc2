@@ -85,7 +85,6 @@ evgMrm::evgMrm(const std::string& id,
     busConfiguration(busConfig),
     m_seq(this, pReg),
     m_acTrig(id+":AcTrig", pReg),
-    m_evtClk(id+":EvtClk", pReg),
   shadowIrqEnable(READ32(m_pReg, IrqEnable))
 {
     epicsUInt32 v, isevr;
@@ -213,6 +212,11 @@ evgMrm::getId() const {
 volatile epicsUInt8*
 evgMrm::getRegAddr() const {
     return m_pReg;
+}
+
+MRFVersion evgMrm::version() const
+{
+    return MRFVersion(getFwVersion());
 }
 
 epicsUInt32 
@@ -461,11 +465,6 @@ evgMrm::setEvtCode(epicsUInt32 evtCode) {
 }
 
 /**    Access    functions     **/
-
-evgEvtClk*
-evgMrm::getEvtClk() {
-    return &m_evtClk;
-}
 
 evgInput*
 evgMrm::getInput(epicsUInt32 inpNum, InputType type) {

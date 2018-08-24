@@ -81,6 +81,7 @@ public:
     /** EVG    **/
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;
+    MRFVersion version() const;
     epicsUInt32 getFwVersion() const;
     epicsUInt32 getFwVersionID();
     formFactor getFormFactor();
@@ -98,6 +99,33 @@ public:
 
     virtual void postSoftSecondsSrc();
 
+    // event clock
+    epicsFloat64 getFrequency() const;
+
+    void setRFFreq(epicsFloat64);
+    epicsFloat64 getRFFreq() const;
+
+    void setRFDiv(epicsUInt32);
+    epicsUInt32 getRFDiv() const;
+
+    void setFracSynFreq(epicsFloat64);
+    epicsFloat64 getFracSynFreq() const;
+
+    // see ClockCtrl[RFSEL]
+    enum ClkSrc {
+        ClkSrcInternal=0,
+        ClkSrcRF=1,
+        ClkSrcPXIe100=2,
+        ClkSrcRecovered=4, // fanout mode
+        ClkSrcSplit=5, // split, external downstream on downstream, recovered on upstream
+        ClkSrcPXIe10=6,
+        ClkSrcRecovered_2=7,
+    };
+    void setSource(epicsUInt16);
+    epicsUInt16 getSource() const;
+
+    bool pllLocked() const;
+
     /**    Interrupt and Callback    **/
     static void isr(evgMrm *evg, bool pci);
     static void isr_pci(void*);
@@ -112,7 +140,6 @@ public:
     epicsUInt32 writeonly() const { return 0; }
 
     /**    Access    functions     **/
-    evgEvtClk* getEvtClk();
     evgInput* getInput(epicsUInt32, InputType);
     epicsEvent* getTimerEvent();
     const bus_configuration* getBusConfiguration();
@@ -134,10 +161,12 @@ private:
     volatile epicsUInt8* const    m_pReg;
     const bus_configuration       busConfiguration;
 
+    epicsFloat64               m_RFref;       // In MHz
+    epicsFloat64               m_fracSynFreq; // In MHz
+
     EvgSeqManager                 m_seq;
 
     evgAcTrig                     m_acTrig;
-    evgEvtClk                     m_evtClk;
 
     typedef std::vector<evgTrigEvt*> TrigEvt_t;
     TrigEvt_t                     m_trigEvt;
