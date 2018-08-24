@@ -113,7 +113,19 @@ file "databuftxCtrl.db"
 
 file "evm-fct.template"
 {
-{P="$(SYS){$(D)}", OBJ="$(EVG):FCT"}
+{P="$(SYS){$(D)-FCT}", OBJ="$(EVG):FCT"}
+}
+
+file "sfp.db"
+{
+{P="$(SYS){$(D)-SFP:1}", OBJ="$(EVG):FCT:SFP1"}
+{P="$(SYS){$(D)-SFP:2}", OBJ="$(EVG):FCT:SFP2"}
+{P="$(SYS){$(D)-SFP:3}", OBJ="$(EVG):FCT:SFP3"}
+{P="$(SYS){$(D)-SFP:4}", OBJ="$(EVG):FCT:SFP4"}
+{P="$(SYS){$(D)-SFP:5}", OBJ="$(EVG):FCT:SFP5"}
+{P="$(SYS){$(D)-SFP:6}", OBJ="$(EVG):FCT:SFP6"}
+{P="$(SYS){$(D)-SFP:7}", OBJ="$(EVG):FCT:SFP7"}
+{P="$(SYS){$(D)-SFP:8}", OBJ="$(EVG):FCT:SFP8"}
 }
 
 ### EVRU Core (see input from upstream EVM ) ###
