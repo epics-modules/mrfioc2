@@ -24,6 +24,9 @@ record(ao, "$(P)Tgt-SP") {
     field(DTYP, "Obj Prop double")
     field( OUT, "@OBJ=$(OBJ), PROP=DCTarget")
     field( EGU, "ns")
+    # a too small value will cause glitches and dropped events.
+    # so we pick a conservative default suitable for the slowest 50MHz clock
+    field( VAL, "110")
     field(PREC, "3")
     field(PINI, "YES")
     field(FLNK, "$(P)Tgt-RB")
