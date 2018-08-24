@@ -138,6 +138,9 @@ public:
         {SCOPED_LOCK(evrLock);return eventClock;}
     virtual void clockSet(double) OVERRIDE FINAL;
 
+    epicsUInt16 clockMode() const;
+    void clockModeSet(epicsUInt16 mode);
+
     virtual bool pllLocked() const OVERRIDE FINAL;
 
     virtual epicsUInt32 irqCount() const OVERRIDE FINAL {return count_hardware_irq;}

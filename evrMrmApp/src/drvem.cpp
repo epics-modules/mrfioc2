@@ -607,6 +607,21 @@ EVRMRM::clockSet(double freq)
     }
 }
 
+epicsUInt16
+EVRMRM::clockMode() const
+{
+    return (READ32(base, ClkCtrl)&ClkCtrl_clkmd_MASK)>>ClkCtrl_clkmd_SHIFT;
+}
+
+void
+EVRMRM::clockModeSet(epicsUInt16 mode)
+{
+    epicsUInt32 cur = READ32(base, ClkCtrl);
+    cur &= ~ClkCtrl_clkmd_MASK;
+    cur |= (epicsUInt32(mode)<<ClkCtrl_clkmd_SHIFT)&ClkCtrl_clkmd_MASK;
+    WRITE32(base, ClkCtrl, cur);
+}
+
 epicsUInt32
 EVRMRM::uSecDiv() const
 {
@@ -1038,6 +1053,7 @@ void EVRMRM::setTimeSrc(epicsUInt32 raw)
 }
 
 OBJECT_BEGIN2(EVRMRM, EVR)
+  OBJECT_PROP2("Clock Mode", &EVRMRM::clockMode, &EVRMRM::clockModeSet);
   OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
   OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
   OBJECT_PROP1("DCRx",     &EVRMRM::dcRx);

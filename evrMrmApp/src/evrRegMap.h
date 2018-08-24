@@ -146,6 +146,9 @@
 #define U32_USecDiv     0x04C
 
 #define U32_ClkCtrl     0x050
+#  define ClkCtrl_plllock 0x80000000
+#  define ClkCtrl_clkmd_MASK 0x06000000
+#  define ClkCtrl_clkmd_SHIFT 25
 #  define ClkCtrl_cglock 0x00000200
 
 #define U32_SRSec       0x05C
