@@ -147,4 +147,15 @@ record(ai, "$(P)Frequency-RB") {
     field( PREC, "3")
 }
 
+record(bi, "$(P)Pll-Sts") {
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=PLL Lock Status")
+  field(SCAN, "1 second")
+  field(PINI, "YES")
+  field(DESC, "Status of PLL")
+  field(ZNAM, "Error")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")
+}
+
 

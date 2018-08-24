@@ -109,6 +109,13 @@ file "databuftxCtrl.db"
 { "$(SYS){$(D)}", "$(EVG):BUFTX" }
 }
 
+### FCT Core
+
+file "evm-fct.template"
+{
+{P="$(SYS){$(D)}", OBJ="$(EVG):FCT"}
+}
+
 ### EVRU Core (see input from upstream EVM ) ###
 
 file "evrbase.db"

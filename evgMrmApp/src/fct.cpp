@@ -76,4 +76,11 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCInternal", &FCT::dcInternal);
     OBJECT_PROP1("TopoID", &FCT::topoId);
     OBJECT_PROP1("DCPort1", &FCT::dcPort<0>);
+    OBJECT_PROP1("DCPort2", &FCT::dcPort<1>);
+    OBJECT_PROP1("DCPort3", &FCT::dcPort<2>);
+    OBJECT_PROP1("DCPort4", &FCT::dcPort<3>);
+    OBJECT_PROP1("DCPort5", &FCT::dcPort<4>);
+    OBJECT_PROP1("DCPort6", &FCT::dcPort<5>);
+    OBJECT_PROP1("DCPort7", &FCT::dcPort<6>);
+    OBJECT_PROP1("DCPort8", &FCT::dcPort<7>);
 OBJECT_END(FCT)
