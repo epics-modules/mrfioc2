@@ -47,6 +47,8 @@ evgmrm_SRCS += evgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
 
+evgmrm_SRCS += fct.cpp
+
 evgmrm_SRCS += mrmevgseq.cpp
 
 evgmrm_SRCS += seqconst.c

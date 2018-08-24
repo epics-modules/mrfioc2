@@ -26,6 +26,7 @@
 #include <longoutRecord.h>
 
 #include "mrmpci.h"
+#include "fct.h"
 
 #include "mrf/version.h"
 #include <mrfCommonIO.h> 
@@ -157,7 +158,8 @@ evgMrm::evgMrm(const std::string& id,
         mrf::SPIDevice::registerDev(id+":FLASH", mrf::SPIDevice(this, 1));
 
     if(pciDevice->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
-        printf("EVM automatically creating %s:EVRD and %s:EVRU\n", id.c_str(), id.c_str());
+        printf("EVM automatically creating '%s:FCT', '%s:EVRD', and '%s:EVRU'\n", id.c_str(), id.c_str(), id.c_str());
+        fct.reset(new FCT(this, id+":FCT", pReg+0x10000));
         evrd.reset(new EVRMRM(id+":EVRD", busConfig, &evm_evrd_conf, pReg+0x20000, 0x10000));
         evru.reset(new EVRMRM(id+":EVRU", busConfig, &evm_evru_conf, pReg+0x30000, 0x10000));
     }

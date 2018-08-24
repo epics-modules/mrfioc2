@@ -37,7 +37,6 @@
 #include "mrmtimesrc.h"
 #include "mrmevgseq.h"
 #include "mrmspi.h"
-#include "evgRegMap.h"
 #include "configurationInfo.h"
 #include "drvem.h"
 
@@ -49,6 +48,8 @@
  */
 class wdTimer;
 class wdTimer1;
+
+class FCT;
 
 enum ALARM_TS {TS_ALARM_NONE, TS_ALARM_MINOR, TS_ALARM_MAJOR};
 
@@ -194,6 +195,7 @@ private:
     epicsUInt32                   shadowIrqEnable;
 
     // EVM only
+    mrf::auto_ptr<FCT> fct;
     mrf::auto_ptr<EVRMRM> evru, evrd;
 };
 

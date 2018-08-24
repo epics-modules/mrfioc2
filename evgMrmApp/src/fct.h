@@ -1,0 +1,46 @@
+/*************************************************************************\
+* Copyright (c) 2018 Michael Davidsaver
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
+
+#ifndef EVG_FCT_H
+#define EVG_FCT_H
+
+#include <vector>
+
+#include "mrfCommon.h"
+#include "mrf/object.h"
+
+class evgMrm;
+class SFP;
+
+// Fanout/ConcenTrator
+class FCT : public mrf::ObjectInst<FCT>
+{
+    evgMrm *evg;
+    volatile epicsUInt8* const base;
+    std::vector<SFP*> sfp;
+public:
+    FCT(evgMrm *evg, const std::string& id, volatile epicsUInt8* const base);
+    virtual ~FCT();
+
+    virtual void lock() const OVERRIDE FINAL {}
+    virtual void unlock() const OVERRIDE FINAL {}
+
+    epicsUInt16 statusRaw() const;
+    double dcUpstream() const;
+    double dcFIFO() const;
+    double dcInternal() const;
+
+    epicsUInt32 topoId() const;
+
+    double dcPortN(unsigned port) const;
+
+    template<int port>
+    double dcPort() const {
+        return dcPortN(port);
+    }
+};
+
+#endif // EVG_FCT_H
