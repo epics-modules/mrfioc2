@@ -32,6 +32,7 @@ OBJECT_BEGIN(evgEvtClk) {
     OBJECT_PROP2("RFDiv",       &evgEvtClk::getRFDiv,  &evgEvtClk::setRFDiv);
     OBJECT_PROP2("FracSynFreq", &evgEvtClk::getFracSynFreq, &evgEvtClk::setFracSynFreq);
     OBJECT_PROP1("Frequency",   &evgEvtClk::getFrequency);
+    OBJECT_PROP1("PLL Lock Status", &evgEvtClk::pllLocked);
 } OBJECT_END(evgEvtClk)
 
 OBJECT_BEGIN(evgInput) {

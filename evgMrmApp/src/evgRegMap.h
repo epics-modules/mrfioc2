@@ -114,11 +114,13 @@
 
 #define  U32_ClockControl       0x0050
 
+#define  ClockControl_plllock   0x80000000
 #define  ClockControl_Sel_MASK  0x07000000
 #define  ClockControl_Sel_SHIFT 24
 #define  ClockControl_Div_MASK  0x003f0000
 #define  ClockControl_Div_SHIFT 16
 #define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select
+#define  ClockControl_cglock    0x00000200
 
 
 #define  U8_ClockSource         0x0050  // Event Clock Source(Internal or RF Input)

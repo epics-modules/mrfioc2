@@ -42,6 +42,8 @@ public:
     void setSource(epicsUInt16);
     epicsUInt16 getSource() const;
 
+    bool pllLocked() const;
+
 private:
     volatile epicsUInt8* const m_pReg;
     epicsFloat64               m_RFref;       // In MHz

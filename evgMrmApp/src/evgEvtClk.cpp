@@ -112,3 +112,11 @@ epicsUInt16 evgEvtClk::getSource() const {
     return cur >> ClockControl_Sel_SHIFT;
 }
 
+bool evgEvtClk::pllLocked() const
+{
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+    epicsUInt32 mask = 0;
+    if(version()>=MRFVersion(2, 7, 0))
+        mask |= ClockControl_plllock|ClockControl_cglock;
+    return (cur&mask)==mask;
+}
