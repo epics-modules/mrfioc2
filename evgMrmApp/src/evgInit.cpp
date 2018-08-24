@@ -162,10 +162,10 @@ inithooks(initHookState state) {
     }
 }
 
-void checkVersion(volatile epicsUInt8 *base, unsigned int required,
-                  unsigned int recommended)
+void checkVersion(volatile epicsUInt8 *base, const MRFVersion& required,
+                  const MRFVersion& recommended)
 {
-    epicsUInt32 type, ver;
+    epicsUInt32 type;
     epicsUInt32 v = READ32(base, FPGAVersion);
 
     type = v & FPGAVersion_TYPE_MASK;
@@ -174,14 +174,15 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required,
     if(type != 0x2)
         throw std::runtime_error("Address does not correspond to an EVG");
 
-    ver = v & FPGAVersion_VER_MASK;
+    MRFVersion ver(v);
 
     if(ver < required) {
-        printf("Firmware version >= %u is required\n", required);
-        throw std::runtime_error("Firmware version not supported");
+        std::ostringstream msg;
+        msg<<"Firmware version >= "<<required<<" is required\n";
+        throw std::runtime_error(msg.str());
 
     } else if(ver < recommended) {
-        printf("Firmware version >= %u is recommended, please consider upgrading\n", required);
+        std::cout<<"Firmware version >= "<<recommended<<" is recommended, please consider upgrading\n";
     }
 }
 
@@ -268,7 +269,7 @@ mrmEvgSetupVME (
             }
         }
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
-        checkVersion(regCpuAddr, 3, 3);
+        checkVersion(regCpuAddr, MRFVersion(0, 3, 0), MRFVersion(0, 3, 0));
 
         const evgMrm::Config *conf = &conf_vme_evg_230;
 
@@ -468,7 +469,7 @@ mrmEvgSetupPCI (
         }
 
         printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
-        checkVersion(BAR_evg, 3, 8);
+        checkVersion(BAR_evg, MRFVersion(0, 3, 0), MRFVersion(0, 8, 0));
 
         /*Disable the interrupts and enable them at the end of iocInit via initHooks*/
         WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
@@ -489,6 +490,8 @@ mrmEvgSetupPCI (
 
         evgMrm* evg = new evgMrm(id, conf, bus, BAR_evg, cur);
 
+        MRFVersion ver(evg->version());
+
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // Enable active high interrupt1 through the PLX to the PCI bus.
@@ -499,20 +502,20 @@ mrmEvgSetupPCI (
             WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
         }
 #else
-        if(evg->getFwVersionID()>=8 && kifacever>=2) {
+        if(ver>=MRFVersion(0, 8, 0) && kifacever>=2) {
             // PCI master enable supported by firmware and kernel module.
             // the kernel will set this bit when devPCIEnableInterrupt() is called
         } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // PLX based devices don't need special handling
             WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
-        } else if(evg->getFwVersionID()<8) {
+        } else if(ver<MRFVersion(0, 8, 0)) {
             // old firmware and (maybe) old kernel module.
             // this will still work, so just complain
             printf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
                          "         Please consider upgrading to FW version 8.\n");
             if(kifacever<2)
                 printf("         Also upgrade the linux kernel module to interface version 2.");
-        } else if(evg->getFwVersionID()>=8 && kifacever<2) {
+        } else if(ver>=MRFVersion(0, 8, 0) && kifacever<2) {
             // New firmware w/ old kernel module, this won't work
             throw std::runtime_error("FW version 8 for this device requires a linux kernel module w/ interface version 2");
         } else {
