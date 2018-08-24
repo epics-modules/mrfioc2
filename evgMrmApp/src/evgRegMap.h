@@ -114,6 +114,8 @@
 
 #define  U32_ClockControl       0x0050
 
+#define  ClockControl_Sel_MASK  0x07000000
+#define  ClockControl_Sel_SHIFT 24
 #define  ClockControl_Div_MASK  0x003f0000
 #define  ClockControl_Div_SHIFT 16
 #define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select

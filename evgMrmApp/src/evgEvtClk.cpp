@@ -99,16 +99,16 @@ evgEvtClk::getFracSynFreq() const {
 }
 
 void
-evgEvtClk::setSource (bool clkSrc) {
-    if(clkSrc)
-        BITSET32 (m_pReg, ClockControl, ClockControl_EXTRF);
-    else 
-        BITCLR32 (m_pReg, ClockControl, ClockControl_EXTRF);
+evgEvtClk::setSource (epicsUInt16 clkSrc) {
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+    cur &= ~ClockControl_Sel_MASK;
+    cur |= (epicsUInt32(clkSrc)<<ClockControl_Sel_SHIFT)&ClockControl_Sel_MASK;
+    WRITE32(m_pReg, ClockControl, cur);
 }
 
-bool
-evgEvtClk::getSource() const {
-    epicsUInt32 clkReg = READ32(m_pReg, ClockControl);
-    return clkReg & ClockControl_EXTRF;
+epicsUInt16 evgEvtClk::getSource() const {
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+    cur &= ClockControl_Sel_MASK;
+    return cur >> ClockControl_Sel_SHIFT;
 }
 

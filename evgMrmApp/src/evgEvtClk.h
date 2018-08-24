@@ -29,9 +29,18 @@ public:
     void setFracSynFreq(epicsFloat64);
     epicsFloat64 getFracSynFreq() const;
 
-    // true == external, false == internal
-    void setSource(bool);
-    bool getSource() const;
+    // see ClockCtrl[RFSEL]
+    enum ClkSrc {
+        ClkSrcInternal=0,
+        ClkSrcRF=1,
+        ClkSrcPXIe100=2,
+        ClkSrcRecovered=4, // fanout mode
+        ClkSrcSplit=5, // split, external downstream on downstream, recovered on upstream
+        ClkSrcPXIe10=6,
+        ClkSrcRecovered_2=7,
+    };
+    void setSource(epicsUInt16);
+    epicsUInt16 getSource() const;
 
 private:
     volatile epicsUInt8* const m_pReg;
