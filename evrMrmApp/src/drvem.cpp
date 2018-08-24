@@ -648,7 +648,11 @@ EVRMRM::setExtInhib(bool v)
 bool
 EVRMRM::pllLocked() const
 {
-    return (READ32(base, ClkCtrl) & ClkCtrl_cglock) != 0;
+    epicsUInt32 cur = READ32(base, ClkCtrl);
+    epicsUInt32 mask = ClkCtrl_cglock;
+    if(version()>=MRFVersion(2, 7, 0))
+        mask |= ClkCtrl_plllock;
+    return (cur&mask)==mask;
 }
 
 bool
