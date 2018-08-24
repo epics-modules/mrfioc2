@@ -218,72 +218,12 @@ evgMrm::getRegAddr() const {
 
 MRFVersion evgMrm::version() const
 {
-    return MRFVersion(getFwVersion());
+    return MRFVersion(READ32(m_pReg, FPGAVersion));
 }
 
-epicsUInt32 
-evgMrm::getFwVersion() const {
-    return READ32(m_pReg, FPGAVersion);
-}
-
-epicsUInt32
-evgMrm::getFwVersionID(){
-    epicsUInt32 ver = getFwVersion();
-
-    ver &= FPGAVersion_VER_MASK;
-
-    return ver;
-}
-
-formFactor
-evgMrm::getFormFactor(){
-    epicsUInt32 form = getFwVersion();
-
-    form &= FPGAVersion_FORM_MASK;
-    form >>= FPGAVersion_FORM_SHIFT;
-
-    if(form <= formFactor_PCIe) return (formFactor)form;
-    else return formFactor_unknown;
-}
-
-std::string
-evgMrm::getFormFactorStr(){
-    std::string text;
-
-    switch(getFormFactor()){
-    case formFactor_CPCI:
-        text = "CompactPCI 3U";
-        break;
-
-    case formFactor_CPCIFULL:
-        text = "CompactPCI 6U";
-        break;
-
-    case formFactor_CRIO:
-        text = "CompactRIO";
-        break;
-
-    case formFactor_PCIe:
-        text = "PCIe";
-        break;
-
-    case formFactor_PXIe:
-        text = "PXIe";
-        break;
-
-    case formFactor_PMC:
-        text = "PMC";
-        break;
-
-    case formFactor_VME64:
-        text = "VME 64";
-        break;
-
-    default:
-        text = "Unknown form factor";
-    }
-
-    return text;
+std::string evgMrm::getFwVersionStr() const
+{
+    return version().str();
 }
 
 std::string

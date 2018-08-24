@@ -25,8 +25,8 @@ record(mbbi, "$(P)Enable-RB") {
     field( TWVL, "2")
 }
 
-record(longin, "$(P)FwVer-I") {
-  field(DTYP, "Obj Prop uint32")
+record(stringin, "$(P)FwVer-I") {
+  field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Version")
   field(PINI, "YES")
   field(DESC, "Firmware version")

@@ -83,10 +83,7 @@ public:
     const std::string getId() const;
     volatile epicsUInt8* getRegAddr() const;
     MRFVersion version() const;
-    epicsUInt32 getFwVersion() const;
-    epicsUInt32 getFwVersionID();
-    formFactor getFormFactor();
-    std::string getFormFactorStr();
+    std::string getFwVersionStr() const;
     std::string getSwVersion() const;
 
     void enable(epicsUInt16);

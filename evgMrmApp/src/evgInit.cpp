@@ -497,7 +497,7 @@ mrmEvgSetupPCI (
             // Enable active high interrupt1 through the PLX to the PCI bus.
             LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
         }
-        if(evg->getFwVersionID()>=8) {
+        if(ver>=MRFVersion(0, 8, 0)) {
             // RTOS doesn't need this, so always enable
             WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
         }
@@ -715,8 +715,7 @@ reportCard(mrf::Object* obj, void* arg) {
         return true;
 
     printf("EVG: %s     \n", evg->getId().c_str());
-    printf("\tFPGA Version: %08x (firmware: %x)\n", evg->getFwVersion(), evg->getFwVersionID());
-    printf("\tForm factor: %s\n", evg->getFormFactorStr().c_str());
+    printf("\tFPGA Version: %s\n", evg->getFwVersionStr().c_str());
 
     const bus_configuration *bus = evg->getBusConfiguration();
     if(bus->busType == busType_vme){

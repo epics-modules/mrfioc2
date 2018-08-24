@@ -49,7 +49,7 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP2("Enable",     &evgMrm::enabled,      &evgMrm::enable);
     OBJECT_PROP2("Reset MXC",  &evgMrm::getResetMxc,  &evgMrm::resetMxc);
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
-    OBJECT_PROP1("Version", &evgMrm::getFwVersion);
+    OBJECT_PROP1("Version", &evgMrm::getFwVersionStr);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
     {
