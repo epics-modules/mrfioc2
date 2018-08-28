@@ -1,30 +1,37 @@
-#include "evgMrm.h"
 
 #include <stdio.h>
 #include <errlog.h> 
 #include <stdexcept>
+#include <sstream>
 
 #include <mrfCommonIO.h> 
 #include <mrfCommon.h> 
 #include <mrfFracSynth.h>
 
+#include "evgMrm.h"
 #include "evgRegMap.h"
 
 epicsFloat64
 evgMrm::getFrequency() const {
-    if(getSource() == ClkSrcInternal)
-        return m_fracSynFreq;
-    else
+    epicsUInt16 cur = getSource();
+    switch(cur) {
+    case ClkSrcPXIe100:
+        return 100;
+        // case ClkSrcPXIe10: ??
+    case ClkSrcRF:
+    case ClkSrcSplit:
         return getRFFreq()/getRFDiv();
+    default:
+        return m_fracSynFreq;
+    }
 }
 
 void
 evgMrm::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
-        char err[80];
-        sprintf(err, "Cannot set RF frequency to %f MHz. Valid range is 50 - 1600.", RFref);
-        std::string strErr(err);
-        throw std::runtime_error(strErr);
+        std::ostringstream strm;
+        strm<<"Cannot set RF frequency to "<<RFref<<" MHz. Valid range is 50 - 1600.";
+        throw std::runtime_error(strm.str());
     }
 
     m_RFref = RFref;
@@ -37,24 +44,20 @@ evgMrm::getRFFreq() const {
 
 void
 evgMrm::setRFDiv(epicsUInt32 rfDiv) {
-    if(rfDiv < 1    || rfDiv > 32) {
+    if(rfDiv < 1 || rfDiv == 13 || rfDiv > 32) {
         char err[80];
-        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 32", rfDiv);
+        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 12, 14 - 32", rfDiv);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
-    
-    epicsUInt32 temp = READ32(m_pReg, ClockControl);
-    temp &= ~ClockControl_Div_MASK;
-    temp |= (rfDiv-1)<<ClockControl_Div_SHIFT;
+    m_RFDiv = rfDiv;
 
-    WRITE32(m_pReg, ClockControl, temp);
+    recalcRFDiv();
 }
 
 epicsUInt32
 evgMrm::getRFDiv() const {
-    // read 0 -> divide by 1
-    return 1+((READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT);
+    return m_RFDiv;
 }
 
 void
@@ -90,10 +93,21 @@ evgMrm::getFracSynFreq() const {
 
 void
 evgMrm::setSource (epicsUInt16 clkSrc) {
-    epicsUInt32 cur = READ32(m_pReg, ClockControl);
-    cur &= ~ClockControl_Sel_MASK;
-    cur |= (epicsUInt32(clkSrc)<<ClockControl_Sel_SHIFT)&ClockControl_Sel_MASK;
-    WRITE32(m_pReg, ClockControl, cur);
+    switch(clkSrc) {
+    case ClkSrcInternal:
+    case ClkSrcRF:
+    case ClkSrcPXIe100:
+    case ClkSrcRecovered:
+    case ClkSrcSplit:
+    case ClkSrcPXIe10:
+    case ClkSrcRecovered_2:
+        m_ClkSrc = (ClkSrc)clkSrc;
+
+        recalcRFDiv();
+        return;
+    }
+
+    throw std::invalid_argument("Invalid clock source");
 }
 
 epicsUInt16 evgMrm::getSource() const {
@@ -109,4 +123,29 @@ bool evgMrm::pllLocked() const
     if(version()>=MRFVersion(2, 7, 0))
         mask |= ClockControl_plllock|ClockControl_cglock;
     return (cur&mask)==mask;
+}
+
+void evgMrm::recalcRFDiv()
+{
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+
+    cur &= ~ClockControl_Sel_MASK;
+    cur &= ~ClockControl_Div_MASK;
+
+    epicsUInt32 div = m_RFDiv-1; // /1 -> 0, /2 -> 1, etc.
+
+    switch(m_ClkSrc) {
+    case ClkSrcInternal:
+    case ClkSrcRecovered:
+    case ClkSrcRecovered_2:
+        // disable RF input
+        div = 0xc; // /13 is magic for OFF
+        break;
+    default:
+        break;
+    }
+
+    cur |= (div<<ClockControl_Div_SHIFT)&ClockControl_Div_MASK;
+    cur |= (epicsUInt32(m_ClkSrc)<<ClockControl_Sel_SHIFT)&ClockControl_Sel_MASK;
+    WRITE32(m_pReg, ClockControl, cur);
 }

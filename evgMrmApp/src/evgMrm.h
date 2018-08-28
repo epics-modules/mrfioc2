@@ -115,7 +115,7 @@ public:
         ClkSrcRF=1,
         ClkSrcPXIe100=2,
         ClkSrcRecovered=4, // fanout mode
-        ClkSrcSplit=5, // split, external downstream on downstream, recovered on upstream
+        ClkSrcSplit=5, // split, external on downstream, recovered on upstream
         ClkSrcPXIe10=6,
         ClkSrcRecovered_2=7,
     };
@@ -161,6 +161,9 @@ private:
 
     epicsFloat64               m_RFref;       // In MHz
     epicsFloat64               m_fracSynFreq; // In MHz
+    unsigned                   m_RFDiv;
+    ClkSrc                     m_ClkSrc;
+    void recalcRFDiv();
 
     EvgSeqManager                 m_seq;
 
