@@ -170,7 +170,7 @@ try{
         throw std::runtime_error("Firmware 2 version < 207 not supported");
 
     if(ver.firmware()==2 && ver<MRFVersion(2,7,6))
-        printf("Warning: Recommended minimum firmware 2 version is 207.6\n");
+        printf("Warning: Recommended minimum firmware 2 version is 207.6, found %s\n", ver.str().c_str());
 
     if(ver.firmware()!=0 && ver.firmware()!=2)
         printf("Warning: Unknown firmware series %u.  Your milage may vary\n", ver.firmware());
