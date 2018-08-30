@@ -43,19 +43,19 @@ epicsUInt16 FCT::statusRaw() const
 
 double FCT::dcUpstream() const
 {
-    double period=1e9/evg->getFrequency(); // in nanoseconds
+    double period=1e3/evg->getFrequency(); // in nanoseconds
     return double(READ32(base, UpDCValue))/65536.0*period;
 }
 
 double FCT::dcFIFO() const
 {
-    double period=1e9/evg->getFrequency(); // in nanoseconds
+    double period=1e3/evg->getFrequency(); // in nanoseconds
     return double(READ32(base, FIFODCValue))/65536.0*period;
 }
 
 double FCT::dcInternal() const
 {
-    double period=1e9/evg->getFrequency(); // in nanoseconds
+    double period=1e3/evg->getFrequency(); // in nanoseconds
     return double(READ32(base, IntDCValue))/65536.0*period;
 }
 
@@ -66,7 +66,8 @@ epicsUInt32 FCT::topoId() const
 
 double FCT::dcPortN(unsigned port) const
 {
-    return READ32(base, PortNDCValue(port));
+    double period=1e3/evg->getFrequency(); // in nanoseconds
+    return READ32(base, PortNDCValue(port))/65536.0*period;
 }
 
 OBJECT_BEGIN(FCT)
