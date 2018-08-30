@@ -10,7 +10,7 @@
   <background_color>
     <color red="224" green="255" blue="255" />
   </background_color>
-  <boy_version>5.1.0.201605121837</boy_version>
+  <boy_version>5.1.0.201609071627</boy_version>
   <foreground_color>
     <color red="192" green="192" blue="192" />
   </foreground_color>
@@ -1481,6 +1481,7 @@ $(pv_value)</tooltip>
     <lock_children>false</lock_children>
     <macros>
       <include_parent_macros>true</include_parent_macros>
+      <SFP>$(SYS){$(D)-SFP}</SFP>
     </macros>
     <name>SFP</name>
     <rules />
@@ -1568,7 +1569,7 @@ $(pv_value)</tooltip>
       <name>Text Update_1</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Pwr:RX-I</pv_name>
+      <pv_name>$(SFP)Pwr:RX-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -1661,7 +1662,7 @@ $(pv_value)</tooltip>
       <name>Text Update_1</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Pwr:TX-I</pv_name>
+      <pv_name>$(SFP)Pwr:TX-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -1754,7 +1755,7 @@ $(pv_value)</tooltip>
       <name>Text Update_2</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}T-I</pv_name>
+      <pv_name>$(SFP)T-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -1847,7 +1848,7 @@ $(pv_value)</tooltip>
       <name>Text Update_3</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Speed:Link-I</pv_name>
+      <pv_name>$(SFP)Speed:Link-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -1940,7 +1941,7 @@ $(pv_value)</tooltip>
       <name>Text Update_4</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Vendor-I</pv_name>
+      <pv_name>$(SFP)Vendor-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -2033,7 +2034,7 @@ $(pv_value)</tooltip>
       <name>Text Update_5</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Part-I</pv_name>
+      <pv_name>$(SFP)Part-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -2126,7 +2127,7 @@ $(pv_value)</tooltip>
       <name>Text Update_4</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Serial-I</pv_name>
+      <pv_name>$(SFP)Serial-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
@@ -2219,7 +2220,7 @@ $(pv_value)</tooltip>
       <name>Text Update_4</name>
       <precision>0</precision>
       <precision_from_pv>true</precision_from_pv>
-      <pv_name>$(SYS){$(D)-SFP}Date:Manu-I</pv_name>
+      <pv_name>$(SFP)Date:Manu-I</pv_name>
       <pv_value />
       <rotation_angle>0.0</rotation_angle>
       <rules />
