@@ -62,22 +62,23 @@ evgMrm::getRFDiv() const {
 
 void
 evgMrm::setFracSynFreq(epicsFloat64 freq) {
-    epicsUInt32 controlWord, oldControlWord;
     epicsFloat64 error;
 
-    controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
+    epicsUInt32 controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
     if ((!controlWord) || (error > 100.0)) {
         char err[80];
         sprintf(err, "Cannot set event clock speed to %f MHz.\n", freq);            
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
+    epicsUInt32 uSecDivider = (epicsUInt16)freq;
 
-    oldControlWord=READ32(m_pReg, FracSynthWord);
+    epicsUInt32 oldControlWord=READ32(m_pReg, FracSynthWord),
+                olduSecDivider=READ32(m_pReg, uSecDiv);
 
     /* Changing the control word disturbes the phase of the synthesiser
      which will cause a glitch. Don't change the control word unless needed.*/
-    if(controlWord != oldControlWord){
+    if(controlWord != oldControlWord || uSecDivider!=olduSecDivider){
         WRITE32(m_pReg, FracSynthWord, controlWord);
         epicsUInt32 uSecDivider = (epicsUInt16)freq;
         WRITE32(m_pReg, uSecDiv, uSecDivider);
