@@ -85,6 +85,7 @@ record(mbbo, "$(P)TrigSrc:2-Sel") {
 record(longout, "$(P)TrigSrc-Sel_") {
     field( DTYP, "Obj Prop uint32")
     field( OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
+    field( VAL , "0x03000000") # default to None
     info( autosaveFields_pass0, "VAL")
 }
 
