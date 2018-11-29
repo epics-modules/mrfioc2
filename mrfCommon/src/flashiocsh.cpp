@@ -57,6 +57,16 @@ void flashinfo(const char *name)
             printf("\n");
         }
 
+        {
+            mrf::CFIStreamBuf sbuf(mem);
+            std::istream strm(&sbuf);
+            mrf::XilinxBitInfo image;
+            if(image.read(strm)) {
+                printf("Bit Stream found\n  Project: %s\n  Part: %s\n  Build: %s\n",
+                       image.project.c_str(), image.part.c_str(), image.date.c_str());
+            }
+        }
+
     }catch(std::exception& e){
         printf("Error: %s\n", e.what());
     }

@@ -1,6 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
+#include <sstream>
 
 #include <stdlib.h>
 #include <string.h>
@@ -91,7 +92,7 @@ struct TestDevice : public mrf::SPIInterface
 
     virtual epicsUInt8 cycle(epicsUInt8 in)
     {
-        testDiag("cycle(%02x) current=%u command=%02x count=%u", (unsigned)in, current, command, count);
+        //testDiag("cycle(%02x) current=%u command=%02x count=%u", (unsigned)in, current, command, count);
 
         if(!selected) throw std::logic_error("cycle() when not selected");
 
@@ -348,16 +349,80 @@ void testWrite()
     testOk1(!!match);
 }
 
+static const char xiheader[] = "\x00\t\x0f\xf0\x0f\xf0\x0f\xf0\x0f\xf0\x00\x00\x01""a\x00/"
+                               "mtcaeevm300;User"
+                               "ID=0XFFFFFFFF;Ve"
+                               "rsion=2017.4.1\x00""b"
+                               "\x00\r7k325tfbg900\x00""c"
+                               "\x00\x0b""2018/07/23\x00""d\x00\t"
+                               "08:57:10\x00""e\x00\xae\x9d\x9c\xff\xff";
+
+void testStream()
+{
+    testDiag("testStream()");
+
+    TestDevice iface;
+    mrf::SPIDevice dev(&iface, 1);
+    mrf::CFIFlash mem(dev);
+
+    mem.write(0, sizeof(xiheader)-1, (const epicsUInt8*)xiheader, false);
+
+    mrf::CFIStreamBuf sbuf(mem);
+    std::istream strm(&sbuf);
+
+    std::vector<char> cbuf(13);
+
+    testOk(strm.read(&cbuf[0], cbuf.size()).gcount()==std::streamsize(cbuf.size()),
+            "read %u == %u", unsigned(strm.gcount()), unsigned(cbuf.size()));
+    testOk1(!!strm.good());
+    testOk1(!!std::equal(cbuf.begin(), cbuf.end(), xiheader));
+
+    // retry
+    testDiag("seek(0)");
+    strm.seekg(0);
+    testOk1(!!strm.good());
+    testOk(strm.tellg()==0, "tell -> %d", int(strm.tellg()));
+    sbuf.pubseekpos(0);
+
+    std::fill(cbuf.begin(), cbuf.end(), 0);
+
+    testOk(strm.read(&cbuf[0], 6).gcount()==6,
+            "read %u == %u", unsigned(strm.gcount()), 6);
+    testOk1(!!strm.good());
+    testOk(strm.read(&cbuf[6], 7).gcount()==7,
+            "read %u == %u", unsigned(strm.gcount()), 7);
+    testOk1(!!strm.good());
+    testOk1(!!std::equal(cbuf.begin(), cbuf.end(), xiheader));
+}
+
+void testXilinx()
+{
+    testDiag("testXilinx()");
+
+    std::istringstream strm(std::string(xiheader, sizeof(xiheader)-1));
+
+    mrf::XilinxBitInfo info;
+    testOk1(!!info.read(strm));
+    testOk(info.project=="mtcaeevm300;UserID=0XFFFFFFFF;Version=2017.4.1",
+           "project='%s'", info.project.c_str());
+    testOk(info.part=="7k325tfbg900",
+           "part='%s'", info.part.c_str());
+    testOk(info.date=="2018/07/23 08:57:10",
+           "date='%s'", info.date.c_str());
+}
+
 } // namespace
 
 MAIN(flashTest)
 {
-    testPlan(50);
+    testPlan(58);
     try{
         testTimeout();
         testReadID();
         testRead();
         testWrite();
+        testStream();
+        testXilinx();
     }catch(std::exception& e){
         testAbort("Exception %s", e.what());
     }

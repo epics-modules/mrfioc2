@@ -7,9 +7,13 @@
 #define FLASH_H
 
 #include <vector>
+#include <string>
+#include <istream>
 
 #include <epicsTypes.h>
 #include <shareLib.h>
+
+#include <mrfCommon.h>
 
 namespace mrf {
 
@@ -77,6 +81,31 @@ private:
         ~WriteEnabler()
         { dev.writeEnable(false); }
     };
+};
+
+//! Adapt CFIFlash for use with std::istream
+class epicsShareClass CFIStreamBuf : public std::streambuf
+{
+    CFIFlash& flash;
+    epicsUInt32 pos;
+    std::vector<char> buf;
+public:
+    CFIStreamBuf(CFIFlash& flash);
+
+    virtual int_type underflow() OVERRIDE FINAL;
+
+    virtual pos_type seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode mode) OVERRIDE FINAL;
+    virtual pos_type seekpos(pos_type pos, std::ios_base::openmode mode) OVERRIDE FINAL;
+};
+
+//! Attempt to read out the header of a Xilinx bitstream file.
+struct epicsShareClass XilinxBitInfo
+{
+    XilinxBitInfo() {}
+
+    bool read(std::istream& strm);
+
+    std::string project, part, date;
 };
 
 } // namespace mrf
