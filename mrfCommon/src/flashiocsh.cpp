@@ -6,6 +6,8 @@
 
 #include <stdexcept>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -73,53 +75,6 @@ void flashinfo(const char *name)
 }
 }
 
-namespace {
-struct FILEWrapper {
-    FILE *fp;
-    FILEWrapper() :fp(0) {}
-    void open(FILE *fp)
-    {
-        if(!fp)
-            throw std::runtime_error(SB()<<"File error "<<errno);
-        this->fp = fp;
-    }
-    ~FILEWrapper() { close(); }
-    void close()
-    {
-        if(fp && fclose(fp))
-            printf("Error closing file %u\n", errno);
-        fp = 0;
-    }
-    void write(const std::vector<epicsUInt8>& buf)
-    {
-        if(fp && fwrite(&buf[0], 1, buf.size(), fp)!=buf.size())
-            throw std::runtime_error(SB()<<"Write Error "<<int(errno));
-    }
-    void read(std::vector<epicsUInt8>& buf)
-    {
-        if(fp) {
-            ssize_t ret = fread(&buf[0], 1, buf.size(), fp);
-            if(ret<0)
-                throw std::runtime_error(SB()<<"Read Error "<<int(errno));
-            buf.resize(ret);
-        } else {
-            buf.resize(0);
-        }
-    }
-    long size()
-    {
-        if(fseek(fp, 0, SEEK_END)!=0)
-            throw std::runtime_error(SB()<<"Seek error "<<errno);
-        long size = ftell(fp);
-        if(size==-1)
-            throw std::runtime_error(SB()<<"Tell error "<<errno);
-        if(fseek(fp, 0, SEEK_SET)!=0)
-            throw std::runtime_error(SB()<<"Seek2 error "<<errno);
-        return size;
-    }
-};
-}// namespace
-
 extern "C" {
 void flashread(const char *name, int addrraw, int countraw, const char *outfile)
 {
@@ -133,9 +88,14 @@ void flashread(const char *name, int addrraw, int countraw, const char *outfile)
 
         mrf::CFIFlash mem(dev);
 
-        FILEWrapper out;
-        if(outfile)
-            out.open(fopen(outfile, "wb"));
+        std::ostream *strm = &std::cout;
+        std::ofstream fstrm;
+        if(outfile) {
+            fstrm.open(outfile, std::ios_base::out|std::ios_base::binary);
+            if(fstrm.fail())
+                throw std::runtime_error("Unable to open output file");
+            strm = &fstrm;
+        }
 
         while(count) {
             const epicsUInt32 N = std::min(count, mem.blockSize());
@@ -144,7 +104,7 @@ void flashread(const char *name, int addrraw, int countraw, const char *outfile)
             mem.read(addr, buf);
 
             if(outfile) {
-                out.write(buf);
+                (*strm).write((const char*)&buf[0], buf.size());
 
             } else {
                 for(size_t i=0; i<buf.size(); i++) {
@@ -192,9 +152,13 @@ void flashwrite(const char *name, int addrraw, const char *infile)
             return;
         }
 
-        FILEWrapper inp;
-        inp.open(fopen(infile, "rb"));
-        const long fsize = inp.size();
+        std::ifstream strm(infile, std::ios_base::in|std::ios_base::binary);
+        if(strm.fail())
+            throw std::runtime_error("Unable to open output file");
+
+        strm.seekg(0, std::ios_base::end);
+        const long fsize = strm.tellg();
+        strm.seekg(0);
 
         std::vector<epicsUInt8> buf;
 
@@ -203,7 +167,9 @@ void flashwrite(const char *name, int addrraw, const char *infile)
             printf("| %u/%u\n", (unsigned)pos, (unsigned)fsize);
 
             buf.resize(mem.blockSize());
-            inp.read(buf);
+            buf.resize(strm.read((char*)&buf[0], buf.size()).gcount());
+            if(strm.fail())
+                throw std::runtime_error("I/O Error");
             if(buf.empty())
                 break;
             pos += buf.size();
