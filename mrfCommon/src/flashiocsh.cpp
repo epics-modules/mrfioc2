@@ -195,7 +195,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
         std::vector<epicsUInt8> buf;
 
         long pos=0;
-        while(true) {
+        while(strm.good()) {
             printf("| %u/%u\n", (unsigned)pos, (unsigned)fsize);
 
             buf.resize(mem.blockSize());
