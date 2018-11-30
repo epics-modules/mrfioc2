@@ -415,7 +415,7 @@ void testXilinx()
 
 MAIN(flashTest)
 {
-    testPlan(58);
+    testPlan(64);
     try{
         testTimeout();
         testReadID();

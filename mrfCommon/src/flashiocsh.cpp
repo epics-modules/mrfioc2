@@ -16,6 +16,7 @@
 
 #include <iocsh.h>
 #include <epicsThread.h>
+#include <epicsStdio.h>
 
 // defines macros for printf() so that output is captured
 // for iocsh when redirecting to file.
@@ -27,6 +28,9 @@
 
 #include <epicsExport.h>
 
+extern "C" {
+int flashAcknowledgeMismatch;
+}
 
 extern "C" {
 void flashinfo(const char *name)
@@ -160,6 +164,34 @@ void flashwrite(const char *name, int addrraw, const char *infile)
         const long fsize = strm.tellg();
         strm.seekg(0);
 
+        if(flashAcknowledgeMismatch!=2) {
+            mrf::XilinxBitInfo infile, inmem;
+
+            infile.read(strm);
+            strm.seekg(0);
+
+            mrf::CFIStreamBuf sbuf(mem);
+            std::istream mstrm(&sbuf);
+            mstrm.seekg(addr);
+            inmem.read(mstrm);
+
+            bool match = true;
+            match &= infile.project.empty() || infile.project==inmem.project;
+            match &= infile.part.empty() || infile.part==inmem.project;
+            if(!match) {
+                fprintf(stderr, "Bitstream header mis-match.\nFile: \"%s\", \"%s\"\nFile: \"%s\", \"%s\"\n",
+                        infile.part.c_str(), infile.project.c_str(),
+                        inmem.part.c_str(), inmem.project.c_str());
+
+                if(!flashAcknowledgeMismatch) {
+                    fprintf(stderr, "To override, re-run after setting: var(\"flashAcknowledgeMismatch\", 1)\n");
+                    return;
+                }
+            }
+        }
+        // user must re-ack for each operation
+        flashAcknowledgeMismatch = 0;
+
         std::vector<epicsUInt8> buf;
 
         long pos=0;
@@ -267,4 +299,7 @@ static void registrarFlashOps()
     iocshRegister(&flashwriteFuncDef, &flashwriteCall);
     iocshRegister(&flasheraseFuncDef, &flasheraseCall);
 }
+extern "C" {
 epicsExportRegistrar(registrarFlashOps);
+epicsExportAddress(int, flashAcknowledgeMismatch);
+}

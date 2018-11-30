@@ -50,6 +50,8 @@ public:
     inline epicsUInt32 alignement() { check(); return (info.pageSize-1)|(info.sectorSize-1); }
     // optimal block size of write operation
     inline epicsUInt32 blockSize() { return alignement()+1u; }
+    inline epicsUInt32 pageSize() { check(); return info.pageSize; }
+    inline epicsUInt32 sectorSize() { check(); return info.sectorSize; }
 
     void read(epicsUInt32 start, epicsUInt32 count, epicsUInt8 *in);
     inline void read(epicsUInt32 start, std::vector<epicsUInt8>& in)

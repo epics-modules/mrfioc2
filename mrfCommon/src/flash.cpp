@@ -370,7 +370,8 @@ CFIStreamBuf::CFIStreamBuf(CFIFlash& flash)
 
 CFIStreamBuf::int_type CFIStreamBuf::underflow()
 {
-    buf.resize(flash.blockSize());
+    // read-ahead is only one page
+    buf.resize(flash.pageSize());
     flash.read(pos, buf.size(), (epicsUInt8*)&buf[0]);
     setg(&buf[0], &buf[0], &buf[buf.size()]);
     pos += buf.size();
