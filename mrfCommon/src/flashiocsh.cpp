@@ -177,9 +177,9 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 
             bool match = true;
             match &= infile.project.empty() || infile.project==inmem.project;
-            match &= infile.part.empty() || infile.part==inmem.project;
+            match &= infile.part.empty() || infile.part==inmem.part;
             if(!match) {
-                fprintf(stderr, "Bitstream header mis-match.\nFile: \"%s\", \"%s\"\nFile: \"%s\", \"%s\"\n",
+                fprintf(stderr, "Bitstream header mis-match.\nFile: \"%s\", \"%s\"\nROM: \"%s\", \"%s\"\n",
                         infile.part.c_str(), infile.project.c_str(),
                         inmem.part.c_str(), inmem.project.c_str());
 
@@ -200,7 +200,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 
             buf.resize(mem.blockSize());
             buf.resize(strm.read((char*)&buf[0], buf.size()).gcount());
-            if(strm.fail())
+            if(strm.bad())
                 throw std::runtime_error("I/O Error");
             if(buf.empty())
                 break;
