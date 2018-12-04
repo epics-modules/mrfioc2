@@ -97,6 +97,7 @@ record(ai, "$(P)Corr-I") {
     field(FLNK, "$(P)Lck-Sts")
     info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
+
 record(bi, "$(P)Lck-Sts") {
     field(DTYP, "Obj Prop uint32")
     field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
