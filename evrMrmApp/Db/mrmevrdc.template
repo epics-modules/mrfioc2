@@ -1,5 +1,45 @@
 # Delay Compensation control/status
 
+record(longout, "$(P):DLY_CSET_QPHA") {
+    field(DESC, "Set fractional delay")
+    field(DTYP, "Obj Prop uint32")
+    field( OUT, "@OBJ=$(OBJ), PROP=ECP3DPhase")
+    field(EGU, "cycles/16")
+    field(DRVH, "15")
+    field(DRVL, "0")
+    field(FLNK, "$(P):DLY_RSET_QPHA")
+    info(archive, " ")
+    info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P):DLY_RSET_QPHA") {
+    field(DESC, "Get fractional delay")
+    field(DTYP, "Obj Prop uint32")
+    field(INP, "@OBJ=$(OBJ), PROP=ECP3DPhase")
+    field(EGU, "cycles/16")
+    info(archive, " ")
+}
+
+record(bo, "$(P):DLY_CMD_INCR") {
+    field(DESC, "Increase Delay 1 cycle")
+    field(DTYP, "Obj Prop bool")
+    field( OUT, "@OBJ=$(OBJ), PROP=ECP3DINC")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Increase")
+    field(HIGH, "0.25")
+    info(archive, " ")
+}
+
+record(bo, "$(P):DLY_CMD_DECR") {
+    field(DESC, "Decrease Delay 1 cycle")
+    field(DTYP, "Obj Prop bool")
+    field( OUT, "@OBJ=$(OBJ), PROP=ECP3DDEC")
+    field(ZNAM, "Inactive")
+    field(ONAM, "Decrease")
+    field(HIGH, "0.25")
+    info(archive, " ")
+}
+
 record(bo, "$(P)Ena-Sel") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")

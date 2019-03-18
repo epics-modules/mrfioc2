@@ -202,6 +202,16 @@ public:
     epicsUInt32 dcStatusRaw() const;
     epicsUInt32 topId() const;
 
+    //! Read raw delay register
+    epicsUInt32 ECP3DelayRaw() const;
+    //! Phase between FIFO Read/Write clocks in 16ths of a cycle
+    epicsUInt32 ECP3DPhase() const;
+    void setECP3DPhase(epicsUInt32);
+    //! Increment/Decrement delay by 1 whole cycle
+    bool dummyBool() const {return false;}
+    void ECP3DelayIncrease(bool i);
+    void ECP3DelayDecrease(bool d);
+
     epicsUInt32 dummy() const { return 0; }
     void setEvtCode(epicsUInt32 code) OVERRIDE FINAL;
 

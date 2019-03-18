@@ -1054,6 +1054,43 @@ EVRMRM::topId() const
     return READ32(base, TOPID);
 }
 
+epicsUInt32
+EVRMRM::ECP3DelayRaw() const
+{
+    return READ32(base, ECP3Delay_control);
+}
+
+epicsUInt32
+EVRMRM::ECP3DPhase() const
+{
+    return (ECP3DelayRaw() & ECP3Delay_DPHASE) >> ECP3Delay_shift;
+}
+
+void
+EVRMRM::setECP3DPhase(epicsUInt32 steps)
+{
+    SCOPED_LOCK(evrLock);
+    if (steps < 0) steps = 0;
+    else if (steps > 15) steps = 15;
+    WRITE32(base, ECP3Delay_control, (ECP3DelayRaw() & ~(ECP3Delay_DPHASE)) | (steps << ECP3Delay_shift));
+}
+
+void
+EVRMRM::ECP3DelayIncrease(bool i)
+{
+    SCOPED_LOCK(evrLock);
+    if(i)
+        BITSET32(base, ECP3Delay_control, ECP3Delay_DINC);
+}
+
+void
+EVRMRM::ECP3DelayDecrease(bool d)
+{
+    SCOPED_LOCK(evrLock);
+    if(d)
+        BITSET32(base, ECP3Delay_control, ECP3Delay_DDEC);
+}
+
 void
 EVRMRM::setEvtCode(epicsUInt32 code)
 {
@@ -1111,6 +1148,10 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
+  OBJECT_PROP1("ECP3DelayRaw", &EVRMRM::ECP3DelayRaw);
+  OBJECT_PROP2("ECP3DPhase", &EVRMRM::ECP3DPhase, &EVRMRM::setECP3DPhase);
+  OBJECT_PROP2("ECP3DINC", &EVRMRM::dummyBool, &EVRMRM::ECP3DelayIncrease);
+  OBJECT_PROP2("ECP3DDEC", &EVRMRM::dummyBool, &EVRMRM::ECP3DelayDecrease);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
   OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
     {
