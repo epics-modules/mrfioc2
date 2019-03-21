@@ -1043,6 +1043,12 @@ EVRMRM::dcInternal() const
 }
 
 epicsUInt32
+EVRMRM::dcIntTicks() const
+{
+   return (READ32(base, DCIntVal)) >> 16;
+}
+
+epicsUInt32
 EVRMRM::dcStatusRaw() const
 {
     return READ32(base, DCStatus);
@@ -1090,6 +1096,24 @@ EVRMRM::ECP3DelayDecrease(bool d)
     if(d)
         BITSET32(base, ECP3Delay_control, ECP3Delay_DDEC);
 }
+
+void
+EVRMRM::setFIFODelay(epicsUInt32 ticks){
+     epicsUInt32 oldTicks = dcIntTicks();
+     if(ticks < oldTicks){
+       ECP3DelayDecrease(true);
+     }
+     if(oldTicks < ticks){
+       for(unsigned i=0; i < (ticks - dcIntTicks()); i++){
+         ECP3DelayIncrease(true);
+         //epicsThreadSleep(.05);
+         //give up if this isn't doing anything
+         //if(dcIntTicks() <= oldTicks) return;
+         printf("increase delay\n");
+      }
+     }
+}
+
 
 void
 EVRMRM::setEvtCode(epicsUInt32 code)
@@ -1142,18 +1166,19 @@ void EVRMRM::setTimeSrc(epicsUInt32 raw)
 }
 
 OBJECT_BEGIN2(EVRMRM, EVR)
-  OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
-  OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
-  OBJECT_PROP1("DCRx",     &EVRMRM::dcRx);
-  OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
-  OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
-  OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
+  OBJECT_PROP2("DCEnable",     &EVRMRM::dcEnabled,    &EVRMRM::dcEnable);
+  OBJECT_PROP2("DCTarget",     &EVRMRM::dcTarget,     &EVRMRM::dcTargetSet);
+  OBJECT_PROP1("DCRx",         &EVRMRM::dcRx);
+  OBJECT_PROP1("DCInt",        &EVRMRM::dcInternal);
+  OBJECT_PROP1("DCStatusRaw",  &EVRMRM::dcStatusRaw);
+  OBJECT_PROP1("DCTOPID",      &EVRMRM::topId);
   OBJECT_PROP1("ECP3DelayRaw", &EVRMRM::ECP3DelayRaw);
-  OBJECT_PROP2("ECP3DPhase", &EVRMRM::ECP3DPhase, &EVRMRM::setECP3DPhase);
-  OBJECT_PROP2("ECP3DINC", &EVRMRM::dummyBool, &EVRMRM::ECP3DelayIncrease);
-  OBJECT_PROP2("ECP3DDEC", &EVRMRM::dummyBool, &EVRMRM::ECP3DelayDecrease);
-  OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
-  OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
+  OBJECT_PROP2("DCIntTicks",   &EVRMRM::dcIntTicks,   &EVRMRM::setFIFODelay);
+  OBJECT_PROP2("ECP3DPhase",   &EVRMRM::ECP3DPhase,   &EVRMRM::setECP3DPhase);
+  OBJECT_PROP2("ECP3DINC",     &EVRMRM::dummyBool,    &EVRMRM::ECP3DelayIncrease);
+  OBJECT_PROP2("ECP3DDEC",     &EVRMRM::dummyBool,    &EVRMRM::ECP3DelayDecrease);
+  OBJECT_PROP2("EvtCode",      &EVRMRM::dummy,        &EVRMRM::setEvtCode);
+  OBJECT_PROP2("TimeSrc",      &EVRMRM::timeSrc,      &EVRMRM::setTimeSrc);
     {
       std::string (EVRMRM::*getter)() const = &EVRMRM::nextSecond;
       OBJECT_PROP1("NextSecond", getter);

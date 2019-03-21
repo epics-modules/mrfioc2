@@ -27,6 +27,7 @@ record(bo, "$(P):DLY_CMD_INCR") {
     field(ZNAM, "Inactive")
     field(ONAM, "Increase")
     field(HIGH, "0.25")
+    field(FLNK, "$(P):DLY_RSET_TICK")
     info(archive, " ")
 }
 
@@ -37,7 +38,30 @@ record(bo, "$(P):DLY_CMD_DECR") {
     field(ZNAM, "Inactive")
     field(ONAM, "Decrease")
     field(HIGH, "0.25")
+    field(FLNK, "$(P):DLY_RSET_TICK")
     info(archive, " ")
+}
+
+record(longout, "$(P):DLY_CSET_TICK") {
+    field(DESC, "Set delay in ticks")
+    field(DTYP, "Obj Prop uint32")
+    field( OUT, "@OBJ=$(OBJ), PROP=DCIntTicks")
+    field( EGU, "Tick")
+}
+
+record(calc, "$(P):DLY_RSET_TICK") {
+    field(DESC, "Req'd full-tick delay")
+    field(INPA, "$(P):DLY_CMD_INCR NPP MS")
+    field(INPB, "$(P):DLY_CMD_DECR NPP MS")
+    field(CALC, "VAL + (A-B)")
+    field(FLNK, "$(P):DLY_RSET_TINT")
+}
+
+record(longin, "$(P):DLY_RSET_TINT") {
+    field(DESC, "Req'd full-tick delay")
+    field(DTYP, "Obj Prop uint32")
+    field(SCAN, "1 second")
+    field( INP, "@OBJ=$(OBJ), PROP=DCIntTicks")
 }
 
 record(bo, "$(P)Ena-Sel") {

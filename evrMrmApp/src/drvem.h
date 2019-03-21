@@ -199,6 +199,8 @@ public:
     double dcRx() const;
     //! Delay compensation applied
     double dcInternal() const;
+    void setFIFODelay(epicsUInt32);
+    epicsUInt32 dcIntTicks() const;
     epicsUInt32 dcStatusRaw() const;
     epicsUInt32 topId() const;
 
