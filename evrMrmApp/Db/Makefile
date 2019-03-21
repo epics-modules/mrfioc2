@@ -13,6 +13,7 @@ DB += sequencedemo.db
 DB += evr-pmc-230.db
 DB += evr-cpci-230.db
 DB += evr-cpci-300.db
+DB += evr-cpci-300dc.db
 DB += evr-vmerf-230.db
 DB += evr-tg-300.db
 DB += evr-mtca-300.db

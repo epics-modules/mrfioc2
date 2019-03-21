@@ -186,6 +186,14 @@
 #define U32_DCStatus    0x0bc
 #define U32_TOPID       0x0c0
 
+#define U32_ECP3Delay_control 0x0c4
+  #define ECP3Delay_DINC   0x80000000
+  #define ECP3Delay_DDEC   0x40000000
+  #define ECP3Delay_DPHASE 0x00000F00
+    #define ECP3Delay_shift  0x00000008
+  #define ECP3Delay_FDELB  0x00000016
+  #define ECP3Delay_FDELA  0x00000001
+
 #define  U32_SeqControl_base    0x00e0
 #define  U32_SeqControl(n)      (U32_SeqControl_base + (4*n))
 
