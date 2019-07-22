@@ -61,7 +61,7 @@ bool DelayModule::enabled() const
     epicsUInt32 data;
 
     data = gpio_->getOutput();
-    return !(data && OUTPUT_DISABLE_BIT(N_));
+    return !(data & OUTPUT_DISABLE_BIT(N_));
 }
 
 // ---------------------- //
