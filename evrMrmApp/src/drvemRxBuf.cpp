@@ -89,6 +89,7 @@ try {
         return;
 
     if (sts&DataBufCtrl_sumerr) {
+        BITSET(NAT,32,self.base,DataBufCtrl,DataBufCtrl_sumerr);
         self.haderror(2);
 
     } else {
