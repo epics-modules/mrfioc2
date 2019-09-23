@@ -1,18 +1,30 @@
-sudo: false
-dist: xenial
 language: c
-env:
- - BASE=7.0 STATIC=shared
- - BASE=7.0 STATIC=shared EXTRA=CMD_CXXFLAGS=-std=c++11
- - BASE=7.0 STATIC=shared CMPLR=clang
- - BASE=7.0 STATIC=static
- - BASE=3.15 STATIC=shared
- - BASE=3.14 STATIC=shared
- - BASE=3.14 STATIC=static
- - KSER=3.x KVER=3.2.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
- - KSER=3.x KVER=3.16.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
- - KSER=4.x KVER=4.9.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
- - KSER=4.x KVER=4.19.67 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+
+matrix:
+  include:
+  - dist: xenial
+    env: BASE=7.0 STATIC=shared
+  - dist: xenial
+    env: BASE=7.0 EXTRA=CMD_CXXFLAGS=-std=c++11
+  - dist: trusty
+    env: BASE=7.0 STATIC=shared CMPLR=clang
+  - dist: xenial
+    env: BASE=7.0 STATIC=static
+  - dist: xenial
+    env: BASE=3.15 STATIC=shared
+  - dist: xenial
+    env: BASE=3.14 STATIC=shared
+  - dist: xenial
+    env: BASE=3.14 STATIC=static
+  - dist: trusty
+    env: KSER=3.x KVER=3.2.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+  - dist: trusty
+    env: KSER=3.x KVER=3.16.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+  - dist: xenial
+    env: KSER=4.x KVER=4.9.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+  - dist: xenial
+    env: KSER=4.x KVER=4.19.67 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+
 install:
  - ./.ci/prepare-epics.sh
  - ./.ci/prepare-linux.sh
