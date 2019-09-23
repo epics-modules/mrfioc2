@@ -12,7 +12,9 @@
 #include <errno.h>
 #include <string.h>
 
+#include <epicsStdio.h>
 #include <epicsThread.h>
+#include <osiSock.h>
 
 #include "mrfCommon.h"
 #include "mrf/spi.h"
@@ -359,6 +361,105 @@ void CFIFlash::busyWait(double timeout, unsigned n)
 
     if(!T.ok())
         throw std::runtime_error("Timeout waiting for operation to complete");
+}
+
+CFIStreamBuf::CFIStreamBuf(CFIFlash& flash)
+    :flash(flash)
+    ,pos(0u)
+{}
+
+CFIStreamBuf::int_type CFIStreamBuf::underflow()
+{
+    // read-ahead is only one page
+    buf.resize(flash.pageSize());
+    flash.read(pos, buf.size(), (epicsUInt8*)&buf[0]);
+    setg(&buf[0], &buf[0], &buf[buf.size()]);
+    pos += buf.size();
+
+    return buf[0];
+}
+
+CFIStreamBuf::pos_type
+CFIStreamBuf::seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode mode)
+{
+    if(dir==std::ios_base::cur)
+        off += pos;
+    else if(dir==std::ios_base::end)
+        return pos_type(-1); // error
+    return seekpos(off, mode);
+}
+
+CFIStreamBuf::pos_type
+CFIStreamBuf::seekpos(pos_type off, std::ios_base::openmode mode)
+{
+    pos = off;
+    setg(&buf[0], &buf[0], &buf[0]); // empty buffer
+    return pos;
+}
+
+bool XilinxBitInfo::read(std::istream& strm)
+{
+    static const char header[] = "\0\x09\x0f\xf0\x0f\xf0\x0f\xf0\x0f\xf0\0\0\1";
+
+    std::vector<char> buf(sizeof(header)-1);
+
+    if(strm.read(&buf[0], buf.size()).gcount()!=std::streamsize(buf.size()) || !std::equal(buf.begin(), buf.end(), header))
+        return false; // not a .bit file
+
+    std::string project, part, date, time;
+
+    bool eof = false;
+    while(!eof) {
+        epicsUInt8 id;
+        epicsUInt16 size;
+
+        if(strm.read((char*)&id, 1).gcount()==0)
+            break;
+
+        switch(id) {
+        case 0x61:
+        case 0x62:
+        case 0x63:
+        case 0x64:
+            if(strm.read((char*)&size, 2).gcount()!=2)
+                throw std::runtime_error("Truncated block header");
+            size = ntohs(size);
+            buf.resize(size);
+            if(strm.read(&buf[0], buf.size()).gcount()!=std::streamsize(buf.size()))
+                throw std::runtime_error("Truncated block payload");
+
+            // there are all actually printable strings, so ensure they have a trailing nil.
+            buf.push_back('\0');
+
+            break;
+        case 0x65:
+            // start of bit stream content, we treat this as end of "header" and stop here.
+            // in practice there is nothing after the bit stream anyway.
+            eof = true;
+            break;
+        default:
+            fprintf(stderr, "Warning: attempting to ignore unknown block 0x%02x\n", unsigned(id));
+            eof = true;
+            break;
+        }
+
+        std::string str(&buf[0]);
+
+        switch(id) {
+        case 0x61: project.swap(str); break;
+        case 0x62: part.swap(str); break;
+        case 0x63: date.swap(str); break;
+        case 0x64: time.swap(str); break;
+        }
+    }
+
+    date += " ";
+    date += time;
+
+    this->project.swap(project);
+    this->part.swap(part);
+    this->date.swap(date);
+    return true;
 }
 
 } // namespace mrf

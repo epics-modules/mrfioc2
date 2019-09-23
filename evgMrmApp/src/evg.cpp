@@ -26,14 +26,6 @@ OBJECT_BEGIN(evgDbus) {
     OBJECT_PROP2("Source", &evgDbus::getSource, &evgDbus::setSource);
 } OBJECT_END(evgDbus)
 
-OBJECT_BEGIN(evgEvtClk) {
-    OBJECT_PROP2("Source",      &evgEvtClk::getSource, &evgEvtClk::setSource);
-    OBJECT_PROP2("RFFreq",      &evgEvtClk::getRFFreq, &evgEvtClk::setRFFreq);
-    OBJECT_PROP2("RFDiv",       &evgEvtClk::getRFDiv,  &evgEvtClk::setRFDiv);
-    OBJECT_PROP2("FracSynFreq", &evgEvtClk::getFracSynFreq, &evgEvtClk::setFracSynFreq);
-    OBJECT_PROP1("Frequency",   &evgEvtClk::getFrequency);
-} OBJECT_END(evgEvtClk)
-
 OBJECT_BEGIN(evgInput) {
     OBJECT_PROP2("IRQ", &evgInput::getExtIrq, &evgInput::setExtIrq);
 } OBJECT_END(evgInput)
@@ -57,7 +49,7 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP2("Enable",     &evgMrm::enabled,      &evgMrm::enable);
     OBJECT_PROP2("Reset MXC",  &evgMrm::getResetMxc,  &evgMrm::resetMxc);
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
-    OBJECT_PROP1("Version", &evgMrm::getFwVersion);
+    OBJECT_PROP1("Version", &evgMrm::getFwVersionStr);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
     {
@@ -79,6 +71,12 @@ OBJECT_BEGIN(evgMrm) {
       void (evgMrm::*cmd)() = &evgMrm::resyncSecond;
       OBJECT_PROP1("Sync TS", cmd);
     }
+    OBJECT_PROP2("Source",      &evgMrm::getSource, &evgMrm::setSource);
+    OBJECT_PROP2("RFFreq",      &evgMrm::getRFFreq, &evgMrm::setRFFreq);
+    OBJECT_PROP2("RFDiv",       &evgMrm::getRFDiv,  &evgMrm::setRFDiv);
+    OBJECT_PROP2("FracSynFreq", &evgMrm::getFracSynFreq, &evgMrm::setFracSynFreq);
+    OBJECT_PROP1("Frequency",   &evgMrm::getFrequency);
+    OBJECT_PROP1("PLL Lock Status", &evgMrm::pllLocked);
 } OBJECT_END(evgMrm)
 
 

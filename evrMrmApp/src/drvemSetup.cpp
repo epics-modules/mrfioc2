@@ -17,6 +17,7 @@
 #include <map>
 
 #include <epicsString.h>
+#include <epicsStdio.h> /* redirects stdout/err */
 #include <drvSup.h>
 #include <iocsh.h>
 #include <initHooks.h>
@@ -381,14 +382,14 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required, unsigned int
 
     epicsUInt32 ver=(v&FWVersion_ver_mask)>>FWVersion_ver_shift;
 
-    errlogPrintf("Found version %u\n", ver);
+    printf("Found version %u\n", ver);
 
     if(ver<required) {
-        errlogPrintf("Firmware version >=%u is required\n", required);
+        printf("Firmware version >=%u is required\n", required);
         throw std::runtime_error("Firmware version not supported");
 
     } else if(ver<recommended) {
-        errlogPrintf("Firmware version >=%u is recommended, please consider upgrading\n", recommended);
+        printf("Firmware version >=%u is recommended, please consider upgrading\n", recommended);
     }
 }
 
@@ -403,19 +404,19 @@ bool checkUIOVersion(int vmin, int vmax, int *actual)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
+        printf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
         return true;
     }
     if(fscanf(fd, "%d", &version)!=1) {
         fclose(fd);
-        errlogPrintf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
+        printf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
         return true;
     }
     fclose(fd);
 
     // Interface versions are *not* expected to be backwords or forwards compatible.
     if(version<vmin || version>vmax) {
-        errlogPrintf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
+        printf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
         return true;
     }
     if(actual)
@@ -457,7 +458,7 @@ try {
         return;
     }
 
-    printf("Device %s  %u:%u.%u slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
+    printf("Device %s  %x:%x.%x slot=%s\n",id,cur->bus,cur->device,cur->function,cur->slot);
     printf("Using IRQ %u\n",cur->irq);
 
     bus.pci.dev = cur;
@@ -631,10 +632,10 @@ try {
     } else if(receiver->version()<MRFVersion(0, 0xa)) {
         // old firmware and (maybe) old kernel module.
         // this will still work, so just complain
-        errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
+        printf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
                      "         Please consider upgrading to FW version 0xA.\n");
         if(kifacever<2)
-            errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
+            printf("         Also upgrade the linux kernel module to interface version 2.");
     } else if(receiver->version()>=MRFVersion(0, 0xa) && kifacever<2) {
         // New firmware w/ old kernel module, this won't work
         throw std::runtime_error("FW version 0xA for this device requires a linux kernel module w/ interface version 2");

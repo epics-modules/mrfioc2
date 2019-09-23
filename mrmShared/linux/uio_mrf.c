@@ -64,6 +64,9 @@ MODULE_PARM_DESC(use_msi, "Use MSI if present (default 1, yes)");
 /* PCIe-EVR-300 and PCIe-EVR-300DC */
 #define PCI_SUBDEVICE_ID_PCIE_EVR_300       0x172c
 
+/* mTCA-EVM-300 */
+#define PCI_DEVICE_ID_MRF_MTCA_EVM_300      0x232c
+
 /* cPCI-EVG-300 */
 #define PCI_DEVICE_ID_MRF_CPCI_EVG_300      0x252c
 /* cPCI-EVR-300 */
@@ -756,6 +759,13 @@ static struct pci_device_id mrf_pci_ids[] = {
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_DEVICE_ID_MRF_EVRMTCA300,
         .driver_data =  0x18,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_XILINX,
+        .device =       PCI_DEVICE_ID_XILINX_DEV,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_DEVICE_ID_MRF_MTCA_EVM_300,
+        .driver_data =  0x28,
     },
     { 0, }
 };

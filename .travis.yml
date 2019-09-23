@@ -2,7 +2,7 @@ sudo: false
 dist: trusty
 language: c
 env:
- - BASE=core/master STATIC=shared
+ - BASE=7.0 STATIC=shared
  - BASE=3.16 STATIC=shared
  - BASE=3.16 STATIC=shared EXTRA=CMD_CXXFLAGS=-std=c++11
  - BASE=3.16 STATIC=shared CMPLR=clang

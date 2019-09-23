@@ -6,7 +6,7 @@ USR_CPPFLAGS += -DDEBUG_PRINT
 
 export PERL5LIB=$(EPICS_BASE)/lib/perl
 
-MRF_VERSION = 2.2.1
+MRF_VERSION = $(MRFIOC2_MAJOR_VERSION).$(MRFIOC2_MINOR_VERSION).$(MRFIOC2_MAINTENANCE_VERSION)
 
 #---------------------
 # Install include files
@@ -73,6 +73,7 @@ mrfCommon_SRCS += mrfCommon.cpp
 mrfCommon_SRCS += spi.cpp
 mrfCommon_SRCS += flash.cpp
 mrfCommon_SRCS += flashiocsh.cpp
+mrfCommon_SRCS += pollirq.cpp
 
 mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 

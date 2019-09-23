@@ -58,7 +58,6 @@
 #  define HAVE_PARALLEL_CB
 #endif
 
-int evrMrmSPIDebug;
 int evrMrmTimeDebug;
 int evrMrmSeqRxDebug;
 //! value in nanoseconds above which a timestamp is considered invalid.
@@ -67,7 +66,6 @@ int evrMrmSeqRxDebug;
 int evrMrmTimeNSOverflowThreshold;
 extern "C" {
  epicsExportAddress(int, evrMrmSeqRxDebug);
- epicsExportAddress(int, evrMrmSPIDebug);
  epicsExportAddress(int, evrMrmTimeDebug);
  epicsExportAddress(int, evrMrmTimeNSOverflowThreshold);
 }
@@ -124,6 +122,7 @@ EVRMRM::EVRMRM(const std::string& n,
                volatile unsigned char* b,
                epicsUInt32 bl)
   :base_t(n,busConfig)
+  ,MRMSPI(b+U32_SPIDData)
   ,TimeStampSource(1.0)
   ,evrLock()
   ,conf(c)
@@ -171,7 +170,7 @@ try{
         throw std::runtime_error("Firmware 2 version < 207 not supported");
 
     if(ver.firmware()==2 && ver<MRFVersion(2,7,6))
-        printf("Warning: Recommended minimum firmware 2 version is 207.6\n");
+        printf("Warning: Recommended minimum firmware 2 version is 207.6, found %s\n", ver.str().c_str());
 
     if(ver.firmware()!=0 && ver.firmware()!=2)
         printf("Warning: Unknown firmware series %u.  Your milage may vary\n", ver.firmware());
@@ -403,72 +402,6 @@ EVRMRM::cleanup()
     printf("complete\n");
 }
 
-void EVRMRM::select(unsigned id)
-{
-    if(evrMrmSPIDebug)
-        printf("SPI: select %u\n", id);
-
-    if(id==0) {
-        // deselect
-        WRITE32(base, SPIDCtrl, SPIDCtrl_OE);
-        // wait a bit to ensure the chip sees deselect
-        epicsThreadSleep(0.001);
-        // disable drivers
-        WRITE32(base, SPIDCtrl, 0);
-    } else {
-        // drivers on w/ !SS
-        WRITE32(base, SPIDCtrl, SPIDCtrl_OE);
-        // wait a bit to ensure the chip sees deselect
-        epicsThreadSleep(0.001);
-        // select
-        WRITE32(base, SPIDCtrl, SPIDCtrl_OE|SPIDCtrl_SS);
-    }
-}
-
-epicsUInt8 EVRMRM::cycle(epicsUInt8 in)
-{
-    double timeout = this->timeout();
-
-    if(evrMrmSPIDebug)
-        printf("SPI %02x ", int(in));
-
-    // wait for send ready to be set
-    {
-        mrf::TimeoutCalculator T(timeout);
-        while(T.ok() && !(READ32(base, SPIDCtrl)&SPIDCtrl_SendRdy))
-            epicsThreadSleep(T.inc());
-        if(!T.ok())
-            throw std::runtime_error("SPI cycle timeout2");
-
-        if(evrMrmSPIDebug)
-            printf("(%f) ", T.sofar());
-    }
-
-    WRITE32(base, SPIDData, in);
-
-    if(evrMrmSPIDebug)
-        printf("-> ");
-
-    // wait for recv ready to be set
-    {
-        mrf::TimeoutCalculator T(timeout);
-        while(T.ok() && !(READ32(base, SPIDCtrl)&SPIDCtrl_RecvRdy))
-            epicsThreadSleep(T.inc());
-        if(!T.ok())
-            throw std::runtime_error("SPI cycle timeout2");
-
-        if(evrMrmSPIDebug)
-            printf("(%f) ", T.sofar());
-    }
-
-    epicsUInt8 ret = READ32(base, SPIDData)&0xff;
-
-    if(evrMrmSPIDebug) {
-        printf("%02x\n", int(ret));
-    }
-    return ret;
-}
-
 string EVRMRM::model() const
 {
     return conf->model;
@@ -674,6 +607,21 @@ EVRMRM::clockSet(double freq)
     }
 }
 
+epicsUInt16
+EVRMRM::clockMode() const
+{
+    return (READ32(base, ClkCtrl)&ClkCtrl_clkmd_MASK)>>ClkCtrl_clkmd_SHIFT;
+}
+
+void
+EVRMRM::clockModeSet(epicsUInt16 mode)
+{
+    epicsUInt32 cur = READ32(base, ClkCtrl);
+    cur &= ~ClkCtrl_clkmd_MASK;
+    cur |= (epicsUInt32(mode)<<ClkCtrl_clkmd_SHIFT)&ClkCtrl_clkmd_MASK;
+    WRITE32(base, ClkCtrl, cur);
+}
+
 epicsUInt32
 EVRMRM::uSecDiv() const
 {
@@ -700,7 +648,11 @@ EVRMRM::setExtInhib(bool v)
 bool
 EVRMRM::pllLocked() const
 {
-    return (READ32(base, ClkCtrl) & ClkCtrl_cglock) != 0;
+    epicsUInt32 cur = READ32(base, ClkCtrl);
+    epicsUInt32 mask = ClkCtrl_cglock;
+    if(version()>=MRFVersion(2, 7, 0))
+        mask |= ClkCtrl_plllock;
+    return (cur&mask)==mask;
 }
 
 bool
@@ -1105,6 +1057,7 @@ void EVRMRM::setTimeSrc(epicsUInt32 raw)
 }
 
 OBJECT_BEGIN2(EVRMRM, EVR)
+  OBJECT_PROP2("Clock Mode", &EVRMRM::clockMode, &EVRMRM::clockModeSet);
   OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
   OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
   OBJECT_PROP1("DCRx",     &EVRMRM::dcRx);
@@ -1165,6 +1118,14 @@ EVRMRM::isr_vme(void *arg) {
 
     // Calling the default platform-independent interrupt routine
     evr->isr(evr, false);
+}
+
+void
+EVRMRM::isr_poll(void *arg) {
+    EVRMRM *evr=static_cast<EVRMRM*>(arg);
+
+    // Calling the default platform-independent interrupt routine
+    evr->isr(evr, true);
 }
 
 // A place to write to which will keep the read

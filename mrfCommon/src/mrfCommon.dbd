@@ -1,6 +1,7 @@
 registrar (FracSynthRegistrar)
 registrar (objectsreg)
 registrar (registrarFlashOps)
+variable(flashAcknowledgeMismatch, int)
 
 # link format
 # "@OBJ=..., PROP=..."

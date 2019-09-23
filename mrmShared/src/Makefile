@@ -2,6 +2,9 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
+USR_INCLUDES += -I$(TOP)/mrfCommon/src
+USR_INCLUDES += -I$(TOP)/evrMrmApp/src
+
 INC += mrmDataBufTx.h
 INC += mrmSeq.h
 INC += mrmpci.h
@@ -18,6 +21,7 @@ mrmShared_SRCS += mrmSeq.cpp
 mrmShared_SRCS += devMrfBufTx.cpp
 mrmShared_SRCS += sfp.cpp
 mrmShared_SRCS += mrmtimesrc.cpp
+mrmShared_SRCS += mrmspi.cpp
 
 mrmShared_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 

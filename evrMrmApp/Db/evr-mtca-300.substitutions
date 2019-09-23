@@ -10,9 +10,9 @@
 #  $(SYS){$(D)}Signal-SD
 #  $(SYS){$(D)-SubDev}Signal-SD
 
-file "evrbase.db"
+file "mrmevrbase.template"
 {
-{P="$(SYS){$(D)}", OBJ="$(EVR)", EVNT1Hz="125", FEVT="\$(FEVT=124.916)"}
+{P="$(SYS){$(D)}", OBJ="$(EVR)", EVNT1HZ="\$(EVNT1HZ=125)", FEVT="\$(FEVT=124.916)"}
 }
 file "databuftx.db"
 {pattern

@@ -1,90 +1,84 @@
-#include "evgEvtClk.h"
 
 #include <stdio.h>
 #include <errlog.h> 
 #include <stdexcept>
+#include <sstream>
 
 #include <mrfCommonIO.h> 
 #include <mrfCommon.h> 
 #include <mrfFracSynth.h>
 
+#include "evgMrm.h"
 #include "evgRegMap.h"
 
-evgEvtClk::evgEvtClk(const std::string& name, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgEvtClk>(name),
-m_pReg(pReg),
-m_RFref(0.0f),
-m_fracSynFreq(0.0f) {
-}
-
-evgEvtClk::~evgEvtClk() {
-}
-
 epicsFloat64
-evgEvtClk::getFrequency() const {
-    if(getSource() == ClkSrcInternal)
-        return m_fracSynFreq;
-    else
+evgMrm::getFrequency() const {
+    epicsUInt16 cur = getSource();
+    switch(cur) {
+    case ClkSrcPXIe100:
+        return 100;
+        // case ClkSrcPXIe10: ??
+    case ClkSrcRF:
+    case ClkSrcSplit:
         return getRFFreq()/getRFDiv();
+    default:
+        return m_fracSynFreq;
+    }
 }
 
 void
-evgEvtClk::setRFFreq (epicsFloat64 RFref) {
+evgMrm::setRFFreq (epicsFloat64 RFref) {
     if(RFref < 50.0f || RFref > 1600.0f) {
-        char err[80];
-        sprintf(err, "Cannot set RF frequency to %f MHz. Valid range is 50 - 1600.", RFref);
-        std::string strErr(err);
-        throw std::runtime_error(strErr);
+        std::ostringstream strm;
+        strm<<"Cannot set RF frequency to "<<RFref<<" MHz. Valid range is 50 - 1600.";
+        throw std::runtime_error(strm.str());
     }
 
     m_RFref = RFref;
 }
 
 epicsFloat64
-evgEvtClk::getRFFreq() const {
+evgMrm::getRFFreq() const {
     return m_RFref;    
 }
 
 void
-evgEvtClk::setRFDiv(epicsUInt32 rfDiv) {
-    if(rfDiv < 1    || rfDiv > 32) {
+evgMrm::setRFDiv(epicsUInt32 rfDiv) {
+    if(rfDiv < 1 || rfDiv == 13 || rfDiv > 32) {
         char err[80];
-        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 32", rfDiv);
+        sprintf(err, "Invalid RF Divider %d. Valid range is 1 - 12, 14 - 32", rfDiv);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
-    
-    epicsUInt32 temp = READ32(m_pReg, ClockControl);
-    temp &= ~ClockControl_Div_MASK;
-    temp |= (rfDiv-1)<<ClockControl_Div_SHIFT;
+    m_RFDiv = rfDiv;
 
-    WRITE32(m_pReg, ClockControl, temp);
+    recalcRFDiv();
 }
 
 epicsUInt32
-evgEvtClk::getRFDiv() const {
-    // read 0 -> divide by 1
-    return 1+((READ32(m_pReg, ClockControl)&ClockControl_Div_MASK)>>ClockControl_Div_SHIFT);
+evgMrm::getRFDiv() const {
+    return m_RFDiv;
 }
 
 void
-evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
-    epicsUInt32 controlWord, oldControlWord;
+evgMrm::setFracSynFreq(epicsFloat64 freq) {
     epicsFloat64 error;
 
-    controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
+    epicsUInt32 controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
     if ((!controlWord) || (error > 100.0)) {
         char err[80];
         sprintf(err, "Cannot set event clock speed to %f MHz.\n", freq);            
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }
+    epicsUInt32 uSecDivider = (epicsUInt16)freq;
 
-    oldControlWord=READ32(m_pReg, FracSynthWord);
+    epicsUInt32 oldControlWord=READ32(m_pReg, FracSynthWord),
+                olduSecDivider=READ32(m_pReg, uSecDiv);
 
     /* Changing the control word disturbes the phase of the synthesiser
      which will cause a glitch. Don't change the control word unless needed.*/
-    if(controlWord != oldControlWord){
+    if(controlWord != oldControlWord || uSecDivider!=olduSecDivider){
         WRITE32(m_pReg, FracSynthWord, controlWord);
         epicsUInt32 uSecDivider = (epicsUInt16)freq;
         WRITE32(m_pReg, uSecDiv, uSecDivider);
@@ -94,21 +88,65 @@ evgEvtClk::setFracSynFreq(epicsFloat64 freq) {
 }
 
 epicsFloat64
-evgEvtClk::getFracSynFreq() const {
+evgMrm::getFracSynFreq() const {
     return FracSynthAnalyze(READ32(m_pReg, FracSynthWord), 24.0, 0);
 }
 
 void
-evgEvtClk::setSource (bool clkSrc) {
-    if(clkSrc)
-        BITSET32 (m_pReg, ClockControl, ClockControl_EXTRF);
-    else 
-        BITCLR32 (m_pReg, ClockControl, ClockControl_EXTRF);
+evgMrm::setSource (epicsUInt16 clkSrc) {
+    switch(clkSrc) {
+    case ClkSrcInternal:
+    case ClkSrcRF:
+    case ClkSrcPXIe100:
+    case ClkSrcRecovered:
+    case ClkSrcSplit:
+    case ClkSrcPXIe10:
+    case ClkSrcRecovered_2:
+        m_ClkSrc = (ClkSrc)clkSrc;
+
+        recalcRFDiv();
+        return;
+    }
+
+    throw std::invalid_argument("Invalid clock source");
 }
 
-bool
-evgEvtClk::getSource() const {
-    epicsUInt32 clkReg = READ32(m_pReg, ClockControl);
-    return clkReg & ClockControl_EXTRF;
+epicsUInt16 evgMrm::getSource() const {
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+    cur &= ClockControl_Sel_MASK;
+    return cur >> ClockControl_Sel_SHIFT;
 }
 
+bool evgMrm::pllLocked() const
+{
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+    epicsUInt32 mask = 0;
+    if(version()>=MRFVersion(2, 7, 0))
+        mask |= ClockControl_plllock|ClockControl_cglock;
+    return (cur&mask)==mask;
+}
+
+void evgMrm::recalcRFDiv()
+{
+    epicsUInt32 cur = READ32(m_pReg, ClockControl);
+
+    cur &= ~ClockControl_Sel_MASK;
+    cur &= ~ClockControl_Div_MASK;
+
+    epicsUInt32 div = m_RFDiv-1; // /1 -> 0, /2 -> 1, etc.
+
+    switch(m_ClkSrc) {
+    case ClkSrcInternal:
+    case ClkSrcRecovered:
+    case ClkSrcRecovered_2:
+        // disable RF input
+        div = 0xc; // /13 is magic for OFF
+        break;
+    default:
+        break;
+    }
+
+    cur |= (div<<ClockControl_Div_SHIFT)&ClockControl_Div_MASK;
+    cur |= (epicsUInt32(m_ClkSrc)<<ClockControl_Sel_SHIFT)&ClockControl_Sel_MASK;
+    WRITE32(m_pReg, ClockControl, cur);
+}

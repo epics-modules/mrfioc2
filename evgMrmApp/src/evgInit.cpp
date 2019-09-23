@@ -13,7 +13,7 @@
 
 #include <epicsExit.h>
 #include <epicsThread.h>
-#include <epicsStdio.h>
+#include <epicsStdio.h> // redirects stdout/err
 #include <epicsString.h>
 
 #include <iocsh.h>
@@ -23,6 +23,7 @@
 
 #include "mrf/object.h"
 #include "mrf/databuf.h"
+#include "mrf/pollirq.h"
 #include "mrmpci.h"
 
 #include <devcsr.h>
@@ -51,10 +52,57 @@ static epicsUInt8 vme_level_mask = 0;
 
 static const
 struct VMECSRID vmeEvgIDs[] = {
+/* VME-EVG-230 */
 {MRF_VME_IEEE_OUI,
     MRF_VME_EVG_BID|MRF_SERIES_230,
     VMECSRANY},
+/* VME-EVM-300 */
+{MRF_VME_IEEE_OUI,
+    MRF_VME_EVM_BID,
+    VMECSRANY},
 VMECSR_END
+};
+
+static const evgMrm::Config conf_vme_evg_230 = {
+    "VME-EVG-230",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_pci_misc = {
+    "Unknown PCI",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_220 = {
+    "cPCI-EVG-220",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_230 = {
+    "cPCI-EVG-230",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_cpci_evg_300 = {
+    "cPCI-EVG-300",
+    2,
+    4,
+    16,
+};
+
+static const evgMrm::Config conf_mtca_evm_300 = {
+    "mTCA-EVM-300",
+    3,
+    16,
+    0,
 };
 
 static bool
@@ -114,14 +162,11 @@ inithooks(initHookState state) {
     }
 }
 
-void checkVersion(volatile epicsUInt8 *base, unsigned int required,
-                  unsigned int recommended)
+void checkVersion(volatile epicsUInt8 *base, const MRFVersion& required,
+                  const MRFVersion& recommended)
 {
-    epicsUInt32 type, ver;
+    epicsUInt32 type;
     epicsUInt32 v = READ32(base, FPGAVersion);
-
-    if(v & FPGAVersion_ZERO_MASK)
-        throw std::runtime_error("Invalid firmware version (HW or bus error)");
 
     type = v & FPGAVersion_TYPE_MASK;
     type = v >> FPGAVersion_TYPE_SHIFT;
@@ -129,14 +174,15 @@ void checkVersion(volatile epicsUInt8 *base, unsigned int required,
     if(type != 0x2)
         throw std::runtime_error("Address does not correspond to an EVG");
 
-    ver = v & FPGAVersion_VER_MASK;
+    MRFVersion ver(v);
 
     if(ver < required) {
-        printf("Firmware version >= %u is required\n", required);
-        throw std::runtime_error("Firmware version not supported");
+        std::ostringstream msg;
+        msg<<"Firmware version >= "<<required<<" is required\n";
+        throw std::runtime_error(msg.str());
 
     } else if(ver < recommended) {
-        printf("Firmware version >= %u is recommended, please consider upgrading\n", required);
+        std::cout<<"Firmware version >= "<<recommended<<" is recommended, please consider upgrading\n";
     }
 }
 
@@ -163,7 +209,7 @@ mrmEvgSetupVME (
 
     try {
         if(mrf::Object::getObject(id)){
-            errlogPrintf("ID %s already in use\n",id);
+            printf("ID %s already in use\n",id);
             return -1;
         }
 
@@ -172,7 +218,7 @@ mrmEvgSetupVME (
                 devCSRTestSlot(vmeEvgIDs,slot,&info);
 
         if(!csrCpuAddr) {
-            errlogPrintf("No EVG in slot %d\n",slot);
+            printf("No EVG in slot %d\n",slot);
             return -1;
         }
 
@@ -182,7 +228,7 @@ mrmEvgSetupVME (
         
         epicsUInt32 xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1));
         if(xxx)
-            errlogPrintf("Warning: EVG not in power on state! (%08x)\n", xxx);
+            printf("Warning: EVG not in power on state! (%08x)\n", xxx);
 
         /*Setting the base address of Register Map on VME Board (EVG)*/
         CSRSetBase(csrCpuAddr, 1, vmeAddress, VME_AM_STD_SUP_DATA);
@@ -211,7 +257,7 @@ mrmEvgSetupVME (
                     );
 
         if(status) {
-            errlogPrintf("Failed to map VME address %08x\n", vmeAddress);
+            printf("Failed to map VME address %08x\n", vmeAddress);
             return -1;
         }
 
@@ -223,9 +269,14 @@ mrmEvgSetupVME (
             }
         }
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
-        checkVersion(regCpuAddr, 3, 3);
+        checkVersion(regCpuAddr, MRFVersion(0, 3, 0), MRFVersion(0, 3, 0));
 
-        evgMrm* evg = new evgMrm(id, bus, regCpuAddr, NULL);
+        const evgMrm::Config *conf = &conf_vme_evg_230;
+
+        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp);
+
+        evgMrm* evg = new evgMrm(id, conf, bus, regCpuAddr, NULL);
 
         if(irqLevel > 0 && irqVector >= 0) {
             /*Configure the Interrupt level and vector on the EVG board*/
@@ -249,7 +300,7 @@ mrmEvgSetupVME (
 
             /*Connect Interrupt handler to vector*/
             if(devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr_vme, evg)){
-                errlogPrintf("ERROR:Failed to connect VME IRQ vector %d\n"
+                printf("ERROR:Failed to connect VME IRQ vector %d\n"
                              ,irqVector&0xff);
                 delete evg;
                 return -1;
@@ -259,7 +310,7 @@ mrmEvgSetupVME (
         errlogFlush();
         return 0;
     } catch(std::exception& e) {
-        errlogPrintf("Error: %s\n",e.what());
+        printf("Error: %s\n",e.what());
     }
     errlogFlush();
     return -1;
@@ -276,19 +327,19 @@ bool checkUIOVersion(int vmin, int vmax, int *actual)
 
     fd = fopen(ifaceversion, "r");
     if(!fd) {
-        errlogPrintf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
+        printf("Can't open %s in order to read kernel module interface version. Kernel module not loaded or too old.\n", ifaceversion);
         return true;
     }
     if(fscanf(fd, "%d", &version)!=1) {
         fclose(fd);
-        errlogPrintf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
+        printf("Failed to read %s in order to get the kernel module interface version.\n", ifaceversion);
         return true;
     }
     fclose(fd);
 
     // Interface versions are *not* expected to be backwords or forwards compatible.
     if(version<vmin || version>vmax) {
-        errlogPrintf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
+        printf("Error: Expect MRF kernel module interface version between [%d, %d], found %d.\n", vmin, vmax, version);
         return true;
     }
     if(actual)
@@ -305,6 +356,7 @@ mrmevgs[] = {
     DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_SUBDEVICE_ID_MRF_PXIEVG_220, PCI_VENDOR_ID_MRF),
     DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_PLX_9030, PCI_VENDOR_ID_PLX,PCI_DEVICE_ID_MRF_PXIEVG230, PCI_VENDOR_ID_MRF),
     DEVPCI_DEVICE_VENDOR(PCI_DEVICE_ID_MRF_CPCIEVG300, PCI_VENDOR_ID_MRF),
+    DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV, PCI_VENDOR_ID_XILINX, PCI_DEVICE_ID_MRF_MTCA_EVM_300, PCI_VENDOR_ID_MRF),
     DEVPCI_END
 };
 
@@ -331,7 +383,7 @@ mrmEvgSetupPCI (
 
     try {
         if (mrf::Object::getObject(id)) {
-            errlogPrintf("ID %s already in use\n", id);
+            printf("ID %s already in use\n", id);
             return -1;
         }
 
@@ -357,7 +409,7 @@ mrmEvgSetupPCI (
         bus.busType = busType_pci;
         bus.pci.dev = cur;
 
-        printf("Device %s  %u:%u.%u\n", id, cur->bus, cur->device,
+        printf("Device %s  %x:%x.%x\n", id, cur->bus, cur->device,
                cur->function);
         printf("Using IRQ %u\n", cur->irq);
 
@@ -365,11 +417,11 @@ mrmEvgSetupPCI (
         volatile epicsUInt8 *BAR_plx, *BAR_evg;
 
         if (devPCIToLocalAddr(cur, 0, (volatile void**) (void *) &BAR_plx, 0)) {
-            errlogPrintf("Failed to map BARs 0\n");
+            printf("Failed to map BARs 0\n");
             return -1;
         }
         if (!BAR_plx) {
-            errlogPrintf("BAR0 mapped to zero? (%08lx)\n",
+            printf("BAR0 mapped to zero? (%08lx)\n",
                          (unsigned long) BAR_plx);
             return -1;
         }
@@ -377,11 +429,11 @@ mrmEvgSetupPCI (
         switch(cur->id.device) {
         case PCI_DEVICE_ID_PLX_9030: /* cPCI-EVG-220 and cPCI-EVG-230 */
             if (devPCIToLocalAddr(cur, 2, (volatile void**) (void *) &BAR_evg, 0)) {
-                errlogPrintf("Failed to map BARs 2\n");
+                printf("Failed to map BARs 2\n");
                 return -1;
             }
             if (!BAR_evg) {
-                errlogPrintf("BAR2 mapped to zero? (%08lx)\n",
+                printf("BAR2 mapped to zero? (%08lx)\n",
                              (unsigned long) BAR_evg);
                 return -1;
             }
@@ -393,6 +445,7 @@ mrmEvgSetupPCI (
 #endif
             break;
         case PCI_DEVICE_ID_MRF_CPCIEVG300:
+        case PCI_DEVICE_ID_XILINX_DEV:
             BAR_evg = BAR_plx;
             /* the endianness the 300 series devices w/o PLX bridge
              * is a little tricky to setup.  byte order swapping is controlled
@@ -411,43 +464,58 @@ mrmEvgSetupPCI (
 
             break;
         default:
-            errlogPrintf("Unknown/unsupported PCI device 0x%04x\n", (unsigned)cur->device);
+            printf("Unknown/unsupported PCI device 0x%04x\n", (unsigned)cur->device);
             return -1;
         }
 
         printf("FPGA version: %08x\n", READ32(BAR_evg, FPGAVersion));
-        checkVersion(BAR_evg, 3, 8);
+        checkVersion(BAR_evg, MRFVersion(0, 3, 0), MRFVersion(0, 8, 0));
 
         /*Disable the interrupts and enable them at the end of iocInit via initHooks*/
         WRITE32(BAR_evg, IrqFlag, READ32(BAR_evg, IrqFlag));
         WRITE32(BAR_evg, IrqEnable, 0);
 
-        evgMrm* evg = new evgMrm(id, bus, BAR_evg, cur);
+        const evgMrm::Config *conf = &conf_pci_misc;
+
+        if(cur->id.device==PCI_DEVICE_ID_MRF_CPCIEVG300) {
+            conf = &conf_cpci_evg_300;
+        } else switch(cur->id.sub_device) {
+        case PCI_SUBDEVICE_ID_MRF_PXIEVG_220: conf = &conf_cpci_evg_220; break;
+        case PCI_DEVICE_ID_MRF_PXIEVG230: conf = &conf_cpci_evg_230; break;
+        case PCI_DEVICE_ID_MRF_MTCA_EVM_300: conf = &conf_mtca_evm_300; break;
+        }
+
+        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp);
+
+        evgMrm* evg = new evgMrm(id, conf, bus, BAR_evg, cur);
+
+        MRFVersion ver(evg->version());
 
 #if !defined(__linux__) && !defined(_WIN32)
         if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // Enable active high interrupt1 through the PLX to the PCI bus.
             LE_WRITE16(BAR_plx, INTCSR,	INTCSR_INT1_Enable| INTCSR_INT1_Polarity| INTCSR_PCI_Enable);
         }
-        if(evg->getFwVersionID()>=8) {
+        if(ver>=MRFVersion(0, 8, 0)) {
             // RTOS doesn't need this, so always enable
             WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
         }
 #else
-        if(evg->getFwVersionID()>=8 && kifacever>=2) {
+        if(ver>=MRFVersion(0, 8, 0) && kifacever>=2) {
             // PCI master enable supported by firmware and kernel module.
             // the kernel will set this bit when devPCIEnableInterrupt() is called
         } else if(cur->id.device==PCI_DEVICE_ID_PLX_9030) {
             // PLX based devices don't need special handling
             WRITE32(BAR_evg, PCI_MIE, EVG_MIE_ENABLE);
-        } else if(evg->getFwVersionID()<8) {
+        } else if(ver<MRFVersion(0, 8, 0)) {
             // old firmware and (maybe) old kernel module.
             // this will still work, so just complain
-            errlogPrintf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
+            printf("Warning: this configuration of FW and SW is known to have race conditions in interrupt handling.\n"
                          "         Please consider upgrading to FW version 8.\n");
             if(kifacever<2)
-                errlogPrintf("         Also upgrade the linux kernel module to interface version 2.");
-        } else if(evg->getFwVersionID()>=8 && kifacever<2) {
+                printf("         Also upgrade the linux kernel module to interface version 2.");
+        } else if(ver>=MRFVersion(0, 8, 0) && kifacever<2) {
             // New firmware w/ old kernel module, this won't work
             throw std::runtime_error("FW version 8 for this device requires a linux kernel module w/ interface version 2");
         } else {
@@ -459,15 +527,12 @@ mrmEvgSetupPCI (
         }
 #endif
 
-#ifdef __linux__
-        evg->isrLinuxPvt = (void*) cur;
-#endif
         int ret;
         /*Connect Interrupt handler to isr thread*/
-        if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {//devConnectInterruptVME(irqVector & 0xff, &evgMrm::isr, evg)){
+        if ((ret=devPCIConnectInterrupt(cur, &evgMrm::isr_pci, (void*) evg, 0))!=0) {
             char buf[80];
             errSymLookup(ret, buf, sizeof(buf));
-            errlogPrintf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
+            printf("ERROR:Failed to connect PCI interrupt. err (%d) %s\n", ret, buf);
             delete evg;
             return -1;
         } else {
@@ -477,7 +542,7 @@ mrmEvgSetupPCI (
         return 0;
 
     } catch (std::exception& e) {
-        errlogPrintf("Error: %s\n", e.what());
+        printf("Error: %s\n", e.what());
     }
     return -1;
 } //mrmEvgSetupPCI
@@ -650,8 +715,7 @@ reportCard(mrf::Object* obj, void* arg) {
         return true;
 
     printf("EVG: %s     \n", evg->getId().c_str());
-    printf("\tFPGA Version: %08x (firmware: %x)\n", evg->getFwVersion(), evg->getFwVersionID());
-    printf("\tForm factor: %s\n", evg->getFormFactorStr().c_str());
+    printf("\tFPGA Version: %s\n", evg->getFwVersionStr().c_str());
 
     const bus_configuration *bus = evg->getBusConfiguration();
     if(bus->busType == busType_vme){

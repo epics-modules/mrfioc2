@@ -1,22 +1,45 @@
-record(bo, "$(P)Source-Sel") {
+record(mbbo, "$(P)Source-Sel") {
     field( DESC, "EVG Evt Clk Source")
-    field( DTYP, "Obj Prop bool")
+    field( DTYP, "Obj Prop uint16")
     field( OUT,  "@OBJ=$(OBJ), PROP=Source")
     field( PINI, "YES")
     field( VAL,  "0")
-    field( UDF,  "0")
-    field( ZNAM, "FracSyn")
-    field( ONAM, "RF")
+    field( ZRST, "FracSyn (Int)")
+    field( ONST, "RF (Ext)")
+    field( TWST, "Upstream (fanout)")
+    field( THST, "Upstream/2")
+    field( FRST, "Split")
+    field( FVST, "PXIe 100MHz")
+    field( SXST, "PXIe 10MHz")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "4")
+    field( THVL, "7")
+    field( FRVL, "5")
+    field( FVVL, "2")
+    field( SXVL, "6")
     field( FLNK, "$(P)Source-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)Source-RB") {
+record(mbbi, "$(P)Source-RB") {
     field( DESC, "EVG Evt Clk Source")
-    field( DTYP, "Obj Prop bool")
+    field( DTYP, "Obj Prop uint16")
     field( INP , "@OBJ=$(OBJ), PROP=Source")
-    field( ZNAM, "FracSyn")
-    field( ONAM, "RF")
+    field( ZRST, "FracSyn (Int)")
+    field( ONST, "RF (Ext)")
+    field( TWST, "Upstream (fanout)")
+    field( THST, "Upstream/2")
+    field( FRST, "Split")
+    field( FVST, "PXIe 100MHz")
+    field( SXST, "PXIe 10MHz")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "4")
+    field( THVL, "7")
+    field( FRVL, "5")
+    field( FVVL, "2")
+    field( SXVL, "6")
     field( FLNK, "$(P)Frequency-RB")
 }
 
@@ -122,6 +145,17 @@ record(ai, "$(P)Frequency-RB") {
     field( INP,  "@OBJ=$(OBJ), PROP=Frequency")
     field( EGU,  "MHz")
     field( PREC, "3")
+}
+
+record(bi, "$(P)Pll-Sts") {
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=PLL Lock Status")
+  field(SCAN, "1 second")
+  field(PINI, "YES")
+  field(DESC, "Status of PLL")
+  field(ZNAM, "Error")
+  field(ONAM, "OK")
+  field(ZSV , "MAJOR")
 }
 
 

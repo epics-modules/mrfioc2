@@ -101,7 +101,6 @@
 //
 #define  U32_FPGAVersion        0x002C  // FPGA Firmware Version
 
-#define FPGAVersion_ZERO_MASK   0x00FFFF00
 #define FPGAVersion_TYPE_MASK   0xF0000000
 #define FPGAVersion_FORM_MASK   0x0F000000
 #define FPGAVersion_FORM_SHIFT  24
@@ -115,9 +114,13 @@
 
 #define  U32_ClockControl       0x0050
 
+#define  ClockControl_plllock   0x80000000
+#define  ClockControl_Sel_MASK  0x07000000
+#define  ClockControl_Sel_SHIFT 24
 #define  ClockControl_Div_MASK  0x003f0000
 #define  ClockControl_Div_SHIFT 16
 #define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select
+#define  ClockControl_cglock    0x00000200
 
 
 #define  U8_ClockSource         0x0050  // Event Clock Source(Internal or RF Input)
@@ -150,6 +153,10 @@
 // RF Recovery
 //
 #define  U32_RxInitPS           0x0088  // Initial Value For RF Recovery DCM Phase
+
+// SPI device access (eg. FPGA configuration eeprom)
+#define U32_SPIDData    0x0A0
+#define U32_SPIDCtrl    0x0A4
 
 //=====================
 // Trigger Event Control Registers
@@ -260,6 +267,8 @@
 #define  EVG_DIS_EVT_REC        0x40000000
 #define  EVG_REV_PWD_DOWN       0x20000000
 #define  EVG_MXC_RESET          0x01000000
+#define  EVG_BCGEN              0x00800000
+#define  EVG_DCMST              0x00400000
 
 /**************************************************************************************************/
 /* Input                                                                                          */
@@ -275,9 +284,6 @@
 #define evgNumDbusBit 8
 #define evgNumFrontOut 6
 #define evgNumUnivOut 4
-#define evgNumFrontInp 2
-#define evgNumUnivInp 4
-#define evgNumRearInp 16
 #define evgNumSeqRam 2
 #define evgAllowedTsGitter 0.5f
 #define evgEndOfSeqBuf 5

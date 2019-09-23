@@ -38,6 +38,7 @@
 #include <epicsVersion.h>
 #include <epicsMutex.h>
 #include <epicsThread.h>
+#include <epicsStdio.h> /* redirects stdout/err */
 #include <callback.h>
 #include <drvSup.h>
 #include <recGbl.h>
@@ -379,9 +380,9 @@ static void ntpShmReport(int)
     epicsMutexUnlock(ntpShm.ntplock);
 
     if(evr) {
-        fprintf(stderr, "Driver is active\n ok#: %u\n fail#: %u\n", ok, fail);
+        printf("Driver is active\n ok#: %u\n fail#: %u\n", ok, fail);
     } else {
-        fprintf(stderr, "Driver is not active\n");
+        printf("Driver is not active\n");
     }
 }
 

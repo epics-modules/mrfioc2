@@ -13,7 +13,6 @@
 #define EVRMRML_H_INC
 
 #include "evr/evr.h"
-#include "mrf/spi.h"
 
 #include <string>
 #include <vector>
@@ -37,6 +36,7 @@
 #include "delayModule.h"
 #include "drvemRxBuf.h"
 #include "mrmevrseq.h"
+#include "mrmspi.h"
 
 #include "mrmGpio.h"
 #include "mrmtimesrc.h"
@@ -80,7 +80,7 @@ struct epicsShareClass eventCode {
  * 
  */
 class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
-                                      mrf::SPIInterface,
+                               public MRMSPI,
                                public TimeStampSource
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
@@ -114,10 +114,6 @@ private:
     void cleanup();
 public:
 
-    // SPI access
-    virtual void select(unsigned id);
-    virtual epicsUInt8 cycle(epicsUInt8 in);
-
     virtual void lock() const OVERRIDE FINAL {evrLock.lock();}
     virtual void unlock() const OVERRIDE FINAL {evrLock.unlock();};
 
@@ -141,6 +137,9 @@ public:
     virtual double clock() const OVERRIDE FINAL
         {SCOPED_LOCK(evrLock);return eventClock;}
     virtual void clockSet(double) OVERRIDE FINAL;
+
+    epicsUInt16 clockMode() const;
+    void clockModeSet(epicsUInt16 mode);
 
     virtual bool pllLocked() const OVERRIDE FINAL;
 
@@ -211,6 +210,7 @@ public:
     static void isr(EVRMRM *evr, bool pci);
     static void isr_pci(void*);
     static void isr_vme(void*);
+    static void isr_poll(void*);
 #if defined(__linux__) || defined(_WIN32)
     const void *isrLinuxPvt;
 #endif

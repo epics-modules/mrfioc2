@@ -7,9 +7,13 @@
 #define FLASH_H
 
 #include <vector>
+#include <string>
+#include <istream>
 
 #include <epicsTypes.h>
 #include <shareLib.h>
+
+#include <mrfCommon.h>
 
 namespace mrf {
 
@@ -32,8 +36,8 @@ public:
 
         const char *vendorName;
         epicsUInt32 capacity, //!< total capacity in bytes
-                    sectorSize, //!< SECTOR ERASE (0xd8) size.  A power of 2
-                    pageSize;   //!< PAGE PROGRAM (0x02) size.  A power of 2
+                    sectorSize, //!< SECTOR ERASE (0xd8) size in bytes.  Always a power of 2
+                    pageSize;   //!< PAGE PROGRAM (0x02) size in bytes.  Always a power of 2
 
         std::vector<epicsUInt8> SN;
     };
@@ -46,6 +50,8 @@ public:
     inline epicsUInt32 alignement() { check(); return (info.pageSize-1)|(info.sectorSize-1); }
     // optimal block size of write operation
     inline epicsUInt32 blockSize() { return alignement()+1u; }
+    inline epicsUInt32 pageSize() { check(); return info.pageSize; }
+    inline epicsUInt32 sectorSize() { check(); return info.sectorSize; }
 
     void read(epicsUInt32 start, epicsUInt32 count, epicsUInt8 *in);
     inline void read(epicsUInt32 start, std::vector<epicsUInt8>& in)
@@ -77,6 +83,31 @@ private:
         ~WriteEnabler()
         { dev.writeEnable(false); }
     };
+};
+
+//! Adapt CFIFlash for use with std::istream
+class epicsShareClass CFIStreamBuf : public std::streambuf
+{
+    CFIFlash& flash;
+    epicsUInt32 pos;
+    std::vector<char> buf;
+public:
+    CFIStreamBuf(CFIFlash& flash);
+
+    virtual int_type underflow() OVERRIDE FINAL;
+
+    virtual pos_type seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode mode) OVERRIDE FINAL;
+    virtual pos_type seekpos(pos_type pos, std::ios_base::openmode mode) OVERRIDE FINAL;
+};
+
+//! Attempt to read out the header of a Xilinx bitstream file.
+struct epicsShareClass XilinxBitInfo
+{
+    XilinxBitInfo() {}
+
+    bool read(std::istream& strm);
+
+    std::string project, part, date;
 };
 
 } // namespace mrf

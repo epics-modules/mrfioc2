@@ -6,6 +6,7 @@ include $(TOP)/configure/CONFIG
 USR_DBFLAGS += -I$(TOP)/mrmShared/Db
 
 DB += mrmevrout.db
+DB += mrmevrbase.template
 DB += mrmevrdc.template
 DB += mrmevrbufrx.db
 DB += sequencedemo.db

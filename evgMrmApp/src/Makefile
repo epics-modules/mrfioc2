@@ -6,6 +6,8 @@ include $(TOP)/configure/CONFIG
 #=============================
 
 USR_INCLUDES += -I$(TOP)/mrmShared/src
+USR_INCLUDES += -I$(TOP)/mrfCommon/src
+USR_INCLUDES += -I$(TOP)/evrMrmApp/src
 
 LIBRARY_IOC += evgmrm
 
@@ -44,6 +46,8 @@ evgmrm_SRCS += devEvgDbus.cpp
 evgmrm_SRCS += evgInput.cpp
 
 evgmrm_SRCS += evgOutput.cpp
+
+evgmrm_SRCS += fct.cpp
 
 evgmrm_SRCS += mrmevgseq.cpp
 
