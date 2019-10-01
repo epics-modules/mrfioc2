@@ -192,6 +192,10 @@ OBJECT_BEGIN(PreScaler) {
 
     OBJECT_PROP2("Divide", &PreScaler::prescaler, &PreScaler::setPrescaler);
 
+    OBJECT_PROP2("Phase Offset", &PreScaler::prescalerPhasOffs, &PreScaler::setPrescalerPhasOffs);
+
+    OBJECT_PROP2("Pulse Trig", &PreScaler::prescalerPulsTrig, &PreScaler::setPrescalerPulsTrig);
+
 } OBJECT_END(PreScaler)
 
 

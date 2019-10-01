@@ -36,3 +36,43 @@ record(waveform, "$(SN)Label-I") {
   field(NELM, "128")
   info(autosaveFields_pass1, "VAL")
 }
+
+record(longout, "$(SN)PhasOffs-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( OUT , "@OBJ=$(OBJ), PROP=Phase Offset")
+  field( PINI, "YES")
+  field( VAL , "0")
+  field( HOPR, "0xffffffff")
+  field( LOPR, "0")
+  field( DRVH, "0xffffffff")
+  field( DRVL, "0")
+  field( FLNK, "$(SN)PhasOffs-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SN)PhasOffs-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( INP , "@OBJ=$(OBJ), PROP=Phase Offset")
+}
+
+record(longout, "$(SN)PulsTrig-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Pulse Trig")
+  field( OUT , "@OBJ=$(OBJ), PROP=Pulse Trig")
+  field( PINI, "YES")
+  field( VAL , "0")
+  field( HOPR, "0xffff")
+  field( LOPR, "0")
+  field( DRVH, "0xffff")
+  field( DRVL, "0")
+  field( FLNK, "$(SN)PulsTrig-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SN)PulsTrig-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Pulse Trig")
+  field( INP , "@OBJ=$(OBJ), PROP=Pulse Trig")
+}
