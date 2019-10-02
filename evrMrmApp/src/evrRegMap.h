@@ -348,7 +348,7 @@
 #define MappingRamBlockSet       0x8
 #define MappingRamBlockReset     0xc
 
-#define U32__MappingRam(M,E,N) (U32_MappingRam_base + (0x2000*(M)) + (0x10*(E)) + (N))
+#define U32__MappingRam(M,E,N) (U32_MappingRam_base + (0x1000*(M)) + (0x10*(E)) + (N))
 #define U32_MappingRam(M,E,N) U32__MappingRam(M,E, MappingRamBlock##N)
 
 // MappingRam actions
