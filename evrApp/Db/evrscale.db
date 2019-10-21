@@ -17,13 +17,20 @@ record(longout, "$(SN)Div-SP") {
   field( LOPR, "2")
   field( DRVH, "$(MAX=0xffff)")
   field( DRVL, "2")
-  field( FLNK, "$(SN)Rate-I")
+  field( FLNK, "$(SN)Div-RB")
   info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SN)Div-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX)")
+  field( INP , "@OBJ=$(OBJ), PROP=Divide")
+  field( FLNK, "$(SN)Rate-I")
 }
 
 record(calc, "$(SN)Rate-I") {
   field(DESC, "Output frequency")
-  field(INPA, "$(SN)Div-SP NPP")
+  field(INPA, "$(SN)Div-RB NPP")
   field(INPB, "$(P)Link:Clk-I CP")
   field(CALC, "B/A")
   field(EGU, "MHz")
