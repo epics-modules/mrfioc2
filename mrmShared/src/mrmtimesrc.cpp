@@ -247,7 +247,7 @@ void TimeStampSource::softSecondsSrc(bool enable)
 
         } else if(!enable && impl->softsrc.get()) {
             impl->stopsrc = true;
-            cleanup.swap(impl->softsrc);
+            cleanup = PTRMOVE(impl->softsrc);
         }
     }
     if(cleanup.get()) {
