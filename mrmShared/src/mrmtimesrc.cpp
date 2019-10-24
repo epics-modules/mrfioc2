@@ -231,27 +231,28 @@ double TimeStampSource::deltaSeconds() const
 void TimeStampSource::softSecondsSrc(bool enable)
 {
 #ifdef HAVE_CNS
-    Guard G(impl->mutex);
-    if(enable && !impl->softsrc.get()) {
-        // start it
-        impl->stopsrc = false;
-        impl->softsrc.reset(new epicsThread(impl->softsrcRun,
-                                            "SoftTimeSrc",
-                                            epicsThreadGetStackSize(epicsThreadStackSmall),
-                                            epicsThreadPriorityHigh));
-        impl->softsrc->start();
+    mrf::auto_ptr<epicsThread> cleanup;
+    {
+        Guard G(impl->mutex);
+        if(enable && !impl->softsrc.get()) {
+            // start it
+            impl->stopsrc = false;
+            impl->softsrc.reset(new epicsThread(impl->softsrcRun,
+                                                "SoftTimeSrc",
+                                                epicsThreadGetStackSize(epicsThreadStackSmall),
+                                                epicsThreadPriorityHigh));
+            impl->softsrc->start();
 
-        resyncSecond();
+            resyncSecond();
 
-    } else if(!enable && impl->softsrc.get()) {
-        impl->stopsrc = true;
-        {
-            UnGuard U(G);
-            impl->wakeup.signal();
-            impl->softsrc->exitWait();
+        } else if(!enable && impl->softsrc.get()) {
+            impl->stopsrc = true;
+            cleanup.swap(impl->softsrc);
         }
-        impl->softsrc.reset();
-
+    }
+    if(cleanup.get()) {
+        impl->wakeup.signal();
+        cleanup->exitWait();
     }
 #else
     if(enable)

@@ -1048,12 +1048,17 @@ void EVRMRM::setTimeSrc(epicsUInt32 raw)
     }
     timeSrcMode_t mode((timeSrcMode_t)raw);
 
-    SCOPED_LOCK(evrLock);
+    bool changed;
+    {
+        SCOPED_LOCK(evrLock);
 
-    if(timeSrcMode!=mode)
+        changed = timeSrcMode!=mode;
+
+        timeSrcMode = mode;
+    }
+
+    if(changed)
         softSecondsSrc(mode==SysClk);
-
-    timeSrcMode = mode;
 }
 
 OBJECT_BEGIN2(EVRMRM, EVR)
