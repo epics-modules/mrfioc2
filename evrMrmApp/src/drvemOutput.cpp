@@ -50,6 +50,7 @@ void
 MRMOutput::setSource(epicsUInt32 v)
 {
     if( ! ( (v<=63 && v>=61) ||
+            (v<=55 && v>=48) ||
             (v<=42 && v>=32) ||
             (v<=15) )
     )
@@ -66,6 +67,7 @@ void
 MRMOutput::setSource2(epicsUInt32 v)
 {
     if( ! ( (v<=63 && v>=61) ||
+            (v<=55 && v>=48) ||
             (v<=42 && v>=32) ||
             (v<=15) )
     )
