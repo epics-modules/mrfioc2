@@ -92,3 +92,23 @@ record(calc, "$(SN)PhasOffs-RB") {
   field( INPA, "$(SN)Div-RB")
   field( INPB, "$(SN)PhasOffs:Raw-RB PP")
 }
+
+record(longout, "$(SN)PulsTrig-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Pulse Trig")
+  field( OUT , "@OBJ=$(OBJ), PROP=Pulse Trig")
+  field( PINI, "YES")
+  field( VAL , "0")
+  field( HOPR, "0xffff")
+  field( LOPR, "0")
+  field( DRVH, "0xffff")
+  field( DRVL, "0")
+  field( FLNK, "$(SN)PulsTrig-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SN)PulsTrig-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Pulse Trig")
+  field( INP , "@OBJ=$(OBJ), PROP=Pulse Trig")
+}

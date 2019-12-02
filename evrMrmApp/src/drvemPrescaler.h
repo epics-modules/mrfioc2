@@ -31,6 +31,9 @@ public:
 
     virtual epicsUInt32 prescalerPhasOffs() const;
     virtual void setPrescalerPhasOffs(epicsUInt32);
+
+    virtual epicsUInt32 prescalerPulsTrig() const;
+    virtual void setPrescalerPulsTrig(epicsUInt32);
 };
 
 #endif // MRMEVRPRESCALER_H_INC

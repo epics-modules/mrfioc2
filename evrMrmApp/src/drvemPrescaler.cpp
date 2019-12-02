@@ -43,3 +43,15 @@ MRMPreScaler::setPrescalerPhasOffs(epicsUInt32 v)
 {
     nat_iowrite32(base + ScalerPhasOffs_offset, v);
 }
+
+epicsUInt32
+MRMPreScaler::prescalerPulsTrig() const
+{
+    return nat_ioread32(base + ScalerPulsTrig_offset);
+}
+
+void
+MRMPreScaler::setPrescalerPulsTrig(epicsUInt32 v)
+{
+    nat_iowrite32(base + ScalerPulsTrig_offset, v);
+}
