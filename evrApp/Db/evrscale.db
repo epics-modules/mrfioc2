@@ -43,3 +43,52 @@ record(waveform, "$(SN)Label-I") {
   field(NELM, "128")
   info(autosaveFields_pass1, "VAL")
 }
+
+record(ao, "$(SN)PhasOffs-SP") {
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( EGU , "Deg")
+  field( OMSL, "supervisory")
+  field( HOPR, "359.9999999999")
+  field( LOPR, "0")
+  field( DRVH, "359.9999999999")
+  field( DRVL, "0")
+  field( FLNK, "$(SN)PhasOffs-CO_")
+}
+
+record(calcout, "$(SN)PhasOffs-CO_") {
+  field( DESC, "Degrees to Event Clock Ticks")
+  field( OUT , "$(SN)PhasOffs:Raw-SP PP")
+  field( CALC, "FLOOR(B/360*A)")
+  field( INPA, "$(SN)Div-RB CPP")
+  field( INPB, "$(SN)PhasOffs-SP")
+}
+
+record(longout, "$(SN)PhasOffs:Raw-SP") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( OUT , "@OBJ=$(OBJ), PROP=Phase Offset")
+  field( PINI, "YES")
+  field( VAL , "0")
+  field( HOPR, "0xffffffff")
+  field( LOPR, "0")
+  field( DRVH, "0xffffffff")
+  field( DRVL, "0")
+  field( FLNK, "$(SN)PhasOffs:Raw-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(SN)PhasOffs:Raw-RB") {
+  field( DTYP, "Obj Prop uint32")
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( INP , "@OBJ=$(OBJ), PROP=Phase Offset")
+  field( PINI, "YES")
+  field( FLNK, "$(SN)PhasOffs-RB")
+}
+
+record(calc, "$(SN)PhasOffs-RB") {
+  field( DESC, "Prescaler $(IDX) Phase Offset")
+  field( CALC, "B/A*360")
+  field( EGU , "Deg")
+  field( INPA, "$(SN)Div-RB")
+  field( INPB, "$(SN)PhasOffs:Raw-RB PP")
+}

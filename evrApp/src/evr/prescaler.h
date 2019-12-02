@@ -26,6 +26,9 @@ public:
   virtual epicsUInt32 prescaler() const=0;
   virtual void setPrescaler(epicsUInt32)=0;
 
+  virtual epicsUInt32 prescalerPhasOffs() const { return 0; };
+  virtual void setPrescalerPhasOffs(epicsUInt32) { };
+
   EVR& owner;
 };
 
