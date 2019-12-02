@@ -14,11 +14,18 @@
 #include "evrRegMap.h"
 
 #include <stdexcept>
+#include <evr/evr.h>
 #include <evr/prescaler.h>
 
 #include <epicsExport.h>
 #include "drvemPrescaler.h"
 
+MRMPreScaler::MRMPreScaler(const std::string& n, EVR& o,volatile unsigned char* b)
+    :base_t(n,o)
+    ,base(b)
+{}
+
+MRMPreScaler::~MRMPreScaler() {}
 
 epicsUInt32
 MRMPreScaler::prescaler() const
@@ -31,3 +38,19 @@ MRMPreScaler::setPrescaler(epicsUInt32 v)
 {
     nat_iowrite32(base, v);
 }
+
+epicsUInt32
+MRMPreScaler::prescalerPhasOffs() const
+{
+    return nat_ioread32(base + ScalerPhasOffs_offset);
+}
+
+void
+MRMPreScaler::setPrescalerPhasOffs(epicsUInt32 v)
+{
+    nat_iowrite32(base + ScalerPhasOffs_offset, v);
+}
+
+OBJECT_BEGIN2(MRMPreScaler, PreScaler)
+    OBJECT_PROP2("Phase Offset", &MRMPreScaler::prescalerPhasOffs, &MRMPreScaler::setPrescalerPhasOffs);
+OBJECT_END(MRMPreScaler)
