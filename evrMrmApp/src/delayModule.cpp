@@ -26,26 +26,26 @@ DelayModule::~DelayModule()
 
 void DelayModule::setDelay0(double val)
 {
-    if(val < 2.050) val = 2.050;
-    if(val > 10.736)val = 10.736;
-	setDelay(true, false, (epicsUInt16)((val - 2.050) * 1023.0 / 8.686), 0);
+    if(val < 0) val = 0;
+    if(val > 8.686)val = 8.686;
+	setDelay(true, false, (epicsUInt16)(val * 1023.0 / 8.686), 0);
 }
 
 double DelayModule::getDelay0() const
 {
-    return (dly0_ * 8.686 / 1023.0) + 2.050;
+    return (dly0_ * 8.686 / 1023.0);
 }
 
 void DelayModule::setDelay1(double val)
 {
-    if(val < 2.050) val = 2.050;
-    if(val > 10.736)val = 10.736;
-	setDelay(false, true, 0, (epicsUInt16)((val - 2.050) * 1023.0 / 8.686));
+    if(val < 0) val = 0;
+    if(val > 8.686)val = 8.686;
+	setDelay(false, true, 0, (epicsUInt16)(val * 1023.0 / 8.686));
 }
 
 double DelayModule::getDelay1() const
 {
-    return (dly1_ * 8.686 / 1023.0) + 2.050;
+    return (dly1_ * 8.686 / 1023.0);
 }
 
 void DelayModule::setState(bool enabled)
