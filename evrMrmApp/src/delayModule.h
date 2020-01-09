@@ -21,7 +21,7 @@ public:
 
     /**
      * @brief setDelay0 Sets the delay of the output 0 in the module
-     * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
+     * @param val Delay in range of 0ns - 8.686ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
     virtual void setDelay0(double val) OVERRIDE FINAL;
     /**
@@ -32,7 +32,7 @@ public:
 
     /**
      * @brief setDelay1 Sets the delay of the output 1 in the module
-     * @param val Delay in range of 2.2ns - 12.43ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
+     * @param val Delay in range of 0ns - 8.686ns. If the value is greater it will be set to maximum range value, if it is smaller it will be set to minimum range value.
      */
     virtual void setDelay1(double val) OVERRIDE FINAL;
     /**
