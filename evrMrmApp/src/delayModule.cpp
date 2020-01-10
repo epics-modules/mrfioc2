@@ -110,11 +110,13 @@ void DelayModule::setDelay(bool output0, bool output1, epicsUInt16 value0, epics
         //    LENB, 0, DB9, DB8, DB7, DB6, DB5, DB4
 
         if(output0){  // output 0 selected = UNIV 0 = DB
-            delay = ((value0 & 0x00f) << 12) | (value0 >> 4);
-            latch = 0x000080;
+            delay |= ((dly1_ & 0x0ff) << 16) | (dly1_ & 0x300);
+            delay |= ((value0 & 0x00f) << 12) | (value0 >> 4);
+            latch |= 0x000080;
             dly0_ = value0;
         }
         if(output1){ // output 1 selected = UNIV 1 = DA
+            delay |= ((dly0_ & 0x00f) << 12) | (dly0_ >> 4);
             delay |= ((value1 & 0x0ff) << 16) | (value1 & 0x300);
             latch |= 0x000800;
             dly1_ = value1;
