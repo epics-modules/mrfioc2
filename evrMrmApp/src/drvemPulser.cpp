@@ -165,7 +165,7 @@ void MRMPulser::setMasks(epicsUInt32 inps)
     inps <<= PulserCtrl_masks_shift;
     inps &= PulserCtrl_masks;
 
-    reg &= ~(PulserCtrl_enables);
+    reg &= ~(PulserCtrl_masks);
 
     WRITE32(owner.base, PulserCtrl(id), reg|inps);
 
