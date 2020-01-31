@@ -199,10 +199,10 @@
 
 /* 0 <= N <= 15 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
-#  define PulserCtrl_masks 0xff0000
-#  define PulserCtrl_masks_shift 16
-#  define PulserCtrl_enables 0xff00
-#  define PulserCtrl_enables_shift 8
+#  define PulserCtrl_masks         0xf0000000
+#  define PulserCtrl_masks_shift   28
+#  define PulserCtrl_enables       0x00f00000
+#  define PulserCtrl_enables_shift 20
 #  define PulserCtrl_ena  0x01
 #  define PulserCtrl_mtrg 0x02
 #  define PulserCtrl_mset 0x04
