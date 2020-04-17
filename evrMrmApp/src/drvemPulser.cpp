@@ -153,6 +153,28 @@ MRMPulser::setPolarityInvert(bool s)
         BITCLR(NAT,32,owner.base, PulserCtrl(id), PulserCtrl_pol);
 }
 
+epicsUInt32 MRMPulser::enables() const
+{
+    return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_enables)>>PulserCtrl_enables_shift;
+}
+
+void MRMPulser::setEnables(epicsUInt32 inps)
+{
+    epicsUInt32 reg = READ32(owner.base, PulserCtrl(id));
+
+    inps <<= PulserCtrl_enables_shift;
+    inps &= PulserCtrl_enables;
+
+    reg &= ~(PulserCtrl_enables);
+
+    WRITE32(owner.base, PulserCtrl(id), reg|inps);
+
+    epicsUInt32 rereg = READ32(owner.base, PulserCtrl(id));
+
+    if((rereg&PulserCtrl_enables)!=inps)
+        throw std::runtime_error("FW doesn't support Pulser enable-gates");
+}
+
 epicsUInt32 MRMPulser::masks() const
 {
     return (READ32(owner.base, PulserCtrl(id)) & PulserCtrl_masks)>>PulserCtrl_masks_shift;
@@ -256,4 +278,5 @@ MRMPulser::sourceSetMap(epicsUInt32 evt,MapType::type action)
 
 OBJECT_BEGIN2(MRMPulser, Pulser)
     OBJECT_PROP2("Masks", &MRMPulser::masks, &MRMPulser::setMasks);
+    OBJECT_PROP2("Enables", &MRMPulser::enables, &MRMPulser::setEnables);
 OBJECT_END(MRMPulser)

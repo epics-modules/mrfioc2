@@ -49,6 +49,8 @@ public:
     virtual bool polarityInvert() const OVERRIDE FINAL;
     virtual void setPolarityInvert(bool) OVERRIDE FINAL;
 
+    epicsUInt32 enables() const;
+    void setEnables(epicsUInt32 inps);
     epicsUInt32 masks() const;
     void setMasks(epicsUInt32 inps);
 
