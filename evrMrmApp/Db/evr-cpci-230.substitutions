@@ -50,14 +50,14 @@ file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
 {"$(SYS){$(D)}1hz",  "$(EVR)", 0x7d, 125}
-{"$(SYS){$(D)}EvtA", "$(EVR)", 10, 10}
-{"$(SYS){$(D)}EvtB", "$(EVR)", 11, 11}
-{"$(SYS){$(D)}EvtC", "$(EVR)", 12, 12}
-{"$(SYS){$(D)}EvtD", "$(EVR)", 13, 13}
-{"$(SYS){$(D)}EvtE", "$(EVR)", 14, 14}
-{"$(SYS){$(D)}EvtF", "$(EVR)", 15, 15}
-{"$(SYS){$(D)}EvtG", "$(EVR)", 16, 16}
-{"$(SYS){$(D)}EvtH", "$(EVR)", 17, 17}
+{"$(SYS){$(D)}EvtA", "$(EVR)", 0x0a, 10}
+{"$(SYS){$(D)}EvtB", "$(EVR)", 0x0b, 11}
+{"$(SYS){$(D)}EvtC", "$(EVR)", 0x0c, 12}
+{"$(SYS){$(D)}EvtD", "$(EVR)", 0x0d, 13}
+{"$(SYS){$(D)}EvtE", "$(EVR)", 0x0e, 14}
+{"$(SYS){$(D)}EvtF", "$(EVR)", 0x0f, 15}
+{"$(SYS){$(D)}EvtG", "$(EVR)", 0x10, 16}
+{"$(SYS){$(D)}EvtH", "$(EVR)", 0x11, 17}
 }
 
 file "evrscale.db"

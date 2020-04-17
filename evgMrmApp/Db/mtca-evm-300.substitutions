@@ -144,14 +144,14 @@ file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
 {"$(SYS){$(D)U}1hz",  "$(EVG):EVRU", 0x7d, 125}
-{"$(SYS){$(D)U}EvtA", "$(EVG):EVRU", 10, 10}
-{"$(SYS){$(D)U}EvtB", "$(EVG):EVRU", 11, 11}
-{"$(SYS){$(D)U}EvtC", "$(EVG):EVRU", 12, 12}
-{"$(SYS){$(D)U}EvtD", "$(EVG):EVRU", 13, 13}
-{"$(SYS){$(D)U}EvtE", "$(EVG):EVRU", 14, 14}
-{"$(SYS){$(D)U}EvtF", "$(EVG):EVRU", 15, 15}
-{"$(SYS){$(D)U}EvtG", "$(EVG):EVRU", 16, 16}
-{"$(SYS){$(D)U}EvtH", "$(EVG):EVRU", 17, 17}
+{"$(SYS){$(D)U}EvtA", "$(EVG):EVRU", 0x0a, 10}
+{"$(SYS){$(D)U}EvtB", "$(EVG):EVRU", 0x0b, 11}
+{"$(SYS){$(D)U}EvtC", "$(EVG):EVRU", 0x0c, 12}
+{"$(SYS){$(D)U}EvtD", "$(EVG):EVRU", 0x0d, 13}
+{"$(SYS){$(D)U}EvtE", "$(EVG):EVRU", 0x0e, 14}
+{"$(SYS){$(D)U}EvtF", "$(EVG):EVRU", 0x0f, 15}
+{"$(SYS){$(D)U}EvtG", "$(EVG):EVRU", 0x10, 16}
+{"$(SYS){$(D)U}EvtH", "$(EVG):EVRU", 0x11, 17}
 }
 
 file "mrmevrout.db"
@@ -312,15 +312,15 @@ file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
 {"$(SYS){$(D)D}1hz",  "$(EVG):EVRD", 0x7d, 125}
-{"$(SYS){$(D)D}EvtA", "$(EVG):EVRD", 10, 10}
-{"$(SYS){$(D)D}EvtB", "$(EVG):EVRD", 11, 11}
-{"$(SYS){$(D)D}EvtC", "$(EVG):EVRD", 12, 12}
-{"$(SYS){$(D)D}EvtD", "$(EVG):EVRD", 13, 13}
-{"$(SYS){$(D)D}EvtE", "$(EVG):EVRD", 14, 14}
-{"$(SYS){$(D)D}EvtF", "$(EVG):EVRD", 15, 15}
-{"$(SYS){$(D)D}EvtG", "$(EVG):EVRD", 16, 16}
-{"$(SYS){$(D)D}EvtH", "$(EVG):EVRD", 17, 17}
-}
+{"$(SYS){$(D)D}EvtA", "$(EVG):EVRD", 0x0a, 10}
+{"$(SYS){$(D)D}EvtB", "$(EVG):EVRD", 0x0b, 11}
+{"$(SYS){$(D)D}EvtC", "$(EVG):EVRD", 0x0c, 12}
+{"$(SYS){$(D)D}EvtD", "$(EVG):EVRD", 0x0d, 13}
+{"$(SYS){$(D)D}EvtE", "$(EVG):EVRD", 0x0e, 14}
+{"$(SYS){$(D)D}EvtF", "$(EVG):EVRD", 0x0f, 15}
+{"$(SYS){$(D)D}EvtG", "$(EVG):EVRD", 0x10, 16}
+{"$(SYS){$(D)D}EvtH", "$(EVG):EVRD", 0x11, 17}
+}0x
 
 file "mrmevrout.db"
 {pattern
