@@ -10,6 +10,7 @@ record(mbbo, "$(P)Enable-Sel") {
     field( TWVL, "2")
     field( PINI, "RUNNING")
     field( VAL,  "1")
+    field( FLNK, "$(P)Enable-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
