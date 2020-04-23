@@ -39,7 +39,7 @@ long select_string(aSubRecord *prec)
         epicsEnum16 sevr, stat;
         if(L[i].type==CONSTANT)
             continue;
-        if(dbGetAlarm(&L[i], &sevr, &stat))
+        if(dbGetAlarm(&L[i], &stat, &sevr))
             continue;
         if(sevr!=NO_ALARM)
             continue;
