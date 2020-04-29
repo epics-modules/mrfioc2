@@ -1,4 +1,22 @@
-language: c
+language: cpp
+compiler: gcc
+dist: xenial
+
+cache:
+  directories:
+  - $HOME/.cache
+
+env:
+  global:
+    - SETUP_PATH=.ci-local
+
+addons:
+  apt:
+    packages:
+    - libreadline6-dev
+    - libncurses5-dev
+    - perl
+    - clang
 
 matrix:
   include:
@@ -24,10 +42,12 @@ matrix:
     env: KSER=4.x KVER=4.9.1 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
   - dist: xenial
     env: KSER=4.x KVER=4.19.67 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
+  - dist: xenial
+    env: KSER=5.x KVER=5.5.19 EXTRA="-C mrmShared/linux KERNELDIR=$HOME/linux"
 
 install:
- - ./.ci/prepare-epics.sh
- - ./.ci/prepare-linux.sh
+ - if [ "$BASE" ]; then ./.ci/travis/prepare.sh; fi
+ - ./.ci-local/prepare-linux.sh
 script:
- - ./.ci/build-epics.sh
- - ./.ci/build-linux.sh
+ - if [ "$BASE" ]; then ./.ci/travis/build.sh; fi
+ - ./.ci-local/build-linux.sh
