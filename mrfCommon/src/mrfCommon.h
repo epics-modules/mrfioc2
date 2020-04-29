@@ -283,6 +283,7 @@ public:
     std::string str() const;
 };
 
+epicsShareExtern
 std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver);
 
 
