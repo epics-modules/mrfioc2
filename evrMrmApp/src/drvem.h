@@ -33,6 +33,7 @@
 #include "drvemPrescaler.h"
 #include "drvemPulser.h"
 #include "drvemCML.h"
+#include "drvemTSBuffer.h"
 #include "delayModule.h"
 #include "drvemRxBuf.h"
 #include "mrmevrseq.h"
@@ -46,7 +47,7 @@
 
 class EVRMRM;
 
-struct epicsShareClass eventCode {
+struct eventCode {
     epicsUInt8 code; // constant
     EVRMRM* owner;
 
@@ -58,6 +59,9 @@ struct epicsShareClass eventCode {
     epicsUInt32 last_sec;
     epicsUInt32 last_evt;
 
+    typedef std::set<EVRMRMTSBuffer*> tbufs_t;
+    tbufs_t tbufs;
+
     IOSCANPVT occured;
 
     typedef std::list<std::pair<EVR::eventCallback,void*> > notifiees_t;
@@ -68,7 +72,7 @@ struct epicsShareClass eventCode {
     bool again;
 
     eventCode():owner(0), interested(0), last_sec(0)
-            ,last_evt(0), notifiees(), waitingfor(0), again(false)
+            ,last_evt(0), waitingfor(0), again(false)
     {
         scanIoInit(&occured);
         // done - initialized in EVRMRM::EVRMRM()
@@ -314,6 +318,8 @@ private:
     void _map(epicsUInt8 evt, epicsUInt8 func)   { _mapped[evt] |=    1<<(func);  }
     void _unmap(epicsUInt8 evt, epicsUInt8 func) { _mapped[evt] &= ~( 1<<(func) );}
     bool _ismap(epicsUInt8 evt, epicsUInt8 func) const { return (_mapped[evt] & 1<<(func)) != 0; }
+
+    friend struct EVRMRMTSBuffer;
 }; // class EVRMRM
 
 #endif // EVRMRML_H_INC

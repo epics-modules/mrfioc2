@@ -1,0 +1,50 @@
+# Capture event timestamps in Buffer.
+#
+# SYS, D - Record name componenets
+# EVR - EVR object name
+# NAME - Capture buffer instance name.  Default (EVR):CPT(CODE)
+# CODE - Capture times of this event
+# TRIG - Flush buffer when this event is received.  may be 0
+
+record(waveform, "$(SYS){$(D)}TS-I") {
+    field(DTYP, "Obj Prop waveform in")
+    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimesRelFlush")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "LONG") # int32
+    field(NELM, "$(NELM=128)")
+    field(TSE , "-2")
+}
+
+record(longout, "$(SYS){$(D)}CptEvt-SP") {
+    field(DTYP, "Obj Prop uint16")
+    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
+    field(VAL , "$(CODE=0)")
+    field(PINI, "YES")
+}
+
+record(longout, "$(SYS){$(D)}FlshEvt-SP") {
+    field(DTYP, "Obj Prop uint16")
+    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
+    field(VAL , "$(TRIG=0)")
+    field(PINI, "YES")
+}
+
+record(bo, "$(SYS){$(D)}Flsh-SP") {
+    field(DTYP, "Obj Prop command")
+    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushManual")
+    field(VAL , "$(TRIG=0)")
+    field(ZNAM, "Flush")
+    field(ONAM, "Flush")
+}
+
+record(longin, "$(SYS){$(D)}Drop-I") {
+    field(DTYP, "Obj Prop uint32")
+    field(SCAN, "10 second")
+    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=DropCnt")
+    field(FLNK, "$(SYS){$(D)}DropRate-I")
+}
+
+record(calc, "$(SYS){$(D)}DropRate-I") {
+    field(INPA, "$(SYS){$(D)}Drop-I NPP")
+    field(CALC, "C:=A-B;B:=A;C/10")
+}

@@ -9,6 +9,7 @@ DB += mrmevrout.db
 DB += mrmevrbase.template
 DB += mrmevrdc.template
 DB += mrmevrbufrx.db
+DB += mrmevrtsbuf.db
 DB += sequencedemo.db
 
 DB += evr-pmc-230.db

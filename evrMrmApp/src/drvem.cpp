@@ -1254,11 +1254,11 @@ EVRMRM::drain_fifo()
     SCOPED_LOCK2(evrLock, guard);
 
     while(true) {
-        int code, err;
+        int msg, err;
 
         guard.unlock();
 
-        err=drain_fifo_wakeup.receive(&code, sizeof(code));
+        err=drain_fifo_wakeup.receive(&msg, sizeof(msg));
 
         if (err<0) {
             errlogPrintf("FIFO wakeup error %d\n",err);
@@ -1266,7 +1266,7 @@ EVRMRM::drain_fifo()
             guard.lock();
             continue;
 
-        } else if(code==1) {
+        } else if(msg==1) {
             // Request thread stop
             guard.lock();
             break;
@@ -1308,8 +1308,41 @@ EVRMRM::drain_fifo()
 
             eventCode& evt = events[code];
 
+            // cache of last time
             evt.last_sec=READ32(base, EvtFIFOSec);
             evt.last_evt=READ32(base, EvtFIFOEvt);
+
+            // update any timestamp buffers
+            for(eventCode::tbufs_t::const_iterator it(evt.tbufs.begin()), end(evt.tbufs.end());
+                it!=end; ++it)
+            {
+                EVRMRMTSBuffer* tbuf = *it;
+
+                if(tbuf->timeEvt==code) {
+                    EVRMRMTSBuffer::ebuf_t& buf = tbuf->ebufs[tbuf->active];
+                    // add code to buffer
+                    if(buf.pos < buf.buf.size()) {
+                        // append raw time to buffer
+                        buf.buf[buf.pos].secPastEpoch = evt.last_sec;
+                        buf.buf[buf.pos].nsec = evt.last_evt;
+                        buf.pos++;
+
+                    } else {
+                        tbuf->dropped++;
+                    }
+                }
+
+                if(tbuf->flushEvt==code) {
+                    // flush
+                    EVRMRMTSBuffer::ebuf_t& active = tbuf->ebufs[tbuf->active];
+                    active.flushtime.secPastEpoch = evt.last_sec;
+                    active.flushtime.nsec = evt.last_evt;
+
+                    active.ok &= convertTS(&active.flushtime);
+
+                    tbuf->doFlush();
+                }
+            }
 
             if (evt.again) {
                 // ignore extra events in buffer.
