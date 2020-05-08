@@ -9,6 +9,7 @@
 #include <string>
 
 #include <shareLib.h>
+#include <epicsTypes.h>
 
 /* Handles sending shirt 0/1 events after the start of each second.
  */

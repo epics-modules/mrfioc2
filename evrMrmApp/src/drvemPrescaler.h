@@ -23,11 +23,11 @@ public:
     virtual ~MRMPreScaler(){};
 
     /* no locking needed */
-    virtual void lock() const{};
-    virtual void unlock() const{};
+    virtual void lock() const OVERRIDE FINAL{};
+    virtual void unlock() const OVERRIDE FINAL{};
 
-    virtual epicsUInt32 prescaler() const;
-    virtual void setPrescaler(epicsUInt32);
+    virtual epicsUInt32 prescaler() const OVERRIDE FINAL;
+    virtual void setPrescaler(epicsUInt32) OVERRIDE FINAL;
 };
 
 #endif // MRMEVRPRESCALER_H_INC

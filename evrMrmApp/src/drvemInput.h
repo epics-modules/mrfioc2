@@ -28,29 +28,29 @@ public:
     virtual ~MRMInput(){};
 
     /* no locking needed */
-    virtual void lock() const{};
-    virtual void unlock() const{};
+    virtual void lock() const OVERRIDE FINAL {};
+    virtual void unlock() const OVERRIDE FINAL {};
 
-    virtual void dbusSet(epicsUInt16);
-    virtual epicsUInt16 dbus() const;
+    virtual void dbusSet(epicsUInt16) OVERRIDE FINAL;
+    virtual epicsUInt16 dbus() const OVERRIDE FINAL;
 
-    virtual void levelHighSet(bool);
-    virtual bool levelHigh() const;
+    virtual void levelHighSet(bool) OVERRIDE FINAL;
+    virtual bool levelHigh() const OVERRIDE FINAL;
 
-    virtual void edgeRiseSet(bool);
-    virtual bool edgeRise() const;
+    virtual void edgeRiseSet(bool) OVERRIDE FINAL;
+    virtual bool edgeRise() const OVERRIDE FINAL;
 
-    virtual void extModeSet(TrigMode);
-    virtual TrigMode extMode() const;
+    virtual void extModeSet(TrigMode) OVERRIDE FINAL;
+    virtual TrigMode extMode() const OVERRIDE FINAL;
 
-    virtual void extEvtSet(epicsUInt32);
-    virtual epicsUInt32 extEvt() const;
+    virtual void extEvtSet(epicsUInt32) OVERRIDE FINAL;
+    virtual epicsUInt32 extEvt() const OVERRIDE FINAL;
 
-    virtual void backModeSet(TrigMode);
-    virtual TrigMode backMode() const;
+    virtual void backModeSet(TrigMode) OVERRIDE FINAL;
+    virtual TrigMode backMode() const OVERRIDE FINAL;
 
-    virtual void backEvtSet(epicsUInt32);
-    virtual epicsUInt32 backEvt() const;
+    virtual void backEvtSet(epicsUInt32) OVERRIDE FINAL;
+    virtual epicsUInt32 backEvt() const OVERRIDE FINAL;
 
 private:
     volatile unsigned char * const base;

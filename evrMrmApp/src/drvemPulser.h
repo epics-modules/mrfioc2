@@ -27,33 +27,33 @@ public:
     MRMPulser(const std::string& n, epicsUInt32,EVRMRM&);
     virtual ~MRMPulser(){};
 
-    virtual void lock() const;
-    virtual void unlock() const;
+    virtual void lock() const OVERRIDE FINAL;
+    virtual void unlock() const OVERRIDE FINAL;
 
-    virtual bool enabled() const;
-    virtual void enable(bool);
+    virtual bool enabled() const OVERRIDE FINAL;
+    virtual void enable(bool) OVERRIDE FINAL;
 
-    virtual void setDelayRaw(epicsUInt32);
-    virtual void setDelay(double);
-    virtual epicsUInt32 delayRaw() const;
-    virtual double delay() const;
+    virtual void setDelayRaw(epicsUInt32) OVERRIDE FINAL;
+    virtual void setDelay(double) OVERRIDE FINAL;
+    virtual epicsUInt32 delayRaw() const OVERRIDE FINAL;
+    virtual double delay() const OVERRIDE FINAL;
 
-    virtual void setWidthRaw(epicsUInt32);
-    virtual void setWidth(double);
-    virtual epicsUInt32 widthRaw() const;
-    virtual double width() const;
+    virtual void setWidthRaw(epicsUInt32) OVERRIDE FINAL;
+    virtual void setWidth(double) OVERRIDE FINAL;
+    virtual epicsUInt32 widthRaw() const OVERRIDE FINAL;
+    virtual double width() const OVERRIDE FINAL;
 
-    virtual epicsUInt32 prescaler() const;
-    virtual void setPrescaler(epicsUInt32);
+    virtual epicsUInt32 prescaler() const OVERRIDE FINAL;
+    virtual void setPrescaler(epicsUInt32) OVERRIDE FINAL;
 
-    virtual bool polarityInvert() const;
-    virtual void setPolarityInvert(bool);
+    virtual bool polarityInvert() const OVERRIDE FINAL;
+    virtual void setPolarityInvert(bool) OVERRIDE FINAL;
 
     epicsUInt32 masks() const;
     void setMasks(epicsUInt32 inps);
 
-    virtual MapType::type mappedSource(epicsUInt32 src) const;
-    virtual void sourceSetMap(epicsUInt32 src,MapType::type action);
+    virtual MapType::type mappedSource(epicsUInt32 src) const OVERRIDE FINAL;
+    virtual void sourceSetMap(epicsUInt32 src,MapType::type action) OVERRIDE FINAL;
 
 private:
     // bit map of which event #'s are mapped

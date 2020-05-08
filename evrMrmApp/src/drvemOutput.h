@@ -30,17 +30,17 @@ public:
   MRMOutput(const std::string& n, EVRMRM* owner, OutputType t, unsigned int idx);
   virtual ~MRMOutput();
 
-  virtual void lock() const;
-  virtual void unlock() const;
+  virtual void lock() const OVERRIDE FINAL;
+  virtual void unlock() const OVERRIDE FINAL;
 
-  virtual epicsUInt32 source() const;
-  virtual void setSource(epicsUInt32);
+  virtual epicsUInt32 source() const OVERRIDE FINAL;
+  virtual void setSource(epicsUInt32) OVERRIDE FINAL;
 
   epicsUInt32 source2() const;
   void setSource2(epicsUInt32);
 
-  virtual bool enabled() const;
-  virtual void enable(bool);
+  virtual bool enabled() const OVERRIDE FINAL;
+  virtual void enable(bool) OVERRIDE FINAL;
 
 private:
   EVRMRM * const owner;

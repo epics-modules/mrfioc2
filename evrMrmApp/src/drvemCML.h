@@ -25,54 +25,54 @@ public:
     MRMCML(const std::string&, unsigned char, EVRMRM&, outkind, formFactor);
     virtual ~MRMCML();
 
-    virtual void lock() const;
-    virtual void unlock() const;
+    virtual void lock() const OVERRIDE FINAL;
+    virtual void unlock() const OVERRIDE FINAL;
 
-    virtual cmlMode mode() const;
-    virtual void setMode(cmlMode);
+    virtual cmlMode mode() const OVERRIDE FINAL;
+    virtual void setMode(cmlMode) OVERRIDE FINAL;
 
-    virtual bool enabled() const;
-    virtual void enable(bool);
+    virtual bool enabled() const OVERRIDE FINAL;
+    virtual void enable(bool) OVERRIDE FINAL;
 
-    virtual bool inReset() const;
-    virtual void reset(bool);
+    virtual bool inReset() const OVERRIDE FINAL;
+    virtual void reset(bool) OVERRIDE FINAL;
 
-    virtual bool powered() const;
-    virtual void power(bool);
+    virtual bool powered() const OVERRIDE FINAL;
+    virtual void power(bool) OVERRIDE FINAL;
 
-    virtual epicsUInt32 freqMultiple() const{return mult;}
+    virtual epicsUInt32 freqMultiple() const OVERRIDE FINAL {return mult;}
 
-    virtual double fineDelay() const;
-    virtual void setFineDelay(double);
+    virtual double fineDelay() const OVERRIDE FINAL;
+    virtual void setFineDelay(double) OVERRIDE FINAL;
 
     // For Frequency mode
 
     //! Trigger level
-    virtual bool polarityInvert() const;
-    virtual void setPolarityInvert(bool);
+    virtual bool polarityInvert() const OVERRIDE FINAL;
+    virtual void setPolarityInvert(bool) OVERRIDE FINAL;
 
-    virtual epicsUInt32 countHigh() const;
-    virtual epicsUInt32 countLow () const;
-    virtual epicsUInt32 countInit () const;
-    virtual void setCountHigh(epicsUInt32);
-    virtual void setCountLow (epicsUInt32);
-    virtual void setCountInit (epicsUInt32);
-    virtual double timeHigh() const;
-    virtual double timeLow () const;
-    virtual double timeInit () const;
-    virtual void setTimeHigh(double);
-    virtual void setTimeLow (double);
-    virtual void setTimeInit (double);
+    virtual epicsUInt32 countHigh() const OVERRIDE FINAL;
+    virtual epicsUInt32 countLow () const OVERRIDE FINAL;
+    virtual epicsUInt32 countInit () const OVERRIDE FINAL;
+    virtual void setCountHigh(epicsUInt32) OVERRIDE FINAL;
+    virtual void setCountLow (epicsUInt32) OVERRIDE FINAL;
+    virtual void setCountInit (epicsUInt32) OVERRIDE FINAL;
+    virtual double timeHigh() const OVERRIDE FINAL;
+    virtual double timeLow () const OVERRIDE FINAL;
+    virtual double timeInit () const OVERRIDE FINAL;
+    virtual void setTimeHigh(double) OVERRIDE FINAL;
+    virtual void setTimeLow (double) OVERRIDE FINAL;
+    virtual void setTimeInit (double) OVERRIDE FINAL;
 
     // For Pattern mode
 
-    virtual bool recyclePat() const;
-    virtual void setRecyclePat(bool);
+    virtual bool recyclePat() const OVERRIDE FINAL;
+    virtual void setRecyclePat(bool) OVERRIDE FINAL;
 
-    virtual epicsUInt32 lenPattern(pattern) const;
-    virtual epicsUInt32 lenPatternMax(pattern) const;
-    virtual epicsUInt32 getPattern(pattern, unsigned char*, epicsUInt32) const;
-    virtual void setPattern(pattern, const unsigned char*, epicsUInt32);
+    virtual epicsUInt32 lenPattern(pattern) const OVERRIDE FINAL;
+    virtual epicsUInt32 lenPatternMax(pattern) const OVERRIDE FINAL;
+    virtual epicsUInt32 getPattern(pattern, unsigned char*, epicsUInt32) const OVERRIDE FINAL;
+    virtual void setPattern(pattern, const unsigned char*, epicsUInt32) OVERRIDE FINAL;
 
 private:
 

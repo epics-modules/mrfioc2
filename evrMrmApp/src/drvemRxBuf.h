@@ -22,11 +22,11 @@ public:
     virtual ~mrmBufRx();
 
     /* no locking needed */
-    virtual void lock() const{};
-    virtual void unlock() const{};
+    virtual void lock() const OVERRIDE FINAL {};
+    virtual void unlock() const OVERRIDE FINAL {};
 
-    virtual bool dataRxEnabled() const;
-    virtual void dataRxEnable(bool);
+    virtual bool dataRxEnabled() const OVERRIDE FINAL;
+    virtual void dataRxEnable(bool) OVERRIDE FINAL;
 
     static void drainbuf(CALLBACK*);
 

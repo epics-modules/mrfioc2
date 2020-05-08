@@ -39,8 +39,8 @@ public:
     virtual ~SeqManager();
 
     // no locking needed.  our members are effectivly "const" after addHW() during sub-class ctor
-    virtual void lock() const {}
-    virtual void unlock() const {}
+    virtual void lock() const OVERRIDE FINAL {}
+    virtual void unlock() const OVERRIDE FINAL {}
 
     static mrf::Object* buildSW(const std::string& name, const std::string& klass, const mrf::Object::create_args_t& args);
 

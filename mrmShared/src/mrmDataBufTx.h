@@ -26,17 +26,17 @@ public:
     virtual ~mrmDataBufTx();
 
     /* locking done internally */
-    virtual void lock() const{};
-    virtual void unlock() const{};
+    virtual void lock() const OVERRIDE FINAL {};
+    virtual void unlock() const OVERRIDE FINAL {};
 
-    virtual bool dataTxEnabled() const;
-    virtual void dataTxEnable(bool);
+    virtual bool dataTxEnabled() const OVERRIDE FINAL;
+    virtual void dataTxEnable(bool) OVERRIDE FINAL;
 
-    virtual bool dataRTS() const;
+    virtual bool dataRTS() const OVERRIDE FINAL;
 
-    virtual epicsUInt32 lenMax() const;
+    virtual epicsUInt32 lenMax() const OVERRIDE FINAL;
 
-    virtual void dataSend(epicsUInt32 len, const epicsUInt8 *buf);
+    virtual void dataSend(epicsUInt32 len, const epicsUInt8 *buf) OVERRIDE FINAL;
 
 private:
     volatile epicsUInt8 * const dataCtrl;

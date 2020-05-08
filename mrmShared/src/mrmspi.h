@@ -12,6 +12,7 @@
 #ifndef MRMSPI_H
 #define MRMSPI_H
 
+#include <mrfCommon.h>
 #include <mrf/spi.h>
 #include <shareLib.h>
 
@@ -23,8 +24,8 @@ public:
     MRMSPI(volatile unsigned char *base);
     virtual ~MRMSPI();
 
-    virtual void select(unsigned id);
-    virtual epicsUInt8 cycle(epicsUInt8 in);
+    virtual void select(unsigned id) OVERRIDE FINAL;
+    virtual epicsUInt8 cycle(epicsUInt8 in) OVERRIDE FINAL;
 };
 
 #endif // MRMSPI_H
