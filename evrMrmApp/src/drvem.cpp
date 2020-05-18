@@ -1288,38 +1288,40 @@ EVRMRM::drain_fifo()
             if (status&IRQ_RXErr)
                 break;
 
-            epicsUInt32 evt=READ32(base, EvtFIFOCode);
-            if (!evt)
+            epicsUInt32 code=READ32(base, EvtFIFOCode);
+            if (!code)
                 break;
 
-            if (evt>NELEMENTS(events)) {
+            if (code>NELEMENTS(events)) {
                 // BUG: we get occasional corrupt VME reads of this register
                 // Fixed in firmware.  Feb 2011
-                epicsUInt32 evt2=READ32(base, EvtFIFOCode);
-                if (evt2>NELEMENTS(events)) {
-                    printf("Really weird event 0x%08x 0x%08x\n", evt, evt2);
+                epicsUInt32 code2=READ32(base, EvtFIFOCode);
+                if (code2>NELEMENTS(events)) {
+                    printf("Really weird event 0x%08x 0x%08x\n", code, code2);
                     break;
                 } else
-                    evt=evt2;
+                    code=code2;
             }
-            evt &= 0xff; // (in)santity check
+            code &= 0xff; // (in)santity check
 
             count_fifo_events++;
 
-            events[evt].last_sec=READ32(base, EvtFIFOSec);
-            events[evt].last_evt=READ32(base, EvtFIFOEvt);
+            eventCode& evt = events[code];
 
-            if (events[evt].again) {
+            evt.last_sec=READ32(base, EvtFIFOSec);
+            evt.last_evt=READ32(base, EvtFIFOEvt);
+
+            if (evt.again) {
                 // ignore extra events in buffer.
-            } else if (events[evt].waitingfor>0) {
+            } else if (evt.waitingfor>0) {
                 // already queued, but received again before all
                 // callbacks finished.  Un-map event until complete
-                events[evt].again=true;
-                specialSetMap(evt, ActionFIFOSave, false);
+                evt.again=true;
+                specialSetMap(code, ActionFIFOSave, false);
                 count_FIFO_sw_overrate++;
             } else {
                 // needs to be queued
-                eventInvoke(events[evt]);
+                eventInvoke(evt);
             }
 
         }
