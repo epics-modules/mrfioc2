@@ -465,7 +465,7 @@ public:
 protected:
     explicit ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
-    ObjectInst(const std::string& n, A a) : Base(n, a) {}
+    ObjectInst(const std::string& n, A& a) : Base(n, a) {initObject();}
     virtual ~ObjectInst(){}
 public:
 
