@@ -170,18 +170,20 @@ linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int opt
         goto errparse;
     }
 
-    for (i=0, cur=opts; cur && cur->name; i++, cur++) {
+    for (arg=pairs; arg && arg[0]; arg+=2) {
+        int match=0;
 
         if (options&LINKOPTIONDEBUG)
-            fprintf(stderr,"For option: %s\n",cur->name);
+            printf("key %s\n",arg[0]);
 
-        for (arg=pairs; arg && arg[0]; arg+=2) {
+        for (i=0, cur=opts; !match && cur && cur->name; i++, cur++) {
 
             if (options&LINKOPTIONDEBUG)
-                printf("key %s\n",arg[0]);
+                fprintf(stderr,"For option: %s\n",cur->name);
 
             if( strcmp(arg[0], cur->name)!=0 )
                 continue;
+            match=1;
 
             if (found[i/32]&(1<<(i%32)) && !cur->overwrite) {
                 fprintf(stderr,"Option %s was already given\n",cur->name);
@@ -195,6 +197,13 @@ linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int opt
             if (status)
                 goto errsemantix;
         }
+
+        if(!match) {
+            printf("Warning: ignoring unknown INP/OUT option %s=\n", arg[0]);
+        }
+    }
+
+    for (i=0, cur=opts; cur && cur->name; i++, cur++) {
 
         if ( !(found[i/32]&(1<<(i%32))) && cur->required ) {
             fprintf(stderr,"Missing required option %s\n",cur->name);
