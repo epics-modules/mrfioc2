@@ -62,6 +62,7 @@ template<typename T>
 static long read_ai_from_integer(aiRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -103,6 +104,7 @@ template<typename T>
 static long write_ao_from_real(aoRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -155,6 +157,7 @@ template<typename T>
 static long write_ao_from_integer(aoRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 

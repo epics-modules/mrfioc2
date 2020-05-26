@@ -17,6 +17,8 @@ using namespace mrf;
 static
 long exec_bo(boRecord *prec)
 {
+    if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+    CurrentRecord cur(prec);
     try {
         addr<void> *priv=(addr<void>*)prec->dpvt;
         {

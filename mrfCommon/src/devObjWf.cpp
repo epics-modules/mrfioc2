@@ -57,6 +57,7 @@ readop(waveformRecord* prec)
 static long read_waveform(waveformRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     switch(prec->ftvl) {
     case menuFtypeCHAR:
@@ -104,6 +105,7 @@ writeop(waveformRecord* prec)
 static long write_waveform(waveformRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
 
     switch(prec->ftvl) {

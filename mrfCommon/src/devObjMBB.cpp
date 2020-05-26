@@ -22,6 +22,7 @@ template<typename T>
 static long read_mbbi_from_integer(mbbiRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -60,6 +61,7 @@ template<typename I>
 static long write_mbbo_from_integer(mbboRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

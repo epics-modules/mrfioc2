@@ -21,6 +21,7 @@ template<typename T>
 static long read_bi_from_integer(biRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -68,6 +69,7 @@ template<typename I>
 static long write_bo_from_integer(boRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

@@ -5,6 +5,10 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <stdexcept>
+
+#include <epicsThread.h>
+
 #include "devObj.h"
 
 const
@@ -20,3 +24,29 @@ linkOptionDef objdef[] =
     linkString  (addrBase, parent , "PARENT"  , 0, 0),
     linkOptionEnd
 };
+
+static
+struct CurrentID_t {
+    epicsThreadPrivateId id;
+    CurrentID_t()
+        :id(epicsThreadPrivateCreate())
+    {
+        if(!id)
+            throw std::bad_alloc();
+    }
+} CurrentID;
+
+void CurrentRecord::set(dbCommon* prec)
+{
+    epicsThreadPrivateSet(CurrentID.id, prec);
+}
+
+CurrentRecord::~CurrentRecord()
+{
+    set(0);
+}
+
+dbCommon* CurrentRecord::get()
+{
+    return (dbCommon*)epicsThreadPrivateGet(CurrentID.id);
+}

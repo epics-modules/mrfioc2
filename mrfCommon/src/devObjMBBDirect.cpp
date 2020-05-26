@@ -21,6 +21,7 @@ template<typename T>
 static long read_mbbidir_from_integer(mbbiDirectRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<T> *priv=(addr<T>*)prec->dpvt;
 
@@ -58,6 +59,7 @@ template<typename I>
 static long write_mbbodir_from_integer(mbboDirectRecord* prec)
 {
 if (!prec->dpvt) {(void)recGblSetSevr(prec, COMM_ALARM, INVALID_ALARM); return -1; }
+CurrentRecord cur(prec);
 try {
     addr<I> *priv=(addr<I>*)prec->dpvt;
 

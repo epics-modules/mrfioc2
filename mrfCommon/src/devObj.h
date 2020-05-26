@@ -101,6 +101,19 @@ struct addr : public addrBase {
 epicsShareExtern const
 linkOptionDef objdef[];
 
+struct epicsShareClass CurrentRecord {
+    template<typename Rec>
+    explicit CurrentRecord(Rec* prec)
+    {
+        (void)prec->dpvt;
+        set((dbCommon*)prec);
+    }
+    ~CurrentRecord();
+    static
+    dbCommon* get();
+    void set(dbCommon* prec);
+};
+
 template<dsxt* D>
 static inline
 long init_dset(int i)
