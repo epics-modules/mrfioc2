@@ -187,7 +187,8 @@ void showObject(std::ostream& strm, Object& obj, std::string indent, int depth, 
     if(depth>=maxdepth)
         return;
     propArgs args(strm, indent+"  ");
-    strm <<indent <<"Object: " <<obj.name() <<"\n";
+    strm <<indent <<"Object: " <<obj.name() <<"\n"
+         <<indent <<"Type: "<<typeid (obj).name()<<"\n";
     if(props)
         obj.visitProperties(&showProp, (void*)&args);
     for(Object::child_iterator it=obj.beginChild(); it!=obj.endChild(); ++it)
