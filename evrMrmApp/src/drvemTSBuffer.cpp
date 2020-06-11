@@ -43,8 +43,10 @@ void EVRMRMTSBuffer::flushTimeSet(epicsUInt16 v)
 
     if(timeEvt) {
         evr->events[timeEvt].tbufs.erase(this);
+        evr->interestedInEvent(timeEvt, false);
     }
     if(v) {
+        evr->interestedInEvent(v, true);
         evr->events[v].tbufs.insert(this);
     }
     timeEvt = v;
@@ -59,8 +61,10 @@ void EVRMRMTSBuffer::flushEventSet(epicsUInt16 v)
 
     if(flushEvt) {
         evr->events[flushEvt].tbufs.erase(this);
+        evr->interestedInEvent(flushEvt, false);
     }
     if(v) {
+        evr->interestedInEvent(v, true);
         evr->events[v].tbufs.insert(this);
     }
     flushEvt = v;
