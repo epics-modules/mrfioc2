@@ -55,6 +55,13 @@ mrf_DBD += caPutLog.dbd
 mrf_LIBS += caPutLog
 endif
 
+ifneq ($(PVA2PVA),)
+mrf_DBD += PVAServerRegister.dbd
+mrf_DBD += qsrv.dbd
+mrf_LIBS += qsrv
+mrf_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+endif
+
 # Finally link to the EPICS Base libraries
 mrf_LIBS += $(EPICS_BASE_IOC_LIBS)
 
