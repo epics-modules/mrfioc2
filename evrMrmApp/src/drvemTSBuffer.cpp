@@ -77,6 +77,7 @@ void EVRMRMTSBuffer::flushNow()
         ebufs[active].flushtime.secPastEpoch = 0u;
         ebufs[active].flushtime.nsec = 0u;
         ebufs[active].ok = false;
+        ebufs[active].drop = false;
     }
 
     doFlush();
@@ -89,6 +90,7 @@ void EVRMRMTSBuffer::doFlush()
     ebufs[active].pos = 0u;
     // a valid buffer requires timestamp validity at start and end flush
     ebufs[active].ok = evr->TimeStampValid();
+    ebufs[active].drop = false;
 
     scanIoRequest(scan);
 }
@@ -106,6 +108,8 @@ epicsUInt32 getTimes(const EVRMRMTSBuffer* self, epicsInt32 *arr, epicsUInt32 co
 
     if(prec && !readout.ok) {
         recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+    } else if(prec && readout.drop) {
+        recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
     } else if(prec && readout.ok) {
         prec->time = readout.flushtime;
     }

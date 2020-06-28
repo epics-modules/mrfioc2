@@ -55,7 +55,8 @@ struct EVRMRMTSBuffer : public mrf::ObjectInst<EVRMRMTSBuffer>
         std::vector<epicsTimeStamp> buf;
         epicsTimeStamp flushtime;
         bool ok;
-        ebuf_t() :pos(0u), ok(false) {
+        bool drop;
+        ebuf_t() :pos(0u), ok(false), drop(false) {
             flushtime.secPastEpoch = 0u;
             flushtime.nsec = 0u;
         }
