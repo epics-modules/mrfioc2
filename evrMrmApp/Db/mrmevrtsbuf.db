@@ -20,6 +20,12 @@ record(longout, "$(SYS){$(D)}CptEvt-SP") {
     field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
     field(VAL , "$(CODE=0)")
     field(PINI, "YES")
+    field(FLNK, "$(SYS){$(D)}CptEvt-RB")
+}
+
+record(longin, "$(SYS){$(D)}CptEvt-RB") {
+    field(DTYP, "Obj Prop uint16")
+    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
 }
 
 record(longout, "$(SYS){$(D)}FlshEvt-SP") {
@@ -27,6 +33,12 @@ record(longout, "$(SYS){$(D)}FlshEvt-SP") {
     field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
     field(VAL , "$(TRIG=0)")
     field(PINI, "YES")
+    field(FLNK, "$(SYS){$(D)}FlshEvt-RB")
+}
+
+record(longin, "$(SYS){$(D)}FlshEvt-RB") {
+    field(DTYP, "Obj Prop uint16")
+    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
 }
 
 record(bo, "$(SYS){$(D)}Flsh-SP") {
