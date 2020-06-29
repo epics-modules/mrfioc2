@@ -38,7 +38,20 @@ record(bo, "$(ON)Rst-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# CML/GTX pattern mode
+#
+# 4x Pattern
+#   Uses the Pat Rise, Pat High, Pat Fall, and Pat Low properties
+#   to store four 20 bit (0 -> 0xfff) sub-patterns which are shifted
+#   out depending on the (change of) state of the input.
+#
+# Frequency
+#   Uses the Freq Trig Lvl, Counts High, and Counts Low properties
+#
+# Waveform
+#   Uses the bit pattern stored by the Pattern Set property.
 record(mbbo, "$(ON)Mode-Sel") {
+  field( DESC, "CML/GTX pattern mode")
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(OBJ), PROP=Mode")
   field( PINI, "YES")
@@ -94,6 +107,8 @@ record(fanout, "$(ON)Res-FO_") {
 }
 
 # Rising pattern
+#
+# Send in 4x Pattern mode when output goes Inactive -> Active
 
 record(mbboDirect, "$(ON)Pat:Rise00_15-SP") {
   field(DTYP, "Soft and restore")
@@ -146,6 +161,8 @@ record(waveform, "$(ON)Pat:Rise-SP") {
 }
 
 # High pattern
+#
+# # Send in 4x Pattern mode when output remain Active -> Active
 
 record(mbboDirect, "$(ON)Pat:High00_15-SP") {
   field(DTYP, "Soft and restore")
@@ -198,6 +215,8 @@ record(waveform, "$(ON)Pat:High-SP") {
 }
 
 # Falling pattern
+#
+# Send in 4x Pattern mode when output goes Active -> Inactive
 
 record(mbboDirect, "$(ON)Pat:Fall00_15-SP") {
   field(DTYP, "Soft and restore")
@@ -250,6 +269,8 @@ record(waveform, "$(ON)Pat:Fall-SP") {
 }
 
 # Low pattern
+#
+# Send in 4x Pattern mode when output remains Inactive -> Inactive
 
 record(mbboDirect, "$(ON)Pat:Low00_15-SP") {
   field(DTYP, "Soft and restore")
@@ -451,6 +472,8 @@ record(waveform, "$(ON)Pat:WfX-I") {
 }
 
 # Delay gen calculator for CML waveform
+#
+# use CML/GTX as fine-tuned version of regular pulse delay
 
 record(bo, "$(ON)WfCalc:Ena-SP") {
   field(DESC, "Disable calculator")

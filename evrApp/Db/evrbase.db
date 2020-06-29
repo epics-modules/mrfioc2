@@ -5,7 +5,15 @@
 #  OBJ = devObj name
 #  EVNT1HZ = DB event number for the 1 second tick
 
+# Master enable for the EVR. If not set then very little will happen.
+#
+# If disabled, an EVR will automatically enable when the event link becomes active.
+# This allows for bumpless cold starts. For this reason the enable property
+# should not be included in any autosave request files.
+# cf. $(P)Link:Init-FO_
+#
 record(bo, "$(P)Ena-Sel") {
+  field(DESC, "Master HW Enable")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(DESC, "Master enable for EVR device")
@@ -15,6 +23,11 @@ record(bo, "$(P)Ena-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# The number of times the hardware heartbeat timer has expired.
+#
+# This indicates that the EVG is not sending event code 122
+# which may mean that it is misconfigured or hung.
+#
 record(longin, "$(P)Cnt:LinkTimo-I") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=HB Timeout Count")
@@ -34,6 +47,15 @@ record(bo, "$(P)ExtInhib-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Status of phase locked loop which synchronizes an EVR's local oscilator
+# with the phase of the EVG's oscilator. Outputs will not be stable unless the PLL is locked.
+#
+# Except for immediately (<< 1 sec) after a change to the fractional synthesizer, this property
+# should always read as true (locked). Reading false for longer then one second is likely an
+# indication that the fractional synthesize is misconfigured, or that a hardware fault has occured.
+#
+# eg. The fiber is unplugged
+#
 record(bi, "$(P)Link-Sts") {
   field(DTYP, "Obj Prop bool")
   field(INP , "@OBJ=$(OBJ), PROP=Link Status")
@@ -45,6 +67,7 @@ record(bi, "$(P)Link-Sts") {
   field(FLNK, "$(P)Cnt:RxErr-I")
 }
 
+# The number of event link errors which have occurred.
 record(longin, "$(P)Cnt:RxErr-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Receive Error Count")
@@ -54,6 +77,15 @@ record(longin, "$(P)Cnt:RxErr-I") {
   field(FLNK, "$(P)Cnt:HwOflw-I")
 }
 
+# Counter the number of hardware event buffer overflows.
+#
+# There is a single hardware buffer for all event codes.
+# When it overflows arbitrary events will fail to be delivered to software.
+# This can cause the timestamp to falsely be invalidated,
+# and can disrupt database processing which depends on event reception.
+#
+# An overflow does not effect physical outputs.
+# This is a serious error which should be corrected.
 record(longin, "$(P)Cnt:HwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Hw Overflow Count")
@@ -62,6 +94,17 @@ record(longin, "$(P)Cnt:HwOflw-I") {
   field(FLNK, "$(P)Cnt:SwOflw-I")
 }
 
+# Counts overflows in all of the per event software buffers.
+#
+# This indicates that the period between successive events is shorter
+# then the runtime of the code (callbacks, and database processing)
+# that is causes. Extra events are being dropped and cause no action.
+#
+# Actions of other event codes are not effected.
+#
+# cf. var("mrmEvrFIFOPeriod") to change/disable soft rate limit
+#
+# Actions of other event codes are not effected.
 record(longin, "$(P)Cnt:SwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Sw Overrate Count")
@@ -82,6 +125,9 @@ record(calcout, "$(P)Link:Init-FO_") {
   field(TSEL, "$(P)Link-Sts.TIME")
 }
 
+# Frequency of an EVR's local oscilator.
+#
+# This must be close enough to the EVG master oscilator to allow the phase locked loop in the EVR to lock.
 record(ao, "$(P)Link:Clk-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Clock")
@@ -211,6 +257,7 @@ record(bi, "$(P)Pll-Sts") {
 }
 
 record(stringin, "$(P)HwType-I") {
+  field(DESC, "Hardware model")
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Model")
   field(PINI, "YES")
@@ -218,6 +265,7 @@ record(stringin, "$(P)HwType-I") {
 }
 
 record(stringin, "$(P)FwVer-I") {
+  field(DESC, "Firmware version/build")
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Version")
   field(PINI, "YES")
@@ -225,13 +273,17 @@ record(stringin, "$(P)FwVer-I") {
 }
 
 record(stringin, "$(P)SwVer-I") {
+  field(DESC, "Software version/build")
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
   field(PINI, "YES")
   field(DESC, "Software version")
 }
 
+# Geographic location (eg. slot number)
+# if available, fallback to logical bus address
 record(stringin, "$(P)Pos-I") {
+  field(DESC, "Physical card position")
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Position")
   field(PINI, "YES")
@@ -244,6 +296,18 @@ record(fanout, "$(P)Time:Init-FO_") {
   field(LNK2, "$(P)Time:Src-Sel")
 }
 
+# Indicates if the EVR has a current, valid timestamp.
+# Condition under which timestamp is declared invalid include:
+#
+# * TS counter reset event received, but “seconds” value not updated.
+# * Found timestamp with previous invalid value. Catches old timestamp in buffers.
+# * TS counter exceeded limit (eg. missed reset event)
+# * New “seconds” value is less then the last valid values,
+#   or more then two greater then the last valid value. (Light Source time model only).
+#   This will reject single “bad” values sent by the EVG.
+# * Event Link error (Status is error).
+#
+# The timestamp will become valid when a new “seconds” value is received from the EVG.
 record(bi, "$(P)Time:Valid-Sts") {
   field(DTYP, "Obj Prop bool")
   field(INP , "@OBJ=$(OBJ), PROP=Timestamp Valid")
@@ -283,12 +347,27 @@ record(mbbo, "$(P)Time:Src-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Determines what causes the timestamp event counter to tick. There are three possible choices.
+#
+# * Event clock Use an integer divisor of the EVR's local oscilator.
+# * Mapped code(s) Increments the counter whenever certain events arrive. These codes can be defined using special mapping records.
+# * DBus 4 Increments on the 0->1 transition of DBus bit #4.
+#
 record(longout, "$(P)Time:Src-Sel_") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Source")
   field(FLNK, "$(P)Time:Clock-I")
 }
 
+# Specifies the rate at which the timestamp event counter will be incremented. This determines the resolution of all timestamps.
+#
+# This setting is used in conjunction with the 'Timestamp Source'.
+#
+# When the timestamp source is set to "Event clock" this property is used
+# to compute an integer divider from the EVR's local oscilator frequency
+# to the given frequency. Since this may not be exact it is recommended
+# to read back the actual divider setting via the "Timestamp Prescaler" property.
+#
 record(ao, "$(P)Time:Clock-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Clock")
@@ -322,12 +401,20 @@ record(ai, "$(P)Time:Clock-I") {
   field(FLNK, "$(P)Time:Div-I")
 }
 
+# When using the "Event clock" timestamp source this will return the actual divisor used.
+# In other modes it reads 0.
+#
 record(longin, "$(P)Time:Div-I") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Timestamp Prescaler")
   field(DESC, "Timestamp divider")
 }
 
+# Time of last received event 125 (aka. timestamp reset)
+#
+# Due to firmware implementation details, the reception time of 125 does not
+# reflect the reset of the sub-seconds counter, and will never have nsec==0.
+#
 record(stringin, "$(P)Time-I") {
   field(DTYP, "EVR Timestamp")
   field(INP , "@OBJ=$(OBJ), Code=$(EVNT1HZ=125)")
@@ -336,6 +423,13 @@ record(stringin, "$(P)Time-I") {
   field(TSE , "-2")
 }
 
+# Selects Event link data mode.
+#
+# This chooses between DBus only, and DBus+Buffer (default) modes.
+# In DBus only mode Data Buffer reception is not possible.
+#
+# Must match EVG setting
+#
 record(bo, "$(P)Link:RxMode-Sel") {
   field(DESC, "Downstream data mode")
   field(DTYP, "Obj Prop bool")

@@ -54,6 +54,7 @@ record(mbbo, "$(IN)Trig:Ext-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Sets code which will be applied to the local mapping ram whenever the 'External Mode' condition is met.
 record(longout, "$(IN)Code:Ext-SP") {
   field( DTYP, "Obj Prop uint32")
   field( OUT , "@OBJ=$(OBJ), PROP=External Code")
@@ -65,6 +66,7 @@ record(longout, "$(IN)Code:Ext-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Sets the code which will be sent on the upstream event link whenever the 'Backwards Mode' condition is met.
 record(mbbo, "$(IN)Trig:Back-Sel") {
   field( DTYP, "Obj Prop uint16")
   field( OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")

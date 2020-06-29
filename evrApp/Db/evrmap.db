@@ -8,7 +8,39 @@
 #                 "Stop Log", "Log", "Heartbeat", "Reset PS",
 #                 "TS reset", "TS tick", "Shift 1", "Shift 0",
 #
-
+# Blink
+#   An LED on the EVRs front panel will blink when the code is received.
+#
+# Forward
+#   The received code will be immediately retransmits on the upstream event link.
+#
+# Stop Log
+#   Freeze the circular event log buffer. An CPU interrupt will be raised which will cause the buffer to be downloaded. This might be a useful action to map to a fault event.
+#
+# Log
+#   Include this event code in the circular event log.
+#
+# Heartbeat
+#   This event resets the heartbeat timeout timer.
+#
+# Reset PS
+#   Resets the phase of all prescalers.
+#
+# TS reset
+#   Transfers the seconds timestamp from the shift register and zeros the sub-seconds part.
+#
+# TS tick
+#   When the timestamp source is 'Mapped code' then any event with this mapping will cause the sub-seconds part of the timestamp to increment.
+#
+# Shift 1
+#   Shifts the current value of the seconds timestamp shift register up by one bit and sets the low bit to 1.
+#
+# Shift 0
+#   Shifts the current value of the seconds timestamp shift register up by one bit and sets the low bit to 0.
+#
+# FIFO
+#   Bypass the automatic allocation mechanism and always include this code in the event FIFO.
+#
 record(longout, "$(NAME)") {
   field( DTYP, "EVR Mapping" )
   field( OUT , "@OBJ=$(OBJ), Func=$(func)")

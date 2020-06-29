@@ -1,3 +1,10 @@
+# Selects Event link data mode.
+#
+# This chooses between DBus only, and DBus+Buffer (default) modes.
+# In DBus only mode Data Buffer reception is not possible.
+#
+# Must match EVR setting
+#
 record(bo, "$(P)Link:TxMode-Sel") {
   field(DESC, "Data mode")
   field(DTYP, "Obj Prop bool")

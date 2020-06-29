@@ -10,6 +10,10 @@
 #  PMAX = Max prescaler (divider) setting
 #  NOPS = 0 - enable prescaler, 1 - disable prescaler
 
+# When Disabled, the output of the Pulse Generator will remain in
+# its inactive state (normally low). The generator must be enabled
+# before mapped actions take effect.
+#
 record(bo, "$(PN)Ena-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
@@ -21,6 +25,9 @@ record(bo, "$(PN)Ena-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Reverses the output polarity. When set, changes the Pulse Generator's
+# output from normally low to normally high.
+#
 record(bo, "$(PN)Polarity-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Polarity")
@@ -32,6 +39,8 @@ record(bo, "$(PN)Polarity-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Determines the time between when the Pulse Generator is triggered
+# and when it changes state from inactive to active (normally low to high).
 record(ao, "$(PN)Delay-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Delay")
@@ -67,6 +76,9 @@ record(longin, "$(PN)Delay:Raw-RB") {
   field( HSV, "MAJOR")
 }
 
+# Determines the time between when the Pulse Generator changes state from 
+# inactive to active (normally low to high), and when it changes back to inactive.
+#
 record(ao, "$(PN)Width-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Width")
@@ -102,6 +114,10 @@ record(longin, "$(PN)Width:Raw-RB") {
   field( HSV, "MAJOR")
 }
 
+# Decreases the resolution of both delay and width by an integer multiple.
+#
+# Achieves greater range at the expense of resolution.
+#
 record(longout, "$(PN)Prescaler-SP") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Prescaler")
@@ -129,7 +145,7 @@ record(longin, "$(PN)Prescaler-RB") {
 }
 
 record(calc, "$(PN)Res-I") {
-  field(DESC, "Resolution")
+  field(DESC, "Effective resolution")
   field(INPA, "$(PN)Prescaler-RB MS")
   field(INPB, "$(P)Link:ClkPeriod-I CP")
   field(CALC, "1e9*(A?A:1)*B")

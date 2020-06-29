@@ -1,4 +1,12 @@
 
+# When a buffer with the given Protocol ID is received a copy is placed in this record.
+# It is possible to have many records receiving the same Protocol ID. Data is received
+# as a byte array and interpreted according to FTVL. For multi-byte types the
+# transmission byte order is assumed to be big endian. Data is truncated to a multiple
+# of the element size.
+#
+# Many record (or other listeners) may register for the same Protocol ID.
+# The special Protocol ID 0xff00 may be used to cause a listener to receive messages destined for any ID.
 record(waveform, "$(P)dbus:recv:s8") {
   field(DESC, "Recv Buffer")
   field(DTYP, "MRM EVR Buf Rx")
