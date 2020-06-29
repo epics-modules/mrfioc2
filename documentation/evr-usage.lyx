@@ -5301,5 +5301,98 @@ Note:
 
 \end_layout
 
+\begin_layout Subsection
+Per-device Database Files
+\end_layout
+
+\begin_layout Standard
+Several database are installed by default for use with certain devices.
+ Use with different devices is not an error, but will result in warnings
+ being printed for sub-units included in the database file, but not physically
+ present.
+\end_layout
+
+\begin_layout Itemize
+db/evr-cpci-230.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-cpci-300.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-mtca-300.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-pcie-300dc.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-pmc-230.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-tg-300.db
+\end_layout
+
+\begin_layout Itemize
+db/evr-vmerf-230.db
+\end_layout
+
+\begin_layout Subsection
+Special Database Files
+\end_layout
+
+\begin_layout Standard
+Several database files are provided to augment the per-device files.
+ These optional files are not tied to a specific hardware sub-unit.
+\end_layout
+
+\begin_layout Itemize
+db/evrevent.db
+\end_layout
+
+\begin_layout Standard
+Adds a reception counter for a specific event code.
+\end_layout
+
+\begin_layout Itemize
+db/mrmevrtsbuf.db
+\end_layout
+
+\begin_layout Standard
+Adds a capture buffer for reception times of a certain, fast, event code.
+\end_layout
+
+\begin_layout Itemize
+db/evralias.db
+\end_layout
+
+\begin_layout Standard
+A set of alias() entries to give an alternative (application specific) name
+ prefix(s) for anEVR pulser.
+\end_layout
+
+\begin_layout Itemize
+db/databuftx.db
+\end_layout
+
+\begin_layout Itemize
+db/mrmevrbufrx.db
+\end_layout
+
+\begin_layout Standard
+Examples of sending and receiving a data buffer.
+\end_layout
+
+\begin_layout Itemize
+db/evrNtp.db
+\end_layout
+
+\begin_layout Standard
+Status for the builtin NTP clock driver.
+\end_layout
+
 \end_body
 \end_document
