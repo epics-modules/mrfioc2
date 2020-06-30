@@ -4839,7 +4839,7 @@ The shared memory interface can only be used to provide time with microsecond
 \end_layout
 
 \begin_layout Standard
-If the propogation time from the time source to the EVR is known, then the
+If the propagation time from the time source to the EVR is known, then the
  offset can be given by adding 
 \begin_inset Quotes eld
 \end_inset
@@ -4853,6 +4853,112 @@ time1 0.XXX
 ntp.conf
 \shape default
 .
+\end_layout
+
+\begin_layout Section
+Buffered Timestamp Capture
+\end_layout
+
+\begin_layout Standard
+Some applications are interested in the precise reception timestamp of an
+ asynchronous event code.
+ For example, an External event code from an EVR Input.
+ Further, if this Input/event code occurs at a high rate, it is preferable
+ for software to process reception times in batches.
+\end_layout
+
+\begin_layout Standard
+The motivating use case for this feature was monitoring of a rotational
+ encoder which produces a pulse on crossing a particular angle.
+ The times of this crossing are needed to calculate frequency and phase.
+ Further, crossing occur at ~1KHz.
+\end_layout
+
+\begin_layout Standard
+Buffers are setup by loading instances of the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+db/mrmevrtsbuf.db
+\end_layout
+
+\end_inset
+
+ database.
+ Many buffers may be loaded.
+ While un-useful it is possible to associate multiple buffers with the same
+ event code.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dbLoadRecords("db/evr-pcie-300dc.db","SYS=TST, D=evr:1, EVR=EVR,
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+               FEVT=125")
+\end_layout
+
+\begin_layout Plain Layout
+
+dbLoadRecords("db/mrmevrtsbuf.db", "SYS=TST, D=evr:1-ts:1, EVR=EVR,
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+               CODE=20, TRIG=10, FLUSH=TimesRelFlush")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example, the (optional) CODE and TRIG macros name two event codes.
+ CODE=20 is the event for which the reception time will be captured.
+ The (also optional) TRIG=10 is an event for which reception will cause
+ the internal buffer of timestamps to be flushed to a waveform record.
+ Alternately, flushing can be triggered by another record.
+\end_layout
+
+\begin_layout Standard
+The CODE and TRIG macros are setting the default values of fields which
+ may be changed at runtime.
+\end_layout
+
+\begin_layout Standard
+Each waveform record which present timestamps does so in a format determined
+ by the FLUSH macro.
+\end_layout
+
+\begin_layout Description
+TimesRelFlush Elements are times in nanoseconds relative to the flushing
+ action (either flush event code, or manual flush).
+ The time of the flushing action is stored as the record timestamp.
+ Element values are always negative.
+ This is the default if FLUSH is not set.
+\end_layout
+
+\begin_layout Description
+TimesRelFirst Elements are times in nanoseconds relative to the time of
+ the first event received after a previous flush.
+ The time of the first event is stored in the record timestamp.
+ Element values are always positive, and the first element value is always
+ zero.
 \end_layout
 
 \begin_layout Section

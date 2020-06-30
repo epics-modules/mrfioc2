@@ -6,9 +6,24 @@
 # CODE - Capture times of this event
 # TRIG - Flush buffer when this event is received.  may be 0
 
+# Buffered reception times.
+#
+# The meaning of elements of the waveform depends on the FLUSH macro.
+# Allowed values are:
+#
+# TimesRelFlush
+#   Elements are times in nanoseconds relative to the flushing action (either flush event code, or manual flush).
+#   The time of the flushing action is stored as the record timestamp.  Element values are always
+#   negative.
+#
+# TimesRelFirst
+#   Elements are times in nanoseconds relative to the time of the first event received after a previous flush.
+#   The time of the first event is stored in the record timestamp.  Element values are always positive,
+#   and the first element value is always zero.
+#
 record(waveform, "$(SYS){$(D)}TS-I") {
     field(DTYP, "Obj Prop waveform in")
-    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimesRelFlush")
+    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFlush)")
     field(SCAN, "I/O Intr")
     field(FTVL, "LONG") # int32
     field(NELM, "$(NELM=128)")
