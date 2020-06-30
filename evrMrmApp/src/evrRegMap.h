@@ -270,9 +270,11 @@
 #  define InputMapFP_back_shft 8
 #  define InputMapFP_ext_mask  0x000000ff
 #  define InputMapFP_ext_shft  0
-#  define InputMapFPMax 2
+#  define InputMapFPMax 32
 
-/* 0 <= N <= 1 */
+/*  0 <= N <= 3  : FPInMap   */
+/*  4 <= N <= 23 : UnivInMap */
+/* 24 <= N <= 31 : BPInMap   */
 #define U32_InputMapFP(N)  (U32_InputMapFPN  + (4*(N)))
 
 /* GTX delay */

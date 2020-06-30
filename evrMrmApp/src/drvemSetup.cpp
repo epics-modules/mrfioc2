@@ -184,7 +184,10 @@ static const EVRMRM::Config mtca_evr_300 = {
     2,  // FP Delay outputs
     0,  // CML/GTX outputs
     MRMCML::typeTG300,
-    2,  // FP inputs
+    /*  0 <= N <= 3  : FPInMap   */
+    /*  4 <= N <= 23 : UnivInMap */
+    /* 24 <= N <= 31 : BPInMap   */
+    32,  // FP inputs total
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
