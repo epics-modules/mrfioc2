@@ -69,9 +69,14 @@ CFIFlash::readID(ID *id)
         id->vendorName = "Micron";
 
         switch(id->dev_type) {
+        case 0x20: // m25p (Numonyx)
+            id->capacity = 1u<<(id->dev_id);
+            id->sectorSize = 256*1024u; // 2Mbit
+            id->pageSize = 256;
+            break;
         case 0xba: // mt25q
         case 0xbb:
-            id->capacity = 2u<<(id->dev_id+2);
+            id->capacity = 1u<<(id->dev_id);
             id->sectorSize = 64*1024u;
             id->pageSize = 256;
             break;

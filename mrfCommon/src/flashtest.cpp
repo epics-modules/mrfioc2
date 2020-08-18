@@ -189,7 +189,7 @@ struct TestDevice : public mrf::SPIInterface
                 switch(++count) {
                 case 1: return 0x20;
                 case 2: return 0xba;
-                case 3: return 0x17; // 64MB
+                case 3: return 0x17; // 64Mbit (8MB)
                 case 4: return 0x10; // 16 bytes payload
                 case 5: return 0x00;
                 case 6: return 0x00;
@@ -235,7 +235,7 @@ void testReadID()
     testOk1(info.dev_type==0xba);
     testOk1(info.dev_id==0x17);
     // capacity >16MB is truncated to 16MB (we use 24-bit operations)
-    testOk1(info.capacity==16*1024*1024);
+    testOk1(info.capacity==8*1024*1024);
     testOk1(info.pageSize==256);
     testOk1(info.sectorSize==64*1024);
 }
