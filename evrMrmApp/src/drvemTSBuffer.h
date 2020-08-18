@@ -38,6 +38,7 @@ struct EVRMRMTSBuffer : public mrf::ObjectInst<EVRMRMTSBuffer>
 
     epicsUInt32 getTimesRelFirst(epicsInt32 *arr, epicsUInt32 count) const;
     epicsUInt32 getTimesRelFlush(epicsInt32 *arr, epicsUInt32 count) const;
+    epicsUInt32 getTimesRelPrevFlush(epicsInt32 *arr, epicsUInt32 count) const;
 
     IOSCANPVT flushed() const { return scan; }
 
@@ -53,12 +54,13 @@ struct EVRMRMTSBuffer : public mrf::ObjectInst<EVRMRMTSBuffer>
     struct ebuf_t {
         size_t pos;
         std::vector<epicsTimeStamp> buf;
-        epicsTimeStamp flushtime;
-        bool ok;
+        epicsTimeStamp flushtime, prevflushtime;
+        bool ok, prevok;
         bool drop;
-        ebuf_t() :pos(0u), ok(false), drop(false) {
+        ebuf_t() :pos(0u), ok(false), prevok(false), drop(false) {
             flushtime.secPastEpoch = 0u;
             flushtime.nsec = 0u;
+            prevflushtime = flushtime;
         }
     private:
         ebuf_t(const ebuf_t&);

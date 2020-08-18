@@ -85,6 +85,9 @@ void EVRMRMTSBuffer::flushNow()
 
 void EVRMRMTSBuffer::doFlush()
 {
+    bool prevok = ebufs[active].ok;
+    epicsTimeStamp prevflushtime = ebufs[active].flushtime;
+
     active ^= 1u;
 
     ebufs[active].pos = 0u;
@@ -92,12 +95,16 @@ void EVRMRMTSBuffer::doFlush()
     ebufs[active].ok = evr->TimeStampValid();
     ebufs[active].drop = false;
 
+    ebufs[active].prevok = prevok;
+    ebufs[active].prevflushtime = prevflushtime;
+
     scanIoRequest(scan);
 }
 
 enum TimesRef {
     TimesRefEvt0,
     TimesRefFlush,
+    TimesRefPrevFlush,
 };
 
 static
@@ -108,10 +115,10 @@ epicsUInt32 getTimes(const EVRMRMTSBuffer* self, epicsInt32 *arr, epicsUInt32 co
 
     if(prec && !readout.ok) {
         recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
+    } else if(prec && ref==TimesRefPrevFlush && !readout.prevok) {
+        recGblSetSevr(prec, READ_ALARM, INVALID_ALARM);
     } else if(prec && readout.drop) {
         recGblSetSevr(prec, READ_ALARM, MAJOR_ALARM);
-    } else if(prec && readout.ok) {
-        prec->time = readout.flushtime;
     }
 
     double period=1e9/self->evr->clockTS(); // in nanoseconds
@@ -132,8 +139,11 @@ epicsUInt32 getTimes(const EVRMRMTSBuffer* self, epicsInt32 *arr, epicsUInt32 co
     }
 
     epicsTimeStamp tref;
-    if(ref==TimesRefFlush)
+    if(ref==TimesRefFlush) {
         tref = readout.flushtime;
+    } else if(ref==TimesRefPrevFlush) {
+        tref = readout.prevflushtime;
+    }
 
     for(size_t i=0; i<len; i++) {
         epicsTimeStamp ts = readout.buf[i];
@@ -151,6 +161,10 @@ epicsUInt32 getTimes(const EVRMRMTSBuffer* self, epicsInt32 *arr, epicsUInt32 co
         arr[i] = epicsInt32(diff*1e9); // ns
     }
 
+    if(prec) {
+        prec->time = tref;
+    }
+
     return len;
 }
 
@@ -162,6 +176,11 @@ epicsUInt32 EVRMRMTSBuffer::getTimesRelFirst(epicsInt32 *arr, epicsUInt32 count)
 epicsUInt32 EVRMRMTSBuffer::getTimesRelFlush(epicsInt32 *arr, epicsUInt32 count) const
 {
     return getTimes(this, arr, count, TimesRefFlush);
+}
+
+epicsUInt32 EVRMRMTSBuffer::getTimesRelPrevFlush(epicsInt32 *arr, epicsUInt32 count) const
+{
+    return getTimes(this, arr, count, TimesRefPrevFlush);
 }
 
 static
@@ -197,4 +216,6 @@ OBJECT_BEGIN(EVRMRMTSBuffer)
     OBJECT_PROP1("TimesRelFirst", &EVRMRMTSBuffer::flushed);
     OBJECT_PROP1("TimesRelFlush", &EVRMRMTSBuffer::getTimesRelFlush);
     OBJECT_PROP1("TimesRelFlush", &EVRMRMTSBuffer::flushed);
+    OBJECT_PROP1("TimesRelPrevFlush", &EVRMRMTSBuffer::getTimesRelPrevFlush);
+    OBJECT_PROP1("TimesRelPrevFlush", &EVRMRMTSBuffer::flushed);
 OBJECT_END(EVRMRMTSBuffer)
