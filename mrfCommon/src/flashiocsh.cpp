@@ -63,6 +63,13 @@ void flashinfo(const char *name)
             printf("\n");
         }
 
+        if(!info.capacity || !info.sectorSize || !info.pageSize) {
+            printf("Warning: Some information about this flash chip is not known.\n"
+                   "         Please open an issue and include this output of flashinfo()\n"
+                   "         and if known the flash chip vendor and part number.\n"
+                   "         https://github.com/epics-modules/mrfioc2/issues\n");
+        }
+
         {
             mrf::CFIStreamBuf sbuf(mem);
             std::istream strm(&sbuf);
