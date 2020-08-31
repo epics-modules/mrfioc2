@@ -51,6 +51,19 @@ MRMPreScaler::setPrescalerPhasOffs(epicsUInt32 v)
     nat_iowrite32(base + ScalerPhasOffs_offset, v);
 }
 
+epicsUInt32
+MRMPreScaler::prescalerPulsTrig() const
+{
+    return nat_ioread32(base + ScalerPulsTrig_offset);
+}
+
+void
+MRMPreScaler::setPrescalerPulsTrig(epicsUInt32 v)
+{
+    nat_iowrite32(base + ScalerPulsTrig_offset, v);
+}
+
 OBJECT_BEGIN2(MRMPreScaler, PreScaler)
     OBJECT_PROP2("Phase Offset", &MRMPreScaler::prescalerPhasOffs, &MRMPreScaler::setPrescalerPhasOffs);
+    OBJECT_PROP2("Pulser Trigger", &MRMPreScaler::prescalerPulsTrig, &MRMPreScaler::setPrescalerPulsTrig);
 OBJECT_END(MRMPreScaler)

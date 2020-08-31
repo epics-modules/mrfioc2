@@ -92,3 +92,22 @@ record(calc, "$(SN)PhasOffs-RB") {
   field( INPA, "$(SN)Div-RB")
   field( INPB, "$(SN)PhasOffs:Raw-RB PP")
 }
+
+record(mbboDirect, "$(SN)PulsTrig-Sel") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler Pulse Generator Trigger")
+  field(OMSL, "supervisory")
+  field(OUT , "@OBJ=$(OBJ), PROP=Pulser Trigger")
+  field(PINI, "YES")
+  field(NOBT, "32")
+  field(VAL , "0")
+  field(FLNK, "$(SN)PulsTrig-RB")
+  info(autosaveFields_pass0, "RVAL")
+}
+
+record(mbbiDirect, "$(SN)PulsTrig-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler Pulse Generator Trigger")
+  field(INP , "@OBJ=$(OBJ), PROP=Pulser Trigger")
+  field(NOBT, "32")
+}
