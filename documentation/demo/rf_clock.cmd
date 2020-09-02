@@ -1,6 +1,6 @@
 ## Configuration EVG
 ## Select RF input as clock source
-dbpf("TST{EVG-EvtClk}Source-Sel","RF")
+dbpf("TST{EVG-EvtClk}Source-Sel","RF (Ext)")
 
 ## Take 500MHz in and divide by 4 to get 125MHz Event clock
 ##dbpf("TST{EVG-EvtClk}RFFreq-SP","500.0")
