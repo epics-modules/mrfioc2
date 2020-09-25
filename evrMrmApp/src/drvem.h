@@ -205,6 +205,9 @@ public:
     epicsUInt32 dcStatusRaw() const;
     epicsUInt32 topId() const;
 
+    bool psPolarity() const;
+    void psPolaritySet(bool v);
+
     epicsUInt32 dummy() const { return 0; }
     void setEvtCode(epicsUInt32 code) OVERRIDE FINAL;
 

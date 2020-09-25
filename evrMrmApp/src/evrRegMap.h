@@ -69,6 +69,8 @@
 
 #  define Control_DCEna   0x00400000
 
+#  define Control_pspol   0x00008000 /* prescaler polarity */
+
 /*                        Timestamp clock on DBUS #4 */
 #  define Control_tsdbus  0x00004000
 #  define Control_tsrst   0x00002000
