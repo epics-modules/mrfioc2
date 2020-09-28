@@ -28,6 +28,9 @@
 # but want to suppress deprecation warnings
 USR_CPPFLAGS += -DUSE_TYPED_RSET
 
+USR_CPPFLAGS_WIN32 += -DNOMINMAX
+USR_CPPFLAGS_WIN32 += -DWIN32_LEAN_AND_MEAN
+
 # Uncomment the following to enable strict treatment of warnings
 #USR_CFLAGS += -Wall -Wextra -Wno-unused-parameter -Werror -Wno-error=deprecated-declarations
 #USR_CXXFLAGS += -Wall -Wextra -Wno-unused-parameter -Werror -Wno-error=deprecated-declarations
