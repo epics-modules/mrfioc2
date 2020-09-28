@@ -7,11 +7,8 @@
 /*
  * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
-#ifdef _WIN32
- #define NOMINMAX
- #include <algorithm>
-#endif
 
+#include <algorithm>
 
 #include <stringoutRecord.h>
 #include <stringinRecord.h>

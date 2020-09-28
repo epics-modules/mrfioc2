@@ -8,6 +8,7 @@
 #  include <rtems.h>
 #endif
 
+#include <algorithm>
 #include <stdio.h>
 
 #include <epicsMath.h>

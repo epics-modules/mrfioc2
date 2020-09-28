@@ -4,6 +4,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <algorithm>
 #include <stdexcept>
 #include <vector>
 

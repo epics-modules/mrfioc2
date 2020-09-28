@@ -4,6 +4,8 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <algorithm>
+
 #include "drvem.h"
 #include "drvemTSBuffer.h"
 #include "devObj.h"
