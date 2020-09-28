@@ -6,8 +6,6 @@
 #include "testMain.h"
 
 #include "mrf/object.h"
-
-namespace {
 using namespace mrf;
 
 class mine : public ObjectInst<mine>
@@ -65,6 +63,7 @@ other::buildOne(const std::string& name, const std::string& klass, const Object:
     return new other(name);
 }
 
+namespace {
 
 void testMine()
 {
