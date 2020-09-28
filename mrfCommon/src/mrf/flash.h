@@ -17,7 +17,7 @@
 
 namespace mrf {
 
-struct SPIDevice;
+class SPIDevice;
 
 //! Handling for Common Flash Interfafce compliant chips
 class MRFCOMMON_API CFIFlash
