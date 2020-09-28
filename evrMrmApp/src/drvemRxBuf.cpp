@@ -14,10 +14,6 @@
 #include <cstdio>
 #include <errlog.h>
 
-#ifdef _WIN32
-	#include <Winsock2.h>
-	#pragma comment (lib, "Ws2_32.lib")
-#endif
 #include <callback.h>
 #include <mrfCommonIO.h>
 #include <mrfBitOps.h>

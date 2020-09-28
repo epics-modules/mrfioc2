@@ -27,6 +27,7 @@ mrmShared_SRCS += mrmspi.cpp
 
 mrmShared_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 
+USR_SYS_LIBS_WIN32 += ws2_32
 #---------------------
 # Generic EPICS build rules
 #

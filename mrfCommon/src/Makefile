@@ -81,6 +81,7 @@ mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 #OBJS_IOC += $(mrfCommon_SRCS)
 mrfCommon_LIBS += $(EPICS_BASE_IOC_LIBS)
 
+USR_SYS_LIBS_WIN32 += ws2_32
 #---------------------
 # Build the host-side utilities for creating and analyzing
 # the fractional synthesizer control words.
