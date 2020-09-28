@@ -11,7 +11,7 @@
 #include <epicsGuard.h>
 #include <epicsTypes.h>
 
-class epicsShareClass DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>
+class EVR_API DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>
 {
 public:
     explicit DelayModuleEvr(const std::string& n) : mrf::ObjectInst<DelayModuleEvr>(n) {}

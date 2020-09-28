@@ -48,10 +48,8 @@ alarm_exception::what() throw()
     return "Alarm!";
 }
 
-epicsShareFunc
 propertyBase::~propertyBase() {}
 
-epicsShareFunc
 void
 propertyBase::show(std::ostream& strm) const
 {

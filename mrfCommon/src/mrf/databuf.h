@@ -5,15 +5,6 @@
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
-#ifdef DATABUF_H_INC_LEVEL2
- #ifdef epicsExportSharedSymbols
-  #define DATABUFL2_epicsExportSharedSymbols
-  #undef epicsExportSharedSymbols
-  #include "shareLib.h"
- #endif
-#endif
-
-
 #ifndef DATABUF_H_INC
 #define DATABUF_H_INC
 
@@ -21,6 +12,7 @@
 #include <epicsTime.h>
 
 #include "mrf/object.h"
+#include "mrf/mrfCommonAPI.h"
 
 /**
  *@param arg[in] Arbitrary pointer passed by user
@@ -32,7 +24,7 @@ typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
                            epicsUInt32 len, const epicsUInt8* buf);
 
 
-class epicsShareClass dataBufTx : public mrf::ObjectInst<dataBufTx> {
+class MRFCOMMON_API dataBufTx : public mrf::ObjectInst<dataBufTx> {
     struct impl;
     impl *pimpl;
 public:
@@ -59,7 +51,7 @@ public:
 
 
 
-class epicsShareClass dataBufRx : public mrf::ObjectInst<dataBufRx> {
+class MRFCOMMON_API dataBufRx : public mrf::ObjectInst<dataBufRx> {
 public:
     explicit dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
 
@@ -91,9 +83,3 @@ public:
 };
 
 #endif // DATABUF_H_INC
-
-#ifdef DATABUFL2_epicsExportSharedSymbols
- #undef DATABUF_H_INC_LEVEL2
- #define epicsExportSharedSymbols
- #include "shareLib.h"
-#endif

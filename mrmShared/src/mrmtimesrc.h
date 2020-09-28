@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include <shareLib.h>
+#include <mrmSharedAPI.h>
 #include <epicsTypes.h>
 
 /* Handles sending shirt 0/1 events after the start of each second.
  */
-class epicsShareClass TimeStampSource
+class MRMSHARED_API TimeStampSource
 {
     struct Impl;
     Impl * const impl;

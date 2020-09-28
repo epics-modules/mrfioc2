@@ -362,7 +362,7 @@ static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
  *
  **************************************************************************************************/
 
-epicsShareExtern epicsStatus mrfSetEventClockSpeed (
+epicsStatus mrfSetEventClockSpeed (
     epicsFloat64   InputClockSpeed,             /* Desired event clock speed in MHz (or zero)     */
     epicsUInt32    InputControlWord,            /* Fractional synthesizer control word (or zero)  */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency (in MHz)    */
@@ -549,7 +549,7 @@ epicsShareExtern epicsStatus mrfSetEventClockSpeed (
  **************************************************************************************************/
 
 
-epicsShareExtern epicsUInt32 FracSynthControlWord (
+epicsUInt32 FracSynthControlWord (
     epicsFloat64         DesiredFreq,         /* Desired output frequency                         */
     epicsFloat64         ReferenceFreq,       /* SY87739L input reference frequency               */
     epicsInt32           debugFlag,           /* Flag for debug/informational output              */
@@ -841,7 +841,7 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
  **************************************************************************************************/
 
 
-epicsShareExtern epicsFloat64 FracSynthAnalyze (
+epicsFloat64 FracSynthAnalyze (
     epicsUInt32    ControlWord,                 /* Control word to analyze                        */
     epicsFloat64   ReferenceFreq,               /* SY87739L input reference frequency             */
     epicsInt32     PrintFlag)                   /* Flag to control what we print in this routine  */

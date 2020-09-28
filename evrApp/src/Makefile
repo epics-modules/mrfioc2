@@ -5,12 +5,15 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+USR_CPPFLAGS += -DBUILDING_EVR_API
+
 LIBRARY = evr
 
 SRC_DIRS += evr
 
 DBD += evrSupport.dbd
 
+INC += evr/evrAPI.h
 INC += evr/pulser.h
 INC += evr/output.h
 INC += evr/delay.h

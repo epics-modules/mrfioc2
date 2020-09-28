@@ -91,7 +91,7 @@
 #include "mrfCommon.h"
 
 // when dset should signal alarm w/o printing a message
-class epicsShareClass alarm_exception : public std::exception
+class MRFCOMMON_API alarm_exception : public std::exception
 {
     const short sevr, stat;
 public:
@@ -105,7 +105,7 @@ public:
 namespace mrf {
 
 //! @brief Requested operation is not implemented by the property
-class epicsShareClass opNotImplemented : public std::runtime_error
+class MRFCOMMON_API opNotImplemented : public std::runtime_error
 {
 public:
     explicit opNotImplemented(const std::string& m) : std::runtime_error(m) {}
@@ -117,7 +117,7 @@ public:
  * There is no way other then to up-cast in ObjectInst<C>
  * and then down-cast in getProperty<P>().
  */
-struct epicsShareClass propertyBase
+struct MRFCOMMON_API propertyBase
 {
     virtual ~propertyBase()=0;
     virtual const char* name() const=0;
@@ -192,7 +192,7 @@ struct unboundPropertyBase
 
 //! @brief An un-bound, typed scalar property
 template<class C, typename P>
-class epicsShareClass unboundProperty : public unboundPropertyBase<C>
+class MRFCOMMON_API unboundProperty : public unboundPropertyBase<C>
 {
 public:
     typedef void (C::*setter_t)(P);
@@ -219,7 +219,7 @@ makeUnboundProperty(const char* n, P (C::*g)() const, void (C::*s)(P)=0)
 
 //! @brief An un-bound, typed array property
 template<class C, typename P>
-class epicsShareClass unboundProperty<C,P[1]> : public unboundPropertyBase<C>
+class MRFCOMMON_API unboundProperty<C,P[1]> : public unboundPropertyBase<C>
 {
 public:
     typedef void   (C::*setter_t)(const P*, epicsUInt32);
@@ -248,7 +248,7 @@ makeUnboundProperty(const char* n,
 
 //! @brief An un-bound momentary/command
 template<class C>
-class epicsShareClass unboundProperty<C,void> : public unboundPropertyBase<C>
+class MRFCOMMON_API unboundProperty<C,void> : public unboundPropertyBase<C>
 {
 public:
     typedef void (C::*exec_t)();
@@ -272,7 +272,7 @@ makeUnboundProperty(const char* n,
 
 //! @brief final scalar implementation
 template<class C, typename P>
-class epicsShareClass  propertyInstance : public property<P>
+class MRFCOMMON_API  propertyInstance : public property<P>
 {
   C *inst;
   unboundProperty<C,P> prop;
@@ -313,7 +313,7 @@ unboundProperty<C,P>::bind(C* inst)
 
 //! @brief final array implementation
 template<class C, typename P>
-class epicsShareClass propertyInstance<C,P[1]> : public property<P[1]>
+class MRFCOMMON_API propertyInstance<C,P[1]> : public property<P[1]>
 {
   C *inst;
   unboundProperty<C,P[1]> prop;
@@ -342,7 +342,7 @@ unboundProperty<C,P[1]>::bind(C* inst)
 }
 
 template<class C>
-class epicsShareClass propertyInstance<C,void> : public property<void>
+class MRFCOMMON_API propertyInstance<C,void> : public property<void>
 {
     C *inst;
     unboundProperty<C,void> prop;
@@ -375,7 +375,7 @@ unboundProperty<C,void>::bind(C* inst)
  * to properties.
  */
 
-class epicsShareClass Object
+class MRFCOMMON_API Object
 {
 public:
     struct _compName {
@@ -456,7 +456,7 @@ public:
  @endcode
  */
 template<class C, typename Base = Object>
-class epicsShareClass ObjectInst : public Base
+class MRFCOMMON_API ObjectInst : public Base
 {
     typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
     static m_props_t *m_props;

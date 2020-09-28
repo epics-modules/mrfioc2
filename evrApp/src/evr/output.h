@@ -23,7 +23,7 @@ enum OutputType {
   OutputBackplane=4, //!< Backplane lines
 };
 
-class epicsShareClass Output : public mrf::ObjectInst<Output>
+class EVR_API Output : public mrf::ObjectInst<Output>
 {
 public:
   explicit Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}

@@ -11,7 +11,7 @@
 #include <istream>
 
 #include <epicsTypes.h>
-#include <shareLib.h>
+#include <mrf/mrfCommonAPI.h>
 
 #include <mrfCommon.h>
 
@@ -20,7 +20,7 @@ namespace mrf {
 struct SPIDevice;
 
 //! Handling for Common Flash Interfafce compliant chips
-class epicsShareClass CFIFlash
+class MRFCOMMON_API CFIFlash
 {
 public:
     explicit CFIFlash(const SPIDevice& dev);
@@ -86,7 +86,7 @@ private:
 };
 
 //! Adapt CFIFlash for use with std::istream
-class epicsShareClass CFIStreamBuf : public std::streambuf
+class MRFCOMMON_API CFIStreamBuf : public std::streambuf
 {
     CFIFlash& flash;
     epicsUInt32 pos;
@@ -101,7 +101,7 @@ public:
 };
 
 //! Attempt to read out the header of a Xilinx bitstream file.
-struct epicsShareClass XilinxBitInfo
+struct MRFCOMMON_API XilinxBitInfo
 {
     XilinxBitInfo() {}
 

@@ -87,7 +87,7 @@ using std::auto_ptr;
 
 #include  <limits.h>            /* Standard C numeric limits                                      */
 
-#include <shareLib.h>
+#include <mrf/mrfCommonAPI.h>
 
 /**************************************************************************************************/
 /*  MRF Event System Constants                                                                    */
@@ -256,7 +256,7 @@ struct SB {
  *   approacing release 12000207, we have prereleases 12FF0206, 12FE0206,
  *   12FD0206 etc. in this order.
  */
-class epicsShareClass MRFVersion
+class MRFCOMMON_API MRFVersion
 {
     const epicsUInt16 m_major;
     const epicsInt8 m_minor;
@@ -283,13 +283,13 @@ public:
     std::string str() const;
 };
 
-epicsShareExtern
+MRFCOMMON_API extern
 std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver);
 
 
 //! @brief Helper to allow one class to have several runable methods
 template<class C,void (C::*Method)()>
-class epicsShareClass epicsThreadRunableMethod : public epicsThreadRunable
+class MRFCOMMON_API epicsThreadRunableMethod : public epicsThreadRunable
 {
     C& owner;
 public:
@@ -330,9 +330,9 @@ public:
 /* Round down and convert float to unsigned int
  * throws std::range_error for NaN and out of range inputs
  */
-epicsShareFunc epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
+MRFCOMMON_API epicsUInt32 roundToUInt(double val, epicsUInt32 maxresult=0xffffffff);
 
-epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_STYLE(2,3);
+MRFCOMMON_API char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_STYLE(2,3);
 #endif
 
 /**************************************************************************************************/
@@ -381,7 +381,7 @@ epicsShareFunc char *allocSNPrintf(size_t N, const char *fmt, ...) EPICS_PRINTF_
 #ifdef __cplusplus
 extern "C" {
 #endif
-epicsShareFunc int
+MRFCOMMON_API int
 epicsParseUInt32(const char *str, epicsUInt32 *to, int base, char **units);
 #ifdef __cplusplus
 }

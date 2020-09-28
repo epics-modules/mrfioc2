@@ -2,9 +2,11 @@
 TOP=../..
 include $(TOP)/configure/CONFIG
 
+USR_CPPFLAGS += -DBUILDING_MRMSHARED_API
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 USR_INCLUDES += -I$(TOP)/evrMrmApp/src
 
+INC += mrmSharedAPI.h
 INC += mrmDataBufTx.h
 INC += mrmSeq.h
 INC += mrmpci.h

@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+USR_CPPFLAGS += -DBUILDING_EVRMRM_API
 USR_INCLUDES += -I$(TOP)/mrmShared/src
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
@@ -57,4 +58,3 @@ endif
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-

@@ -44,6 +44,7 @@
 #include "mrmDataBufTx.h"
 #include "sfp.h"
 #include "configurationInfo.h"
+#include <evrMrmAPI.h>
 
 class EVRMRM;
 
@@ -83,7 +84,7 @@ struct eventCode {
  *
  * 
  */
-class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
+class EVRMRM_API EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
                                public MRMSPI,
                                public TimeStampSource
 {

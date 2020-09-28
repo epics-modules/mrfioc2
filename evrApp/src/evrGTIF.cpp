@@ -41,7 +41,7 @@ static EVR* lastSrc = 0;
 
 static epicsMutexId lastLock;
 
-epicsShareFunc
+EVR_API
 int EVRInitTime()
 {
     if(lastLock)

@@ -12,6 +12,7 @@
 #define PULSER_HPP_INC
 
 #include "mrf/object.h"
+#include "evr/evrAPI.h"
 
 #include <epicsTypes.h>
 
@@ -35,7 +36,7 @@ struct MapType {
  * Gated mode has two event codes.  One is sets the output
  * high and the second resets the output low.
  */
-class epicsShareClass Pulser : public mrf::ObjectInst<Pulser>
+class EVR_API Pulser : public mrf::ObjectInst<Pulser>
 {
 public:
   explicit Pulser(const std::string& n) : mrf::ObjectInst<Pulser>(n) {}

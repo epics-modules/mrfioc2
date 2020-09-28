@@ -17,8 +17,9 @@
 #include <callback.h>
 
 #include "mrf/databuf.h"
+#include "evrMrmAPI.h"
 
-class epicsShareClass bufRxManager : public dataBufRx
+class EVRMRM_API bufRxManager : public dataBufRx
 {
 public:
     bufRxManager(const std::string&, unsigned int qdepth, unsigned int bsize=0);

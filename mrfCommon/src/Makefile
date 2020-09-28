@@ -2,7 +2,7 @@ TOP=../..
 include $(TOP)/configure/CONFIG
 
 USR_CFLAGS += -DDEBUG_PRINT
-USR_CPPFLAGS += -DDEBUG_PRINT
+USR_CPPFLAGS += -DDEBUG_PRINT -DBUILDING_MRFCOMMON_API
 
 export PERL5LIB=$(EPICS_BASE)/lib/perl
 
@@ -11,6 +11,7 @@ MRF_VERSION = $(MRFIOC2_MAJOR_VERSION).$(MRFIOC2_MINOR_VERSION).$(MRFIOC2_MAINTE
 #---------------------
 # Install include files
 #
+INC += mrf/mrfCommonAPI.h
 INC += mrfBitOps.h
 INC += mrfCommon.h        # Common MRF event system constants & definitions
 INC += mrfCommonIO.h      # Common I/O access macros

@@ -90,7 +90,7 @@ struct addrBase {
     mrf::Object *O;
 };
 
-epicsShareExtern const
+MRFCOMMON_API extern const
 linkOptionEnumType readbackEnum[];
 
 template<typename T>
@@ -98,10 +98,10 @@ struct addr : public addrBase {
     mrf::auto_ptr<mrf::property<T> > P;
 };
 
-epicsShareExtern const
+MRFCOMMON_API extern const
 linkOptionDef objdef[];
 
-struct epicsShareClass CurrentRecord {
+struct MRFCOMMON_API CurrentRecord {
     template<typename Rec>
     explicit CurrentRecord(Rec* prec)
     {

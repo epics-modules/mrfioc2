@@ -3,7 +3,6 @@
 #include <epicsEvent.h>
 #include <epicsMutex.h>
 #include <epicsGuard.h>
-#define epicsExportSharedSymbols
 #include "mrf/pollirq.h"
 
 IRQPoller::IRQPoller(pollerFN fn, void *arg, double period)

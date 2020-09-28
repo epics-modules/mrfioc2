@@ -17,7 +17,7 @@
 
 class EVR;
 
-class epicsShareClass PreScaler : public mrf::ObjectInst<PreScaler>
+class EVR_API PreScaler : public mrf::ObjectInst<PreScaler>
 {
 public:
   PreScaler(const std::string& n, EVR& o):mrf::ObjectInst<PreScaler>(n),owner(o){};

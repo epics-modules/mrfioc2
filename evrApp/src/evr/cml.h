@@ -22,7 +22,7 @@ enum cmlMode {
   cmlModeInvalid
 };
 
-class epicsShareClass CML : public mrf::ObjectInst<CML>
+class EVR_API CML : public mrf::ObjectInst<CML>
 {
 public:
   enum pattern {

@@ -52,6 +52,8 @@
 
 #include <epicsTypes.h>                 /* EPICS Architecture-independent type definitions        */
 
+#include <mrf/mrfCommonAPI.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -60,12 +62,15 @@ extern "C" {
 /*  Function Prototypes for Fractional Synthesizer Utility Routines                               */
 /**************************************************************************************************/
 
-epicsShareExtern epicsStatus   mrfSetEventClockSpeed (epicsFloat64,  epicsUInt32,  epicsFloat64,
+MRFCOMMON_API
+epicsStatus   mrfSetEventClockSpeed (epicsFloat64,  epicsUInt32,  epicsFloat64,
                                                       epicsFloat64*, epicsUInt32*, epicsInt32);
 
-epicsShareExtern epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epicsFloat64*);
+MRFCOMMON_API
+epicsUInt32   FracSynthControlWord  (epicsFloat64, epicsFloat64, epicsInt32, epicsFloat64*);
 
-epicsShareExtern epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
+MRFCOMMON_API
+epicsFloat64  FracSynthAnalyze      (epicsUInt32, epicsFloat64, epicsInt32);
 
 /**************************************************************************************************/
 /*  Special Macros to Define Commonly Used Symbols                                                */
