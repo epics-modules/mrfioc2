@@ -59,7 +59,7 @@ record(calcout, "$(SN)PhasOffs-CO_") {
   field( DESC, "Degrees to Event Clock Ticks")
   field( OUT , "$(SN)PhasOffs:Raw-SP PP")
   field( CALC, "FLOOR(B/360*A)")
-  field( INPA, "$(SN)Div-RB CPP")
+  field( INPA, "$(SN)Div-RB")
   field( INPB, "$(SN)PhasOffs-SP")
 }
 
@@ -89,6 +89,6 @@ record(calc, "$(SN)PhasOffs-RB") {
   field( DESC, "Prescaler $(IDX) Phase Offset")
   field( CALC, "B/A*360")
   field( EGU , "Deg")
-  field( INPA, "$(SN)Div-RB")
+  field( INPA, "$(SN)Div-RB CPP")
   field( INPB, "$(SN)PhasOffs:Raw-RB PP")
 }
