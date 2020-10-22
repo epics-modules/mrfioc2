@@ -117,6 +117,8 @@
 #define  ClockControl_plllock   0x80000000
 #define  ClockControl_Sel_MASK  0x07000000
 #define  ClockControl_Sel_SHIFT 24
+#define  ClockControl_pll_bw    0x70000000
+#define  ClockControl_pll_SHIFT 28
 #define  ClockControl_Div_MASK  0x003f0000
 #define  ClockControl_Div_SHIFT 16
 #define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select

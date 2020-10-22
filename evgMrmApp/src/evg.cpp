@@ -71,12 +71,13 @@ OBJECT_BEGIN(evgMrm) {
       void (evgMrm::*cmd)() = &evgMrm::resyncSecond;
       OBJECT_PROP1("Sync TS", cmd);
     }
-    OBJECT_PROP2("Source",      &evgMrm::getSource, &evgMrm::setSource);
-    OBJECT_PROP2("RFFreq",      &evgMrm::getRFFreq, &evgMrm::setRFFreq);
-    OBJECT_PROP2("RFDiv",       &evgMrm::getRFDiv,  &evgMrm::setRFDiv);
-    OBJECT_PROP2("FracSynFreq", &evgMrm::getFracSynFreq, &evgMrm::setFracSynFreq);
-    OBJECT_PROP1("Frequency",   &evgMrm::getFrequency);
+    OBJECT_PROP2("Source",          &evgMrm::getSource, &evgMrm::setSource);
+    OBJECT_PROP2("RFFreq",          &evgMrm::getRFFreq, &evgMrm::setRFFreq);
+    OBJECT_PROP2("RFDiv",           &evgMrm::getRFDiv,  &evgMrm::setRFDiv);
+    OBJECT_PROP2("FracSynFreq",     &evgMrm::getFracSynFreq, &evgMrm::setFracSynFreq);
+    OBJECT_PROP1("Frequency",       &evgMrm::getFrequency);
     OBJECT_PROP1("PLL Lock Status", &evgMrm::pllLocked);
+    OBJECT_PROP2("PLL Bandwidth",   &evgMrm::getPLLBandwidthRaw, &evgMrm::setPLLBandwidthRaw);
 } OBJECT_END(evgMrm)
 
 
