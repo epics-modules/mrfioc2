@@ -17,11 +17,13 @@
 #define MRF_VME_EVG_BID      0x45470000 /* VME Event Generator */
 #define MRF_VME_EVR_BID      0x45520000 /* VME Event Receiver */
 #define MRF_VME_EVR_RF_BID   0x45524600 /* VME Event Receiver with RF Recovery */
-#define MRF_VME_EVM_BID      0x4547012c /* VME-EVM-300 */
+#define MRF_VME_EVM_300_BID  0x45470100 /* VME-EVM-300 */
+#define MRF_VME_EVR_300_BID  0x45520100 /* VME-EVR-300 */
 
 #define MRF_SERIES_200       0x000000C8 /* Series 200 Code */
 #define MRF_SERIES_220       0x000000DC /* Series 220 Code */
 #define MRF_SERIES_230       0x000000E6 /* Series 230 Code */
+#define MRF_SERIES_300       0x0000002C /* Series 300 Code */
 
 /**************************************************************************************************/
 /*  Board ID Field Masks                                                                          */
@@ -49,6 +51,13 @@
 #define MRF_VME_EVG230_BID   (MRF_VME_EVG_BID    | MRF_SERIES_230) /* VME Event Generator 230     */
 #define MRF_VME_EVR230_BID   (MRF_VME_EVR_BID    | MRF_SERIES_230) /* VME Event Receiver 230      */
 #define MRF_VME_EVR230RF_BID (MRF_VME_EVR_RF_BID | MRF_SERIES_230) /* VME EVR 230 w/ RF Recovery  */
+
+/**************************************************************************************************/
+/*  Series 300 Board ID Codes                                                                     */
+/**************************************************************************************************/
+
+#define MRF_VME_EVM300_BID   (MRF_VME_EVM_300_BID | MRF_SERIES_300) /* VME Event Master 300     */
+#define MRF_VME_EVR300_BID   (MRF_VME_EVR_300_BID | MRF_SERIES_300) /* VME Event Receiver 300      */
 
 /**************************************************************************************************/
 /*  CR/CSR User-CSR Space Offsets (MRF Specific)                                                  */
