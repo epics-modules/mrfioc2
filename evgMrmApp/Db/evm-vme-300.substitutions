@@ -3,7 +3,7 @@ pattern { P, OBJ }
 { "$(SYS):$(D)-AcTrig:", "$(EVG):AcTrig" }
 }
 
-file evgDbus.db {
+file evgDbus-evm300.db {
 pattern { P, OBJ, EVG, dbusBit }
 { "$(SYS):$(D)-Dbus0:", "$(EVG):Dbus0", $(EVG), 0 }
 { "$(SYS):$(D)-Dbus1:", "$(EVG):Dbus1", $(EVG), 1 }
@@ -42,7 +42,7 @@ pattern { P, OBJ, , SYS, D, Num }
 { "$(SYS):$(D)-Inp:Rear15:",  "$(EVG):RearInp15",  $(SYS), $(D), 8 }
 }
 
-file evgMrm.db {
+file evgMrm-evm300.db {
 { P="$(SYS):$(D):", SOFTEVT="$(SYS):$(D)-SoftEvt:", OBJ="$(EVG)", EVG="$(EVG)" }
 }
 

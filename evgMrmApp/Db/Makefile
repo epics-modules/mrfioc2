@@ -23,6 +23,7 @@ DB += evgTrigEvt.db
 DB += evgTrigEvt-evm300.db
 DB += evgMxc.db
 DB += evgDbus.db
+DB += evgDbus-evm300.db
 DB += evgAcTrig.db
 DB += evgInput.db
 DB += evgOutput.db

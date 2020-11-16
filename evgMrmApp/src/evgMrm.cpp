@@ -56,8 +56,8 @@ VMECSR_END
 };
 
 static
-EVRMRM::Config mtca_evm_evru_conf = {
-    "mTCA-EVM-300 (EVRU)",
+EVRMRM::Config evm_evru_conf = {
+    "EVRU",
     16, // pulse generators
     3,  // prescalers
     8,  // FP outputs
@@ -71,38 +71,8 @@ EVRMRM::Config mtca_evm_evru_conf = {
 };
 
 static
-EVRMRM::Config mtca_evm_evrd_conf = {
-    "mTCA-EVM-300 (EVRD)",
-    16, // pulse generators
-    3,  // prescalers
-    8,  // FP outputs
-    0,  // FPUV outputs
-    0,  // RB outputs
-    0,  // Backplane outputs
-    0,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
-    8,  // FP inputs
-};
-
-static
-EVRMRM::Config vme_evm_evru_conf = {
-    "VME-EVM-300 (EVRU)",
-    16, // pulse generators
-    3,  // prescalers
-    8,  // FP outputs
-    0,  // FPUV outputs
-    0,  // RB outputs
-    0,  // Backplane outputs
-    0,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
-    8,  // FP inputs
-};
-
-static
-EVRMRM::Config vme_evm_evrd_conf = {
-    "VME-EVM-300 (EVRD)",
+EVRMRM::Config evm_evrd_conf = {
+    "EVRD",
     16, // pulse generators
     3,  // prescalers
     8,  // FP outputs
@@ -140,19 +110,20 @@ evgMrm::evgMrm(const std::string& id,
     struct VMECSRID info;
     info.board = 0; info.revision = 0; info.vendor = 0;
 
-    epicsUInt32 slot = busConfig.vme.slot;
+    if(getBusConfiguration()->busType==busType_vme) {
+        epicsUInt32 slot = busConfig.vme.slot;
 
-    epicsUInt32 v, isevr;
+        /*csrCpuAddr is VME-CSR space CPU address for the board*/
+        volatile unsigned char* csrCpuAddr =
+            devCSRTestSlot(vmeEvgIDs,slot,&info);
 
-    /*csrCpuAddr is VME-CSR space CPU address for the board*/
-    volatile unsigned char* csrCpuAddr =
-        devCSRTestSlot(vmeEvgIDs,slot,&info);
-
-    if(!csrCpuAddr) {
-        printf("No EVG in slot %d\n",slot);
-        return;
+        if(!csrCpuAddr) {
+            printf("No EVG in slot %d\n",slot);
+            return;
+        }
     }
 
+    epicsUInt32 v, isevr;
     v = READ32(m_pReg, FPGAVersion);
     isevr=v&FPGAVersion_TYPE_MASK;
     isevr>>=FPGAVersion_TYPE_SHIFT;
@@ -220,18 +191,11 @@ evgMrm::evgMrm(const std::string& id,
     if((busConfig.busType==busType_pci) || (info.board==MRF_VME_EVM300_BID))
         mrf::SPIDevice::registerDev(id+":FLASH", mrf::SPIDevice(this, 1));
 
-    if(pciDevice->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) {
+    if((pciDevice->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) || (info.board==MRF_VME_EVM300_BID)) {
         printf("EVM automatically creating '%s:FCT', '%s:EVRD', and '%s:EVRU'\n", id.c_str(), id.c_str(), id.c_str());
         fct.reset(new FCT(this, id+":FCT", pReg+0x10000));
-        evrd.reset(new EVRMRM(id+":EVRD", busConfig, &mtca_evm_evrd_conf, pReg+0x20000, 0x10000));
-        evru.reset(new EVRMRM(id+":EVRU", busConfig, &mtca_evm_evru_conf, pReg+0x30000, 0x10000));
-    }
-
-    if(info.board==MRF_VME_EVM300_BID) {
-        printf("EVM automatically created '%s:FCT', '%s:EVRD', and '%s:EVRU'\n", id.c_str(), id.c_str(), id.c_str());
-        fct.reset(new FCT(this, id+":FCT", pReg+0x10000));
-        evrd.reset(new EVRMRM(id+":EVRD", busConfig, &vme_evm_evrd_conf, pReg+0x20000, 0x10000));
-        evru.reset(new EVRMRM(id+":EVRU", busConfig, &vme_evm_evru_conf, pReg+0x30000, 0x10000));
+        evrd.reset(new EVRMRM(id+":EVRD", busConfig, &evm_evrd_conf, pReg+0x20000, 0x10000));
+        evru.reset(new EVRMRM(id+":EVRU", busConfig, &evm_evru_conf, pReg+0x30000, 0x10000));
     }
 }
 
