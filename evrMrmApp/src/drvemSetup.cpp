@@ -86,6 +86,8 @@ static const epicsPCIID mrmevrs[] = {
 static const struct VMECSRID vmeevrs[] = {
     // VME-EVR-230 and VME-EVRRF-230
     {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
+    // VME-EVR-300
+    ,{MRF_VME_IEEE_OUI, MRF_VME_EVR300_BID, VMECSRANY}
     ,VMECSR_END
 };
 
@@ -141,6 +143,20 @@ static const EVRMRM::Config vme_evrrf_230 = { // no way to distinguish RF and no
     0,  // Backplane outputs
     2,  // FP Delay outputs
     3,  // CML/GTX outputs
+    MRMCML::typeCML,
+    2,  // FP inputs
+};
+
+static const EVRMRM::Config vme_evr_300 = {
+    "VME-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    2,  // FP outputs
+    10, // FPUV outputs
+    16, // RB outputs
+    0,  // Backplane outputs
+    8,  // FP Delay outputs
+    4,  // CML/GTX outputs
     MRMCML::typeCML,
     2,  // FP inputs
 };
@@ -754,7 +770,6 @@ mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
     bus_configuration bus;
-    const EVRMRM::Config *conf = &vme_evrrf_230;
 
     bus.busType = busType_vme;
     bus.vme.slot = slot;
@@ -775,6 +790,9 @@ try {
         return;
     }
 
+    /* Is this a 230 series or 300 series?? */
+    const EVRMRM::Config *conf = ((info.board == MRF_VME_EVR300_BID) ? &vme_evr_300 : &vme_evrrf_230);
+    
     printf("Setting up EVR in VME Slot %d\n",slot);
 
     printf("Found vendor: %08x board: %08x rev.: %08x\n",
