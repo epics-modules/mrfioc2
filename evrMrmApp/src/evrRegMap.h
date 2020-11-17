@@ -339,7 +339,7 @@
 #define U32_DataTx(N)      (U32_DataTx_base + (N))
 
 /* 0 <= N <= 0xfff */
-#define U32_EventLog(N)    (U32_EventLog_base
+#define U32_EventLog(N)    (U32_EventLog_base)
 
 /* 0 <= M <= 1   ram select
  * 0 <= E <= 255 event code number
