@@ -147,6 +147,8 @@
 
 #define U32_ClkCtrl     0x050
 #  define ClkCtrl_plllock 0x80000000
+#  define ClkCtrl_pll_bw  0x70000000
+#  define ClkCtrl_pll_bw_SHIFT 28
 #  define ClkCtrl_clkmd_MASK 0x06000000
 #  define ClkCtrl_clkmd_SHIFT 25
 #  define ClkCtrl_cglock 0x00000200
@@ -187,8 +189,8 @@
 
 
 #define U32_ScalerN     0x100
-#  define ScalerMax 3
-/* 0 <= N <= 2 */
+#  define ScalerMax 8
+/* 0 <= N <= 8 */
 #define U32_Scaler(N)   (U32_ScalerN + (4*(N)))
 #  define ScalerPhasOffs_offset 0x20
 
@@ -196,14 +198,14 @@
 #define U32_PulserNScal 0x204
 #define U32_PulserNDely 0x208
 #define U32_PulserNWdth 0x20c
-#  define PulserMax 10
+#  define PulserMax 24
 
 /* 0 <= N <= 15 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
-#  define PulserCtrl_masks         0xf0000000
-#  define PulserCtrl_masks_shift   28
-#  define PulserCtrl_enables       0x00f00000
-#  define PulserCtrl_enables_shift 20
+#  define PulserCtrl_masks         0xff000000
+#  define PulserCtrl_masks_shift   24
+#  define PulserCtrl_enables       0x00ff0000
+#  define PulserCtrl_enables_shift 16
 #  define PulserCtrl_ena  0x01
 #  define PulserCtrl_mtrg 0x02
 #  define PulserCtrl_mset 0x04
@@ -317,7 +319,7 @@
 #define U32_OutputCMLNPat_base 0x20000
 #define U32_OutputCMLPat(i,N) (U32_OutputCMLNPat_base + 0x4000*(i) + 4*(N))
 
-#  define OutputCMLMax 3
+#  define OutputCMLMax 4
 #  define OutputGTXMax 8
 
 /* 0 <= N <= 2 */
