@@ -126,7 +126,7 @@ bool evgMrm::pllLocked() const
     return (cur&mask)==mask;
 }
 
-void evgMrm::setPLLBandwidth(PLLBandwidth pllBandwidth)
+void evgMrm::setPLLBandwidth(epicsUInt16 pllBandwidth)
 {
     if(pllBandwidth > PLLBandwidth_MAX) {
         throw std::out_of_range("PLL bandwidth you selected is not available.");
@@ -138,14 +138,13 @@ void evgMrm::setPLLBandwidth(PLLBandwidth pllBandwidth)
     WRITE32(m_pReg, ClockControl, temp);
 }
 
-PLLBandwidth evgMrm::getPLLBandwidth() const
+epicsUInt16 evgMrm::getPLLBandwidth() const
 {
-    epicsUInt8 bw;
-
-    bw = (READ32(m_pReg, ClockControl) & ClockControl_pll_bw);
+    epicsUInt32 bw = READ32(m_pReg, ClockControl);
+    bw &= ClockControl_pll_bw;
     bw = bw >> ClockControl_pll_SHIFT;
 
-    return (PLLBandwidth) bw;
+    return (epicsUInt16) bw;
 }
 
 void evgMrm::recalcRFDiv()
