@@ -47,6 +47,14 @@
 
 class EVRMRM;
 
+enum EvtClkMode {
+    ECModeUpFallBackSame = 0,
+    ECModeFracSynt = 1,
+    ECModeUpFallBackFracSynt = 2,
+    ECModeUpFallBackStop = 3,
+    ECModeMax = ECModeUpFallBackStop
+};
+
 struct eventCode {
     epicsUInt8 code; // constant
     EVRMRM* owner;
@@ -146,6 +154,9 @@ public:
     void clockModeSet(epicsUInt16 mode);
 
     virtual bool pllLocked() const OVERRIDE FINAL;
+
+    virtual void setPLLBandwidth(epicsUInt16 pllBandwidth);
+    virtual epicsUInt16 getPLLBandwidth() const;
 
     virtual epicsUInt32 irqCount() const OVERRIDE FINAL {return count_hardware_irq;}
 
