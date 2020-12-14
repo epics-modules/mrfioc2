@@ -1,3 +1,5 @@
+KBUILD_CPPFLAGS += -DDRV_VERSION='"$(DRV_VERSION)"'
+
 obj-m := mrf.o
 
 mrf-objs := uio_mrf.o jtag_mrf.o
