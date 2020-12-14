@@ -1,0 +1,8 @@
+# This makefile is designed to be called from dkms: it builds in place.
+
+# We expect dkms to set this variable (see dkms.conf), but to help with
+# standalone building we set a default if it's not already been set.
+KERNEL_DIR ?= /lib/modules/$(kernelver)/build
+
+mrf.ko:
+	make -C $(KERNEL_DIR) M=$(CURDIR) modules

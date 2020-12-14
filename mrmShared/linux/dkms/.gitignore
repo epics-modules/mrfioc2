@@ -1,0 +1,6 @@
+# Files generated during build
+/dkms.conf
+/mrf.spec
+
+/rpmbuild
+/*.rpm
