@@ -1,0 +1,50 @@
+Summary: Kernel driver for MRF Event Receiver
+Name: @@DRV_NAME@@
+Version: @@RPM_VERSION@@
+Release: 1dkms
+License: GPL
+Group: System Environment/Kernel
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+BuildArch: noarch
+Requires: dkms
+Requires: udev
+Packager: Michael Abbott <michael.abbott@diamond.ac.uk>
+
+# The two target directories
+%define dkmsdir /usr/src/%{name}-%{version}
+%define udevdir /etc/udev/rules.d
+
+%description
+Installs the kernel driver for interfacing to the MRF Event Receiver over
+PCI express.  The driver is installed using dkms.
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{dkmsdir} %{buildroot}%{udevdir}
+install -m 0644 %{_sourcedir}/uio_mrf.c     %{buildroot}%{dkmsdir}
+install -m 0644 %{_sourcedir}/jtag_mrf.c    %{buildroot}%{dkmsdir}
+install -m 0644 %{_sourcedir}/mrf.h         %{buildroot}%{dkmsdir}
+install -m 0644 %{_curdir}/Makefile.dkms    %{buildroot}%{dkmsdir}/Makefile
+install -m 0644 %{_sourcedir}/Kbuild        %{buildroot}%{dkmsdir}
+install -m 0644 %{_curdir}/dkms.conf        %{buildroot}%{dkmsdir}
+
+%files
+%{dkmsdir}/uio_mrf.c
+%{dkmsdir}/jtag_mrf.c
+%{dkmsdir}/mrf.h
+%{dkmsdir}/Makefile
+%{dkmsdir}/Kbuild
+%{dkmsdir}/dkms.conf
+
+%post
+dkms add     -m %{name} -v %{version} --rpm_safe_upgrade
+dkms build   -m %{name} -v %{version}
+dkms install -m %{name} -v %{version}
+modprobe %{name}
+
+%preun
+modprobe -r %{name}
+dkms remove --all -m %{name} -v %{version} --rpm_safe_upgrade
+
+%postun
+rmdir /usr/src/%{name}-%{version}
