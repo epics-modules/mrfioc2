@@ -1,10 +1,10 @@
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 
-  KERNELDIR ?= /lib/modules/$(shell uname -r)/build
-  PWD := $(shell pwd)
+include VERSION
 
 all: modules
 
 modules modules_install clean:
-	$(MAKE) -C $(KERNELDIR) M=$(PWD) $@
+	$(MAKE) -C $(KERNELDIR) DRV_VERSION='$(DRV_VERSION)' M=$(CURDIR) $@
 
 .PHONY: all modules modules_install clean

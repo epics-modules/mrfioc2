@@ -12,7 +12,6 @@
 #include <linux/seq_file.h>
 
 #define DRV_NAME "mrf-pci"
-#define DRV_VERSION "1"
 
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
