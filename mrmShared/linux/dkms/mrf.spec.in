@@ -27,7 +27,7 @@ install -m 0644 %{_sourcedir}/mrf.h         %{buildroot}%{dkmsdir}
 install -m 0644 %{_curdir}/Makefile.dkms    %{buildroot}%{dkmsdir}/Makefile
 install -m 0644 %{_sourcedir}/Kbuild        %{buildroot}%{dkmsdir}
 install -m 0644 %{_curdir}/dkms.conf        %{buildroot}%{dkmsdir}
-install -m 0644 %{_sourcedir}/99-mrf.rules  %{buildroot}%{udevdir}
+install -m 0644 %{_curdir}/99-mrf.rules     %{buildroot}%{udevdir}
 
 %files
 %{dkmsdir}/uio_mrf.c

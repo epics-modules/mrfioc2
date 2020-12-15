@@ -4,6 +4,8 @@ SRCDIR = $(CURDIR)/..
 
 DRV_NAME = mrf
 include $(SRCDIR)/VERSION
+include CONFIG
+
 
 # The RPM_VERSION string takes the dotted version name (without extra version
 # info) and follows the Red Hat versioning rules: only letters, digits, and
@@ -19,7 +21,7 @@ driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
 
 clean:
-	rm -f dkms.conf $(DRV_NAME).spec *.rpm
+	rm -f $(SED_FILES) *.rpm
 	rm -rf rpmbuild
 .PHONY: clean
 
@@ -27,16 +29,16 @@ clean:
 SED_SUBSTS =
 SED_SUBSTS += s/@@DRV_VERSION@@/$(DRV_VERSION)/g;
 SED_SUBSTS += s/@@DRV_NAME@@/$(DRV_NAME)/g;
-SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g
+SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
+SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
 
-dkms.conf: dkms.conf.in $(SRCDIR)/VERSION
+%: %.in CONFIG $(SRCDIR)/VERSION
 	sed '$(SED_SUBSTS)' $< >$@
 
-$(DRV_NAME).spec: $(DRV_NAME).spec.in $(SRCDIR)/VERSION
-	sed '$(SED_SUBSTS)' $< >$@
+SED_FILES = dkms.conf $(DRV_NAME).spec 99-mrf.rules
 
 
-$(RPM_FILE): dkms.conf $(DRV_NAME).spec $(wildcard $(SRCDIR)/*)
+$(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
 	mkdir -p rpmbuild/RPMS rpmbuild/BUILD
 	rpmbuild -bb \
             --define '_curdir $(CURDIR)' \
