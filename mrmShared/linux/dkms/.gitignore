@@ -1,7 +1,7 @@
 # Files generated during build
 /dkms.conf
 /mrf.spec
-/99-mrf.rules
+/50-mrf.rules
 
 /rpmbuild
 /*.rpm

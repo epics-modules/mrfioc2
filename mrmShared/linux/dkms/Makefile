@@ -35,7 +35,7 @@ SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
 %: %.in CONFIG $(SRCDIR)/VERSION
 	sed '$(SED_SUBSTS)' $< >$@
 
-SED_FILES = dkms.conf $(DRV_NAME).spec 99-mrf.rules
+SED_FILES = dkms.conf $(DRV_NAME).spec 50-mrf.rules
 
 
 $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
