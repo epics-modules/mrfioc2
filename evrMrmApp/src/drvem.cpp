@@ -309,7 +309,7 @@ try{
     for(epicsUInt32 i=0; i<NELEMENTS(this->events); i++) {
         events[i].code=i;
         events[i].owner=this;
-        CBINIT(&events[i].done, priorityLow, &EVRMRM::sentinel_done , &events[i]);
+        CBINIT(&events[i].done_cb, priorityLow, &EVRMRM::sentinel_done , &events[i]);
     }
 
     SCOPED_LOCK(evrLock);
@@ -1240,8 +1240,8 @@ eventInvoke(eventCode& event)
         if((prio_queued&(1u<<p))==0) continue;
 #endif
         event.waitingfor++;
-        event.done.priority=p;
-        callbackRequest(&event.done);
+        event.done_cb.priority=p;
+        callbackRequest(&event.done_cb);
     }
 }
 
