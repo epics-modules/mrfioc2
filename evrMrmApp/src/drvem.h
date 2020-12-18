@@ -67,7 +67,7 @@ struct eventCode {
     typedef std::list<std::pair<EVR::eventCallback,void*> > notifiees_t;
     notifiees_t notifiees;
 
-    CALLBACK done;
+    CALLBACK done_cb;
     size_t waitingfor;
     bool again;
 
@@ -75,7 +75,7 @@ struct eventCode {
             ,last_evt(0), waitingfor(0), again(false)
     {
         scanIoInit(&occured);
-        // done - initialized in EVRMRM::EVRMRM()
+        // done_cb - initialized in EVRMRM::EVRMRM()
   }
 };
 

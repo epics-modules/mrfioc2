@@ -97,7 +97,7 @@ typedef struct {
 
     epicsMutexId ntplock;
 
-    CALLBACK ntpcb;
+    CALLBACK ntp_cb;
 
     epicsUInt32 event;
 
@@ -211,7 +211,7 @@ static void ntpsetup(CALLBACK *)
                         " or is not configured correctly.  Will retry later.");
                 ntpShm.notify_nomap = 1;
             }
-            callbackRequestDelayed(&ntpShm.ntpcb, RETRY_TIME);
+            callbackRequestDelayed(&ntpShm.ntp_cb, RETRY_TIME);
         } else {
             perror("ntpshmsetup: shmget");
         }
@@ -243,9 +243,9 @@ static void ntpshminit(void*)
 {
     ntpShm.ntplock = epicsMutexMustCreate();
 
-    callbackSetPriority(priorityLow, &ntpShm.ntpcb);
-    callbackSetCallback(&ntpsetup, &ntpShm.ntpcb);
-    callbackSetUser(0, &ntpShm.ntpcb);
+    callbackSetPriority(priorityLow, &ntpShm.ntp_cb);
+    callbackSetCallback(&ntpsetup, &ntpShm.ntp_cb);
+    callbackSetUser(0, &ntpShm.ntp_cb);
 }
 
 static void ntpshmhooks(initHookState state)
@@ -257,7 +257,7 @@ static void ntpshmhooks(initHookState state)
 
     epicsMutexMustLock(ntpShm.ntplock);
     if(ntpShm.evr) {
-        callbackRequest(&ntpShm.ntpcb);
+        callbackRequest(&ntpShm.ntp_cb);
         fprintf(stderr, "Starting NTP SHM writer for segment %d\n", ntpShm.segid);
     }
     epicsMutexUnlock(ntpShm.ntplock);
