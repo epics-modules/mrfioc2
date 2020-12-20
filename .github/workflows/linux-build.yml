@@ -1,0 +1,75 @@
+name: mrfioc2 kernel module
+
+on: [push, pull_request]
+
+jobs:
+  specific:
+    name: With ${{ matrix.version }}
+    runs-on: ${{ matrix.os }}
+    env:
+      KSER: ${{ matrix.series }}
+      KVER: ${{ matrix.version }}
+      CC: ${{ matrix.cc }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-16.04
+            series: 3.x
+            version: 3.2.1
+            cc: gcc-4.8
+
+          - os: ubuntu-16.04
+            series: 3.x
+            version: 3.16.1
+            cc: gcc-4.8
+
+          - os: ubuntu-20.04
+            series: 4.x
+            version: 4.9.1
+
+          - os: ubuntu-20.04
+            series: 5.x
+            version: 5.9.6
+    steps:
+    - uses: actions/checkout@v2
+    - name: Info
+      run: |
+        gcc --version
+    - name: Deps
+      run: |
+        sudo apt-get update
+        # linux-headers-* only to pull in kbuild deps
+        sudo apt-get -y install linux-headers-`uname -r` kmod libelf-dev
+        [ "${{ matrix.cc }}" != "gcc-4.8" ] || sudo apt-get -y install gcc-4.8
+    - name: Setup Linux
+      run: |
+        install -d kernel
+        curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz | tar -C kernel --strip-components=1 -xJ
+        make -C kernel CC=${CC:=gcc} defconfig
+        make -C kernel CC=${CC:=gcc} modules_prepare
+    - name: Build
+      run: |
+        make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
+
+  host:
+    name: With VM host
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Info
+      run: |
+        uname -a
+        gcc --version
+    - name: Deps
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install linux-headers-`uname -r`
+    - name: Build
+      run: make -C mrmShared/linux
+    - name: Install/Load
+      run: |
+        sudo make -C mrmShared/linux modules_install
+        sudo depmod -a
+        sudo modprobe mrf
+        sudo dmesg | tail -n 100
