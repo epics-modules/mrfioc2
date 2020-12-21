@@ -97,7 +97,7 @@ typedef struct {
 
     epicsMutexId ntplock;
 
-    CALLBACK ntpcb;
+    callbackPvt ntpcb;
 
     epicsUInt32 event;
 
@@ -196,7 +196,7 @@ static void ntpshmupdate(void*, epicsUInt32 event)
     return; // normal exit
 }
 
-static void ntpsetup(CALLBACK *)
+static void ntpsetup(callbackPvt *)
 {
     // We don't set IPC_CREAT, but instead wait for NTPD to start and initialize
     // as it wants

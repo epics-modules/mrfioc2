@@ -67,7 +67,7 @@ mrmBufRx::dataRxEnable(bool v)
 extern int evrMrmSeqRxDebug;
 
 void
-mrmBufRx::drainbuf(CALLBACK* cb)
+mrmBufRx::drainbuf(callbackPvt* cb)
 {
 try {
     void *vptr;

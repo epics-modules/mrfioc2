@@ -205,7 +205,7 @@ void evgMrm::enableIRQ()
 }
 
 void 
-evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr) { 
+evgMrm::init_cb(callbackPvt *ptr, int priority, void(*fn)(callbackPvt*), void* valptr) {
     callbackSetPriority(priority, ptr); 
     callbackSetCallback(fn, ptr);     
     callbackSetUser(valptr, ptr);     
@@ -373,7 +373,7 @@ try{
 }
 
 void
-evgMrm::process_inp_cb(CALLBACK *pCallback) {
+evgMrm::process_inp_cb(callbackPvt *pCallback) {
     void* pVoid;
     callbackGetUser(pVoid, pCallback);
     evgMrm* evg = static_cast<evgMrm*>(pVoid);

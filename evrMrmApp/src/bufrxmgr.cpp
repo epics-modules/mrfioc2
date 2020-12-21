@@ -148,7 +148,7 @@ bufRxManager::receive(epicsUInt8* raw,unsigned int usedlen)
 }
 
 void
-bufRxManager::received(CALLBACK* cb)
+bufRxManager::received(callbackPvt* cb)
 {
     void *vptr;
     callbackGetUser(vptr,cb);

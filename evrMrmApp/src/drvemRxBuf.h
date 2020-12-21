@@ -28,7 +28,7 @@ public:
     virtual bool dataRxEnabled() const OVERRIDE FINAL;
     virtual void dataRxEnable(bool) OVERRIDE FINAL;
 
-    static void drainbuf(CALLBACK*);
+    static void drainbuf(callbackPvt*);
 
 protected:
     volatile unsigned char * const base;

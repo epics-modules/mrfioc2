@@ -1397,7 +1397,7 @@ EVRMRM::drain_fifo()
 }
 
 void
-EVRMRM::sentinel_done(CALLBACK* cb)
+EVRMRM::sentinel_done(callbackPvt* cb)
 {
 try {
     void *vptr;
@@ -1423,7 +1423,7 @@ try {
 }
 
 void
-EVRMRM::poll_link(CALLBACK* cb)
+EVRMRM::poll_link(callbackPvt* cb)
 {
 try {
     void *vptr;
@@ -1460,7 +1460,7 @@ try {
 }
 
 static
-void send_timestamp(CALLBACK *cb)
+void send_timestamp(callbackPvt *cb)
 {
     void *raw;
     callbackGetUser(raw, cb);

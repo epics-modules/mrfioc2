@@ -75,8 +75,8 @@ private:
     ELLLIST freebufs;
     ELLLIST usedbufs;
 
-    CALLBACK received_cb;
-    static void received(CALLBACK*);
+    callbackPvt received_cb;
+    static void received(callbackPvt*);
 
     struct buffer {
         ELLNODE node;
