@@ -54,7 +54,7 @@ evgmrm_SRCS += mrmevgseq.cpp
 evgmrm_SRCS += seqconst.c
 evgmrm_SRCS += seqnsls2.c
 
-evgmrm_LIBS += mrfCommon mrmShared epicsvme epicspci $(EPICS_BASE_IOC_LIBS)
+evgmrm_LIBS += mrfCommon evrMrm evr mrmShared epicsvme epicspci $(EPICS_BASE_IOC_LIBS)
 
 USR_SYS_LIBS_WIN32 += ws2_32
 
