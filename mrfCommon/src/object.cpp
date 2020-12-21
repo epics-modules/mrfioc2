@@ -59,12 +59,11 @@ propertyBase::show(std::ostream& strm) const
 Object::Object(const std::string& n, const Object *par)
     :m_obj_name(n)
     ,m_obj_parent(par)
-    ,m_obj_children()
 {
     initObjectsOnce();
     epicsGuard<epicsMutex> g(*objectsLock);
 
-    if(n.size()==0)
+    if(n.empty())
         throw std::invalid_argument("Object name can not be empty string");
 
     objects_t::const_iterator it=objects->find(n);
@@ -99,7 +98,7 @@ propertyBase* Object::getPropertyBase(const char*, const std::type_info&)
     return 0;
 }
 
-void Object::visitProperties(bool (*)(propertyBase*, void*), void*) {}
+void Object::visitProperties(bool (*)(const char*, propertyBase*, void*), void*) {}
 
 Object*
 Object::getObject(const std::string& n)
@@ -139,8 +138,11 @@ Object::addFactory(const std::string& klass, create_factory_t fn)
     epicsGuard<epicsMutex> g(*objectsLock);
 
     factories_t::const_iterator it=factories->find(klass);
-    if(it!=factories->end())
+    if(it!=factories->end()) {
+        if(fn==it->second)
+            return; // ignore exact duplicate
         throw std::runtime_error(SB()<<"Can't replace Object factory: "<<klass);
+    }
     (*factories)[klass] = fn;
 }
 
@@ -161,14 +163,14 @@ Object::visitObjects(bool (*cb)(Object*, void*), void *arg)
 struct propArgs {
     std::ostream& strm;
     std::string indent;
-    propArgs(std::ostream& s, std::string i) :strm(s), indent(i) {}
+    propArgs(std::ostream& s, const std::string& i) :strm(s), indent(i) {}
 };
 
 static
-bool showProp(propertyBase* prop, void* raw)
+bool showProp(const char* name, propertyBase* prop, void* raw)
 {
     propArgs *args=static_cast<propArgs*>(raw);
-    args->strm <<args->indent <<prop->type().name() << " " <<prop->name() << " = ";
+    args->strm <<args->indent <<prop->type().name() << " " <<name << " = ";
     try {
         prop->show(args->strm);
     } catch (std::exception& e) {
@@ -180,7 +182,7 @@ bool showProp(propertyBase* prop, void* raw)
 }
 
 static
-void showObject(std::ostream& strm, Object& obj, std::string indent, int depth, int maxdepth, bool props)
+void showObject(std::ostream& strm, Object& obj, const std::string& indent, int depth, int maxdepth, bool props)
 {
     if(depth>=maxdepth)
         return;

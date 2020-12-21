@@ -26,6 +26,7 @@ struct SoftSequence;
 class MRMSHARED_API SeqManager : public mrf::ObjectInst<SeqManager>
 {
     typedef mrf::ObjectInst<SeqManager> base_t;
+    OBJECT_DECL(SeqManager);
 public:
     // Which model card?
     // used handle external and software trigger source mapping

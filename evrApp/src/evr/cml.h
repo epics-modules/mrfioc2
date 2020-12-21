@@ -12,6 +12,7 @@
 #define CMLSHORT_HPP_INC
 
 #include "mrf/object.h"
+#include "evr/evrAPI.h"
 
 #include <epicsTypes.h>
 
@@ -24,6 +25,7 @@ enum cmlMode {
 
 class EVR_API CML : public mrf::ObjectInst<CML>
 {
+    OBJECT_DECL(CML);
 public:
   enum pattern {
     patternWaveform,
@@ -33,7 +35,7 @@ public:
     patternLow
   };
 
-  explicit CML(const std::string& n) : mrf::ObjectInst<CML>(n) {}
+  explicit CML(const std::string& n);
   virtual ~CML()=0;
 
   virtual cmlMode mode() const=0;

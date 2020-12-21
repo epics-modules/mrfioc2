@@ -5,6 +5,7 @@
 #include "mrf/object.h"
 
 class evgAcTrig : public mrf::ObjectInst<evgAcTrig> {
+    OBJECT_DECL(evgAcTrig);
 public:
     evgAcTrig(const std::string&, volatile epicsUInt8* const);
     ~evgAcTrig();

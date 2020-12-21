@@ -26,6 +26,7 @@ class EVRMRM;
 class MRMOutput : public mrf::ObjectInst<MRMOutput, Output>
 {
     typedef mrf::ObjectInst<MRMOutput, Output> base_t;
+    OBJECT_DECL(MRMOutput);
 public:
   MRMOutput(const std::string& n, EVRMRM* owner, OutputType t, unsigned int idx);
   virtual ~MRMOutput();

@@ -31,11 +31,6 @@
  * A momentery/command
  *
  *   void klass::execer();
- *
- @internal
- *
- * Properties are stored unbound (not associated with an instance).
- * Currently a new bound property is allocated for each request.
  */
 #ifndef MRFOBJECT_H
 #define MRFOBJECT_H
@@ -66,9 +61,9 @@
 
 // dmm: the old gcc v2.96 appears to have problems to find the "new" version of <ostream>
 #if (defined __GNUC__ && __GNUC__ < 3)
-	#include <ostream.h>
+    #include <ostream.h>
 #else
-	#include <ostream>
+    #include <ostream>
 #endif
 #include <iostream>
 #include <sstream>
@@ -120,20 +115,11 @@ public:
 struct MRFCOMMON_API propertyBase
 {
     virtual ~propertyBase()=0;
-    virtual const char* name() const=0;
     virtual const std::type_info& type() const=0;
+    virtual propertyBase* clone() const =0;
     //! @brief Print the value of the field w/o leading or trailing whitespace
     virtual void  show(std::ostream&) const;
 };
-
-static inline
-bool operator==(const propertyBase& a, const propertyBase& b)
-{
-    return a.type()==b.type() && strcmp(a.name(),b.name())==0;
-}
-static inline
-bool operator!=(const propertyBase& a, const propertyBase& b)
-{ return !(a==b); }
 
 //! @brief A bound, typed scalar property
 template<typename P>
@@ -175,196 +161,112 @@ struct property<void> : public propertyBase
 
 namespace detail {
 
-/** @brief An un-typed, un-bound property for class C
- *
- * This is the form in which properties are stored
- * by ObjectInst<T>.
- */
-template<class C>
-struct unboundPropertyBase
-{
-    virtual ~unboundPropertyBase(){};
-    virtual const std::type_info& type() const=0;
-
-    //! @brief Create a bound property with the given instance
-    virtual propertyBase* bind(C*)=0;
-};
-
-//! @brief An un-bound, typed scalar property
-template<class C, typename P>
-class MRFCOMMON_API unboundProperty : public unboundPropertyBase<C>
-{
-public:
-    typedef void (C::*setter_t)(P);
-    typedef P    (C::*getter_t)() const;
-
-    const char * const name;
-    getter_t const getter;
-    setter_t const setter;
-
-    unboundProperty(const char* n, getter_t g, setter_t s)
-        :name(n), getter(g), setter(s) {}
-
-    virtual const std::type_info& type() const{return typeid(P);}
-    inline virtual property<P>* bind(C*);
-};
-
-template<class C, typename P>
-static inline
-unboundProperty<C,P>*
-makeUnboundProperty(const char* n, P (C::*g)() const, void (C::*s)(P)=0)
-{
-    return new unboundProperty<C,P>(n,g,s);
-}
-
-//! @brief An un-bound, typed array property
-template<class C, typename P>
-class MRFCOMMON_API unboundProperty<C,P[1]> : public unboundPropertyBase<C>
-{
-public:
-    typedef void   (C::*setter_t)(const P*, epicsUInt32);
-    typedef epicsUInt32 (C::*getter_t)(P*, epicsUInt32) const;
-
-    const char * const name;
-    getter_t const getter;
-    setter_t const setter;
-
-    unboundProperty(const char* n, getter_t g, setter_t s)
-        :name(n), getter(g), setter(s) {}
-
-    virtual const std::type_info& type() const{return typeid(P[1]);}
-    inline virtual property<P[1]>* bind(C*);
-};
-
-template<class C, typename P>
-static inline
-unboundProperty<C,P[1]>*
-makeUnboundProperty(const char* n,
-                    epicsUInt32 (C::*g)(P*, epicsUInt32) const,
-                    void (C::*s)(const P*, epicsUInt32)=0)
-{
-    return new unboundProperty<C,P[1]>(n,g,s);
-}
-
-//! @brief An un-bound momentary/command
-template<class C>
-class MRFCOMMON_API unboundProperty<C,void> : public unboundPropertyBase<C>
-{
-public:
-    typedef void (C::*exec_t)();
-
-    const char * const name;
-    exec_t const execer;
-
-    unboundProperty(const char *n, exec_t e) :name(n), execer(e) {}
-    virtual const std::type_info& type() const{return typeid(void);}
-    inline virtual property<void>* bind(C*);
-};
-
-template<class C>
-static inline
-unboundProperty<C,void>*
-makeUnboundProperty(const char* n,
-                    void (C::*e)())
-{
-    return new unboundProperty<C,void>(n,e);
-}
-
 //! @brief final scalar implementation
 template<class C, typename P>
-class MRFCOMMON_API  propertyInstance : public property<P>
+class propertyInstance : public property<P>
 {
+public:
+  typedef void (C::*setter_t)(P);
+  typedef P    (C::*getter_t)() const;
+private:
   C *inst;
-  unboundProperty<C,P> prop;
+  getter_t const getter;
+  setter_t const setter;
 public:
 
-  propertyInstance(C* c, const unboundProperty<C,P>& p)
+  propertyInstance(C* c, getter_t g, setter_t s)
     :inst(c)
-    ,prop(p)
+    ,getter(g)
+    ,setter(s)
   {}
   virtual ~propertyInstance() {}
 
-  virtual const char* name() const{return prop.name;}
-  virtual const std::type_info& type() const{return prop.type();}
-  virtual void set(P v)
+  virtual const std::type_info& type() const OVERRIDE {return typeid(P);}
+  virtual propertyInstance* clone() const OVERRIDE { return new propertyInstance(inst, getter, setter); }
+  virtual void set(P v) OVERRIDE
   {
-      if(!prop.setter)
+      if(!setter)
           throw opNotImplemented("void set(T) not implemented");
-      (inst->*(prop.setter))(v);
+      (inst->*(setter))(v);
   }
-  virtual P get() const{
-      if(!prop.getter)
+  virtual P get() const OVERRIDE {
+      if(!getter)
           throw opNotImplemented("T get() not implemented");
-      return (inst->*(prop.getter))();
+      return (inst->*(getter))();
   }
-  virtual void show(std::ostream& strm) const
+  virtual void show(std::ostream& strm) const OVERRIDE
   {
       strm<<get();
   }
 };
 
-//! Binder for scalar instances
-template<class C, typename P>
-property<P>*
-unboundProperty<C,P>::bind(C* inst)
-{
-    return new propertyInstance<C,P>(inst,*this);
-}
-
 //! @brief final array implementation
 template<class C, typename P>
-class MRFCOMMON_API propertyInstance<C,P[1]> : public property<P[1]>
+class propertyInstance<C,P[1]> : public property<P[1]>
 {
+public:
+    typedef void   (C::*setter_t)(const P*, epicsUInt32);
+    typedef epicsUInt32 (C::*getter_t)(P*, epicsUInt32) const;
+private:
   C *inst;
-  unboundProperty<C,P[1]> prop;
+  getter_t const getter;
+  setter_t const setter;
 public:
 
-  propertyInstance(C* c, const unboundProperty<C,P[1]>& p)
+  propertyInstance(C* c, getter_t g, setter_t s)
     :inst(c)
-    ,prop(p)
+    ,getter(g)
+    ,setter(s)
   {}
   virtual ~propertyInstance() {}
 
-  virtual const char* name() const{return prop.name;}
-  virtual const std::type_info& type() const{return prop.type();}
-  virtual void   set(const P* a, epicsUInt32 l)
-    { (inst->*(prop.setter))(a,l); }
-  virtual epicsUInt32 get(P* a, epicsUInt32 l) const
-    { return (inst->*(prop.getter))(a,l); }
+  virtual const std::type_info& type() const OVERRIDE {return typeid(P[1]);}
+  virtual propertyInstance* clone() const OVERRIDE { return new propertyInstance(inst, getter, setter); }
+  virtual void   set(const P* a, epicsUInt32 l) OVERRIDE
+    { (inst->*(setter))(a,l); }
+  virtual epicsUInt32 get(P* a, epicsUInt32 l) const OVERRIDE
+    { return (inst->*(getter))(a,l); }
 };
 
-//! Binder for scalar instances
-template<class C, typename P>
-property<P[1]>*
-unboundProperty<C,P[1]>::bind(C* inst)
-{
-    return new propertyInstance<C,P[1]>(inst,*this);
-}
-
 template<class C>
-class MRFCOMMON_API propertyInstance<C,void> : public property<void>
+class propertyInstance<C,void> : public property<void>
 {
+public:
+    typedef void (C::*exec_t)();
+private:
     C *inst;
-    unboundProperty<C,void> prop;
+    exec_t const execer;
 public:
 
-    propertyInstance(C *c, const unboundProperty<C,void>& p)
-        :inst(c), prop(p) {}
+    propertyInstance(C *c, exec_t e)
+        :inst(c), execer(e) {}
     virtual ~propertyInstance() {}
 
-    virtual const char* name() const{return prop.name;}
-    virtual const std::type_info& type() const{return prop.type();}
-    virtual void exec() {
-        (inst->*prop.execer)();
+    virtual const std::type_info& type() const OVERRIDE {return typeid(void);}
+    virtual propertyInstance* clone() const OVERRIDE { return new propertyInstance(inst, execer); }
+    virtual void exec() OVERRIDE {
+        (inst->*execer)();
     }
 };
 
-//! Binder for momentary/command instances
-template<class C>
-property<void>*
-unboundProperty<C,void>::bind(C* inst)
+template<class C, typename P>
+propertyInstance<C,P>* makePropertyInstance(C* self, P (C::*getter)() const, void (C::*setter)(P) =0)
 {
-    return new propertyInstance<C,void>(inst,*this);
+    return new propertyInstance<C, P>(self, getter, setter);
+}
+
+template<class C>
+propertyInstance<C,void>* makePropertyInstance(C* self, void (C::*execr)())
+{
+    return new propertyInstance<C, void>(self, execr);
+}
+
+template<class C, typename P>
+propertyInstance<C,P[1]>* makePropertyInstance(C* self,
+                                           epicsUInt32 (C::*getter)(P*, epicsUInt32) const,
+                                           void   (C::*setter)(const P*, epicsUInt32) =0)
+{
+    return new propertyInstance<C, P[1]>(self, getter, setter);
 }
 
 } // namespace detail
@@ -410,10 +312,10 @@ public:
         property<P> *p=dynamic_cast<property<P> *>(b);
         if(!p)
             return mrf::auto_ptr<property<P> >();
-        return mrf::auto_ptr<property<P> >(p);
+        return mrf::auto_ptr<property<P> >(reinterpret_cast<property<P>*>(p));
     }
 
-    virtual void visitProperties(bool (*)(propertyBase*, void*), void*)=0;
+    virtual void visitProperties(bool (*)(const char*, propertyBase*, void*), void*)=0;
 
     //! Fetch named Object
     //! returns NULL if not found
@@ -437,6 +339,10 @@ public:
  * Used to implement properties in a user class.
  @code
    class mycls : public ObjectInst<mycls> {
+     OBJECT_DECL(mycls)
+     mycls(const std::string& name) : ObjectInst<mycls>(name) {
+        OBJECT_INIT;
+     }
      ...
      int getint() const;
      void setint(int);
@@ -456,16 +362,15 @@ public:
  @endcode
  */
 template<class C, typename Base = Object>
-class MRFCOMMON_API ObjectInst : public Base
+class ObjectInst : public Base
 {
     // not copyable
     ObjectInst(const ObjectInst&);
     ObjectInst& operator=(const ObjectInst&);
-    typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
-    static m_props_t *m_props;
 public:
-    static int initObject();
+    typedef std::multimap<std::string, propertyBase*> m_props_t;
 protected:
+    m_props_t m_props;
     explicit ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
     ObjectInst(const std::string& n, A& a) : Base(n, a) {}
@@ -474,62 +379,55 @@ public:
 
     virtual propertyBase* getPropertyBase(const char* pname, const std::type_info& ptype)
     {
-        std::string emsg;
-        if(!m_props)
-            throw std::runtime_error(emsg);
-        typename m_props_t::const_iterator it=m_props->lower_bound(pname),
-                                          end=m_props->upper_bound(pname);
+        typename m_props_t::const_iterator it=m_props.lower_bound(pname),
+                                          end=m_props.upper_bound(pname);
         for(;it!=end;++it) {
             if(it->second->type()==ptype)
-                return it->second->bind(static_cast<C*>(this));
+                return it->second->clone();
         }
         // continue checking for Base class properties
         return Base::getPropertyBase(pname, ptype);
     }
 
-    virtual void visitProperties(bool (*cb)(propertyBase*, void*), void* arg)
+    virtual void visitProperties(bool (*cb)(const char*, propertyBase*, void*), void* arg)
     {
-        std::string emsg;
-        if(!m_props)
-            throw std::runtime_error(emsg);
-
         mrf::auto_ptr<propertyBase> cur;
-        for(typename m_props_t::const_iterator it=m_props->begin();
-            it!=m_props->end(); ++it)
+        for(typename m_props_t::const_iterator it=m_props.begin();
+            it!=m_props.end(); ++it)
         {
-            cur.reset(it->second->bind(static_cast<C*>(this)));
-            if(!cur.get())
-                continue;
-            if(!(*cb)(cur.get(), arg))
+            if(!(*cb)(it->first.c_str(), it->second, arg))
                 break;
         }
         Base::visitProperties(cb, arg);
     }
 };
 
-#define OBJECT_BEGIN2(klass, Base) namespace mrf {\
-template<> ObjectInst<klass, Base>::m_props_t* ObjectInst<klass, Base>::m_props = 0; \
-template<> int ObjectInst<klass, Base>::initObject() { \
-    const char *klassname = #klass; (void)klassname; \
-    try { mrf::auto_ptr<m_props_t> props(new m_props_t); {
+#define OBJECT_DECL(klass) static void initObject(klass*, m_props_t *);
 
-#define OBJECT_BEGIN(klass) OBJECT_BEGIN2(klass, Object)
+#define OBJECT_INIT initObject(this, &this->m_props)
+
+#define OBJECT_BEGIN2(klass, Base) \
+void klass::initObject(klass *self, mrf::ObjectInst<klass, Base>::m_props_t *props) { \
+    const char *klassname = #klass; (void)klassname; \
+    using namespace mrf; \
+    try { \
+        assert(self && props);
+
+#define OBJECT_BEGIN(klass) OBJECT_BEGIN2(klass, mrf::Object)
 
 #define OBJECT_PROP1(NAME, GET) \
-    props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET) ))
+    props->insert(std::make_pair((NAME), detail::makePropertyInstance(self, GET) ))
 
 #define OBJECT_PROP2(NAME, GET, SET) \
-    props->insert(std::make_pair(static_cast<const char*>(NAME), detail::makeUnboundProperty(NAME, GET, SET) ))
+    props->insert(std::make_pair((NAME), detail::makePropertyInstance(self, GET, SET) ))
 
-#define OBJECT_FACTORY(FN) addFactory(klassname, FN)
+#define OBJECT_FACTORY(FN) Object::addFactory(klassname, FN)
 
 #define OBJECT_END(klass) \
-} m_props = props.release(); return 1; \
 } catch(std::exception& e) { \
 std::cerr<<"Failed to build property table for "<<typeid(klass).name()<<"\n"<<e.what()<<"\n"; \
 throw std::runtime_error("Failed to build"); \
-  }}} \
-static int done_##klass EPICS_UNUSED = klass::initObject();
+  }}
 
 } // namespace mrf
 

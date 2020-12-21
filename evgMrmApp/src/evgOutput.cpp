@@ -10,11 +10,14 @@
 #include "evgRegMap.h"
 
 evgOutput::evgOutput(const std::string& name, const epicsUInt32 num,
-                     const evgOutputType type, volatile epicsUInt8* const pOutReg):
-mrf::ObjectInst<evgOutput>(name),
-m_num(num),
-m_type(type),
-m_pOutReg(pOutReg) {
+                     const evgOutputType type, volatile epicsUInt8* const pOutReg)
+    :mrf::ObjectInst<evgOutput>(name)
+    ,m_num(num)
+    ,m_type(type)
+    ,m_pOutReg(pOutReg)
+{
+    OBJECT_INIT;
+
     switch(m_type) {        
         case(FrontOut):
             if(m_num >= evgNumFrontOut)

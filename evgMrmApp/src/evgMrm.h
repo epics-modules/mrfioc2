@@ -57,6 +57,7 @@ class evgMrm : public mrf::ObjectInst<evgMrm>,
                public TimeStampSource,
                public MRMSPI
 {
+    OBJECT_DECL(evgMrm);
 public:
     struct Config {
         const char *model;

@@ -92,6 +92,8 @@ evgMrm::evgMrm(const std::string& id,
     m_acTrig(id+":AcTrig", pReg),
   shadowIrqEnable(READ32(m_pReg, IrqEnable))
 {
+    OBJECT_INIT;
+
     epicsUInt32 v, isevr;
 
     v = READ32(m_pReg, FPGAVersion);

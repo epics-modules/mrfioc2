@@ -25,10 +25,11 @@ typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
 
 
 class MRFCOMMON_API dataBufTx : public mrf::ObjectInst<dataBufTx> {
+    OBJECT_DECL(dataBufTx);
     struct impl;
     impl *pimpl;
 public:
-    explicit dataBufTx(const std::string& n) : mrf::ObjectInst<dataBufTx>(n) {}
+    explicit dataBufTx(const std::string& n);
     virtual ~dataBufTx()=0;
 
     //! Is card configured for buffer transmission?
@@ -52,8 +53,9 @@ public:
 
 
 class MRFCOMMON_API dataBufRx : public mrf::ObjectInst<dataBufRx> {
+    OBJECT_DECL(dataBufRx);
 public:
-    explicit dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
+    explicit dataBufRx(const std::string& n);
 
     virtual ~dataBufRx()=0;
 

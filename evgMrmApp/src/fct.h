@@ -18,6 +18,7 @@ class SFP;
 // Fanout/ConcenTrator
 class FCT : public mrf::ObjectInst<FCT>
 {
+    OBJECT_DECL(FCT);
     evgMrm *evg;
     volatile epicsUInt8* const base;
     std::vector<SFP*> sfp;

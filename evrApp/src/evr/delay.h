@@ -7,14 +7,16 @@
 #define DELAY_H
 
 #include "mrf/object.h"
+#include "evr/evrAPI.h"
 
 #include <epicsGuard.h>
 #include <epicsTypes.h>
 
 class EVR_API DelayModuleEvr : public mrf::ObjectInst<DelayModuleEvr>
 {
+    OBJECT_DECL(DelayModuleEvr);
 public:
-    explicit DelayModuleEvr(const std::string& n) : mrf::ObjectInst<DelayModuleEvr>(n) {}
+    explicit DelayModuleEvr(const std::string& n);
 	virtual ~DelayModuleEvr() = 0;
 
 	virtual void setDelay0(double val)=0;

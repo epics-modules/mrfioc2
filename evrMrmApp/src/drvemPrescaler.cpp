@@ -23,7 +23,9 @@
 MRMPreScaler::MRMPreScaler(const std::string& n, EVR& o,volatile unsigned char* b)
     :base_t(n,o)
     ,base(b)
-{}
+{
+    OBJECT_INIT;
+}
 
 MRMPreScaler::~MRMPreScaler() {}
 

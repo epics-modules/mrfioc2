@@ -15,6 +15,8 @@
 
 #include <epicsTypes.h>
 
+#include <evr/evrAPI.h>
+
 enum OutputType {
   OutputInt=0, //!< Internal
   OutputFP=1,  //!< Front Panel
@@ -25,8 +27,9 @@ enum OutputType {
 
 class EVR_API Output : public mrf::ObjectInst<Output>
 {
+    OBJECT_DECL(Output);
 public:
-  explicit Output(const std::string& n) : mrf::ObjectInst<Output>(n) {}
+  explicit Output(const std::string& n);
   virtual ~Output()=0;
 
   /**\defgroup src Control which source(s) effect this output.

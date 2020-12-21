@@ -18,6 +18,8 @@ EVRMRMTSBuffer::EVRMRMTSBuffer(const std::string &n, EVRMRM *evr)
     ,flushEvt(0u)
     ,active(0u)
 {
+    OBJECT_INIT;
+
     scanIoInit(&scan);
 }
 

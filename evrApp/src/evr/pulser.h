@@ -38,8 +38,9 @@ struct MapType {
  */
 class EVR_API Pulser : public mrf::ObjectInst<Pulser>
 {
+    OBJECT_DECL(Pulser);
 public:
-  explicit Pulser(const std::string& n) : mrf::ObjectInst<Pulser>(n) {}
+  explicit Pulser(const std::string& n);
   virtual ~Pulser()=0;
 
   /**\defgroup ena Enable/disable pulser output.

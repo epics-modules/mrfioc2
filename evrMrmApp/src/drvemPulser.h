@@ -20,6 +20,7 @@ class EVRMRM;
 class MRMPulser : public mrf::ObjectInst<MRMPulser, Pulser>
 {
     typedef mrf::ObjectInst<MRMPulser, Pulser> base_t;
+    OBJECT_DECL(MRMPulser);
     const epicsUInt32 id;
     EVRMRM& owner;
 

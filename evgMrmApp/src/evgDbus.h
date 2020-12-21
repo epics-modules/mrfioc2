@@ -5,6 +5,7 @@
 #include "mrf/object.h"
 
 class evgDbus : public mrf::ObjectInst<evgDbus> {
+    OBJECT_DECL(evgDbus);
 public:
     evgDbus(const std::string&, const epicsUInt32,  volatile epicsUInt8* const);
     ~evgDbus();

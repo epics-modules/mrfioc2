@@ -46,6 +46,8 @@ EVRFRIB::EVRFRIB(const std::string& s,
     ,out_pulse1(SB()<<s<<":OUT:TR"<<1, 3, this)
     ,mappings(256)
 {
+    OBJECT_INIT;
+
     epicsUInt32 info = LE_READ32(base, FWInfo);
 
     switch((info&FWInfo_Flavor_mask)>>FWInfo_Flavor_shift) {

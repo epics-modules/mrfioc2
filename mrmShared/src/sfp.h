@@ -13,9 +13,12 @@
 
 #include <epicsMutex.h>
 
+#include <mrf/object.h>
+
 #include <mrmSharedAPI.h>
 
 class MRMSHARED_API SFP : public mrf::ObjectInst<SFP> {
+    OBJECT_DECL(SFP);
     volatile unsigned char* base;
     typedef std::vector<epicsUInt8> buffer_t;
     buffer_t buffer;

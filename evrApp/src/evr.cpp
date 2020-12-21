@@ -31,6 +31,13 @@
  * fail in some cases.
  */
 
+EVR::EVR(const std::string& n, bus_configuration& busConfig)
+    :mrf::ObjectInst<EVR>(n)
+    ,busConfiguration(busConfig)
+{
+    OBJECT_INIT;
+}
+
 EVR::~EVR()
 {
 }
@@ -69,24 +76,61 @@ std::string EVR::position() const
     return position.str();
 }
 
+Pulser::Pulser(const std::string& n)
+    :mrf::ObjectInst<Pulser>(n)
+{
+    OBJECT_INIT;
+}
+
 Pulser::~Pulser()
 {
+}
+
+Output::Output(const std::string& n)
+    :mrf::ObjectInst<Output>(n)
+{
+    OBJECT_INIT;
 }
 
 Output::~Output()
 {
 }
 
+Input::Input(const std::string& n)
+    :mrf::ObjectInst<Input>(n)
+{
+    OBJECT_INIT;
+}
+
 Input::~Input()
 {
 }
+
+PreScaler::PreScaler(const std::string& n, EVR& o)
+    :mrf::ObjectInst<PreScaler>(n)
+    ,owner(o)
+{
+    OBJECT_INIT;
+};
 
 PreScaler::~PreScaler()
 {
 }
 
+CML::CML(const std::string& n)
+    :mrf::ObjectInst<CML>(n)
+{
+    OBJECT_INIT;
+}
+
 CML::~CML()
 {
+}
+
+DelayModuleEvr::DelayModuleEvr(const std::string& n)
+    :mrf::ObjectInst<DelayModuleEvr>(n)
+{
+    OBJECT_INIT;
 }
 
 DelayModuleEvr::~DelayModuleEvr()

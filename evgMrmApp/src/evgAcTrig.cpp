@@ -15,9 +15,11 @@
 
 #include "evgRegMap.h"
 
-evgAcTrig::evgAcTrig(const std::string& name, volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgAcTrig>(name),
-m_pReg(pReg) {
+evgAcTrig::evgAcTrig(const std::string& name, volatile epicsUInt8* const pReg)
+    :mrf::ObjectInst<evgAcTrig>(name)
+    ,m_pReg(pReg)
+{
+    OBJECT_INIT;
 }
 
 evgAcTrig::~evgAcTrig() {

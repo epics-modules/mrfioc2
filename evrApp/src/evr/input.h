@@ -24,8 +24,9 @@ enum TrigMode {
 
 class EVR_API Input : public mrf::ObjectInst<Input>
 {
+    OBJECT_DECL(Input);
 public:
-  explicit Input(const std::string& n) : mrf::ObjectInst<Input>(n) {}
+  explicit Input(const std::string& n);
   virtual ~Input()=0;
 
   //! Set mask of dbus bits are driven by this input

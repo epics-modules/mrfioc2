@@ -17,6 +17,7 @@
 class EVRMRM_API MRMPreScaler : public mrf::ObjectInst<MRMPreScaler,PreScaler>
 {
     typedef mrf::ObjectInst<MRMPreScaler,PreScaler> base_t;
+    OBJECT_DECL(MRMPreScaler);
     volatile unsigned char* base;
 
 public:

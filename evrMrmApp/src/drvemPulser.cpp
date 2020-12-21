@@ -33,6 +33,8 @@ MRMPulser::MRMPulser(const std::string& n, epicsUInt32 i, EVRMRM& o)
     if(id>31)
         throw std::out_of_range("pulser id is out of range");
 
+    OBJECT_INIT;
+
     std::memset(&this->mapped, 0, NELEMENTS(this->mapped));
 }
 

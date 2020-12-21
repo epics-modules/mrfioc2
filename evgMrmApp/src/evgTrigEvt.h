@@ -5,6 +5,7 @@
 #include "mrf/object.h"
 
 class evgTrigEvt : public mrf::ObjectInst<evgTrigEvt> {
+    OBJECT_DECL(evgTrigEvt);
 public:
     evgTrigEvt(const std::string&, const epicsUInt32, volatile epicsUInt8* const);
     ~evgTrigEvt();

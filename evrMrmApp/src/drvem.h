@@ -89,6 +89,7 @@ class EVRMRM_API EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
                                public TimeStampSource
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
+    OBJECT_DECL(EVRMRM);
 public:
     /** @brief Guards access to instance
    *  All callers must take this lock before any operations on

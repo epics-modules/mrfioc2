@@ -10,6 +10,7 @@ using namespace mrf;
 
 class mine : public ObjectInst<mine>
 {
+    OBJECT_DECL(mine);
 public:
     int ival;
     double dval;
@@ -17,7 +18,9 @@ public:
     unsigned count;
 
     explicit mine(const std::string& n) : ObjectInst<mine>(n), ival(0), dval(0.0), count(0)
-    {}
+    {
+        OBJECT_INIT;
+    }
 
     /* no locking needed */
     virtual void lock() const{};
@@ -48,8 +51,12 @@ public:
 class other : public ObjectInst<other, mine>
 {
     typedef ObjectInst<other, mine> base_t;
+    OBJECT_DECL(other);
 public:
-    explicit other(const std::string& n) : base_t(n) {}
+    explicit other(const std::string& n) : base_t(n)
+    {
+        OBJECT_INIT;
+    }
     virtual ~other() {}
 
     int getX() const { return 42;}
@@ -94,14 +101,12 @@ void testMine()
 
     mrf::auto_ptr<property<int> > I2=o->getProperty<int>("I");
     testOk1(I2.get()!=NULL);
-    testOk1((*I)==(*I2));
 
     if(I2.get())
         testOk1(I2->get()==42);
 
     I2=o->getProperty<int>("val");
     testOk1(I2.get()!=NULL);
-    testOk1((*I)!=(*I2));
 
     if(I2.get())
         testOk1(I2->get()==42);
@@ -221,7 +226,7 @@ OBJECT_END(other)
 
 MAIN(objectTest)
 {
-    testPlan(39);
+    testPlan(37);
     testMine();
     testOther();
     testOther2();

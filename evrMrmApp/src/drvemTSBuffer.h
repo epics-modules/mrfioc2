@@ -18,6 +18,7 @@ class EVRMRM;
 struct EVRMRMTSBuffer : public mrf::ObjectInst<EVRMRMTSBuffer>
 {
     typedef mrf::ObjectInst<EVRMRMTSBuffer> base_t;
+    OBJECT_DECL(EVRMRMTSBuffer);
 
     explicit EVRMRMTSBuffer(const std::string& n, EVRMRM* evr);
     virtual ~EVRMRMTSBuffer();

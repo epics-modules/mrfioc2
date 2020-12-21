@@ -134,6 +134,7 @@ struct SeqHW
 struct SoftSequence : public mrf::ObjectInst<SoftSequence>
 {
     typedef mrf::ObjectInst<SoftSequence> base_t;
+    OBJECT_DECL(SoftSequence);
 
     SoftSequence(SeqManager *o, const std::string& name);
     virtual ~SoftSequence();
@@ -400,6 +401,7 @@ SoftSequence::SoftSequence(SeqManager *o, const std::string& name)
     ,numEnd(0u)
     ,timeScale(0u) // raw/ticks
 {
+    OBJECT_INIT;
     scanIoInit(&changed);
     scanIoInit(&onStart);
     scanIoInit(&onEnd);
@@ -689,6 +691,8 @@ SeqManager::SeqManager(const std::string &name, Type t)
     :base_t(name)
     ,type(t)
 {
+    OBJECT_INIT;
+
     switch(type) {
     case TypeEVG:
     case TypeEVR:

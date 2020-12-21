@@ -156,6 +156,8 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
+    OBJECT_INIT;
+
     const epicsUInt32 rawver = fpgaFirmware();
     const epicsUInt32 boardtype = (rawver&FWVersion_type_mask)>>FWVersion_type_shift;
     const epicsUInt32 formfactor = (rawver&FWVersion_form_mask)>>FWVersion_form_shift;
