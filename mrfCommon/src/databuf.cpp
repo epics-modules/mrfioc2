@@ -22,9 +22,5 @@ dataBufRx::dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n)
     OBJECT_INIT;
 }
 
-// definition for pure virtual is required in most cases (apparently not MSVC w/ static linking?)
-// If bottom 2 lines are removed, MSVC does not report warning C4273
-#if !defined(_WIN32) || (defined(_WIN32) && defined(_DLL))
 dataBufTx::~dataBufTx() {}
 dataBufRx::~dataBufRx() {}
-#endif
