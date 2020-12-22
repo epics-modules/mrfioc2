@@ -16,6 +16,7 @@ enum InputType {
 };
 
 class evgInput : public mrf::ObjectInst<evgInput> {
+    OBJECT_DECL(evgInput);
 public:
     evgInput(const std::string&, const epicsUInt32, const InputType,
              volatile epicsUInt8* const);

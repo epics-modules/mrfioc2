@@ -24,6 +24,8 @@ FCT::FCT(evgMrm *evg, const std::string& id, volatile epicsUInt8* const base)
     ,base(base)
     ,sfp(8)
 {
+    OBJECT_INIT;
+
     for(size_t i=0; i<sfp.size(); i++) {
         std::ostringstream name;
         name<<id<<":SFP"<<(i+1); // manual numbers SFP from 1

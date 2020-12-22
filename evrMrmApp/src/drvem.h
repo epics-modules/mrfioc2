@@ -44,6 +44,7 @@
 #include "mrmDataBufTx.h"
 #include "sfp.h"
 #include "configurationInfo.h"
+#include <evrMrmAPI.h>
 
 class EVRMRM;
 
@@ -67,7 +68,7 @@ struct eventCode {
     typedef std::list<std::pair<EVR::eventCallback,void*> > notifiees_t;
     notifiees_t notifiees;
 
-    CALLBACK done;
+    callbackPvt done;
     size_t waitingfor;
     bool again;
 
@@ -83,11 +84,12 @@ struct eventCode {
  *
  * 
  */
-class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
+class EVRMRM_API EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
                                public MRMSPI,
                                public TimeStampSource
 {
     typedef mrf::ObjectInst<EVRMRM, EVR> base_t;
+    OBJECT_DECL(EVRMRM);
 public:
     /** @brief Guards access to instance
    *  All callers must take this lock before any operations on
@@ -276,18 +278,18 @@ private:
     epicsThreadRunableMethod<EVRMRM, &EVRMRM::drain_fifo> drain_fifo_method;
     epicsThread drain_fifo_task;
     epicsMessageQueue drain_fifo_wakeup;
-    static void sentinel_done(CALLBACK*);
+    static void sentinel_done(callbackPvt*);
 
     epicsUInt32 count_FIFO_sw_overrate;
 
     eventCode events[256];
 
     // Buffer received
-    CALLBACK data_rx_cb;
+    callbackPvt data_rx_cb;
 
     // Periodic callback to detect when link state goes from down to up
-    CALLBACK poll_link_cb;
-    static void poll_link(CALLBACK*);
+    callbackPvt poll_link_cb;
+    static void poll_link(callbackPvt*);
 
     enum timeSrcMode_t {
         Disable,  // do nothing
@@ -298,7 +300,7 @@ private:
      *   timeSrcMode!=Disable -> listen for 125, react by sending shift 0/1 codes
      *   timeSrcMode==SysClk  -> send soft 125 events
      */
-    CALLBACK timeSrc_cb;
+    callbackPvt timeSrc_cb;
 
     // Set by clockTSSet() with IRQ disabled
     double stampClock;

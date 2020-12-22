@@ -14,7 +14,6 @@
 #include <epicsThread.h>
 
 #include <mrfCommonIO.h>
-#define epicsExportSharedSymbols
 #include "mrmspi.h"
 #include <epicsExport.h>
 

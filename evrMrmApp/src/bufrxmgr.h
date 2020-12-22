@@ -15,13 +15,11 @@
 
 #include <ellLib.h>
 #include <callback.h>
-#include "mrf/databuf.h"
-
-
 
 #include "mrf/databuf.h"
+#include "evrMrmAPI.h"
 
-class epicsShareClass bufRxManager : public dataBufRx
+class EVRMRM_API bufRxManager : public dataBufRx
 {
 public:
     bufRxManager(const std::string&, unsigned int qdepth, unsigned int bsize=0);
@@ -77,8 +75,8 @@ private:
     ELLLIST freebufs;
     ELLLIST usedbufs;
 
-    CALLBACK received_cb;
-    static void received(CALLBACK*);
+    callbackPvt received_cb;
+    static void received(callbackPvt*);
 
     struct buffer {
         ELLNODE node;

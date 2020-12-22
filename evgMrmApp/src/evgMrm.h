@@ -57,6 +57,7 @@ class evgMrm : public mrf::ObjectInst<evgMrm>,
                public TimeStampSource,
                public MRMSPI
 {
+    OBJECT_DECL(evgMrm);
 public:
     struct Config {
         const char *model;
@@ -129,8 +130,8 @@ public:
     static void isr_pci(void*);
     static void isr_vme(void*);
     static void isr_poll(void*);
-    static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
-    static void process_inp_cb(CALLBACK*);
+    static void init_cb(callbackPvt*, int, void(*)(callbackPvt*), void*);
+    static void process_inp_cb(callbackPvt*);
 
     void setEvtCode(epicsUInt32);
 
@@ -142,7 +143,7 @@ public:
     epicsEvent* getTimerEvent();
     const bus_configuration* getBusConfiguration();
 
-    CALLBACK                      irqExtInp_cb;
+    callbackPvt                      irqExtInp_cb;
 
     unsigned char irqExtInp_queued;
 

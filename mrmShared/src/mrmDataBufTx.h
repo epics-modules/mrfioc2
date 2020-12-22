@@ -9,6 +9,7 @@
 #define MRMDATABUFTX_H_INC
 
 #include <epicsMutex.h>
+#include <mrmSharedAPI.h>
 
 #include "mrf/databuf.h"
 
@@ -16,7 +17,7 @@
  * With the MRM both the EVG and the EVR have
  * the exact same Tx control register
  */
-class epicsShareClass mrmDataBufTx : public dataBufTx
+class MRMSHARED_API mrmDataBufTx : public dataBufTx
 {
 public:
 

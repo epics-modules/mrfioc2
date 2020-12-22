@@ -11,6 +11,7 @@ enum evgOutputType {
 };
 
 class evgOutput : public mrf::ObjectInst<evgOutput> {
+    OBJECT_DECL(evgOutput);
 public:
     evgOutput(const std::string&, const epicsUInt32, const evgOutputType,
               volatile epicsUInt8* const);

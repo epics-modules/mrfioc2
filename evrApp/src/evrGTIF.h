@@ -13,7 +13,7 @@
 
 #include <epicsTypes.h>
 #include <epicsTime.h>
-#include <shareLib.h>
+#include <evr/evrAPI.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,13 +26,13 @@ extern "C" {
  */
 
 /* Must be called before other functions.  Returns non-zero on error */
-epicsShareFunc
+EVR_API
 int EVRInitTime();
 
-epicsShareFunc
+EVR_API
 int EVRCurrentTime(epicsTimeStamp *pDest);
 
-epicsShareFunc
+EVR_API
 int EVREventTime(epicsTimeStamp *pDest, int event);
 
 #ifdef __cplusplus

@@ -12,12 +12,12 @@
 
 #include <epicsTypes.h>
 #include <epicsMutex.h>
-#include <shareLib.h>
+#include <mrf/mrfCommonAPI.h>
 
 namespace mrf {
 
 //! Interface for SPI Master
-struct epicsShareClass SPIInterface
+struct MRFCOMMON_API SPIInterface
 {
     SPIInterface();
     virtual ~SPIInterface();
@@ -48,7 +48,7 @@ private:
     double optimo;
 };
 
-class epicsShareClass SPIDevice
+class MRFCOMMON_API SPIDevice
 {
     SPIInterface * spi;
     unsigned id;
@@ -56,7 +56,7 @@ public:
     SPIDevice() :spi(0), id(0) {}
     SPIDevice(SPIInterface *spi, unsigned id) :spi(spi), id(id) {}
 
-    inline SPIInterface* interface() const { return spi; }
+    inline SPIInterface* bus() const { return spi; }
     inline unsigned selector() const { return id; }
 
     class Selector {

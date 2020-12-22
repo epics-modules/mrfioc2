@@ -7,6 +7,7 @@
 class evgMrm;
 
 class evgMxc : public mrf::ObjectInst<evgMxc> {
+    OBJECT_DECL(evgMxc);
 public:
     evgMxc(const std::string&, const epicsUInt32, evgMrm* const);
     ~evgMxc();

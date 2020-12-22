@@ -17,9 +17,10 @@
 #include <devLibPCI.h>
 
 #include "mrmpci.h"
+#include "evrMrmAPI.h"
 
 #ifndef _WIN32
-epicsShareFunc void devLibPCIRegisterBaseDefault(void);
+EVRMRM_API void devLibPCIRegisterBaseDefault(void);
 #endif
 
 static const epicsPCIID mrmevrs[] = {

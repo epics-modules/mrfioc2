@@ -92,6 +92,8 @@ evgMrm::evgMrm(const std::string& id,
     m_acTrig(id+":AcTrig", pReg),
   shadowIrqEnable(READ32(m_pReg, IrqEnable))
 {
+    OBJECT_INIT;
+
     epicsUInt32 v, isevr;
 
     v = READ32(m_pReg, FPGAVersion);
@@ -203,7 +205,7 @@ void evgMrm::enableIRQ()
 }
 
 void 
-evgMrm::init_cb(CALLBACK *ptr, int priority, void(*fn)(CALLBACK*), void* valptr) { 
+evgMrm::init_cb(callbackPvt *ptr, int priority, void(*fn)(callbackPvt*), void* valptr) {
     callbackSetPriority(priority, ptr); 
     callbackSetCallback(fn, ptr);     
     callbackSetUser(valptr, ptr);     
@@ -371,7 +373,7 @@ try{
 }
 
 void
-evgMrm::process_inp_cb(CALLBACK *pCallback) {
+evgMrm::process_inp_cb(callbackPvt *pCallback) {
     void* pVoid;
     callbackGetUser(pVoid, pCallback);
     evgMrm* evg = static_cast<evgMrm*>(pVoid);

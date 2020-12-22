@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+USR_CPPFLAGS += -DBUILDING_EVRMRM_API
 USR_INCLUDES += -I$(TOP)/mrmShared/src
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
@@ -47,6 +48,7 @@ evrMrm_LIBS += mrfCommon mrmShared evr epicspci epicsvme $(EPICS_BASE_IOC_LIBS)
 
 DBD += drvemSupport.dbd
 
+USR_SYS_LIBS_WIN32 += ws2_32
 ifneq ($(DEVIOCSTATS),)
 evrmrm_DBD += devIocStats.dbd
 evrmrm_LIBS += devIocStats
@@ -57,4 +59,3 @@ endif
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-

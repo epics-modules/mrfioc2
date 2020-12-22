@@ -34,6 +34,7 @@ SFP::SFP(const std::string &n, volatile unsigned char *reg)
     ,buffer(SFPMEM_SIZE)
     ,valid(false)
 {
+    OBJECT_INIT;
     updateNow();
 
     /* Check for SFP with LC connector */

@@ -16,7 +16,9 @@ evgInput::evgInput(const std::string& name, const epicsUInt32 num,
     ,m_num(num)
     ,m_type(type)
     ,m_pInReg(pInReg)
-{}
+{
+    OBJECT_INIT;
+}
 
 evgInput::~evgInput() {
 }

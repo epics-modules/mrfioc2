@@ -26,6 +26,7 @@ MRMOutput::MRMOutput(const std::string& n, EVRMRM* o, OutputType t, unsigned int
     ,N(idx)
     ,isEnabled(true)
 {
+    OBJECT_INIT;
     shadowSource = sourceInternal();
 }
 

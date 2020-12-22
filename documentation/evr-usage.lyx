@@ -3702,7 +3702,19 @@ Firmware Update
 \end_layout
 
 \begin_layout Subsection
-PCIe-EVR-300DC, mTCA-EVR-300
+300-series Devices
+\end_layout
+
+\begin_layout Itemize
+PCIe-EVR-300DC
+\end_layout
+
+\begin_layout Itemize
+mTCA-EVR-300
+\end_layout
+
+\begin_layout Itemize
+mTCA-EVM-300
 \end_layout
 
 \begin_layout Standard
@@ -3826,7 +3838,7 @@ flashinfo
 
 \begin_layout Standard
 In this example of a PCIe-EVR-300DC with the 207.0 firmware, the exact size
- is 3011417 bytes, which is arbitrarily rounded up to 3MB.
+ is 3011417 bytes, which we arbitrarily round up to 3MB.
 \end_layout
 
 \begin_layout Standard
@@ -3874,8 +3886,11 @@ epics> flashwrite("EVR1:FLASH", 0, "PCIe-EVR-300DC.207.6.bit")
 \end_layout
 
 \begin_layout Standard
-If the update process is interrupted, do not power cycle! Re-run the update
- process to completion.
+If the update process is interrupted, 
+\series bold
+do not power cycle
+\series default
+! Re-run the update process to completion.
 \end_layout
 
 \begin_layout Standard

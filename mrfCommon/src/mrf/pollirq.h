@@ -4,13 +4,13 @@
 #include <epicsThread.h>
 #include <epicsEvent.h>
 #include <epicsMutex.h>
-#include <shareLib.h>
+#include <mrf/mrfCommonAPI.h>
 
 extern "C" {
     typedef void (*pollerFN)(void *);
 }
 
-class epicsShareClass IRQPoller : protected epicsThreadRunable {
+class MRFCOMMON_API IRQPoller : protected epicsThreadRunable {
 
     epicsEvent evt;
     epicsMutex lock;

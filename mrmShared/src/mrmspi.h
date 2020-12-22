@@ -14,10 +14,10 @@
 
 #include <mrfCommon.h>
 #include <mrf/spi.h>
-#include <shareLib.h>
+#include <mrmSharedAPI.h>
 
 // SPI bus access for 0x200 firmware series EVR and EVG cores.
-class epicsShareClass MRMSPI : public mrf::SPIInterface
+class MRMSHARED_API MRMSPI : public mrf::SPIInterface
 {
     volatile unsigned char * const base;
 public:

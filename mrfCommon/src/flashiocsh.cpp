@@ -4,6 +4,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <algorithm>
 #include <stdexcept>
 #include <vector>
 #include <fstream>
@@ -61,6 +62,13 @@ void flashinfo(const char *name)
             for(size_t i=0; i<info.SN.size(); i++)
                 printf(" %02x", unsigned(info.SN[i]));
             printf("\n");
+        }
+
+        if(!info.capacity || !info.sectorSize || !info.pageSize) {
+            printf("Warning: Some information about this flash chip is not known.\n"
+                   "         Please open an issue and include this output of flashinfo()\n"
+                   "         and if known the flash chip vendor and part number.\n"
+                   "         https://github.com/epics-modules/mrfioc2/issues\n");
         }
 
         {

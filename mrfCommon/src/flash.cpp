@@ -4,6 +4,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
+#include <algorithm>
 #include <stdexcept>
 #include <vector>
 
@@ -41,7 +42,7 @@ CFIFlash::readID(ID *id)
 
     {
         SPIDevice::Selector S(dev);
-        dev.interface()->cycles(1, ops);
+        dev.bus()->cycles(1, ops);
     }
 
     if(response[1]==0xff)
@@ -51,7 +52,7 @@ CFIFlash::readID(ID *id)
          * A single re-try.
          */
         SPIDevice::Selector S(dev);
-        dev.interface()->cycles(1, ops);
+        dev.bus()->cycles(1, ops);
     }
 
     id->vendor = response[1];
@@ -85,7 +86,7 @@ CFIFlash::readID(ID *id)
 
         {
             SPIDevice::Selector S(dev);
-            dev.interface()->cycles(1, ops);
+            dev.bus()->cycles(1, ops);
         }
 
         if(response[4]>2) {
@@ -97,7 +98,7 @@ CFIFlash::readID(ID *id)
             ops[1].out = &id->SN[0];
 
             SPIDevice::Selector S(dev);
-            dev.interface()->cycles(2, ops);
+            dev.bus()->cycles(2, ops);
 
             // if this byte isn't 0, then the spec isn't being followed
             if(response[6]!=0)
@@ -145,7 +146,7 @@ void CFIFlash::read(epicsUInt32 start, epicsUInt32 count, epicsUInt8 *data)
 
     {
         SPIDevice::Selector S(dev);
-        dev.interface()->cycles(2, ops);
+        dev.bus()->cycles(2, ops);
     }
 }
 
@@ -179,7 +180,7 @@ void CFIFlash::write(const epicsUInt32 start,
 
     const epicsUInt32 end = start+count;
 
-    const double timeout = dev.interface()->timeout();
+    const double timeout = dev.bus()->timeout();
 
     {
         WriteEnabler WE(*this);
@@ -201,7 +202,7 @@ void CFIFlash::write(const epicsUInt32 start,
 
             {
                 SPIDevice::Selector S(dev);
-                dev.interface()->cycles(1, &op);
+                dev.bus()->cycles(1, &op);
             }
         }
 
@@ -233,7 +234,7 @@ void CFIFlash::write(const epicsUInt32 start,
 
             {
                 SPIDevice::Selector S(dev);
-                dev.interface()->cycles(2, ops);
+                dev.bus()->cycles(2, ops);
             }
         }
 
@@ -293,7 +294,7 @@ void CFIFlash::erase(epicsUInt32 start, epicsUInt32 count, bool strict)
 
     const epicsUInt32 end = start+count;
 
-    const double timeout = dev.interface()->timeout();
+    const double timeout = dev.bus()->timeout();
 
     WriteEnabler WE(*this);
 
@@ -314,7 +315,7 @@ void CFIFlash::erase(epicsUInt32 start, epicsUInt32 count, bool strict)
 
         {
             SPIDevice::Selector S(dev);
-            dev.interface()->cycles(1, &op);
+            dev.bus()->cycles(1, &op);
         }
     }
 }
@@ -338,7 +339,7 @@ unsigned CFIFlash::status()
     SPIInterface::Operation op = {2, cmd, response};
 
     SPIDevice::Selector S(dev);
-    dev.interface()->cycles(1, &op);
+    dev.bus()->cycles(1, &op);
 
     return response[1]&0x03; // pass out only 0x01 busy and 0x02 write enabled
 }
@@ -349,7 +350,7 @@ void CFIFlash::writeEnable(bool e)
     SPIInterface::Operation op = {1, &cmd, NULL};
 
     SPIDevice::Selector S(dev);
-    dev.interface()->cycles(1, &op);
+    dev.bus()->cycles(1, &op);
 }
 
 void CFIFlash::busyWait(double timeout, unsigned n)

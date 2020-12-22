@@ -12,10 +12,12 @@
 #define MRMEVRPRESCALER_H_INC
 
 #include <evr/prescaler.h>
+#include <evrMrmAPI.h>
 
-class epicsShareClass MRMPreScaler : public mrf::ObjectInst<MRMPreScaler,PreScaler>
+class EVRMRM_API MRMPreScaler : public mrf::ObjectInst<MRMPreScaler,PreScaler>
 {
     typedef mrf::ObjectInst<MRMPreScaler,PreScaler> base_t;
+    OBJECT_DECL(MRMPreScaler);
     volatile unsigned char* base;
 
 public:

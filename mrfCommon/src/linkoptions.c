@@ -20,7 +20,6 @@
 #include <epicsString.h>
 #include <macLib.h>
 
-#define epicsExportSharedSymbols
 #include "linkoptions.h"
 
 #ifndef HUGE_VALF
@@ -131,7 +130,7 @@ store_value(const linkOptionDef* opt, void* user, const char* val, int options)
 }
 
 int
-epicsShareAPI
+epicsStdCall
 linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int options)
 {
     MAC_HANDLE handle; /* only .debug is used */
@@ -220,9 +219,8 @@ errbitarray:
     return status;
 }
 
-epicsShareFunc
 const char*
-epicsShareAPI
+epicsStdCall
 linkOptionsEnumString(const linkOptionEnumType *emap, int i, const char* def)
 {
     for(; emap && emap->name; emap++) {

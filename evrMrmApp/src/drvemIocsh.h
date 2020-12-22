@@ -12,7 +12,7 @@
 #define EVRMRMIOCSH_H
 
 #include <initHooks.h>
-#include <shareLib.h>
+#include <evrMrmAPI.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,28 +30,28 @@ extern "C" {
  * 3 - All "write" (output record processing)
  * 4 - Some "read" (input record processing) and IRQ
  */
-epicsShareExtern int evrmrmVerb;
+EVRMRM_API extern int evrmrmVerb;
 
 
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrSetupPCI(const char* id, const char* pcispec);
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector);
 
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrDumpMap(const char* id,int evt,int ram);
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrForward(const char* id, const char* events_iocsh);
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrLoopback(const char* id, int rxLoopback, int txLoopback);
 
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrInithooks(initHookState state);
 
-long epicsShareFunc
+long EVRMRM_API
 mrmEvrReport(int level);
 
-void epicsShareFunc
+void EVRMRM_API
 mrmEvrProbe(const char *id);
 
 #ifdef __cplusplus

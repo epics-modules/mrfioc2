@@ -13,6 +13,7 @@
 #define DEVMRMBUF_H_
 
 #include <epicsTypes.h>
+#include <evrMrmAPI.h>
 
 /**
  * @brief The buffer information data structure
@@ -49,7 +50,7 @@ extern "C" {
  *
  * @return Returns the structure pointer on success and NULL on failure.
  */
-mrmBufferInfo_t epicsShareFunc *mrmBufInit(const char *dev_name);
+mrmBufferInfo_t EVRMRM_API *mrmBufInit(const char *dev_name);
 
 /**
  * @brief Checks whether receive buffer is supported.
@@ -62,7 +63,7 @@ mrmBufferInfo_t epicsShareFunc *mrmBufInit(const char *dev_name);
  *
  * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
  */
-epicsStatus epicsShareFunc mrmBufRxSupported(mrmBufferInfo_t *data);
+epicsStatus EVRMRM_API mrmBufRxSupported(mrmBufferInfo_t *data);
 
 /**
  * @brief Checks whether transferring buffer is supported.
@@ -75,7 +76,7 @@ epicsStatus epicsShareFunc mrmBufRxSupported(mrmBufferInfo_t *data);
  *
  * @return Returns 1 if supported, 0 if not and -1 if data is NULL.
  */
-epicsStatus epicsShareFunc mrmBufTxSupported(mrmBufferInfo_t *data);
+epicsStatus EVRMRM_API mrmBufTxSupported(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
@@ -88,7 +89,7 @@ epicsStatus epicsShareFunc mrmBufTxSupported(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus epicsShareFunc mrmBufEnable(mrmBufferInfo_t *data);
+epicsStatus EVRMRM_API mrmBufEnable(mrmBufferInfo_t *data);
 
 /**
  * @brief Disable buffer sending logic.
@@ -99,7 +100,7 @@ epicsStatus epicsShareFunc mrmBufEnable(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus epicsShareFunc mrmBufDisable(mrmBufferInfo_t *data);
+epicsStatus EVRMRM_API mrmBufDisable(mrmBufferInfo_t *data);
 
 /**
  * @brief Get maximum supported buffer length.
@@ -109,7 +110,7 @@ epicsStatus epicsShareFunc mrmBufDisable(mrmBufferInfo_t *data);
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus epicsShareFunc mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
+epicsStatus EVRMRM_API mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxLength);
 
 /**
  * @brief Send buffer data
@@ -122,7 +123,7 @@ epicsStatus epicsShareFunc mrmBufMaxLen(mrmBufferInfo_t *data, epicsUInt32 *maxL
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus epicsShareFunc mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
+epicsStatus EVRMRM_API mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, epicsUInt8 *buf);
 
 /**
  * @brief Register data receive callback function
@@ -133,7 +134,7 @@ epicsStatus epicsShareFunc mrmBufSend(mrmBufferInfo_t *data, epicsUInt32 len, ep
  *
  * @return Returns 0 on success -1 on failure.
  */
-epicsStatus epicsShareFunc mrmBufRegCallback(mrmBufferInfo_t *data, mrmBufRecievedCallback callback, void *param);
+epicsStatus EVRMRM_API mrmBufRegCallback(mrmBufferInfo_t *data, mrmBufRecievedCallback callback, void *param);
 
 #ifdef __cplusplus
 }

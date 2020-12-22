@@ -9,10 +9,12 @@
 #include "evgRegMap.h"
 
 evgDbus::evgDbus(const std::string& name, const epicsUInt32 id,
-                 volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgDbus>(name),
-m_id(id),
-m_pReg(pReg) {
+                 volatile epicsUInt8* const pReg)
+    :mrf::ObjectInst<evgDbus>(name)
+    ,m_id(id)
+    ,m_pReg(pReg)
+{
+    OBJECT_INIT;
 }
 
 evgDbus::~evgDbus() {

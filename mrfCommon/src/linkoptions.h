@@ -11,7 +11,7 @@
 #ifndef LINKOPTIONS_H
 #define LINKOPTIONS_H
 
-#include <shareLib.h>
+#include <mrf/mrfCommonAPI.h>
 #include <dbDefs.h>
 #include <epicsTypes.h>
 
@@ -126,9 +126,9 @@ typedef struct linkOptionDef {
  *@return 0 Ok
  *@return -1 Fail ('user' may be partially modified)
  */
-epicsShareFunc
+MRFCOMMON_API
 int
-epicsShareAPI
+epicsStdCall
 linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int options);
 
 /**@brief Return the string associated with Enum 'i'
@@ -138,9 +138,9 @@ linkOptionsStore(const linkOptionDef* opts, void* user, const char* str, int opt
  *@param def String to be returned in 'i' isn't a valid Enum index.
  *@return A constant string
  */
-epicsShareFunc
+MRFCOMMON_API
 const char*
-epicsShareAPI
+epicsStdCall
 linkOptionsEnumString(const linkOptionEnumType *Enums, int i, const char* def);
 
 #ifdef __cplusplus

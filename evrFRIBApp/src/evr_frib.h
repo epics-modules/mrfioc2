@@ -87,6 +87,7 @@ struct PulserFRIB : public Pulser
 struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
 {
     typedef mrf::ObjectInst<EVRFRIB, EVR> base_t;
+    OBJECT_DECL(EVRFRIB);
 
     mutable epicsMutex mutex;
 

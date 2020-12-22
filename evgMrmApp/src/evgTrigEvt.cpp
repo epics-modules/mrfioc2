@@ -11,10 +11,12 @@
 #include "evgRegMap.h"
 
 evgTrigEvt::evgTrigEvt(const std::string& name, const epicsUInt32 id,
-                       volatile epicsUInt8* const pReg):
-mrf::ObjectInst<evgTrigEvt>(name),
-m_id(id),
-m_pReg(pReg) {
+                       volatile epicsUInt8* const pReg)
+    :mrf::ObjectInst<evgTrigEvt>(name)
+    ,m_id(id)
+    ,m_pReg(pReg)
+{
+    OBJECT_INIT;
 }
 
 evgTrigEvt::~evgTrigEvt() {

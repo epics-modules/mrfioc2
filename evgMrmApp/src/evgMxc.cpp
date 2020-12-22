@@ -19,11 +19,13 @@
 #include "evgRegMap.h"
 
 evgMxc::evgMxc(const std::string& name, const epicsUInt32 id,
-               evgMrm* const owner):
-mrf::ObjectInst<evgMxc>(name),
-m_id(id),
-m_owner(owner),
-m_pReg(owner->getRegAddr()) {    
+               evgMrm* const owner)
+    :mrf::ObjectInst<evgMxc>(name)
+    ,m_id(id)
+    ,m_owner(owner)
+    ,m_pReg(owner->getRegAddr())
+{
+    OBJECT_INIT;
 }
 
 evgMxc::~evgMxc() {

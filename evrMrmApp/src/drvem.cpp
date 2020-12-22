@@ -156,6 +156,8 @@ EVRMRM::EVRMRM(const std::string& n,
   ,lastValidTimestamp(0)
 {
 try{
+    OBJECT_INIT;
+
     const epicsUInt32 rawver = fpgaFirmware();
     const epicsUInt32 boardtype = (rawver&FWVersion_type_mask)>>FWVersion_type_shift;
     const epicsUInt32 formfactor = (rawver&FWVersion_form_mask)>>FWVersion_form_shift;
@@ -1395,7 +1397,7 @@ EVRMRM::drain_fifo()
 }
 
 void
-EVRMRM::sentinel_done(CALLBACK* cb)
+EVRMRM::sentinel_done(callbackPvt* cb)
 {
 try {
     void *vptr;
@@ -1421,7 +1423,7 @@ try {
 }
 
 void
-EVRMRM::poll_link(CALLBACK* cb)
+EVRMRM::poll_link(callbackPvt* cb)
 {
 try {
     void *vptr;
@@ -1458,7 +1460,7 @@ try {
 }
 
 static
-void send_timestamp(CALLBACK *cb)
+void send_timestamp(callbackPvt *cb)
 {
     void *raw;
     callbackGetUser(raw, cb);

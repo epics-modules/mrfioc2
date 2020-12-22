@@ -13,7 +13,7 @@
 #define EVRREGMAP_H
 
 #include <mrfBitOps.h>
-#include <shareLib.h> /* for INLINE (C only) */
+#include <evrMrmAPI.h> /* for INLINE (C only) */
 
 #ifdef __cplusplus
 #  ifndef INLINE

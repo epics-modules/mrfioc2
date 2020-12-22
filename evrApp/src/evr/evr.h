@@ -17,6 +17,7 @@
 #include <callback.h>
 #include <dbScan.h>
 
+#include "evr/evrAPI.h"
 #include "evr/output.h"
 #include "mrf/object.h"
 
@@ -42,10 +43,13 @@ enum TSSource {
  * Device support can use one of the functions returning IOSCANPVT
  * to impliment get_ioint_info().
  */
-class epicsShareClass EVR : public mrf::ObjectInst<EVR>
+class EVR_API EVR : public mrf::ObjectInst<EVR>
 {
+    EVR(const EVR&);
+    EVR& operator=(const EVR&);
+    OBJECT_DECL(EVR);
 public:
-  EVR(const std::string& n, bus_configuration& busConfig) : mrf::ObjectInst<EVR>(n), busConfiguration(busConfig) {}
+  EVR(const std::string& n, const bus_configuration &busConfig);
 
   virtual ~EVR()=0;
 

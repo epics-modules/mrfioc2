@@ -5,15 +5,6 @@
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
-#ifdef DATABUF_H_INC_LEVEL2
- #ifdef epicsExportSharedSymbols
-  #define DATABUFL2_epicsExportSharedSymbols
-  #undef epicsExportSharedSymbols
-  #include "shareLib.h"
- #endif
-#endif
-
-
 #ifndef DATABUF_H_INC
 #define DATABUF_H_INC
 
@@ -21,6 +12,7 @@
 #include <epicsTime.h>
 
 #include "mrf/object.h"
+#include "mrf/mrfCommonAPI.h"
 
 /**
  *@param arg[in] Arbitrary pointer passed by user
@@ -32,11 +24,12 @@ typedef void (*dataBufComplete)(void *arg, epicsStatus ok,
                            epicsUInt32 len, const epicsUInt8* buf);
 
 
-class epicsShareClass dataBufTx : public mrf::ObjectInst<dataBufTx> {
+class MRFCOMMON_API dataBufTx : public mrf::ObjectInst<dataBufTx> {
+    OBJECT_DECL(dataBufTx);
     struct impl;
     impl *pimpl;
 public:
-    explicit dataBufTx(const std::string& n) : mrf::ObjectInst<dataBufTx>(n) {}
+    explicit dataBufTx(const std::string& n);
     virtual ~dataBufTx()=0;
 
     //! Is card configured for buffer transmission?
@@ -59,9 +52,10 @@ public:
 
 
 
-class epicsShareClass dataBufRx : public mrf::ObjectInst<dataBufRx> {
+class MRFCOMMON_API dataBufRx : public mrf::ObjectInst<dataBufRx> {
+    OBJECT_DECL(dataBufRx);
 public:
-    explicit dataBufRx(const std::string& n) : mrf::ObjectInst<dataBufRx>(n) {}
+    explicit dataBufRx(const std::string& n);
 
     virtual ~dataBufRx()=0;
 
@@ -91,9 +85,3 @@ public:
 };
 
 #endif // DATABUF_H_INC
-
-#ifdef DATABUFL2_epicsExportSharedSymbols
- #undef DATABUF_H_INC_LEVEL2
- #define epicsExportSharedSymbols
- #include "shareLib.h"
-#endif
