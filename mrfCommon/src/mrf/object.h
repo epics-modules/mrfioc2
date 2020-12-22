@@ -371,9 +371,10 @@ public:
     typedef std::multimap<std::string, propertyBase*> m_props_t;
 protected:
     m_props_t m_props;
-    explicit ObjectInst(const std::string& n) : Base(n) {}
     template<typename A>
-    ObjectInst(const std::string& n, A& a) : Base(n, a) {}
+    explicit ObjectInst(A& n) : Base(n) {}
+    template<typename A, typename B>
+    ObjectInst(A& n, B& a) : Base(n, a) {}
     virtual ~ObjectInst(){}
 public:
 

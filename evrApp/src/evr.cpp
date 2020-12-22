@@ -31,7 +31,7 @@
  * fail in some cases.
  */
 
-EVR::EVR(const std::string& n, bus_configuration& busConfig)
+EVR::EVR(const std::string& n, const bus_configuration& busConfig)
     :mrf::ObjectInst<EVR>(n)
     ,busConfiguration(busConfig)
 {

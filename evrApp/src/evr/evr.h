@@ -49,7 +49,7 @@ class EVR_API EVR : public mrf::ObjectInst<EVR>
     EVR& operator=(const EVR&);
     OBJECT_DECL(EVR);
 public:
-  EVR(const std::string& n, bus_configuration& busConfig);
+  EVR(const std::string& n, const bus_configuration &busConfig);
 
   virtual ~EVR()=0;
 
