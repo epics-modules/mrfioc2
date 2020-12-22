@@ -45,6 +45,8 @@ enum TSSource {
  */
 class EVR_API EVR : public mrf::ObjectInst<EVR>
 {
+    EVR(const EVR&);
+    EVR& operator=(const EVR&);
 public:
   EVR(const std::string& n, bus_configuration& busConfig) : mrf::ObjectInst<EVR>(n), busConfiguration(busConfig) {}
 

@@ -458,6 +458,9 @@ public:
 template<class C, typename Base = Object>
 class MRFCOMMON_API ObjectInst : public Base
 {
+    // not copyable
+    ObjectInst(const ObjectInst&);
+    ObjectInst& operator=(const ObjectInst&);
     typedef std::multimap<std::string, detail::unboundPropertyBase<C>*> m_props_t;
     static m_props_t *m_props;
 public:
