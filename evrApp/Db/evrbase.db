@@ -16,7 +16,6 @@ record(bo, "$(P)Ena-Sel") {
   field(DESC, "Master HW Enable")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
-  field(DESC, "Master enable for EVR device")
   field(MASK, "1")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
@@ -72,7 +71,6 @@ record(longin, "$(P)Cnt:RxErr-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Receive Error Count")
   field(INP , "@OBJ=$(OBJ), PROP=Receive Error Count")
-  field(DESC, "Rx error count")
   field(TSEL, "$(P)Link-Sts.TIME")
   field(FLNK, "$(P)Cnt:HwOflw-I")
 }
@@ -206,7 +204,7 @@ record(longin, "$(P)Cnt:FIFOEvt-I") {
 }
 
 record(calc, "$(P)Rate:FIFOEvt-I") {
-field(DESC, "FIFO reception rate")
+  field(DESC, "FIFO reception rate")
   field(INPA, "$(P)Cnt:FIFOEvt-I")
   field(CALC, "C:=A-B;B:=A;C")
   field(EGU , "evt/s")
@@ -261,7 +259,6 @@ record(stringin, "$(P)HwType-I") {
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Model")
   field(PINI, "YES")
-  field(DESC, "Hardware type code")
 }
 
 record(stringin, "$(P)FwVer-I") {
@@ -269,7 +266,6 @@ record(stringin, "$(P)FwVer-I") {
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Version")
   field(PINI, "YES")
-  field(DESC, "Firmware version")
 }
 
 record(stringin, "$(P)SwVer-I") {
@@ -277,7 +273,6 @@ record(stringin, "$(P)SwVer-I") {
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
   field(PINI, "YES")
-  field(DESC, "Software version")
 }
 
 # Geographic location (eg. slot number)
@@ -287,7 +282,6 @@ record(stringin, "$(P)Pos-I") {
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=Position")
   field(PINI, "YES")
-  field(DESC, "Card position in system")
 }
 
 record(fanout, "$(P)Time:Init-FO_") {
@@ -523,7 +517,7 @@ record(mbbo, "$(P)EvtClkMode-Sel") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( FLNK, "$(P)EvtClkMode-RB")
-    info(autosaveFileds_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P)EvtClkMode-RB") {
