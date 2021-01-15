@@ -857,7 +857,7 @@ pci_ers_result_t
 mrf_slot_reset(struct pci_dev *dev)
 {
 	if (pci_enable_device(dev)) {
-		pci_err(dev, "failed to re-enable after slot reset\n");
+		dev_err(&dev->dev, "failed to re-enable after slot reset\n");
 		return PCI_ERS_RESULT_DISCONNECT;
 	}
 
