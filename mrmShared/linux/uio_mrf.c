@@ -670,6 +670,8 @@ mrf_probe(struct pci_dev *dev,
         }
 #endif /* defined(CONFIG_GENERIC_GPIO) || defined(CONFIG_PARPORT_NOT_PC) */
 
+        pci_save_state(dev);
+
         dev_info(&dev->dev, "MRF Setup complete\n");
 
         return 0;
@@ -820,11 +822,71 @@ mrf_remove(struct pci_dev *dev)
 }
 
 
+/**
+ * AER handling functions.
+ * see https://www.kernel.org/doc/html/latest/PCI/pcieaer-howto.html#non-correctable-non-fatal-and-fatal-errors
+ */
+static
+pci_ers_result_t
+mrf_error_detected(struct pci_dev *dev, pci_channel_state_t state)
+{
+    if (state == pci_channel_io_normal) {
+        /* FIXME: Anything else to do here? */
+        return PCI_ERS_RESULT_CAN_RECOVER;
+    } else if (state == pci_channel_io_frozen) {
+        pci_disable_device(dev);
+        /* FIXME: Anything else to do here? */
+        return PCI_ERS_RESULT_NEED_RESET;
+    } else if (state == pci_channel_io_perm_failure) {
+        return PCI_ERS_RESULT_DISCONNECT;
+    }
+
+    return PCI_ERS_RESULT_NONE;
+}
+
+static
+pci_ers_result_t
+mrf_slot_reset(struct pci_dev *dev)
+{
+	if (pci_enable_device(dev)) {
+		pci_err(dev, "failed to re-enable after slot reset\n");
+		return PCI_ERS_RESULT_DISCONNECT;
+	}
+
+    pci_restore_state(dev);
+    pci_save_state(dev);
+    /* FIXME: Anything else to do here? */
+
+    return PCI_ERS_RESULT_RECOVERED;
+}
+
+static
+pci_ers_result_t
+mrf_mmio_enabled(struct pci_dev *dev) {
+    /* FIXME: Anything else to do here? */
+    return PCI_ERS_RESULT_NONE;
+}
+
+static
+void
+mrf_error_resume(struct pci_dev *dev) {
+    /* FIXME: Anything else to do here? */
+    pci_aer_clear_nonfatal_status(dev);
+}
+
+static const struct pci_error_handlers mrf_err_handler = {
+    .error_detected = mrf_error_detected,
+    .mmio_enabled = mrf_mmio_enabled,
+    .slot_reset = mrf_slot_reset,
+    .resume = mrf_error_resume
+};
+
 static struct pci_driver mrf_driver = {
     .name     = DRV_NAME,
     .id_table = mrf_pci_ids,
     .probe    = mrf_probe,
     .remove  = mrf_remove,
+    .err_handler = &mrf_err_handler
 };
 
 static int mrf_init_module(void)
