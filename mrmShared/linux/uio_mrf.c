@@ -687,7 +687,7 @@ err_release:
 err_disable:
         pci_disable_device(dev);
 err_free:
-        kzfree(priv);
+        kfree_sensitive(priv);
         return ret;
 }
 
@@ -814,7 +814,7 @@ mrf_remove(struct pci_dev *dev)
         pci_release_regions(dev);
         pci_disable_device(dev);
 
-        kzfree(priv);
+        kfree_sensitive(priv);
 
         dev_info(&dev->dev, "MRF Cleaned up\n");
 }
