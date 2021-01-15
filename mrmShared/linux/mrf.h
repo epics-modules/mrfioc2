@@ -25,6 +25,7 @@
 #ifdef CONFIG_PARPORT_NOT_PC
 #  include <linux/parport.h>
 #endif
+#include <linux/aer.h>
 
 
 /************************ Register definitions ****************************/
