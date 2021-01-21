@@ -838,11 +838,22 @@ static
 pci_ers_result_t
 mrf_error_detected(struct pci_dev *dev, pci_channel_state_t state)
 {
+    struct uio_info *info = pci_get_drvdata(dev);
+    struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
+        
     if (state == pci_channel_io_normal) {
         /* FIXME: Anything else to do here? */
         return PCI_ERS_RESULT_CAN_RECOVER;
     } else if (state == pci_channel_io_frozen) {
+        dev_warn(&dev->dev, "Unregistering UIO device\n");
+        uio_unregister_device(info);
+        
+        if (priv->msienabled) {
+            pci_disable_msi(dev);
+        }
+        
         pci_disable_device(dev);
+        
         /* FIXME: Anything else to do here? */
         return PCI_ERS_RESULT_NEED_RESET;
     } else if (state == pci_channel_io_perm_failure) {
@@ -856,13 +867,35 @@ static
 pci_ers_result_t
 mrf_slot_reset(struct pci_dev *dev)
 {
+    int ret;
+    struct uio_info *info = pci_get_drvdata(dev);
+    struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
+
 	if (pci_enable_device(dev)) {
-		dev_err(&dev->dev, "failed to re-enable after slot reset\n");
+		dev_err(&dev->dev, "Failed to re-enable after slot reset\n");
 		return PCI_ERS_RESULT_DISCONNECT;
 	}
 
+    if (priv->msienabled) {
+        int err = pci_enable_msi(dev);
+        if (!err) {
+            dev_info(&dev->dev, "Using MSI\n");
+            /* needed for MSI */
+            pci_set_master(dev);
+        } else {
+            dev_dbg(&dev->dev, "Error enabling MSI %d\n", err);
+        }
+    }
+    
+    ret = uio_register_device(&dev->dev, info);
+    if (ret) {
+        dev_err(&dev->dev, "Failed to register UIO device %d\n", ret);
+    }
+    dev_warn(&dev->dev, "Registered UIO device\n");
+        
     pci_restore_state(dev);
     pci_save_state(dev);
+
     /* FIXME: Anything else to do here? */
 
     return PCI_ERS_RESULT_RECOVERED;
