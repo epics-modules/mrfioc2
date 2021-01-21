@@ -912,11 +912,6 @@ static
 void
 mrf_error_resume(struct pci_dev *dev) {
     /* FIXME: Anything else to do here? */
-#if KERNEL_VERSION(5,7,0) <= LINUX_VERSION_CODE
-	pci_aer_clear_nonfatal_status(dev);
-#else
-	pci_cleanup_aer_uncorrect_error_status(dev);
-#endif
 }
 
 static const struct pci_error_handlers mrf_err_handler = {
