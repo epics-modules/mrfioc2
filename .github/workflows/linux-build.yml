@@ -1,6 +1,14 @@
-name: mrfioc2 kernel module
+name: Linux kernel module
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'mrmShared/linux/**'
+  pull_request:
+    paths:
+      - 'mrmShared/linux/**'
+  schedule: # monthly
+    - cron: '0 0 1 * *'
 
 jobs:
   specific:
