@@ -51,6 +51,7 @@
 /**************************************************************************************************/
 
 #include <epicsTypes.h>                 /* EPICS Architecture-independent type definitions        */
+#include <shareLib.h>
 
 #ifdef __cplusplus
 extern "C" {
