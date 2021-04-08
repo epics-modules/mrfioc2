@@ -40,7 +40,7 @@
 #ifndef MRFOBJECT_H
 #define MRFOBJECT_H
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 /*
  * The warnings C4251 and C4275 happen because all objects have a DLL
  * interface when compiled on VC++ but derive from standard STL objects
