@@ -689,11 +689,7 @@ err_release:
 err_disable:
         pci_disable_device(dev);
 err_free:
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0)
-        kzfree(priv);
-#else
-        kfree_sensitive(priv);
-#endif
+        kfree(priv);
         return ret;
 }
 
@@ -820,11 +816,7 @@ mrf_remove(struct pci_dev *dev)
         pci_release_regions(dev);
         pci_disable_device(dev);
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0)
-        kzfree(priv);
-#else
-        kfree_sensitive(priv);
-#endif
+        kfree(priv);
 
         dev_info(&dev->dev, "MRF Cleaned up\n");
 }
