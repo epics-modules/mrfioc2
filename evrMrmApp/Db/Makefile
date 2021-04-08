@@ -20,6 +20,7 @@ DB += evr-vmerf-230.db
 DB += evr-tg-300.db
 DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
+DB += evr-vme-300.db
 
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
