@@ -77,7 +77,17 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v221 2.3.0 (Apr 2020)
+@subsection v231 2.3.1 (UNRELEASED)
+
+@li Add PCIe error handling to Linux kernel module (Hinko Kocevar)
+@li Add DKMS and RPM configs for Linux kernel module source (Michael Abbott)
+@li Fix input count on PCIe-EVR-300 and MTCA-EVR-300 (Jerzy Jamroz)
+@li Added support for DLY universal modules (Javier Cereijo Garcia)
+@li Add buffered timestamp capture
+@li Support Pulser enable gating, prescalar phase/offset features of newer EVR firmware (Luka Krmpotic)
+@li Warn about unknown INP/OUT link options.
+
+@subsection v230 2.3.0 (Apr 2020)
 
 @li Add support for mTCA-EVM-300
 @li Add safety checks to flash firmware update process
