@@ -128,6 +128,22 @@ struct SeqHW
 
         return isrun;
     }
+
+    // call with interruptLock
+    bool pause()
+    {
+        nat_iowrite32(ctrlreg, ctrlreg_hw | EVG_SEQ_RAM_DISABLE);
+        bool isrun = nat_ioread32(ctrlreg) & EVG_SEQ_RAM_RUNNING;
+        return isrun;
+    }
+
+    // call with interruptLock
+    bool abort()
+    {
+        nat_iowrite32(ctrlreg, ctrlreg_hw | EVG_SEQ_RAM_RESET);
+        bool isrun = nat_ioread32(ctrlreg) & EVG_SEQ_RAM_RUNNING;
+        return isrun;
+    }
 };
 
 struct SoftSequence : public mrf::ObjectInst<SoftSequence>
@@ -298,6 +314,8 @@ public:
     void commit();
     void enable();
     void disable();
+    void pause();
+    void abort();
     void softTrig();
 
     epicsUInt32 counterStart() const { interruptLock L; return numStart; }
@@ -369,6 +387,8 @@ OBJECT_BEGIN(SoftSequence)
   OBJECT_PROP1("ENABLED", &SoftSequence::stateChange);
   OBJECT_PROP1("ENABLE", &SoftSequence::enable);
   OBJECT_PROP1("DISABLE", &SoftSequence::disable);
+  OBJECT_PROP1("PAUSE", &SoftSequence::pause);
+  OBJECT_PROP1("ABORT", &SoftSequence::abort);
   OBJECT_PROP1("COMMITTED", &SoftSequence::isCommited);
   OBJECT_PROP1("COMMITTED", &SoftSequence::stateChange);
   OBJECT_PROP1("COMMIT", &SoftSequence::commit);
@@ -568,6 +588,42 @@ void SoftSequence::disable()
 
     scanIoRequest(changed);
     DEBUG(1, ("Disabled\n") );
+}
+
+void SoftSequence::pause()
+{
+    SCOPED_LOCK(mutex);
+    DEBUG(3, ("Pausing %c\n", is_enabled ? 'Y' : 'N') );
+    if(!is_enabled)
+        {DEBUG(3, ("Skip\n")); return;}
+
+    is_enabled = false;
+
+    if(hw) {
+        interruptLock L;
+        hw->pause();
+    }
+
+    scanIoRequest(changed);
+    DEBUG(1, ("Paused\n") );
+}
+
+void SoftSequence::abort()
+{
+    SCOPED_LOCK(mutex);
+    DEBUG(3, ("Aborting %c\n", is_enabled ? 'Y' : 'N') );
+    if(!is_enabled)
+        {DEBUG(3, ("Skip\n")); return;}
+
+    is_enabled = false;
+
+    if(hw) {
+        interruptLock L;
+        hw->abort();
+    }
+
+    scanIoRequest(changed);
+    DEBUG(1, ("Aborted\n") );
 }
 
 // Called from ISR context
