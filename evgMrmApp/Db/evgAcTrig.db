@@ -77,23 +77,36 @@ record(bi, "$(P)Bypass-RB") {
     field( ONAM, "On")
 }
 
-record(bo, "$(P)SyncSrc-Sel") {
-    field( DESC, "Sync to Event Clock or Mxc7")
-    field( DTYP, "Obj Prop bool")
+record(mbbo, "$(P)SyncSrc-Sel") {
+    field( DESC, "Synchronization Source")
+    field( DTYP, "Obj Prop uint16")
     field( OUT,  "@OBJ=$(OBJ), PROP=SyncSrc")
     field( PINI, "YES")
-    field( VAL , "0")
+    field( ZRST, "Event Clk")
+    field( ONST, "Mxc7")
+    field( TWST, "FP IN1")
+    field( THST, "FP IN2")
+    field( ZRVL, "0x000")
+    field( ONVL, "0x001")
+    field( TWVL, "0x011")
+	field( THVL, "0x101")
+    field( VAL,  "0")
     field( UDF,  "0")
-    field( ZNAM, "Event Clk")
-    field( ONAM, "Mxc7")
     field( FLNK, "$(P)SyncSrc-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)SyncSrc-RB") {
-    field( DESC, "Sync to Event Clock or Mxc7")
-    field( DTYP, "Obj Prop bool")
+record(mbbi, "$(P)SyncSrc-RB") {
+    field( DESC, "Synchronization Source")
+    field( DTYP, "Obj Prop uint16")
     field( INP,  "@OBJ=$(OBJ), PROP=SyncSrc")
-    field( ZNAM, "Event Clk")
-    field( ONAM, "Mxc7")
+    field( ZRST, "Event Clk")
+    field( ONST, "Mxc7")
+    field( TWST, "FP IN1")
+    field( THST, "FP IN2")
+    field( ZRVL, "0x000")
+    field( ONVL, "0x001")
+    field( TWVL, "0x011")
+    field( THVL, "0x101")
 }
+

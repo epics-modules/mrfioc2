@@ -9,6 +9,13 @@ public:
     evgAcTrig(const std::string&, volatile epicsUInt8* const);
     ~evgAcTrig();
 
+    enum SyncSrc {
+        EventClock=0,
+        Mxc7Clock=1,
+        FpIn1=3,
+        FpIn2=5,
+    };
+
     /* locking done internally */
     virtual void lock() const{};
     virtual void unlock() const{};
@@ -22,8 +29,8 @@ public:
     void setBypass(bool);
     bool getBypass() const;
 
-    void setSyncSrc(bool);
-    bool getSyncSrc() const;
+    void setSyncSrc(epicsUInt16);
+    epicsUInt16 getSyncSrc() const;
 
     void setTrigEvtMap(epicsUInt16, bool);
     epicsUInt32 getTrigEvtMap() const;
