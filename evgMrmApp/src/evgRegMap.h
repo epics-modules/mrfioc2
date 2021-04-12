@@ -68,7 +68,8 @@
 //
 #define  U32_AcTrigControl      0x0010
 
-#define  AcTrigControl_Sync         0x00010000
+#define  AcTrigControl_Sync_MASK    0x000d0000
+#define  AcTrigControl_Sync_SHIFT   16
 #define  AcTrigControl_Bypass       0x00020000
 #define  AcTrigControl_Divider_MASK 0x0000ff00
 #define  AcTrigControl_Divider_SHIFT 8
