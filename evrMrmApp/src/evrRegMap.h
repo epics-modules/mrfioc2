@@ -187,10 +187,11 @@
 
 
 #define U32_ScalerN     0x100
-#  define ScalerMax 3
-/* 0 <= N <= 2 */
+#  define ScalerMax 8
+/* 0 <= N <= 7 */
 #define U32_Scaler(N)   (U32_ScalerN + (4*(N)))
 #  define ScalerPhasOffs_offset 0x20
+#define U32_ScalerPulsTrig(N) (U32_ScalerN + 0x40 + (4*(N)))
 
 #define U32_PulserNCtrl 0x200
 #define U32_PulserNScal 0x204
