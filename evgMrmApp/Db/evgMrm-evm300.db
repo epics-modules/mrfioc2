@@ -27,17 +27,17 @@ record(mbbi, "$(P)Enable-RB") {
 }
 
 record(stringin, "$(P)FwVer-I") {
-  field(DTYP, "Obj Prop string")
-  field(INP , "@OBJ=$(OBJ), PROP=Version")
-  field(PINI, "YES")
-  field(DESC, "Firmware version")
+    field(DTYP, "Obj Prop string")
+    field(INP , "@OBJ=$(OBJ), PROP=Version")
+    field(PINI, "YES")
+    field(DESC, "Firmware version")
 }
 
 record(stringin, "$(P)SwVer-I") {
-  field(DTYP, "Obj Prop string")
-  field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
-  field(PINI, "YES")
-  field(DESC, "Software version")
+    field(DTYP, "Obj Prop string")
+    field(INP , "@OBJ=$(OBJ), PROP=Sw Version")
+    field(PINI, "YES")
+    field(DESC, "Software version")
 }
 
 record(bo, "$(P)ResetMxc-Cmd") {
