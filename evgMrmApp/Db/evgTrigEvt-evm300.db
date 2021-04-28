@@ -125,7 +125,6 @@ record(seq, "$(P)Src:FP-Select_") {
     field( LNK5, "$(P)SrcReset0_.PROC PP NMS")
     field( DOL6, "$(P)Src:FP-Select_.DO6 NPP NMS")
     field( DLY6, "0.5")
-#    field( LNK6, "$(P)Src0-MbbiDir_.PROC PP NMS")
     field( LNK6, "$(P)Src:FP-Sel_.VAL PP NMS")
     field( DOL7, "0")
     field( LNK7, "$(P)Src0-MbbiDir_.PROC PP NMS")
