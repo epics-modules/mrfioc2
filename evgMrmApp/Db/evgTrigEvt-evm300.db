@@ -1,0 +1,555 @@
+record(longout, "$(P)EvtCode-SP") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT,  "@OBJ=$(OBJ), PROP=EvtCode")
+    field( PINI, "YES")
+    field( VAL,  "0")
+    field( UDF,  "0")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+    field( FLNK, "$(P)EvtCode-RB")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)EvtCode-RB") {
+    field( DESC, "EVG Trigger Event Code")
+    field( DTYP, "Obj Prop uint32")
+    field( INP,  "@OBJ=$(OBJ), PROP=EvtCode")
+    field( HIHI, "256")
+    field( LOLO, "-1")
+    field( HHSV, "MAJOR")
+    field( LLSV, "MAJOR")
+}
+
+record(mbbo, "$(P)Src:FP-Sel_") {
+    field( DTYP, "Raw Soft Channel")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "AC")
+    field( TWST, "Front0")
+    field( THST, "Front1")
+    field( FRST, "Front2")
+    field( ZRVL, "0x0")
+    field( ONVL, "0x1")
+    field( TWVL, "0x2")
+    field( THVL, "0x4")
+    field( FRVL, "0x8")
+    field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)Src:FP-Select_")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)Src0-Sel")
+}
+
+record(mbbo, "$(P)Src:Mxc-Sel_") {
+    field( DTYP, "Raw Soft Channel")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "Mxc0")
+    field( TWST, "Mxc1")
+    field( THST, "Mxc2")
+    field( FRST, "Mxc3")
+    field( FVST, "Mxc4")
+    field( SXST, "Mxc5")
+    field( SVST, "Mxc6")
+    field( EIST, "Mxc7")
+    field( ZRVL, "0x0")
+    field( ONVL, "0x1")
+    field( TWVL, "0x2")
+    field( THVL, "0x4")
+    field( FRVL, "0x8")
+    field( FVVL, "0x10")
+    field( SXVL, "0x20")
+    field( SVVL, "0x40")
+    field( EIVL, "0x80")
+    field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)Src:Mxc-Select_")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)Src1-Sel")
+}
+
+record(mbbo, "$(P)Src:Univ-Sel_") {
+    field( DTYP, "Raw Soft Channel")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "Univ0")
+    field( TWST, "Univ1")
+    field( THST, "Univ2")
+    field( FRST, "Univ3")
+    field( FVST, "Univ4")
+    field( SXST, "Univ5")
+    field( SVST, "Univ6")
+    field( EIST, "Univ7")
+    field( NIST, "Univ8")
+    field( TEST, "Univ9")
+    field( ELST, "Univ10")
+    field( TVST, "Univ11")
+    field( TTST, "Univ12")
+    field( FTST, "Univ13")
+    field( FFST, "Univ14")
+    field( ZRVL, "0x0")
+    field( ONVL, "0x1")
+    field( TWVL, "0x2")
+    field( THVL, "0x4")
+    field( FRVL, "0x8")
+    field( FVVL, "0x10")
+    field( SXVL, "0x20")
+    field( SVVL, "0x40")
+    field( EIVL, "0x80")
+    field( NIVL, "0x100")
+    field( TEVL, "0x200")
+    field( ELVL, "0x400")
+    field( TVVL, "0x800")
+    field( TTVL, "0x1000")
+    field( FTVL, "0x2000")
+    field( FFVL, "0x4000")
+    field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)Src:Univ-Select_")
+    info( autosaveFields_pass0, "VAL")
+    alias("$(P)Src2-Sel")
+}
+
+record(seq, "$(P)Src:FP-Select_") {
+    field( DESC, "Sequence to control Src Select")
+    field( SDIS, "$(P)SrcChanging_.VAL NPP NMS")
+    field( SELM, "All")
+    field( DOL1, "1")
+    field( LNK1, "$(P)SrcChanging_.VAL PP NMS")
+    field( DOL2, "$(P)Src:FP-Sel_.VAL NPP NMS")
+    field( LNK2, "$(P)Src:FP-Select_.DO6 NPP NMS")
+    field( DOL3, "0")
+    field( LNK3, "$(P)Src:Mxc-Sel_.VAL PP NMS")
+    field( DOL4, "0")
+    field( LNK4, "$(P)Src:Univ-Sel_.VAL PP NMS")
+    field( LNK5, "$(P)SrcReset0_.PROC PP NMS")
+    field( DOL6, "$(P)Src:FP-Select_.DO6 NPP NMS")
+    field( DLY6, "0.5")
+#    field( LNK6, "$(P)Src0-MbbiDir_.PROC PP NMS")
+    field( LNK6, "$(P)Src:FP-Sel_.VAL PP NMS")
+    field( DOL7, "0")
+    field( LNK7, "$(P)Src0-MbbiDir_.PROC PP NMS")
+    field( DOLA, "0")
+    field( LNKA, "$(P)SrcChanging_.VAL PP NMS")
+}
+
+record(seq, "$(P)Src:Mxc-Select_") {
+    field( DESC, "Sequence to control Src Select")
+    field( SDIS, "$(P)SrcChanging_.VAL NPP NMS")
+    field( SELM, "All")
+    field( DOL1, "1")
+    field( LNK1, "$(P)SrcChanging_.VAL PP NMS")
+    field( DOL2, "$(P)Src:Mxc-Sel_.VAL NPP NMS")
+    field( LNK2, "$(P)Src:Mxc-Select_.DO6 NPP NMS")
+    field( DOL3, "0")
+    field( LNK3, "$(P)Src:FP-Sel_.VAL PP NMS")
+    field( DOL4, "0")
+    field( LNK4, "$(P)Src:Univ-Sel_.VAL PP NMS")
+    field( LNK5, "$(P)SrcReset0_.PROC PP NMS")
+    field( DOL6, "$(P)Src:Mxc-Select_.DO6 NPP NMS")
+    field( DLY6, "0.5")
+    field( LNK6, "$(P)Src:Mxc-Sel_.VAL PP NMS")
+    field( DOL7, "0")
+    field( LNK7, "$(P)Src1-MbbiDir_.PROC PP NMS")
+    field( DOLA, "0")
+    field( LNKA, "$(P)SrcChanging_.VAL PP NMS")
+}
+
+record(seq, "$(P)Src:Univ-Select_") {
+    field( DESC, "Sequence to control Src Select")
+    field( SDIS, "$(P)SrcChanging_.VAL NPP NMS")
+    field( SELM, "All")
+    field( DOL1, "1")
+    field( LNK1, "$(P)SrcChanging_.VAL PP NMS")
+    field( DOL2, "$(P)Src:Univ-Sel_.VAL NPP NMS")
+    field( LNK2, "$(P)Src:Univ-Select_.DO6 NPP NMS")
+    field( DOL3, "0")
+    field( LNK3, "$(P)Src:FP-Sel_.VAL PP NMS")
+    field( DOL4, "0")
+    field( LNK4, "$(P)Src:Mxc-Sel_.VAL PP NMS")
+    field( LNK5, "$(P)SrcReset0_.PROC PP NMS")
+    field( DOL6, "$(P)Src:Univ-Select_.DO6 NPP NMS")
+    field( DLY6, "0.5")
+    field( LNK6, "$(P)Src:Univ-Sel_.VAL PP NMS")
+    field( DOL7, "0")
+    field( LNK7, "$(P)Src2-MbbiDir_.PROC PP NMS")
+    field( DOLA, "0")
+    field( LNKA, "$(P)SrcChanging_.VAL PP NMS")
+}
+
+record(bi, "$(P)SrcChanging_") {
+    field( DESC, "TrigEvt Source Change requested")
+    field( ZNAM, "Changing")
+    field( ONAM, "Not Changing")
+}
+       
+record(dfanout, "$(P)SrcReset0_") {
+    field( DESC, "Reset all trigEvt inputs")
+    field( SELM, "All")
+    field( DOL,  "0")
+    field( OUTA, "$(P)Src:AC-Sel.VAL PP NMS")
+    field( OUTB, "$(P)Src:FrontInp0-Sel.VAL PP NMS")
+    field( OUTC, "$(P)Src:FrontInp1-Sel.VAL PP NMS")
+    field( OUTD, "$(P)Src:FrontInp2-Sel.VAL PP NMS")
+    field( OUTE, "$(P)Src:Mxc0-Sel.VAL PP NMS")
+    field( OUTF, "$(P)Src:Mxc1-Sel.VAL PP NMS")
+    field( OUTG, "$(P)Src:Mxc2-Sel.VAL PP NMS")
+    field( OUTH, "$(P)Src:Mxc3-Sel.VAL PP NMS")
+    field( FLNK, "$(P)SrcReset1_")
+}
+
+record(dfanout, "$(P)SrcReset1_") {
+    field( DESC, "Reset all trigEvt inputs")
+    field( SELM, "All")
+    field( DOL,  "0")
+    field( OUTA, "$(P)Src:Mxc4-Sel.VAL PP NMS")
+    field( OUTB, "$(P)Src:Mxc5-Sel.VAL PP NMS")
+    field( OUTC, "$(P)Src:Mxc6-Sel.VAL PP NMS")
+    field( OUTD, "$(P)Src:Mxc7-Sel.VAL PP NMS")
+    field( OUTE, "$(P)Src:RearInp0-Sel.VAL PP NMS")
+    field( OUTF, "$(P)Src:RearInp1-Sel.VAL PP NMS")
+    field( OUTG, "$(P)Src:RearInp2-Sel.VAL PP NMS")
+    field( OUTH, "$(P)Src:RearInp3-Sel.VAL PP NMS")
+    field( FLNK, "$(P)SrcReset2_")
+}
+
+record(dfanout, "$(P)SrcReset2_") {
+    field( DESC, "Reset all trigEvt inputs")
+    field( SELM, "All")
+    field( DOL,  "0")
+    field( OUTA, "$(P)Src:RearInp4-Sel.VAL PP NMS")
+    field( OUTB, "$(P)Src:RearInp5-Sel.VAL PP NMS")
+    field( OUTC, "$(P)Src:RearInp6-Sel.VAL PP NMS")
+    field( OUTD, "$(P)Src:RearInp7-Sel.VAL PP NMS")
+    field( OUTE, "$(P)Src:RearInp8-Sel.VAL PP NMS")
+    field( OUTF, "$(P)Src:RearInp9-Sel.VAL PP NMS")
+    field( OUTG, "$(P)Src:RearInp10-Sel.VAL PP NMS")
+    field( OUTH, "$(P)Src:RearInp11-Sel.VAL PP NMS")
+    field( FLNK, "$(P)SrcReset3_")
+}
+ 
+record(dfanout, "$(P)SrcReset3_") {
+    field( DESC, "Reset all UNIV trigEvt inputs")
+    field( SELM, "All")
+    field( DOL,  "0")
+    field( OUTA, "$(P)Src:RearInp12-Sel.VAL PP NMS")
+    field( OUTB, "$(P)Src:RearInp13-Sel.VAL PP NMS")
+    field( OUTC, "$(P)Src:RearInp14-Sel.VAL PP NMS")
+    field( OUTD, "$(P)Src:RearInp15-Sel.VAL PP NMS")
+}
+  
+record(mbbiDirect, "$(P)Src0-MbbiDir_") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( INP,  "$(P)Src:FP-Sel_.RVAL CP NMS")
+}
+
+record(mbbiDirect, "$(P)Src1-MbbiDir_") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( INP,  "$(P)Src:Mxc-Sel_.RVAL CP NMS")
+}
+
+record(mbbiDirect, "$(P)Src2-MbbiDir_") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( INP,  "$(P)Src:Univ-Sel_.RVAL CP NMS")
+}
+
+record(bo, "$(P)Src:Mxc0-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc0")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B0 CP")
+}
+
+record(bo, "$(P)Src:Mxc1-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc1")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src:Mxc2-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc2")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)Src:Mxc3-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc3")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B3 CP")
+} 
+
+record(bo, "$(P)Src:Mxc4-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc4")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)Src:Mxc5-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc5")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)Src:Mxc6-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc6")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B6 CP")
+}
+
+record(bo, "$(P)Src:Mxc7-Sel") {
+    field( DTYP, "EVG Trig Evt Mxc")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc7")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src1-MbbiDir_.B7 CP")
+}
+
+record(bo, "$(P)Src:AC-Sel") {
+    field( DTYP, "EVG Trig Evt AC")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):AcTrig")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src0-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src:FrontInp0-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp0")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src0-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)Src:FrontInp1-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp1")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src0-MbbiDir_.B3 CP")
+}
+
+record(bo, "$(P)Src:FrontInp2-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp2")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Src0-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)Src:RearInp0-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp0")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B0 CP")
+}
+
+record(bo, "$(P)Src:RearInp1-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp1")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src:RearInp2-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp2")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)Src:RearInp3-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp3")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B3 CP")
+}
+
+record(bo, "$(P)Src:RearInp4-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp4")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)Src:RearInp5-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp5")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)Src:RearInp6-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp6")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B6 CP")
+}
+
+record(bo, "$(P)Src:RearInp7-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp7")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B7 CP")
+}
+
+record(bo, "$(P)Src:RearInp8-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp8")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B8 CP")
+}
+
+record(bo, "$(P)Src:RearInp9-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp9")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.B9 CP")
+}
+
+record(bo, "$(P)Src:RearInp10-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp10")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BA CP")
+}
+
+record(bo, "$(P)Src:RearInp11-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp11")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BB CP")
+}
+
+record(bo, "$(P)Src:RearInp12-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp12")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BC CP")
+}
+
+record(bo, "$(P)Src:RearInp13-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp13")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BD CP")
+}
+
+record(bo, "$(P)Src:RearInp14-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp14")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BE CP")
+}
+
+record(bo, "$(P)Src:RearInp15-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp15")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)Src2-MbbiDir_.BF CP")
+}
+
+# By default OMSL field for the *Src* records is "closed_loop" hence
+# only one Source can be selected due of MBBO record. If you want to select
+# multiple sources then the OMSL field for the *Src* records should be
+# "supervisory" mode. In order to select multiple sources use directly *Src*
+# records bypassing the Src-Sel record.
+#
+record(dfanout, "$(P)Omsl-FOut") {
+    field( PINI, "YES")
+    field( VAL,  "1")
+    field( UDF,  "0")
+    field( OMSL, "supervisory")
+    field( OUTA, "$(P)Src:AC-Sel.OMSL")
+    field( OUTB, "$(P)Src:FrontInp0-Sel.OMSL")
+    field( OUTC, "$(P)Src:FrontInp1-Sel.OMSL")
+    field( OUTD, "$(P)Src:FrontInp2-Sel.OMSL")
+    field( OUTE, "$(P)Src:Mxc2-Sel.OMSL")
+    field( OUTF, "$(P)Src:Mxc3-Sel.OMSL")
+    field( OUTG, "$(P)Src:Mxc4-Sel.OMSL")
+    field( OUTH, "$(P)Src:Mxc5-Sel.OMSL")
+    field( FLNK, "$(P)Omsl:Cont-FOut0_.PROC")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(dfanout, "$(P)Omsl:Cont-FOut0_") {
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Omsl-FOut")
+    field( OUTA, "$(P)Src:Mxc6-Sel.OMSL")
+    field( OUTB, "$(P)Src:Mxc7-Sel.OMSL")
+    field( OUTC, "$(P)Src:RearInp0-Sel.OMSL")
+    field( OUTD, "$(P)Src:RearInp1-Sel.OMSL")
+    field( OUTE, "$(P)Src:RearInp2-Sel.OMSL")
+    field( OUTF, "$(P)Src:RearInp3-Sel.OMSL")
+    field( OUTG, "$(P)Src:RearInp4-Sel.OMSL")
+    field( OUTH, "$(P)Src:RearInp5-Sel.OMSL")
+    field( FLNK, "$(P)Omsl:Cont-FOut1_.PROC")
+}
+
+record(dfanout, "$(P)Omsl:Cont-FOut1_") {
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Omsl-FOut")
+    field( OUTA, "$(P)Src:RearInp6-Sel.OMSL")
+    field( OUTB, "$(P)Src:RearInp7-Sel.OMSL")
+    field( OUTC, "$(P)Src:RearInp8-Sel.OMSL")
+    field( OUTD, "$(P)Src:RearInp9-Sel.OMSL")
+    field( OUTE, "$(P)Src:RearInp10-Sel.OMSL")
+    field( OUTF, "$(P)Src:RearInp11-Sel.OMSL")
+    field( OUTG, "$(P)Src:RearInp12-Sel.OMSL")
+    field( OUTH, "$(P)Src:RearInp13-Sel.OMSL")
+    field( FLNK, "$(P)Omsl:Cont-FOut2_.PROC")
+}
+
+record(dfanout, "$(P)Omsl:Cont-FOut2_") {
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Omsl-FOut")
+    field( OUTA, "$(P)Src:RearInp14-Sel.OMSL")
+    field( OUTB, "$(P)Src:RearInp15-Sel.OMSL")
+}
+
+record(waveform, "$(P)Label-I") {
+    field(DESC, "Label")
+    field(FTVL, "CHAR")
+    field(NELM, "128")
+    info(autosaveFields_pass1, "VAL")
+}
