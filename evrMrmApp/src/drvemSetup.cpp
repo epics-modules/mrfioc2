@@ -152,10 +152,10 @@ static const EVRMRM::Config vme_evr_300 = {
     24, // pulse generators
     8,  // prescalers
     2,  // FP outputs
-    10, // FPUV outputs
+    8,  // FPUV outputs
     16, // RB outputs
     0,  // Backplane outputs
-    8,  // FP Delay outputs
+    4,  // FP Delay outputs
     4,  // CML/GTX outputs
     MRMCML::typeCML,
     2,  // FP inputs

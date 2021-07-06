@@ -152,6 +152,7 @@
 #  define ClkCtrl_clkmd_MASK 0x06000000
 #  define ClkCtrl_clkmd_SHIFT 25
 #  define ClkCtrl_cglock 0x00000200
+#  define PLLBandwidth_MAX 4
 
 #define U32_SRSec       0x05C
 
@@ -202,10 +203,10 @@
 
 /* 0 <= N <= 15 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
-#  define PulserCtrl_masks         0xff000000
-#  define PulserCtrl_masks_shift   24
-#  define PulserCtrl_enables       0x00ff0000
-#  define PulserCtrl_enables_shift 16
+#  define PulserCtrl_masks         0xf0000000
+#  define PulserCtrl_masks_shift   28
+#  define PulserCtrl_enables       0x00f00000
+#  define PulserCtrl_enables_shift 20
 #  define PulserCtrl_ena  0x01
 #  define PulserCtrl_mtrg 0x02
 #  define PulserCtrl_mset 0x04
