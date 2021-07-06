@@ -65,18 +65,17 @@ evgAcTrig::getBypass() const {
     return !!(READ32(m_pReg, AcTrigControl)&AcTrigControl_Bypass);
 }
 
-
 void
-evgAcTrig::setSyncSrc(bool syncSrc) {
-    if(syncSrc)
-        BITSET32(m_pReg, AcTrigControl, AcTrigControl_Sync);
-    else
-        BITCLR32(m_pReg, AcTrigControl, AcTrigControl_Sync);
+evgAcTrig::setSyncSrc(epicsUInt16 syncSrc) {
+    epicsUInt32 cur = READ32(m_pReg, AcTrigControl);
+    cur &= ~AcTrigControl_Sync_MASK;
+    cur |= (epicsUInt8)syncSrc << AcTrigControl_Sync_SHIFT;
+    WRITE32(m_pReg, AcTrigControl, cur);
 }
 
-bool
+epicsUInt16
 evgAcTrig::getSyncSrc() const {
-    return !!(READ32(m_pReg, AcTrigControl)&AcTrigControl_Sync);
+    return (READ32(m_pReg, AcTrigControl)&AcTrigControl_Sync_MASK)>>AcTrigControl_Sync_SHIFT;
 }
 
 void

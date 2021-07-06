@@ -18,7 +18,7 @@
 #include <mrfBitOps.h>
 #include "evrRegMap.h"
 
-
+#include "mrfcsr.h"
 #include "drvem.h"
 #include "drvemCML.h"
 
@@ -34,6 +34,20 @@ MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formF
   ,shadowWaveformlength(0)
   ,kind(k)
 {
+/*
+ * This is necessary to determine if the VME EVR is a 230 series or 300 series
+ * based on the Firmware Version. The 230 series has 20 bit CML outputs while
+ * the 300 series has 40-bit CML outputs. The 300 series does not, however utilize
+ * Gun TX mode of operation.
+ */
+    epicsUInt32 board=READ32(base, FWVersion);
+    board&=FWVersion_ver_mask;
+
+    if(board >= 0x207) {
+        mult=40;
+        wordlen=2;
+    }
+    
     epicsUInt32 val=READ32(base, OutputCMLEna(N));
 
     val&=~OutputCMLEna_type_mask;
