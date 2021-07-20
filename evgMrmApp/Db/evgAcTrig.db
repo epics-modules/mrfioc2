@@ -89,7 +89,7 @@ record(mbbo, "$(P)SyncSrc-Sel") {
     field( ZRVL, "0x000")
     field( ONVL, "0x001")
     field( TWVL, "0x011")
-	field( THVL, "0x101")
+    field( THVL, "0x101")
     field( VAL,  "0")
     field( UDF,  "0")
     field( FLNK, "$(P)SyncSrc-RB")
