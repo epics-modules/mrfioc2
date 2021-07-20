@@ -51,6 +51,7 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
  - PXI-EVG-230
  - cPCI-EVG-300
  - mTCA-EVM-300
+ - VME-EVM-300
 
 - Event Receivers
  - VME-EVR-230RF
@@ -61,6 +62,7 @@ RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
  - cPCI-EVR-300
  - PCIe-EVR-300DC
  - mTCA-EVR-300
+ - VME-EVR-300
  - FRIB EVR (not MRF product)
 
 @section doc Documentation
@@ -79,6 +81,7 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @subsection v231 2.3.1 (UNRELEASED)
 
+@li Add support for the VME EVM-300 and EVR-300 (Tony Pietryla)
 @li Add PCIe error handling to Linux kernel module (Hinko Kocevar)
 @li Add DKMS and RPM configs for Linux kernel module source (Michael Abbott)
 @li Fix input count on PCIe-EVR-300 and MTCA-EVR-300 (Jerzy Jamroz)
