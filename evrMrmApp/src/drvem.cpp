@@ -1000,6 +1000,20 @@ EVRMRM::dcStatusRaw() const
     return READ32(base, DCStatus);
 }
 
+bool
+EVRMRM::psPolarity() const {
+	return READ32(base, Control) & Control_pspol;
+}
+
+void
+EVRMRM::psPolaritySet(bool v)
+{
+    if(v)
+        BITSET32(base, Control, Control_pspol);
+    else
+        BITCLR32(base, Control, Control_pspol);
+}
+
 epicsUInt32
 EVRMRM::topId() const
 {
@@ -1069,6 +1083,7 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
+  OBJECT_PROP2("PSPolarity", &EVRMRM::psPolarity, &EVRMRM::psPolaritySet);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
   OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
     {
