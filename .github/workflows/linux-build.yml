@@ -7,8 +7,6 @@ on:
   pull_request:
     paths:
       - 'mrmShared/linux/**'
-  schedule: # monthly
-    - cron: '0 0 1 * *'
 
 jobs:
   specific:

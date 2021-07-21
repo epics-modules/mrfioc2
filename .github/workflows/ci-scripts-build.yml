@@ -20,8 +20,6 @@ on:
       - 'documentation/**'
       - 'python/**'
       - '**/*.md'
-  schedule: # monthly
-    - cron: '0 0 1 * *'
 
 env:
     SETUP_PATH: .ci-local:.ci
