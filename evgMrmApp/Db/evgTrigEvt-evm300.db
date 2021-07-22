@@ -330,7 +330,7 @@ record(bo, "$(P)Src:AC-Sel") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)Src0-MbbiDir_.B1 CP")
+    field( DOL,  "$(P)Src0-MbbiDir_.B0 CP")
 }
 
 record(bo, "$(P)Src:FrontInp0-Sel") {
@@ -339,7 +339,7 @@ record(bo, "$(P)Src:FrontInp0-Sel") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)Src0-MbbiDir_.B2 CP")
+    field( DOL,  "$(P)Src0-MbbiDir_.B1 CP")
 }
 
 record(bo, "$(P)Src:FrontInp1-Sel") {
@@ -348,7 +348,7 @@ record(bo, "$(P)Src:FrontInp1-Sel") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)Src0-MbbiDir_.B3 CP")
+    field( DOL,  "$(P)Src0-MbbiDir_.B2 CP")
 }
 
 record(bo, "$(P)Src:FrontInp2-Sel") {
@@ -357,7 +357,7 @@ record(bo, "$(P)Src:FrontInp2-Sel") {
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
-    field( DOL,  "$(P)Src0-MbbiDir_.B4 CP")
+    field( DOL,  "$(P)Src0-MbbiDir_.B3 CP")
 }
 
 record(bo, "$(P)Src:RearInp0-Sel") {
