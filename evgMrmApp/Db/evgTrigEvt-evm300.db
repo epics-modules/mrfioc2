@@ -23,6 +23,14 @@ record(longin, "$(P)EvtCode-RB") {
     field( LLSV, "MAJOR")
 }
 
+# Too many possible sources for one mbbo record, so use several
+# Each mbbo has an associated seq record with the following steps:
+# 1. Set SrcChanging, indicates a selection is being processed
+#    and prevents other seq's interfering using SDIS.
+# 2. Save desired selection value.
+# 3-5. Set all the mbbo records to 'Off' (0)
+# 6-7. Process the desired selection.
+# 10. Reset SrcChanging.
 record(mbbo, "$(P)Src:FP-Sel_") {
     field( DTYP, "Raw Soft Channel")
     field( UDF,  "0")
