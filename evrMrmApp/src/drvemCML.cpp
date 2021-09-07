@@ -24,9 +24,11 @@
 
 MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formFactor f)
   :CML(n)
-  ,mult(f==formFactor_CPCIFULL ? 40 : 20) // CML word length
-  ,wordlen(f==formFactor_CPCIFULL ? 2 : 1)// # of 32-bit dwords used to store 1 CML word
-                                      // 40 bits fit in 2 dwords, 20 bits fit in 1
+  // CML word length
+  ,mult(f==formFactor_CPCIFULL || f==formFactor_mTCA ? 40 : 20)
+  // # of 32-bit dwords used to store 1 CML word
+  // 40 bits fit in 2 dwords, 20 bits fit in 1
+  ,wordlen(f==formFactor_CPCIFULL || f==formFactor_mTCA ? 2 : 1)
   ,base(o.base)
   ,N(i)
   ,owner(o)
