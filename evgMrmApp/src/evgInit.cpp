@@ -100,7 +100,7 @@ static const evgMrm::Config conf_cpci_evg_300 = {
 
 static const evgMrm::Config conf_mtca_evm_300 = {
     "mTCA-EVM-300",
-    3,
+    1,
     16,
     0,
 };

@@ -82,8 +82,8 @@ evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
     //Read-Modify-Write
     epicsUInt32 map = nat_ioread32(m_pInReg);
 
-    map = map & 0xffff00ff;
-    map = map | (seqTrigMap << 8);
+    map = map & (~InMap_SEQ_MASK);
+    map = map | (seqTrigMap << InMap_SEQ_SHIFT);
 
     nat_iowrite32(m_pInReg, map);
 }
@@ -91,8 +91,8 @@ evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
 epicsUInt32
 evgInput::getSeqTrigMap() const {
     epicsUInt32 map = nat_ioread32(m_pInReg);
-    map = map & 0x0000ff00;
-    map = map >> 8;
+    map = map & InMap_SEQ_MASK;
+    map = map >> InMap_SEQ_SHIFT;
     return map;
 }
 

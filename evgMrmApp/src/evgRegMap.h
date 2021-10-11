@@ -211,12 +211,14 @@
 #define  U32_UnivInMap_base     0x0540  // Front Univ Input Port Mapping Register
 #define  U32_UnivInMap(n)       (U32_UnivInMap_base + (4*(n)))
 
-
 //=====================
 // Rear Universal Input Mapping Registers
 //
 #define  U32_RearInMap_base       0x0600  // Rear Univ Input Port Mapping Register
 #define  U32_RearInMap(n)         (U32_RearInMap_base + (4*(n)))
+
+#define  InMap_SEQ_MASK           0x00000300
+#define  InMap_SEQ_SHIFT          8
 
 //=====================
 // Data Buffer Area
