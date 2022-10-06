@@ -85,6 +85,13 @@ public:
   virtual void setPrescaler(epicsUInt32)=0;
   /*@}*/
 
+  /**\defgroup scaler Set prescaler triggering
+   */
+  /*@{*/
+  virtual epicsUInt32 psTrig() const=0;
+  virtual void setPSTrig(epicsUInt32)=0;
+  /*@}*/
+
   /**\defgroup pol Set output polarity
    *
    * Selects normal or inverted.

@@ -201,6 +201,8 @@ OBJECT_BEGIN(Pulser) {
 
     OBJECT_PROP2("Prescaler", &Pulser::prescaler, &Pulser::setPrescaler);
 
+    OBJECT_PROP2("PSTrig", &Pulser::psTrig, &Pulser::setPSTrig);
+
 } OBJECT_END(Pulser)
 
 
