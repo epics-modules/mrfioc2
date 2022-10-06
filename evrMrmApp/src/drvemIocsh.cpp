@@ -56,13 +56,14 @@
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "PCI id or slot=#",iocshArgString};
-static const iocshArg * const mrmEvrSetupPCIArgs[2] =
-{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1};
+static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: 'UNIV' or 'IFP']",iocshArgString};
+static const iocshArg * const mrmEvrSetupPCIArgs[3] =
+{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =
-    {"mrmEvrSetupPCI",2,mrmEvrSetupPCIArgs};
+    {"mrmEvrSetupPCI",3,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].sval,args[1].sval);
+    mrmEvrSetupPCI(args[0].sval,args[1].sval,args[2].sval);
 }
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "name",iocshArgString};
