@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -46,6 +47,13 @@ public:
   /*@{*/
   virtual bool enabled() const=0;
   virtual void enable(bool)=0;
+  /*@}*/
+
+  /**\defgroup soft Soft set/reset pulser.
+   */
+  /*@{*/
+  virtual void softSet()=0;
+  virtual void softReset()=0;
   /*@}*/
 
   /**\defgroup dly Set triggered mode delay length.

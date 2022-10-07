@@ -25,6 +25,19 @@ record(bo, "$(PN)Ena-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+# Pulser Soft set/reset
+record(bo, "$(PN)Set-Cmd") {
+  field(DESC, "Soft set")
+  field(DTYP, "Obj Prop command")
+  field(OUT , "@OBJ=$(OBJ), PROP=SoftSet")
+}
+
+record(bo, "$(PN)Reset-Cmd") {
+  field(DESC, "Soft reset")
+  field(DTYP, "Obj Prop command")
+  field(OUT , "@OBJ=$(OBJ), PROP=SoftReset")
+}
+
 # Reverses the output polarity. When set, changes the Pulse Generator's
 # output from normally low to normally high.
 #
