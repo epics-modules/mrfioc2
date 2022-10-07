@@ -81,6 +81,9 @@ struct PulserFRIB : public Pulser
     virtual epicsUInt32 psTrig() const { return 0u; }
     virtual void setPSTrig(epicsUInt32) {}
 
+    virtual epicsUInt32 dbusTrig() const { return 0u; }
+    virtual void setDBusTrig(epicsUInt32) {}
+
     virtual bool polarityInvert() const { return false; }
     virtual void setPolarityInvert(bool) {}
 

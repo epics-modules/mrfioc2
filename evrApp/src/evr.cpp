@@ -203,6 +203,8 @@ OBJECT_BEGIN(Pulser) {
 
     OBJECT_PROP2("PSTrig", &Pulser::psTrig, &Pulser::setPSTrig);
 
+    OBJECT_PROP2("DBusTrig", &Pulser::dbusTrig, &Pulser::setDBusTrig);
+
 } OBJECT_END(Pulser)
 
 

@@ -178,6 +178,33 @@ MRMPulser::setPSTrig(epicsUInt32 v)
     }
 }
 
+epicsUInt32
+MRMPulser::dbusTrig() const
+{
+    epicsUInt32 r = 0;
+    for (int i = 0; i < evrNumDbusBit; i++) {
+        if (READ32(owner.base, DBusPulsTrig(i)) & (1 << id)) {
+            r |= 1 << i;
+        }
+    }
+
+    return r;
+}
+
+void
+MRMPulser::setDBusTrig(epicsUInt32 v)
+{
+    for (int i = 0; i < evrNumDbusBit; i++) {
+        epicsUInt32 t = READ32(owner.base, DBusPulsTrig(i));
+        if (v & (1 << i)) {
+            t |= 1 << id;
+        } else {
+            t &= ~(1 << id);
+        }
+        WRITE32(owner.base, DBusPulsTrig(i), t);
+    }
+}
+
 bool
 MRMPulser::polarityInvert() const
 {

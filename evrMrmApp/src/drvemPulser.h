@@ -53,6 +53,9 @@ public:
     virtual epicsUInt32 psTrig() const OVERRIDE FINAL;
     virtual void setPSTrig(epicsUInt32) OVERRIDE FINAL;
 
+    virtual epicsUInt32 dbusTrig() const OVERRIDE FINAL;
+    virtual void setDBusTrig(epicsUInt32) OVERRIDE FINAL;
+
     virtual bool polarityInvert() const OVERRIDE FINAL;
     virtual void setPolarityInvert(bool) OVERRIDE FINAL;
 

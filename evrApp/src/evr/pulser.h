@@ -92,6 +92,13 @@ public:
   virtual void setPSTrig(epicsUInt32)=0;
   /*@}*/
 
+  /**\defgroup DBus Set DBus triggering
+   */
+  /*@{*/
+  virtual epicsUInt32 dbusTrig() const=0;
+  virtual void setDBusTrig(epicsUInt32)=0;
+  /*@}*/
+
   /**\defgroup pol Set output polarity
    *
    * Selects normal or inverted.
