@@ -7,6 +7,18 @@
 #  IDX = ID # corresponding to output mapping codes
 #  MAX = Maximum division
 
+record(bo, "$(P)PSPolarity-Sel")
+{
+  field( DTYP, "Obj Prop bool")
+  field( DESC, "Polarity of all prescalers")
+  field( OUT , "@OBJ=$(EVR), PROP=PSPolarity")
+  field( PINI, "YES")
+  field( ZNAM, "PS-sync on falling edge")
+  field( ONAM, "PS-sync on rising edge")
+  field( VAL , "0")
+  info(autosaveFields_pass0, "VAL")
+}
+
 record(longout, "$(SN)Div-SP") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "Prescaler $(IDX)")
