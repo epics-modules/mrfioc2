@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -56,7 +57,7 @@
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "PCI id or slot=#",iocshArgString};
-static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: 'UNIV' or 'IFP']",iocshArgString};
+static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: 'UNIV' or 'IFP' or 'RF]",iocshArgString};
 static const iocshArg * const mrmEvrSetupPCIArgs[3] =
 {&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =

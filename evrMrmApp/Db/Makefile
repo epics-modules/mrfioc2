@@ -20,6 +20,7 @@ DB += evr-vmerf-230.db
 DB += evr-tg-300.db
 DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
+DB += evr-mtca-300rf.db
 
 ifdef BASE_3_15
 DB += evr-mtca-300u.db

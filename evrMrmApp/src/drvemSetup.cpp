@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -171,6 +172,25 @@ static const EVRMRM::Config cpci_evr_300 = {
     4,  // CML/GTX outputs
     MRMCML::typeTG300,
     2,  // FP inputs
+};
+
+static const EVRMRM::Config mtca_evr_300rf = {
+    "mTCA-EVR-300RF",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    2,  // FPUV outputs (only FPUV0/1, mapped to FrontUnivOut0/1)
+    10, // RB outputs  (RTM)
+    8,  // Backplane outputs
+    2,  // FP Delay outputs
+    4,  // CML/GTX outputs - one univ. I/O slot (2 outputs), 1x SFP, 1x CML
+    MRMCML::typeTG300,
+    /**
+     * 0 <= N <= 1   : FPInMap
+     * 2 <= N <= 15  : UnivInMap
+     * 16 <= N <= 25 : BPInMap
+     */
+    26,  // FP, Univ, BP inputs
 };
 
 static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP
@@ -500,6 +520,7 @@ try {
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
     case PCI_DEVICE_ID_MRF_EVRMTCA300:
         if (mtca_evr_model == NULL)
+            // To be backward compatible, if no EVR type is provided, we assume IFB as this was default beforehand
             mtca_evr_model = "IFB";
 
         if (strcmp(mtca_evr_model, "UNIV") == 0) {
@@ -508,8 +529,11 @@ try {
         } else if (strcmp(mtca_evr_model, "IFB") == 0) {
             printf("config for EVR FP IFB model\n");
             conf = &mtca_evr_300;
+        } else if (strcmp(mtca_evr_model, "RF") == 0) {
+            printf("config for EVR FP RF model\n");
+            conf = &mtca_evr_300rf;
         } else {
-            printf("Error: mtca_evr_model arg (%s), need 'UNIV' or 'IFB' (default).\n", mtca_evr_model);
+            printf("Error: mtca_evr_model arg (%s), need 'UNIV', 'RF' or 'IFB' (default).\n", mtca_evr_model);
             return;
         }
         break;
