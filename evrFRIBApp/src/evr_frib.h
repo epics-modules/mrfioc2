@@ -1,6 +1,7 @@
 /*
  * This software is Copyright by the Board of Trustees of Michigan
  * State University (c) Copyright 2017.
+ * Copyright (c) 2022 Cosylab d.d.
  *
  * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
@@ -60,6 +61,9 @@ struct PulserFRIB : public Pulser
 
     virtual bool enabled() const { return true;}
     virtual void enable(bool) {}
+
+    virtual void softSet() {}
+    virtual void softReset() {}
 
     virtual void setDelayRaw(epicsUInt32);
     virtual void setDelay(double);

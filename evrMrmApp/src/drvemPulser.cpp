@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -54,6 +55,18 @@ MRMPulser::enable(bool s)
     else
         BITCLR(NAT,32,owner.base, PulserCtrl(id),
              PulserCtrl_ena|PulserCtrl_mtrg|PulserCtrl_mset|PulserCtrl_mrst);
+}
+
+void
+MRMPulser::softSet()
+{
+    BITSET(NAT,32,owner.base, PulserCtrl(id), PulserCtrl_sset);
+}
+
+void
+MRMPulser::softReset()
+{
+    BITSET(NAT,32,owner.base, PulserCtrl(id), PulserCtrl_srst);
 }
 
 void

@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -176,6 +177,8 @@ OBJECT_BEGIN(Output) {
 
 
 OBJECT_BEGIN(Pulser) {
+    OBJECT_PROP1("SoftSet", &Pulser::softSet);
+    OBJECT_PROP1("SoftReset", &Pulser::softReset);
 
     OBJECT_PROP2("Delay", &Pulser::delay, &Pulser::setDelay);
     OBJECT_PROP2("Delay", &Pulser::delayRaw, &Pulser::setDelayRaw);
