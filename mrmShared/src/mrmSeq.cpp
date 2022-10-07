@@ -1,5 +1,6 @@
 /*************************************************************************\
 * Copyright (c) 2016 Michael Davidsaver
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -187,15 +188,26 @@ public:
         // TODO: not handling overflow (HW supports controlled rollover w/ special 0xffffffff times)
         for(epicsUInt32 i=0; i<count; i++)
         {
-            if(!finite(arr[i]) || arr[i]<0.0)
-                throw std::runtime_error("times must be finite >=0");
+            if(!finite(arr[i]) || arr[i]<0.0) {
+                std::string msg("Times must be finite >=0");
+                last_err = msg;
+                scanIoRequest(onErr);
+                throw std::runtime_error(msg);
+            }
 
             times[i] = (arr[i]*tmult)+0.5;
 
-            if(i>0 && times[i]<=times[i-1])
-                throw std::runtime_error("Non-monotonic timestamp array");
-            else if(times[i]==0xffffffff)
-                throw std::runtime_error("Time overflow, rollover not supported");
+            if(i>0 && times[i]<=times[i-1]) {
+                std::string msg("Non-monotonic timestamp array");
+                last_err = msg;
+                scanIoRequest(onErr);
+                throw std::runtime_error(msg);
+            } else if(times[i]==0xffffffff) {
+                std::string msg("Time overflow, rollover not supported");
+                last_err = msg;
+                scanIoRequest(onErr);
+                throw std::runtime_error(msg);
+            }
         }
         {
             SCOPED_LOCK(mutex);
@@ -267,7 +279,10 @@ public:
         case Normal:
             break;
         default:
-            throw std::runtime_error("Unknown sequencer run mode");
+            std::string msg("Unknown sequencer run mode");
+            last_err = msg;
+            scanIoRequest(onErr);
+            throw std::runtime_error(msg);
         }
 
         {
@@ -456,6 +471,10 @@ void SoftSequence::load()
         throw alarm_exception(MAJOR_ALARM, WRITE_ALARM);
     }
 
+    // clear residual error (if any)
+    last_err = "";
+    scanIoRequest(onErr);
+
     scanIoRequest(changed);
     DEBUG(1, ("Loaded\n") );
 }
@@ -504,8 +523,12 @@ void SoftSequence::commit()
     // ensure presence of trailing end of sequence marker event 0x7f
     if(conf.codes.empty() || conf.codes.back()!=0x7f)
     {
-        if(!conf.times.empty() && conf.times.back()==0xffffffff)
-            throw std::runtime_error("Wow, input array is missing 0x7f and maxing out times");
+        if(!conf.times.empty() && conf.times.back()==0xffffffff) {
+            std::string msg("Input array is missing 0x7f and maxing out times");
+            last_err = msg;
+            scanIoRequest(onErr);
+            throw std::runtime_error(msg);
+        }
 
         conf.codes.push_back(0x7f);
 
@@ -515,8 +538,12 @@ void SoftSequence::commit()
             conf.times.push_back(conf.times.back()+1);
     }
 
-    if(conf.times.size()>2048)
-        throw std::runtime_error("Sequence too long");
+    if(conf.times.size()>2048) {
+        std::string msg("Sequence too long");
+        last_err = msg;
+        scanIoRequest(onErr);
+        throw std::runtime_error(msg);
+    }
 
     assert(!hw || hw->loaded==this);
 
@@ -529,6 +556,10 @@ void SoftSequence::commit()
         if(hw && !hw->disarm())
             sync();
     }
+
+    // clear residual error (if any)
+    last_err = "";
+    scanIoRequest(onErr);
 
     scanIoRequest(changed);
     DEBUG(1, ("Committed\n") );
@@ -548,6 +579,11 @@ void SoftSequence::enable()
 
         hw->arm();
     }
+
+    // clear residual error (if any)
+    last_err = "";
+    scanIoRequest(onErr);
+
     scanIoRequest(changed);
     DEBUG(1, ("Enabled\n") );
 }
