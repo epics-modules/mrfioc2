@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -68,6 +69,8 @@
 #  define Control_GTXio   0x01000000 /* GTX use external inhibit */
 
 #  define Control_DCEna   0x00400000
+
+#  define Control_pspol   0x00008000 /* prescaler polarity */
 
 /*                        Timestamp clock on DBUS #4 */
 #  define Control_tsdbus  0x00004000
