@@ -147,6 +147,8 @@ OBJECT_BEGIN(Input) {
 
     OBJECT_PROP2("Active Level", &Input::levelHigh, &Input::levelHighSet);
 
+    OBJECT_PROP1("State", &Input::state);
+
     OBJECT_PROP2("Active Edge", &Input::edgeRise, &Input::edgeRiseSet);
 
     OBJECT_PROP2("External Code", &Input::extEvt, &Input::extEvtSet);
