@@ -258,6 +258,7 @@
 
 /* Front panel inputs */
 #define U32_InputMapFPN  0x500
+#  define InputMapFP_state 0x80000000
 #  define InputMapFP_lvl  0x20000000
 #  define InputMapFP_blvl 0x10000000
 #  define InputMapFP_elvl 0x08000000

@@ -60,6 +60,12 @@ MRMInput::levelHigh() const
     return !(READ32(base,InputMapFP(idx)) & InputMapFP_lvl);
 }
 
+bool
+MRMInput::state() const
+{
+    return (READ32(base,InputMapFP(idx)) & InputMapFP_state);
+}
+
 void
 MRMInput::edgeRiseSet(bool v)
 {

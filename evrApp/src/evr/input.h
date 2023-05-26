@@ -35,6 +35,9 @@ public:
   virtual void levelHighSet(bool)=0;
   virtual bool levelHigh() const=0;
 
+  // Detect the level state on the input
+  virtual bool state() const=0;
+
   //! Set active rise/fall when using edge trigger mode
   virtual void edgeRiseSet(bool)=0;
   virtual bool edgeRise() const=0;

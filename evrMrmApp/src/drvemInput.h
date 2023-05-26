@@ -37,6 +37,8 @@ public:
     virtual void levelHighSet(bool) OVERRIDE FINAL;
     virtual bool levelHigh() const OVERRIDE FINAL;
 
+    virtual bool state() const OVERRIDE FINAL;
+
     virtual void edgeRiseSet(bool) OVERRIDE FINAL;
     virtual bool edgeRise() const OVERRIDE FINAL;
 
