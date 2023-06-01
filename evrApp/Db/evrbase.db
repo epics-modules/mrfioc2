@@ -67,6 +67,13 @@ record(bi, "$(P)Link-Sts") {
   field(FLNK, "$(P)Cnt:RxErr-I")
 }
 
+record(longin, "$(P)DBus-I") {
+  field(DTYP, "Obj Prop uint16")
+  field(DESC, "Read the DBus status")
+  field(INP , "@OBJ=$(OBJ), PROP=DBus Status")
+  field(SCAN, ".1 second")
+}
+
 # The number of event link errors which have occurred.
 record(longin, "$(P)Cnt:RxErr-I") {
   field(DTYP, "Obj Prop uint32")
