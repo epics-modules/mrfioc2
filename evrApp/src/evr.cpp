@@ -130,7 +130,7 @@ OBJECT_BEGIN(EVR) {
 
     OBJECT_PROP1("PLL Lock Status", &EVR::pllLocked);
 
-    OBJECT_PROP1("DBus Status", &EVR::dbus);
+    OBJECT_PROP1("DBus State", &EVR::dbus);
 
     OBJECT_PROP1("Interrupt Count", &EVR::irqCount);
 

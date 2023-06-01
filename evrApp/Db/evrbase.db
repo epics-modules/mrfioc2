@@ -69,8 +69,8 @@ record(bi, "$(P)Link-Sts") {
 
 record(longin, "$(P)DBus-I") {
   field(DTYP, "Obj Prop uint16")
-  field(DESC, "Read the DBus status")
-  field(INP , "@OBJ=$(OBJ), PROP=DBus Status")
+  field(DESC, "Read the DBus state")
+  field(INP , "@OBJ=$(OBJ), PROP=DBus State")
   field(SCAN, ".1 second")
 }
 
