@@ -71,7 +71,7 @@ record(longin, "$(P)DBus-I") {
   field(DTYP, "Obj Prop uint16")
   field(DESC, "Read the DBus state")
   field(INP , "@OBJ=$(OBJ), PROP=DBus State")
-  field(SCAN, ".1 second")
+  info( autosaveFields_pass0, "SCAN")
 }
 
 # The number of event link errors which have occurred.
