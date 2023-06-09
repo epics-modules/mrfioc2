@@ -20,10 +20,10 @@ record(bi, "$(IN)State-I") {
   field( DTYP, "Obj Prop bool")
   field( DESC, "$(DESC) state")
   field( INP , "@OBJ=$(OBJ), PROP=State")
-  field( PINI, "YES")
+  field( PINI, "RUNNING")
   field( ZNAM, "Low")
   field( ONAM, "High")
-  field( SCAN, ".1 second")
+  info( autosaveFields_pass0, "SCAN")
 }
 
 record(bo, "$(IN)Edge-Sel") {
