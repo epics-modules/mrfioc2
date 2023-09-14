@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - 'mrmShared/linux/**'
+  workflow_dispatch:
 
 jobs:
   specific:
@@ -20,16 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-16.04
-            series: 3.x
-            version: 3.2.1
-            cc: gcc-4.8
-
-          - os: ubuntu-16.04
-            series: 3.x
-            version: 3.16.1
-            cc: gcc-4.8
-
           - os: ubuntu-20.04
             series: 4.x
             version: 4.9.1
@@ -37,6 +28,11 @@ jobs:
           - os: ubuntu-20.04
             series: 5.x
             version: 5.9.6
+
+          - os: ubuntu-latest
+            series: latest
+            version: latest
+
     steps:
     - uses: actions/checkout@v2
     - name: Info
@@ -51,6 +47,13 @@ jobs:
     - name: Setup Linux
       run: |
         install -d kernel
+        if [ "$KSER" == "latest" ]; then
+          KSER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/ | grep -o 'v[0-9]\+\.[0-9a-zA-Z]\+/' | sed 's/\/\s*//' | sort -t. -k2,2V -k3,3V -k4,4V | tail -n 1 | sed 's/v//')
+        fi
+        if [ "$KVER" == "latest" ]; then
+          KVER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/ | grep -o 'linux-[0-9]\+\.[0-9]\+\.[0-9]\+\.tar\.xz' | sort -t- -k2,2n -k3,3n -k4,4n | tail -n 1 | sed 's/linux-\(.*\)\.tar\.xz/\1/')
+        fi
+        echo "https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz"
         curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz | tar -C kernel --strip-components=1 -xJ
         make -C kernel CC=${CC:=gcc} defconfig
         make -C kernel CC=${CC:=gcc} modules_prepare
