@@ -68,11 +68,6 @@ jobs:
             base: "7.0"
             extra: "CMD_CXXFLAGS=-std=c++11"
 
-          - os: ubuntu-16.04
-            cmp: clang
-            configuration: default
-            base: "7.0"
-
           - os: ubuntu-20.04
             cmp: clang
             configuration: default
@@ -90,18 +85,6 @@ jobs:
             configuration: default
             base: "7.0"
             rtems: "4.9"
-
-          - os: ubuntu-16.04
-            cmp: gcc-4.8
-            utoolchain: "4.8"
-            configuration: default
-            base: "7.0"
-
-          - os: ubuntu-16.04
-            cmp: gcc-4.9
-            utoolchain: "4.9"
-            configuration: default
-            base: "7.0"
 
           - os: ubuntu-20.04
             cmp: gcc-8
