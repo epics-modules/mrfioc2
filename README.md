@@ -1,14 +1,15 @@
+* [![Docs](https://github.com/epics-modules/mrfioc2/actions/workflows/doxygen-gh-pages.yml/badge.svg)](https://github.com/epics-modules/mrfioc2/actions/workflows/doxygen-gh-pages.yml)
+* [![EPICS driver](https://github.com/epics-modules/mrfioc2/actions/workflows/ci-scripts-build.yml/badge.svg)](https://github.com/epics-modules/mrfioc2/actions/workflows/ci-scripts-build.yml)
+* [![Kernel module](https://github.com/epics-modules/mrfioc2/actions/workflows/linux-build.yml/badge.svg)](https://github.com/epics-modules/mrfioc2/actions/workflows/linux-build.yml)
+
+---
+
 What is Available?
 ------------------
 
-More infomation on the Micro Research hardware can be found on their
-website http://www.mrf.fi/.
+* More infomation on the Micro Research hardware can be found on their website http://www.mrf.fi/.
 
-Documentation appears at [http://epics.sourceforge.net/mrfioc2](http://epics.sourceforge.net/mrfioc2)
-
-The latest developments can be found in the 'mrfioc2' VCS repository.
-
-[https://github.com/epics-modules/mrfioc2](https://github.com/epics-modules/mrfioc2)
+* Documentation at [http://epics.sourceforge.net/mrfioc2](http://epics.sourceforge.net/mrfioc2)
 
 Prerequisites
 -------------
@@ -19,17 +20,4 @@ Base: [http://www.aps.anl.gov/epics/base/R3-15/index.php](http://www.aps.anl.gov
 
 devLib2: [https://github.com/epics-modules/devlib2/](https://github.com/epics-modules/devlib2/)
 
-MSI (Base < 3.15 only): [http://www.aps.anl.gov/epics/extensions/msi/index.php](http://www.aps.anl.gov/epics/extensions/msi/index.php)
-
-The Source
-----------
-
-VCS Checkout
-
-```shell
-git clone https://github.com/epics-modules/mrfioc2.git
-```
-
-Edit 'configure/CONFIG_SITE' and run "make".
-
-<a href="https://travis-ci.org/epics-modules/mrfioc2"><img src="https://travis-ci.org/epics-modules/mrfioc2.svg">CI Build Status</img></a>
+MSI: [http://www.aps.anl.gov/epics/extensions/msi/index.php](http://www.aps.anl.gov/epics/extensions/msi/index.php)
