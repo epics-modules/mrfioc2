@@ -147,9 +147,12 @@
 
 #define U32_ClkCtrl     0x050
 #  define ClkCtrl_plllock 0x80000000
+#  define ClkCtrl_pll_bw  0x70000000
+#  define ClkCtrl_pll_bw_SHIFT 28
 #  define ClkCtrl_clkmd_MASK 0x06000000
 #  define ClkCtrl_clkmd_SHIFT 25
 #  define ClkCtrl_cglock 0x00000200
+#  define PLLBandwidth_MAX 4
 
 #define U32_SRSec       0x05C
 
@@ -187,8 +190,8 @@
 
 
 #define U32_ScalerN     0x100
-#  define ScalerMax 3
-/* 0 <= N <= 2 */
+#  define ScalerMax 8
+/* 0 <= N <= 8 */
 #define U32_Scaler(N)   (U32_ScalerN + (4*(N)))
 #  define ScalerPhasOffs_offset 0x20
 
@@ -196,7 +199,7 @@
 #define U32_PulserNScal 0x204
 #define U32_PulserNDely 0x208
 #define U32_PulserNWdth 0x20c
-#  define PulserMax 10
+#  define PulserMax 24
 
 /* 0 <= N <= 15 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
@@ -318,7 +321,7 @@
 #define U32_OutputCMLNPat_base 0x20000
 #define U32_OutputCMLPat(i,N) (U32_OutputCMLNPat_base + 0x4000*(i) + 4*(N))
 
-#  define OutputCMLMax 3
+#  define OutputCMLMax 4
 #  define OutputGTXMax 8
 
 /* 0 <= N <= 2 */
@@ -340,7 +343,7 @@
 #define U32_DataTx(N)      (U32_DataTx_base + (N))
 
 /* 0 <= N <= 0xfff */
-#define U32_EventLog(N)    (U32_EventLog_base
+#define U32_EventLog(N)    (U32_EventLog_base)
 
 /* 0 <= M <= 1   ram select
  * 0 <= E <= 255 event code number

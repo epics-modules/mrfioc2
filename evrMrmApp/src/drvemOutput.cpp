@@ -49,10 +49,10 @@ MRMOutput::source2() const
 void
 MRMOutput::setSource(epicsUInt32 v)
 {
-    if( ! ( (v<=63 && v>=61) ||
+    if( ! ( (v<=63 && v>=59) ||
             (v<=55 && v>=48) ||
             (v<=42 && v>=32) ||
-            (v<=15) )
+            (v<=23) )
     )
         throw std::out_of_range("Mapping code is out of range");
 
@@ -66,10 +66,10 @@ MRMOutput::setSource(epicsUInt32 v)
 void
 MRMOutput::setSource2(epicsUInt32 v)
 {
-    if( ! ( (v<=63 && v>=61) ||
+    if( ! ( (v<=63 && v>=59) ||
             (v<=55 && v>=48) ||
             (v<=42 && v>=32) ||
-            (v<=15) )
+            (v<=23) )
     )
         throw std::out_of_range("Mapping code is out of range");
 
