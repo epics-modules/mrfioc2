@@ -1,0 +1,21 @@
+<map id="EVRMRMTSBuffer" name="EVRMRMTSBuffer">
+<area shape="rect" id="node2" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; EVRMRMTSBuffer \&gt;" alt="" coords="451,37,712,63"/>
+<area shape="rect" id="node3" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="135,57,230,83"/>
+<area shape="rect" id="node9" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; EVR \&gt;" alt="" coords="494,247,669,274"/>
+<area shape="rect" id="node16" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufTx \&gt;" alt="" coords="473,89,689,115"/>
+<area shape="rect" id="node20" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufRx \&gt;" alt="" coords="473,193,690,219"/>
+<area shape="rect" id="node4" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="109,201,256,243"/>
+<area shape="rect" id="node7" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; EVRMRM,\l EVR \&gt;" alt="" coords="1113,244,1308,285"/>
+<area shape="rect" id="node6" href="$class_e_v_r_m_r_m.html" title="Modular Register Map Event Receivers. " alt="" coords="1759,201,1837,227"/>
+<area shape="rect" id="node8" href="$class_e_v_r.html" title="Base interface for EVRs. " alt="" coords="907,247,955,274"/>
+<area shape="rect" id="node10" href="$class_m_r_m_s_p_i.html" title="MRMSPI" alt="" coords="1513,302,1586,329"/>
+<area shape="rect" id="node11" href="$structmrf_1_1_s_p_i_interface.html" title="Interface for SPI Master. " alt="" coords="1145,310,1276,337"/>
+<area shape="rect" id="node12" href="$class_time_stamp_source.html" title="TimeStampSource" alt="" coords="1479,353,1620,379"/>
+<area shape="rect" id="node13" href="$struct_e_v_r_m_r_m_1_1_config.html" title="EVRMRM::Config" alt="" coords="1485,150,1613,177"/>
+<area shape="rect" id="node14" href="$classmrm_data_buf_tx.html" title="mrmDataBufTx" alt="" coords="1332,89,1455,115"/>
+<area shape="rect" id="node15" href="$classdata_buf_tx.html" title="dataBufTx" alt="" coords="1000,89,1089,115"/>
+<area shape="rect" id="node17" href="$classmrm_buf_rx.html" title="mrmBufRx" alt="" coords="1503,201,1595,227"/>
+<area shape="rect" id="node18" href="$classbuf_rx_manager.html" title="bufRxManager" alt="" coords="1153,193,1269,219"/>
+<area shape="rect" id="node19" href="$classdata_buf_rx.html" title="dataBufRx" alt="" coords="885,193,976,219"/>
+<area shape="rect" id="node21" href="$struct_e_v_r_m_r_m_t_s_buffer_1_1ebuf__t.html" title="EVRMRMTSBuffer::ebuf_t" alt="" coords="1707,251,1889,278"/>
+</map>

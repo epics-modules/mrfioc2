@@ -1,0 +1,4 @@
+<map id="bus_configuration" name="bus_configuration">
+<area shape="rect" id="node2" href="$structconfiguration__vme.html" title="configuration_vme" alt="" coords="5,5,148,32"/>
+<area shape="rect" id="node3" href="$structconfiguration__pci.html" title="configuration_pci" alt="" coords="173,5,306,32"/>
+</map>

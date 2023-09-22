@@ -1,0 +1,9 @@
+<map id="SoftSequence" name="SoftSequence">
+<area shape="rect" id="node6" href="$struct_seq_h_w.html" title="SeqHW" alt="" coords="168,455,237,481"/>
+<area shape="rect" id="node2" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; SoftSequence \&gt;" alt="" coords="259,185,498,212"/>
+<area shape="rect" id="node3" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="129,89,223,115"/>
+<area shape="rect" id="node8" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; SeqManager \&gt;" alt="" coords="5,185,235,212"/>
+<area shape="rect" id="node4" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="267,81,413,123"/>
+<area shape="rect" id="node7" href="$class_seq_manager.html" title="SeqManager" alt="" coords="58,261,161,288"/>
+<area shape="rect" id="node9" href="$struct_soft_sequence_1_1_config.html" title="SoftSequence::Config" alt="" coords="185,261,345,288"/>
+</map>

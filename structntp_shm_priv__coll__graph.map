@@ -1,0 +1,7 @@
+<map id="ntpShmPriv" name="ntpShmPriv">
+<area shape="rect" id="node2" href="$structshm_segment.html" title="shmSegment" alt="" coords="5,261,113,288"/>
+<area shape="rect" id="node3" href="$class_e_v_r.html" title="Base interface for EVRs. " alt="" coords="138,261,186,288"/>
+<area shape="rect" id="node4" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; EVR \&gt;" alt="" coords="75,185,249,212"/>
+<area shape="rect" id="node5" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="93,89,188,115"/>
+<area shape="rect" id="node6" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="213,81,359,123"/>
+</map>

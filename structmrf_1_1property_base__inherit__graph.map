@@ -1,0 +1,8 @@
+<map id="mrf::propertyBase" name="mrf::propertyBase">
+<area shape="rect" id="node2" href="$structmrf_1_1property.html" title="A bound, typed scalar property. " alt="" coords="203,9,350,36"/>
+<area shape="rect" id="node4" href="$structmrf_1_1property_3_01_p[1]_4.html" title="A bound, typed array property. " alt="" coords="197,64,357,91"/>
+<area shape="rect" id="node6" href="$structmrf_1_1property_3_01void_01_4.html" title="A momentary/command. " alt="" coords="193,121,360,148"/>
+<area shape="rect" id="node3" href="$classmrf_1_1detail_1_1property_instance.html" title="final scalar implementation " alt="" coords="408,5,655,32"/>
+<area shape="rect" id="node5" href="$classmrf_1_1detail_1_1property_instance_3_01_c_00_01_p[1]_4.html" title="final array implementation " alt="" coords="427,57,635,98"/>
+<area shape="rect" id="node7" href="$classmrf_1_1detail_1_1property_instance_3_01_c_00_01void_01_4.html" title="mrf::detail::propertyInstance\l\&lt; C, void \&gt;" alt="" coords="427,122,635,163"/>
+</map>

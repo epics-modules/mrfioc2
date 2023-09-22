@@ -1,0 +1,9 @@
+<map id="mrmBufferInfo" name="mrmBufferInfo">
+<area shape="rect" id="node2" href="$classmrm_data_buf_tx.html" title="mrmDataBufTx" alt="" coords="175,363,297,389"/>
+<area shape="rect" id="node3" href="$classdata_buf_tx.html" title="dataBufTx" alt="" coords="167,261,257,288"/>
+<area shape="rect" id="node4" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufTx \&gt;" alt="" coords="5,185,221,212"/>
+<area shape="rect" id="node5" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="98,89,193,115"/>
+<area shape="rect" id="node9" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufRx \&gt;" alt="" coords="246,185,463,212"/>
+<area shape="rect" id="node6" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="241,81,388,123"/>
+<area shape="rect" id="node8" href="$classdata_buf_rx.html" title="dataBufRx" alt="" coords="305,312,396,339"/>
+</map>
