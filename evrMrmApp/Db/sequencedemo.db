@@ -1,11 +1,11 @@
 
-record(seq, "$(SYS){$(D)}demo:reset") {
-  field(LNK1, "$(SYS){$(D)}EvtACnt-I")
-  field(LNK2, "$(SYS){$(D)}EvtBCnt-I")
-  field(LNK3, "$(SYS){$(D)}EvtCCnt-I")
-  field(LNK4, "$(SYS){$(D)}EvtDCnt-I")
-  field(LNK5, "$(SYS){$(D)}EvtECnt-I")
-  field(LNK6, "$(SYS){$(D)}EvtFCnt-I")
-  field(LNK7, "$(SYS){$(D)}EvtGCnt-I")
-  field(LNK8, "$(SYS){$(D)}EvtHCnt-I")
+record(seq, "$(P)demo$(S=:)reset") {
+  field(LNK1, "$(P)EvtACnt-I")
+  field(LNK2, "$(P)EvtBCnt-I")
+  field(LNK3, "$(P)EvtCCnt-I")
+  field(LNK4, "$(P)EvtDCnt-I")
+  field(LNK5, "$(P)EvtECnt-I")
+  field(LNK6, "$(P)EvtFCnt-I")
+  field(LNK7, "$(P)EvtGCnt-I")
+  field(LNK8, "$(P)EvtHCnt-I")
 }
