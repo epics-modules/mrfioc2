@@ -2,7 +2,7 @@
 include "evrbase.db"
 
 
-record(mbbo, "$(P)Src:Clk-SP") {
+record(mbbo, "$(P)Src$(S=:)Clk-SP") {
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Clock Mode")
   field(PINI, "YES")
@@ -10,10 +10,10 @@ record(mbbo, "$(P)Src:Clk-SP") {
   field(ONST, "Internal")
   field(ZRVL, "0")
   field(ONVL, "1")
-  field(FLNK, "$(P)Src:Clk-RB")
+  field(FLNK, "$(P)Src$(S=:)Clk-RB")
 }
 
-record(mbbi, "$(P)Src:Clk-RB") {
+record(mbbi, "$(P)Src$(S=:)Clk-RB") {
   field(DTYP, "Obj Prop uint16")
   field(INP , "@OBJ=$(OBJ), PROP=Clock Mode")
   field(PINI, "YES")
