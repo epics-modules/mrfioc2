@@ -8,12 +8,12 @@
 # 63 - Disable
 
 # linked from mrmSoftSeq.template
-# $(P)InitSeq:Cont-FOut_
-record(fanout, "$(P)TrigSrc:Init-FOut_") {
+# $(P)InitSeq$(S=:)Cont-FOut_
+record(fanout, "$(P)TrigSrc$(S=:)Init-FOut_") {
     field( LNK1, "$(P)TrigSrc-Sel_")
 }
 
-record(mbbo, "$(P)TrigSrc:Pulse-Sel") {
+record(mbbo, "$(P)TrigSrc$(S=:)Pulse-Sel") {
     field( DTYP, "Raw Soft Channel")
     field( OUT , "$(P)TrigSrc-Sel_ PP")
     field( ZRST, "Pulser 0")
@@ -49,10 +49,10 @@ record(mbbo, "$(P)TrigSrc:Pulse-Sel") {
     field( FTVL, "14")
     field( FFVL, "15")
     info( autosaveFields_pass0, "VAL")
-    alias("$(P)TrigSrc:0-Sel")
+    alias("$(P)TrigSrc$(S=:)0-Sel")
 }
 
-record(mbbo, "$(P)TrigSrc:DBus-Sel") {
+record(mbbo, "$(P)TrigSrc$(S=:)DBus-Sel") {
     field( DTYP, "Raw Soft Channel")
     field( OUT , "$(P)TrigSrc-Sel_ PP")
     field( ZRST, "DBus0")
@@ -72,10 +72,10 @@ record(mbbo, "$(P)TrigSrc:DBus-Sel") {
     field( SXVL, "38")
     field( SVVL, "39")
     info( autosaveFields_pass0, "VAL")
-    alias("$(P)TrigSrc:1-Sel")
+    alias("$(P)TrigSrc$(S=:)1-Sel")
 }
 
-record(mbbo, "$(P)TrigSrc:Scale-Sel") {
+record(mbbo, "$(P)TrigSrc$(S=:)Scale-Sel") {
     field( DTYP, "Raw Soft Channel")
     field( OUT , "$(P)TrigSrc-Sel_ PP")
     field( ZRST, "None")
@@ -99,7 +99,7 @@ record(mbbo, "$(P)TrigSrc:Scale-Sel") {
     field( EIVL, "46")
     field( NIVL, "47")
     info( autosaveFields_pass0, "VAL")
-    alias("$(P)TrigSrc:2-Sel")
+    alias("$(P)TrigSrc$(S=:)2-Sel")
 }
 
 record(longout, "$(P)TrigSrc-Sel_") {
@@ -163,10 +163,10 @@ record(stringin, "$(P)TrigSrc-RB") {
 #
 #record(ai, "$(P)EvtClkFreq-RB_") {
 #    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-#    field( FLNK, "$(P)EvtClkFreq:Cont-RB_")
+#    field( FLNK, "$(P)EvtClkFreq$(S=:)Cont-RB_")
 #}
 #
-#record(ao, "$(P)EvtClkFreq:Cont-RB_") {
+#record(ao, "$(P)EvtClkFreq$(S=:)Cont-RB_") {
 #    field( OUT,  "$(P)Timestamp-RB.PROC")
 #    field( VAL,  "1")
 #}
