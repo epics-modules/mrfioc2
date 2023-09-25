@@ -30,7 +30,7 @@ record(longout, "$(ON)Src-SP") {
 # Settings
 # Users use will set one of these at a time.
 
-record(mbbo, "$(ON)Src:Pulse-SP") {
+record(mbbo, "$(ON)Src$(S=:)Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Pulser 0")
@@ -43,7 +43,7 @@ record(mbbo, "$(ON)Src:Pulse-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src:DBus-SP") {
+record(mbbo, "$(ON)Src$(S=:)DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "N/A")
@@ -60,7 +60,7 @@ record(mbbo, "$(ON)Src:DBus-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src:Scale-SP") {
+record(mbbo, "$(ON)Src$(S=:)Scale-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Prescaler 0")
@@ -85,9 +85,9 @@ record(mbbo, "$(ON)Src:Scale-SP") {
 
 record(fanout, "$(ON)Src-FOut_") {
   field(LNK1, "$(ON)Src-RB_")
-  field(LNK2, "$(ON)Src:Pulse-RB")
-  field(LNK3, "$(ON)Src:DBus-RB")
-  field(LNK4, "$(ON)Src:Scale-RB")
+  field(LNK2, "$(ON)Src$(S=:)Pulse-RB")
+  field(LNK3, "$(ON)Src$(S=:)DBus-RB")
+  field(LNK4, "$(ON)Src$(S=:)Scale-RB")
   field(LNK5, "$(ON)Src-Calc_")
 }
 
@@ -97,7 +97,7 @@ record(longin, "$(ON)Src-RB_") {
   field( INP , "@OBJ=$(OBJ), PROP=Map")
 }
 
-record(mbbi, "$(ON)Src:Pulse-RB") {
+record(mbbi, "$(ON)Src$(S=:)Pulse-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB_")
   field( ZRST, "Pulser 0")
@@ -107,7 +107,7 @@ record(mbbi, "$(ON)Src:Pulse-RB") {
   field( UNSV, "MAJOR")
 }
 
-record(mbbi, "$(ON)Src:DBus-RB") {
+record(mbbi, "$(ON)Src$(S=:)DBus-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB_")
   field( ZRST, "N/A")
@@ -123,7 +123,7 @@ record(mbbi, "$(ON)Src:DBus-RB") {
   field( UNSV, "MAJOR")
 }
 
-record(mbbi, "$(ON)Src:Scale-RB") {
+record(mbbi, "$(ON)Src$(S=:)Scale-RB") {
   field( DTYP, "Raw Soft Channel")
   field( INP , "$(ON)Src-RB_")
   field( ZRST, "Prescaler 0")
@@ -149,9 +149,9 @@ record(aSub, "$(ON)Src-Calc_") {
     field(FTB , "STRING")
     field(FTC , "STRING")
     field(FTVA, "STRING")
-    field(INPA, "$(ON)Src:Pulse-RB")
-    field(INPB, "$(ON)Src:DBus-RB")
-    field(INPC, "$(ON)Src:Scale-RB")
+    field(INPA, "$(ON)Src$(S=:)Pulse-RB")
+    field(INPB, "$(ON)Src$(S=:)DBus-RB")
+    field(INPC, "$(ON)Src$(S=:)Scale-RB")
     field(OUTA, "$(ON)Src-RB PP")
 }
 
