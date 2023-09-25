@@ -5,63 +5,63 @@ record(mbbiDirect, "$(P)Link-Sts_") {
     field(SCAN, "1 second")
 }
 
-record(bi, "$(P)Link:1-Sts") {
+record(bi, "$(P)Link$(S=:)1-Sts") {
     field( INP, "$(P)Link-Sts_.B0 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:2-Sts") {
+record(bi, "$(P)Link$(S=:)2-Sts") {
     field( INP, "$(P)Link-Sts_.B1 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:3-Sts") {
+record(bi, "$(P)Link$(S=:)3-Sts") {
     field( INP, "$(P)Link-Sts_.B2 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:4-Sts") {
+record(bi, "$(P)Link$(S=:)4-Sts") {
     field( INP, "$(P)Link-Sts_.B3 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:5-Sts") {
+record(bi, "$(P)Link$(S=:)5-Sts") {
     field( INP, "$(P)Link-Sts_.B4 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:6-Sts") {
+record(bi, "$(P)Link$(S=:)6-Sts") {
     field( INP, "$(P)Link-Sts_.B5 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:7-Sts") {
+record(bi, "$(P)Link$(S=:)7-Sts") {
     field( INP, "$(P)Link-Sts_.B6 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(bi, "$(P)Link:8-Sts") {
+record(bi, "$(P)Link$(S=:)8-Sts") {
     field( INP, "$(P)Link-Sts_.B7 CP MSI")
     field(ZNAM, "Fail")
     field(ONAM, "OK")
     field(ZSV , "MAJOR")
 }
 
-record(ai, "$(P)Msrd:Up-I") {
+record(ai, "$(P)Msrd$(S=:)Up-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCUpstream")
     field(SCAN, "1 second")
@@ -69,7 +69,7 @@ record(ai, "$(P)Msrd:Up-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:FIFO-I") {
+record(ai, "$(P)Msrd$(S=:)FIFO-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCFIFO")
     field(SCAN, "1 second")
@@ -77,7 +77,7 @@ record(ai, "$(P)Msrd:FIFO-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:Int-I") {
+record(ai, "$(P)Msrd$(S=:)Int-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCInternal")
     field(SCAN, "1 second")
@@ -85,7 +85,7 @@ record(ai, "$(P)Msrd:Int-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:1-I") {
+record(ai, "$(P)Msrd$(S=:)1-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort1")
     field(SCAN, "1 second")
@@ -93,7 +93,7 @@ record(ai, "$(P)Msrd:1-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:2-I") {
+record(ai, "$(P)Msrd$(S=:)2-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort2")
     field(SCAN, "1 second")
@@ -101,7 +101,7 @@ record(ai, "$(P)Msrd:2-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:3-I") {
+record(ai, "$(P)Msrd$(S=:)3-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort3")
     field(SCAN, "1 second")
@@ -109,7 +109,7 @@ record(ai, "$(P)Msrd:3-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:4-I") {
+record(ai, "$(P)Msrd$(S=:)4-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort4")
     field(SCAN, "1 second")
@@ -117,7 +117,7 @@ record(ai, "$(P)Msrd:4-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:5-I") {
+record(ai, "$(P)Msrd$(S=:)5-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort5")
     field(SCAN, "1 second")
@@ -125,7 +125,7 @@ record(ai, "$(P)Msrd:5-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:6-I") {
+record(ai, "$(P)Msrd$(S=:)6-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort6")
     field(SCAN, "1 second")
@@ -133,7 +133,7 @@ record(ai, "$(P)Msrd:6-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:7-I") {
+record(ai, "$(P)Msrd$(S=:)7-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort7")
     field(SCAN, "1 second")
@@ -141,7 +141,7 @@ record(ai, "$(P)Msrd:7-I") {
     field(PREC, "3")
 }
 
-record(ai, "$(P)Msrd:8-I") {
+record(ai, "$(P)Msrd$(S=:)8-I") {
     field(DTYP, "Obj Prop double")
     field( INP, "@OBJ=$(OBJ), PROP=DCPort8")
     field(SCAN, "1 second")
