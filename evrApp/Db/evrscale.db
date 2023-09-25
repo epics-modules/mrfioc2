@@ -31,7 +31,7 @@ record(longin, "$(SN)Div-RB") {
 record(calc, "$(SN)Rate-I") {
   field(DESC, "Output frequency")
   field(INPA, "$(SN)Div-RB NPP")
-  field(INPB, "$(P)Link:Clk-I CP")
+  field(INPB, "$(P)Link$(S=:)Clk-I CP")
   field(CALC, "B/A")
   field(EGU, "MHz")
   field(PREC, "2")
@@ -57,13 +57,13 @@ record(ao, "$(SN)PhasOffs-SP") {
 
 record(calcout, "$(SN)PhasOffs-CO_") {
   field( DESC, "Degrees to Event Clock Ticks")
-  field( OUT , "$(SN)PhasOffs:Raw-SP PP")
+  field( OUT , "$(SN)PhasOffs$(S=:)Raw-SP PP")
   field( CALC, "FLOOR(B/360*A)")
   field( INPA, "$(SN)Div-RB")
   field( INPB, "$(SN)PhasOffs-SP")
 }
 
-record(longout, "$(SN)PhasOffs:Raw-SP") {
+record(longout, "$(SN)PhasOffs$(S=:)Raw-SP") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "Prescaler $(IDX) Phase Offset")
   field( OUT , "@OBJ=$(OBJ), PROP=Phase Offset")
@@ -73,11 +73,11 @@ record(longout, "$(SN)PhasOffs:Raw-SP") {
   field( LOPR, "0")
   field( DRVH, "0xffffffff")
   field( DRVL, "0")
-  field( FLNK, "$(SN)PhasOffs:Raw-RB")
+  field( FLNK, "$(SN)PhasOffs$(S=:)Raw-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(SN)PhasOffs:Raw-RB") {
+record(longin, "$(SN)PhasOffs$(S=:)Raw-RB") {
   field( DTYP, "Obj Prop uint32")
   field( DESC, "Prescaler $(IDX) Phase Offset")
   field( INP , "@OBJ=$(OBJ), PROP=Phase Offset")
@@ -90,5 +90,5 @@ record(calc, "$(SN)PhasOffs-RB") {
   field( CALC, "B/A*360")
   field( EGU , "Deg")
   field( INPA, "$(SN)Div-RB CPP")
-  field( INPB, "$(SN)PhasOffs:Raw-RB PP")
+  field( INPB, "$(SN)PhasOffs$(S=:)Raw-RB PP")
 }
