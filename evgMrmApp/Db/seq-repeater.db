@@ -29,7 +29,7 @@ record(waveform, "$(P)Timestamp-SP") {
     alias("$(P)Timestamp-RB")
 }
 
-record(longout, "$(P)Mask:Rep-SP") {
+record(longout, "$(P)Mask$(S=:)Rep-SP") {
     field( DESC, "Mask selecting repeated slots")
     field( FLNK, "$(P)Rep-Calc_")
     info( autosaveFields_pass0, "VAL")
@@ -47,7 +47,7 @@ record(aSub, "$(P)Rep-Calc_") {
     field( INPB, "$(NREP)")
     field( FTB , "ULONG")
     # C - Bit mask to select which repetitions should actually be issued
-    field( INPC, "$(P)Mask:Rep-SP MS PP")
+    field( INPC, "$(P)Mask$(S=:)Rep-SP MS PP")
     field( FTC , "ULONG")
     # D - Unused
     field( INPD, "$(P)Timestamp-SP MS PP")
