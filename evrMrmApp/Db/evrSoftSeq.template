@@ -162,7 +162,7 @@ record(stringin, "$(P)TrigSrc-RB") {
 #(only if TsInpMode = EGU).
 #
 #record(ai, "$(P)EvtClkFreq-RB_") {
-#    field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
+#    field( INP,  "$(R=$(P))EvtClk$(Rs=})Frequency-RB CP")
 #    field( FLNK, "$(P)EvtClkFreq$(S=:)Cont-RB_")
 #}
 #
