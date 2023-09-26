@@ -31,6 +31,10 @@ DB += cpci-evg-300.db
 DB += vme-evg230.db
 DB += vme-evg230-nsls2.db
 DB += mtca-evm-300.db
+ifeq ($(shell echo "$(BASE) > 3.14" | bc),1)
+DB += evm-mtca-300.db
+DB += evm-mtca-300-evr.db
+endif
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
@@ -47,4 +51,3 @@ USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-
