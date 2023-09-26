@@ -1,0 +1,144 @@
+# Naming-agnostic
+# ===============
+## s unused separator, backward compatibility purposes
+## PP is required for: evgInput.db, evgMxc.db, evgSoftSeq.template
+global {s="", PP="\$(P)"}
+
+### EVG Core ###
+
+file "evgAcTrig.db"
+{pattern
+{P, OBJ}
+{"\$(P)AcTrig", "$(EVG):AcTrig"}
+}
+
+file "evgDbus.db"
+{
+pattern
+{P, OBJ, EVG, dbusBit}
+{"\$(P)Dbus0", "$(EVG):Dbus0", $(EVG), 0}
+{"\$(P)Dbus1", "$(EVG):Dbus1", $(EVG), 1}
+{"\$(P)Dbus2", "$(EVG):Dbus2", $(EVG), 2}
+{"\$(P)Dbus3", "$(EVG):Dbus3", $(EVG), 3}
+{"\$(P)Dbus4", "$(EVG):Dbus4", $(EVG), 4}
+{"\$(P)Dbus5", "$(EVG):Dbus5", $(EVG), 5}
+{"\$(P)Dbus6", "$(EVG):Dbus6", $(EVG), 6}
+{"\$(P)Dbus7", "$(EVG):Dbus7", $(EVG), 7}
+}
+
+file "evgEvtClk.db"
+{
+{P="\$(P)EvtClk", OBJ="$(EVG)", FRF="\$(FRF=499.68)", FDIV="\$(FDIV=4)", FEVT="\$(FEVT=124.916)"}
+}
+
+file "evgInput.db"
+{pattern
+{P, OBJ, Num}
+# The $(Num) are not sequential to avoid breaking historical autosave files
+{"\$(P)InpFront0", "$(EVG):FrontInp0",  0}
+{"\$(P)InpFront1", "$(EVG):FrontInp1",  1}
+{"\$(P)InpFront2", "$(EVG):FrontInp2",  2}
+{"\$(P)InpUniv0",  "$(EVG):UnivInp0",   3}
+{"\$(P)InpUniv1",  "$(EVG):UnivInp1",   4}
+{"\$(P)InpUniv2",  "$(EVG):UnivInp2",   5}
+{"\$(P)InpUniv3",  "$(EVG):UnivInp3",   6}
+{"\$(P)InpUniv4",  "$(EVG):UnivInp4",   7}
+{"\$(P)InpUniv5",  "$(EVG):UnivInp5",   8}
+{"\$(P)InpUniv6",  "$(EVG):UnivInp6",   9}
+{"\$(P)InpUniv7",  "$(EVG):UnivInp7",   A}
+{"\$(P)InpUniv8",  "$(EVG):UnivInp8",   B}
+{"\$(P)InpUniv9",  "$(EVG):UnivInp9",   C}
+{"\$(P)InpUniv10", "$(EVG):UnivInp10",  D}
+{"\$(P)InpUniv11", "$(EVG):UnivInp11",  E}
+{"\$(P)InpUniv12", "$(EVG):UnivInp12",  F}
+{"\$(P)InpUniv13", "$(EVG):UnivInp13",  X}
+{"\$(P)InpUniv14", "$(EVG):UnivInp14",  X}
+{"\$(P)InpUniv15", "$(EVG):UnivInp15",  X}
+}
+
+file "evgMrm.db"
+{
+{P="\$(P)", SOFTEVT="\$(P)SoftEvt", OBJ="$(EVG)", EVG="$(EVG)"}
+}
+
+file "evgMxc.db"
+{pattern
+{P, OBJ}
+{"\$(P)Mxc0", "$(EVG):Mxc0"}
+{"\$(P)Mxc1", "$(EVG):Mxc1"}
+{"\$(P)Mxc2", "$(EVG):Mxc2"}
+{"\$(P)Mxc3", "$(EVG):Mxc3"}
+{"\$(P)Mxc4", "$(EVG):Mxc4"}
+{"\$(P)Mxc5", "$(EVG):Mxc5"}
+{"\$(P)Mxc6", "$(EVG):Mxc6"}
+{"\$(P)Mxc7", "$(EVG):Mxc7"}
+}
+
+file "evgOutput.db"
+{pattern
+{P, OBJ}
+{"\$(P)OutFront0", "$(EVG):FrontOut0"}
+{"\$(P)OutFront1", "$(EVG):FrontOut1"}
+{"\$(P)OutFront2", "$(EVG):FrontOut2"}
+{"\$(P)OutFront3", "$(EVG):FrontOut3"}
+}
+
+file "mrmSoftSeq.template"
+{pattern
+{P, EVG, seqNum, NELM}
+{"\$(P)SoftSeq0", $(EVG), 0, 2047}
+{"\$(P)SoftSeq1", $(EVG), 1, 2047}
+{"\$(P)SoftSeq2", $(EVG), 2, 2047}
+}
+
+file "evgSoftSeq.template"
+{pattern
+{P, EVG, seqNum, NELM}
+{"\$(P)SoftSeq0", $(EVG), 0, 2047}
+{"\$(P)SoftSeq1", $(EVG), 1, 2047}
+{"\$(P)SoftSeq2", $(EVG), 2, 2047}
+}
+
+file "evgTrigEvt.db"
+{pattern
+{P, OBJ, EVG, trigEvtNum}
+{"\$(P)TrigEvt0", "$(EVG):TrigEvt0", $(EVG), 0}
+{"\$(P)TrigEvt1", "$(EVG):TrigEvt1", $(EVG), 1}
+{"\$(P)TrigEvt2", "$(EVG):TrigEvt2", $(EVG), 2}
+{"\$(P)TrigEvt3", "$(EVG):TrigEvt3", $(EVG), 3}
+{"\$(P)TrigEvt4", "$(EVG):TrigEvt4", $(EVG), 4}
+{"\$(P)TrigEvt5", "$(EVG):TrigEvt5", $(EVG), 5}
+{"\$(P)TrigEvt6", "$(EVG):TrigEvt6", $(EVG), 6}
+{"\$(P)TrigEvt7", "$(EVG):TrigEvt7", $(EVG), 7}
+}
+
+file "databuftx.db"
+{pattern
+{P, OBJ, PROTO, s}
+{"\$(P)", "$(EVG):BUFTX", 1, "-"}
+}
+
+file "databuftxCtrl.db"
+{pattern
+{P, OBJ}
+{"\$(P)", "$(EVG):BUFTX"}
+}
+
+### FCT Core
+
+file "evm-fct.template"
+{
+{P="\$(P)FCT", OBJ="$(EVG):FCT"}
+}
+
+file "sfp.db"
+{
+{P="\$(P)SFP1", OBJ="$(EVG):FCT:SFP1"}
+{P="\$(P)SFP2", OBJ="$(EVG):FCT:SFP2"}
+{P="\$(P)SFP3", OBJ="$(EVG):FCT:SFP3"}
+{P="\$(P)SFP4", OBJ="$(EVG):FCT:SFP4"}
+{P="\$(P)SFP5", OBJ="$(EVG):FCT:SFP5"}
+{P="\$(P)SFP6", OBJ="$(EVG):FCT:SFP6"}
+{P="\$(P)SFP7", OBJ="$(EVG):FCT:SFP7"}
+{P="\$(P)SFP8", OBJ="$(EVG):FCT:SFP8"}
+}
