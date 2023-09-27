@@ -21,6 +21,10 @@ DB += evr-tg-300.db
 DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
 
+ifeq ($(shell echo "$(BASE) > 3.14" | bc),1)
+DB += evr-300.db
+endif
+
 ifneq ($(DEVIOCSTATS),)
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminRTEMS.db
 DB_INSTALLS += $(DEVIOCSTATS)/db/iocAdminSoft.db
@@ -31,4 +35,3 @@ USR_DBFLAGS += -I . -I .. -I $(INSTALL_LOCATION)/db
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-
