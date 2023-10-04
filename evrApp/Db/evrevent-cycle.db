@@ -12,24 +12,24 @@
 
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
-record(longout, "$(P)Cnt$(S=:)$(C)-SP_") {
+record(longout, "$(P)Cnt$(s=:)$(C)-SP_") {
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(EVR),Code=$(CODE)")
   field(VAL , "-1")
   field(TSE , "-2") # from device support
-  field(FLNK, "$(P)Cnt$(S=:)$(C)Prev-I")
+  field(FLNK, "$(P)Cnt$(s=:)$(C)Prev-I")
 }
 
-record(calc, "$(P)Cnt$(S=:)$(C)-I") {
+record(calc, "$(P)Cnt$(s=:)$(C)-I") {
   field(CALC, "A+1")
-  field(INPA, "$(P)Cnt$(S=:)$(C)-I NPP")
-  field(TSEL, "$(P)Cnt$(S=:)$(C)-SP_.TIME")
+  field(INPA, "$(P)Cnt$(s=:)$(C)-I NPP")
+  field(TSEL, "$(P)Cnt$(s=:)$(C)-SP_.TIME")
 }
 
 # Copy previous counter value and timestamp
-record(longin, "$(P)Cnt$(S=:)$(C)Prev-I") {
-  field(INP , "$(P)Cnt$(S=:)$(C)-I NPP")
-  field(TSEL, "$(P)Cnt$(S=:)$(C)-I.TIME")
-  field(FLNK, "$(P)Cnt$(S=:)$(C)-I")
+record(longin, "$(P)Cnt$(s=:)$(C)Prev-I") {
+  field(INP , "$(P)Cnt$(s=:)$(C)-I NPP")
+  field(TSEL, "$(P)Cnt$(s=:)$(C)-I.TIME")
+  field(FLNK, "$(P)Cnt$(s=:)$(C)-I")
 }

@@ -1,5 +1,5 @@
 
-record(longout, "$(P)$(CML)$(PAT)$(S=:)load") {
+record(longout, "$(P)$(CML)$(PAT)$(s=:)load") {
   field(SCAN, "Event")
   field(EVNT, "$(EVNT)")
   field( VAL, "0")

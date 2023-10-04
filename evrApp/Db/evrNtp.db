@@ -1,20 +1,20 @@
 
-record(longin, "$(P)Cnt$(S=:)OK-I") {
+record(longin, "$(P)Cnt$(s=:)OK-I") {
   field(DESC, "# of good updates")
   field(DTYP, "EVR NTP OK")
   field(SCAN, "I/O Intr")
   field(EGU , "Cnt")
-  field(FLNK, "$(P)Cnt$(S=:)Fail-I")
+  field(FLNK, "$(P)Cnt$(s=:)Fail-I")
 }
 
-record(longin, "$(P)Cnt$(S=:)Fail-I") {
+record(longin, "$(P)Cnt$(s=:)Fail-I") {
   field(DESC, "# of update failures")
   field(DTYP, "EVR NTP Fail")
   field(EGU , "Cnt")
-  field(FLNK, "$(P)Diff$(S=:)Err-I")
+  field(FLNK, "$(P)Diff$(s=:)Err-I")
 }
 
-record(ai, "$(P)Diff$(S=:)Err-I") {
+record(ai, "$(P)Diff$(s=:)Err-I") {
   field(DESC, "Diff between TS and local RTC")
   field(DTYP, "EVR NTP Delta")
   field(LINR, "LINEAR")

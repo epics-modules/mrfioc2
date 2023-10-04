@@ -7,7 +7,7 @@
 #
 # Many record (or other listeners) may register for the same Protocol ID.
 # The special Protocol ID 0xff00 may be used to cause a listener to receive messages destined for any ID.
-record(waveform, "$(P)dbus$(S=:)recv$(S=:)s8") {
+record(waveform, "$(P)dbus$(s=:)recv$(s=:)s8") {
   field(DESC, "Recv Buffer")
   field(DTYP, "MRM EVR Buf Rx")
   field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Rx")
@@ -16,7 +16,7 @@ record(waveform, "$(P)dbus$(S=:)recv$(S=:)s8") {
   info(autosaveFields_pass0, "INP")
 }
 
-record(waveform, "$(P)dbus$(S=:)recv$(S=:)u32") {
+record(waveform, "$(P)dbus$(s=:)recv$(s=:)u32") {
   field(DESC, "Recv Buffer")
   field(DTYP, "MRM EVR Buf Rx")
   field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Rx")
@@ -24,4 +24,3 @@ record(waveform, "$(P)dbus$(S=:)recv$(S=:)u32") {
   field(NELM, "2046")
   info(autosaveFields_pass0, "INP")
 }
-

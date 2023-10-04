@@ -72,7 +72,7 @@ record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
     field( INP,  "$(P)TrigSrc-Sel.RVAL")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc0-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc0-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc0")
     field( ZNAM, "Clear")
@@ -81,7 +81,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc0-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B0 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc1-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc1-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc1")
     field( ZNAM, "Clear")
@@ -90,7 +90,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc1-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B1 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc2-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc2-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc2")
     field( ZNAM, "Clear")
@@ -99,16 +99,16 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc2-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B2 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc3-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc3-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc3")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B3 CP")
-} 
+}
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc4-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc4-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc4")
     field( ZNAM, "Clear")
@@ -117,7 +117,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc4-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B4 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc5-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc5-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc5")
     field( ZNAM, "Clear")
@@ -126,7 +126,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc5-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B5 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc6-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc6-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc6")
     field( ZNAM, "Clear")
@@ -135,7 +135,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc6-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B6 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)Mxc7-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)Mxc7-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc7")
     field( ZNAM, "Clear")
@@ -144,7 +144,7 @@ record(bo, "$(P)TrigSrc$(S=:)Mxc7-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B7 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)AC-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)AC-Sel") {
     field( DTYP, "EVG Trig Evt AC")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):AcTrig")
     field( ZNAM, "Clear")
@@ -153,7 +153,7 @@ record(bo, "$(P)TrigSrc$(S=:)AC-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B8 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)FrontInp0-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)FrontInp0-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp0")
     field( ZNAM, "Clear")
@@ -162,7 +162,7 @@ record(bo, "$(P)TrigSrc$(S=:)FrontInp0-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.B9 CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)FrontInp1-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)FrontInp1-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp1")
     field( ZNAM, "Clear")
@@ -171,7 +171,7 @@ record(bo, "$(P)TrigSrc$(S=:)FrontInp1-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.BA CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)UnivInp0-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)UnivInp0-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp0")
     field( ZNAM, "Clear")
@@ -179,7 +179,7 @@ record(bo, "$(P)TrigSrc$(S=:)UnivInp0-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.BB CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)UnivInp1-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)UnivInp1-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp1")
     field( ZNAM, "Clear")
@@ -187,7 +187,7 @@ record(bo, "$(P)TrigSrc$(S=:)UnivInp1-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.BC CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)UnivInp2-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)UnivInp2-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp2")
     field( ZNAM, "Clear")
@@ -195,7 +195,7 @@ record(bo, "$(P)TrigSrc$(S=:)UnivInp2-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.BD CP")
 }
 
-record(bo, "$(P)TrigSrc$(S=:)UnivInp3-Sel") {
+record(bo, "$(P)TrigSrc$(s=:)UnivInp3-Sel") {
     field( DTYP, "EVG TrigEvt")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp3")
     field( ZNAM, "Clear")
@@ -215,28 +215,28 @@ record(dfanout, "$(P)Omsl-FOut") {
     field( VAL,  "1")
     field( UDF,  "0")
     field( OMSL, "supervisory")
-    field( OUTA, "$(P)TrigSrc$(S=:)Mxc0-Sel.OMSL")
-    field( OUTB, "$(P)TrigSrc$(S=:)Mxc1-Sel.OMSL")
-    field( OUTC, "$(P)TrigSrc$(S=:)Mxc2-Sel.OMSL")
-    field( OUTD, "$(P)TrigSrc$(S=:)Mxc3-Sel.OMSL")
-    field( OUTE, "$(P)TrigSrc$(S=:)Mxc4-Sel.OMSL")
-    field( OUTF, "$(P)TrigSrc$(S=:)Mxc5-Sel.OMSL")
-    field( OUTG, "$(P)TrigSrc$(S=:)Mxc6-Sel.OMSL")
-    field( OUTH, "$(P)TrigSrc$(S=:)Mxc7-Sel.OMSL")
-    field( FLNK, "$(P)Omsl$(S=:)Cont-FOut_")
+    field( OUTA, "$(P)TrigSrc$(s=:)Mxc0-Sel.OMSL")
+    field( OUTB, "$(P)TrigSrc$(s=:)Mxc1-Sel.OMSL")
+    field( OUTC, "$(P)TrigSrc$(s=:)Mxc2-Sel.OMSL")
+    field( OUTD, "$(P)TrigSrc$(s=:)Mxc3-Sel.OMSL")
+    field( OUTE, "$(P)TrigSrc$(s=:)Mxc4-Sel.OMSL")
+    field( OUTF, "$(P)TrigSrc$(s=:)Mxc5-Sel.OMSL")
+    field( OUTG, "$(P)TrigSrc$(s=:)Mxc6-Sel.OMSL")
+    field( OUTH, "$(P)TrigSrc$(s=:)Mxc7-Sel.OMSL")
+    field( FLNK, "$(P)Omsl$(s=:)Cont-FOut_")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(dfanout, "$(P)Omsl$(S=:)Cont-FOut_") {
+record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
-    field( OUTA, "$(P)TrigSrc$(S=:)AC-Sel.OMSL")
-    field( OUTB, "$(P)TrigSrc$(S=:)FrontInp0-Sel.OMSL")
-    field( OUTC, "$(P)TrigSrc$(S=:)FrontInp1-Sel.OMSL")
-    field( OUTD, "$(P)TrigSrc$(S=:)UnivInp0-Sel.OMSL")
-    field( OUTE, "$(P)TrigSrc$(S=:)UnivInp1-Sel.OMSL")
-    field( OUTF, "$(P)TrigSrc$(S=:)UnivInp2-Sel.OMSL")
-    field( OUTG, "$(P)TrigSrc$(S=:)UnivInp3-Sel.OMSL")
+    field( OUTA, "$(P)TrigSrc$(s=:)AC-Sel.OMSL")
+    field( OUTB, "$(P)TrigSrc$(s=:)FrontInp0-Sel.OMSL")
+    field( OUTC, "$(P)TrigSrc$(s=:)FrontInp1-Sel.OMSL")
+    field( OUTD, "$(P)TrigSrc$(s=:)UnivInp0-Sel.OMSL")
+    field( OUTE, "$(P)TrigSrc$(s=:)UnivInp1-Sel.OMSL")
+    field( OUTF, "$(P)TrigSrc$(s=:)UnivInp2-Sel.OMSL")
+    field( OUTG, "$(P)TrigSrc$(s=:)UnivInp3-Sel.OMSL")
 }
 
 

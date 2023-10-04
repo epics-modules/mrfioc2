@@ -40,7 +40,7 @@ record(longout, "$(ON)Src2-SP") {
 # Settings
 # Users use will set one of these at a time.
 
-record(mbbo, "$(ON)Src$(S=:)Pulse-SP") {
+record(mbbo, "$(ON)Src$(s=:)Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Pulser 0")
@@ -80,7 +80,7 @@ record(mbbo, "$(ON)Src$(S=:)Pulse-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src2$(S=:)Pulse-SP") {
+record(mbbo, "$(ON)Src2$(s=:)Pulse-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src2-SP PP")
   field( ZRST, "Pulser 0")
@@ -120,7 +120,7 @@ record(mbbo, "$(ON)Src2$(S=:)Pulse-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src$(S=:)DBus-SP") {
+record(mbbo, "$(ON)Src$(s=:)DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "DBus 0")
@@ -152,7 +152,7 @@ record(mbbo, "$(ON)Src$(S=:)DBus-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src2$(S=:)DBus-SP") {
+record(mbbo, "$(ON)Src2$(s=:)DBus-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src2-SP PP")
   field( ZRST, "DBus 0")
@@ -184,7 +184,7 @@ record(mbbo, "$(ON)Src2$(S=:)DBus-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src$(S=:)Scale-SP") {
+record(mbbo, "$(ON)Src$(s=:)Scale-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Prescaler 0")
@@ -222,7 +222,7 @@ record(mbbo, "$(ON)Src$(S=:)Scale-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src2$(S=:)Scale-SP") {
+record(mbbo, "$(ON)Src2$(s=:)Scale-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src2-SP PP")
   field( ZRST, "Prescaler 0")

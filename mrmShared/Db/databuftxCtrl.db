@@ -5,7 +5,7 @@
 #
 # Must match EVR setting
 #
-record(bo, "$(P)Link$(S=:)TxMode-Sel") {
+record(bo, "$(P)Link$(s=:)TxMode-Sel") {
   field(DESC, "Data mode")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")

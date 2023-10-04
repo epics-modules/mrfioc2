@@ -1,5 +1,5 @@
 
-record(seq, "$(P)demo$(S=:)reset") {
+record(seq, "$(P)demo$(s=:)reset") {
   field(LNK1, "$(P)EvtACnt-I")
   field(LNK2, "$(P)EvtBCnt-I")
   field(LNK3, "$(P)EvtCCnt-I")

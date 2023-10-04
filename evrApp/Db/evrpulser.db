@@ -63,10 +63,10 @@ record(ai, "$(PN)Delay-RB") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(PN)Delay$(S=:)Raw-RB")
+  field(FLNK, "$(PN)Delay$(s=:)Raw-RB")
 }
 
-record(longin, "$(PN)Delay$(S=:)Raw-RB") {
+record(longin, "$(PN)Delay$(s=:)Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Delay")
   field(EGU , "cnts")
@@ -76,7 +76,7 @@ record(longin, "$(PN)Delay$(S=:)Raw-RB") {
   field( HSV, "MAJOR")
 }
 
-# Determines the time between when the Pulse Generator changes state from 
+# Determines the time between when the Pulse Generator changes state from
 # inactive to active (normally low to high), and when it changes back to inactive.
 #
 record(ao, "$(PN)Width-SP") {
@@ -101,10 +101,10 @@ record(ai, "$(PN)Width-RB") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
-  field(FLNK, "$(PN)Width$(S=:)Raw-RB")
+  field(FLNK, "$(PN)Width$(s=:)Raw-RB")
 }
 
-record(longin, "$(PN)Width$(S=:)Raw-RB") {
+record(longin, "$(PN)Width$(s=:)Raw-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
@@ -147,7 +147,7 @@ record(longin, "$(PN)Prescaler-RB") {
 record(calc, "$(PN)Res-I") {
   field(DESC, "Effective resolution")
   field(INPA, "$(PN)Prescaler-RB MS")
-  field(INPB, "$(P)Link$(S=:)ClkPeriod-I CP")
+  field(INPB, "$(P)Link$(s=:)ClkPeriod-I CP")
   field(CALC, "1e9*(A?A:1)*B")
   field(EGU, "ns")
   field(FLNK, "$(PN)Res-FO_")

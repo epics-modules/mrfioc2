@@ -1,6 +1,6 @@
 # linked from mrmSoftSeq.template
-# $(P)InitSeq$(S=:)Cont-FOut_
-record(fanout, "$(P)TrigSrc$(S=:)Init-FOut_") {
+# $(P)InitSeq$(s=:)Cont-FOut_
+record(fanout, "$(P)TrigSrc$(s=:)Init-FOut_") {
     field( LNK1, "$(P)TrigSrc-Sel_")
 }
 
@@ -41,10 +41,10 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field( FTVL, "0x02020001")
     field( FFVL, "0x02020002")
     info( autosaveFields_pass0, "VAL")
-    alias("$(P)TrigSrc$(S=:)0-Sel")
+    alias("$(P)TrigSrc$(s=:)0-Sel")
 }
 
-record(mbbo, "$(P)TrigSrc$(S=:)1-Sel") {
+record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
     field( DTYP, "Raw Soft Channel")
     field( OUT , "$(P)TrigSrc-Sel_ PP")
     field( UDF,  "0")
@@ -78,7 +78,7 @@ record(mbbo, "$(P)TrigSrc$(S=:)1-Sel") {
 }
 
 # placeholder to OPIs
-record(mbbo, "$(P)TrigSrc$(S=:)2-Sel") {
+record(mbbo, "$(P)TrigSrc$(s=:)2-Sel") {
     field(DISP, "1")
 }
 
@@ -136,10 +136,10 @@ record(stringin, "$(P)TrigSrc-RB") {
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
     field( INP,  "$(SYS){$(D)-EvtClk}Frequency-RB CP")
-    field( FLNK, "$(P)EvtClkFreq$(S=:)Cont-RB_")
+    field( FLNK, "$(P)EvtClkFreq$(s=:)Cont-RB_")
 }
 
-record(ao, "$(P)EvtClkFreq$(S=:)Cont-RB_") {
+record(ao, "$(P)EvtClkFreq$(s=:)Cont-RB_") {
     field( OUT,  "$(P)Timestamp-RB.PROC")
     field( VAL,  "1")
 }
