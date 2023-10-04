@@ -6,7 +6,7 @@ record(bo, "$(P)EnaIrq-Sel") {
     field( ONAM, "Enabled")
     field( OMSL, "closed_loop")
     # see evgMrm.db
-    field( DOL,  "$(SYS){$(D)}1ppsInp-MbbiDir_.B$(Num) CP")
+    field( DOL,  "$(PP=$(SYS){$(D)})1ppsInp-MbbiDir_.B$(Num) CP")
     field( FLNK, "$(P)EnaIrq-RB")
     info( autosaveFields_pass0, "VAL")
 }
