@@ -115,8 +115,6 @@ pattern
 {"\$(P)OutBack5", "$(EVR):Backplane5", "TX19 (5)", 61}
 {"\$(P)OutBack6", "$(EVR):Backplane6", "RX20 (6)", 61}
 {"\$(P)OutBack7", "$(EVR):Backplane7", "TX20 (7)", 61}
-{"\$(P)OutFPUV0", "$(EVR):FrontUnivOut0", "TCLKA", 61}
-{"\$(P)OutFPUV1", "$(EVR):FrontUnivOut1", "TCLKB", 61}
 }
 
 file "mrmevroutint.db"
