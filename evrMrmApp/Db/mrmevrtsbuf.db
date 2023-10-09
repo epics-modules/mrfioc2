@@ -1,6 +1,6 @@
 # Capture event timestamps in Buffer.
 #
-# SYS, D - Record name componenets
+# P - Prefix
 # EVR - EVR object name
 # NAME - Capture buffer instance name.  Default (EVR):CPT(CODE)
 # CODE - Capture times of this event
@@ -21,7 +21,7 @@
 #   The time of the first event is stored in the record timestamp.  Element values are always positive,
 #   and the first element value is always zero.
 #
-record(waveform, "$(SYS){$(D)}TS-I") {
+record(waveform, "$(P)TS-I") {
     field(DTYP, "Obj Prop waveform in")
     field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFlush)")
     field(SCAN, "I/O Intr")
@@ -30,33 +30,33 @@ record(waveform, "$(SYS){$(D)}TS-I") {
     field(TSE , "-2")
 }
 
-record(longout, "$(SYS){$(D)}CptEvt-SP") {
+record(longout, "$(P)CptEvt-SP") {
     field(DTYP, "Obj Prop uint16")
     field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
     field(VAL , "$(CODE=0)")
     field(PINI, "YES")
-    field(FLNK, "$(SYS){$(D)}CptEvt-RB")
+    field(FLNK, "$(P)CptEvt-RB")
 }
 
-record(longin, "$(SYS){$(D)}CptEvt-RB") {
+record(longin, "$(P)CptEvt-RB") {
     field(DTYP, "Obj Prop uint16")
     field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
 }
 
-record(longout, "$(SYS){$(D)}FlshEvt-SP") {
+record(longout, "$(P)FlshEvt-SP") {
     field(DTYP, "Obj Prop uint16")
     field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
     field(VAL , "$(TRIG=0)")
     field(PINI, "YES")
-    field(FLNK, "$(SYS){$(D)}FlshEvt-RB")
+    field(FLNK, "$(P)FlshEvt-RB")
 }
 
-record(longin, "$(SYS){$(D)}FlshEvt-RB") {
+record(longin, "$(P)FlshEvt-RB") {
     field(DTYP, "Obj Prop uint16")
     field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
 }
 
-record(bo, "$(SYS){$(D)}Flsh-SP") {
+record(bo, "$(P)Flsh-SP") {
     field(DTYP, "Obj Prop command")
     field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushManual")
     field(VAL , "$(TRIG=0)")
@@ -64,14 +64,14 @@ record(bo, "$(SYS){$(D)}Flsh-SP") {
     field(ONAM, "Flush")
 }
 
-record(longin, "$(SYS){$(D)}Drop-I") {
+record(longin, "$(P)Drop-I") {
     field(DTYP, "Obj Prop uint32")
     field(SCAN, "10 second")
     field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=DropCnt")
-    field(FLNK, "$(SYS){$(D)}DropRate-I")
+    field(FLNK, "$(P)DropRate-I")
 }
 
-record(calc, "$(SYS){$(D)}DropRate-I") {
-    field(INPA, "$(SYS){$(D)}Drop-I NPP")
+record(calc, "$(P)DropRate-I") {
+    field(INPA, "$(P)Drop-I NPP")
     field(CALC, "C:=A-B;B:=A;C/10")
 }
