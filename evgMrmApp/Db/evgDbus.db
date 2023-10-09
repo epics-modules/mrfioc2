@@ -97,7 +97,7 @@ record(mbbiDirect, "$(P)Src-MbbiDir_") {
     field( INP,  "$(P)Src-Sel.RVAL CP")
 }
 
-record(bo, "$(P)Src:FrontInp0-Sel") {
+record(bo, "$(P)Src$(s=:)FrontInp0-Sel") {
     field( DESC, "Front Input0 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp0")
@@ -107,7 +107,7 @@ record(bo, "$(P)Src:FrontInp0-Sel") {
     field( DOL,  "$(P)Src-MbbiDir_.B0 CP")
 }
 
-record(bo, "$(P)Src:FrontInp1-Sel") {
+record(bo, "$(P)Src$(s=:)FrontInp1-Sel") {
     field( DESC, "Front Input1 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp1")
@@ -117,7 +117,7 @@ record(bo, "$(P)Src:FrontInp1-Sel") {
     field( DOL,  "$(P)Src-MbbiDir_.B1 CP")
 }
 
-record(bo, "$(P)Src:UnivInp0-Sel") {
+record(bo, "$(P)Src$(s=:)UnivInp0-Sel") {
     field( DESC, "Front Univ Input0 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp0")
@@ -127,7 +127,7 @@ record(bo, "$(P)Src:UnivInp0-Sel") {
     field( DOL,  "$(P)Src-MbbiDir_.B2 CP")
 }
 
-record(bo, "$(P)Src:UnivInp1-Sel") {
+record(bo, "$(P)Src$(s=:)UnivInp1-Sel") {
     field( DESC, "Front Univ Input1 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp1")
@@ -137,7 +137,7 @@ record(bo, "$(P)Src:UnivInp1-Sel") {
     field( DOL,  "$(P)Src-MbbiDir_.B3 CP")
 }
 
-record(bo, "$(P)Src:UnivInp2-Sel") {
+record(bo, "$(P)Src$(s=:)UnivInp2-Sel") {
     field( DESC, "Front Univ Input2 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp2")
@@ -147,7 +147,7 @@ record(bo, "$(P)Src:UnivInp2-Sel") {
     field( DOL,  "$(P)Src-MbbiDir_.B4 CP")
 }
 
-record(bo, "$(P)Src:UnivInp3-Sel") {
+record(bo, "$(P)Src$(s=:)UnivInp3-Sel") {
     field( DESC, "Front Univ Input3 on Dbus")
     field( DTYP, "EVG Dbus")
     field( OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp3")
@@ -168,12 +168,12 @@ record(dfanout, "$(P)Omsl-FOut") {
     field( VAL,  "1")
     field( UDF,  "0")
     field( OMSL, "supervisory")
-    field( OUTA, "$(P)Src:FrontInp0-Sel.OMSL")
-    field( OUTB, "$(P)Src:FrontInp1-Sel.OMSL")
-    field( OUTC, "$(P)Src:UnivInp0-Sel.OMSL")
-    field( OUTD, "$(P)Src:UnivInp1-Sel.OMSL")
-    field( OUTE, "$(P)Src:UnivInp2-Sel.OMSL")
-    field( OUTF, "$(P)Src:UnivInp3-Sel.OMSL")
+    field( OUTA, "$(P)Src$(s=:)FrontInp0-Sel.OMSL")
+    field( OUTB, "$(P)Src$(s=:)FrontInp1-Sel.OMSL")
+    field( OUTC, "$(P)Src$(s=:)UnivInp0-Sel.OMSL")
+    field( OUTD, "$(P)Src$(s=:)UnivInp1-Sel.OMSL")
+    field( OUTE, "$(P)Src$(s=:)UnivInp2-Sel.OMSL")
+    field( OUTF, "$(P)Src$(s=:)UnivInp3-Sel.OMSL")
     info( autosaveFields_pass0, "VAL")
 }
 

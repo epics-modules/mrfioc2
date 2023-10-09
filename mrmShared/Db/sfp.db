@@ -21,10 +21,10 @@ record(ai, "$(P)T-I") {
   field(LSV , "INVALID")
   field(EGU , "C")
   field(PREC, "1")
-  field(FLNK, "$(P)Pwr:TX-I")
+  field(FLNK, "$(P)Pwr$(s=:)TX-I")
 }
 
-record(ai, "$(P)Pwr:TX-I") {
+record(ai, "$(P)Pwr$(s=:)TX-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Power TX")
   field(DESC, "Tranceiver Output Power")
@@ -39,11 +39,11 @@ record(ai, "$(P)Pwr:TX-I") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "1")
-  field(FLNK, "$(P)Pwr:RX-I")
+  field(FLNK, "$(P)Pwr$(s=:)RX-I")
   info(autosaveFields_pass0, "LOW")
 }
 
-record(ai, "$(P)Pwr:RX-I") {
+record(ai, "$(P)Pwr$(s=:)RX-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Power RX")
   field(DESC, "Tranceiver Input Power")
@@ -58,11 +58,11 @@ record(ai, "$(P)Pwr:RX-I") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "1")
-  field(FLNK, "$(P)Speed:Link-I")
+  field(FLNK, "$(P)Speed$(s=:)Link-I")
   info(autosaveFields_pass0, "LOW")
 }
 
-record(ai, "$(P)Speed:Link-I") {
+record(ai, "$(P)Speed$(s=:)Link-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Link Speed")
   field(DESC, "Tranceiver Line Rate")
@@ -102,10 +102,10 @@ record(stringin, "$(P)Serial-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "SFP serial number")
   field(INP , "@OBJ=$(OBJ), PROP=Serial")
-  field(FLNK, "$(P)Date:Manu-I")
+  field(FLNK, "$(P)Date$(s=:)Manu-I")
 }
 
-record(stringin, "$(P)Date:Manu-I") {
+record(stringin, "$(P)Date$(s=:)Manu-I") {
   field(DTYP, "Obj Prop string")
   field(DESC, "Manufactored date")
   field(INP , "@OBJ=$(OBJ), PROP=Date")

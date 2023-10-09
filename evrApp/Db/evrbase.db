@@ -10,7 +10,7 @@
 # If disabled, an EVR will automatically enable when the event link becomes active.
 # This allows for bumpless cold starts. For this reason the enable property
 # should not be included in any autosave request files.
-# cf. $(P)Link:Init-FO_
+# cf. $(P)Link$(s=:)Init-FO_
 #
 record(bo, "$(P)Ena-Sel") {
   field(DESC, "Master HW Enable")
@@ -28,7 +28,7 @@ record(bo, "$(P)Ena-Sel") {
 # This indicates that the EVG is not sending event code 122
 # which may mean that it is misconfigured or hung.
 #
-record(longin, "$(P)Cnt:LinkTimo-I") {
+record(longin, "$(P)Cnt$(s=:)LinkTimo-I") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=HB Timeout Count")
   field(SCAN, "I/O Intr")
@@ -64,7 +64,7 @@ record(bi, "$(P)Link-Sts") {
   field(ZNAM, "Fail")
   field(ONAM, "OK")
   field(ZSV , "MAJOR")
-  field(FLNK, "$(P)Cnt:RxErr-I")
+  field(FLNK, "$(P)Cnt$(s=:)RxErr-I")
 }
 
 record(longin, "$(P)DBus-I") {
@@ -75,13 +75,13 @@ record(longin, "$(P)DBus-I") {
 }
 
 # The number of event link errors which have occurred.
-record(longin, "$(P)Cnt:RxErr-I") {
+record(longin, "$(P)Cnt$(s=:)RxErr-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Receive Error Count")
   field(INP , "@OBJ=$(OBJ), PROP=Receive Error Count")
   field(DESC, "Rx error count")
   field(TSEL, "$(P)Link-Sts.TIME")
-  field(FLNK, "$(P)Cnt:HwOflw-I")
+  field(FLNK, "$(P)Cnt$(s=:)HwOflw-I")
 }
 
 # Counter the number of hardware event buffer overflows.
@@ -93,12 +93,12 @@ record(longin, "$(P)Cnt:RxErr-I") {
 #
 # An overflow does not effect physical outputs.
 # This is a serious error which should be corrected.
-record(longin, "$(P)Cnt:HwOflw-I") {
+record(longin, "$(P)Cnt$(s=:)HwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Hw Overflow Count")
   field(INP , "@OBJ=$(OBJ), PROP=FIFO Overflow Count")
-  field(TSEL, "$(P)Cnt:RxErr-I.TIME")
-  field(FLNK, "$(P)Cnt:SwOflw-I")
+  field(TSEL, "$(P)Cnt$(s=:)RxErr-I.TIME")
+  field(FLNK, "$(P)Cnt$(s=:)SwOflw-I")
 }
 
 # Counts overflows in all of the per event software buffers.
@@ -112,17 +112,17 @@ record(longin, "$(P)Cnt:HwOflw-I") {
 # cf. var("mrmEvrFIFOPeriod") to change/disable soft rate limit
 #
 # Actions of other event codes are not effected.
-record(longin, "$(P)Cnt:SwOflw-I") {
+record(longin, "$(P)Cnt$(s=:)SwOflw-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Sw Overrate Count")
   field(INP , "@OBJ=$(OBJ), PROP=FIFO Over rate")
-  field(TSEL, "$(P)Cnt:RxErr-I.TIME")
-  field(FLNK, "$(P)Link:Init-FO_")
+  field(TSEL, "$(P)Cnt$(s=:)RxErr-I.TIME")
+  field(FLNK, "$(P)Link$(s=:)Init-FO_")
 }
 
 # Detect the first time the event link
 # is online.  Then set master enable.
-record(calcout, "$(P)Link:Init-FO_") {
+record(calcout, "$(P)Link$(s=:)Init-FO_") {
   field(DESC, "Detect initial link up")
   field(INPA, "$(P)Link-Sts")
   field(CALC, "A")
@@ -135,7 +135,7 @@ record(calcout, "$(P)Link:Init-FO_") {
 # Frequency of an EVR's local oscilator.
 #
 # This must be close enough to the EVG master oscilator to allow the phase locked loop in the EVR to lock.
-record(ao, "$(P)Link:Clk-SP") {
+record(ao, "$(P)Link$(s=:)Clk-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Clock")
   field(PINI, "YES")
@@ -149,11 +149,11 @@ record(ao, "$(P)Link:Clk-SP") {
   field(DRVH, "150")
   field(DRVL, "50")
   field(PREC, "3")
-  field(FLNK, "$(P)Link:Clk-I")
+  field(FLNK, "$(P)Link$(s=:)Clk-I")
   info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 
-record(ai, "$(P)Link:Clk-I") {
+record(ai, "$(P)Link$(s=:)Clk-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Clock")
   field(DESC, "Event Link speed")
@@ -163,73 +163,73 @@ record(ai, "$(P)Link:Clk-I") {
   field(LINR, "LINEAR")
   field(ESLO, "1e-6")
   field(PREC, "3")
-  field(FLNK, "$(P)Link:ClkErr-I")
+  field(FLNK, "$(P)Link$(s=:)ClkErr-I")
   info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 
-record(calc, "$(P)Link:ClkErr-I") {
+record(calc, "$(P)Link$(s=:)ClkErr-I") {
   field(CALC, "(A-B)*1000")
   field(EGU , "KHz")
   field(PREC, "3")
-  field(INPA, "$(P)Link:Clk-SP")
-  field(INPB, "$(P)Link:Clk-I")
-  field(TSEL, "$(P)Link:Clk-I.TIME")
-  field(FLNK, "$(P)Link:ClkPeriod-I")
+  field(INPA, "$(P)Link$(s=:)Clk-SP")
+  field(INPB, "$(P)Link$(s=:)Clk-I")
+  field(TSEL, "$(P)Link$(s=:)Clk-I.TIME")
+  field(FLNK, "$(P)Link$(s=:)ClkPeriod-I")
   info(autosaveFields_pass0, "EGU CALC PREC")
 }
 
 # Intended for use in calculations
-record(calc, "$(P)Link:ClkPeriod-I") {
+record(calc, "$(P)Link$(s=:)ClkPeriod-I") {
   field(DESC, "Event period")
   field(CALC, "B/A")
   field(EGU , "s")
   field(PREC, "3")
-  field(INPA, "$(P)Link:Clk-SP")
-  field(INPB, "$(P)Link:Clk-SP.ESLO")
-  field(TSEL, "$(P)Link:Clk-I.TIME")
+  field(INPA, "$(P)Link$(s=:)Clk-SP")
+  field(INPB, "$(P)Link$(s=:)Clk-SP.ESLO")
+  field(TSEL, "$(P)Link$(s=:)Clk-I.TIME")
 }
 
-record(longin, "$(P)Cnt:IRQ-I") {
+record(longin, "$(P)Cnt$(s=:)IRQ-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Interrupt Count")
   field(SCAN, "1 second")
   field(INP , "@OBJ=$(OBJ), PROP=Interrupt Count")
-  field(FLNK, "$(P)Rate:IRQ-I")
+  field(FLNK, "$(P)Rate$(s=:)IRQ-I")
 }
 
-record(calc, "$(P)Rate:IRQ-I") {
+record(calc, "$(P)Rate$(s=:)IRQ-I") {
   field(DESC, "Interrupt rate")
-  field(INPA, "$(P)Cnt:IRQ-I")
+  field(INPA, "$(P)Cnt$(s=:)IRQ-I")
   field(CALC, "C:=A-B;B:=A;C")
   field(EGU , "Hz")
 }
 
-record(longin, "$(P)Cnt:FIFOEvt-I") {
+record(longin, "$(P)Cnt$(s=:)FIFOEvt-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Event Count")
   field(SCAN, "1 second")
   field(INP , "@OBJ=$(OBJ), PROP=FIFO Event Count")
-  field(FLNK, "$(P)Rate:FIFOEvt-I")
+  field(FLNK, "$(P)Rate$(s=:)FIFOEvt-I")
 }
 
-record(calc, "$(P)Rate:FIFOEvt-I") {
+record(calc, "$(P)Rate$(s=:)FIFOEvt-I") {
 field(DESC, "FIFO reception rate")
-  field(INPA, "$(P)Cnt:FIFOEvt-I")
+  field(INPA, "$(P)Cnt$(s=:)FIFOEvt-I")
   field(CALC, "C:=A-B;B:=A;C")
   field(EGU , "evt/s")
-  field(FLNK, "$(P)Cnt:FIFOLoop-I")
+  field(FLNK, "$(P)Cnt$(s=:)FIFOLoop-I")
 }
 
-record(longin, "$(P)Cnt:FIFOLoop-I") {
+record(longin, "$(P)Cnt$(s=:)FIFOLoop-I") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "FIFO Loop Count")
   field(INP , "@OBJ=$(OBJ), PROP=FIFO Loop Count")
-  field(FLNK, "$(P)Rate:FIFOLoop-I")
+  field(FLNK, "$(P)Rate$(s=:)FIFOLoop-I")
 }
 
-record(calc, "$(P)Rate:FIFOLoop-I") {
+record(calc, "$(P)Rate$(s=:)FIFOLoop-I") {
   field(DESC, "FIFO service rate")
-  field(INPA, "$(P)Cnt:FIFOLoop-I")
+  field(INPA, "$(P)Cnt$(s=:)FIFOLoop-I")
   field(CALC, "C:=A-B;B:=A;C")
   field(EGU , "Hz")
   field(FLNK, "$(P)FIFOCap-I")
@@ -238,8 +238,8 @@ record(calc, "$(P)Rate:FIFOLoop-I") {
 # average number of events taken from the FIFO during each loop
 record(calc, "$(P)FIFOCap-I") {
   field(DESC, "FIFO capacity utilization")
-  field(INPA, "$(P)Rate:FIFOEvt-I")
-  field(INPB, "$(P)Rate:FIFOLoop-I")
+  field(INPA, "$(P)Rate$(s=:)FIFOEvt-I")
+  field(INPB, "$(P)Rate$(s=:)FIFOLoop-I")
   field(INPC, "5.11")
   field(CALC, "A/B/C")
   field(EGU , "%")
@@ -297,25 +297,25 @@ record(stringin, "$(P)Pos-I") {
   field(DESC, "Card position in system")
 }
 
-record(fanout, "$(P)Time:Init-FO_") {
+record(fanout, "$(P)Time$(s=:)Init-FO_") {
   field(PINI, "YES")
-  field(LNK1, "$(P)Time:Clock-SP")
-  field(LNK2, "$(P)Time:Src-Sel")
+  field(LNK1, "$(P)Time$(s=:)Clock-SP")
+  field(LNK2, "$(P)Time$(s=:)Src-Sel")
 }
 
 # Indicates if the EVR has a current, valid timestamp.
 # Condition under which timestamp is declared invalid include:
 #
-# * TS counter reset event received, but “seconds” value not updated.
+# * TS counter reset event received, but seconds value not updated.
 # * Found timestamp with previous invalid value. Catches old timestamp in buffers.
 # * TS counter exceeded limit (eg. missed reset event)
-# * New “seconds” value is less then the last valid values,
+# * New seconds value is less then the last valid values,
 #   or more then two greater then the last valid value. (Light Source time model only).
-#   This will reject single “bad” values sent by the EVG.
+#   This will reject single bad values sent by the EVG.
 # * Event Link error (Status is error).
 #
-# The timestamp will become valid when a new “seconds” value is received from the EVG.
-record(bi, "$(P)Time:Valid-Sts") {
+# The timestamp will become valid when a new seconds value is received from the EVG.
+record(bi, "$(P)Time$(s=:)Valid-Sts") {
   field(DTYP, "Obj Prop bool")
   field(INP , "@OBJ=$(OBJ), PROP=Timestamp Valid")
   field(PINI, "YES")
@@ -325,9 +325,9 @@ record(bi, "$(P)Time:Valid-Sts") {
   field(ONAM, "Valid")
 }
 
-record(mbbo, "$(P)Time:Src-Sel") {
+record(mbbo, "$(P)Time$(s=:)Src-Sel") {
   field( DTYP, "Raw Soft Channel")
-  field( OUT , "$(P)Time:Src-Sel_")
+  field( OUT , "$(P)Time$(s=:)Src-Sel_")
   field( PINI, "YES")
   field( ZRST, "Event clock")
   field( ONST, "Mapped code(s)")
@@ -350,20 +350,20 @@ record(mbbo, "$(P)Time:Src-Sel") {
   field( FFSV, "INVALID")
   field( UNSV, "INVALID")
   field( IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)Time:Src-Sel_")
+  field(FLNK, "$(P)Time$(s=:)Src-Sel_")
   info(autosaveFields_pass0, "VAL")
 }
 
 # Determines what causes the timestamp event counter to tick. There are three possible choices.
 #
-# * Event clock Use an integer divisor of the EVR's local oscilator.
-# * Mapped code(s) Increments the counter whenever certain events arrive. These codes can be defined using special mapping records.
-# * DBus 4 Increments on the 0->1 transition of DBus bit #4.
+# * Event clock Use an integer divisor of the EVR's local oscilator.
+# * Mapped code(s) Increments the counter whenever certain events arrive. These codes can be defined using special mapping records.
+# * DBus 4 Increments on the 0->1 transition of DBus bit #4.
 #
-record(longout, "$(P)Time:Src-Sel_") {
+record(longout, "$(P)Time$(s=:)Src-Sel_") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Source")
-  field(FLNK, "$(P)Time:Clock-I")
+  field(FLNK, "$(P)Time$(s=:)Clock-I")
 }
 
 # Specifies the rate at which the timestamp event counter will be incremented. This determines the resolution of all timestamps.
@@ -375,7 +375,7 @@ record(longout, "$(P)Time:Src-Sel_") {
 # to the given frequency. Since this may not be exact it is recommended
 # to read back the actual divider setting via the "Timestamp Prescaler" property.
 #
-record(ao, "$(P)Time:Clock-SP") {
+record(ao, "$(P)Time$(s=:)Clock-SP") {
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Clock")
   field(DESC, "Timestamp tick rate")
@@ -388,11 +388,11 @@ record(ao, "$(P)Time:Clock-SP") {
   field(DRVH, "150")
   field(DRVL, "0")
   field(PREC, "3")
-  field(FLNK, "$(P)Time:Clock-I")
+  field(FLNK, "$(P)Time$(s=:)Clock-I")
   info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 
-record(ai, "$(P)Time:Clock-I") {
+record(ai, "$(P)Time$(s=:)Clock-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Timestamp Clock")
   field(SCAN, "1 second")
@@ -405,13 +405,13 @@ record(ai, "$(P)Time:Clock-I") {
   field(HOPR, "150")
   field(LOPR, "0")
   field(PREC, "3")
-  field(FLNK, "$(P)Time:Div-I")
+  field(FLNK, "$(P)Time$(s=:)Div-I")
 }
 
 # When using the "Event clock" timestamp source this will return the actual divisor used.
 # In other modes it reads 0.
 #
-record(longin, "$(P)Time:Div-I") {
+record(longin, "$(P)Time$(s=:)Div-I") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=Timestamp Prescaler")
   field(DESC, "Timestamp divider")
@@ -437,7 +437,7 @@ record(stringin, "$(P)Time-I") {
 #
 # Must match EVG setting
 #
-record(bo, "$(P)Link:RxMode-Sel") {
+record(bo, "$(P)Link$(s=:)RxMode-Sel") {
   field(DESC, "Downstream data mode")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ):BUFRX, PROP=Enable")
