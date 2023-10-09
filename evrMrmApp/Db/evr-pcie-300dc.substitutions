@@ -105,18 +105,22 @@ file "mrmevrout.db"
 # default to tri-state
 pattern
 {ON, OBJ, DESC, DEFAULT}
-{"$(SYS){$(D)-Out:RB00}", "$(EVR):FrontUnivOut0", "UNIV0", 61}
-{"$(SYS){$(D)-Out:RB01}", "$(EVR):FrontUnivOut1", "UNIV1", 61}
-{"$(SYS){$(D)-Out:RB02}", "$(EVR):FrontUnivOut2", "UNIV2", 61}
-{"$(SYS){$(D)-Out:RB03}", "$(EVR):FrontUnivOut3", "UNIV3", 61}
-{"$(SYS){$(D)-Out:RB04}", "$(EVR):FrontUnivOut4", "UNIV4", 61}
-{"$(SYS){$(D)-Out:RB05}", "$(EVR):FrontUnivOut5", "UNIV5", 61}
-{"$(SYS){$(D)-Out:RB06}", "$(EVR):FrontUnivOut6", "UNIV6", 61}
-{"$(SYS){$(D)-Out:RB07}", "$(EVR):FrontUnivOut7", "UNIV7", 61}
-{"$(SYS){$(D)-Out:RB08}", "$(EVR):FrontUnivOut8", "UNIV8", 61}
-{"$(SYS){$(D)-Out:RB09}", "$(EVR):FrontUnivOut9", "UNIV9", 61}
-{"$(SYS){$(D)-Out:RB10}", "$(EVR):FrontUnivOut10","UNIV10", 61}
-{"$(SYS){$(D)-Out:RB11}", "$(EVR):FrontUnivOut11","UNIV11", 61}
+{"$(SYS){$(D)-Out:RB00}", "$(EVR):FrontUnivOut0",  "UNIV0",  61}
+{"$(SYS){$(D)-Out:RB01}", "$(EVR):FrontUnivOut1",  "UNIV1",  61}
+{"$(SYS){$(D)-Out:RB02}", "$(EVR):FrontUnivOut2",  "UNIV2",  61}
+{"$(SYS){$(D)-Out:RB03}", "$(EVR):FrontUnivOut3",  "UNIV3",  61}
+{"$(SYS){$(D)-Out:RB04}", "$(EVR):FrontUnivOut4",  "UNIV4",  61}
+{"$(SYS){$(D)-Out:RB05}", "$(EVR):FrontUnivOut5",  "UNIV5",  61}
+{"$(SYS){$(D)-Out:RB06}", "$(EVR):FrontUnivOut6",  "UNIV6",  61}
+{"$(SYS){$(D)-Out:RB07}", "$(EVR):FrontUnivOut7",  "UNIV7",  61}
+{"$(SYS){$(D)-Out:RB08}", "$(EVR):FrontUnivOut8",  "UNIV8",  61}
+{"$(SYS){$(D)-Out:RB09}", "$(EVR):FrontUnivOut9",  "UNIV9",  61}
+{"$(SYS){$(D)-Out:RB10}", "$(EVR):FrontUnivOut10", "UNIV10", 61}
+{"$(SYS){$(D)-Out:RB11}", "$(EVR):FrontUnivOut11", "UNIV11", 61}
+{"$(SYS){$(D)-Out:RB12}", "$(EVR):FrontUnivOut12", "UNIV12", 61}
+{"$(SYS){$(D)-Out:RB13}", "$(EVR):FrontUnivOut13", "UNIV13", 61}
+{"$(SYS){$(D)-Out:RB14}", "$(EVR):FrontUnivOut14", "UNIV14", 61}
+{"$(SYS){$(D)-Out:RB15}", "$(EVR):FrontUnivOut15", "UNIV15", 61}
 }
 
 file "mrmevroutint.db"
@@ -243,6 +247,30 @@ file "evrdcpulser.template"
 file "evrin.db"
 {pattern
 {IN, OBJ, DESC}
-{"$(SYS){$(D)-In:0}", "$(EVR):FPIn0", "IN0 (TTL)"}
-{"$(SYS){$(D)-In:1}", "$(EVR):FPIn1", "IN1 (TTL)"}
+# Front panel inputs 4
+{"$(SYS){$(D)-In:0}",      "$(EVR):FPIn0",  "FPIN0 (TTL)"}
+{"$(SYS){$(D)-In:1}",      "$(EVR):FPIn1",  "FPIN1 (TTL)"}
+{"$(SYS){$(D)-In:2}",      "$(EVR):FPIn2",  "FPIN2 (TTL)"}
+{"$(SYS){$(D)-In:3}",      "$(EVR):FPIn3",  "FPIN3 (TTL)"}
+# Univ inputs 20
+{"$(SYS){$(D)-In:FPUV0}",  "$(EVR):FPIn4",  "In:FPUV0"}
+{"$(SYS){$(D)-In:FPUV1}",  "$(EVR):FPIn5",  "In:FPUV1"}
+{"$(SYS){$(D)-In:FPUV2}",  "$(EVR):FPIn6",  "In:FPUV2"}
+{"$(SYS){$(D)-In:FPUV3}",  "$(EVR):FPIn7",  "In:FPUV3"}
+{"$(SYS){$(D)-In:FPUV4}",  "$(EVR):FPIn8",  "In:FPUV4"}
+{"$(SYS){$(D)-In:FPUV5}",  "$(EVR):FPIn9",  "In:FPUV5"}
+{"$(SYS){$(D)-In:FPUV6}",  "$(EVR):FPIn10", "In:FPUV6"}
+{"$(SYS){$(D)-In:FPUV7}",  "$(EVR):FPIn11", "In:FPUV7"}
+{"$(SYS){$(D)-In:FPUV8}",  "$(EVR):FPIn12", "In:FPUV8"}
+{"$(SYS){$(D)-In:FPUV9}",  "$(EVR):FPIn13", "In:FPUV9"}
+{"$(SYS){$(D)-In:FPUV10}", "$(EVR):FPIn14", "In:FPUV10"}
+{"$(SYS){$(D)-In:FPUV11}", "$(EVR):FPIn15", "In:FPUV11"}
+{"$(SYS){$(D)-In:FPUV12}", "$(EVR):FPIn16", "In:FPUV12"}
+{"$(SYS){$(D)-In:FPUV13}", "$(EVR):FPIn17", "In:FPUV13"}
+{"$(SYS){$(D)-In:FPUV14}", "$(EVR):FPIn18", "In:FPUV14"}
+{"$(SYS){$(D)-In:FPUV15}", "$(EVR):FPIn19", "In:FPUV15"}
+{"$(SYS){$(D)-In:FPUV16}", "$(EVR):FPIn20", "In:FPUV16"}
+{"$(SYS){$(D)-In:FPUV17}", "$(EVR):FPIn21", "In:FPUV17"}
+{"$(SYS){$(D)-In:FPUV18}", "$(EVR):FPIn22", "In:FPUV18"}
+{"$(SYS){$(D)-In:FPUV19}", "$(EVR):FPIn23", "In:FPUV19"}
 }
