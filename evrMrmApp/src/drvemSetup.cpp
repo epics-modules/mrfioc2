@@ -178,8 +178,8 @@ static const EVRMRM::Config mtca_evr_300 = {
     16, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    0,  // FPUV outputs (really 2, handled specially)
-    16, // RB outputs  (via external IFB)
+    18, // Univ outputs (16 via external IFB + 2 handled specially)
+    10, // RB outputs (10 EVRTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
     0,  // CML/GTX outputs
@@ -188,8 +188,9 @@ static const EVRMRM::Config mtca_evr_300 = {
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
      * 24 <= N <= 31 : BPInMap
+     * 48 - 57 : TBInMap (EVRTM)
      */
-    32,  // FP, Univ, BP inputs
+    58, // FP, Univ, BP, TB inputs
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
