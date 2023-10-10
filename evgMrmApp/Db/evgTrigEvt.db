@@ -72,7 +72,7 @@ record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
     field( INP,  "$(P)TrigSrc-Sel.RVAL")
 }
 
-record(mbbo, "$(P)TrigSrc$(s=:)Cont-Sel") {
+record(mbbo, "$(P)TrigSrc1-Sel") {
     field( DESC, "EVG Trig Evt Trig")
     field( PINI, "YES")
     field( VAL,  "0")
@@ -108,13 +108,13 @@ record(mbbo, "$(P)TrigSrc$(s=:)Cont-Sel") {
     field( FFSV, "INVALID")
     field( UNSV, "INVALID")
     field( IVOA, "Don't drive outputs")
-    field( FLNK, "$(P)TrigSrc$(s=:)Cont-MbbiDir_")
+    field( FLNK, "$(P)TrigSrc1-MbbiDir_")
     info( autosaveFields_pass0, "VAL")
 }
 
-record(mbbiDirect, "$(P)TrigSrc$(s=:)Cont-MbbiDir_") {
+record(mbbiDirect, "$(P)TrigSrc1-MbbiDir_") {
     field( DESC, "EVG Trig Evt Trig")
-    field( INP,  "$(P)TrigSrc$(s=:)Cont-Sel.RVAL")
+    field( INP,  "$(P)TrigSrc1-Sel.RVAL")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)Mxc0-Sel") {
@@ -253,7 +253,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp4-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp4")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B0 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B0 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp5-Sel") {
@@ -261,7 +261,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp5-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp5")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B1 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B1 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp6-Sel") {
@@ -269,7 +269,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp6-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp6")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B2 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B2 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp7-Sel") {
@@ -277,7 +277,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp7-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp7")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B3 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B3 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp8-Sel") {
@@ -285,7 +285,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp8-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp8")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B4 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B4 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp9-Sel") {
@@ -293,7 +293,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp9-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp9")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B5 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B5 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp10-Sel") {
@@ -301,7 +301,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp10-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp10")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B6 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B6 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp11-Sel") {
@@ -309,7 +309,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp11-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp11")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B7 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B7 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp12-Sel") {
@@ -317,7 +317,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp12-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp12")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B8 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B8 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp13-Sel") {
@@ -325,7 +325,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp13-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp13")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.B9 CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B9 CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp14-Sel") {
@@ -333,7 +333,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp14-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp14")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.BA CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.BA CP")
 }
 
 record(bo, "$(P)TrigSrc$(s=:)UnivInp15-Sel") {
@@ -341,7 +341,7 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp15-Sel") {
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp15")
     field( ZNAM, "Clear")
     field( ONAM, "Set")
-    field( DOL,  "$(P)TrigSrc$(s=:)Cont-MbbiDir_.BB CP")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.BB CP")
 }
 
 #
