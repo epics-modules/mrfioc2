@@ -378,10 +378,10 @@ record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
     field( OUTE, "$(P)TrigSrc$(s=:)UnivInp1-Sel.OMSL")
     field( OUTF, "$(P)TrigSrc$(s=:)UnivInp2-Sel.OMSL")
     field( OUTG, "$(P)TrigSrc$(s=:)UnivInp3-Sel.OMSL")
-    field( FLNK, "$(P)Omsl$(s=:)Cont2-FOut_")
+    field( FLNK, "$(P)Omsl$(s=:)Cont1-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
+record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
     field( OUTA, "$(P)TrigSrc$(s=:)UnivInp4-Sel.OMSL")
@@ -392,10 +392,10 @@ record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
     field( OUTF, "$(P)TrigSrc$(s=:)UnivInp9-Sel.OMSL")
     field( OUTG, "$(P)TrigSrc$(s=:)UnivInp10-Sel.OMSL")
     field( OUTH, "$(P)TrigSrc$(s=:)UnivInp11-Sel.OMSL")
-    field( FLNK, "$(P)Omsl$(s=:)Cont3-FOut_")
+    field( FLNK, "$(P)Omsl$(s=:)Cont2-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont3-FOut_") {
+record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
     field( OUTA, "$(P)TrigSrc$(s=:)UnivInp12-Sel.OMSL")
