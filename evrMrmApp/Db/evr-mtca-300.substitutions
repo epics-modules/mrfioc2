@@ -37,14 +37,14 @@ file "mrmevrbufrx.db"
 {"$(SYS){$(D)}", $(EVR):BUFRX, 0xff00}
 }
 
-file mrmSoftSeq.template {
+file "mrmSoftSeq.template" {
 pattern { P, EVG, seqNum, NELM }
 { "$(SYS){$(D)-SoftSeq:0}", $(EVR), 0, 2047 }
 { "$(SYS){$(D)-SoftSeq:1}", $(EVR), 1, 2047 }
 { "$(SYS){$(D)-SoftSeq:2}", $(EVR), 2, 2047 }
 }
 
-file evrSoftSeq.template {
+file "evrSoftSeq.template" {
 pattern { P, EVG, seqNum, NELM }
 { "$(SYS){$(D)-SoftSeq:0}", $(EVR), 0, 2047 }
 { "$(SYS){$(D)-SoftSeq:1}", $(EVR), 1, 2047 }
@@ -115,8 +115,19 @@ pattern
 {"$(SYS){$(D)-Out:Back5}", "$(EVR):Backplane5", "TX19 (5)", 61}
 {"$(SYS){$(D)-Out:Back6}", "$(EVR):Backplane6", "RX20 (6)", 61}
 {"$(SYS){$(D)-Out:Back7}", "$(EVR):Backplane7", "TX20 (7)", 61}
-{"$(SYS){$(D)-Out:FPUV0}", "$(EVR):FrontUnivOut0", "TCLKA", 61}
-{"$(SYS){$(D)-Out:FPUV1}", "$(EVR):FrontUnivOut1", "TCLKB", 61}
+}
+
+file "mrmevrout.db"
+{pattern
+{ON, OBJ, DESC, DEFAULT}
+# FP UNIV
+{"$(SYS){$(D)-Out:FPUV0}",  "$(EVR):FrontUnivOut0",  "Out:FPUV0",  61}
+{"$(SYS){$(D)-Out:FPUV1}",  "$(EVR):FrontUnivOut1",  "Out:FPUV1",  61}
+{"$(SYS){$(D)-Out:FPUV2}",  "$(EVR):FrontUnivOut2",  "Out:FPUV2",  61}
+{"$(SYS){$(D)-Out:FPUV3}",  "$(EVR):FrontUnivOut3",  "Out:FPUV3",  61}
+# Backplane CLK-s
+{"$(SYS){$(D)-Out:TCLKA}",  "$(EVR):FrontUnivOut16", "TCLKA", 61}
+{"$(SYS){$(D)-Out:TCLKB}",  "$(EVR):FrontUnivOut17", "TCLKB", 61}
 }
 
 file "mrmevroutint.db"
@@ -126,9 +137,9 @@ file "mrmevroutint.db"
 
 file "evrcml.db"
 {pattern
-{P, ON, OBJ}
-{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FPUV0}", "$(EVR):CML0"}
-{"$(SYS){$(D)}", "$(SYS){$(D)-Out:FPUV1}", "$(EVR):CML1"}
+{P, ON, OBJ, NBIT}
+{"$(SYS){$(D)}", "$(SYS){$(D)-Out:TCLKA}", "$(EVR):CML0", 40}
+{"$(SYS){$(D)}", "$(SYS){$(D)-Out:TCLKB}", "$(EVR):CML1", 40}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
