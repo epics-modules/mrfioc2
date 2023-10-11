@@ -72,6 +72,51 @@ record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
     field( INP,  "$(P)TrigSrc-Sel.RVAL")
 }
 
+record(mbbo, "$(P)TrigSrc1-Sel") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( PINI, "YES")
+    field( VAL,  "0")
+    field( UDF,  "0")
+    field( ZRST, "Off")
+    field( ONST, "Univ4")
+    field( TWST, "Univ5")
+    field( THST, "Univ6")
+    field( FRST, "Univ7")
+    field( FVST, "Univ8")
+    field( SXST, "Univ9")
+    field( SVST, "Univ10")
+    field( EIST, "Univ11")
+    field( NIST, "Univ12")
+    field( TEST, "Univ13")
+    field( ELST, "Univ14")
+    field( TVST, "Univ15")
+    field( ZRVL, "0")
+    field( ONVL, "1")
+    field( TWVL, "2")
+    field( THVL, "4")
+    field( FRVL, "8")
+    field( FVVL, "16")
+    field( SXVL, "32")
+    field( SVVL, "64")
+    field( EIVL, "128")
+    field( NIVL, "256")
+    field( TEVL, "512")
+    field( ELVL, "1024")
+    field( TVVL, "2048")
+    field( TTSV, "INVALID")
+    field( FTSV, "INVALID")
+    field( FFSV, "INVALID")
+    field( UNSV, "INVALID")
+    field( IVOA, "Don't drive outputs")
+    field( FLNK, "$(P)TrigSrc1-MbbiDir_")
+    info( autosaveFields_pass0, "VAL")
+}
+
+record(mbbiDirect, "$(P)TrigSrc1-MbbiDir_") {
+    field( DESC, "EVG Trig Evt Trig")
+    field( INP,  "$(P)TrigSrc1-Sel.RVAL")
+}
+
 record(bo, "$(P)TrigSrc$(s=:)Mxc0-Sel") {
     field( DTYP, "EVG Trig Evt Mxc")
     field( OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc0")
@@ -203,6 +248,102 @@ record(bo, "$(P)TrigSrc$(s=:)UnivInp3-Sel") {
     field( DOL,  "$(P)TrigSrc-MbbiDir_.BE CP")
 }
 
+record(bo, "$(P)TrigSrc$(s=:)UnivInp4-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp4")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B0 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp5-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp5")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp6-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp6")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp7-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp7")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B3 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp8-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp8")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp9-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp9")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp10-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp10")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B6 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp11-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp11")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B7 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp12-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp12")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B8 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp13-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp13")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.B9 CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp14-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp14")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.BA CP")
+}
+
+record(bo, "$(P)TrigSrc$(s=:)UnivInp15-Sel") {
+    field( DTYP, "EVG TrigEvt")
+    field( OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp15")
+    field( ZNAM, "Clear")
+    field( ONAM, "Set")
+    field( DOL,  "$(P)TrigSrc1-MbbiDir_.BB CP")
+}
+
 #
 # By default OMSL field for the *TrigSrc* records is "closed_loop" hence
 # only one Source can be selected due of MBBO record. If you want to select
@@ -237,8 +378,31 @@ record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
     field( OUTE, "$(P)TrigSrc$(s=:)UnivInp1-Sel.OMSL")
     field( OUTF, "$(P)TrigSrc$(s=:)UnivInp2-Sel.OMSL")
     field( OUTG, "$(P)TrigSrc$(s=:)UnivInp3-Sel.OMSL")
+    field( FLNK, "$(P)Omsl$(s=:)Cont1-FOut_")
 }
 
+record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Omsl-FOut")
+    field( OUTA, "$(P)TrigSrc$(s=:)UnivInp4-Sel.OMSL")
+    field( OUTB, "$(P)TrigSrc$(s=:)UnivInp5-Sel.OMSL")
+    field( OUTC, "$(P)TrigSrc$(s=:)UnivInp6-Sel.OMSL")
+    field( OUTD, "$(P)TrigSrc$(s=:)UnivInp7-Sel.OMSL")
+    field( OUTE, "$(P)TrigSrc$(s=:)UnivInp8-Sel.OMSL")
+    field( OUTF, "$(P)TrigSrc$(s=:)UnivInp9-Sel.OMSL")
+    field( OUTG, "$(P)TrigSrc$(s=:)UnivInp10-Sel.OMSL")
+    field( OUTH, "$(P)TrigSrc$(s=:)UnivInp11-Sel.OMSL")
+    field( FLNK, "$(P)Omsl$(s=:)Cont2-FOut_")
+}
+
+record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
+    field( OMSL, "closed_loop")
+    field( DOL,  "$(P)Omsl-FOut")
+    field( OUTA, "$(P)TrigSrc$(s=:)UnivInp12-Sel.OMSL")
+    field( OUTB, "$(P)TrigSrc$(s=:)UnivInp13-Sel.OMSL")
+    field( OUTC, "$(P)TrigSrc$(s=:)UnivInp14-Sel.OMSL")
+    field( OUTD, "$(P)TrigSrc$(s=:)UnivInp15-Sel.OMSL")
+}
 
 record(waveform, "$(P)Label-I") {
   field(DESC, "Label")
