@@ -67,7 +67,7 @@ MRMPulser::setDelay(double v)
 {
     double scal=double(prescaler());
     if (scal<=0) scal=1;
-    double clk=owner.clockTS();
+    double clk = (owner.clock() == 0.0) ? owner.clockTS() : owner.clock(); // in MHz. MTicks/second
 
     epicsUInt32 ticks=roundToUInt((v*clk)/scal);
 
@@ -85,7 +85,7 @@ MRMPulser::delay() const
 {
     double scal=double(prescaler());
     double ticks=double(delayRaw());
-    double clk=owner.clockTS();
+    double clk = (owner.clock() == 0.0) ? owner.clockTS() : owner.clock(); // in MHz. MTicks/second
     if (scal<=0) scal=1;
 
     return (ticks*scal)/clk;
@@ -101,7 +101,7 @@ void
 MRMPulser::setWidth(double v)
 {
     double scal=double(prescaler());
-    double clk=owner.clockTS();
+    double clk = (owner.clock() == 0.0) ? owner.clockTS() : owner.clock(); // in MHz. MTicks/second
     if (scal<=0) scal=1;
 
     epicsUInt32 ticks=roundToUInt((v*clk)/scal);
@@ -120,7 +120,7 @@ MRMPulser::width() const
 {
     double scal=double(prescaler());
     double ticks=double(widthRaw());
-    double clk=owner.clockTS();
+    double clk = (owner.clock() == 0.0) ? owner.clockTS() : owner.clock(); // in MHz. MTicks/second
     if (scal<=0) scal=1;
 
     return (ticks*scal)/clk;
