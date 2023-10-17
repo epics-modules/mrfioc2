@@ -287,6 +287,13 @@ record(stringin, "$(P)SwVer-I") {
   field(DESC, "Software version")
 }
 
+record(stringin, "$(P)CommitHash-I") {
+  field(DESC, "Commit hash")
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=CommitHash")
+  field(PINI, "YES")
+}
+
 # Geographic location (eg. slot number)
 # if available, fallback to logical bus address
 record(stringin, "$(P)Pos-I") {
