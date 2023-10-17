@@ -32,6 +32,10 @@
  * fail in some cases.
  */
 
+#ifndef __COMMIT_HASH
+#  define __COMMIT_HASH "NotConfigured"
+#endif
+
 EVR::~EVR()
 {
 }
@@ -46,6 +50,10 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
+std::string EVR::getCommitHash() const 
+{
+    return __COMMIT_HASH;
+}
 
 bus_configuration *EVR::getBusConfiguration(){
     return &busConfiguration;
@@ -100,6 +108,7 @@ OBJECT_BEGIN(EVR) {
 
     OBJECT_PROP1("Version", &EVR::versionStr);
     OBJECT_PROP1("Sw Version", &EVR::versionSw);
+    OBJECT_PROP1("CommitHash", &EVR::getCommitHash);
 
     OBJECT_PROP1("Position", &EVR::position);
 

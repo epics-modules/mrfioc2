@@ -57,6 +57,7 @@ public:
   std::string versionStr() const;
   //! Software Version
   virtual std::string versionSw() const;
+  virtual std::string getCommitHash() const;
 
   //! Position of EVR device in enclosure.
   virtual std::string position() const;
