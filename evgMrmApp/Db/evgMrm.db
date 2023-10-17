@@ -40,6 +40,13 @@ record(stringin, "$(P)SwVer-I") {
   field(DESC, "Software version")
 }
 
+record(stringin, "$(P)CommitHash-I") {
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=CommitHash")
+  field(PINI, "YES")
+  field(DESC, "Commit hash")
+}
+
 record(bo, "$(P)ResetMxc-Cmd") {
     field( DTYP, "Obj Prop bool")
     field( OUT , "@OBJ=$(OBJ), PROP=Reset MXC")
@@ -148,4 +155,3 @@ record(longin, "$(P)DbusStatus-RB" ) {
     field( INP , "@OBJ=$(OBJ), PROP=DbusStatus")
     info( autosaveFields_pass0, "SCAN")
 }
-

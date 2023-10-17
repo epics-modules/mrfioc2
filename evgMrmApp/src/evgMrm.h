@@ -85,6 +85,7 @@ public:
     MRFVersion version() const;
     std::string getFwVersionStr() const;
     std::string getSwVersion() const;
+    std::string getCommitHash() const;
 
     void enable(epicsUInt16);
     epicsUInt16 enabled() const;

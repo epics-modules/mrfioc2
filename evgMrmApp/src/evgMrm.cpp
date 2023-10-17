@@ -40,6 +40,10 @@
 
 #include <epicsExport.h>
 
+#ifndef __COMMIT_HASH
+#  define __COMMIT_HASH "NotConfigured"
+#endif
+
 static
 EVRMRM::Config evm_evru_conf = {
     "mTCA-EVM-300 (EVRU)",
@@ -233,6 +237,11 @@ std::string evgMrm::getFwVersionStr() const
 std::string
 evgMrm::getSwVersion() const {
     return MRF_VERSION;
+}
+
+std::string
+evgMrm::getCommitHash() const {
+    return __COMMIT_HASH;
 }
 
 epicsUInt32

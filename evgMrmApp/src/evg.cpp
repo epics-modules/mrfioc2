@@ -51,6 +51,7 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("DbusStatus", &evgMrm::getDbusStatus);
     OBJECT_PROP1("Version", &evgMrm::getFwVersionStr);
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
+    OBJECT_PROP1("CommitHash", &evgMrm::getCommitHash);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
     {
       bool (evgMrm::*getter)() const = &evgMrm::isSoftSeconds;
@@ -78,5 +79,3 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("Frequency",   &evgMrm::getFrequency);
     OBJECT_PROP1("PLL Lock Status", &evgMrm::pllLocked);
 } OBJECT_END(evgMrm)
-
-
