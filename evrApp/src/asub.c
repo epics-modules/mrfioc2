@@ -147,7 +147,7 @@ long gen_delaygen(aSubRecord *prec)
 
     if (prec->ftva != menuFtypeUCHAR
         ) {
-        errlogPrintf("%s incorrect output type. OUTA (DOUBLE)",
+        errlogPrintf("%s incorrect output type. OUTA (UCHAR)",
                      prec->name);
         return -1;
     }
@@ -169,7 +169,7 @@ long gen_delaygen(aSubRecord *prec)
         errlogPrintf("%s : invalid delay %d check units\n",prec->name,idelay);
         return -1;
     } else if(iwidth>=count) {
-        errlogPrintf("%s : invalid delay %d check units\n",prec->name,iwidth);
+        errlogPrintf("%s : invalid width %d check units\n",prec->name,iwidth);
         return -1;
     } else if(idelay+iwidth>=count) {
         errlogPrintf("%s : delay+width is too long\n",prec->name);
@@ -236,7 +236,7 @@ long gen_bitarraygen(aSubRecord *prec)
 
     for(curlen=0; curlen<numinputs; curlen++) {
         if(intype[curlen]!=menuFtypeUSHORT) {
-            errlogPrintf("%s incorrect input type. %c (UCHAR))\n",
+            errlogPrintf("%s incorrect input type. %c (USHORT))\n",
                          prec->name, 'A'+curlen);
             return -1;
         } else if(inlen[curlen]!=1){
@@ -274,7 +274,7 @@ long gun_bunchTrain(aSubRecord *prec)
     }
 
     if (prec->ftva != menuFtypeUCHAR) {
-        errlogPrintf("%s incorrect output type. OUTA (DOUBLE)",
+        errlogPrintf("%s incorrect output type. OUTA (UCHAR)",
                      prec->name);
         return -1;
     }
@@ -322,4 +322,3 @@ void asub_evr(void) {
 #include <epicsExport.h>
 
 epicsExportRegistrar(asub_evr);
-
