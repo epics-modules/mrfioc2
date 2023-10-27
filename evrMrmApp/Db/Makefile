@@ -21,7 +21,7 @@ DB += evr-tg-300.db
 DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
 
-ifeq ($(shell echo "$(BASE) > 3.14" | bc),1)
+ifndef BASE_3_14
 DB += evr-300.db
 endif
 
