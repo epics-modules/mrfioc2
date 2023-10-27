@@ -31,10 +31,10 @@ DB += cpci-evg-300.db
 DB += vme-evg230.db
 DB += vme-evg230-nsls2.db
 DB += mtca-evm-300.db
-ifeq ($(shell echo "$(BASE) > 3.14" | bc),1)
+ifndef BASE_3_14
 DB += evm-mtca-300.db
 DB += evm-mtca-300-evr.db
-endif
+endif # BASE_3_14
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
