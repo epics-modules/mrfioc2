@@ -21,7 +21,7 @@ DB += evr-tg-300.db
 DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
 
-ifndef BASE_3_14
+ifdef BASE_3_15
 DB += evr-300.db
 endif
 

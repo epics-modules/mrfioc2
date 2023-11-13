@@ -31,10 +31,10 @@ DB += cpci-evg-300.db
 DB += vme-evg230.db
 DB += vme-evg230-nsls2.db
 DB += mtca-evm-300.db
-ifndef BASE_3_14
+ifdef BASE_3_15
 DB += evm-mtca-300.db
 DB += evm-mtca-300-evr.db
-endif # BASE_3_14
+endif
 
 ifneq ($(DEVIOCSTATS),)
 ifeq ($(OS_CLASS), RTEMS)
