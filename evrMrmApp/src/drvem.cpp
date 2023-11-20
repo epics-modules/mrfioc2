@@ -887,6 +887,10 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
 
         // out of bounds
         if(int(ts->nsec-1000000000u)>=evrMrmTimeNSOverflowThreshold) {
+            errlogPrintf("TS out of bounds %08x %08x oflow %d evrMrmTimeNSOverflowThreshold %u diff %d\n",
+                         (unsigned)ts->secPastEpoch, (unsigned)ts->nsec,
+                         int(ts->nsec-1000000000u), evrMrmTimeNSOverflowThreshold,
+                         int(ts->nsec-1000000000u)-evrMrmTimeNSOverflowThreshold);
             timestampValid=0;
             lastInvalidTimestamp=ts->secPastEpoch;
             scanIoRequest(timestampValidChange);
