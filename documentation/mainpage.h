@@ -278,6 +278,8 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @author Luka Krmpotić <luka.krmpotic@cosylab.com>
 
+@author Jerzy Jamróz <jerzy.jamroz@gmail.com>
+
 */
 
 #endif // MAINPAGE_H
