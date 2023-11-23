@@ -252,7 +252,7 @@ struct SB {
  *
  * To quote the manual:
  *   Subrelease ID For production releases the subrelease ID counts up from 00.
- *   For pre-releases this ID is used “backwards” counting down from ff i.e. when
+ *   For pre-releases this ID is used "backwards" counting down from ff i.e. when
  *   approacing release 12000207, we have prereleases 12FF0206, 12FE0206,
  *   12FD0206 etc. in this order.
  */
