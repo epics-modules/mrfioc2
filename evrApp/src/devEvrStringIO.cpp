@@ -101,10 +101,18 @@ try {
     if (ts.secPastEpoch==priv->last_bad)
         return 0;
 
+    // Normalize the timestamp to seconds
+    epicsTimeStamp ts_sec = ts;
+    // Round the timestamp to 1s accuracy
+    if (ts_sec.nsec + 500000000u >= 1000000000u)
+        ts_sec.secPastEpoch += 1;
+
+    ts_sec.nsec = 0; // Remove the ns part
+
     size_t r=epicsTimeToStrftime(prec->val,
                                  sizeof(prec->val),
                                  "%a, %d %b %Y %H:%M:%S %z",
-                                 &ts);
+                                 &ts_sec);
     if(r==0||r==sizeof(prec->val)){
         recGblRecordError(S_dev_badArgument, (void*)prec,
                           "Format string resulted in error");
