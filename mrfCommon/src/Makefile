@@ -11,24 +11,24 @@ MRF_VERSION = $(MRFIOC2_MAJOR_VERSION).$(MRFIOC2_MINOR_VERSION).$(MRFIOC2_MAINTE
 #---------------------
 # Install include files
 #
-INC += mrfBitOps.h
-INC += mrfCommon.h        # Common MRF event system constants & definitions
-INC += mrfCommonIO.h      # Common I/O access macros
-INC += mrfFracSynth.h     # Fractional Synthesizer routines
-INC += linkoptions.h
-INC += mrfcsr.h
+# INC += mrfBitOps.h
+# INC += mrfCommon.h        # Common MRF event system constants & definitions
+# INC += mrfCommonIO.h      # Common I/O access macros
+# INC += mrfFracSynth.h     # Fractional Synthesizer routines
+# INC += linkoptions.h
+# INC += mrfcsr.h
 
-INC += mrf/databuf.h
-INC += mrf/object.h
+# INC += mrf/databuf.h
+# INC += mrf/object.h
 
 INC += mrf/version.h
 
-INC += devObj.h
+# INC += devObj.h
 
-INC += configurationInfo.h
-INC += plx9030.h
-INC += plx9056.h
-INC += latticeEC30.h
+# INC += configurationInfo.h
+# INC += plx9030.h
+# INC += plx9056.h
+# INC += latticeEC30.h
 
 TESTPROD_HOST += objectTest
 objectTest_SRCS += objectTest.c

@@ -4,6 +4,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
+USR_INCLUDES += -I$(TOP)/evrApp/src
+USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
 DBD += evrFRIBSupport.dbd
 
@@ -22,4 +24,3 @@ evrFRIB_LIBS += $(EPICS_BASE_IOC_LIBS)
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-

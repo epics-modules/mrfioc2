@@ -5,10 +5,10 @@ include $(TOP)/configure/CONFIG
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 USR_INCLUDES += -I$(TOP)/evrMrmApp/src
 
-INC += mrmDataBufTx.h
-INC += mrmSeq.h
-INC += mrmpci.h
-INC += sfp.h
+# INC += mrmDataBufTx.h
+# INC += mrmSeq.h
+# INC += mrmpci.h
+# INC += sfp.h
 
 DBD += mrmShared.dbd
 

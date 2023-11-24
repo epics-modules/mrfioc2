@@ -7,7 +7,7 @@ include $(TOP)/configure/CONFIG
 
 USR_INCLUDES += -I$(TOP)/mrmShared/src
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
-
+USR_INCLUDES += -I$(TOP)/evrApp/src
 #=============================
 # Build the modular register map event receiver library
 
@@ -57,4 +57,3 @@ endif
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-
