@@ -8,19 +8,20 @@ include $(TOP)/configure/CONFIG
 USR_INCLUDES += -I$(TOP)/mrmShared/src
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 USR_INCLUDES += -I$(TOP)/evrMrmApp/src
+USR_INCLUDES += -I$(TOP)/evrApp/src
 
 LIBRARY_IOC += evgmrm
 
-INC += evgMrm.h
-INC += evgRegMap.h
-INC += evgAcTrig.h
-INC += evgEvtClk.h
-INC += evgTrigEvt.h
-INC += evgMxc.h
-INC += evgDbus.h
-INC += evgInput.h
-INC += evgOutput.h
-INC += mrmevgseq.h
+# INC += evgMrm.h
+# INC += evgRegMap.h
+# INC += evgAcTrig.h
+# INC += evgEvtClk.h
+# INC += evgTrigEvt.h
+# INC += evgMxc.h
+# INC += evgDbus.h
+# INC += evgInput.h
+# INC += evgOutput.h
+# INC += mrmevgseq.h
 
 SRC_DIRS += ../devSupport 
 
