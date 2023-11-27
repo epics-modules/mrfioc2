@@ -216,7 +216,7 @@ record(mbbo, "$(ON)Src$(s=:)Scale-SP") {
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(ON)Src:Gate-SP") {
+record(mbbo, "$(ON)Src$(s=:)Gate-SP") {
   field( DTYP, "Raw Soft Channel")
   field( OUT , "$(ON)Src-SP PP")
   field( ZRST, "Flip-flop 0")
