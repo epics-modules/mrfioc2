@@ -211,13 +211,33 @@ static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP
      */
     32,  // FP, Univ, BP inputs
 };
-
+// Default MTCA EVR
 static const EVRMRM::Config mtca_evr_300 = {
     "mTCA-EVR-300",
     24, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    18, // Univ outputs (16 via external IFB + 2 handled specially)
+    18, // Univ outputs
+    10, // RB outputs (10 EVRTM)
+    8,  // Backplane outputs
+    2,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    /**
+     * 0 <= N <= 3   : FPInMap
+     * 4 <= N <= 23  : UnivInMap
+     * 24 <= N <= 31 : BPInMap
+     * 48 - 57 : TBInMap (EVRTM)
+     */
+    58, // FP, Univ, BP, TB inputs
+};
+// Obsolte model
+static const EVRMRM::Config mtca_evr_300ifb = {
+    "mTCA-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    4,  // FP outputs
+    18, // Univ outputs
     10, // RB outputs (10 EVRTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
@@ -520,20 +540,21 @@ try {
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
     case PCI_DEVICE_ID_MRF_EVRMTCA300:
         if (mtca_evr_model == NULL)
-            // To be backward compatible, if no EVR type is provided, we assume IFB as this was default beforehand
-            mtca_evr_model = "IFB";
-
-        if (strcmp(mtca_evr_model, "UNIV") == 0) {
-            printf("config for EVR FP UNIV model\n");
+        {
+            // if no EVR type is provided, we assume mtca_evr_300 generic as this was the default beforehand
+            mtca_evr_model = "default";
+            conf = &mtca_evr_300;
+        } else if (strcmp(mtca_evr_model, "UNIV") == 0) {
+            printf("Config for EVR FP UNIV model (mTCA-EVR-300U).\n");
             conf = &mtca_evr_300u;
         } else if (strcmp(mtca_evr_model, "IFB") == 0) {
-            printf("config for EVR FP IFB model\n");
-            conf = &mtca_evr_300;
+            printf("Config for EVR FP IFB model (mTCA-EVR-300IFB - obsolete).\n");
+            conf = &mtca_evr_300ifb;
         } else if (strcmp(mtca_evr_model, "RF") == 0) {
-            printf("config for EVR FP RF model\n");
+            printf("Config for EVR FP RF model (mTCA-EVR-300RF).\n");
             conf = &mtca_evr_300rf;
         } else {
-            printf("Error: mtca_evr_model arg (%s), need 'UNIV', 'RF' or 'IFB' (default).\n", mtca_evr_model);
+            printf("Error: mtca_evr_model arg (%s), needs no param (default) or 'UNIV' or 'RF' or 'IFB'.\n", mtca_evr_model);
             return;
         }
         break;

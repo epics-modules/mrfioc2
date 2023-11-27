@@ -293,10 +293,11 @@ try{
         // additional setup specific to mTCA-EVR-300RF
         if(model().compare("mTCA-EVR-300RF") == 0) {
             // map FPUV2/3 as UNIV18/19 and FPSFP/FPCML as UNIV20/21
-            for (unsigned int i = 18; i <= 21; ++i) {
-                outputs[std::make_pair(OutputFPUniv, i)]
-                    = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
-            }
+            // TODO: To check as probably the .sub file is sufficient.
+            // for (unsigned int i = 18; i <= 21; ++i) {
+            //     outputs[std::make_pair(OutputFPUniv, i)]
+            //         = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
+            // }
 
             // append CML2 to CML5 to existing CMLs
             shortcmls.resize(6);

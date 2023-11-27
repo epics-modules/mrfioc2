@@ -57,7 +57,7 @@
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "PCI id or slot=#",iocshArgString};
-static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: 'UNIV' or 'IFP' or 'RF]",iocshArgString};
+static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: no param (default) or 'UNIV' or 'IFP' or 'RF]",iocshArgString};
 static const iocshArg * const mrmEvrSetupPCIArgs[3] =
 {&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =
