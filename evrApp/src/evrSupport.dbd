@@ -45,3 +45,6 @@ registrar(EVRTime_Registrar)
 registrar(ntpShmRegister)
 driver(ntpShared)
 variable(mrmGTIFEnable, int)
+
+# '@C=..., Code=hweventnum'
+device(int64out,    INST_IO, devINT64UTAGEVR, "UTAG Source")

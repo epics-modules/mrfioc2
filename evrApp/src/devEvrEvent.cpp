@@ -153,7 +153,13 @@ try {
         post_event(prec->val);
 
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStamp(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.nsec;
+#ifdef DBR_UTAG
+        prec->utag = static_cast<epicsUInt64>(ts.utag);
+#endif
     }
 
     return 0;
@@ -197,9 +203,14 @@ try {
 #endif
 
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStamp(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.nsec;
+#ifdef DBR_UTAG
+        prec->utag = static_cast<epicsUInt64>(ts.utag);
+#endif
     }
-
     return 0;
 } catch(std::runtime_error& e) {
     recGblRecordError(S_dev_noDevice, (void*)prec, e.what());
@@ -217,7 +228,13 @@ static long process_event(eventRecord *prec)
     long ret=0;
 try {
     if(prec->tse==epicsTimeEventDeviceTime){
-        p->evr->getTimeStamp(&prec->time,p->event);
+        epicsTimeStampUTag ts;
+        p->evr->getTimeStamp(&ts, p->event);
+        prec->time.secPastEpoch = ts.secPastEpoch;
+        prec->time.nsec = ts.nsec;
+#ifdef DBR_UTAG
+        prec->utag = static_cast<epicsUInt64>(ts.utag);
+#endif
     }
 
     return 0;

@@ -826,18 +826,80 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 
     }
 
-    if(!convertTS(&ts))
+    if(!convertTS<epicsTimeStamp>(&ts))
         return false;
 
     *ret = ts;
     return true;
 }
 
+bool
+EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
+{
+    if(!ret) throw std::runtime_error("Invalid argument");
+    epicsTimeStampUTag tstag;
+
+    SCOPED_LOCK(evrLock);
+    if(timestampValid<TSValidThreshold) return false;
+
+    if(event>0 && event<=255) {
+        // Get time of last event code #
+
+        eventCode *entry=&events[event];
+
+        // Fail if event is not mapped
+        if (!entry->interested ||
+            ( entry->last_sec==0 &&
+              entry->last_evt==0) )
+        {
+            return false;
+        }
+
+        tstag.secPastEpoch=entry->last_sec;
+        tstag.nsec=entry->last_evt;
+        tstag.utag=entry->utag;
+
+
+    } else {
+        // Get current absolute time
+
+        epicsUInt32 ctrl=READ32(base, Control);
+
+        // Latch timestamp
+        WRITE32(base, Control, ctrl|Control_tsltch);
+
+        tstag.secPastEpoch=READ32(base, TSSecLatch);
+        tstag.nsec=READ32(base, TSEvtLatch);
+        tstag.utag = 0;
+
+        /* BUG: There was a firmware bug which occasionally
+         * causes the previous write to fail with a VME bus
+         * error, and 0 the Control register.
+         *
+         * This issues has been fixed in VME firmwares EVRv 5
+         * pre2 and EVG v3 pre2.  Feb 2011
+         */
+        epicsUInt32 ctrl2=READ32(base, Control);
+        if (ctrl2!=ctrl) { // tsltch bit is write-only
+            printf("Get timestamp: control register write fault. Written: %08x, readback: %08x\n",ctrl,ctrl2);
+            WRITE32(base, Control, ctrl);
+        }
+
+    }
+
+    if(!convertTS<epicsTimeStampUTag>(&tstag))
+        return false;
+
+    *ret = tstag;
+    return true;
+}
+
+
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
  */
-bool
-EVRMRM::convertTS(epicsTimeStamp* ts)
+template<typename TimeStampT>
+bool EVRMRM::convertTS(TimeStampT* ts)
 {
     // First validate the input
 
@@ -1361,7 +1423,7 @@ EVRMRM::drain_fifo()
                     active.flushtime.secPastEpoch = evt.last_sec;
                     active.flushtime.nsec = evt.last_evt;
 
-                    active.ok &= convertTS(&active.flushtime);
+                    active.ok &= convertTS<epicsTimeStamp>(&active.flushtime);
 
                     tbuf->doFlush();
                 }
@@ -1563,3 +1625,26 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
         callbackRequest(&evr->timeSrc_cb);
     }
 }
+
+// Get UTAG value for specific event 
+epicsUTag
+EVRMRM::eventUtag(const epicsUInt32 event) const {
+    if(event==0) return 0;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    return events[event].utag;
+}
+
+// Set UTAG value for specific event 
+void
+EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
+    if(event==0) return;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    // set UTAG value to particular event
+    events[event].utag = tag;
+    return;
+}
+

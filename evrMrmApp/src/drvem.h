@@ -72,8 +72,12 @@ struct eventCode {
     size_t waitingfor;
     bool again;
 
+    // UTAG associated to event
+    epicsUTag utag;
+
     eventCode():owner(0), interested(0), last_sec(0)
-            ,last_evt(0), waitingfor(0), again(false)
+            ,last_evt(0), waitingfor(0), again(false),
+            utag(0)
     {
         scanIoInit(&occured);
         // done_cb - initialized in EVRMRM::EVRMRM()
@@ -174,12 +178,14 @@ public:
     virtual IOSCANPVT TimeStampValidEvent() const OVERRIDE FINAL {return timestampValidChange;}
 
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event) OVERRIDE FINAL;
+    virtual bool getTimeStamp(epicsTimeStampUTag *ts,epicsUInt32 event) OVERRIDE FINAL;
     virtual bool getTicks(epicsUInt32 *tks) OVERRIDE FINAL;
     virtual IOSCANPVT eventOccurred(epicsUInt32 event) const OVERRIDE FINAL;
     virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
     virtual void eventNotifyDel(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
 
-    bool convertTS(epicsTimeStamp* ts);
+    template<typename TimeStampT>
+    bool convertTS(TimeStampT* ts);
 
     virtual epicsUInt16 dbus() const OVERRIDE FINAL;
 
@@ -192,6 +198,9 @@ public:
     {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
+
+    virtual epicsUTag eventUtag(const epicsUInt32 event) const OVERRIDE FINAL;
+    virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) OVERRIDE FINAL;
 
     void enableIRQ(void);
 

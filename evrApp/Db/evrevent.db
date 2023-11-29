@@ -26,3 +26,17 @@ record(calc, "$(EN)Cnt-I") {
   field(INPA, "$(EN)Cnt-I NPP")
   field(TSEL, "$(EN)-SP.TIME")
 }
+
+
+# Mapping between hardware event code and a software database event
+#
+# Macros:
+#  EN = record name prefix
+#  OBJ = EVR devObj name
+#  CODE = Event code (hardware)
+record(int64out, "$(EN)-UTag-SP") {
+  field(DTYP, "UTAG Source")
+  field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
+  field(VAL , "0")
+  info(autosaveFields_pass0, "OUT VAL")
+}
