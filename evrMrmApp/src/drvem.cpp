@@ -826,7 +826,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 
     }
 
-    if(!convertTS<epicsTimeStamp>(&ts))
+    if(!convertTS(&ts))
         return false;
 
     *ret = ts;
@@ -898,8 +898,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
  */
-template<typename TimeStampT>
-bool EVRMRM::convertTS(TimeStampT* ts)
+
+bool EVRMRM::convertTS(epicsTimeStamp* ts)
 {
     // First validate the input
 
@@ -1423,7 +1423,7 @@ EVRMRM::drain_fifo()
                     active.flushtime.secPastEpoch = evt.last_sec;
                     active.flushtime.nsec = evt.last_evt;
 
-                    active.ok &= convertTS<epicsTimeStamp>(&active.flushtime);
+                    active.ok &= convertTS(&active.flushtime);
 
                     tbuf->doFlush();
                 }

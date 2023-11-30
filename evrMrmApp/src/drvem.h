@@ -184,8 +184,7 @@ public:
     virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
     virtual void eventNotifyDel(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;
 
-    template<typename TimeStampT>
-    bool convertTS(TimeStampT* ts);
+    bool convertTS(epicsTimeStamp* ts);
 
     virtual epicsUInt16 dbus() const OVERRIDE FINAL;
 
