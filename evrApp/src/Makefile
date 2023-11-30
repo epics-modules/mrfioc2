@@ -28,7 +28,9 @@ evr_SRCS += evrGTIF.cpp
 
 evr_SRCS += devEvrStringIO.cpp
 
+ifdef BASE_7_0
 evr_SRCS += devEvrUtag.cpp
+endif
 
 evr_SRCS += devEvrEvent.cpp
 evr_SRCS += devEvrMapping.cpp
@@ -55,6 +57,9 @@ evrtest_LIBS += evr mrfCommon
 
 evrtest_DBD += base.dbd
 evrtest_DBD += evrSupport.dbd
+ifdef BASE_7_0
+evrtest_DBD += evrSupportBase7.dbd
+endif
 
 ifneq ($(GENERAL_TIME),)
 evrtest_LIBS += generalTime

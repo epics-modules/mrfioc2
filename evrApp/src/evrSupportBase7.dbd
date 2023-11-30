@@ -1,0 +1,2 @@
+# '@C=..., Code=hweventnum'
+device(int64out,    INST_IO, devINT64UTAGEVR, "UTAG Source")
