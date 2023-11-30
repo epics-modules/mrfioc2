@@ -898,8 +898,8 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
  */
-
-bool EVRMRM::convertTS(epicsTimeStamp* ts)
+bool
+EVRMRM::convertTS(epicsTimeStamp* ts)
 {
     // First validate the input
 
