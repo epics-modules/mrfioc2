@@ -38,12 +38,6 @@ enum TSSource {
   typedef epicsUInt32     epicsUTag;
 #endif
 
-struct epicsTimeStampUTag {
-    epicsUInt32    secPastEpoch;   /**< \brief seconds since 0000 Jan 1, 1990 */
-    epicsUInt32    nsec;           /**< \brief nanoseconds within second */
-    epicsUTag      utag;           /**< \brief user defined tag */
-};
-
 /**@brief Base interface for EVRs.
  *
  * This is the interface which the generic EVR device support
@@ -157,7 +151,7 @@ public:
    *@return false When ts could not be updated
    */
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)=0;
-  virtual bool getTimeStamp(epicsTimeStampUTag *ts,epicsUInt32 event) {return 0;};
+  virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event, epicsUTag &utag) {return 0;};
 
   /** Returns the current value of the Timestamp Event Counter
    *@param tks Pointer to be filled with the counter value

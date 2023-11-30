@@ -153,12 +153,10 @@ try {
         post_event(prec->val);
 
     if(prec->tse==epicsTimeEventDeviceTime){
-        epicsTimeStampUTag ts;
-        p->evr->getTimeStamp(&ts, p->event);
-        prec->time.secPastEpoch = ts.secPastEpoch;
-        prec->time.nsec = ts.nsec;
 #ifdef DBR_UTAG
-        prec->utag = static_cast<epicsUInt64>(ts.utag);
+        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
+#else
+        p->evr->getTimeStamp(&prec->time,p->event);
 #endif
     }
 
@@ -203,12 +201,10 @@ try {
 #endif
 
     if(prec->tse==epicsTimeEventDeviceTime){
-        epicsTimeStampUTag ts;
-        p->evr->getTimeStamp(&ts, p->event);
-        prec->time.secPastEpoch = ts.secPastEpoch;
-        prec->time.nsec = ts.nsec;
 #ifdef DBR_UTAG
-        prec->utag = static_cast<epicsUInt64>(ts.utag);
+        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
+#else
+        p->evr->getTimeStamp(&prec->time,p->event);
 #endif
     }
     return 0;
@@ -228,12 +224,10 @@ static long process_event(eventRecord *prec)
     long ret=0;
 try {
     if(prec->tse==epicsTimeEventDeviceTime){
-        epicsTimeStampUTag ts;
-        p->evr->getTimeStamp(&ts, p->event);
-        prec->time.secPastEpoch = ts.secPastEpoch;
-        prec->time.nsec = ts.nsec;
 #ifdef DBR_UTAG
-        prec->utag = static_cast<epicsUInt64>(ts.utag);
+        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
+#else
+        p->evr->getTimeStamp(&prec->time,p->event);
 #endif
     }
 

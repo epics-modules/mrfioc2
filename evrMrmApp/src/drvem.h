@@ -178,7 +178,7 @@ public:
     virtual IOSCANPVT TimeStampValidEvent() const OVERRIDE FINAL {return timestampValidChange;}
 
     virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event) OVERRIDE FINAL;
-    virtual bool getTimeStamp(epicsTimeStampUTag *ts,epicsUInt32 event) OVERRIDE FINAL;
+    virtual bool getTimeStamp(epicsTimeStamp *ts, epicsUInt32 event, epicsUTag &utag) OVERRIDE FINAL;
     virtual bool getTicks(epicsUInt32 *tks) OVERRIDE FINAL;
     virtual IOSCANPVT eventOccurred(epicsUInt32 event) const OVERRIDE FINAL;
     virtual void eventNotifyAdd(epicsUInt32, eventCallback, void*) OVERRIDE FINAL;

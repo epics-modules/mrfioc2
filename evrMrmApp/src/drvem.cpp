@@ -834,10 +834,10 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
+EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 {
     if(!ret) throw std::runtime_error("Invalid argument");
-    epicsTimeStampUTag tstag;
+    epicsTimeStamp ts;
 
     SCOPED_LOCK(evrLock);
     if(timestampValid<TSValidThreshold) return false;
@@ -855,9 +855,9 @@ EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
             return false;
         }
 
-        tstag.secPastEpoch=entry->last_sec;
-        tstag.nsec=entry->last_evt;
-        tstag.utag=entry->utag;
+        ts.secPastEpoch=entry->last_sec;
+        ts.nsec=entry->last_evt;
+        utag=entry->utag;
 
 
     } else {
@@ -868,9 +868,9 @@ EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
         // Latch timestamp
         WRITE32(base, Control, ctrl|Control_tsltch);
 
-        tstag.secPastEpoch=READ32(base, TSSecLatch);
-        tstag.nsec=READ32(base, TSEvtLatch);
-        tstag.utag = 0;
+        ts.secPastEpoch=READ32(base, TSSecLatch);
+        ts.nsec=READ32(base, TSEvtLatch);
+        utag = 0;
 
         /* BUG: There was a firmware bug which occasionally
          * causes the previous write to fail with a VME bus
@@ -887,10 +887,10 @@ EVRMRM::getTimeStamp(epicsTimeStampUTag *ret,epicsUInt32 event)
 
     }
 
-    if(!convertTS<epicsTimeStampUTag>(&tstag))
+    if(!convertTS(&ts))
         return false;
 
-    *ret = tstag;
+    *ret = ts;
     return true;
 }
 
@@ -1647,4 +1647,3 @@ EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
     events[event].utag = tag;
     return;
 }
-
