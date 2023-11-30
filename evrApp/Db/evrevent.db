@@ -38,5 +38,5 @@ record(int64out, "$(EN)UTag-SP") {
   field(DTYP, "UTAG Source")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
   field(VAL , "0")
-  info(autosaveFields_pass0, "OUT VAL")
+  info(autosaveFields_pass0, "OUT")
 }
