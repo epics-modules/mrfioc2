@@ -775,65 +775,6 @@ EVRMRM::TimeStampValid() const
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
-{
-    if(!ret) throw std::runtime_error("Invalid argument");
-    epicsTimeStamp ts;
-
-    SCOPED_LOCK(evrLock);
-    if(timestampValid<TSValidThreshold) return false;
-
-    if(event>0 && event<=255) {
-        // Get time of last event code #
-
-        eventCode *entry=&events[event];
-
-        // Fail if event is not mapped
-        if (!entry->interested ||
-            ( entry->last_sec==0 &&
-              entry->last_evt==0) )
-        {
-            return false;
-        }
-
-        ts.secPastEpoch=entry->last_sec;
-        ts.nsec=entry->last_evt;
-
-
-    } else {
-        // Get current absolute time
-
-        epicsUInt32 ctrl=READ32(base, Control);
-
-        // Latch timestamp
-        WRITE32(base, Control, ctrl|Control_tsltch);
-
-        ts.secPastEpoch=READ32(base, TSSecLatch);
-        ts.nsec=READ32(base, TSEvtLatch);
-
-        /* BUG: There was a firmware bug which occasionally
-         * causes the previous write to fail with a VME bus
-         * error, and 0 the Control register.
-         *
-         * This issues has been fixed in VME firmwares EVRv 5
-         * pre2 and EVG v3 pre2.  Feb 2011
-         */
-        epicsUInt32 ctrl2=READ32(base, Control);
-        if (ctrl2!=ctrl) { // tsltch bit is write-only
-            printf("Get timestamp: control register write fault. Written: %08x, readback: %08x\n",ctrl,ctrl2);
-            WRITE32(base, Control, ctrl);
-        }
-
-    }
-
-    if(!convertTS(&ts))
-        return false;
-
-    *ret = ts;
-    return true;
-}
-
-bool
 EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 {
     if(!ret) throw std::runtime_error("Invalid argument");
@@ -870,7 +811,7 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 
         ts.secPastEpoch=READ32(base, TSSecLatch);
         ts.nsec=READ32(base, TSEvtLatch);
-        utag = 0;
+        utag=0;
 
         /* BUG: There was a firmware bug which occasionally
          * causes the previous write to fail with a VME bus
@@ -894,6 +835,13 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
     return true;
 }
 
+// The backward compatibility wrapper for the epics-base without UTAG support.
+bool
+EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
+{
+    epicsUTag fake_utag = 0;
+    return EVRMRM::getTimeStamp(ret, event, fake_utag);
+}
 
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.
  @returns false if conversion failed
