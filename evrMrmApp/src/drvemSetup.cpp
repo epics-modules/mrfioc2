@@ -233,12 +233,12 @@ static const EVRMRM::Config mtca_evr_300 = {
 };
 // Obsolte model
 static const EVRMRM::Config mtca_evr_300ifb = {
-    "mTCA-EVR-300",
-    24, // pulse generators
+    "mTCA-EVR-300IFB",
+    16, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    18, // Univ outputs
-    10, // RB outputs (10 EVRTM)
+    0,  // FPUV outputs
+    16, // RB outputs  (via external IFB)
     8,  // Backplane outputs
     2,  // FP Delay outputs
     0,  // CML/GTX outputs
@@ -247,9 +247,8 @@ static const EVRMRM::Config mtca_evr_300ifb = {
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
      * 24 <= N <= 31 : BPInMap
-     * 48 - 57 : TBInMap (EVRTM)
      */
-    58, // FP, Univ, BP, TB inputs
+    32,  // FP, Univ, BP inputs
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
