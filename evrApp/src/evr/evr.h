@@ -34,8 +34,9 @@ enum TSSource {
   TSSourceDBus4=2
 };
 
+// Backward compatibility if UTAG is not supported by the epics-base.
 #ifndef DBR_UTAG
-  typedef epicsUInt32     epicsUTag;
+  typedef epicsUInt64     epicsUTag;
 #endif
 
 /**@brief Base interface for EVRs.
