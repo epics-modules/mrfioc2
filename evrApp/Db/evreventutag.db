@@ -1,0 +1,22 @@
+
+# Macros:
+#  EN = record name prefix
+#  OBJ = EVR devObj name
+#  CODE = Event code (hardware)
+
+record(int64out, "$(EN)-SP") {
+  field(DTYP, "EVR Event Utag")
+  field(SCAN, "I/O Intr")
+  field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
+  field(TSE , "-2") # from device support
+  field(FLNK, "$(EN)Cnt-I")
+  info(autosaveFields_pass0, "OUT")
+}
+
+record(calc, "$(EN)Cnt-I") {
+  field(SDIS, "$(EN)-SP")
+  field(DISV, "0")
+  field(CALC, "A+1")
+  field(INPA, "$(EN)Cnt-I NPP")
+  field(TSEL, "$(EN)-SP.TIME")
+}

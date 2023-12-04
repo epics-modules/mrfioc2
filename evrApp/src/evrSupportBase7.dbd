@@ -1,2 +1,3 @@
 # '@C=..., Code=hweventnum'
-device(int64out,    INST_IO, devINT64UTAGEVR, "UTAG Source")
+# device(int64out,    INST_IO, devINT64UTAGEVR, "UTAG Source")
+device(int64out,    INST_IO, devI64OEventUtagEVR, "EVR Event Utag")
