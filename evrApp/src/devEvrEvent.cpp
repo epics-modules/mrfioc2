@@ -43,7 +43,6 @@ struct priv {
     EVR* evr;
     char obj[30];
     int event;
-    epicsUTag utag;
 #ifdef USE_EVENT_NAMES
     EVENTPVT handle;
     char prev[sizeof( ((stringoutRecord*)0)->val)];
@@ -154,14 +153,10 @@ try {
         post_event(p->event);
 
     if(prec->tse==epicsTimeEventDeviceTime){
-#ifdef DBR_UTAG
-    // Inject the value as the UTAG reference
-    p->utag = static_cast<epicsUTag>(prec->val);
-    p->evr->eventUtagSet(p->event, p->utag);
-    prec->utag = static_cast<epicsUInt64>(p->utag);
-    p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
-#else
     p->evr->getTimeStamp(&prec->time,p->event);
+#ifdef DBR_UTAG
+    prec->utag = static_cast<epicsUTag>(prec->val);
+    p->evr->setUtag(prec->utag, p->event);
 #endif
     }
 
@@ -206,10 +201,9 @@ try {
 #endif
 
     if(prec->tse==epicsTimeEventDeviceTime){
+    p->evr->getTimeStamp(&prec->time,p->event);
 #ifdef DBR_UTAG
-        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
-#else
-        p->evr->getTimeStamp(&prec->time,p->event);
+    prec->utag = p->evr->getUtag(p->event);
 #endif
     }
 
@@ -230,10 +224,9 @@ static long process_event(eventRecord *prec)
     long ret=0;
 try {
     if(prec->tse==epicsTimeEventDeviceTime){
+    p->evr->getTimeStamp(&prec->time,p->event);
 #ifdef DBR_UTAG
-        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
-#else
-        p->evr->getTimeStamp(&prec->time,p->event);
+    prec->utag = p->evr->getUtag(p->event);
 #endif
     }
 

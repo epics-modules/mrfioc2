@@ -1576,7 +1576,7 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 
 // Get UTAG value for specific event 
 epicsUTag
-EVRMRM::eventUtag(const epicsUInt32 event) const {
+EVRMRM::getUtag(const epicsUInt32 event) const {
     if(event==0) return 0;
     else if(event>255) throw std::runtime_error("Event code out of range");
     SCOPED_LOCK(evrLock);
@@ -1586,7 +1586,7 @@ EVRMRM::eventUtag(const epicsUInt32 event) const {
 
 // Set UTAG value for specific event 
 void
-EVRMRM::eventUtagSet(const epicsUInt32 event, epicsUTag tag) {
+EVRMRM::setUtag(epicsUTag tag, const epicsUInt32 event) {
     if(event==0) return;
     else if(event>255) throw std::runtime_error("Event code out of range");
     SCOPED_LOCK(evrLock);

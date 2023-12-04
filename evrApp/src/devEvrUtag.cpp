@@ -107,7 +107,7 @@ try {
 
     // Inject the value as the UTAG reference
     p->utag = static_cast<epicsUTag>(prec->val);
-    p->evr->eventUtagSet(p->event, p->utag);
+    p->evr->setUtag(p->utag, p->event);
 #ifdef DBR_UTAG
     prec->utag = static_cast<epicsUInt64>(p->utag);
 #endif

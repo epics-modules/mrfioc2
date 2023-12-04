@@ -202,8 +202,8 @@ public:
    * Get/Set UTAG value for specific event
    */
   /*@{*/
-  virtual epicsUTag eventUtag(const epicsUInt32 event) const {return 0;};
-  virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) {};
+  virtual epicsUTag getUtag(const epicsUInt32 event) const {return 0;};
+  virtual void setUtag(epicsUTag tag, const epicsUInt32 event) {};
   /*@}*/
 
 private:

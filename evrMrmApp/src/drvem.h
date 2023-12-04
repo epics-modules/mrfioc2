@@ -198,8 +198,8 @@ public:
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
 
-    virtual epicsUTag eventUtag(const epicsUInt32 event) const OVERRIDE FINAL;
-    virtual void eventUtagSet(const epicsUInt32 event, epicsUTag tag) OVERRIDE FINAL;
+    virtual epicsUTag getUtag(const epicsUInt32 event) const OVERRIDE FINAL;
+    virtual void setUtag(epicsUTag tag, const epicsUInt32 event) OVERRIDE FINAL;
 
     void enableIRQ(void);
 
