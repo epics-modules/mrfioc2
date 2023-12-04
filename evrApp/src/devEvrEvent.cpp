@@ -43,6 +43,7 @@ struct priv {
     EVR* evr;
     char obj[30];
     int event;
+    epicsUTag utag;
 #ifdef USE_EVENT_NAMES
     EVENTPVT handle;
     char prev[sizeof( ((stringoutRecord*)0)->val)];
@@ -149,14 +150,18 @@ static long process_longout(longoutRecord *prec)
     long ret=0;
 try {
 
-    if (prec->val>=0 && prec->val<=255)
-        post_event(prec->val);
+    if (p->event>=0 && p->event<=255)
+        post_event(p->event);
 
     if(prec->tse==epicsTimeEventDeviceTime){
 #ifdef DBR_UTAG
-        p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
+    // Inject the value as the UTAG reference
+    p->utag = static_cast<epicsUTag>(prec->val);
+    p->evr->eventUtagSet(p->event, p->utag);
+    prec->utag = static_cast<epicsUInt64>(p->utag);
+    p->evr->getTimeStamp(&prec->time,p->event,prec->utag);
 #else
-        p->evr->getTimeStamp(&prec->time,p->event);
+    p->evr->getTimeStamp(&prec->time,p->event);
 #endif
     }
 
