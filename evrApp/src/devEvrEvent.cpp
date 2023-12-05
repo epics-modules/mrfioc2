@@ -149,16 +149,11 @@ static long process_longout(longoutRecord *prec)
     long ret=0;
 try {
 
-    if (p->event>=0 && p->event<=255)
-        post_event(p->event);
+    if (prec->val>=0 && prec->val<=255)
+        post_event(prec->val);
 
     if(prec->tse==epicsTimeEventDeviceTime){
-    p->evr->getTimeStamp(&prec->time,p->event);
-#ifdef DBR_UTAG
-    prec->utag = static_cast<epicsUTag>(prec->val);
-    p->evr->setUtag(prec->utag, p->event);
-    std::cout << "evrevent.cpp " << " p->event " << p->event << " prec->val " << prec->val << " prec->utag " << prec->utag << std::endl;
-#endif
+        p->evr->getTimeStamp(&prec->time,p->event);
     }
 
     return 0;
@@ -202,10 +197,7 @@ try {
 #endif
 
     if(prec->tse==epicsTimeEventDeviceTime){
-    p->evr->getTimeStamp(&prec->time,p->event);
-#ifdef DBR_UTAG
-    prec->utag = p->evr->getUtag(p->event);
-#endif
+        p->evr->getTimeStamp(&prec->time,p->event);
     }
 
     return 0;
@@ -225,10 +217,7 @@ static long process_event(eventRecord *prec)
     long ret=0;
 try {
     if(prec->tse==epicsTimeEventDeviceTime){
-    p->evr->getTimeStamp(&prec->time,p->event);
-#ifdef DBR_UTAG
-    prec->utag = p->evr->getUtag(p->event);
-#endif
+        p->evr->getTimeStamp(&prec->time,p->event);
     }
 
     return 0;
