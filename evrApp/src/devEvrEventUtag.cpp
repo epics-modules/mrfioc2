@@ -1,3 +1,14 @@
+/*************************************************************************\
+* Copyright (c) 2023 European Spallation Source ERIC (ESS), Lund, Sweden
+* mrfioc2 is distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
+/*
+ * Date:    5.12.2023
+ * Authors: Joao Paulo Martins <joaopaulosm@gmail.com>
+ *          Jerzy Jamroz <jerzy.jamroz@gmail.com>
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <epicsExport.h>
