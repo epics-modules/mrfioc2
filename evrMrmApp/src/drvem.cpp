@@ -775,7 +775,7 @@ EVRMRM::TimeStampValid() const
 }
 
 bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
+EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
 {
     if(!ret) throw std::runtime_error("Invalid argument");
     epicsTimeStamp ts;
@@ -798,7 +798,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 
         ts.secPastEpoch=entry->last_sec;
         ts.nsec=entry->last_evt;
-        utag=entry->utag;
 
 
     } else {
@@ -811,7 +810,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 
         ts.secPastEpoch=READ32(base, TSSecLatch);
         ts.nsec=READ32(base, TSEvtLatch);
-        utag=0;
 
         /* BUG: There was a firmware bug which occasionally
          * causes the previous write to fail with a VME bus
@@ -833,14 +831,6 @@ EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event, epicsUTag &utag)
 
     *ret = ts;
     return true;
-}
-
-// The backward compatibility wrapper for the epics-base without UTAG support.
-bool
-EVRMRM::getTimeStamp(epicsTimeStamp *ret,epicsUInt32 event)
-{
-    epicsUTag fake_utag = 0;
-    return EVRMRM::getTimeStamp(ret, event, fake_utag);
 }
 
 /** @brief In place conversion between raw posix sec+ticks to EPICS sec+nsec.

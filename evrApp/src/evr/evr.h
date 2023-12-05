@@ -152,7 +152,6 @@ public:
    *@return false When ts could not be updated
    */
   virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event)=0;
-  virtual bool getTimeStamp(epicsTimeStamp *ts,epicsUInt32 event, epicsUTag &utag) {return 0;};
 
   /** Returns the current value of the Timestamp Event Counter
    *@param tks Pointer to be filled with the counter value
