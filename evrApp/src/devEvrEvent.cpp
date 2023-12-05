@@ -157,6 +157,7 @@ try {
 #ifdef DBR_UTAG
     prec->utag = static_cast<epicsUTag>(prec->val);
     p->evr->setUtag(prec->utag, p->event);
+    std::cout << "evrevent.cpp " << " p->event " << p->event << " prec->val " << prec->val << " prec->utag " << prec->utag << std::endl;
 #endif
     }
 

@@ -14,8 +14,9 @@ record(int64out, "$(EN)-SP") {
 }
 
 record(calc, "$(EN)Cnt-I") {
-  field(SDIS, "$(EN)-SP")
-  field(DISV, "0")
+  field(DESC, "TS and UTAG source")
+  #field(SDIS, "$(EN)-SP")
+  #field(DISV, "0")
   field(CALC, "A+1")
   field(INPA, "$(EN)Cnt-I NPP")
   field(TSEL, "$(EN)-SP.TIME")

@@ -29,7 +29,7 @@ evr_SRCS += evrGTIF.cpp
 evr_SRCS += devEvrStringIO.cpp
 
 ifdef BASE_7_0
-evr_SRCS += devEvrUtag.cpp
+evr_SRCS += devEvrEventUtag.cpp
 endif
 
 evr_SRCS += devEvrEvent.cpp

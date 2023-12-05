@@ -1,3 +1,4 @@
 # '@C=..., Code=hweventnum'
 # device(int64out,    INST_IO, devINT64UTAGEVR, "UTAG Source")
 device(int64out,    INST_IO, devI64OEventUtagEVR, "EVR Event Utag")
+device(event,       INST_IO, devEVEventUtagEVR,   "EVR Event Utag")
