@@ -20,11 +20,6 @@
 #include <stdexcept>
 #include <string>
 
-#if defined(EPICS_VERSION_INT) && EPICS_VERSION_INT >= VERSION_INT(3, 15, 1, 0)
-// Use new API allowing events to have name strings instead of just numbers
-#define USE_EVENT_NAMES
-#endif
-
 /***************** Event *****************/
 
 struct priv
@@ -153,12 +148,10 @@ static long process_int64out(int64outRecord *prec)
         if (prec->tse == epicsTimeEventDeviceTime)
         {
             p->evr->getTimeStamp(&prec->time, p->event);
-            // #ifdef DBR_UTAG
+#ifdef DBR_UTAG
             prec->utag = static_cast<epicsUTag>(prec->val);
             p->evr->setUtag(prec->utag, p->event);
-            std::cout << "devEvrEventUtag.cpp "
-                      << " p->event " << p->event << " prec->val " << prec->val << " prec->utag " << prec->utag << std::endl;
-            // #endif
+#endif
         }
 
         return 0;

@@ -5,8 +5,8 @@
  *
  * Author: Michael Davidsaver <mdavidsaver@gmail.com>
  */
-#ifndef SRC_EVR_FRIB_H
-#define SRC_EVR_FRIB_H
+#ifndef EVR_FRIB_H
+#define EVR_FRIB_H
 
 #include <stdexcept>
 #include <vector>
@@ -217,4 +217,4 @@ struct EVRFRIB : public mrf::ObjectInst<EVRFRIB, EVR>
 };
 
 
-#endif /* SRC_EVR_FRIB_H */
+#endif // EVR_FRIB_H

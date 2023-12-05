@@ -1,3 +1,6 @@
+# Usage of "evreventutag.db"
+## Timestaming + UTAG support: import "evreventutag.db" instead of "evrevent.db".
+## Timestaming support only: import "evrevent.db" and ignore "evreventutag.db".
 
 # Macros:
 #  EN = record name prefix
