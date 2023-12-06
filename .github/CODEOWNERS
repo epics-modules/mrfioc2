@@ -2,4 +2,4 @@
 
 # Sets the relevant support.
 evm-mtca-300*.substitutions @jerzyjamroz
-evr-300.substitutions @jerzyjamroz
+evr-mtca-300*.substitutions @jerzyjamroz
