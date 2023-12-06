@@ -179,7 +179,7 @@ static const EVRMRM::Config mtca_evr_300rf = {
     24, // pulse generators
     8,  // prescalers
     0,  // FP outputs
-    2,  // FPUV outputs (only FPUV0/1, mapped to FrontUnivOut0/1)
+    2,  // FPUV outputs (only FPUV0/1, mapped to FrontUnivOut0/1, FPUV2/3 mapped in the code to FrontUnivOut18/19)
     10, // RB outputs  (RTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
@@ -217,7 +217,7 @@ static const EVRMRM::Config mtca_evr_300 = {
     24, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    18, // Univ outputs
+    16, // Univ outputs
     10, // RB outputs (10 EVRTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
