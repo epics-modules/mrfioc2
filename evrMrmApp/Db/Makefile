@@ -22,7 +22,7 @@ DB += evr-mtca-300.db
 DB += evr-pcie-300dc.db
 
 ifdef BASE_3_15
-DB += evr-300.db
+DB += evr-mtca-300u.db
 endif
 
 ifneq ($(DEVIOCSTATS),)
