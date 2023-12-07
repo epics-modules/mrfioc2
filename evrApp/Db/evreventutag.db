@@ -11,6 +11,7 @@ record(int64out, "$(EN)-SP") {
   field(DTYP, "EVR Event Utag")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
+  field(VAL , "0")
   field(TSE , "-2") # from device support
   field(FLNK, "$(EN)Cnt-I")
   info(autosaveFields_pass0, "OUT")
