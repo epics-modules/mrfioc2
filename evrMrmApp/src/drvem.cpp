@@ -356,6 +356,10 @@ try{
     if(busConfig.busType==busType_pci)
         mrf::SPIDevice::registerDev(n+":FLASH", mrf::SPIDevice(this, 1));
 
+    #ifndef DBR_UTAG
+    std::cout << "WARNING EVRMRM::EVRMRM epicsUTag not supported." << std::endl;
+    #endif
+
 } catch (std::exception& e) {
     printf("Aborting EVR initializtion: %s\n", e.what());
     cleanup();
