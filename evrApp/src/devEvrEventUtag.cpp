@@ -20,7 +20,6 @@
 #include <errlog.h>
 
 #include <int64outRecord.h>
-#include <eventRecord.h>
 #include <epicsVersion.h>
 
 #include "devObj.h"
@@ -115,8 +114,7 @@ static long del_record(struct dbCommon *prec)
     return ret;
 }
 
-static long
-get_ioint_info(int, dbCommon *prec, IOSCANPVT *io)
+static long get_ioint_info(int, dbCommon *prec, IOSCANPVT *io)
 {
     if (!prec->dpvt)
         return S_db_errArg;
@@ -180,43 +178,9 @@ static long process_int64out(int64outRecord *prec)
     return ret;
 }
 
-static long process_event(eventRecord *prec)
-{
-    priv *p = static_cast<priv *>(prec->dpvt);
-    long ret = 0;
-    try
-    {
-        if (prec->tse == epicsTimeEventDeviceTime)
-        {
-            p->evr->getTimeStamp(&prec->time, p->event);
-#ifdef DBR_UTAG
-            prec->utag = p->evr->getUtag(p->event);
-#endif
-        }
-
-        return 0;
-    }
-    catch (std::runtime_error &e)
-    {
-        recGblRecordError(S_dev_noDevice, (void *)prec, e.what());
-        ret = S_dev_noDevice;
-    }
-    catch (std::exception &e)
-    {
-        recGblRecordError(S_db_noMemory, (void *)prec, e.what());
-        ret = S_db_noMemory;
-    }
-    return ret;
-}
-
 static long add_int64out(struct dbCommon *precord)
 {
     return add_record(precord, &((struct int64outRecord *)precord)->out);
-}
-
-static long add_event(struct dbCommon *precord)
-{
-    return add_record(precord, &((struct eventRecord *)precord)->inp);
 }
 
 dsxt dxtI64OEventUtagEVR = {add_int64out, del_record};
@@ -228,17 +192,7 @@ static common_dset devI64OEventUtagEVR = {
     dset_cast(&process_int64out),
     NULL};
 
-dsxt dxtEVEventUtagEVR = {add_event, del_record};
-static common_dset devEVEventUtagEVR = {
-    6, NULL,
-    dset_cast(&init_dset<&dxtEVEventUtagEVR>),
-    (DEVSUPFUN)init_record_empty,
-    (DEVSUPFUN)&get_ioint_info,
-    dset_cast(&process_event),
-    NULL};
-
 extern "C"
 {
     epicsExportAddress(dset, devI64OEventUtagEVR);
-    epicsExportAddress(dset, devEVEventUtagEVR);
 }
