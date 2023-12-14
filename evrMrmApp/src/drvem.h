@@ -73,15 +73,18 @@ struct eventCode {
     bool again;
 
     // UTAG associated to event
+#ifdef DBR_UTAG
     epicsUTag utag;
-
+#endif
     eventCode():owner(0), interested(0), last_sec(0)
-            ,last_evt(0), waitingfor(0), again(false),
-            utag(0)
+            ,last_evt(0), waitingfor(0), again(false)
+#ifdef DBR_UTAG
+            ,utag(0)
+#endif
     {
         scanIoInit(&occured);
         // done_cb - initialized in EVRMRM::EVRMRM()
-  }
+    }
 };
 
 /**@brief Modular Register Map Event Receivers
@@ -196,10 +199,10 @@ public:
     {SCOPED_LOCK(evrLock);return count_FIFO_sw_overrate;}
     virtual epicsUInt32 FIFOEvtCount() const OVERRIDE FINAL {return count_fifo_events;}
     virtual epicsUInt32 FIFOLoopCount() const OVERRIDE FINAL {return count_fifo_loops;}
-
+#ifdef DBR_UTAG
     virtual epicsUTag getUtag(const epicsUInt32 event) const OVERRIDE FINAL;
     virtual void setUtag(epicsUTag tag, const epicsUInt32 event) OVERRIDE FINAL;
-
+#endif
     void enableIRQ(void);
 
     bool dcEnabled() const;

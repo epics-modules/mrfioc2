@@ -1568,6 +1568,7 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
     }
 }
 
+#ifdef DBR_UTAG
 // Get UTAG value for specific event 
 epicsUTag
 EVRMRM::getUtag(const epicsUInt32 event) const {
@@ -1589,3 +1590,4 @@ EVRMRM::setUtag(epicsUTag tag, const epicsUInt32 event) {
     events[event].utag = tag;
     return;
 }
+#endif

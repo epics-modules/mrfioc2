@@ -34,11 +34,6 @@ enum TSSource {
   TSSourceDBus4=2
 };
 
-// Backward compatibility if UTAG is not supported by the epics-base.
-#ifndef DBR_UTAG
-  typedef epicsUInt64     epicsUTag;
-#endif
-
 /**@brief Base interface for EVRs.
  *
  * This is the interface which the generic EVR device support
@@ -196,6 +191,7 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
+#ifdef DBR_UTAG
   /**\defgroup utagman UTAG Management
    *
    * Get/Set UTAG value for specific event
@@ -204,6 +200,7 @@ public:
   virtual epicsUTag getUtag(const epicsUInt32 event) const {return 0;};
   virtual void setUtag(epicsUTag tag, const epicsUInt32 event) {};
   /*@}*/
+#endif
 
 private:
   bus_configuration busConfiguration;
