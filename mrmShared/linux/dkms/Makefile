@@ -15,7 +15,7 @@ include CONFIG
 RPM_VERSION = $(DRV_VERSION)
 
 
-RPM_FILE = $(DRV_NAME)-$(RPM_VERSION)-1dkms.noarch.rpm
+RPM_FILE = $(DRV_NAME)-dkms-$(RPM_VERSION)-1.noarch.rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -31,6 +31,7 @@ SED_SUBSTS += s/@@DRV_VERSION@@/$(DRV_VERSION)/g;
 SED_SUBSTS += s/@@DRV_NAME@@/$(DRV_NAME)/g;
 SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
 SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
+SED_SUBSTS += s/@@DRV_RELEASE@@/$(DRV_RELEASE)/g;
 
 %: %.in CONFIG $(SRCDIR)/VERSION
 	sed '$(SED_SUBSTS)' $< >$@

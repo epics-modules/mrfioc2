@@ -932,4 +932,3 @@ static void mrf_exit_module(void)
         pci_unregister_driver(&mrf_driver);
 }
 module_exit(mrf_exit_module);
-

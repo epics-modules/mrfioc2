@@ -1,10 +1,14 @@
-Summary: Kernel driver for MRF Event Receiver
-Name: @@DRV_NAME@@
+Summary: DKMS kernel module - mrfioc2 driver
+
+Name: @@DRV_NAME@@-dkms
 Version: @@RPM_VERSION@@
-Release: 1dkms
+Release: @@DRV_RELEASE@@
+
+Vendor: EPICS Community
 License: GPL
 Group: System Environment/Kernel
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
+BuildRequires: autoconf libtool gcc gcc-c++
 BuildArch: noarch
 Requires: dkms
 Requires: udev
@@ -50,3 +54,9 @@ dkms remove --all -m %{name} -v %{version} --rpm_safe_upgrade
 
 %postun
 rmdir /usr/src/%{name}-%{version}
+
+%changelog
+* Wed Jan 24 2024 Jerzy Jamroz <jerzy.jamroz@gmail.com> - 2-1
+- Build adjustments.
+- Group rw access for the pci resource0.
+- AER handling functions.

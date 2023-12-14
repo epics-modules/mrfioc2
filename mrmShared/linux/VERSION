@@ -1,3 +1,5 @@
 # Version definition for driver
 
-DRV_VERSION = 1
+# 20240124 Release
+DRV_VERSION = 2
+DRV_RELEASE = 1
