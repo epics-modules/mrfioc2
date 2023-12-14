@@ -191,6 +191,17 @@ public:
   epicsUInt32 SourceTSraw() const{return (TSSource)SourceTS();};
   /*@}*/
 
+#ifdef DBR_UTAG
+  /**\defgroup utagman UTAG Management
+   *
+   * Get/Set UTAG value for specific event
+   */
+  /*@{*/
+  virtual epicsUTag getUtag(const epicsUInt32 event) const {return 0;};
+  virtual void setUtag(epicsUTag tag, const epicsUInt32 event) {};
+  /*@}*/
+#endif
+
 private:
   bus_configuration busConfiguration;
 }; // class EVR

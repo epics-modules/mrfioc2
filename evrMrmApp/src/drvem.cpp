@@ -356,6 +356,10 @@ try{
     if(busConfig.busType==busType_pci)
         mrf::SPIDevice::registerDev(n+":FLASH", mrf::SPIDevice(this, 1));
 
+    #ifndef DBR_UTAG
+    std::cout << "WARNING EVRMRM::EVRMRM epicsUTag not supported." << std::endl;
+    #endif
+
 } catch (std::exception& e) {
     printf("Aborting EVR initializtion: %s\n", e.what());
     cleanup();
@@ -1563,3 +1567,27 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
         callbackRequest(&evr->timeSrc_cb);
     }
 }
+
+#ifdef DBR_UTAG
+// Get UTAG value for specific event 
+epicsUTag
+EVRMRM::getUtag(const epicsUInt32 event) const {
+    if(event==0) return 0;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    return events[event].utag;
+}
+
+// Set UTAG value for specific event 
+void
+EVRMRM::setUtag(epicsUTag tag, const epicsUInt32 event) {
+    if(event==0) return;
+    else if(event>255) throw std::runtime_error("Event code out of range");
+    SCOPED_LOCK(evrLock);
+
+    // set UTAG value to particular event
+    events[event].utag = tag;
+    return;
+}
+#endif

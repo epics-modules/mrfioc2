@@ -532,13 +532,13 @@ record(bo, "$(ON)BunchTrain$(s=:)Ena-SP") {
 
 record(longout, "$(ON)BunchTrain$(s=:)Size-SP") {
   field(PINI, "YES")
-  field(OUT , "$(ON)BunchTrain$(s=:)ASub_.A PP")
+  field(OUT , "$(ON)BunchTrain-ASub_.A PP")
   field(UDF , "0")
   field(VAL , "1")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(aSub, "$(ON)BunchTrain$(s=:)ASub_") {
+record(aSub, "$(ON)BunchTrain-ASub_") {
   field(SDIS, "$(ON)BunchTrain$(s=:)Ena-SP")
   field(DISV, "0")
   field(SNAM, "Bunch Train")

@@ -14,6 +14,9 @@ DB += evrcml.db
 DB += evrcmlgun.db
 DB += evrcmlextra.db
 DB += evrevent.db
+ifdef BASE_7_0
+DB += evreventutag.db
+endif
 DB += evrevent-cycle.db
 DB += evrsoftgate.db
 DB += evralias.db
