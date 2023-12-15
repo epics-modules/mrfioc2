@@ -35,8 +35,7 @@ std::ostream& operator<<(std::ostream& strm, const MRFVersion& ver)
     strm<<std::hex<<ver.firmware()
         <<std::hex<<std::setfill('0')<<std::setw(2)<<ver.revision()
         <<'.'
-        <<((ver.subrelease()<0) ? "-" : "")
-        <<abs(ver.subrelease());
+        <<ver.subrelease();
     return strm;
 }
 
