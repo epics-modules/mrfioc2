@@ -259,7 +259,7 @@ struct SB {
 class epicsShareClass MRFVersion
 {
     const epicsUInt16 m_major;
-    const epicsInt8 m_minor;
+    const epicsUInt8 m_minor;
 public:
 
     explicit MRFVersion(epicsUInt32 regval)
@@ -271,7 +271,7 @@ public:
 
     inline unsigned firmware() const { return m_major>>8; }
     inline unsigned revision() const { return m_major&0xff; }
-    inline int subrelease() const { return m_minor; }
+    inline unsigned subrelease() const { return m_minor; }
 
     int compare(const MRFVersion& o) const;
     inline bool operator>(const MRFVersion& o) const { return compare(o)==1; }
