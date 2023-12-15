@@ -283,3 +283,68 @@ epicsExportAddress(dset,devSOEventEVR);
 epicsExportAddress(dset,devEVEventEVR);
 
 }
+
+
+/*
+ * Timestamping with UTAG extension
+ * Date:    5.12.2023
+ * Authors: Joao Paulo Martins <joaopaulosm@gmail.com>
+ *          Jerzy Jamroz <jerzy.jamroz@gmail.com>
+ */
+
+#ifdef DBR_UTAG
+
+#include <int64outRecord.h>
+
+static long process_int64out(int64outRecord *prec)
+{
+    priv *p = static_cast<priv *>(prec->dpvt);
+    long ret = 0;
+    try
+    {
+
+        if (p->event >= 0 && p->event <= 255)
+            post_event(p->event);
+
+        if (prec->tse == epicsTimeEventDeviceTime)
+        {
+            p->evr->getTimeStamp(&prec->time, p->event);
+            prec->utag = static_cast<epicsUTag>(prec->val);
+            p->evr->setUtag(prec->utag, p->event);
+        }
+
+        return 0;
+    }
+    catch (std::runtime_error &e)
+    {
+        recGblRecordError(S_dev_noDevice, (void *)prec, e.what());
+        ret = S_dev_noDevice;
+    }
+    catch (std::exception &e)
+    {
+        recGblRecordError(S_db_noMemory, (void *)prec, e.what());
+        ret = S_db_noMemory;
+    }
+    return ret;
+}
+
+static long add_int64out(struct dbCommon *precord)
+{
+    return add_record(precord, &((struct int64outRecord *)precord)->out);
+}
+
+dsxt dxtI64OEventUtagEVR = {add_int64out, del_record};
+static common_dset devI64OEventUtagEVR = {
+    6, NULL,
+    dset_cast(&init_dset<&dxtI64OEventUtagEVR>),
+    (DEVSUPFUN)init_record_empty,
+    (DEVSUPFUN)&get_ioint_info,
+    dset_cast(&process_int64out),
+    NULL};
+
+extern "C"
+{
+    epicsExportAddress(dset, devI64OEventUtagEVR);
+}
+
+#endif
