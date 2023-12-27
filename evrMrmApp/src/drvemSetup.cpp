@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -173,12 +174,50 @@ static const EVRMRM::Config cpci_evr_300 = {
     2,  // FP inputs
 };
 
-static const EVRMRM::Config mtca_evr_300 = {
-    "mTCA-EVR-300",
-    16, // pulse generators
+static const EVRMRM::Config mtca_evr_300rf = {
+    "mTCA-EVR-300RF",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    2,  // FPUV outputs (only FPUV0/1, mapped to FrontUnivOut0/1, FPUV2/3 mapped in the code to FrontUnivOut18/19)
+    10, // RB outputs  (RTM)
+    8,  // Backplane outputs
+    2,  // FP Delay outputs
+    4,  // CML/GTX outputs - one univ. I/O slot (2 outputs), 1x SFP, 1x CML
+    MRMCML::typeTG300,
+    /**
+     * 0 <= N <= 1   : FPInMap
+     * 2 <= N <= 15  : UnivInMap
+     * 16 <= N <= 25 : BPInMap
+     */
+    26,  // FP, Univ, BP inputs
+};
+
+static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP
+    "mTCA-EVR-300U",
+    24, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    18, // Univ outputs (16 via external IFB + 2 handled specially)
+    4,  // FPUV outputs
+    16, // RB outputs  (RTM)
+    8,  // Backplane outputs
+    2,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    /**
+     * 0 <= N <= 3   : FPInMap
+     * 4 <= N <= 23  : UnivInMap
+     * 24 <= N <= 31 : BPInMap
+     */
+    32,  // FP, Univ, BP inputs
+};
+// Default MTCA EVR
+static const EVRMRM::Config mtca_evr_300 = {
+    "mTCA-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    4,  // FP outputs
+    16, // Univ outputs
     10, // RB outputs (10 EVRTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
@@ -191,6 +230,25 @@ static const EVRMRM::Config mtca_evr_300 = {
      * 48 - 57 : TBInMap (EVRTM)
      */
     58, // FP, Univ, BP, TB inputs
+};
+// Obsolte model
+static const EVRMRM::Config mtca_evr_300ifb = {
+    "mTCA-EVR-300IFB",
+    16, // pulse generators
+    8,  // prescalers
+    4,  // FP outputs
+    0,  // FPUV outputs
+    16, // RB outputs  (via external IFB)
+    8,  // Backplane outputs
+    2,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    /**
+     * 0 <= N <= 3   : FPInMap
+     * 4 <= N <= 23  : UnivInMap
+     * 24 <= N <= 31 : BPInMap
+     */
+    32,  // FP, Univ, BP inputs
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
@@ -438,7 +496,7 @@ static bool checkUIOVersion(int,int,int*) {return false;}
 #endif
 
 void
-mrmEvrSetupPCI(const char* id,const char* pcispec)
+mrmEvrSetupPCI(const char* id,const char* pcispec, const char* mtca_evr_model)
 {
 try {
     bus_configuration bus;
@@ -479,8 +537,26 @@ try {
     case PCI_DEVICE_ID_MRF_PXIEVR_230: conf = &cpci_evr_230; break;
     case PCI_DEVICE_ID_MRF_EVRTG_300:  conf = &cpci_evrtg_300; break;
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
-    case PCI_DEVICE_ID_MRF_EVRMTCA300: conf = &mtca_evr_300; break;
-        // ambiguity
+    case PCI_DEVICE_ID_MRF_EVRMTCA300:
+        if (mtca_evr_model == NULL)
+        {
+            // if no EVR type is provided, we assume mtca_evr_300 generic as this was the default beforehand
+            mtca_evr_model = "default";
+            conf = &mtca_evr_300;
+        } else if (strcmp(mtca_evr_model, "UNIV") == 0) {
+            printf("Config for EVR FP UNIV model (mTCA-EVR-300U).\n");
+            conf = &mtca_evr_300u;
+        } else if (strcmp(mtca_evr_model, "IFB") == 0) {
+            printf("Config for EVR FP IFB model (mTCA-EVR-300IFB - obsolete).\n");
+            conf = &mtca_evr_300ifb;
+        } else if (strcmp(mtca_evr_model, "RF") == 0) {
+            printf("Config for EVR FP RF model (mTCA-EVR-300RF).\n");
+            conf = &mtca_evr_300rf;
+        } else {
+            printf("Error: mtca_evr_model arg (%s), needs no param (default) or 'UNIV' or 'RF' or 'IFB'.\n", mtca_evr_model);
+            return;
+        }
+        break;
     case PCI_DEVICE_ID_MRF_EVRTG_300E: // aka PCI_SUBDEVICE_ID_PCIE_EVR_300
         switch (cur->id.device) {
         case PCI_DEVICE_ID_EC_30: conf = &cpci_evrtg_300; break;

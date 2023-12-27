@@ -1,4 +1,4 @@
-# Record set for a mTCA-EVR-300u
+# Record set for a mTCA-EVR-300rf
 #
 # Macros:
 # P = Prefix
@@ -113,15 +113,13 @@ file "evrscale.db"
 file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
-{"\$(P)\$(dsh=-)Out\$(s=:)Int\$(ES)"  , "$(EVR):Int"          , "Internal"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FP0\$(ES)"  , "$(EVR):FrontOut0"    , "OUT0 (TTL)"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FP1\$(ES)"  , "$(EVR):FrontOut1"    , "OUT1 (TTL)"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FP2\$(ES)"  , "$(EVR):FrontOut2"    , "OUT2 (TTL)"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FP3\$(ES)"  , "$(EVR):FrontOut3"    , "OUT3 (TTL)"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FPUV0\$(ES)", "$(EVR):FrontUnivOut0", "UNIV0"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FPUV1\$(ES)", "$(EVR):FrontUnivOut1", "UNIV1"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FPUV2\$(ES)", "$(EVR):FrontUnivOut2", "UNIV2"}
-{"\$(P)\$(dsh=-)Out\$(s=:)FPUV3\$(ES)", "$(EVR):FrontUnivOut3", "UNIV3"}
+{"\$(P)\$(dsh=-)Out\$(s=:)Int\$(ES)"  , "$(EVR):Int"           , "Internal"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPUV0\$(ES)", "$(EVR):FrontUnivOut0" , "UNIV0"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPUV1\$(ES)", "$(EVR):FrontUnivOut1" , "UNIV1"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPUV2\$(ES)", "$(EVR):FrontUnivOut18", "UNIV2"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPUV3\$(ES)", "$(EVR):FrontUnivOut19", "UNIV3"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPSFP\$(ES)", "$(EVR):FrontUnivOut20", "GTX SFP"}
+{"\$(P)\$(dsh=-)Out\$(s=:)FPCML\$(ES)", "$(EVR):FrontUnivOut21", "CML"}
 # default to tri-state for backplane lines
 pattern
 {ON, OBJ, DESC, DEFAULT}
@@ -158,6 +156,10 @@ file "evrcml.db"
 {P, ON, OBJ, NBIT, MAX}
 {"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)TCLKA\$(ES)", "$(EVR):CML0", 40, 81880}
 {"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)TCLKB\$(ES)", "$(EVR):CML1", 40, 81880}
+{"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)FPUV2\$(ES)", "$(EVR):CML2", 40, 81880}
+{"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)FPUV3\$(ES)", "$(EVR):CML3", 40, 81880}
+{"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)FPSFP\$(ES)", "$(EVR):CML4", 40, 81880}
+{"\$(P)\$(ES)", "\$(P)\$(dsh=-)Out\$(s=:)FPCML\$(ES)", "$(EVR):CML5", 40, 81880}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
@@ -306,6 +308,14 @@ file "evrdcpulser.template"
 {13,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
 {14,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
 {15,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{16,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{17,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{18,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{19,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{20,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{21,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{22,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
+{23,"\$(P)\$(ES)", "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)", "$(EVR):Pul$(PID)"}
 }
 
 file "evrin.db"
@@ -321,5 +331,3 @@ file "mrmevrdlymodule.template"
 {0, "\$(P)\$(dsh=-)Out\$(s=:)FPDly$(SLOT)\$(ES)", "$(EVR)"}
 {1, "\$(P)\$(dsh=-)Out\$(s=:)FPDly$(SLOT)\$(ES)", "$(EVR)"}
 }
-
-

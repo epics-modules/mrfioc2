@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -34,7 +35,7 @@ epicsShareExtern int evrmrmVerb;
 
 
 void epicsShareFunc
-mrmEvrSetupPCI(const char* id, const char* pcispec);
+mrmEvrSetupPCI(const char* id, const char* pcispec, const char* mtca_evr_model);
 void epicsShareFunc
 mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector);
 

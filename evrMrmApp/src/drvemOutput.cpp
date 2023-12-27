@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2013 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -50,9 +51,8 @@ void
 MRMOutput::setSource(epicsUInt32 v)
 {
     if( ! ( (v<=63 && v>=61) ||
-            (v<=55 && v>=48) ||
-            (v<=42 && v>=32) ||
-            (v<=15) )
+            (v<=55 && v>=32) ||
+            (v<=23) )
     )
         throw std::out_of_range("Mapping code is out of range");
 
@@ -67,9 +67,8 @@ void
 MRMOutput::setSource2(epicsUInt32 v)
 {
     if( ! ( (v<=63 && v>=61) ||
-            (v<=55 && v>=48) ||
-            (v<=42 && v>=32) ||
-            (v<=15) )
+            (v<=55 && v>=32) ||
+            (v<=23) )
     )
         throw std::out_of_range("Mapping code is out of range");
 

@@ -1,6 +1,7 @@
 /*************************************************************************\
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -390,7 +391,7 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
     // If we are given a length that is not a multiple of CML word size
     // then truncate.
     if(blen%mult){
-        printf("Given length is not a multiple of %u (CML word size). Truncating...\n", mult);
+        printf("Given length %u is not a multiple of %u (CML word size). Truncating...\n", blen, mult);
         blen-=blen%mult;
     }
 

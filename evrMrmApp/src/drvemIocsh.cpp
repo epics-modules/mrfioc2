@@ -2,6 +2,7 @@
 * Copyright (c) 2010 Brookhaven Science Associates, as Operator of
 *     Brookhaven National Laboratory.
 * Copyright (c) 2015 Paul Scherrer Institute (PSI), Villigen, Switzerland
+* Copyright (c) 2022 Cosylab d.d.
 * mrfioc2 is distributed subject to a Software License Agreement found
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
@@ -56,13 +57,14 @@
 
 static const iocshArg mrmEvrSetupPCIArg0 = { "name",iocshArgString};
 static const iocshArg mrmEvrSetupPCIArg1 = { "PCI id or slot=#",iocshArgString};
-static const iocshArg * const mrmEvrSetupPCIArgs[2] =
-{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1};
+static const iocshArg mrmEvrSetupPCIArg2 = { "[uTCA model: no param (default) or 'UNIV' or 'IFP' or 'RF]",iocshArgString};
+static const iocshArg * const mrmEvrSetupPCIArgs[3] =
+{&mrmEvrSetupPCIArg0,&mrmEvrSetupPCIArg1,&mrmEvrSetupPCIArg2};
 static const iocshFuncDef mrmEvrSetupPCIFuncDef =
-    {"mrmEvrSetupPCI",2,mrmEvrSetupPCIArgs};
+    {"mrmEvrSetupPCI",3,mrmEvrSetupPCIArgs};
 static void mrmEvrSetupPCICallFunc(const iocshArgBuf *args)
 {
-    mrmEvrSetupPCI(args[0].sval,args[1].sval);
+    mrmEvrSetupPCI(args[0].sval,args[1].sval,args[2].sval);
 }
 
 static const iocshArg mrmEvrSetupVMEArg0 = { "name",iocshArgString};
