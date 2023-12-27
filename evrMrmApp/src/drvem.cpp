@@ -285,35 +285,16 @@ try{
         shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
 
     } else if(formfactor==formFactor_mTCA) {
-
-        // map TCLKA/B as UNIV16/17
-        for (unsigned int i = 16; i <= 17; ++i) {
-            outputs[std::make_pair(OutputFPUniv, i)]
-                = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
-        }
-
-        // CMLs for TCLKA/B
-        shortcmls.resize(2);
-        shortcmls[0] = new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
-        shortcmls[1] = new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
-
-        // additional setup specific to mTCA-EVR-300RF
-        if(model().compare("mTCA-EVR-300RF") == 0) {
-            // map FPUV2/3 as UNIV18/19 and FPSFP/FPCML as UNIV20/21
-            for (unsigned int i = 18; i <= 21; ++i) {
-                outputs[std::make_pair(OutputFPUniv, i)]
-                    = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
-            }
-
-            // append CML2 to CML5 to existing CMLs
-            shortcmls.resize(6);
-            // Univ2 and Univ3
-            shortcmls[2] = new MRMCML(n+":CML2", 2,*this, MRMCML::typeCML,form);
-            shortcmls[3] = new MRMCML(n+":CML3", 3,*this, MRMCML::typeCML,form);
-            // SFP
-            shortcmls[4] = new MRMCML(n+":CML4", 4,*this, MRMCML::typeTG300,form);
-            // CML
-            shortcmls[5] = new MRMCML(n+":CML5", 5,*this, MRMCML::typeCML,form);
+        if (conf->nCML>0) shortcmls.resize(conf->nCML);
+        for (size_t i = 0; i < conf->nCML; i++)
+        {
+            // map TCLKx starting from UNIV16 (offset == 16) as in the documentation
+            outputs[std::make_pair(OutputFPUniv, i + 16)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i + 16, this, OutputFPUniv, i + 16);
+            // CMLs for TCLKx
+            if(model().compare("mTCA-EVR-300RF") == 0 && i == 4)
+                shortcmls[i] = new MRMCML(n + ":CML" + std::to_string(i), i, *this, MRMCML::typeTG300, form);
+            else
+                shortcmls[i] = new MRMCML(n + ":CML" + std::to_string(i), i, *this, conf->kind, form);
         }
     } else if(conf->nCML && ver>=MRFVersion(0,4)){
         shortcmls.resize(conf->nCML);
@@ -1594,7 +1575,7 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 }
 
 #ifdef DBR_UTAG
-// Get UTAG value for specific event 
+// Get UTAG value for specific event
 epicsUTag
 EVRMRM::getUtag(const epicsUInt32 event) const {
     if(event==0) return 0;
@@ -1604,7 +1585,7 @@ EVRMRM::getUtag(const epicsUInt32 event) const {
     return events[event].utag;
 }
 
-// Set UTAG value for specific event 
+// Set UTAG value for specific event
 void
 EVRMRM::setUtag(epicsUTag tag, const epicsUInt32 event) {
     if(event==0) return;
