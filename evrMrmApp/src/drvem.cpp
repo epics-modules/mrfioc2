@@ -114,6 +114,9 @@ extern "C" {
 /* Number of good updates before the time is considered valid */
 #define TSValidThreshold 5
 
+/* GTX output offset [FPUniv] */
+#define GTX_FPUV_OFFSET 16
+
 // Fractional synthesizer reference clock frequency
 static
 const double fracref=24.0; // MHz
@@ -288,8 +291,8 @@ try{
         if (conf->nCML>0) shortcmls.resize(conf->nCML);
         for (size_t i = 0; i < conf->nCML; i++)
         {
-            // map TCLKx starting from UNIV16 (offset == 16) as in the documentation
-            outputs[std::make_pair(OutputFPUniv, i + 16)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i + 16, this, OutputFPUniv, i + 16);
+            // map TCLKx starting from GTX_FPUV_OFFSET (as in the documentation)
+            outputs[std::make_pair(OutputFPUniv, i + GTX_FPUV_OFFSET)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i + GTX_FPUV_OFFSET, this, OutputFPUniv, i + GTX_FPUV_OFFSET);
             // CMLs for TCLKx
             if(model().compare("mTCA-EVR-300RF") == 0 && i == 4)
                 shortcmls[i] = new MRMCML(n + ":CML" + std::to_string(i), i, *this, MRMCML::typeTG300, form);
