@@ -291,13 +291,15 @@ try{
         if (conf->nCML>0) shortcmls.resize(conf->nCML);
         for (size_t i = 0; i < conf->nCML; i++)
         {
-            // map TCLKx starting from GTX_FPUV_OFFSET (as in the documentation)
+            // map GTX outputs (e.g. TCLKA/B) starting from GTX_FPUV_OFFSET (as in the documentation)
             outputs[std::make_pair(OutputFPUniv, i + GTX_FPUV_OFFSET)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i + GTX_FPUV_OFFSET, this, OutputFPUniv, i + GTX_FPUV_OFFSET);
-            // CMLs for TCLKx
+            // create CMLs
+            std::ostringstream mrmcml_stm;
+            mrmcml_stm << n << ":CML" << i;
             if(model().compare("mTCA-EVR-300RF") == 0 && i == 4)
-                shortcmls[i] = new MRMCML(n + ":CML" + std::to_string(i), i, *this, MRMCML::typeTG300, form);
+                shortcmls[i] = new MRMCML(mrmcml_stm.str(), i, *this, MRMCML::typeTG300, form);
             else
-                shortcmls[i] = new MRMCML(n + ":CML" + std::to_string(i), i, *this, conf->kind, form);
+                shortcmls[i] = new MRMCML(mrmcml_stm.str(), i, *this, conf->kind, form);
         }
     } else if(conf->nCML && ver>=MRFVersion(0,4)){
         shortcmls.resize(conf->nCML);
