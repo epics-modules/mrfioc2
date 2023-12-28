@@ -206,10 +206,19 @@ try{
     formFactor form = getFormFactor();
 
     printf("%s: ", formFactorStr().c_str());
-    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
-           (unsigned int)conf->nOFP,(unsigned int)conf->nOFPUV,
-           (unsigned int)conf->nORB,(unsigned int)conf->nIFP,
-           (unsigned int)conf->nOFPDly);
+
+    std::cout << " Model " << conf->model
+              << " Pul " << conf->nPul
+              << " PS " << conf->nPS
+              << " OFP " << conf->nOFP
+              << " OFPUNIV " << conf->nOFPUV
+              << " ORB " << conf->nORB
+              << " OBack " << conf->nOBack
+              << " OFPDly " << conf->nOFPDly
+              << " CML " << conf->nCML
+              << " Kind " << static_cast<int>(conf->kind)
+              << " IFP " << conf->nIFP
+              << std::endl;
 
     inputs.resize(conf->nIFP);
     for(size_t i=0; i<conf->nIFP; i++){
