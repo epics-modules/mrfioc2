@@ -189,9 +189,7 @@ try{
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
     if(ver>=MRFVersion(0, 5)) {
-        std::ostringstream name;
-        name<<n<<":SFP";
-        sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
+        sfp.reset(new SFP(SB() << n << ":SFP", base + U32_SFPEEPROM_base));
     }
 
     if(ver>=MRFVersion(2,7)) {
@@ -222,73 +220,53 @@ try{
 
     inputs.resize(conf->nIFP);
     for(size_t i=0; i<conf->nIFP; i++){
-        std::ostringstream name;
-        name<<n<<":FPIn"<<i;
-        inputs[i]=new MRMInput(name.str(), base,i);
+        inputs[i] = new MRMInput(SB() << n << ":FPIn" << i, base, i);
     }
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(n+":Int", this, OutputInt, 0);
 
     for(unsigned int i=0; i<conf->nOFP; i++){
-        std::ostringstream name;
-        name<<n<<":FrontOut"<<i;
-        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
+        outputs[std::make_pair(OutputFP, i)] = new MRMOutput(SB() << n << ":FrontOut" << i, this, OutputFP, i);
     }
 
     for(unsigned int i=0; i<conf->nOFPUV; i++){
-        std::ostringstream name;
-        name<<n<<":FrontUnivOut"<<i;
-        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
+        outputs[std::make_pair(OutputFPUniv, i)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
     }
 
     delays.resize(conf->nOFPDly);
     for(unsigned int i=0; i<conf->nOFPDly; i++){
-        std::ostringstream name;
-        name<<n<<":UnivDlyModule"<<i;
-        delays[i]=new DelayModule(name.str(), this, i);
+        delays[i] = new DelayModule(SB() << n << ":UnivDlyModule" << i, this, i);
     }
 
     for(unsigned int i=0; i<conf->nORB; i++){
-        std::ostringstream name;
-        name<<n<<":RearUniv"<<i;
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
+        outputs[std::make_pair(OutputRB, i)] = new MRMOutput(SB() << n << ":RearUniv" << i, this, OutputRB, i);
     }
 
     for(unsigned int i=0; i<conf->nOBack; i++){
-        std::ostringstream name;
-        name<<n<<":Backplane"<<i;
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputBackplane, i);
+        outputs[std::make_pair(OutputRB, i)] = new MRMOutput(SB() << n << ":Backplane" << i, this, OutputBackplane, i);
     }
 
     prescalers.resize(conf->nPS);
     for(size_t i=0; i<conf->nPS; i++){
-        std::ostringstream name;
-        name<<n<<":PS"<<i;
-        prescalers[i]=new MRMPreScaler(name.str(), *this,base+U32_Scaler(i));
+        prescalers[i] = new MRMPreScaler(SB() << n << ":PS" << i, *this, base + U32_Scaler(i));
     }
 
     pulsers.resize(32);
     for(epicsUInt32 i=0; i<conf->nPul; i++){
-        std::ostringstream name;
-        name<<n<<":Pul"<<i;
-        pulsers[i]=new MRMPulser(name.str(), i,*this);
+        pulsers[i] = new MRMPulser(SB() << n << ":Pul" << i, i, *this);
     }
     if(ver>=MRFVersion(2,0)) {
         // masking pulsers
         for(epicsUInt32 i=28; i<=31; i++){
-            std::ostringstream name;
-            name<<n<<":Pul"<<i;
-            pulsers[i]=new MRMPulser(name.str(), i,*this);
+            pulsers[i] = new MRMPulser(SB() << n << ":Pul" << i, i, *this);
         }
 
     }
 
     if(formfactor==formFactor_CPCIFULL) {
         for(unsigned int i=4; i<8; i++) {
-            std::ostringstream name;
-            name<<n<<":FrontOut"<<i;
-            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
+            outputs[std::make_pair(OutputFP, i)] = new MRMOutput(SB() << n << ":FrontOut" << i, this, OutputFP, i);
         }
         shortcmls.resize(8, 0);
         shortcmls[4]=new MRMCML(n+":CML4", 4,*this,MRMCML::typeCML,form);
