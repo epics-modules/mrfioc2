@@ -183,8 +183,8 @@ static const EVRMRM::Config mtca_evr_300rf = {
     10, // RB outputs  (RTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
-    4,  // CML/GTX outputs - one univ. I/O slot (2 outputs), 1x SFP, 1x CML
-    MRMCML::typeTG300,
+    6,  // CML/GTX outputs - CLKA/B, 1x UNIV I/O slot (2 outputs), 1x SFP, 1x CML
+    MRMCML::typeCML,
     /**
      * 0 <= N <= 1   : FPInMap
      * 2 <= N <= 15  : UnivInMap
@@ -199,11 +199,11 @@ static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP
     8,  // prescalers
     4,  // FP outputs
     4,  // FPUV outputs
-    16, // RB outputs  (RTM)
+    10, // RB outputs  (RTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
+    2,  // CML/GTX outputs - CLKA/B
+    MRMCML::typeCML,
     /**
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
@@ -217,12 +217,12 @@ static const EVRMRM::Config mtca_evr_300 = {
     24, // pulse generators
     8,  // prescalers
     4,  // FP outputs
-    16, // Univ outputs
+    4,  // Univ outputs
     10, // RB outputs (10 EVRTM)
     8,  // Backplane outputs
     2,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
+    2,  // CML/GTX outputs - CLKA/B
+    MRMCML::typeCML,
     /**
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
@@ -234,39 +234,39 @@ static const EVRMRM::Config mtca_evr_300 = {
 // Obsolte model
 static const EVRMRM::Config mtca_evr_300ifb = {
     "mTCA-EVR-300IFB",
-    16, // pulse generators
+    24, // pulse generators
     8,  // prescalers
     4,  // FP outputs
     0,  // FPUV outputs
-    16, // RB outputs  (via external IFB)
+    10, // RB outputs  (via external IFB)
     8,  // Backplane outputs
-    2,  // FP Delay outputs
-    0,  // CML/GTX outputs
-    MRMCML::typeTG300,
+    0,  // FP Delay outputs
+    2,  // CML/GTX outputs
+    MRMCML::typeCML,
     /**
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
      * 24 <= N <= 31 : BPInMap
      */
-    32,  // FP, Univ, BP inputs
+    32, // FP, Univ, BP inputs
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
     "PCIe-EVR-300DC",
-    16, // pulse generators
+    24, // pulse generators
     8,  // prescalers
     0,  // FP outputs
-    16,  // FPUV outputs  (via external IFB)
-    0, // RB outputs
+    16, // FPUV outputs  (via external IFB)
+    0,  // RB outputs
     0,  // Backplane outputs
     0,  // FP Delay outputs
     0,  // CML/GTX outputs
-    MRMCML::typeTG300,
+    MRMCML::typeCML,
     /**
      * 0 <= N <= 3  : FPInMap
      * 4 <= N <= 23 : UnivInMap
      */
-    24,  // FP, Univ inputs
+    24, // FP, Univ inputs
 };
 
 static const EVRMRM::Config cpci_evr_unknown = {

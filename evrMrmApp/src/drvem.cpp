@@ -114,6 +114,11 @@ extern "C" {
 /* Number of good updates before the time is considered valid */
 #define TSValidThreshold 5
 
+/* GTX output offset [FPUniv] */
+#define GTX_FPUV_OFFSET 16
+/* GTX SFP output offset [on MTCA RF card]*/
+#define GTX_SFP_OFFSET 20
+
 // Fractional synthesizer reference clock frequency
 static
 const double fracref=24.0; // MHz
@@ -186,9 +191,7 @@ try{
     CBINIT(&poll_link_cb , priorityMedium, &EVRMRM::poll_link , this);
 
     if(ver>=MRFVersion(0, 5)) {
-        std::ostringstream name;
-        name<<n<<":SFP";
-        sfp.reset(new SFP(name.str(), base + U32_SFPEEPROM_base));
+        sfp.reset(new SFP(SB() << n << ":SFP", base + U32_SFPEEPROM_base));
     }
 
     if(ver>=MRFVersion(2,7)) {
@@ -203,80 +206,69 @@ try{
     formFactor form = getFormFactor();
 
     printf("%s: ", formFactorStr().c_str());
-    printf("Out FP:%u FPUNIV:%u RB:%u IFP:%u GPIO:%u\n",
-           (unsigned int)conf->nOFP,(unsigned int)conf->nOFPUV,
-           (unsigned int)conf->nORB,(unsigned int)conf->nIFP,
-           (unsigned int)conf->nOFPDly);
+
+    std::cout << " Model " << conf->model
+              << " Pul " << conf->nPul
+              << " PS " << conf->nPS
+              << " OFP " << conf->nOFP
+              << " OFPUNIV " << conf->nOFPUV
+              << " ORB " << conf->nORB
+              << " OBack " << conf->nOBack
+              << " OFPDly " << conf->nOFPDly
+              << " CML " << conf->nCML
+              << " Kind " << static_cast<int>(conf->kind)
+              << " IFP " << conf->nIFP
+              << std::endl;
 
     inputs.resize(conf->nIFP);
     for(size_t i=0; i<conf->nIFP; i++){
-        std::ostringstream name;
-        name<<n<<":FPIn"<<i;
-        inputs[i]=new MRMInput(name.str(), base,i);
+        inputs[i] = new MRMInput(SB() << n << ":FPIn" << i, base, i);
     }
 
     // Special output for mapping bus interrupt
     outputs[std::make_pair(OutputInt,0)]=new MRMOutput(n+":Int", this, OutputInt, 0);
 
     for(unsigned int i=0; i<conf->nOFP; i++){
-        std::ostringstream name;
-        name<<n<<":FrontOut"<<i;
-        outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
+        outputs[std::make_pair(OutputFP, i)] = new MRMOutput(SB() << n << ":FrontOut" << i, this, OutputFP, i);
     }
 
     for(unsigned int i=0; i<conf->nOFPUV; i++){
-        std::ostringstream name;
-        name<<n<<":FrontUnivOut"<<i;
-        outputs[std::make_pair(OutputFPUniv,i)]=new MRMOutput(name.str(), this, OutputFPUniv, i);
+        outputs[std::make_pair(OutputFPUniv, i)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
     }
 
     delays.resize(conf->nOFPDly);
     for(unsigned int i=0; i<conf->nOFPDly; i++){
-        std::ostringstream name;
-        name<<n<<":UnivDlyModule"<<i;
-        delays[i]=new DelayModule(name.str(), this, i);
+        delays[i] = new DelayModule(SB() << n << ":UnivDlyModule" << i, this, i);
     }
 
     for(unsigned int i=0; i<conf->nORB; i++){
-        std::ostringstream name;
-        name<<n<<":RearUniv"<<i;
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputRB, i);
+        outputs[std::make_pair(OutputRB, i)] = new MRMOutput(SB() << n << ":RearUniv" << i, this, OutputRB, i);
     }
 
     for(unsigned int i=0; i<conf->nOBack; i++){
-        std::ostringstream name;
-        name<<n<<":Backplane"<<i;
-        outputs[std::make_pair(OutputRB,i)]=new MRMOutput(name.str(), this, OutputBackplane, i);
+        outputs[std::make_pair(OutputRB, i)] = new MRMOutput(SB() << n << ":Backplane" << i, this, OutputBackplane, i);
     }
 
     prescalers.resize(conf->nPS);
     for(size_t i=0; i<conf->nPS; i++){
-        std::ostringstream name;
-        name<<n<<":PS"<<i;
-        prescalers[i]=new MRMPreScaler(name.str(), *this,base+U32_Scaler(i));
+        prescalers[i] = new MRMPreScaler(SB() << n << ":PS" << i, *this, base + U32_Scaler(i));
     }
 
     pulsers.resize(32);
     for(epicsUInt32 i=0; i<conf->nPul; i++){
-        std::ostringstream name;
-        name<<n<<":Pul"<<i;
-        pulsers[i]=new MRMPulser(name.str(), i,*this);
+        pulsers[i] = new MRMPulser(SB() << n << ":Pul" << i, i, *this);
     }
     if(ver>=MRFVersion(2,0)) {
         // masking pulsers
         for(epicsUInt32 i=28; i<=31; i++){
-            std::ostringstream name;
-            name<<n<<":Pul"<<i;
-            pulsers[i]=new MRMPulser(name.str(), i,*this);
+            pulsers[i] = new MRMPulser(SB() << n << ":Pul" << i, i, *this);
         }
 
     }
 
     if(formfactor==formFactor_CPCIFULL) {
         for(unsigned int i=4; i<8; i++) {
-            std::ostringstream name;
-            name<<n<<":FrontOut"<<i;
-            outputs[std::make_pair(OutputFP,i)]=new MRMOutput(name.str(), this, OutputFP, i);
+            outputs[std::make_pair(OutputFP, i)] = new MRMOutput(SB() << n << ":FrontOut" << i, this, OutputFP, i);
         }
         shortcmls.resize(8, 0);
         shortcmls[4]=new MRMCML(n+":CML4", 4,*this,MRMCML::typeCML,form);
@@ -285,42 +277,25 @@ try{
         shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
 
     } else if(formfactor==formFactor_mTCA) {
-
-        // map TCLKA/B as UNIV16/17
-        for (unsigned int i = 16; i <= 17; ++i) {
-            outputs[std::make_pair(OutputFPUniv, i)]
-                = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
-        }
-
-        // CMLs for TCLKA/B
-        shortcmls.resize(2);
-        shortcmls[0] = new MRMCML(n+":CML0", 0,*this,MRMCML::typeCML,form);
-        shortcmls[1] = new MRMCML(n+":CML1", 1,*this,MRMCML::typeCML,form);
-
-        // additional setup specific to mTCA-EVR-300RF
-        if(model().compare("mTCA-EVR-300RF") == 0) {
-            // map FPUV2/3 as UNIV18/19 and FPSFP/FPCML as UNIV20/21
-            for (unsigned int i = 18; i <= 21; ++i) {
-                outputs[std::make_pair(OutputFPUniv, i)]
-                    = new MRMOutput(SB() << n << ":FrontUnivOut" << i, this, OutputFPUniv, i);
-            }
-
-            // append CML2 to CML5 to existing CMLs
-            shortcmls.resize(6);
-            // Univ2 and Univ3
-            shortcmls[2] = new MRMCML(n+":CML2", 2,*this, MRMCML::typeCML,form);
-            shortcmls[3] = new MRMCML(n+":CML3", 3,*this, MRMCML::typeCML,form);
-            // SFP
-            shortcmls[4] = new MRMCML(n+":CML4", 4,*this, MRMCML::typeTG300,form);
-            // CML
-            shortcmls[5] = new MRMCML(n+":CML5", 5,*this, MRMCML::typeCML,form);
+        int u_idx;
+        if (conf->nCML > 0)
+            shortcmls.resize(conf->nCML);
+        for (size_t i = 0; i < conf->nCML; i++)
+        {
+            u_idx = GTX_FPUV_OFFSET + i;
+            // map GTX outputs (e.g. TCLKA/B) starting from GTX_FPUV_OFFSET (as in the documentation)
+            outputs[std::make_pair(OutputFPUniv, u_idx)]
+                = new MRMOutput(SB() << n << ":FrontUnivOut" << u_idx, this, OutputFPUniv, u_idx);
+            // create CMLs
+            if(model().compare("mTCA-EVR-300RF") == 0 && u_idx == GTX_SFP_OFFSET)
+                shortcmls[i] = new MRMCML(SB() << n << ":CML" << i, i, *this, MRMCML::typeTG300, form);
+            else
+                shortcmls[i] = new MRMCML(SB() << n << ":CML" << i, i, *this, conf->kind, form);
         }
     } else if(conf->nCML && ver>=MRFVersion(0,4)){
         shortcmls.resize(conf->nCML);
         for(size_t i=0; i<conf->nCML; i++){
-            std::ostringstream name;
-            name<<n<<":CML"<<i;
-            shortcmls[i]=new MRMCML(name.str(), (unsigned char)i,*this,conf->kind,form);
+            shortcmls[i] = new MRMCML(SB() << n << ":CML" << i, (unsigned char)i, *this, conf->kind, form);
         }
 
     }else if(conf->nCML){
@@ -1594,7 +1569,7 @@ EVRMRM::seconds_tick(void *raw, epicsUInt32)
 }
 
 #ifdef DBR_UTAG
-// Get UTAG value for specific event 
+// Get UTAG value for specific event
 epicsUTag
 EVRMRM::getUtag(const epicsUInt32 event) const {
     if(event==0) return 0;
@@ -1604,7 +1579,7 @@ EVRMRM::getUtag(const epicsUInt32 event) const {
     return events[event].utag;
 }
 
-// Set UTAG value for specific event 
+// Set UTAG value for specific event
 void
 EVRMRM::setUtag(epicsUTag tag, const epicsUInt32 event) {
     if(event==0) return;
