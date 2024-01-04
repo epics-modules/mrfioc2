@@ -41,9 +41,9 @@
 #include "drvem.h"
 
 /*********
- * Each EVG will be represented by the instance of class 'evgMrm'. Each evg 
+ * Each EVG will be represented by the instance of class 'evgMrm'. Each evg
  * object maintains a list to all the evg sub-componets i.e. Event clock,
- * Software Events, Trigger Events, Distributed bus, Multiplex Counters, 
+ * Software Events, Trigger Events, Distributed bus, Multiplex Counters,
  * Input, Output etc.
  */
 class wdTimer;
@@ -198,6 +198,9 @@ private:
     // EVM only
     mrf::auto_ptr<FCT> fct;
     mrf::auto_ptr<EVRMRM> evru, evrd;
+public:
+    EVRMRM* getEvruMrm() const { return evru.get(); } // EVRU MRM accessor
+    EVRMRM* getEvrdMrm() const { return evrd.get(); } // EVRD MRM accessor
 };
 
 #endif //EVG_MRM_H
