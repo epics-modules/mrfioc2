@@ -284,7 +284,6 @@ epicsExportAddress(dset,devEVEventEVR);
 
 }
 
-
 /*
  * Timestamping with UTAG extension
  * Date:    5.12.2023
@@ -292,14 +291,15 @@ epicsExportAddress(dset,devEVEventEVR);
  *          Jerzy Jamroz <jerzy.jamroz@gmail.com>
  */
 
-#ifdef DBR_UTAG
+#if EPICS_VERSION >= 7
 
 #include <int64outRecord.h>
 
 static long process_int64out(int64outRecord *prec)
 {
-    priv *p = static_cast<priv *>(prec->dpvt);
     long ret = 0;
+#ifdef DBR_UTAG
+    priv *p = static_cast<priv *>(prec->dpvt);
     try
     {
 
@@ -325,6 +325,10 @@ static long process_int64out(int64outRecord *prec)
         recGblRecordError(S_db_noMemory, (void *)prec, e.what());
         ret = S_db_noMemory;
     }
+#else
+    recGblRecordError(S_db_noSupport, (void *)prec, "UTAG not supported in EPCIS base prior to 7.0.6");
+    ret = S_db_noSupport;
+#endif
     return ret;
 }
 
