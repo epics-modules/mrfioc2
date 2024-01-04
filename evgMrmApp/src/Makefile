@@ -23,7 +23,7 @@ LIBRARY_IOC += evgmrm
 # INC += evgOutput.h
 # INC += mrmevgseq.h
 
-SRC_DIRS += ../devSupport 
+SRC_DIRS += ../devSupport
 
 #All the source files that are compiled and put in the library.
 evgmrm_SRCS += evgInit.cpp

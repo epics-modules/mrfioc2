@@ -133,7 +133,7 @@ evgShutdown(void*)
     mrf::Object::visitObjects(&disableIRQ,0);
 }
 
-static void 
+static void
 inithooks(initHookState state) {
     epicsUInt8 lvl;
     switch(state) {
@@ -225,7 +225,7 @@ mrmEvgSetupVME (
         printf("##### Setting up MRF EVG in VME Slot %d #####\n",slot);
         printf("Found Vendor: %08x\nBoard: %08x\nRevision: %08x\n",
                info.vendor, info.board, info.revision);
-        
+
         epicsUInt32 xxx = CSRRead32(csrCpuAddr + CSR_FN_ADER(1));
         if(xxx)
             printf("Warning: EVG not in power on state! (%08x)\n", xxx);
@@ -536,6 +536,8 @@ mrmEvgSetupPCI (
             delete evg;
             return -1;
         } else {
+            new IRQPoller(&EVRMRM::isr_poll, static_cast<void*>(evg->getEvruMrm()), 0.1);
+            new IRQPoller(&EVRMRM::isr_poll, static_cast<void*>(evg->getEvrdMrm()), 0.1);
             printf("PCI interrupt connected!\n");
         }
 
@@ -562,7 +564,7 @@ static const iocshArg * const mrmEvgSetupVMEArgs[5] = { &mrmEvgSetupVMEArg0,
 static const iocshFuncDef mrmEvgSetupVMEFuncDef = { "mrmEvgSetupVME", 5,
                                                     mrmEvgSetupVMEArgs };
 
-static void 
+static void
 mrmEvgSetupVMECallFunc(const iocshArgBuf *args) {
     mrmEvgSetupVME(args[0].sval,
             args[1].ival,
@@ -750,7 +752,7 @@ reportCard(mrf::Object* obj, void* arg) {
     }
 
     evg->show(*level);
-    
+
     if(*level >= 2)
         printregisters(evg->getRegAddr());
 
@@ -758,7 +760,7 @@ reportCard(mrf::Object* obj, void* arg) {
     return true;
 }
 
-static long 
+static long
 report(int level) {
     printf("===  Begin MRF EVG support   ===\n");
     mrf::Object::visitObjects(&reportCard, (void*)&level);
