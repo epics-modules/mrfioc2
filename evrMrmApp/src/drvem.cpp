@@ -116,6 +116,8 @@ extern "C" {
 
 /* GTX output offset [FPUniv] */
 #define GTX_FPUV_OFFSET 16
+/* GTX SFP output offset [on MTCA RF card]*/
+#define GTX_SFP_OFFSET 20
 
 // Fractional synthesizer reference clock frequency
 static
@@ -275,13 +277,17 @@ try{
         shortcmls[7]=new MRMCML(n+":CML7", 7,*this,MRMCML::typeTG300,form);
 
     } else if(formfactor==formFactor_mTCA) {
-        if (conf->nCML>0) shortcmls.resize(conf->nCML);
+        int u_idx;
+        if (conf->nCML > 0)
+            shortcmls.resize(conf->nCML);
         for (size_t i = 0; i < conf->nCML; i++)
         {
+            u_idx = GTX_FPUV_OFFSET + i;
             // map GTX outputs (e.g. TCLKA/B) starting from GTX_FPUV_OFFSET (as in the documentation)
-            outputs[std::make_pair(OutputFPUniv, i + GTX_FPUV_OFFSET)] = new MRMOutput(SB() << n << ":FrontUnivOut" << i + GTX_FPUV_OFFSET, this, OutputFPUniv, i + GTX_FPUV_OFFSET);
+            outputs[std::make_pair(OutputFPUniv, u_idx)]
+                = new MRMOutput(SB() << n << ":FrontUnivOut" << u_idx, this, OutputFPUniv, u_idx);
             // create CMLs
-            if(model().compare("mTCA-EVR-300RF") == 0 && i == 4)
+            if(model().compare("mTCA-EVR-300RF") == 0 && u_idx == GTX_SFP_OFFSET)
                 shortcmls[i] = new MRMCML(SB() << n << ":CML" << i, i, *this, MRMCML::typeTG300, form);
             else
                 shortcmls[i] = new MRMCML(SB() << n << ":CML" << i, i, *this, conf->kind, form);
