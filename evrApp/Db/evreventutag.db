@@ -23,5 +23,5 @@ record(calc, "$(EN)Cnt-I") {
   #field(DISV, "0")
   field(CALC, "A+1")
   field(INPA, "$(EN)Cnt-I NPP")
-  field(TSEL, "$(EN)-SP.TIME")
+  $(SFTSEN=)field(TSEL, "$(EN)-SP.TIME")
 }
