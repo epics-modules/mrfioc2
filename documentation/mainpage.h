@@ -77,7 +77,11 @@ For the generator see mrmEvgSetupVME() or the ::evgMrm class.
 
 @section changelog Changelog
 
-@subsection v231 2.3.1 (UNRELEASED)
+@subsection Nov 2023 and onwards
+
+@li https://github.com/epics-modules/mrfioc2/releases
+
+@subsection v231 2.3.1 (Nov 2023)
 
 @li Add PCIe error handling to Linux kernel module (Hinko Kocevar)
 @li Add DKMS and RPM configs for Linux kernel module source (Michael Abbott)
