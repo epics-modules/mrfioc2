@@ -178,3 +178,45 @@ record(waveform, "$(PN)Label-I") {
   field(NELM, "128")
   info(autosaveFields_pass1, "VAL")
 }
+
+# Triger pulser generator by one or more prescalers
+record(mbboDirect, "$(PN)PSTrig-Sel")
+{
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=PSTrig")
+  field(PINI, "YES")
+  field(NOBT, "8")
+  field(VAL , "0")
+  field(FLNK, "$(PN)PSTrig-RB")
+  info(autosaveFields_pass0, "RVAL")
+}
+
+record(mbbiDirect, "$(PN)PSTrig-RB")
+{
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=PSTrig")
+  field(PINI, "YES")
+  field(NOBT, "8")
+  info(autosaveFields_pass0, "RVAL")
+}
+
+# Trigger pulser generator by one or more DBus bits
+record(mbboDirect, "$(PN)DBusTrig-Sel")
+{
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=DBusTrig")
+  field(PINI, "YES")
+  field(NOBT, "8")
+  field(VAL , "0")
+  field(FLNK, "$(PN)DBusTrig-RB")
+  info(autosaveFields_pass0, "RVAL")
+}
+
+record(mbbiDirect, "$(PN)DBusTrig-RB")
+{
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=DBusTrig")
+  field(PINI, "YES")
+  field(NOBT, "8")
+  info(autosaveFields_pass0, "RVAL")
+}

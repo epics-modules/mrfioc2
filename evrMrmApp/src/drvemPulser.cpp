@@ -151,6 +151,60 @@ MRMPulser::setPrescaler(epicsUInt32 v)
     WRITE32(owner.base, PulserScal(id), v);
 }
 
+epicsUInt32
+MRMPulser::psTrig() const
+{
+    epicsUInt32 r = 0;
+    for (int i = 0; i < ScalerMax; i++) {
+        if (READ32(owner.base, ScalerPulsTrig(i)) & (1 << id)) {
+            r |= 1 << i;
+        }
+    }
+
+    return r;
+}
+
+void
+MRMPulser::setPSTrig(epicsUInt32 v)
+{
+    for (int i = 0; i < ScalerMax; i++) {
+        epicsUInt32 t = READ32(owner.base, ScalerPulsTrig(i));
+        if (v & (1 << i)) {
+            t |= 1 << id;
+        } else {
+            t &= ~(1 << id);
+        }
+        WRITE32(owner.base, ScalerPulsTrig(i), t);
+    }
+}
+
+epicsUInt32
+MRMPulser::dbusTrig() const
+{
+    epicsUInt32 r = 0;
+    for (int i = 0; i < evrNumDbusBit; i++) {
+        if (READ32(owner.base, DBusPulsTrig(i)) & (1 << id)) {
+            r |= 1 << i;
+        }
+    }
+
+    return r;
+}
+
+void
+MRMPulser::setDBusTrig(epicsUInt32 v)
+{
+    for (int i = 0; i < evrNumDbusBit; i++) {
+        epicsUInt32 t = READ32(owner.base, DBusPulsTrig(i));
+        if (v & (1 << i)) {
+            t |= 1 << id;
+        } else {
+            t &= ~(1 << id);
+        }
+        WRITE32(owner.base, DBusPulsTrig(i), t);
+    }
+}
+
 bool
 MRMPulser::polarityInvert() const
 {
