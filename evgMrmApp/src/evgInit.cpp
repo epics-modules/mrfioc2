@@ -536,8 +536,14 @@ mrmEvgSetupPCI (
             delete evg;
             return -1;
         } else {
-            new IRQPoller(&EVRMRM::isr_poll, static_cast<void*>(evg->getEvruMrm()), 0.1);
-            new IRQPoller(&EVRMRM::isr_poll, static_cast<void*>(evg->getEvrdMrm()), 0.1);
+            // By default the IRQPollers for EVRU/D are disabled.
+            // __IRQP_EVRU/D_PRD selects the polling perdiod [s] and enables the equivalent EVM embedded EVR.
+#ifdef __IRQP_EVRU_PRD
+            new IRQPoller(&EVRMRM::isr_poll, static_cast<void *>(evg->getEvruMrm()), __IRQP_EVRU_PRD);
+#endif
+#ifdef __IRQP_EVRD_PRD
+            new IRQPoller(&EVRMRM::isr_poll, static_cast<void *>(evg->getEvrdMrm()), __IRQP_EVRD_PRD);
+#endif
             printf("PCI interrupt connected!\n");
         }
 
