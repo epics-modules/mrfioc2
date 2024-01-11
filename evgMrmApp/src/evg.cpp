@@ -27,7 +27,10 @@ OBJECT_BEGIN(evgDbus) {
 } OBJECT_END(evgDbus)
 
 OBJECT_BEGIN(evgInput) {
-    OBJECT_PROP2("IRQ", &evgInput::getExtIrq, &evgInput::setExtIrq);
+    OBJECT_PROP2("IRQ", &evgInput::getExtIrq, &evgInput::setExtIrq);    
+    OBJECT_PROP2("FPMASK", &evgInput::getHwMask, &evgInput::setHwMask);
+    OBJECT_PROP1("FPMASK", &evgInput::stateChange);
+
 } OBJECT_END(evgInput)
 
 OBJECT_BEGIN(evgMxc) {

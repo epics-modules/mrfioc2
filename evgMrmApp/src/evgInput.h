@@ -7,6 +7,8 @@
 
 #include <epicsTypes.h>
 #include "mrf/object.h"
+#include <dbScan.h>
+
 
 enum InputType {
     NoneInp = 0,
@@ -31,6 +33,9 @@ public:
     void setExtIrq(bool);
     bool getExtIrq() const;
 
+    void setHwMask(epicsUInt32);
+    epicsUInt32 getHwMask() const;
+
     void setDbusMap(epicsUInt16, bool);
     bool getDbusMap(epicsUInt16) const;
 
@@ -40,9 +45,12 @@ public:
     void setTrigEvtMap(epicsUInt16, bool);
     bool getTrigEvtMap(epicsUInt16) const;
 
+    IOSCANPVT stateChange() const { return changed; }
+
 private:
     const epicsUInt32          m_num;
     const InputType            m_type;
     volatile epicsUInt8* const m_pInReg;
+    IOSCANPVT changed;
 };
 #endif //EVG_INPUT_H

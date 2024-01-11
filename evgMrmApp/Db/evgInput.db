@@ -18,3 +18,16 @@ record(bi, "$(P)EnaIrq-RB") {
     field( ZNAM, "Disabled")
     field( ONAM, "Enabled")
 }
+
+record(ao, "$(P)FPMask-Sel") {
+    field( DESC, "FPxMask")
+    field( DTYP, "Obj Prop uint32")
+    field( OUT , "@OBJ=$(OBJ), PROP=FPMASK")
+    field( FLNK, "$(P)FPMask-RB")
+}
+record(ai, "$(P)FPMask-RB") {
+    field( DESC, "FPxMask")
+    field( DTYP, "Obj Prop uint32")
+    field( INP , "@OBJ=$(OBJ), PROP=FPMASK")
+}
+

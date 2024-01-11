@@ -30,6 +30,11 @@
 #define  EVG_SEQ_RAM_DISABLE    0x00020000  /* Sequence RAM Disable (and stop) */
 #define  EVG_SEQ_RAM_ARM        0x00010000  /* Sequence RAM Enable/Arm */
 
+#define EVG_SEQ_RAM_SWMASK         0x0000F000 // Sequence RAM Software mask
+#define EVG_SEQ_RAM_SWMASK_shift   12
+#define EVG_SEQ_RAM_SWENABLE       0x00000F00 // Sequence RAM Software enable
+#define EVG_SEQ_RAM_SWENABLE_shift 8
+
 #define  EVG_SEQ_RAM_WRITABLE_MASK 0x00ffffff
 #define  EVG_SEQ_RAM_REPEAT_MASK 0x00180000 /* Sequence RAM Repeat Mode Mask */
 #define  EVG_SEQ_RAM_NORMAL     0x00000000  /* Normal Mode: Repeat every trigger */
@@ -254,6 +259,68 @@ public:
         return ret;
     }
 
+    void setMask(const epicsUInt8 *arr, epicsUInt32 count)
+    {
+        masks_t masks(count);
+        if (*arr>15){
+            std::string msg("4 bits code. Authorized range is [0-15]");
+            last_err = msg;
+            scanIoRequest(onErr);
+            throw std::runtime_error(msg);
+        }
+        std::copy(arr,
+                  arr + count,
+                  masks.begin());
+        {
+            SCOPED_LOCK(mutex);
+            scratch.masks.swap(masks);
+            is_committed = false;
+        }
+        DEBUG(4, ("Set masks\n"));
+        scanIoRequest(changed);
+    }
+
+    epicsUInt32 getMask(epicsUInt8 *arr, epicsUInt32 count) const
+    {
+        SCOPED_LOCK(mutex);
+        epicsUInt32 ret = std::min(size_t(count), committed.masks.size());
+        std::copy(committed.masks.begin(),
+                  committed.masks.begin() + ret,
+                  arr);
+        return ret;
+    }
+
+    void setEna(const epicsUInt8 *arr, epicsUInt32 count)
+    {
+        if (*arr>15){
+            std::string msg("4 bits code. Authorized range is [0-15]");
+            last_err = msg;
+            scanIoRequest(onErr);
+            throw std::runtime_error(msg);
+        }
+        enables_t enables(count);
+        std::copy(arr,
+                  arr + count,
+                  enables.begin());
+        {
+            SCOPED_LOCK(mutex);
+            scratch.enables.swap(enables);
+            is_committed = false;
+        }
+        DEBUG(4, ("Set enables\n"));
+        scanIoRequest(changed);
+    }
+
+    epicsUInt32 getEna(epicsUInt8 *arr, epicsUInt32 count) const
+    {
+        SCOPED_LOCK(mutex);
+        epicsUInt32 ret = std::min(size_t(count), committed.enables.size());
+        std::copy(committed.enables.begin(),
+                  committed.enables.begin() + ret,
+                  arr);
+        return ret;
+    }
+
     void setTrigSrc(epicsUInt32 src)
     {
         DEBUG(4, ("Setting trig src %x\n", (unsigned)src));
@@ -314,6 +381,12 @@ public:
     void enable();
     void disable();
     void softTrig();
+    
+    epicsUInt32 getSwMask() const;
+    void setSwMask(epicsUInt32 src);
+    epicsUInt32 getSwEna() const;
+    void setSwEna(epicsUInt32 src);
+
 
     epicsUInt32 counterStart() const { interruptLock L; return numStart; }
     IOSCANPVT counterStartScan() const { return onStart; }
@@ -335,10 +408,14 @@ public:
 
     typedef std::vector<epicsUInt64> times_t;
     typedef std::vector<epicsUInt8> codes_t;
+    typedef std::vector<epicsUInt8> masks_t;
+    typedef std::vector<epicsUInt8> enables_t;
 
     struct Config {
         times_t times;
         codes_t codes;
+        masks_t masks;
+        enables_t enables;
         RunMode mode;
         epicsUInt32 src;
         Config()
@@ -349,6 +426,8 @@ public:
         {
             std::swap(times, o.times);
             std::swap(codes, o.codes);
+            std::swap(masks, o.masks);
+            std::swap(enables, o.enables);
             std::swap(mode, o.mode);
             std::swap(src, o.src);
         }
@@ -387,11 +466,19 @@ OBJECT_BEGIN(SoftSequence)
   OBJECT_PROP1("COMMITTED", &SoftSequence::isCommited);
   OBJECT_PROP1("COMMITTED", &SoftSequence::stateChange);
   OBJECT_PROP1("COMMIT", &SoftSequence::commit);
+  OBJECT_PROP2("SWMASK", &SoftSequence::getSwMask, &SoftSequence::setSwMask);
+  OBJECT_PROP1("SWMASK", &SoftSequence::stateChange);
+  OBJECT_PROP2("SWENA", &SoftSequence::getSwEna, &SoftSequence::setSwEna);
+  OBJECT_PROP1("SWENA", &SoftSequence::stateChange);
   OBJECT_PROP1("SOFT_TRIG", &SoftSequence::softTrig);
   OBJECT_PROP2("TIMES", &SoftSequence::getTimestamp, &SoftSequence::setTimestamp);
   OBJECT_PROP1("TIMES", &SoftSequence::stateChange);
   OBJECT_PROP2("CODES", &SoftSequence::getEventCode, &SoftSequence::setEventCode);
   OBJECT_PROP1("CODES", &SoftSequence::stateChange);
+  OBJECT_PROP2("MASK", &SoftSequence::getMask, &SoftSequence::setMask);
+  OBJECT_PROP1("MASK", &SoftSequence::stateChange);
+  OBJECT_PROP2("ENA", &SoftSequence::getEna, &SoftSequence::setEna);
+  OBJECT_PROP1("ENA", &SoftSequence::stateChange);
   OBJECT_PROP1("NUM_RUNS", &SoftSequence::counterEnd);
   OBJECT_PROP1("NUM_RUNS", &SoftSequence::counterEndScan);
   OBJECT_PROP1("NUM_STARTS", &SoftSequence::counterStart);
@@ -434,6 +521,97 @@ void SoftSequence::softTrig()
     }
     DEBUG(2, ("SW Triggered\n") );
 }
+
+epicsUInt32 SoftSequence::getSwMask() const
+{
+    epicsUInt32 val;
+
+    DEBUG(3, ("SW Mask getter\n"));
+    SCOPED_LOCK(mutex);
+    if (!hw || !is_enabled)
+    {
+        DEBUG(3, ("Skip\n"));
+        return 0;
+    }
+
+    else
+    {
+        DEBUG(5, ("Register sequencer : %u\n", nat_ioread32(hw->ctrlreg)));
+        epicsUInt32 val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWMASK) >> EVG_SEQ_RAM_SWMASK_shift;
+        DEBUG(5, ("Response sequencer : %u\n", val));
+        return val;
+    }
+}
+
+void SoftSequence::setSwMask(epicsUInt32 src)
+{
+
+    if (src>15){
+        std::string msg("4 bits code. Authorized range is [0-15]");
+        last_err = msg;
+        scanIoRequest(onErr);
+        throw std::runtime_error(msg);
+    }
+    DEBUG(3, ("SW Mask setter\n"));
+    if (!hw || !is_enabled)
+    {
+        DEBUG(3, ("Skip\n"));
+        return;
+    }
+
+    else
+    {
+        hw->ctrlreg_hw &= ~(EVG_SEQ_RAM_SWMASK);
+        hw->ctrlreg_hw |= src << EVG_SEQ_RAM_SWMASK_shift;
+        nat_iowrite32(hw->ctrlreg, hw->ctrlreg_hw);
+        scanIoRequest(changed);
+    }
+}
+
+epicsUInt32 SoftSequence::getSwEna() const
+{
+    epicsUInt32 val;
+
+    DEBUG(3, ("SW Enable getter\n"));
+    SCOPED_LOCK(mutex);
+    if (!hw || !is_enabled)
+    {
+        DEBUG(3, ("Skip\n"));
+        return 0;
+    }
+
+    else
+    {
+        DEBUG(5, ("Register sequencer : %u\n", nat_ioread32(hw->ctrlreg)));
+        epicsUInt32 val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWENABLE) >> EVG_SEQ_RAM_SWENABLE_shift;
+        DEBUG(5, ("Response sequencer : %u\n", val));
+        return val;
+    }
+}
+
+void SoftSequence::setSwEna(epicsUInt32 src)
+{
+    if (src>15){
+        std::string msg("4 bits code. Authorized range is [0-15]");
+        last_err = msg;
+        scanIoRequest(onErr);
+        throw std::runtime_error(msg);
+    }
+    DEBUG(3, ("SW Enable setter\n"));
+    if (!hw || !is_enabled)
+    {
+        DEBUG(3, ("Skip\n"));
+        return;
+    }
+    else
+    {
+        hw->ctrlreg_hw &= ~(EVG_SEQ_RAM_SWENABLE);
+        hw->ctrlreg_hw |= src << EVG_SEQ_RAM_SWENABLE_shift;
+        nat_iowrite32(hw->ctrlreg, hw->ctrlreg_hw);
+        scanIoRequest(changed);
+    }
+}
+
 
 void SoftSequence::load()
 {
@@ -519,6 +697,8 @@ void SoftSequence::commit()
                              conf.times.size());
     conf.codes.resize(buflen);
     conf.times.resize(buflen);
+    conf.enables.resize(buflen);
+    conf.masks.resize(buflen);
 
     // ensure presence of trailing end of sequence marker event 0x7f
     if(conf.codes.empty() || conf.codes.back()!=0x7f)
@@ -536,6 +716,10 @@ void SoftSequence::commit()
             conf.times.push_back(0);
         else
             conf.times.push_back(conf.times.back()+1);
+
+        conf.masks.push_back(0);
+        conf.enables.push_back(0);
+
     }
 
     if(conf.times.size()>2048) {
@@ -698,10 +882,21 @@ void SoftSequence::sync()
     volatile epicsUInt32 *ram = static_cast<volatile epicsUInt32 *>(hw->rambase);
     for(size_t i=0, N=committed.codes.size(); i<N; i++)
     {
+        epicsUInt32 codesMasks;
+
+        DEBUG(5, ("  Code %u\n", committed.codes[i]));
+
+        codesMasks = committed.codes[i];
+        codesMasks |= committed.enables[i] << EVG_SEQ_RAM_SWENABLE_shift;
+        codesMasks |= committed.masks[i] << EVG_SEQ_RAM_SWMASK_shift;
+
+        //
+        DEBUG(5, ("  Done, write %u\n", codesMasks));
         nat_iowrite32(ram++, committed.times[i]);
-        nat_iowrite32(ram++, committed.codes[i]);
-        if(committed.codes[i]==0x7f)
+        nat_iowrite32(ram++, codesMasks);
+        if (committed.codes[i] == 0x7f)
             break;
+
     }
 
     {

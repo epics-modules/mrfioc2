@@ -16,7 +16,9 @@ evgInput::evgInput(const std::string& name, const epicsUInt32 num,
     ,m_num(num)
     ,m_type(type)
     ,m_pInReg(pInReg)
-{}
+{
+    scanIoInit(&changed);
+}
 
 evgInput::~evgInput() {
 }
@@ -45,6 +47,22 @@ bool
 evgInput::getExtIrq() const {
     return  (nat_ioread32(m_pInReg) & (epicsUInt32)EVG_EXT_INP_IRQ_ENA) != 0;
 }
+
+epicsUInt32 evgInput::getHwMask() const
+{
+    epicsUInt32 val;
+    val = (nat_ioread32(m_pInReg) & EVG_INP_FP_MASK) >> EVG_INP_FP_MASK_shift;
+    return val;
+}
+
+void evgInput::setHwMask(epicsUInt32 src)
+{
+    epicsUInt32 inReg=nat_ioread32(m_pInReg) & ~(EVG_INP_FP_MASK);
+    nat_iowrite32(m_pInReg, inReg | (src<<EVG_INP_FP_MASK_shift));
+    scanIoRequest(changed);
+}
+
+
 
 void
 evgInput::setDbusMap(epicsUInt16 dbus, bool ena) {

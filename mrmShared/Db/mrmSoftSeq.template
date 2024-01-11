@@ -60,6 +60,42 @@ record(mbbi, "$(P)TsResolution-RB") {
     field( UNSV, "INVALID")
 }
 
+record(waveform, "$(P)EvtEna-SP") {
+    field( DTYP, "Obj Prop waveform out")
+    field( DESC, "Sequence event enable array")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENA")
+    field( NELM, "$(NELM)")
+    field( FTVL, "UCHAR")
+    info( autosaveFields_pass1, "VAL")
+}
+
+record(waveform, "$(P)EvtEna-RB") {
+    field( DTYP, "Obj Prop waveform in")
+    field( DESC, "Sequence event enable readback")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENA")
+    field( SCAN, "I/O Intr")
+    field( NELM, "$(NELM)")
+    field( FTVL, "UCHAR")
+}
+
+record(waveform, "$(P)EvtMask-SP") {
+    field( DTYP, "Obj Prop waveform out")
+    field( DESC, "Sequence event mask array")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=MASK")
+    field( NELM, "$(NELM)")
+    field( FTVL, "UCHAR")
+    info( autosaveFields_pass1, "VAL")
+}
+
+record(waveform, "$(P)EvtMask-RB") {
+    field( DTYP, "Obj Prop waveform in")
+    field( DESC, "Sequence event mask readback")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=MASK")
+    field( SCAN, "I/O Intr")
+    field( NELM, "$(NELM)")
+    field( FTVL, "UCHAR")
+}
+
 record(waveform, "$(P)EvtCode-SP") {
     field( DTYP, "Obj Prop waveform out")
     field( DESC, "Sequence event code array")
@@ -211,6 +247,32 @@ record(bo, "$(P)SoftTrig-Cmd") {
     field( UDF,  "0")
     field( ZNAM, "0")
     field( ONAM, "1")
+}
+
+record(mbbo, "$(P)SwMask-Sel") {
+    field( DTYP, "Obj Prop uint32")
+    field( DESC, "Sequence RAM soft trigger")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWMASK")
+}
+
+record(mbbi, "$(P)SwMask-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( DESC, "Sequence RAM soft trigger")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWMASK")
+    field( SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)SwEna-Sel") {
+    field( DTYP, "Obj Prop uint32")
+    field( DESC, "Sequence RAM soft trigger")
+    field( OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWENA")
+}
+
+record(mbbi, "$(P)SwEna-RB") {
+    field( DTYP, "Obj Prop uint32")
+    field( DESC, "Sequence RAM soft trigger")
+    field( INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWENA")
+    field( SCAN, "I/O Intr")
 }
 
 record(bi, "$(P)Load-RB") {
