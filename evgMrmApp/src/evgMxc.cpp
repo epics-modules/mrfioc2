@@ -63,10 +63,8 @@ evgMxc::getPrescaler() const {
 
 void
 evgMxc::setFrequency(epicsFloat64 freq) {
-    epicsUInt32 clkSpeed = (epicsFloat64)m_owner->getFrequency()
-                             * pow(10.0, 6);
-    epicsUInt32 preScaler = (epicsUInt32)((epicsFloat64)clkSpeed / freq);
-    
+    epicsFloat64 clkSpeed = m_owner->getFrequency() * pow(10.0, 6);
+    epicsUInt32 preScaler = (epicsUInt32)lround(clkSpeed / freq);
     setPrescaler(preScaler);
 }
 
@@ -98,4 +96,3 @@ evgMxc::getTrigEvtMap(epicsUInt16 trigEvt) const {
     epicsUInt32    mask = 1 << (trigEvt+MuxControl_TrigMap_SHIFT);
     return READ32(m_pReg, MuxControl(m_id))&mask;
 }
-
