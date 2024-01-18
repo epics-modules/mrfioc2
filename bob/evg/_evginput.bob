@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-31 14:49:36 by agaget-->
+<display version="2.0.0">
+  <name>evg_input</name>
+  <width>136</width>
+  <height>93</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="label" version="2.0.0">
+    <name>Label_4</name>
+    <text>FPMask</text>
+    <x>2</x>
+    <y>36</y>
+    <width>52</width>
+    <height>19</height>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_5</name>
+    <text>IRQ</text>
+    <x>3</x>
+    <y>28</y>
+    <width>39</width>
+    <height>19</height>
+    <visible>false</visible>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>$(INP)</text>
+    <x>4</x>
+    <width>115</width>
+    <height>25</height>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button</name>
+    <pv_name>$(PREFIX)EnaIrq-Sel</pv_name>
+    <bit>-1</bit>
+    <x>59</x>
+    <y>23</y>
+    <width>69</width>
+    <height>27</height>
+    <visible>false</visible>
+    <off_label>Disable</off_label>
+    <off_color>
+      <color name="Disable" red="200" green="200" blue="200">
+      </color>
+    </off_color>
+    <on_label>Enable</on_label>
+    <on_color>
+      <color name="Enable" red="0" green="255" blue="0">
+      </color>
+    </on_color>
+    <labels_from_pv>true</labels_from_pv>
+    <actions>
+    </actions>
+    <confirm_message>Are you sure you want to do this?</confirm_message>
+  </widget>
+  <widget type="byte_monitor" version="2.0.0">
+    <name>Byte Monitor</name>
+    <pv_name>$(PREFIX)FPMask-RB</pv_name>
+    <x>61</x>
+    <y>56</y>
+    <width>69</width>
+    <numBits>4</numBits>
+    <off_color>
+      <color name="Off" red="60" green="100" blue="60">
+      </color>
+    </off_color>
+    <on_color>
+      <color name="On" red="0" green="255" blue="0">
+      </color>
+    </on_color>
+    <foreground_color>
+      <color red="192" green="192" blue="192">
+      </color>
+    </foreground_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input</name>
+    <pv_name>$(PREFIX)FPMask-Sel</pv_name>
+    <x>61</x>
+    <y>35</y>
+    <width>69</width>
+    <height>22</height>
+    <foreground_color>
+      <color name="InputText" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="InputBackground" red="120" green="120" blue="120">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+</display>

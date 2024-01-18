@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-31 15:19:53 by agaget-->
+<display version="2.0.0">
+  <name>Launcher timing Labo</name>
+  <width>200</width>
+  <height>300</height>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button</name>
+    <actions>
+      <action type="open_display">
+        <file>evg/evm-mtca-300.bob</file>
+        <macros>
+          <P>Labo:titan-EVM</P>
+          <TITLE>EVM Demo</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>EVM300</text>
+    <x>16</x>
+    <y>70</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_1</name>
+    <actions>
+      <action type="open_display">
+        <file>evr/evr-mtca-300u.bob</file>
+        <macros>
+          <P>Labo:titan-EVR</P>
+          <TITLE>EVR Demo</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>MTCA EVR300U</text>
+    <x>16</x>
+    <y>110</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>change Macro of the button to change PV prefix</text>
+    <x>16</x>
+    <y>10</y>
+    <width>170</width>
+    <height>40</height>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_2</name>
+    <actions>
+    </actions>
+    <text>Other modesl = PR</text>
+    <x>16</x>
+    <y>230</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+    <enabled>false</enabled>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_4</name>
+    <actions>
+      <action type="open_display">
+        <file>evr/evr-mtca-300.bob</file>
+        <macros>
+          <P>Labo:titan-EVR</P>
+          <TITLE>EVR Demo</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>MTCA EVR300</text>
+    <x>16</x>
+    <y>150</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_5</name>
+    <actions>
+      <action type="open_display">
+        <file>evr/evr-mtca-300.bob</file>
+        <macros>
+          <P>Labo:titan-EVR</P>
+          <TITLE>EVR Demo</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>PCIe EVR300</text>
+    <x>16</x>
+    <y>190</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+</display>

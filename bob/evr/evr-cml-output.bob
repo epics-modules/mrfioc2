@@ -1,0 +1,741 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<display version="2.0.0">
+  <name>${TITLE}</name>
+  <macros>
+    <INFO>set/path/to/info</INFO>
+    <MAIN>evr-vmerf-setup.opi</MAIN>
+    <TITLE>CML: $(SYS) $(D) $(O)</TITLE>
+  </macros>
+  <height>955</height>
+  <background_color>
+    <color red="224" green="255" blue="255">
+    </color>
+  </background_color>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="group" version="2.0.0">
+    <name>Setup</name>
+    <x>6</x>
+    <y>42</y>
+    <width>266</width>
+    <height>146</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="LabelBG" red="65" green="105" blue="225">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="TabBG" red="224" green="255" blue="255">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>Reset</text>
+      <x>3</x>
+      <y>57</y>
+      <width>40</width>
+      <height>19</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button</name>
+      <pv_name>$(P):Out$(O)-Mode-Sel</pv_name>
+      <x>48</x>
+      <y>90</y>
+      <height>19</height>
+      <background_color>
+        <color name="ButtonFG" red="180" green="180" blue="180">
+        </color>
+      </background_color>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="choice" version="2.0.0">
+      <name>Choice Button_2</name>
+      <pv_name>$(P):Out$(O)-Rst-Sel</pv_name>
+      <x>48</x>
+      <y>54</y>
+      <width>103</width>
+      <height>25</height>
+      <background_color>
+        <color name="ButtonFG" red="180" green="180" blue="180">
+        </color>
+      </background_color>
+      <selected_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </selected_color>
+      <actions>
+      </actions>
+      <items>
+        <item>Item 1</item>
+        <item>Item 2</item>
+      </items>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <text>GTX Fine Delay</text>
+      <x>181</x>
+      <y>12</y>
+      <width>72</width>
+      <height>13</height>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input</name>
+      <pv_name>$(P):Out$(O)-Delay-SP</pv_name>
+      <x>186</x>
+      <y>27</y>
+      <width>62</width>
+      <height>17</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Enable</text>
+      <x>3</x>
+      <y>9</y>
+      <width>40</width>
+      <height>19</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):Out$(O)-Width-RB</pv_name>
+      <x>186</x>
+      <y>53</y>
+      <width>61</width>
+      <height>14</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <transparent>true</transparent>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text>Power</text>
+      <x>3</x>
+      <y>33</y>
+      <width>40</width>
+      <height>19</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="choice" version="2.0.0">
+      <name>Choice Button_1</name>
+      <pv_name>$(P):Out$(O)-Pwr-Sel</pv_name>
+      <x>48</x>
+      <y>30</y>
+      <width>103</width>
+      <height>25</height>
+      <background_color>
+        <color name="ButtonFG" red="180" green="180" blue="180">
+        </color>
+      </background_color>
+      <selected_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </selected_color>
+      <actions>
+      </actions>
+      <items>
+        <item>Item 1</item>
+        <item>Item 2</item>
+      </items>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <text>Mode</text>
+      <x>3</x>
+      <y>90</y>
+      <width>40</width>
+      <height>19</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="choice" version="2.0.0">
+      <name>Choice Button</name>
+      <pv_name>$(P):Out$(O)-Ena-Sel</pv_name>
+      <x>48</x>
+      <y>6</y>
+      <width>103</width>
+      <height>25</height>
+      <background_color>
+        <color name="ButtonFG" red="180" green="180" blue="180">
+        </color>
+      </background_color>
+      <selected_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </selected_color>
+      <actions>
+      </actions>
+      <items>
+        <item>Item 1</item>
+        <item>Item 2</item>
+      </items>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Waveform Mode</name>
+    <x>6</x>
+    <y>192</y>
+    <width>661</width>
+    <height>312</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="LabelBG" red="65" green="105" blue="225">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="TabBG" red="224" green="255" blue="255">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <text>WF Calc.</text>
+      <x>6</x>
+      <y>6</y>
+      <width>42</width>
+      <height>13</height>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="xyplot" version="3.0.0">
+      <name>XY Graph</name>
+      <x>6</x>
+      <y>30</y>
+      <width>643</width>
+      <height>250</height>
+      <title_font>
+        <font family="Arial" style="BOLD" size="11.881188118811881">
+        </font>
+      </title_font>
+      <actions>
+      </actions>
+      <x_axis>
+        <title>Primary X Axis (0)</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <title_font>
+          <font family="Arial" style="BOLD" size="8.910891089108912">
+          </font>
+        </title_font>
+        <scale_font>
+          <font name="Default" family="Liberation Sans" style="REGULAR" size="14.0">
+          </font>
+        </scale_font>
+        <visible>true</visible>
+      </x_axis>
+      <y_axes>
+        <y_axis>
+          <title>Primary Y Axis (1)</title>
+          <autoscale>false</autoscale>
+          <log_scale>false</log_scale>
+          <minimum>-0.1</minimum>
+          <maximum>1.1</maximum>
+          <show_grid>true</show_grid>
+          <title_font>
+            <font family="Arial" style="BOLD" size="8.910891089108912">
+            </font>
+          </title_font>
+          <scale_font>
+            <font name="Default" family="Liberation Sans" style="REGULAR" size="14.0">
+            </font>
+          </scale_font>
+          <on_right>false</on_right>
+          <visible>true</visible>
+          <color>
+            <color name="Text" red="0" green="0" blue="0">
+            </color>
+          </color>
+        </y_axis>
+      </y_axes>
+      <traces>
+        <trace>
+          <name>$(traces[0].y_pv)</name>
+          <x_pv>$(P):Out$(O)-Pat-WfX-I</x_pv>
+          <y_pv>$(P):Out$(O)-Pat-Wf-SP</y_pv>
+          <err_pv />
+          <axis>0</axis>
+          <trace_type>0</trace_type>
+          <color>
+            <color red="21" green="21" blue="196">
+            </color>
+          </color>
+          <line_width>1</line_width>
+          <line_style>0</line_style>
+          <point_type>2</point_type>
+          <point_size>4</point_size>
+          <visible>true</visible>
+        </trace>
+        <trace>
+          <name>$(traces[1].y_pv)</name>
+          <x_pv>$(P):Out$(O)-Pat-WfX-I</x_pv>
+          <y_pv>$(P):Out$(O)-Pat-Wf-RB</y_pv>
+          <err_pv />
+          <axis>0</axis>
+          <trace_type>1</trace_type>
+          <color>
+            <color red="242" green="26" blue="26">
+            </color>
+          </color>
+          <line_width>1</line_width>
+          <line_style>0</line_style>
+          <point_type>0</point_type>
+          <point_size>4</point_size>
+          <visible>true</visible>
+        </trace>
+      </traces>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text>Delay</text>
+      <x>118</x>
+      <y>6</y>
+      <width>42</width>
+      <height>13</height>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_1</name>
+      <pv_name>$(P):Out$(O)-WfCalc-Width-SP</pv_name>
+      <x>296</x>
+      <y>4</y>
+      <width>62</width>
+      <height>17</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):Out$(O)-WfCalc-Delay-SP.EGU</pv_name>
+      <x>222</x>
+      <y>5</y>
+      <width>29</width>
+      <height>16</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <transparent>true</transparent>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <pv_name>$(P):Out$(O)-WfCalc-Width-SP.EGU</pv_name>
+      <x>362</x>
+      <y>5</y>
+      <width>29</width>
+      <height>16</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <transparent>true</transparent>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>Width</text>
+      <x>255</x>
+      <y>6</y>
+      <width>42</width>
+      <height>13</height>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Boolean Button</name>
+      <pv_name>$(P):Out$(O)-WfCalc-Ena-SP</pv_name>
+      <bit>-1</bit>
+      <x>54</x>
+      <y>2</y>
+      <width>56</width>
+      <height>22</height>
+      <off_label />
+      <off_color>
+        <color red="0" green="100" blue="0">
+        </color>
+      </off_color>
+      <on_label />
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+      <background_color>
+        <color name="ButtonFG" red="180" green="180" blue="180">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input</name>
+      <pv_name>$(P):Out$(O)-WfCalc-Delay-SP</pv_name>
+      <x>156</x>
+      <y>4</y>
+      <width>62</width>
+      <height>17</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Frequency Mode</name>
+    <x>276</x>
+    <y>42</y>
+    <width>391</width>
+    <height>146</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="LabelBG" red="65" green="105" blue="225">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="TabBG" red="224" green="255" blue="255">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>4x Pattern Mode</name>
+    <x>6</x>
+    <y>510</y>
+    <width>661</width>
+    <height>445</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="LabelBG" red="65" green="105" blue="225">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="TabBG" red="224" green="255" blue="255">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="polyline" version="2.0.0">
+      <name>Polyline</name>
+      <macros>
+        <pv_name />
+      </macros>
+      <x>18</x>
+      <y>372</y>
+      <width>103</width>
+      <height>49</height>
+      <points>
+        <point x="0.0" y="48.0">
+        </point>
+        <point x="48.0" y="48.0">
+        </point>
+        <point x="48.0" y="0.0">
+        </point>
+        <point x="102.0" y="0.0">
+        </point>
+        <point x="102.0" y="48.0">
+        </point>
+      </points>
+      <line_width>1</line_width>
+      <actions>
+      </actions>
+      <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container</name>
+      <macros>
+        <PAT>$(P):Out$(O)-Pat-Low</PAT>
+      </macros>
+      <file>evr-cml-pat40.bob</file>
+      <x>7</x>
+      <y>37</y>
+      <width>644</width>
+      <height>48</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Low</text>
+      <x>12</x>
+      <y>12</y>
+      <width>47</width>
+      <height>18</height>
+      <font>
+        <font name="Header1" family="Arial" style="REGULAR" size="8.910891089108912">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_1</name>
+      <macros>
+        <PAT>$(P):Out$(O)-Pat-Rise</PAT>
+      </macros>
+      <file>evr-cml-pat40.bob</file>
+      <x>7</x>
+      <y>115</y>
+      <width>644</width>
+      <height>48</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text>Rise</text>
+      <x>12</x>
+      <y>90</y>
+      <width>47</width>
+      <height>18</height>
+      <font>
+        <font name="Header1" family="Arial" style="REGULAR" size="8.910891089108912">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_2</name>
+      <macros>
+        <PAT>$(P):Out$(O)-Pat-High</PAT>
+      </macros>
+      <file>evr-cml-pat40.bob</file>
+      <x>7</x>
+      <y>199</y>
+      <width>644</width>
+      <height>48</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>High</text>
+      <x>12</x>
+      <y>174</y>
+      <width>47</width>
+      <height>18</height>
+      <font>
+        <font name="Header1" family="Arial" style="REGULAR" size="8.910891089108912">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_3</name>
+      <macros>
+        <PAT>$(P):Out$(O)-Pat-Fall</PAT>
+      </macros>
+      <file>evr-cml-pat40.bob</file>
+      <x>7</x>
+      <y>277</y>
+      <width>644</width>
+      <height>48</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <text>Fall</text>
+      <x>12</x>
+      <y>252</y>
+      <width>47</width>
+      <height>18</height>
+      <font>
+        <font name="Header1" family="Arial" style="REGULAR" size="8.910891089108912">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Title800_1</name>
+    <width>800</width>
+    <height>32</height>
+    <style>3</style>
+    <foreground_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Text Input</name>
+      <macros>
+        <pv_name />
+      </macros>
+      <text>${TITLE}</text>
+      <x>10</x>
+      <width>777</width>
+      <height>32</height>
+      <font>
+        <font name="Title" family="Sans" style="BOLD" size="11.881188118811881">
+        </font>
+      </font>
+      <background_color>
+        <color name="EngTitleBG" red="175" green="238" blue="238">
+        </color>
+      </background_color>
+      <transparent>false</transparent>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+</display>

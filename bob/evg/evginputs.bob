@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-31 14:50:27 by agaget-->
+<display version="2.0.0">
+  <name>$(TITLE) Inputs</name>
+  <width>673</width>
+  <height>589</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="embedded" version="2.0.0">
+    <name>Linking Container</name>
+    <macros>
+      <INP>Front 0</INP>
+      <PREFIX>$(P):InpFront0</PREFIX>
+    </macros>
+    <file>_evginput.bob</file>
+    <y>48</y>
+    <width>169</width>
+    <height>109</height>
+    <resize>1</resize>
+    <transparent>true</transparent>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Linking Container_1</name>
+    <macros>
+      <INP>Front 1</INP>
+      <PREFIX>$(P):InpFront1</PREFIX>
+    </macros>
+    <file>_evginput.bob</file>
+    <x>168</x>
+    <y>48</y>
+    <width>169</width>
+    <height>109</height>
+    <resize>1</resize>
+    <transparent>true</transparent>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_1</name>
+    <text>EVRU</text>
+    <x>18</x>
+    <y>396</y>
+    <width>72</width>
+    <height>33</height>
+    <font>
+      <font name="Header 3" family="Liberation Sans" style="BOLD" size="16.0">
+      </font>
+    </font>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>EVRU (upstream)</name>
+    <y>397</y>
+    <width>675</width>
+    <height>237</height>
+    <style>1</style>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_10</name>
+      <macros>
+        <INP>Univ 8</INP>
+        <PREFIX>$(P):InpUniv8</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_11</name>
+      <macros>
+        <INP>Univ 9</INP>
+        <PREFIX>$(P):InpUniv9</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>168</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_12</name>
+      <macros>
+        <INP>Univ 10</INP>
+        <PREFIX>$(P):InpUniv10</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>336</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_13</name>
+      <macros>
+        <INP>Univ 11</INP>
+        <PREFIX>$(P):InpUniv11</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>504</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_14</name>
+      <macros>
+        <INP>Univ 12</INP>
+        <PREFIX>$(P):InpUniv12</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_15</name>
+      <macros>
+        <INP>Univ 13</INP>
+        <PREFIX>$(P):InpUniv13</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>168</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_16</name>
+      <macros>
+        <INP>Univ 14</INP>
+        <PREFIX>$(P):InpUniv14</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>336</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_17</name>
+      <macros>
+        <INP>Univ 15</INP>
+        <PREFIX>$(P):InpUniv15</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>504</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>EVRD (downstream)</name>
+    <y>161</y>
+    <width>675</width>
+    <height>237</height>
+    <style>1</style>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_2</name>
+      <macros>
+        <INP>Univ 0</INP>
+        <PREFIX>$(P):InpUniv0</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_3</name>
+      <macros>
+        <PREFIX>$(P):InpUniv1</PREFIX>
+        <INP>Univ 1</INP>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>168</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_4</name>
+      <macros>
+        <INP>Univ 2</INP>
+        <PREFIX>$(P):InpUniv2</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>336</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_5</name>
+      <macros>
+        <INP>Univ 3</INP>
+        <PREFIX>$(P):InpUniv3</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>504</x>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_6</name>
+      <macros>
+        <INP>Univ 4</INP>
+        <PREFIX>$(P):InpUniv4</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_7</name>
+      <macros>
+        <INP>Univ 5</INP>
+        <PREFIX>$(P):InpUniv5</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>168</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_8</name>
+      <macros>
+        <INP>Univ 6</INP>
+        <PREFIX>$(P):InpUniv6</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>336</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Linking Container_9</name>
+      <macros>
+        <INP>Univ 7</INP>
+        <PREFIX>$(P):InpUniv7</PREFIX>
+      </macros>
+      <file>_evginput.bob</file>
+      <x>504</x>
+      <y>108</y>
+      <width>169</width>
+      <height>109</height>
+      <resize>1</resize>
+      <transparent>true</transparent>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_8</name>
+    <text>EVG Mask Inputs</text>
+    <width>673</width>
+    <height>55</height>
+    <font>
+      <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="52" green="101" blue="164">
+      </color>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color name="Container Border Grey" red="150" green="150" blue="150">
+      </color>
+    </border_color>
+  </widget>
+</display>

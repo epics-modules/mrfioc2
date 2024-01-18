@@ -1,0 +1,938 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-31 14:18:56 by agaget-->
+<display version="2.0.0">
+  <name>Sequencer $(SS) $(TITLE)</name>
+  <width>1154</width>
+  <height>475</height>
+  <background_color>
+    <color name="Screen Background" red="240" green="240" blue="240">
+    </color>
+  </background_color>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="group" version="3.0.0">
+    <name>Settings</name>
+    <x>12</x>
+    <y>72</y>
+    <width>330</width>
+    <height>211</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Run Mode</text>
+      <x>8</x>
+      <y>8</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Timestamp Units</text>
+      <x>152</x>
+      <y>25</y>
+      <width>114</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Trigger Source</text>
+      <y>76</y>
+      <width>97</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):$(SS)RunMode-RB</pv_name>
+      <x>8</x>
+      <y>27</y>
+      <width>80</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button</name>
+      <pv_name>$(P):$(SS)RunMode-Sel</pv_name>
+      <x>8</x>
+      <y>46</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):$(SS)TrigSrc-RB</pv_name>
+      <x>8</x>
+      <y>95</y>
+      <width>80</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button</name>
+      <pv_name>$(P):$(SS)TrigSrc0-Sel</pv_name>
+      <x>8</x>
+      <y>114</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button</name>
+      <pv_name>$(P):$(SS)TsResolution-Sel</pv_name>
+      <x>133</x>
+      <y>44</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):$(SS)Commit-RB</pv_name>
+      <x>240</x>
+      <y>136</y>
+      <width>80</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)Commit-Cmd</pv_name>
+      <text>Commit</text>
+      <x>240</x>
+      <y>155</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):$(SS)TsResolution-RB</pv_name>
+      <x>212</x>
+      <y>44</y>
+      <width>80</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button</name>
+      <pv_name>$(P):$(SS)TrigSrc1-Sel</pv_name>
+      <x>8</x>
+      <y>132</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button_1</name>
+      <pv_name>$(P):$(SS)TrigSrc2-Sel</pv_name>
+      <x>8</x>
+      <y>150</y>
+      <width>80</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_27</name>
+      <text>Commit settings -&gt;</text>
+      <x>111</x>
+      <y>157</y>
+      <width>132</width>
+      <height>18</height>
+    </widget>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_8</name>
+    <text>Sequencer $(SS) $(TITLE)</text>
+    <width>1154</width>
+    <height>55</height>
+    <font>
+      <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="52" green="101" blue="164">
+      </color>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color name="Container Border Grey" red="150" green="150" blue="150">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Sequence</name>
+    <x>354</x>
+    <y>72</y>
+    <width>462</width>
+    <height>302</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_2</name>
+      <pv_name>$(P):$(SS)EvtCode-SP</pv_name>
+      <x>101</x>
+      <y>45</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <text>code</text>
+      <x>17</x>
+      <y>48</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_3</name>
+      <pv_name>$(P):$(SS)Timestamp-SP</pv_name>
+      <x>101</x>
+      <y>17</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <text>time</text>
+      <x>17</x>
+      <y>20</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_4</name>
+      <pv_name>$(P):$(SS)EvtMask-SP</pv_name>
+      <x>101</x>
+      <y>73</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <text>mask</text>
+      <x>17</x>
+      <y>76</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_5</name>
+      <pv_name>$(P):$(SS)EvtEna-SP</pv_name>
+      <x>101</x>
+      <y>103</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <text>ena</text>
+      <x>17</x>
+      <y>106</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_6</name>
+      <pv_name>$(P):$(SS)EvtCode-RB</pv_name>
+      <x>101</x>
+      <y>175</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Read_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_7</name>
+      <pv_name>$(P):$(SS)Timestamp-RB</pv_name>
+      <x>101</x>
+      <y>147</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Read_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_8</name>
+      <pv_name>$(P):$(SS)EvtMask-RB</pv_name>
+      <x>101</x>
+      <y>203</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Read_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_9</name>
+      <pv_name>$(P):$(SS)EvtEna-RB</pv_name>
+      <x>101</x>
+      <y>233</y>
+      <width>338</width>
+      <height>25</height>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Read_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <actions>
+      </actions>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_9</name>
+      <text>code RB</text>
+      <x>17</x>
+      <y>175</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_10</name>
+      <text>time RB</text>
+      <x>17</x>
+      <y>147</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_11</name>
+      <text>mask RB</text>
+      <x>17</x>
+      <y>203</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_12</name>
+      <text>ena RB</text>
+      <x>17</x>
+      <y>233</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Masks / Enables</name>
+    <x>834</x>
+    <y>72</y>
+    <width>276</width>
+    <height>168</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input</name>
+      <pv_name>$(P):$(SS)SwMask-Sel</pv_name>
+      <x>129</x>
+      <y>5</y>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="byte_monitor" version="2.0.0">
+      <name>Byte Monitor</name>
+      <pv_name>$(P):$(SS)SwMask-RB</pv_name>
+      <x>129</x>
+      <y>35</y>
+      <width>125</width>
+      <numBits>4</numBits>
+      <off_color>
+        <color red="0" green="100" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+      <foreground_color>
+        <color red="192" green="192" blue="192">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_1</name>
+      <pv_name>$(P):$(SS)SwEna-Sel</pv_name>
+      <x>125</x>
+      <y>72</y>
+      <height>25</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="byte_monitor" version="2.0.0">
+      <name>Byte Monitor_1</name>
+      <pv_name>$(P):$(SS)SwEna-RB</pv_name>
+      <x>125</x>
+      <y>102</y>
+      <width>125</width>
+      <numBits>4</numBits>
+      <off_color>
+        <color red="0" green="100" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+      <foreground_color>
+        <color red="192" green="192" blue="192">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>Soft mask</text>
+      <x>11</x>
+      <y>8</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <text>Soft enable</text>
+      <x>11</x>
+      <y>75</y>
+      <width>80</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Execute Sequence</name>
+    <x>12</x>
+    <y>294</y>
+    <width>330</width>
+    <height>156</height>
+    <style>1</style>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)Load-Cmd</pv_name>
+      <text>Load</text>
+      <x>17</x>
+      <y>25</y>
+      <width>67</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_1</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)Unload-Cmd</pv_name>
+      <text>Unload</text>
+      <x>83</x>
+      <y>25</y>
+      <width>67</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_2</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)Enable-Cmd</pv_name>
+      <text>Enable</text>
+      <x>17</x>
+      <y>73</y>
+      <width>67</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_3</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)Disable-Cmd</pv_name>
+      <text>Disable</text>
+      <x>83</x>
+      <y>73</y>
+      <width>67</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <pv_name>$(P):$(SS)Load-RB</pv_name>
+      <x>17</x>
+      <y>6</y>
+      <width>133</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <pv_name>$(P):$(SS)Enable-RB</pv_name>
+      <x>17</x>
+      <y>55</y>
+      <width>133</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_6</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>WritePV</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(SS)SoftTrig-Cmd</pv_name>
+      <text>SW Trigger</text>
+      <x>185</x>
+      <y>6</y>
+      <width>97</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_2</name>
+      <pv_name>$(P):$(SS)NumOfRuns-I</pv_name>
+      <x>209</x>
+      <y>72</y>
+      <width>103</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text># E</text>
+      <x>155</x>
+      <y>72</y>
+      <width>43</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_3</name>
+      <pv_name>$(P):$(SS)Error-RB</pv_name>
+      <x>11</x>
+      <y>108</y>
+      <width>307</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_4</name>
+      <pv_name>$(P):$(SS)NumOfStarts-I</pv_name>
+      <x>209</x>
+      <y>48</y>
+      <width>103</width>
+      <foreground_color>
+        <color name="Read_Foreground" red="0" green="255" blue="0">
+        </color>
+      </foreground_color>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text># S</text>
+      <x>155</x>
+      <y>48</y>
+      <width>43</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+</display>
