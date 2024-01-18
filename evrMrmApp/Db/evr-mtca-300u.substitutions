@@ -284,6 +284,133 @@ file "evrpulsermap.db"
 {31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Trig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Trig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
 {31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Trig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+
+
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+# gate generators mappings
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set0-SP", "$(EVR):Pul$(PID)", Set, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set1-SP", "$(EVR):Pul$(PID)", Set, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Set2-SP", "$(EVR):Pul$(PID)", Set, 0}
+
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{0, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{1, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{2, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{3, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{4, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{5, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{6, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{7, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{8, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{9, "\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{10,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{11,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{12,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{13,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{14,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{15,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+# gate generators mappings
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{28,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{29,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{30,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset0-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset1-SP", "$(EVR):Pul$(PID)", Reset, 0}
+{31,"\$(P)\$(dsh=-)DlyGen\$(s=:)$(PID)\$(ES)Evt\$(s=:)Reset2-SP", "$(EVR):Pul$(PID)", Reset, 0}
+
+
 }
 
 # pulser masking controls
@@ -313,6 +440,19 @@ file "evrin.db"
 {IN, OBJ, DESC}
 {"\$(P)\$(dsh=-)In\$(s=:)0\$(ES)", "$(EVR):FPIn0", "IN0 (TTL)"}
 {"\$(P)\$(dsh=-)In\$(s=:)1\$(ES)", "$(EVR):FPIn1", "IN1 (TTL)"}
+{"\$(P)\$(dsh=-)UnivIn\$(s=:)0\$(ES)", "$(EVR):FPIn4", "UnivIN0"}
+{"\$(P)\$(dsh=-)UnivIn\$(s=:)1\$(ES)", "$(EVR):FPIn5", "UnivIN1"}
+{"\$(P)\$(dsh=-)UnivIn\$(s=:)2\$(ES)", "$(EVR):FPIn6", "UnivIN2"}
+{"\$(P)\$(dsh=-)UnivIn\$(s=:)3\$(ES)", "$(EVR):FPIn7", "UnivIN3"}
+
+{"\$(P)\$(dsh=-)BPIn\$(s=:)0\$(ES)", "$(EVR):FPIn24", "BPIN0 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)1\$(ES)", "$(EVR):FPIn25", "BPIN1 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)2\$(ES)", "$(EVR):FPIn26", "BPIN2 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)3\$(ES)", "$(EVR):FPIn27", "BPIN3 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)4\$(ES)", "$(EVR):FPIn28", "BPIN4 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)5\$(ES)", "$(EVR):FPIn29", "BPIN5 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)6\$(ES)", "$(EVR):FPIn30", "BPIN6 (LVDS)"}
+{"\$(P)\$(dsh=-)BPIn\$(s=:)7\$(ES)", "$(EVR):FPIn31", "BPIN7 (LVDS)"}
 }
 
 file "mrmevrdlymodule.template"
@@ -320,6 +460,7 @@ file "mrmevrdlymodule.template"
 {SLOT, P, OBJ}
 {0, "\$(P)\$(dsh=-)Out\$(s=:)FPDly$(SLOT)\$(ES)", "$(EVR)"}
 {1, "\$(P)\$(dsh=-)Out\$(s=:)FPDly$(SLOT)\$(ES)", "$(EVR)"}
+
 }
 
 
