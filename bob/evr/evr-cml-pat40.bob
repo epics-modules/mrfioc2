@@ -1,0 +1,1228 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<display version="2.0.0">
+  <width>641</width>
+  <height>45</height>
+  <background_color>
+    <color name="Text" red="0" green="0" blue="0">
+    </color>
+  </background_color>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button</name>
+    <pv_name>$(PAT)00_15-SP.BF</pv_name>
+    <bit>-1</bit>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_1</name>
+    <pv_name>$(PAT)00_15-SP.BE</pv_name>
+    <bit>-1</bit>
+    <x>16</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_2</name>
+    <pv_name>$(PAT)00_15-SP.BD</pv_name>
+    <bit>-1</bit>
+    <x>32</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_3</name>
+    <pv_name>$(PAT)00_15-SP.BC</pv_name>
+    <bit>-1</bit>
+    <x>48</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_4</name>
+    <pv_name>$(PAT)00_15-SP.BB</pv_name>
+    <bit>-1</bit>
+    <x>64</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_5</name>
+    <pv_name>$(PAT)00_15-SP.BA</pv_name>
+    <bit>-1</bit>
+    <x>80</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_6</name>
+    <pv_name>$(PAT)00_15-SP.B9</pv_name>
+    <bit>-1</bit>
+    <x>96</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_7</name>
+    <pv_name>$(PAT)00_15-SP.B8</pv_name>
+    <bit>-1</bit>
+    <x>112</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_8</name>
+    <pv_name>$(PAT)00_15-SP.B7</pv_name>
+    <bit>-1</bit>
+    <x>128</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_9</name>
+    <pv_name>$(PAT)00_15-SP.B6</pv_name>
+    <bit>-1</bit>
+    <x>144</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_10</name>
+    <pv_name>$(PAT)00_15-SP.B5</pv_name>
+    <bit>-1</bit>
+    <x>160</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_11</name>
+    <pv_name>$(PAT)00_15-SP.B4</pv_name>
+    <bit>-1</bit>
+    <x>176</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_12</name>
+    <pv_name>$(PAT)00_15-SP.B3</pv_name>
+    <bit>-1</bit>
+    <x>192</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_13</name>
+    <pv_name>$(PAT)00_15-SP.B2</pv_name>
+    <bit>-1</bit>
+    <x>208</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_14</name>
+    <pv_name>$(PAT)00_15-SP.B1</pv_name>
+    <bit>-1</bit>
+    <x>224</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_15</name>
+    <pv_name>$(PAT)00_15-SP.B0</pv_name>
+    <bit>-1</bit>
+    <x>240</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_16</name>
+    <pv_name>$(PAT)16_31-SP.BF</pv_name>
+    <bit>-1</bit>
+    <x>254</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_17</name>
+    <pv_name>$(PAT)16_31-SP.BE</pv_name>
+    <bit>-1</bit>
+    <x>270</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_18</name>
+    <pv_name>$(PAT)16_31-SP.BD</pv_name>
+    <bit>-1</bit>
+    <x>286</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_19</name>
+    <pv_name>$(PAT)16_31-SP.BC</pv_name>
+    <bit>-1</bit>
+    <x>302</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_20</name>
+    <pv_name>$(PAT)16_31-SP.BB</pv_name>
+    <bit>-1</bit>
+    <x>318</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_21</name>
+    <pv_name>$(PAT)16_31-SP.BA</pv_name>
+    <bit>-1</bit>
+    <x>334</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_22</name>
+    <pv_name>$(PAT)16_31-SP.B9</pv_name>
+    <bit>-1</bit>
+    <x>350</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_23</name>
+    <pv_name>$(PAT)16_31-SP.B8</pv_name>
+    <bit>-1</bit>
+    <x>366</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_24</name>
+    <pv_name>$(PAT)16_31-SP.B7</pv_name>
+    <bit>-1</bit>
+    <x>382</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_25</name>
+    <pv_name>$(PAT)16_31-SP.B6</pv_name>
+    <bit>-1</bit>
+    <x>398</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_26</name>
+    <pv_name>$(PAT)16_31-SP.B5</pv_name>
+    <bit>-1</bit>
+    <x>414</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_27</name>
+    <pv_name>$(PAT)16_31-SP.B4</pv_name>
+    <bit>-1</bit>
+    <x>430</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_28</name>
+    <pv_name>$(PAT)16_31-SP.B3</pv_name>
+    <bit>-1</bit>
+    <x>446</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_29</name>
+    <pv_name>$(PAT)16_31-SP.B2</pv_name>
+    <bit>-1</bit>
+    <x>462</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_30</name>
+    <pv_name>$(PAT)16_31-SP.B1</pv_name>
+    <bit>-1</bit>
+    <x>478</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_31</name>
+    <pv_name>$(PAT)16_31-SP.B0</pv_name>
+    <bit>-1</bit>
+    <x>494</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_32</name>
+    <pv_name>$(PAT)32_39-SP.B7</pv_name>
+    <bit>-1</bit>
+    <x>512</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_33</name>
+    <pv_name>$(PAT)32_39-SP.B6</pv_name>
+    <bit>-1</bit>
+    <x>528</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_34</name>
+    <pv_name>$(PAT)32_39-SP.B5</pv_name>
+    <bit>-1</bit>
+    <x>544</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_35</name>
+    <pv_name>$(PAT)32_39-SP.B4</pv_name>
+    <bit>-1</bit>
+    <x>560</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_36</name>
+    <pv_name>$(PAT)32_39-SP.B3</pv_name>
+    <bit>-1</bit>
+    <x>576</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_37</name>
+    <pv_name>$(PAT)32_39-SP.B2</pv_name>
+    <bit>-1</bit>
+    <x>592</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_38</name>
+    <pv_name>$(PAT)32_39-SP.B1</pv_name>
+    <bit>-1</bit>
+    <x>608</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_39</name>
+    <pv_name>$(PAT)32_39-SP.B0</pv_name>
+    <bit>-1</bit>
+    <x>624</x>
+    <y>12</y>
+    <width>17</width>
+    <height>33</height>
+    <off_label />
+    <off_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_label />
+    <on_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </on_color>
+    <show_led>false</show_led>
+    <background_color>
+      <color name="Text" red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>3</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_1</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>83</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_2</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>163</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_3</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>243</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_4</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>321</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_5</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>401</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_6</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>481</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_7</name>
+    <macros>
+      <pv_name />
+    </macros>
+    <x>561</x>
+    <width>11</width>
+    <height>13</height>
+    <line_width>0</line_width>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <background_color>
+      <color red="0" green="0" blue="0">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+  </widget>
+</display>

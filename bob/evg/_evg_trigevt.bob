@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-10 17:05:17 by agaget-->
+<display version="2.0.0">
+  <name>evg_trigevt</name>
+  <width>295</width>
+  <height>20</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>TrigEvt$(N)</text>
+    <width>80</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input</name>
+    <pv_name>$(P):TrigEvt$(N)EvtCode-SP</pv_name>
+    <x>79</x>
+    <width>48</width>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button</name>
+    <pv_name>$(P):TrigEvt$(N)TrigSrc-Sel</pv_name>
+    <x>126</x>
+    <width>85</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button_1</name>
+    <pv_name>$(P):TrigEvt$(N)TrigSrc1-Sel</pv_name>
+    <x>210</x>
+    <width>85</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+</display>

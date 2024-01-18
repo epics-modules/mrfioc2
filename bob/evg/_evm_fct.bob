@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-31 12:21:35 by agaget-->
+<display version="2.0.0">
+  <name>FCT $(SFP)</name>
+  <width>177</width>
+  <height>200</height>
+  <widget type="group" version="3.0.0">
+    <name>$(SFP)</name>
+    <y>17</y>
+    <width>177</width>
+    <height>183</height>
+    <style>1</style>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Rx Pwr</text>
+      <x>10</x>
+      <y>7</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <pv_name>$(SFP)PwrRX-I</pv_name>
+      <x>85</x>
+      <y>7</y>
+      <width>65</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text>Tx Pwr</text>
+      <x>10</x>
+      <y>25</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_2</name>
+      <pv_name>$(SFP)PwrTX-I</pv_name>
+      <x>85</x>
+      <y>25</y>
+      <width>65</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>Temperature</text>
+      <x>10</x>
+      <y>43</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_3</name>
+      <pv_name>$(SFP)T-I</pv_name>
+      <x>85</x>
+      <y>43</y>
+      <width>65</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <text>Link Speed</text>
+      <x>10</x>
+      <y>61</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_4</name>
+      <pv_name>$(SFP)SpeedLink-I</pv_name>
+      <x>85</x>
+      <y>61</y>
+      <width>65</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <text>Vendor</text>
+      <x>10</x>
+      <y>78</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_5</name>
+      <pv_name>$(SFP)Vendor-I</pv_name>
+      <x>85</x>
+      <y>78</y>
+      <width>83</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <text>Part</text>
+      <x>10</x>
+      <y>94</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_6</name>
+      <pv_name>$(SFP)Part-I</pv_name>
+      <x>85</x>
+      <y>94</y>
+      <width>83</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <text>Serial #</text>
+      <x>10</x>
+      <y>111</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_7</name>
+      <pv_name>$(SFP)Serial-I</pv_name>
+      <x>85</x>
+      <y>111</y>
+      <width>83</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <text>Manu. Date</text>
+      <x>10</x>
+      <y>128</y>
+      <width>63</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_8</name>
+      <pv_name>$(SFP)DateManu-I</pv_name>
+      <x>85</x>
+      <y>128</y>
+      <width>83</width>
+      <height>17</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Write_Background" red="120" green="120" blue="120">
+        </color>
+      </background_color>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <wrap_words>false</wrap_words>
+      <actions>
+      </actions>
+      <border_width>1</border_width>
+    </widget>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_2</name>
+    <pv_name>$(P):FCTLink$(NUM)-Sts</pv_name>
+    <x>2</x>
+    <y>2</y>
+    <width>16</width>
+    <height>16</height>
+    <off_color>
+      <color red="0" green="100" blue="0">
+      </color>
+    </off_color>
+    <foreground_color>
+      <color red="192" green="192" blue="192">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="150" green="150" blue="150">
+      </color>
+    </line_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_9</name>
+    <pv_name>$(P):FCTMsrd$(NUM)-I</pv_name>
+    <x>39</x>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="Write_Background" red="120" green="120" blue="120">
+      </color>
+    </background_color>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+</display>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-10 14:46:37 by agaget-->
+<display version="2.0.0">
+  <name>evg_mxc</name>
+  <width>415</width>
+  <height>19</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>MXC$(N)</text>
+    <width>91</width>
+    <height>19</height>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input</name>
+    <pv_name>$(P):Mxc$(N)Prescaler-SP</pv_name>
+    <x>90</x>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update</name>
+    <pv_name>$(P):Mxc$(N)Frequency-RB</pv_name>
+    <x>189</x>
+    <width>70</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Read_Foreground" red="0" green="255" blue="0">
+      </color>
+    </foreground_color>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button</name>
+    <pv_name>$(P):Mxc$(N)Polarity-Sel</pv_name>
+    <x>336</x>
+    <width>79</width>
+    <height>19</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_1</name>
+    <pv_name>$(P):Mxc$(N)Frequency-SP</pv_name>
+    <x>258</x>
+    <width>66</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+</display>

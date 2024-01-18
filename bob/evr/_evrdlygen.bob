@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-01-10 17:25:33 by agaget-->
+<display version="2.0.0">
+  <name>evr_dlygen</name>
+  <width>523</width>
+  <height>39</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input</name>
+    <pv_name>$(P):$(GEN)Prescaler-SP</pv_name>
+    <x>86</x>
+    <width>37</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_1</name>
+    <pv_name>$(P):$(GEN)Delay-SP</pv_name>
+    <x>128</x>
+    <width>109</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_2</name>
+    <pv_name>$(P):$(GEN)Width-SP</pv_name>
+    <x>266</x>
+    <width>73</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update</name>
+    <pv_name>$(P):$(GEN)Delay-SP.EGU</pv_name>
+    <x>236</x>
+    <width>25</width>
+    <height>19</height>
+    <background_color>
+      <color red="255" green="255" blue="255">
+      </color>
+    </background_color>
+    <transparent>true</transparent>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_1</name>
+    <pv_name>$(P):$(GEN)Width-SP.EGU</pv_name>
+    <x>338</x>
+    <width>25</width>
+    <height>19</height>
+    <background_color>
+      <color red="255" green="255" blue="255">
+      </color>
+    </background_color>
+    <transparent>true</transparent>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>$(N)</text>
+    <width>27</width>
+    <height>37</height>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_3</name>
+    <pv_name>$(P):$(GEN)EvtTrig0-SP</pv_name>
+    <x>374</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_4</name>
+    <pv_name>$(P):$(GEN)EvtTrig1-SP</pv_name>
+    <x>398</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_5</name>
+    <pv_name>$(P):$(GEN)EvtTrig2-SP</pv_name>
+    <x>422</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button</name>
+    <pv_name>$(P):$(GEN)Polarity-Sel</pv_name>
+    <bit>-1</bit>
+    <x>26</x>
+    <y>20</y>
+    <width>61</width>
+    <height>19</height>
+    <off_label>Normal</off_label>
+    <off_color>
+      <color red="0" green="255" blue="0">
+      </color>
+    </off_color>
+    <on_label>Invert</on_label>
+    <on_color>
+      <color red="0" green="0" blue="255">
+      </color>
+    </on_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_1</name>
+    <pv_name>$(P):$(GEN)Ena-Sel</pv_name>
+    <bit>-1</bit>
+    <x>26</x>
+    <width>61</width>
+    <height>19</height>
+    <off_color>
+      <color red="255" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_color>
+      <color red="0" green="255" blue="0">
+      </color>
+    </on_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_6</name>
+    <pv_name>$(P):$(GEN)Label-I</pv_name>
+    <x>92</x>
+    <y>20</y>
+    <width>354</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <format>6</format>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_7</name>
+    <pv_name>$(P):$(GEN)EvtSet0-SP</pv_name>
+    <x>451</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_8</name>
+    <pv_name>$(P):$(GEN)EvtSet1-SP</pv_name>
+    <x>475</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_9</name>
+    <pv_name>$(P):$(GEN)EvtSet2-SP</pv_name>
+    <x>499</x>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_10</name>
+    <pv_name>$(P):$(GEN)EvtReset0-SP</pv_name>
+    <x>451</x>
+    <y>20</y>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_11</name>
+    <pv_name>$(P):$(GEN)EvtReset1-SP</pv_name>
+    <x>475</x>
+    <y>20</y>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_12</name>
+    <pv_name>$(P):$(GEN)EvtReset2-SP</pv_name>
+    <x>499</x>
+    <y>20</y>
+    <width>24</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+</display>

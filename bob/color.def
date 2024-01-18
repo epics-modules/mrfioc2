@@ -1,0 +1,48 @@
+# Default color for text
+Text=0,0,0
+
+# Default color for 'active' text that's being edited
+ActiveText=255, 255, 255
+
+# Display background
+Background = 240, 240, 240
+
+# .. for widgets that read/write a value
+Read_Background = 120, 120, 120
+Write_Background = 120, 120, 120
+
+Read_Foreground = 0, 255, 0
+Write_Foreground = 0, 255, 255
+
+# .. for buttons
+Button_Background = 210, 210, 210
+
+# .. for grouping
+Group_Background = 240, 240, 240
+
+# Styling
+Header_Background=52,101,164
+Header_2_Background=114,159,207
+Header_3_Background=255,255,255
+
+Header_ForeGround=255,255,255
+Header_2_ForeGround=255,255,255
+Header_3_ForeGround=255,255,255
+
+#Status
+OK = 0, 255, 0
+MINOR = 255, 128, 0
+MAJOR = 255, 0, 0
+INVALID = 255, 0, 255
+DISCONNECTED = INVALID
+On = OK
+Off = 60,100,60
+Enable = 0, 255, 0
+Disable = 200, 200, 200 
+Open = OK
+Out = OK
+Close = MAJOR
+In = MAJOR 
+Moving = 0, 0, 200
+Initialization = Moving
+Transition = Moving  
