@@ -1,0 +1,253 @@
+# Record set for a universal EVR (tested with 300 family)
+#
+# Macros:
+# P = Prefix
+# EVR = Card name (same as mrmEvrSetupPCI())
+# FEVT = Event link frequency (default 124.916 MHz)
+# Naming-agnostic
+# ===============
+global {s=""}
+
+file "mrmevrbase.template"
+{
+{P="\$(P)", OBJ="$(EVR)", EVNT1HZ="\$(EVNT1HZ=125)", FEVT="\$(FEVT=124.916)"}
+}
+file "databuftx.db"
+{pattern
+{P, OBJ, PROTO, s}
+{"\$(P)", "$(EVR):BUFTX", 1, "-"}
+}
+
+file "evrSoftEvt.template"
+{
+{P="\$(P)", OBJ="$(EVR)"}
+}
+
+file "databuftxCtrl.db"
+{pattern
+{P, OBJ}
+{"\$(P)", "$(EVR):BUFTX"}
+}
+
+file "mrmevrbufrx.db"
+{pattern
+{P, OBJ, PROTO, s}
+{"\$(P)", "$(EVR):BUFRX", "0xff00", "-"}
+}
+
+file "mrmSoftSeq.template"
+{pattern
+{P, EVG, seqNum, NELM}
+{"\$(P)SoftSeq0", $(EVR), 0, 2047}
+{"\$(P)SoftSeq1", $(EVR), 1, 2047}
+{"\$(P)SoftSeq2", $(EVR), 2, 2047}
+}
+
+file "evrSoftSeq.template"
+{pattern
+{P, EVG, seqNum, NELM }
+{"\$(P)SoftSeq0", $(EVR), 0, 2047}
+{"\$(P)SoftSeq1", $(EVR), 1, 2047}
+{"\$(P)SoftSeq2", $(EVR), 2, 2047}
+}
+
+file "sfp.db"
+{
+{P="\$(P)SFP", OBJ="$(EVR):SFP"}
+}
+
+file "mrmevrdc.template"
+{
+{P="\$(P)DC", OBJ="$(EVR)"}
+}
+
+file "evrmap.db"
+{pattern
+{NAME, OBJ, func, EVT}
+{"\$(P)EvtBlink0-SP", "$(EVR)", Blink, 15}
+{"\$(P)EvtBlink1-SP", "$(EVR)", Blink, 0}
+{"\$(P)EvtResetPS-SP","$(EVR)", "Reset PS", 123}
+}
+
+file "evrevent.db"
+{pattern
+{EN, OBJ, CODE, EVNT}
+{"\$(P)1hz",  "$(EVR)", 0x7d, 125}
+{"\$(P)EvtA", "$(EVR)", 10, 10}
+{"\$(P)EvtB", "$(EVR)", 11, 11}
+{"\$(P)EvtC", "$(EVR)", 12, 12}
+{"\$(P)EvtD", "$(EVR)", 13, 13}
+{"\$(P)EvtE", "$(EVR)", 14, 14}
+{"\$(P)EvtF", "$(EVR)", 15, 15}
+{"\$(P)EvtG", "$(EVR)", 16, 16}
+{"\$(P)EvtH", "$(EVR)", 17, 17}
+}
+
+file "evrscale.db"
+{pattern
+{IDX, P, SN, OBJ, MAX}
+{0, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{1, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{2, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{3, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{4, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{5, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{6, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{7, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+}
+
+file "mrmevrout.db"
+{pattern
+{ON, OBJ, DESC}
+{"\$(P)OutInt", "$(EVR):Int", "Internal"}
+{"\$(P)OutFP0", "$(EVR):FrontOut0", "OUT0 (TTL)"}
+{"\$(P)OutFP1", "$(EVR):FrontOut1", "OUT1 (TTL)"}
+{"\$(P)OutFP2", "$(EVR):FrontOut2", "OUT2 (TTL)"}
+{"\$(P)OutFP3", "$(EVR):FrontOut3", "OUT3 (TTL)"}
+# default to tri-state for backplane lines
+pattern
+{ON, OBJ, DESC, DEFAULT}
+{"\$(P)OutBack0", "$(EVR):Backplane0", "RX17 (0)", 61}
+{"\$(P)OutBack1", "$(EVR):Backplane1", "TX17 (1)", 61}
+{"\$(P)OutBack2", "$(EVR):Backplane2", "RX18 (2)", 61}
+{"\$(P)OutBack3", "$(EVR):Backplane3", "TX18 (3)", 61}
+{"\$(P)OutBack4", "$(EVR):Backplane4", "RX19 (4)", 61}
+{"\$(P)OutBack5", "$(EVR):Backplane5", "TX19 (5)", 61}
+{"\$(P)OutBack6", "$(EVR):Backplane6", "RX20 (6)", 61}
+{"\$(P)OutBack7", "$(EVR):Backplane7", "TX20 (7)", 61}
+}
+
+file "mrmevroutint.db"
+{{
+    ON="\$(P)OutInt", OBJ="$(EVR)"
+}}
+
+file "evrcml.db"
+{pattern
+{P, ON, OBJ}
+{"\$(P)", "\$(P)OutFPUV0", "$(EVR):CML0"}
+{"\$(P)", "\$(P)OutFPUV1", "$(EVR):CML1"}
+}
+
+# Pulse generators w/o a prescaler set NOPS=1
+file "evrpulser.db"
+{pattern
+{PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
+{0, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{1, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{2, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{3, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{4, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{5, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{6, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{7, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{8, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{9, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{10,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{11,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{12,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{13,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{14,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{15,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+# gate generators
+{28,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{29,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{30,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{31,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+}
+
+# Default to 3 possible trigger mappings per pulser
+file "evrpulsermap.db"
+{pattern
+{PID, NAME, OBJ, F, EVT}
+{0, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{0, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{0, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+# gate generators mappings
+{28,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{28,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{28,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVR):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVR):Pul$(PID)", Trig, 0}
+}
+
+# pulser masking controls
+file "evrdcpulser.template"
+{pattern
+{PID, P, PN, OBJ}
+{0,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{1,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{2,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{3,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{4,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{5,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{6,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{7,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{8,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{9,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{10, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{11, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{12, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{13, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{14, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+{15, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)"}
+}
+
+file "evrin.db"
+{pattern
+{IN, OBJ, DESC}
+{"\$(P)In0", "$(EVR):FPIn0", "IN0 (TTL)"}
+{"\$(P)In1", "$(EVR):FPIn1", "IN1 (TTL)"}
+}

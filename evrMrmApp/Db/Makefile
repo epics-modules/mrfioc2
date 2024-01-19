@@ -24,7 +24,7 @@ DB += evr-mtca-300rf.db
 DB += evr-mtca-300u.db
 
 ifdef BASE_3_15
-DB += evr-mtca-300u.db
+DB += evr-mtca-300u.uv.db
 endif
 
 ifneq ($(DEVIOCSTATS),)
