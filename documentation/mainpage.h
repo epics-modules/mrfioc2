@@ -16,7 +16,7 @@ event timing systems.
 
 @section whereis Source
 
-Releases can be found at @url http://sourceforge.net/projects/epics/files/mrfioc2/
+Releases can be found at @url https://github.com/epics-modules/mrfioc2/releases
 
 This module is versioned with Git and can be viewed at
 @url https://github.com/epics-modules/mrfioc2/
@@ -25,7 +25,7 @@ Or checked out with
 
 git clone https://github.com/epics-modules/mrfioc2.git
 
-The canonical version of this page is @url http://epics.sourceforge.net/mrfioc2/
+The canonical version of this page is @url http://epics-modules.github.io/mrfioc2
 
 @subsection requires Requires
 
@@ -39,7 +39,7 @@ MSI (Macro expansion tool)  Required with Base < 3.15.1
 
 devLib2 >= 2.9
 
-@url http://epics.sourceforge.net/devlib2/
+@url https://epics-modules.github.io/devlib2/
 
 RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
