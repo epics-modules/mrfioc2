@@ -1,7 +1,0 @@
-<map id="dataBufRx" name="dataBufRx">
-<area shape="rect" id="node6" href="$classbuf_rx_manager.html" title="bufRxManager" alt="" coords="56,337,172,364"/>
-<area shape="rect" id="node2" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufRx \&gt;" alt="" coords="5,185,223,212"/>
-<area shape="rect" id="node3" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="45,89,140,115"/>
-<area shape="rect" id="node4" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="165,81,311,123"/>
-<area shape="rect" id="node7" href="$classmrm_buf_rx.html" title="mrmBufRx" alt="" coords="68,413,160,440"/>
-</map>

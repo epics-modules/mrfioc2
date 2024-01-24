@@ -1,9 +1,0 @@
-<map id="devMrmBuf.cpp" name="devMrmBuf.cpp">
-<area shape="rect" id="node2" href="$dev_obj_8h.html" title="devObj.h" alt="" coords="557,155,637,181"/>
-<area shape="rect" id="node13" href="$object_8h.html" title="mrf/object.h" alt="" coords="1109,229,1210,256"/>
-<area shape="rect" id="node39" href="$databuf_8h.html" title="mrf/databuf.h" alt="" coords="1352,155,1463,181"/>
-<area shape="rect" id="node40" href="$mrm_data_buf_tx_8h.html" title="mrmDataBufTx.h" alt="" coords="1383,80,1517,107"/>
-<area shape="rect" id="node43" href="$dev_mrm_buf_8h.html" title="C interface for data buffer sending and receiving. " alt="" coords="1791,80,1899,107"/>
-<area shape="rect" id="node27" href="$mrf_common_8h.html" title="mrfCommon.h" alt="" coords="639,304,755,331"/>
-<area shape="rect" id="node37" href="$linkoptions_8h.html" title="Hardware link parsing and storage. " alt="" coords="1775,304,1882,331"/>
-</map>

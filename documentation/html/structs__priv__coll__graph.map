@@ -1,8 +1,0 @@
-<map id="s_priv" name="s_priv">
-<area shape="rect" id="node2" href="$classdata_buf_tx.html" title="dataBufTx" alt="" coords="163,261,253,288"/>
-<area shape="rect" id="node3" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufTx \&gt;" alt="" coords="5,185,221,212"/>
-<area shape="rect" id="node4" href="$classmrf_1_1_object.html" title="Base object inspection. " alt="" coords="98,89,193,115"/>
-<area shape="rect" id="node8" href="$classmrf_1_1_object_inst.html" title="mrf::ObjectInst\&lt; dataBufRx \&gt;" alt="" coords="246,185,463,212"/>
-<area shape="rect" id="node5" href="$classmrf_1_1_object_inst.html" title="User implementation hook. " alt="" coords="241,81,388,123"/>
-<area shape="rect" id="node7" href="$classdata_buf_rx.html" title="dataBufRx" alt="" coords="293,261,384,288"/>
-</map>
