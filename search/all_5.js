@@ -131,6 +131,7 @@ var searchData=
   ['evrmrmtimensoverflowthreshold',['evrMrmTimeNSOverflowThreshold',['../drvem_8cpp.html#ad2d06f0ca379f2277d7f7d1f0038bdf7',1,'drvem.cpp']]],
   ['evrmrmtsbuffer',['EVRMRMTSBuffer',['../struct_e_v_r_m_r_m_t_s_buffer.html',1,'EVRMRMTSBuffer'],['../class_e_v_r_m_r_m.html#acd73a78f990f5b1b03069bec81322308',1,'EVRMRM::EVRMRMTSBuffer()'],['../struct_e_v_r_m_r_m_t_s_buffer.html#a972af88c89592d70c0db2c8ec095d6cf',1,'EVRMRMTSBuffer::EVRMRMTSBuffer()']]],
   ['evrmrmverb',['evrmrmVerb',['../drvem_iocsh_8h.html#ad172b11454f8190a8d85334e966e2a9a',1,'drvemIocsh.h']]],
+  ['evrnumdbusbit',['evrNumDbusBit',['../evr_reg_map_8h.html#aad60bc7c95b7f51f596db733d08b0a64',1,'evrRegMap.h']]],
   ['evrregmap_2eh',['evrRegMap.h',['../evr_reg_map_8h.html',1,'']]],
   ['evrseqmanager',['EvrSeqManager',['../class_evr_seq_manager.html',1,'EvrSeqManager'],['../class_evr_seq_manager.html#a574b361cf6a5de65cb7eb60fcbf07b17',1,'EvrSeqManager::EvrSeqManager()']]],
   ['evrtime_5fregistrar',['EVRTime_Registrar',['../evr_g_t_i_f_8cpp.html#a77eb478add81de2fe276f27e01a46779',1,'evrGTIF.cpp']]],

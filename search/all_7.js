@@ -5,6 +5,7 @@ var searchData=
   ['getbusconfiguration',['getBusConfiguration',['../classevg_mrm.html#a5729ae664ee55a1849bc3b86a9831a05',1,'evgMrm::getBusConfiguration()'],['../class_e_v_r.html#a80fa05ab811447ed0b3b97b041dfa60d',1,'EVR::getBusConfiguration()']]],
   ['getbypass',['getBypass',['../classevg_ac_trig.html#a5349b6dc754cd77b9ae35462a7442fef',1,'evgAcTrig']]],
   ['getclkfreq',['getClkFreq',['../class_seq_manager.html#abfd0a1a14c6dffe65763ea446a1ce338',1,'SeqManager::getClkFreq()'],['../class_evg_seq_manager.html#a8f5cf0750bdd784db66b82fe483b2f64',1,'EvgSeqManager::getClkFreq()'],['../class_evr_seq_manager.html#ac4dd5b1e988fbe49b8dcb22ccee0e10a',1,'EvrSeqManager::getClkFreq()']]],
+  ['getcommithash',['getCommitHash',['../classevg_mrm.html#a6cf70282f18255e7a133fe2212c1775e',1,'evgMrm::getCommitHash()'],['../class_e_v_r.html#a7f5b6e919a6820c88f17c64626fa3d8c',1,'EVR::getCommitHash()']]],
   ['getcreateobject',['getCreateObject',['../classmrf_1_1_object.html#a0e88061cbc2ec05aded98eb712dcfb89',1,'mrf::Object']]],
   ['getdbusmap',['getDbusMap',['../classevg_input.html#a9a59c346b4d03cd413a1605b53d8a217',1,'evgInput']]],
   ['getdbusstatus',['getDbusStatus',['../classevg_mrm.html#ae1753c318f41c931870024c3bddc9d5c',1,'evgMrm']]],
@@ -15,6 +16,8 @@ var searchData=
   ['geterr',['getErr',['../struct_soft_sequence.html#aae4977a6510f7f04be94c90bade69f49',1,'SoftSequence']]],
   ['geterrscan',['getErrScan',['../struct_soft_sequence.html#a6d4b62550e7e0cc0a304a4c356d6ec7a',1,'SoftSequence']]],
   ['geteventcode',['getEventCode',['../struct_soft_sequence.html#a5209446835ddca6f4ce06d653fec0ede',1,'SoftSequence']]],
+  ['getevrdmrm',['getEvrdMrm',['../classevg_mrm.html#a0b0262f4b2dcbc2fbd38162fb98b43fe',1,'evgMrm']]],
+  ['getevrumrm',['getEvruMrm',['../classevg_mrm.html#a3b46acab99fe684b12295c82c3e54741',1,'evgMrm']]],
   ['getevtcode',['getEvtCode',['../classevg_trig_evt.html#a79cf5cfc4eea9916cbfb42edaf8a485e',1,'evgTrigEvt']]],
   ['getextirq',['getExtIrq',['../classevg_input.html#af304fd46e3c2a5c34abf8aa87a4131b5',1,'evgInput']]],
   ['getformfactor',['getFormFactor',['../class_e_v_r_m_r_m.html#ae3a845ec57954eacd82f390740d09aca',1,'EVRMRM']]],
@@ -64,5 +67,7 @@ var searchData=
   ['gpioc_5fpin_5fdata',['GPIOC_pin_data',['../mrf_8h.html#ab638797d7ae50f51478f0e9759f0aa26',1,'mrf.h']]],
   ['gpioc_5fpin_5fdir',['GPIOC_pin_dir',['../mrf_8h.html#a329cf42f479100dbe934e54b4a2cd65b',1,'mrf.h']]],
   ['gpioc_5fpin_5ffn',['GPIOC_pin_fn',['../mrf_8h.html#acb9f2f14764f0f2a46fefb28cb59cb93',1,'mrf.h']]],
+  ['gtx_5ffpuv_5foffset',['GTX_FPUV_OFFSET',['../drvem_8cpp.html#a4c3c8f35377680d589f8676054efa820',1,'drvem.cpp']]],
+  ['gtx_5fsfp_5foffset',['GTX_SFP_OFFSET',['../drvem_8cpp.html#a9e9ae6a84d6eb92d13f1648d8e02c74a',1,'drvem.cpp']]],
   ['guard',['Guard',['../mrmtimesrc_8cpp.html#ac3935b62519bf527b4f380b253b0b5ee',1,'mrmtimesrc.cpp']]]
 ];

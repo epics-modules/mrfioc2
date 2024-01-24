@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -133,6 +133,10 @@ Macros</h2></td></tr>
 <tr class="separator:ab86c0b7c19d0baf219cdcda33c59ed70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f8851cfce0747ea606b0875d52b182"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#ae1f8851cfce0747ea606b0875d52b182">TSValidThreshold</a>&#160;&#160;&#160;5</td></tr>
 <tr class="separator:ae1f8851cfce0747ea606b0875d52b182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3c8f35377680d589f8676054efa820"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#a4c3c8f35377680d589f8676054efa820">GTX_FPUV_OFFSET</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a4c3c8f35377680d589f8676054efa820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e9ae6a84d6eb92d13f1648d8e02c74a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#a9e9ae6a84d6eb92d13f1648d8e02c74a">GTX_SFP_OFFSET</a>&#160;&#160;&#160;20</td></tr>
+<tr class="separator:a9e9ae6a84d6eb92d13f1648d8e02c74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af463124166d9f79a6eb55a48c3b9889a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#af463124166d9f79a6eb55a48c3b9889a">CLEANVEC</a>(TYPE,  VAR)</td></tr>
 <tr class="separator:af463124166d9f79a6eb55a48c3b9889a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -160,6 +164,8 @@ Functions</h2></td></tr>
 <tr class="separator:a38add51433a0595f7be99ef23a1806b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a409aed3315516b8e5dd8ca5301dbefaf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#a409aed3315516b8e5dd8ca5301dbefaf">OBJECT_PROP1</a> (&quot;DCTOPID&quot;, &amp;EVRMRM::topId)</td></tr>
 <tr class="separator:a409aed3315516b8e5dd8ca5301dbefaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52cef9249a9d92c14cf0a5c9f40bd335"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#a52cef9249a9d92c14cf0a5c9f40bd335">OBJECT_PROP2</a> (&quot;PSPolarity&quot;, &amp;EVRMRM::psPolarity, &amp;<a class="el" href="class_e_v_r_m_r_m.html#a15fbd56096bb7151958a0cf26fa0a4ac">EVRMRM::psPolaritySet</a>)</td></tr>
+<tr class="separator:a52cef9249a9d92c14cf0a5c9f40bd335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5ce3002ea6355f16171f792536c3665"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#aa5ce3002ea6355f16171f792536c3665">OBJECT_PROP2</a> (&quot;EvtCode&quot;, &amp;EVRMRM::dummy, &amp;<a class="el" href="class_e_v_r_m_r_m.html#a0497b49fc2dc3598fcd57202d0e7622f">EVRMRM::setEvtCode</a>)</td></tr>
 <tr class="separator:aa5ce3002ea6355f16171f792536c3665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59ab78c3d67a9e1191fac3170b581114"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="drvem_8cpp.html#a59ab78c3d67a9e1191fac3170b581114">OBJECT_PROP2</a> (&quot;TimeSrc&quot;, &amp;EVRMRM::timeSrc, &amp;<a class="el" href="class_e_v_r_m_r_m.html#ab317e39e8c48de7f6b7a132a08d644e1">EVRMRM::setTimeSrc</a>)</td></tr>
@@ -223,7 +229,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span> { \</div><div class="line">  callbackSetPriority(prio, ptr); \</div><div class="line">  callbackSetCallback(fn, ptr);   \</div><div class="line">  callbackSetUser(valptr, ptr);   \</div><div class="line">  (ptr)-&gt;timer=NULL;              \</div><div class="line">} <span class="keywordflow">while</span>(0)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00075">75</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00076">76</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -255,6 +261,38 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">for</span>(TYPE::iterator it=VAR.begin(); it!=VAR.end(); ++it) \</div><div class="line">    { <span class="keyword">delete</span> (*it); } \</div><div class="line">    VAR.clear();</div></div><!-- fragment -->
 </div>
 </div>
+<a id="a4c3c8f35377680d589f8676054efa820"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c3c8f35377680d589f8676054efa820">&#9670;&nbsp;</a></span>GTX_FPUV_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GTX_FPUV_OFFSET&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00118">118</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a9e9ae6a84d6eb92d13f1648d8e02c74a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e9ae6a84d6eb92d13f1648d8e02c74a">&#9670;&nbsp;</a></span>GTX_SFP_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GTX_SFP_OFFSET&#160;&#160;&#160;20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00120">120</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a91303ac75094c7c0f3ce794f7980ea23"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91303ac75094c7c0f3ce794f7980ea23">&#9670;&nbsp;</a></span>HAVE_PARALLEL_CB</h2>
 
@@ -267,7 +305,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00058">58</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00059">59</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -283,7 +321,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00114">114</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00115">115</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -597,7 +635,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a9eaeeeead61b85097571dd1607487af7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9eaeeeead61b85097571dd1607487af7">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eaeeeead61b85097571dd1607487af7">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -631,7 +669,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a5bbff22a6ab4c0bcfef252e8c02b0c06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bbff22a6ab4c0bcfef252e8c02b0c06">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bbff22a6ab4c0bcfef252e8c02b0c06">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +703,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a1fa560e74233a7b9b3526249c9942a09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fa560e74233a7b9b3526249c9942a09">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa560e74233a7b9b3526249c9942a09">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -698,8 +736,42 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a52cef9249a9d92c14cf0a5c9f40bd335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52cef9249a9d92c14cf0a5c9f40bd335">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OBJECT_PROP2 </td>
+          <td>(</td>
+          <td class="paramtype">&quot;PSPolarity&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;<a class="el" href="class_e_v_r_m_r_m.html#a94ef4bcd0b64845c676f0702b28b4e31">EVRMRM::psPolarity</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;<a class="el" href="class_e_v_r_m_r_m.html#a15fbd56096bb7151958a0cf26fa0a4ac">EVRMRM::psPolaritySet</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa5ce3002ea6355f16171f792536c3665"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5ce3002ea6355f16171f792536c3665">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ce3002ea6355f16171f792536c3665">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -733,7 +805,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a59ab78c3d67a9e1191fac3170b581114"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59ab78c3d67a9e1191fac3170b581114">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a59ab78c3d67a9e1191fac3170b581114">&#9670;&nbsp;</a></span>OBJECT_PROP2() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -779,7 +851,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l01139">1139</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l01165">1165</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -795,7 +867,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00062">62</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00063">63</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -811,7 +883,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00061">61</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00062">62</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -828,7 +900,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>value in nanoseconds above which a timestamp is considered invalid. below is truncated. May be necessary when simulating timestamp source in software </p>
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00066">66</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00067">67</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
@@ -844,14 +916,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00108">108</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="drvem_8cpp_source.html#l00109">109</a> of file <a class="el" href="drvem_8cpp_source.html">drvem.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:38 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

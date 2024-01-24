@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -124,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aee9b17add3c9fba20b65bd129998e3b7"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_v_r.html#aee9b17add3c9fba20b65bd129998e3b7">versionSw</a> () const</td></tr>
 <tr class="memdesc:aee9b17add3c9fba20b65bd129998e3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Software Version.  <a href="#aee9b17add3c9fba20b65bd129998e3b7">More...</a><br /></td></tr>
 <tr class="separator:aee9b17add3c9fba20b65bd129998e3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f5b6e919a6820c88f17c64626fa3d8c"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_v_r.html#a7f5b6e919a6820c88f17c64626fa3d8c">getCommitHash</a> () const</td></tr>
+<tr class="separator:a7f5b6e919a6820c88f17c64626fa3d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8c20b998633662f1168916650bd3306"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_v_r.html#ad8c20b998633662f1168916650bd3306">position</a> () const</td></tr>
 <tr class="memdesc:ad8c20b998633662f1168916650bd3306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position of <a class="el" href="class_e_v_r.html" title="Base interface for EVRs. ">EVR</a> device in enclosure.  <a href="#ad8c20b998633662f1168916650bd3306">More...</a><br /></td></tr>
 <tr class="separator:ad8c20b998633662f1168916650bd3306"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,8 +328,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00034">34</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div></div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00039">39</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -510,8 +512,36 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00049">49</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                                           {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> &amp;busConfiguration;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div></div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00058">58</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                           {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> &amp;busConfiguration;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div></div><!-- fragment -->
+</div>
+</div>
+<a id="a7f5b6e919a6820c88f17c64626fa3d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f5b6e919a6820c88f17c64626fa3d8c">&#9670;&nbsp;</a></span>getCommitHash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string EVR::getCommitHash </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00053">53</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="evr_8cpp.html#adc0b2fde9c8979dec7fdb107537fbfe5">__COMMIT_HASH</a>;</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div><div class="ttc" id="evr_8cpp_html_adc0b2fde9c8979dec7fdb107537fbfe5"><div class="ttname"><a href="evr_8cpp.html#adc0b2fde9c8979dec7fdb107537fbfe5">__COMMIT_HASH</a></div><div class="ttdeci">#define __COMMIT_HASH</div><div class="ttdef"><b>Definition:</b> <a href="evr_8cpp_source.html#l00036">evr.cpp:36</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a37430f6dd31ad096c6c82cd1843d6ccb"></a>
@@ -676,10 +706,10 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Position of <a class="el" href="class_e_v_r.html" title="Base interface for EVRs. ">EVR</a> device in enclosure. </p>
 
-<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00053">53</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::ostringstream <a class="code" href="class_e_v_r.html#ad8c20b998633662f1168916650bd3306">position</a>;</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#af747e744defe50b23e8564a3a99a7d39">busType</a> == <a class="code" href="configuration_info_8h.html#a2908ca6eecf7770735af1b2b83a78e1ea447f187e050cf5f3692244b25bb5baa3">busType_pci</a>) {</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        position &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;bus &lt;&lt; <span class="stringliteral">&quot;:&quot;</span></div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                 &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;device &lt;&lt; <span class="stringliteral">&quot;.&quot;</span></div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                 &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;function;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;slot)</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            position &lt;&lt; <span class="stringliteral">&quot; slot=&quot;</span> &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;slot;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#af747e744defe50b23e8564a3a99a7d39">busType</a> == <a class="code" href="configuration_info_8h.html#a2908ca6eecf7770735af1b2b83a78e1eadc93044175237decc50a1bfdebff5662">busType_vme</a>) {</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        position &lt;&lt; <span class="stringliteral">&quot;Slot #&quot;</span> &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#a035503027dc42cb97e895d0074ca3104">vme</a>.<a class="code" href="structconfiguration__vme.html#a299eaa4b8d4fc22307de7d4f6dccb373">slot</a>;</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    } <span class="keywordflow">else</span> {</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        position &lt;&lt; <span class="stringliteral">&quot;Unknown position&quot;</span>;</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> position.str();</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div><div class="ttc" id="structbus__configuration_html_a035503027dc42cb97e895d0074ca3104"><div class="ttname"><a href="structbus__configuration.html#a035503027dc42cb97e895d0074ca3104">bus_configuration::vme</a></div><div class="ttdeci">struct configuration_vme vme</div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00035">configurationInfo.h:35</a></div></div>
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00062">62</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::ostringstream <a class="code" href="class_e_v_r.html#ad8c20b998633662f1168916650bd3306">position</a>;</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#af747e744defe50b23e8564a3a99a7d39">busType</a> == <a class="code" href="configuration_info_8h.html#a2908ca6eecf7770735af1b2b83a78e1ea447f187e050cf5f3692244b25bb5baa3">busType_pci</a>) {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        position &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;bus &lt;&lt; <span class="stringliteral">&quot;:&quot;</span></div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                 &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;device &lt;&lt; <span class="stringliteral">&quot;.&quot;</span></div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                 &lt;&lt; std::hex &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;function;</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;slot)</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            position &lt;&lt; <span class="stringliteral">&quot; slot=&quot;</span> &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">pci</a>.<a class="code" href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">dev</a>-&gt;slot;</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(busConfiguration.<a class="code" href="structbus__configuration.html#af747e744defe50b23e8564a3a99a7d39">busType</a> == <a class="code" href="configuration_info_8h.html#a2908ca6eecf7770735af1b2b83a78e1eadc93044175237decc50a1bfdebff5662">busType_vme</a>) {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        position &lt;&lt; <span class="stringliteral">&quot;Slot #&quot;</span> &lt;&lt; busConfiguration.<a class="code" href="structbus__configuration.html#a035503027dc42cb97e895d0074ca3104">vme</a>.<a class="code" href="structconfiguration__vme.html#a299eaa4b8d4fc22307de7d4f6dccb373">slot</a>;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } <span class="keywordflow">else</span> {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        position &lt;&lt; <span class="stringliteral">&quot;Unknown position&quot;</span>;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">return</span> position.str();</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div><div class="ttc" id="structbus__configuration_html_a035503027dc42cb97e895d0074ca3104"><div class="ttname"><a href="structbus__configuration.html#a035503027dc42cb97e895d0074ca3104">bus_configuration::vme</a></div><div class="ttdeci">struct configuration_vme vme</div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00035">configurationInfo.h:35</a></div></div>
 <div class="ttc" id="structbus__configuration_html_af747e744defe50b23e8564a3a99a7d39"><div class="ttname"><a href="structbus__configuration.html#af747e744defe50b23e8564a3a99a7d39">bus_configuration::busType</a></div><div class="ttdeci">enum busType busType</div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00037">configurationInfo.h:37</a></div></div>
-<div class="ttc" id="class_e_v_r_html_ad8c20b998633662f1168916650bd3306"><div class="ttname"><a href="class_e_v_r.html#ad8c20b998633662f1168916650bd3306">EVR::position</a></div><div class="ttdeci">virtual std::string position() const</div><div class="ttdoc">Position of EVR device in enclosure. </div><div class="ttdef"><b>Definition:</b> <a href="evr_8cpp_source.html#l00053">evr.cpp:53</a></div></div>
+<div class="ttc" id="class_e_v_r_html_ad8c20b998633662f1168916650bd3306"><div class="ttname"><a href="class_e_v_r.html#ad8c20b998633662f1168916650bd3306">EVR::position</a></div><div class="ttdeci">virtual std::string position() const</div><div class="ttdoc">Position of EVR device in enclosure. </div><div class="ttdef"><b>Definition:</b> <a href="evr_8cpp_source.html#l00062">evr.cpp:62</a></div></div>
 <div class="ttc" id="configuration_info_8h_html_a2908ca6eecf7770735af1b2b83a78e1ea447f187e050cf5f3692244b25bb5baa3"><div class="ttname"><a href="configuration_info_8h.html#a2908ca6eecf7770735af1b2b83a78e1ea447f187e050cf5f3692244b25bb5baa3">busType_pci</a></div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00031">configurationInfo.h:31</a></div></div>
 <div class="ttc" id="structbus__configuration_html_ae9f3bff7df702960fef2e3f8d973248f"><div class="ttname"><a href="structbus__configuration.html#ae9f3bff7df702960fef2e3f8d973248f">bus_configuration::pci</a></div><div class="ttdeci">struct configuration_pci pci</div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00036">configurationInfo.h:36</a></div></div>
 <div class="ttc" id="structconfiguration__pci_html_a2bc35bd1a61f280945981130cd1f5993"><div class="ttname"><a href="structconfiguration__pci.html#a2bc35bd1a61f280945981130cd1f5993">configuration_pci::dev</a></div><div class="ttdeci">const epicsPCIDevice * dev</div><div class="ttdef"><b>Definition:</b> <a href="configuration_info_8h_source.html#l00023">configurationInfo.h:23</a></div></div>
@@ -844,8 +874,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00038">38</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_e_v_r.html#aca91dc53addc364e07d25e2cdc2cc62b">version</a>().str();</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div><div class="ttc" id="class_e_v_r_html_aca91dc53addc364e07d25e2cdc2cc62b"><div class="ttname"><a href="class_e_v_r.html#aca91dc53addc364e07d25e2cdc2cc62b">EVR::version</a></div><div class="ttdeci">virtual MRFVersion version() const =0</div><div class="ttdoc">Firmware Version. </div></div>
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00043">43</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_e_v_r.html#aca91dc53addc364e07d25e2cdc2cc62b">version</a>().str();</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div><div class="ttc" id="class_e_v_r_html_aca91dc53addc364e07d25e2cdc2cc62b"><div class="ttname"><a href="class_e_v_r.html#aca91dc53addc364e07d25e2cdc2cc62b">EVR::version</a></div><div class="ttdeci">virtual MRFVersion version() const =0</div><div class="ttdoc">Firmware Version. </div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -874,8 +904,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Software Version. </p>
 
-<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00043">43</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> MRF_VERSION;</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div></div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="evr_8cpp_source.html#l00048">48</a> of file <a class="el" href="evr_8cpp_source.html">evr.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="version_8h.html#acab41b0a49ac7370972af8b46b9522af">MRF_VERSION</a>;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div><div class="ttc" id="version_8h_html_acab41b0a49ac7370972af8b46b9522af"><div class="ttname"><a href="version_8h.html#acab41b0a49ac7370972af8b46b9522af">MRF_VERSION</a></div><div class="ttdeci">#define MRF_VERSION</div><div class="ttdef"><b>Definition:</b> <a href="version_8h_source.html#l00002">version.h:2</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -885,7 +916,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:39 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

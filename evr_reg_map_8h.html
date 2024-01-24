@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -102,6 +102,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:aad60bc7c95b7f51f596db733d08b0a64"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#aad60bc7c95b7f51f596db733d08b0a64">evrNumDbusBit</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:aad60bc7c95b7f51f596db733d08b0a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4556e7b4a7d24c93a9dff6746e14de54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a4556e7b4a7d24c93a9dff6746e14de54">U32_Status</a>&#160;&#160;&#160;0x000</td></tr>
 <tr class="separator:a4556e7b4a7d24c93a9dff6746e14de54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c274097180fc164792f11f2d5f83424"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a3c274097180fc164792f11f2d5f83424">Status_dbus_mask</a>&#160;&#160;&#160;0xff000000</td></tr>
@@ -136,6 +138,8 @@ Macros</h2></td></tr>
 <tr class="separator:a61f02f6b1e677e7f5226351a370cb6a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40ea7cdeefc88c2ba20af7fc48af0318"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a40ea7cdeefc88c2ba20af7fc48af0318">Control_DCEna</a>&#160;&#160;&#160;0x00400000</td></tr>
 <tr class="separator:a40ea7cdeefc88c2ba20af7fc48af0318"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579f063bd9fb48ae598749c786ba6c4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a579f063bd9fb48ae598749c786ba6c4a">Control_pspol</a>&#160;&#160;&#160;0x00008000 /* prescaler polarity */</td></tr>
+<tr class="separator:a579f063bd9fb48ae598749c786ba6c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fb57a29bdb840c9bd75c9ec6cfcda34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a9fb57a29bdb840c9bd75c9ec6cfcda34">Control_tsdbus</a>&#160;&#160;&#160;0x00004000</td></tr>
 <tr class="separator:a9fb57a29bdb840c9bd75c9ec6cfcda34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c16ec08a6194aa0e37440a485fe9fe3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a7c16ec08a6194aa0e37440a485fe9fe3">Control_tsrst</a>&#160;&#160;&#160;0x00002000</td></tr>
@@ -300,12 +304,18 @@ Macros</h2></td></tr>
 <tr class="separator:abcc9608071ccd1b7f7365521a9532b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a1e983637323aa50172f99bfd83a2bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a2a1e983637323aa50172f99bfd83a2bb">U32_ScalerN</a>&#160;&#160;&#160;0x100</td></tr>
 <tr class="separator:a2a1e983637323aa50172f99bfd83a2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b7fc7d15a39d6a45d3cc4b62675b083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a4b7fc7d15a39d6a45d3cc4b62675b083">ScalerMax</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:a4b7fc7d15a39d6a45d3cc4b62675b083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a4b7fc7d15a39d6a45d3cc4b62675b083">ScalerMax</a>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:a4b7fc7d15a39d6a45d3cc4b62675b083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9455d794e9cbd1031822aa324b8deca0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a9455d794e9cbd1031822aa324b8deca0">U32_Scaler</a>(N)&#160;&#160;&#160;(<a class="el" href="evr_reg_map_8h.html#a2a1e983637323aa50172f99bfd83a2bb">U32_ScalerN</a> + (4*(N)))</td></tr>
 <tr class="separator:a9455d794e9cbd1031822aa324b8deca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76287c53e030fea0be22d2a516de0be3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a76287c53e030fea0be22d2a516de0be3">ScalerPhasOffs_offset</a>&#160;&#160;&#160;0x20</td></tr>
 <tr class="separator:a76287c53e030fea0be22d2a516de0be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbe6c549154a8b458d5ee5add2b60393"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#abbe6c549154a8b458d5ee5add2b60393">U32_ScalerPulsTrig</a>(N)&#160;&#160;&#160;(<a class="el" href="evr_reg_map_8h.html#a2a1e983637323aa50172f99bfd83a2bb">U32_ScalerN</a> + 0x40 + (4*(N)))</td></tr>
+<tr class="separator:abbe6c549154a8b458d5ee5add2b60393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae7c8dd2e0287312edf94b6149fe26f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a0ae7c8dd2e0287312edf94b6149fe26f">U32_DBusTrigN</a>&#160;&#160;&#160;0x180</td></tr>
+<tr class="separator:a0ae7c8dd2e0287312edf94b6149fe26f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a036a71da8ab330c544947c1f0c2971c4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a036a71da8ab330c544947c1f0c2971c4">U32_DBusPulsTrig</a>(N)&#160;&#160;&#160;(<a class="el" href="evr_reg_map_8h.html#a0ae7c8dd2e0287312edf94b6149fe26f">U32_DBusTrigN</a> + (4*(N)))</td></tr>
+<tr class="separator:a036a71da8ab330c544947c1f0c2971c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6231c001edede90b875f23ea9e44219b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#a6231c001edede90b875f23ea9e44219b">U32_PulserNCtrl</a>&#160;&#160;&#160;0x200</td></tr>
 <tr class="separator:a6231c001edede90b875f23ea9e44219b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb41deba6fabdf9f468965fdf07561b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="evr_reg_map_8h.html#aeb41deba6fabdf9f468965fdf07561b5">U32_PulserNScal</a>&#160;&#160;&#160;0x204</td></tr>
@@ -560,7 +570,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00365">365</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00374">374</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -576,7 +586,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00362">362</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00371">371</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +602,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00368">368</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00377">377</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -608,7 +618,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00364">364</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00373">373</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -624,7 +634,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00367">367</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00376">376</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -640,7 +650,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00366">366</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00375">375</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +666,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00369">369</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00378">378</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -672,7 +682,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00363">363</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00372">372</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -688,7 +698,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00152">152</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00157">157</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +714,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00150">150</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00155">155</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -720,7 +730,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00151">151</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00156">156</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +746,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00149">149</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00154">154</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -752,7 +762,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00070">70</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00073">73</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -768,7 +778,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00053">53</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00056">56</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +794,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00066">66</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00069">69</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -800,7 +810,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00055">55</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00058">58</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -816,7 +826,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00085">85</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00090">90</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -832,7 +842,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00068">68</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00071">71</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -848,7 +858,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00082">82</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00087">87</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -864,7 +874,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00081">81</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00086">86</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -880,7 +890,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00080">80</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00085">85</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -896,7 +906,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00084">84</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00089">89</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -912,7 +922,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00077">77</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00082">82</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -928,7 +938,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00078">78</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00083">83</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -944,7 +954,23 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00062">62</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00065">65</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+
+</div>
+</div>
+<a id="a579f063bd9fb48ae598749c786ba6c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a579f063bd9fb48ae598749c786ba6c4a">&#9670;&nbsp;</a></span>Control_pspol</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define Control_pspol&#160;&#160;&#160;0x00008000 /* prescaler polarity */</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00075">75</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -960,7 +986,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00060">60</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00063">63</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -976,7 +1002,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00064">64</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00067">67</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -992,7 +1018,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00073">73</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00078">78</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +1034,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00075">75</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00080">80</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1024,7 +1050,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00074">74</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00079">79</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1066,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00058">58</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00061">61</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1056,7 +1082,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00126">126</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00131">131</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1098,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00125">125</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00130">130</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1114,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00121">121</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00126">126</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1104,7 +1130,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00123">123</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00128">128</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1146,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00124">124</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00129">129</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1136,7 +1162,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00129">129</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00134">134</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1178,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00132">132</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00137">137</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1194,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00134">134</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00139">139</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1184,7 +1210,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00133">133</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00138">138</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1200,7 +1226,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00130">130</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00135">135</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1216,7 +1242,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00131">131</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00136">136</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1232,7 +1258,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00117">117</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00122">122</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1274,23 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00380">380</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00389">389</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+
+</div>
+</div>
+<a id="aad60bc7c95b7f51f596db733d08b0a64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad60bc7c95b7f51f596db733d08b0a64">&#9670;&nbsp;</a></span>evrNumDbusBit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define evrNumDbusBit&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00045">45</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1306,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00139">139</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00144">144</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1280,7 +1322,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00140">140</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00145">145</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1296,7 +1338,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00137">137</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00142">142</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1312,7 +1354,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00138">138</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00143">143</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1370,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00141">141</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00146">146</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1344,7 +1386,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00142">142</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00147">147</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1360,7 +1402,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00270">270</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00279">279</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1376,7 +1418,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00271">271</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00280">280</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1434,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00266">266</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00275">275</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1450,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00263">263</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00272">272</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1424,7 +1466,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00268">268</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00277">277</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1440,7 +1482,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00269">269</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00278">278</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1456,7 +1498,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00265">265</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00274">274</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1472,7 +1514,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00267">267</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00276">276</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1488,7 +1530,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00264">264</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00273">273</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1504,7 +1546,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00272">272</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00281">281</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1520,7 +1562,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00273">273</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00282">282</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1536,7 +1578,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00262">262</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00271">271</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1594,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00261">261</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00270">270</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1568,7 +1610,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00274">274</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00283">283</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1584,7 +1626,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00091">91</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00096">96</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1600,7 +1642,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00100">100</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00105">105</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1616,7 +1658,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00088">88</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00093">93</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1632,7 +1674,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00093">93</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00098">98</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1648,7 +1690,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00095">95</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00100">100</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1664,7 +1706,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00094">94</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00099">99</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1680,7 +1722,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00092">92</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00097">97</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1696,7 +1738,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00090">90</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00095">95</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1712,7 +1754,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00101">101</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00106">106</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1728,7 +1770,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00096">96</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00101">101</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1744,7 +1786,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00089">89</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00094">94</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1760,7 +1802,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00353">353</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00362">362</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1776,7 +1818,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00356">356</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00365">365</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1792,7 +1834,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00355">355</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00364">364</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1850,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00354">354</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00363">363</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1828,7 +1870,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00228">228</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00237">237</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1848,7 +1890,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00229">229</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00238">238</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1864,7 +1906,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00313">313</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00322">322</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1880,7 +1922,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00314">314</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00323">323</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1896,7 +1938,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00312">312</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00321">321</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1912,7 +1954,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00302">302</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00311">311</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1928,7 +1970,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00310">310</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00319">319</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1944,7 +1986,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00303">303</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00312">312</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +2002,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00294">294</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00303">303</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1976,7 +2018,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00295">295</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00304">304</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -1992,7 +2034,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00306">306</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00315">315</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2008,7 +2050,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00304">304</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00313">313</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2024,7 +2066,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00305">305</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00314">314</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2082,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00307">307</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00316">316</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2056,7 +2098,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00300">300</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00309">309</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2072,7 +2114,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00301">301</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00310">310</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2088,7 +2130,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00309">309</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00318">318</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2104,7 +2146,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00308">308</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00317">317</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2120,7 +2162,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00298">298</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00307">307</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2136,7 +2178,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00297">297</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00306">306</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2152,7 +2194,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00299">299</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00308">308</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2168,7 +2210,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00296">296</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00305">305</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2184,7 +2226,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00321">321</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00330">330</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2200,7 +2242,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00316">316</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00325">325</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2216,7 +2258,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00322">322</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00331">331</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2232,7 +2274,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00254">254</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00263">263</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2248,7 +2290,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00233">233</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00242">242</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2264,7 +2306,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00240">240</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00249">249</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2280,7 +2322,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00247">247</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00256">256</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2296,7 +2338,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00207">207</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00216">216</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2312,7 +2354,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00205">205</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00214">214</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2328,7 +2370,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00206">206</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00215">215</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2344,7 +2386,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00203">203</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00212">212</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2360,7 +2402,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00204">204</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00213">213</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2376,7 +2418,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00210">210</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00219">219</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2392,7 +2434,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00209">209</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00218">218</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2408,7 +2450,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00208">208</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00217">217</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2424,7 +2466,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00211">211</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00220">220</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2440,7 +2482,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00214">214</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00223">223</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2456,7 +2498,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00212">212</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00221">221</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2472,7 +2514,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00213">213</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00222">222</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2488,7 +2530,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00199">199</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00208">208</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2499,12 +2541,12 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ScalerMax&#160;&#160;&#160;3</td>
+          <td class="memname">#define ScalerMax&#160;&#160;&#160;8</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00190">190</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00195">195</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2520,7 +2562,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00193">193</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00198">198</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2536,7 +2578,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00045">45</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00048">48</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2552,7 +2594,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00046">46</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00049">49</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2568,7 +2610,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00050">50</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00053">53</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2584,7 +2626,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00047">47</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00050">50</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2600,7 +2642,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00049">49</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00052">52</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2616,7 +2658,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00048">48</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00051">51</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2632,7 +2674,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00112">112</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00117">117</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2648,7 +2690,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00113">113</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00118">118</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2664,7 +2706,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00110">110</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00115">115</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2680,7 +2722,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00111">111</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00116">116</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2716,7 +2758,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00358">358</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00367">367</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2732,7 +2774,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00148">148</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00153">153</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2748,7 +2790,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00052">52</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00055">55</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2764,7 +2806,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00144">144</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00149">149</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2780,7 +2822,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00119">119</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00124">124</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2800,7 +2842,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00339">339</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00348">348</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2816,7 +2858,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00334">334</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00343">343</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2836,7 +2878,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00340">340</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00349">349</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2852,7 +2894,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00335">335</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00344">344</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2868,7 +2910,43 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00128">128</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00133">133</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+
+</div>
+</div>
+<a id="a036a71da8ab330c544947c1f0c2971c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a036a71da8ab330c544947c1f0c2971c4">&#9670;&nbsp;</a></span>U32_DBusPulsTrig</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define U32_DBusPulsTrig</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N</td><td>)</td>
+          <td>&#160;&#160;&#160;(<a class="el" href="evr_reg_map_8h.html#a0ae7c8dd2e0287312edf94b6149fe26f">U32_DBusTrigN</a> + (4*(N)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00202">202</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+
+</div>
+</div>
+<a id="a0ae7c8dd2e0287312edf94b6149fe26f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae7c8dd2e0287312edf94b6149fe26f">&#9670;&nbsp;</a></span>U32_DBusTrigN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define U32_DBusTrigN&#160;&#160;&#160;0x180</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00201">201</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2884,7 +2962,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00181">181</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00186">186</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2900,7 +2978,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00180">180</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00185">185</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2916,7 +2994,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00182">182</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00187">187</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2932,7 +3010,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00179">179</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00184">184</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2952,7 +3030,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00343">343</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00352">352</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2968,7 +3046,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00336">336</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00345">345</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -2984,7 +3062,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00163">163</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00168">168</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3000,7 +3078,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00162">162</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00167">167</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3016,7 +3094,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00161">161</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00166">166</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3032,7 +3110,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00167">167</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00172">172</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3048,7 +3126,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00136">136</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00141">141</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3064,7 +3142,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00171">171</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00176">176</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3080,7 +3158,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00172">172</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00177">177</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3096,7 +3174,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00173">173</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00178">178</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3116,7 +3194,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00286">286</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00295">295</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3132,7 +3210,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00285">285</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00294">294</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3153,7 +3231,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <p>0 &lt;= N &lt;= 3 : FPInMap 4 &lt;= N &lt;= 23 : UnivInMap 24 &lt;= N &lt;= 31 : BPInMap FP, Univ, BP map </p>
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00282">282</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00291">291</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3169,7 +3247,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00260">260</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00269">269</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3185,7 +3263,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00098">98</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00103">103</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3201,7 +3279,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00087">87</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00092">92</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3217,7 +3295,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00103">103</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00108">108</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3233,7 +3311,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00165">165</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00170">170</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3269,7 +3347,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00359">359</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00368">368</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3285,7 +3363,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00351">351</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00360">360</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3305,7 +3383,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00331">331</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00340">340</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3325,7 +3403,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00329">329</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00338">338</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3345,7 +3423,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00327">327</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00336">336</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3365,7 +3443,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00328">328</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00337">337</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3385,7 +3463,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00325">325</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00334">334</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3401,7 +3479,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00311">311</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00320">320</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3417,7 +3495,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00293">293</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00302">302</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3433,7 +3511,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00291">291</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00300">300</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3449,7 +3527,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00292">292</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00301">301</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3465,7 +3543,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00289">289</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00298">298</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3481,7 +3559,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00318">318</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00327">327</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3497,7 +3575,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00315">315</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00324">324</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3513,7 +3591,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00290">290</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00299">299</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3543,7 +3621,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00319">319</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00328">328</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3563,7 +3641,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00332">332</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00341">341</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3583,7 +3661,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00326">326</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00335">335</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3603,7 +3681,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00257">257</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00266">266</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3619,7 +3697,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00253">253</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00262">262</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3639,7 +3717,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00236">236</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00245">245</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3655,7 +3733,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00232">232</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00241">241</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3675,7 +3753,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00243">243</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00252">252</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3691,7 +3769,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00239">239</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00248">248</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3711,7 +3789,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00250">250</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00259">259</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3727,7 +3805,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00246">246</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00255">255</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3743,7 +3821,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00116">116</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00121">121</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3763,7 +3841,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00202">202</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00211">211</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3783,7 +3861,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00217">217</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00226">226</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3799,7 +3877,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00195">195</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00204">204</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3815,7 +3893,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00197">197</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00206">206</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3831,7 +3909,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00196">196</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00205">205</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3847,7 +3925,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00198">198</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00207">207</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3867,7 +3945,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00216">216</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00225">225</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3887,7 +3965,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00218">218</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00227">227</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3903,7 +3981,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00169">169</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00174">174</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3923,7 +4001,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00192">192</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00197">197</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3939,7 +4017,27 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00189">189</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00194">194</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+
+</div>
+</div>
+<a id="abbe6c549154a8b458d5ee5add2b60393"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbe6c549154a8b458d5ee5add2b60393">&#9670;&nbsp;</a></span>U32_ScalerPulsTrig</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define U32_ScalerPulsTrig</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N</td><td>)</td>
+          <td>&#160;&#160;&#160;(<a class="el" href="evr_reg_map_8h.html#a2a1e983637323aa50172f99bfd83a2bb">U32_ScalerN</a> + 0x40 + (4*(N)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00199">199</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3959,7 +4057,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00186">186</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00191">191</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -3975,7 +4073,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00185">185</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00190">190</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4005,7 +4103,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00373">373</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00382">382</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4021,7 +4119,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00372">372</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00381">381</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4041,7 +4139,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00378">378</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00387">387</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4057,7 +4155,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00377">377</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00386">386</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4077,7 +4175,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00376">376</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00385">385</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4093,7 +4191,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00375">375</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00384">384</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4109,7 +4207,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00177">177</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00182">182</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4125,7 +4223,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00176">176</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00181">181</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4141,7 +4239,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00154">154</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00159">159</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4157,7 +4255,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00044">44</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00047">47</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4173,7 +4271,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00108">108</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00113">113</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4189,7 +4287,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00183">183</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00188">188</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4205,7 +4303,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00157">157</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00162">162</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4221,7 +4319,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00159">159</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00164">164</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4237,7 +4335,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00156">156</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00161">161</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4253,7 +4351,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00158">158</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00163">163</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
@@ -4269,14 +4367,14 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00146">146</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="evr_reg_map_8h_source.html#l00151">151</a> of file <a class="el" href="evr_reg_map_8h_source.html">evrRegMap.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:38 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

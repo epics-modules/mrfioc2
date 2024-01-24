@@ -89,6 +89,7 @@ var searchData=
   ['control_5fpreamble_5fbits',['CONTROL_PREAMBLE_BITS',['../group__mrf_common.html#gacb0fbea34f8af60d31e21e38fdecc179',1,'mrfFracSynth.c']]],
   ['control_5fpreamble_5fmask',['CONTROL_PREAMBLE_MASK',['../group__mrf_common.html#ga89aacdb8108467e0ed6c4d30d5cd564c',1,'mrfFracSynth.c']]],
   ['control_5fpreamble_5fshift',['CONTROL_PREAMBLE_SHIFT',['../group__mrf_common.html#ga9e59d92df51ad3f1edeb63822c2b4dfc',1,'mrfFracSynth.c']]],
+  ['control_5fpspol',['Control_pspol',['../evr_reg_map_8h.html#a579f063bd9fb48ae598749c786ba6c4a',1,'evrRegMap.h']]],
   ['control_5fqp_5fbits',['CONTROL_QP_BITS',['../group__mrf_common.html#ga2bf644316e534d1809d5f34e64fa82b4',1,'mrfFracSynth.c']]],
   ['control_5fqp_5fmask',['CONTROL_QP_MASK',['../group__mrf_common.html#gaced1549e7d5fa7b5e09eda9aea9f51da',1,'mrfFracSynth.c']]],
   ['control_5fqp_5fshift',['CONTROL_QP_SHIFT',['../group__mrf_common.html#ga5f146a143e408be0fc1f3cfe933aada2',1,'mrfFracSynth.c']]],

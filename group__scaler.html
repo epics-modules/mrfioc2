@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -72,6 +72,10 @@ Functions</h2></td></tr>
 <tr class="separator:gad98d30242eb1a3a5a5d6f93a04e4843d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1d7d20a7ad9ccf69aefc1e1ab4310eb5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__scaler.html#ga1d7d20a7ad9ccf69aefc1e1ab4310eb5">Pulser::setPrescaler</a> (epicsUInt32)=0</td></tr>
 <tr class="separator:ga1d7d20a7ad9ccf69aefc1e1ab4310eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3274e567a7f4229f56fd8944bbdc5eec"><td class="memItemLeft" align="right" valign="top">virtual epicsUInt32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__scaler.html#ga3274e567a7f4229f56fd8944bbdc5eec">Pulser::psTrig</a> () const =0</td></tr>
+<tr class="separator:ga3274e567a7f4229f56fd8944bbdc5eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f7842498267673e49af2ff84e17ddad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__scaler.html#ga0f7842498267673e49af2ff84e17ddad">Pulser::setPSTrig</a> (epicsUInt32)=0</td></tr>
+<tr class="separator:ga0f7842498267673e49af2ff84e17ddad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
@@ -99,6 +103,33 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="class_m_r_m_pulser.html#a6b2759771b4069ba255431e28e2495d7">MRMPulser</a>.</p>
+
+</div>
+</div>
+<a id="ga3274e567a7f4229f56fd8944bbdc5eec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3274e567a7f4229f56fd8944bbdc5eec">&#9670;&nbsp;</a></span>psTrig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual epicsUInt32 Pulser::psTrig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_m_r_m_pulser.html#aee0eee3e8c99d4b66da454f8afa7ed00">MRMPulser</a>.</p>
 
 </div>
 </div>
@@ -130,10 +161,38 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga0f7842498267673e49af2ff84e17ddad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0f7842498267673e49af2ff84e17ddad">&#9670;&nbsp;</a></span>setPSTrig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Pulser::setPSTrig </td>
+          <td>(</td>
+          <td class="paramtype">epicsUInt32&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_m_r_m_pulser.html#a73d5cb30aeead16aed95c7ac1877d021">MRMPulser</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:38 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

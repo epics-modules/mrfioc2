@@ -1,7 +1,13 @@
 var searchData=
 [
-  ['have_5fparallel_5fcb',['HAVE_PARALLEL_CB',['../drvem_8cpp.html#a91303ac75094c7c0f3ce794f7980ea23',1,'drvem.cpp']]],
-  ['host_5fbuild',['HOST_BUILD',['../_frac_synth_analyze_8c.html#a413873fa3e667fc7303122af9845d57a',1,'HOST_BUILD():&#160;FracSynthAnalyze.c'],['../_frac_synth_control_word_8c.html#a413873fa3e667fc7303122af9845d57a',1,'HOST_BUILD():&#160;FracSynthControlWord.c']]],
-  ['huge_5fvalf',['HUGE_VALF',['../linkoptions_8c.html#acd69981d54c27fe0ff514645dbfc6359',1,'linkoptions.c']]],
-  ['huge_5fvall',['HUGE_VALL',['../linkoptions_8c.html#ab8b359c356d4311bf5d4ae6c03f43182',1,'linkoptions.c']]]
+  ['gpioc',['GPIOC',['../mrf_8h.html#a2dca03332d620196ba943bc2346eaa08',1,'mrf.h']]],
+  ['gpioc_5fnum_5fpins',['GPIOC_num_pins',['../mrf_8h.html#a47d75b400c3461149b1e9291eb369c64',1,'mrf.h']]],
+  ['gpioc_5fpin0_5fdata',['GPIOC_pin0_data',['../mrf_8h.html#a9e7c19bfdcddea9c10f313ed280986f9',1,'mrf.h']]],
+  ['gpioc_5fpin0_5fdir',['GPIOC_pin0_dir',['../mrf_8h.html#ad9a2b666d43aab18402aeabf8e6e264b',1,'mrf.h']]],
+  ['gpioc_5fpin0_5ffn',['GPIOC_pin0_fn',['../mrf_8h.html#a55a896ea4ee87a0f26be92706847eae9',1,'mrf.h']]],
+  ['gpioc_5fpin_5fdata',['GPIOC_pin_data',['../mrf_8h.html#ab638797d7ae50f51478f0e9759f0aa26',1,'mrf.h']]],
+  ['gpioc_5fpin_5fdir',['GPIOC_pin_dir',['../mrf_8h.html#a329cf42f479100dbe934e54b4a2cd65b',1,'mrf.h']]],
+  ['gpioc_5fpin_5ffn',['GPIOC_pin_fn',['../mrf_8h.html#acb9f2f14764f0f2a46fefb28cb59cb93',1,'mrf.h']]],
+  ['gtx_5ffpuv_5foffset',['GTX_FPUV_OFFSET',['../drvem_8cpp.html#a4c3c8f35377680d589f8676054efa820',1,'drvem.cpp']]],
+  ['gtx_5fsfp_5foffset',['GTX_SFP_OFFSET',['../drvem_8cpp.html#a9e9ae6a84d6eb92d13f1648d8e02c74a',1,'drvem.cpp']]]
 ];

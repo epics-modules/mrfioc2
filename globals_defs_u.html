@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -133,8 +133,14 @@ $(function() {
 <li>U32_DataTxCtrl
 : <a class="el" href="evr_reg_map_8h.html#a32f4d4f06529317b13eceb3e816a4fc3">evrRegMap.h</a>
 </li>
+<li>U32_DBusPulsTrig
+: <a class="el" href="evr_reg_map_8h.html#a036a71da8ab330c544947c1f0c2971c4">evrRegMap.h</a>
+</li>
 <li>U32_DBusSrc
 : <a class="el" href="evg_reg_map_8h.html#ae8c2e0c86cdc88071272e8d922499dd5">evgRegMap.h</a>
+</li>
+<li>U32_DBusTrigN
+: <a class="el" href="evr_reg_map_8h.html#a0ae7c8dd2e0287312edf94b6149fe26f">evrRegMap.h</a>
 </li>
 <li>U32_DCIntVal
 : <a class="el" href="evr_reg_map_8h.html#a9db88dfc4b0a535b622d8d3096209e60">evrRegMap.h</a>
@@ -226,11 +232,11 @@ $(function() {
 <li>U32_IRQEnable
 : <a class="el" href="evr_reg_map_8h.html#a00f89f5f6905c0bb1431d0d722eecdfe">evrRegMap.h</a>
 </li>
-<li>U32_IRQFlag
-: <a class="el" href="evr_reg_map_8h.html#ac79e8608ff6e87c12622a8085e271188">evrRegMap.h</a>
-</li>
 <li>U32_IrqFlag
 : <a class="el" href="evg_reg_map_8h.html#a00ecee6ec6e507f5baa83cad68ea7dfd">evgRegMap.h</a>
+</li>
+<li>U32_IRQFlag
+: <a class="el" href="evr_reg_map_8h.html#ac79e8608ff6e87c12622a8085e271188">evrRegMap.h</a>
 </li>
 <li>U32_IRQPulseMap
 : <a class="el" href="evr_reg_map_8h.html#a2b03b1ee60963d104ccb62b7fd511034">evrRegMap.h</a>
@@ -332,8 +338,8 @@ $(function() {
 : <a class="el" href="evr_reg_map_8h.html#a40029efda58b39dd09ead80e331688f8">evrRegMap.h</a>
 </li>
 <li>U32_PCI_MIE
-: <a class="el" href="evg_reg_map_8h.html#a2202d39222d93bdea874cf56217cfcec">evgRegMap.h</a>
-, <a class="el" href="evr_reg_map_8h.html#a2202d39222d93bdea874cf56217cfcec">evrRegMap.h</a>
+: <a class="el" href="evr_reg_map_8h.html#a2202d39222d93bdea874cf56217cfcec">evrRegMap.h</a>
+, <a class="el" href="evg_reg_map_8h.html#a2202d39222d93bdea874cf56217cfcec">evgRegMap.h</a>
 </li>
 <li>U32_PortNDCValue
 : <a class="el" href="fct_8cpp.html#a5de2f42b97f3474a8b0006b3d20b64cf">fct.cpp</a>
@@ -380,13 +386,16 @@ $(function() {
 <li>U32_ScalerN
 : <a class="el" href="evr_reg_map_8h.html#a2a1e983637323aa50172f99bfd83a2bb">evrRegMap.h</a>
 </li>
+<li>U32_ScalerPulsTrig
+: <a class="el" href="evr_reg_map_8h.html#abbe6c549154a8b458d5ee5add2b60393">evrRegMap.h</a>
+</li>
 <li>U32_SeqControl
 : <a class="el" href="evg_reg_map_8h.html#abcc9608071ccd1b7f7365521a9532b54">evgRegMap.h</a>
 , <a class="el" href="evr_reg_map_8h.html#abcc9608071ccd1b7f7365521a9532b54">evrRegMap.h</a>
 </li>
 <li>U32_SeqControl_base
-: <a class="el" href="evg_reg_map_8h.html#a74ab87830994e407ced8f8d7e5fdbc41">evgRegMap.h</a>
-, <a class="el" href="evr_reg_map_8h.html#a74ab87830994e407ced8f8d7e5fdbc41">evrRegMap.h</a>
+: <a class="el" href="evr_reg_map_8h.html#a74ab87830994e407ced8f8d7e5fdbc41">evrRegMap.h</a>
+, <a class="el" href="evg_reg_map_8h.html#a74ab87830994e407ced8f8d7e5fdbc41">evgRegMap.h</a>
 </li>
 <li>U32_SeqRamEvent
 : <a class="el" href="evg_reg_map_8h.html#addfb811fc51145bfc96d4e27907716fa">evgRegMap.h</a>
@@ -416,25 +425,25 @@ $(function() {
 </li>
 <li>U32_SPIDCtrl
 : <a class="el" href="evr_reg_map_8h.html#ab23ca5fe6df9bc45653c08f467e3a0cb">evrRegMap.h</a>
-, <a class="el" href="mrmspi_8cpp.html#ab23ca5fe6df9bc45653c08f467e3a0cb">mrmspi.cpp</a>
 , <a class="el" href="evg_reg_map_8h.html#ab23ca5fe6df9bc45653c08f467e3a0cb">evgRegMap.h</a>
+, <a class="el" href="mrmspi_8cpp.html#ab23ca5fe6df9bc45653c08f467e3a0cb">mrmspi.cpp</a>
 </li>
 <li>U32_SPIDData
-: <a class="el" href="evr_reg_map_8h.html#ace0e7281f19d912c743bdd72ba2853a0">evrRegMap.h</a>
-, <a class="el" href="mrmspi_8cpp.html#ace0e7281f19d912c743bdd72ba2853a0">mrmspi.cpp</a>
+: <a class="el" href="mrmspi_8cpp.html#ace0e7281f19d912c743bdd72ba2853a0">mrmspi.cpp</a>
+, <a class="el" href="evr_reg_map_8h.html#ace0e7281f19d912c743bdd72ba2853a0">evrRegMap.h</a>
 , <a class="el" href="evg_reg_map_8h.html#ace0e7281f19d912c743bdd72ba2853a0">evgRegMap.h</a>
 </li>
 <li>U32_SRSec
 : <a class="el" href="evr_reg_map_8h.html#a0718e23358293a8a965f280e18a3aa21">evrRegMap.h</a>
 </li>
 <li>U32_Status
-: <a class="el" href="evr_reg_map_8h.html#a4556e7b4a7d24c93a9dff6746e14de54">evrRegMap.h</a>
+: <a class="el" href="evg_reg_map_8h.html#a4556e7b4a7d24c93a9dff6746e14de54">evgRegMap.h</a>
 , <a class="el" href="fct_8cpp.html#a4556e7b4a7d24c93a9dff6746e14de54">fct.cpp</a>
-, <a class="el" href="evg_reg_map_8h.html#a4556e7b4a7d24c93a9dff6746e14de54">evgRegMap.h</a>
+, <a class="el" href="evr_reg_map_8h.html#a4556e7b4a7d24c93a9dff6746e14de54">evrRegMap.h</a>
 </li>
 <li>U32_SwEvent
-: <a class="el" href="evr_reg_map_8h.html#aec956a09122e79fedf23f494c9091fa6">evrRegMap.h</a>
-, <a class="el" href="evg_reg_map_8h.html#aec956a09122e79fedf23f494c9091fa6">evgRegMap.h</a>
+: <a class="el" href="evg_reg_map_8h.html#aec956a09122e79fedf23f494c9091fa6">evgRegMap.h</a>
+, <a class="el" href="evr_reg_map_8h.html#aec956a09122e79fedf23f494c9091fa6">evrRegMap.h</a>
 </li>
 <li>U32_TOPID
 : <a class="el" href="evr_reg_map_8h.html#ab7c696c8ca4f83d235f273e80cd20351">evrRegMap.h</a>
@@ -516,7 +525,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:39 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

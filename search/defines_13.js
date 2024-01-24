@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['wbarr',['wbarr',['../mrf_io_ops_def_8h.html#a18dc5c35a3413bd02ca26bc181a45141',1,'wbarr():&#160;mrfIoOpsDef.h'],['../vx_works_2mrf_io_ops_8h.html#a18dc5c35a3413bd02ca26bc181a45141',1,'wbarr():&#160;mrfIoOps.h']]],
-  ['write32',['WRITE32',['../mrf_common_i_o_8h.html#a18fced360153062abe37d095d546fbf6',1,'mrfCommonIO.h']]]
+  ['version_5fint',['VERSION_INT',['../mrf_common_8h.html#aec3b51ad3030e7a0894015698908ee00',1,'mrfCommon.h']]],
+  ['vm_5freserved',['VM_RESERVED',['../uio__mrf_8c.html#af12aae06ab1ce7dd8ea86d9c0a1f8b08',1,'uio_mrf.c']]]
 ];

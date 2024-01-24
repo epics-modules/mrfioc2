@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mrfioc2
-   &#160;<span id="projectnumber">2.3.0</span>
+   &#160;<span id="projectnumber">2.6.0</span>
    </div>
   </td>
  </tr>
@@ -69,11 +69,11 @@ What is it?</h1>
 <p><a href="http://www.mrf.fi/">http://www.mrf.fi/</a></p>
 <h1><a class="anchor" id="whereis"></a>
 Source</h1>
-<p>Releases can be found at  <a href="http://sourceforge.net/projects/epics/files/mrfioc2/">http://sourceforge.net/projects/epics/files/mrfioc2/</a></p>
+<p>Releases can be found at  <a href="https://github.com/epics-modules/mrfioc2/releases">https://github.com/epics-modules/mrfioc2/releases</a></p>
 <p>This module is versioned with Git and can be viewed at  <a href="https://github.com/epics-modules/mrfioc2/">https://github.com/epics-modules/mrfioc2/</a></p>
 <p>Or checked out with</p>
 <p>git clone <a href="https://github.com/epics-modules/mrfioc2.git">https://github.com/epics-modules/mrfioc2.git</a></p>
-<p>The canonical version of this page is  <a href="http://epics.sourceforge.net/mrfioc2/">http://epics.sourceforge.net/mrfioc2/</a></p>
+<p>The canonical version of this page is  <a href="http://epics-modules.github.io/mrfioc2">http://epics-modules.github.io/mrfioc2</a></p>
 <h2><a class="anchor" id="requires"></a>
 Requires</h2>
 <p>EPICS Base &gt;= 3.14.10</p>
@@ -81,7 +81,7 @@ Requires</h2>
 <p>MSI (Macro expansion tool) Required with Base &lt; 3.15.1</p>
 <p><a href="http://www.aps.anl.gov/epics/extensions/msi/index.php">http://www.aps.anl.gov/epics/extensions/msi/index.php</a></p>
 <p>devLib2 &gt;= 2.9</p>
-<p><a href="http://epics.sourceforge.net/devlib2/">http://epics.sourceforge.net/devlib2/</a></p>
+<p><a href="https://epics-modules.github.io/devlib2/">https://epics-modules.github.io/devlib2/</a></p>
 <p>RTEMS &gt;= 4.9.x, vxWorks &gt;=6.7, or Linux &gt;= 2.6.26.</p>
 <h1><a class="anchor" id="hardware"></a>
 Supported Hardware</h1>
@@ -110,12 +110,17 @@ Supported Hardware</h1>
 <h1><a class="anchor" id="doc"></a>
 Documentation</h1>
 <p>User documentation can be found in the form of usage manuals for both the <a href="evr-usage.pdf">Receiver</a> and <a href="evg-usage.pdf">Generator</a></p>
-<p>Those interested in the implementation for the Receiver might wish to start with <a class="el" href="drvem_iocsh_8h.html#a20511059d1fbcf9fd46322e4ebb25ee4">mrmEvrSetupPCI()</a> and <a class="el" href="drvem_iocsh_8h.html#a4eb8fc8cd83f1d7f9408621ab857ac48">mrmEvrSetupVME()</a> or the <a class="el" href="class_e_v_r_m_r_m.html" title="Modular Register Map Event Receivers. ">EVRMRM</a> class.</p>
+<p>Those interested in the implementation for the Receiver might wish to start with <a class="el" href="drvem_iocsh_8h.html#a93cd69f24bcb6648da482be25280d895">mrmEvrSetupPCI()</a> and <a class="el" href="drvem_iocsh_8h.html#a4eb8fc8cd83f1d7f9408621ab857ac48">mrmEvrSetupVME()</a> or the <a class="el" href="class_e_v_r_m_r_m.html" title="Modular Register Map Event Receivers. ">EVRMRM</a> class.</p>
 <p>For the generator see <a class="el" href="evg_init_8cpp.html#a075174ef75a23655bc35a88765d20ea4">mrmEvgSetupVME()</a> or the <a class="el" href="classevg_mrm.html">evgMrm</a> class.</p>
 <h1><a class="anchor" id="changelog"></a>
 Changelog</h1>
+<h2><a class="anchor" id="Nov"></a>
+2023 and onwards</h2>
+<ul>
+<li><a href="https://github.com/epics-modules/mrfioc2/releases">https://github.com/epics-modules/mrfioc2/releases</a></li>
+</ul>
 <h2><a class="anchor" id="v231"></a>
-2.3.1 (UNRELEASED)</h2>
+2.3.1 (Nov 2023)</h2>
 <ul>
 <li>Add PCIe error handling to Linux kernel module (Hinko Kocevar) </li>
 <li>Add DKMS and RPM configs for Linux kernel module source (Michael Abbott) </li>
@@ -150,7 +155,7 @@ Additions</h3>
 <li>Add support for mTCA-EVR-300 and PCIe-EVR-300DC. Requires firmware &gt;=207. Tested with firmware &gt;=207.6. </li>
 <li>Add support for PXI-EVG-220. Support for PXI-EVG-230 was added in 2.1.0, but not documented. </li>
 <li>Add driver for FRIB developed mTCA <a class="el" href="class_e_v_r.html" title="Base interface for EVRs. ">EVR</a> </li>
-<li><a class="el" href="drvem_iocsh_8h.html#a20511059d1fbcf9fd46322e4ebb25ee4">mrmEvrSetupPCI()</a> accepts "slot=#" in addition to PCI geographic address </li>
+<li><a class="el" href="drvem_iocsh_8h.html#a93cd69f24bcb6648da482be25280d895">mrmEvrSetupPCI()</a> accepts "slot=#" in addition to PCI geographic address </li>
 <li>linux: kernel module exports PCI ID table to enable automatic module loading </li>
 <li>Firmware upgrade via PCIe flash access for mTCA-EVR-300 and PCIe-EVR-300DC. See <a class="el" href="class_e_v_r.html" title="Base interface for EVRs. ">EVR</a> manual for details. </li>
 <li>EVG add 1 PPS source option "Sys Clk" to simulate external HW clock using system clock. </li>
@@ -306,11 +311,13 @@ Dirk Zimoch <a href="#" onclick="location.href='mai'+'lto:'+'dir'+'k.'+'zim'+'oc
 <dd>
 Anton Derbenev <a href="#" onclick="location.href='mai'+'lto:'+'ade'+'rb'+'ene'+'v@'+'bnl'+'.g'+'ov'; return false;">aderb<span style="display: none;">.nosp@m.</span>enev<span style="display: none;">.nosp@m.</span>@bnl.<span style="display: none;">.nosp@m.</span>gov</a></dd>
 <dd>
-Luka Krmpotić <a href="#" onclick="location.href='mai'+'lto:'+'luk'+'a.'+'krm'+'po'+'tic'+'@c'+'osy'+'la'+'b.c'+'om'; return false;">luka.<span style="display: none;">.nosp@m.</span>krmp<span style="display: none;">.nosp@m.</span>otic@<span style="display: none;">.nosp@m.</span>cosy<span style="display: none;">.nosp@m.</span>lab.c<span style="display: none;">.nosp@m.</span>om</a> </dd></dl>
+Luka Krmpotić <a href="#" onclick="location.href='mai'+'lto:'+'luk'+'a.'+'krm'+'po'+'tic'+'@c'+'osy'+'la'+'b.c'+'om'; return false;">luka.<span style="display: none;">.nosp@m.</span>krmp<span style="display: none;">.nosp@m.</span>otic@<span style="display: none;">.nosp@m.</span>cosy<span style="display: none;">.nosp@m.</span>lab.c<span style="display: none;">.nosp@m.</span>om</a></dd>
+<dd>
+Jerzy Jamróz <a href="#" onclick="location.href='mai'+'lto:'+'jer'+'zy'+'.ja'+'mr'+'oz@'+'gm'+'ail'+'.c'+'om'; return false;">jerzy<span style="display: none;">.nosp@m.</span>.jam<span style="display: none;">.nosp@m.</span>roz@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd></dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 22 2023 08:45:39 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 24 2024 09:54:29 for mrfioc2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

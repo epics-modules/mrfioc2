@@ -17,5 +17,8 @@ var searchData=
   ['process_5finp_5fcb',['process_inp_cb',['../classevg_mrm.html#a4632a6809b4f3d27779512d3c260d87c',1,'evgMrm']]],
   ['propargs',['propArgs',['../structprop_args.html#a27333b028af9ea1650db25f8376bd58e',1,'propArgs']]],
   ['propertyinstance',['propertyInstance',['../classmrf_1_1detail_1_1property_instance.html#a42a817e8575d3eb59422a1dc9c6df57b',1,'mrf::detail::propertyInstance::propertyInstance()'],['../classmrf_1_1detail_1_1property_instance_3_01_c_00_01_p[1]_4.html#a233c68b0e2cb4cf18479235a54316911',1,'mrf::detail::propertyInstance&lt; C, P[1]&gt;::propertyInstance()'],['../classmrf_1_1detail_1_1property_instance_3_01_c_00_01void_01_4.html#aa5a4a72220b13ff504fa01fe722a7461',1,'mrf::detail::propertyInstance&lt; C, void &gt;::propertyInstance()']]],
+  ['pspolarity',['psPolarity',['../class_e_v_r_m_r_m.html#a94ef4bcd0b64845c676f0702b28b4e31',1,'EVRMRM']]],
+  ['pspolarityset',['psPolaritySet',['../class_e_v_r_m_r_m.html#a15fbd56096bb7151958a0cf26fa0a4ac',1,'EVRMRM']]],
+  ['pstrig',['psTrig',['../group__scaler.html#ga3274e567a7f4229f56fd8944bbdc5eec',1,'Pulser::psTrig()'],['../class_m_r_m_pulser.html#aee0eee3e8c99d4b66da454f8afa7ed00',1,'MRMPulser::psTrig()']]],
   ['pulser',['Pulser',['../class_pulser.html#a76b5e4a6e06a0e8290db62f36437a960',1,'Pulser']]]
 ];
