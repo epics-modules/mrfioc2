@@ -9,7 +9,7 @@ What is Available?
 
 * More infomation on the Micro Research hardware can be found on their website http://www.mrf.fi/.
 
-* Documentation at [http://epics.sourceforge.net/mrfioc2](http://epics.sourceforge.net/mrfioc2)
+* Documentation at [https://epics-modules.github.io/mrfioc2](https://epics-modules.github.io/mrfioc2)
 
 Prerequisites
 -------------
