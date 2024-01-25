@@ -15,7 +15,7 @@ include CONFIG
 RPM_VERSION = $(DRV_VERSION)
 
 
-RPM_FILE = $(DRV_NAME)-dkms-$(RPM_VERSION)-1.noarch.rpm
+RPM_FILE = $(DRV_NAME)-$(RPM_VERSION)-$(DRV_RELEASE).noarch.rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm

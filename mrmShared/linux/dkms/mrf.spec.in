@@ -1,6 +1,6 @@
 Summary: DKMS kernel module - mrfioc2 driver
 
-Name: @@DRV_NAME@@-dkms
+Name:    @@DRV_NAME@@
 Version: @@RPM_VERSION@@
 Release: @@DRV_RELEASE@@
 
