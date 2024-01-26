@@ -1,23 +1,24 @@
-%define module_name @@DRV_NAME@@
+%define kmod_name @@DRV_NAME@@
 
 Summary: DKMS kernel module - mrfioc2 driver
 
-Name:    %{module_name}-dkms
+Name:    @@RPM_NAME@@
 Version: @@RPM_VERSION@@
 Release: @@DRV_RELEASE@@
 
 Vendor: EPICS Community
 License: EPICS Open License
 Group: System Environment/Kernel
-BuildRoot: %{_tmppath}/%{module_name}-%{version}-root
+URL: https://github.com/epics-modules/mrfioc2
 BuildRequires: autoconf libtool gcc gcc-c++
 BuildArch: @@ARCH@@
 Requires: dkms
 Requires: udev
 Packager: Michael Abbott <michael.abbott@diamond.ac.uk>
+BuildRoot: %{_tmppath}/%{kmod_name}-%{version}-root
 
 # The two target directories
-%define dkmsdir /usr/src/%{module_name}-%{version}
+%define dkmsdir /usr/src/%{kmod_name}-%{version}
 %define udevdir /etc/udev/rules.d
 
 %description
@@ -45,17 +46,17 @@ install -m 0644 %{_curdir}/50-mrf.rules     %{buildroot}%{udevdir}
 %{udevdir}/50-mrf.rules
 
 %post
-dkms add     -m %{module_name} -v %{version} --rpm_safe_upgrade
-dkms build   -m %{module_name} -v %{version}
-dkms install -m %{module_name} -v %{version}
-modprobe %{module_name}
+dkms add     -m %{kmod_name} -v %{version} --rpm_safe_upgrade
+dkms build   -m %{kmod_name} -v %{version}
+dkms install -m %{kmod_name} -v %{version}
+modprobe %{kmod_name}
 
 %preun
-modprobe -r %{module_name}
-dkms remove --all -m %{module_name} -v %{version} --rpm_safe_upgrade
+modprobe -r %{kmod_name}
+dkms remove --all -m %{kmod_name} -v %{version} --rpm_safe_upgrade
 
 %postun
-rmdir /usr/src/%{module_name}-%{version}
+rmdir /usr/src/%{kmod_name}-%{version}
 
 %changelog
 * Wed Jan 24 2024 Jerzy Jamroz <jerzy.jamroz@gmail.com> - 2-1

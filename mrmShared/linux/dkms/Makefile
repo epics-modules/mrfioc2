@@ -6,6 +6,7 @@ DRV_NAME = mrf
 include $(SRCDIR)/VERSION
 include CONFIG
 
+RPM_NAME = mrfioc2-dkms
 
 # The RPM_VERSION string takes the dotted version name (without extra version
 # info) and follows the Red Hat versioning rules: only letters, digits, and
@@ -17,7 +18,7 @@ RPM_VERSION = $(DRV_VERSION)
 # Determine the architecture of the machine
 ARCH := $(shell uname -m)
 
-RPM_FILE = $(DRV_NAME)-dkms-$(RPM_VERSION)-$(DRV_RELEASE).$(ARCH).rpm
+RPM_FILE = $(RPM_NAME)-$(RPM_VERSION)-$(DRV_RELEASE).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -35,6 +36,7 @@ SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
 SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
 SED_SUBSTS += s/@@DRV_RELEASE@@/$(DRV_RELEASE)/g;
 SED_SUBSTS += s/@@ARCH@@/$(ARCH)/g;
+SED_SUBSTS += s/@@RPM_NAME@@/$(RPM_NAME)/g;
 
 %: %.in CONFIG $(SRCDIR)/VERSION
 	sed '$(SED_SUBSTS)' $< >$@
