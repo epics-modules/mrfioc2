@@ -14,8 +14,10 @@ include CONFIG
 # for information on RPM versioning.  We'll want to obey these rules if we can.
 RPM_VERSION = $(DRV_VERSION)
 
+# Determine the architecture of the machine
+ARCH := $(shell uname -m)
 
-RPM_FILE = $(DRV_NAME)-$(RPM_VERSION)-$(DRV_RELEASE).noarch.rpm
+RPM_FILE = $(DRV_NAME)-dkms-$(RPM_VERSION)-$(DRV_RELEASE).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -32,6 +34,7 @@ SED_SUBSTS += s/@@DRV_NAME@@/$(DRV_NAME)/g;
 SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
 SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
 SED_SUBSTS += s/@@DRV_RELEASE@@/$(DRV_RELEASE)/g;
+SED_SUBSTS += s/@@ARCH@@/$(ARCH)/g;
 
 %: %.in CONFIG $(SRCDIR)/VERSION
 	sed '$(SED_SUBSTS)' $< >$@
@@ -47,4 +50,4 @@ $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
             --define '_sourcedir $(SRCDIR)' \
             --define '_tmppath %{_topdir}/BUILD' \
             $(DRV_NAME).spec
-	ln -sf rpmbuild/RPMS/noarch/$(RPM_FILE) .
+	ln -sf rpmbuild/RPMS/$(ARCH)/$(RPM_FILE) .
