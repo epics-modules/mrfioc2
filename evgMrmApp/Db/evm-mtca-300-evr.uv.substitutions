@@ -19,7 +19,7 @@ file "mrmevrdc.template"
 {P="\$(P)DC", OBJ="$(EVG):EVR$(T)"}
 }
 
-file "evreventutag.db"
+file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
 {"\$(P)Pps",  "$(EVG):EVR$(T)", 0x7d, 125}
