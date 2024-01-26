@@ -1,2 +1,2 @@
-# UDEV rule to give general access to MRF device
-SUBSYSTEM=="uio", ATTR{name}=="mrf-pci", GROUP="@@MRF_USER@@", MODE="0660", RUN+="/bin/chmod g+rw %S%p/resource0"
+# UDEV rule giving access to MRF device
+KERNEL=="uio*", ATTR{name}=="mrf-pci", GROUP="@@MRF_GROUP@@", MODE="0660", RUN+="/bin/chmod g+rw %S%p/resource0 && /bin/echo UDEV rule giving access to MRF device %S%p"

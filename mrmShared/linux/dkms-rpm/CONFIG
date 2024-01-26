@@ -1,3 +1,4 @@
 # Specify the group for the MRF driver user here
 
-MRF_USER = mrf
+MRF_GROUP = mrf
+RPM_RELEASE = 1
