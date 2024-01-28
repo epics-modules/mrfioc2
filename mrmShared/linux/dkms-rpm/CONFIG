@@ -2,3 +2,6 @@
 
 MRF_GROUP = mrf
 RPM_RELEASE = 1
+DRV_NAME = mrf
+RPM_NAME = mrfioc2-dkms
+DIST ?= el7

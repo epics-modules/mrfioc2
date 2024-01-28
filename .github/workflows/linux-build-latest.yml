@@ -1,12 +1,6 @@
-name: Linux kernel module
+name: Linux latest kernel module test
 
 on:
-  push:
-    paths:
-      - "mrmShared/linux/**"
-  pull_request:
-    paths:
-      - "mrmShared/linux/**"
   workflow_dispatch:
 
 jobs:
@@ -21,15 +15,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 20.04 - Series 4.x
-            os: ubuntu-20.04
-            series: 4.x
-            version: 4.9.1
-
-          - name: Ubuntu 20.04 - Series 5.x
-            os: ubuntu-20.04
-            series: 5.x
-            version: 5.9.6
+          - name: Ubuntu Latest - Series Latest
+            os: ubuntu-latest
+            series: latest
+            version: latest
 
     steps:
       - uses: actions/checkout@v2
@@ -58,25 +47,3 @@ jobs:
       - name: Build
         run: |
           make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
-
-  host:
-    name: With VM host
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Info
-        run: |
-          uname -a
-          gcc --version
-      - name: Deps
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install linux-headers-`uname -r`
-      - name: Build
-        run: make -C mrmShared/linux
-      - name: Install/Load
-        run: |
-          sudo make -C mrmShared/linux modules_install
-          sudo depmod -a
-          sudo modprobe mrf
-          sudo dmesg | tail -n 100

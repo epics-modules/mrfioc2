@@ -5,8 +5,6 @@ SRCDIR = $(CURDIR)/..
 include $(SRCDIR)/VERSION
 include CONFIG
 
-DRV_NAME = mrf
-RPM_NAME = mrfioc2-dkms
 # Determine the architecture of the machine
 ARCH := $(shell uname -m)
 
@@ -17,7 +15,7 @@ ARCH := $(shell uname -m)
 # for information on RPM versioning.  We'll want to obey these rules if we can.
 RPM_VERSION = $(DRV_VERSION)
 
-RPM_FILE = $(RPM_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(ARCH).rpm
+RPM_FILE = $(RPM_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(DIST).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
