@@ -51,7 +51,7 @@ install -m 0644 %{_curdir}/50-mrf.rules     %{buildroot}%{udevdir}
 %{udevdir}/50-mrf.rules
 
 %post
-groupadd -r @@MRF_GROUP@@ 2>&1 || :
+# NOTE: group root groupadd -r @@DRV_GROUP@@ 2>&1 || :
 dkms add     -m %{kmod_name} -v %{version} --rpm_safe_upgrade
 dkms build   -m %{kmod_name} -v %{version}
 dkms install -m %{kmod_name} -v %{version}
@@ -62,7 +62,7 @@ modprobe %{kmod_name}
 modprobe -r %{kmod_name}
 dkms remove --all -m %{kmod_name} -v %{version} --rpm_safe_upgrade --all ||:
 %udev_rules_update
-groupdel @@MRF_GROUP@@ 2>&1 || :
+# NOTE: group root groupdel @@DRV_GROUP@@ 2>&1 || :
 
 %postun
 rmdir /usr/src/%{kmod_name}-%{version}
