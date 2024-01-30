@@ -1,8 +1,3 @@
-# Specify the group for the MRF driver user here
 
-# NOTE: group root can be adjusted by the configuration tool
-DRV_GROUP = root
-RPM_RELEASE = 1
-DRV_NAME = mrf
-RPM_NAME = mrfioc2-dkms
-DIST ?= el7
+RPM_RELEASE := 1
+# NOTE: Not necessary DIST ?= el7

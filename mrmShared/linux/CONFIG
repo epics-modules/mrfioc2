@@ -1,0 +1,8 @@
+# Version definition for driver
+# 20240124 Release
+DRV_VERSION := 3
+
+# Package control vars
+PKG_NAME := mrfioc2-dkms
+DRV_NAME := mrf
+DRV_GROUP := mrf

@@ -1,6 +1,6 @@
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 
-include VERSION
+include CONFIG
 
 all: modules
 

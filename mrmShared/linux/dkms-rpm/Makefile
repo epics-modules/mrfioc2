@@ -2,7 +2,7 @@
 
 SRCDIR = $(CURDIR)/..
 
-include $(SRCDIR)/VERSION
+include $(SRCDIR)/CONFIG
 include CONFIG
 
 # Determine the architecture of the machine
@@ -15,7 +15,7 @@ ARCH := $(shell uname -m)
 # for information on RPM versioning.  We'll want to obey these rules if we can.
 RPM_VERSION = $(DRV_VERSION)
 
-RPM_FILE = $(RPM_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(DIST).$(ARCH).rpm
+RPM_FILE = $(PKG_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -33,9 +33,9 @@ SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
 SED_SUBSTS += s/@@DRV_GROUP@@/$(DRV_GROUP)/g;
 SED_SUBSTS += s/@@RPM_RELEASE@@/$(RPM_RELEASE)/g;
 SED_SUBSTS += s/@@ARCH@@/$(ARCH)/g;
-SED_SUBSTS += s/@@RPM_NAME@@/$(RPM_NAME)/g;
+SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
 
-%: %.in CONFIG $(SRCDIR)/VERSION
+%: %.in CONFIG $(SRCDIR)/CONFIG
 	sed '$(SED_SUBSTS)' $< >$@
 
 SED_FILES = dkms.conf $(DRV_NAME).spec 50-mrf.rules

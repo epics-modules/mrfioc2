@@ -5,9 +5,9 @@
 
 Summary: DKMS mrfioc2 kernel module
 
-Name:    @@RPM_NAME@@
+Name:    @@PKG_NAME@@
 Version: @@RPM_VERSION@@
-Release: @@RPM_RELEASE@@%{?dist}
+Release: @@RPM_RELEASE@@
 
 Vendor: EPICS Community
 License: EPICS Open License
@@ -51,7 +51,7 @@ install -m 0644 %{_curdir}/50-mrf.rules     %{buildroot}%{udevdir}
 %{udevdir}/50-mrf.rules
 
 %post
-# NOTE: group root groupadd -r @@DRV_GROUP@@ 2>&1 || :
+# PRP: groupadd -r @@DRV_GROUP@@ 2>&1 || :
 dkms add     -m %{kmod_name} -v %{version} --rpm_safe_upgrade
 dkms build   -m %{kmod_name} -v %{version}
 dkms install -m %{kmod_name} -v %{version}
@@ -62,7 +62,7 @@ modprobe %{kmod_name}
 modprobe -r %{kmod_name}
 dkms remove --all -m %{kmod_name} -v %{version} --rpm_safe_upgrade --all ||:
 %udev_rules_update
-# NOTE: group root groupdel @@DRV_GROUP@@ 2>&1 || :
+# PRP: group root groupdel @@DRV_GROUP@@ 2>&1 || :
 
 %postun
 rmdir /usr/src/%{kmod_name}-%{version}
