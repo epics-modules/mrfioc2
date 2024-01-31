@@ -1,2 +1,0 @@
-# UDEV rule to give general access to MRF device
-SUBSYSTEM=="uio", ATTR{name}=="mrf-pci", GROUP="@@MRF_USER@@", MODE="0660"

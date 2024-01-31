@@ -2,10 +2,11 @@
 
 SRCDIR = $(CURDIR)/..
 
-DRV_NAME = mrf
-include $(SRCDIR)/VERSION
+include $(SRCDIR)/CONFIG
 include CONFIG
 
+# Determine the architecture of the machine
+ARCH := $(shell uname -m)
 
 # The RPM_VERSION string takes the dotted version name (without extra version
 # info) and follows the Red Hat versioning rules: only letters, digits, and
@@ -14,8 +15,7 @@ include CONFIG
 # for information on RPM versioning.  We'll want to obey these rules if we can.
 RPM_VERSION = $(DRV_VERSION)
 
-
-RPM_FILE = $(DRV_NAME)-$(RPM_VERSION)-1dkms.noarch.rpm
+RPM_FILE = $(PKG_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -30,9 +30,12 @@ SED_SUBSTS =
 SED_SUBSTS += s/@@DRV_VERSION@@/$(DRV_VERSION)/g;
 SED_SUBSTS += s/@@DRV_NAME@@/$(DRV_NAME)/g;
 SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
-SED_SUBSTS += s/@@MRF_USER@@/$(MRF_USER)/g;
+SED_SUBSTS += s/@@DRV_GROUP@@/$(DRV_GROUP)/g;
+SED_SUBSTS += s/@@RPM_RELEASE@@/$(RPM_RELEASE)/g;
+SED_SUBSTS += s/@@ARCH@@/$(ARCH)/g;
+SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
 
-%: %.in CONFIG $(SRCDIR)/VERSION
+%: %.in CONFIG $(SRCDIR)/CONFIG
 	sed '$(SED_SUBSTS)' $< >$@
 
 SED_FILES = dkms.conf $(DRV_NAME).spec 50-mrf.rules
@@ -46,4 +49,4 @@ $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
             --define '_sourcedir $(SRCDIR)' \
             --define '_tmppath %{_topdir}/BUILD' \
             $(DRV_NAME).spec
-	ln -sf rpmbuild/RPMS/noarch/$(RPM_FILE) .
+	ln -sf rpmbuild/RPMS/$(ARCH)/$(RPM_FILE) .

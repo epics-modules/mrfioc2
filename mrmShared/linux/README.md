@@ -1,10 +1,9 @@
 
-== cross compiling ==
+# Cross compiling
 
 make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- KERNELDIR=/path/to/headers
 
-
-== udev ==
+# udev
 
 udev rules to automatically set permissions for approprieate /dev/uio*
 
@@ -15,8 +14,7 @@ cat << EOF > /etc/udev/rules.d/99-mrfioc2.rules
 KERNEL=="uio*", ATTR{name}=="mrf-pci", GROUP="softioc", MODE="0660"
 EOF
 
-
-== dkms ==
+# dkms-rpm
 
 To create an installable dksm package for this kernel module do the following:
 

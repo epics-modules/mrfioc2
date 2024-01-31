@@ -398,7 +398,7 @@ int mrf_irqcontrol(struct uio_info *info, s32 onoff)
     default:
         // there are no distict registers for this bridge.
         // 'plx' holds the base address of FPGA registers
-	
+
         // Check endianism
         end = mrf_detect_endian(priv, plx);
 
@@ -644,7 +644,7 @@ mrf_probe(struct pci_dev *dev,
             /* clear everything for GPIO 0-3 (aka first 12 bits).
              * Preserve current settings for GPIO 4-7.
              * This will setup these as inputs (which float high)
-             * 
+             *
              * Each GPIO bit has 3 register bits (function, direction, and value)
              */
             val &= 0xfffff000;
@@ -832,23 +832,24 @@ mrf_error_detected(struct pci_dev *dev, pci_channel_state_t state)
 {
     struct uio_info *info = pci_get_drvdata(dev);
     struct mrf_priv *priv = container_of(info, struct mrf_priv, uio);
-        
+
     if (state == pci_channel_io_normal) {
         /* FIXME: Anything else to do here? */
         return PCI_ERS_RESULT_CAN_RECOVER;
     } else if (state == pci_channel_io_frozen) {
         dev_warn(&dev->dev, "Unregistering UIO device\n");
         uio_unregister_device(info);
-        
+
         if (priv->msienabled) {
             pci_disable_msi(dev);
         }
-        
+
         pci_disable_device(dev);
-        
+
         /* FIXME: Anything else to do here? */
         return PCI_ERS_RESULT_NEED_RESET;
     } else if (state == pci_channel_io_perm_failure) {
+        printk(KERN_ERR "PCI card is dead.\n");
         return PCI_ERS_RESULT_DISCONNECT;
     }
 
@@ -878,13 +879,13 @@ mrf_slot_reset(struct pci_dev *dev)
             dev_dbg(&dev->dev, "Error enabling MSI %d\n", err);
         }
     }
-    
+
     ret = uio_register_device(&dev->dev, info);
     if (ret) {
         dev_err(&dev->dev, "Failed to register UIO device %d\n", ret);
     }
     dev_warn(&dev->dev, "Registered UIO device\n");
-        
+
     pci_restore_state(dev);
     pci_save_state(dev);
 
@@ -932,4 +933,3 @@ static void mrf_exit_module(void)
         pci_unregister_driver(&mrf_driver);
 }
 module_exit(mrf_exit_module);
-
