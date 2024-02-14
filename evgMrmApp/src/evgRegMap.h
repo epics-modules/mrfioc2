@@ -259,6 +259,12 @@
 #define  EVG_SEQ_RAM_SINGLE     0x00100000  // Single-Shot Mode: Disable on completion
 #define  EVG_SEQ_RAM_RECYCLE    0x00080000  // Continuous Mode: Repeat on completion
 
+//Mask registers
+#define  EVG_SEQ_RAM_SWMASK         0x0000F000  // Sequence RAM Software mask
+#define  EVG_SEQ_RAM_SWMASK_shift   12
+#define  EVG_SEQ_RAM_SWENABLE       0x00000F00  // Sequence RAM Software enable
+#define  EVG_SEQ_RAM_SWENABLE_shift 8
+
 /**************************************************************************************************/
 /* Control Register flags                                                                         */
 /**************************************************************************************************/
@@ -275,6 +281,10 @@
 /**************************************************************************************************/
 
 #define  EVG_EXT_INP_IRQ_ENA    0x01000000
+#define  EVG_INP_FP_ENA         0x0F000000
+#define  EVG_INP_FP_ENA_shift   24 
+#define  EVG_INP_FP_MASK        0xF0000000
+#define  EVG_INP_FP_MASK_shift  28
 
 #ifndef  EVG_CONSTANTS
 #define  EVG_CONSTANTS
