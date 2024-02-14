@@ -167,6 +167,7 @@ record(calc, "$(PN)Res-I") {
 }
 
 record(fanout, "$(PN)Res-FO_") {
+  field(ASG, "private")
   field(DESC, "Clock change resync")
   field(LNK1, "$(PN)Delay-SP")
   field(LNK2, "$(PN)Width-SP")

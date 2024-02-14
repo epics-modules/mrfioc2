@@ -68,6 +68,7 @@ record(ao, "$(SN)PhasOffs-SP") {
 }
 
 record(calcout, "$(SN)PhasOffs-CO_") {
+  field(ASG, "private")
   field( DESC, "Degrees to Event Clock Ticks")
   field( OUT , "$(SN)PhasOffs$(s=:)Raw-SP PP")
   field( CALC, "FLOOR(B/360*A)")

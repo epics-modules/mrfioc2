@@ -98,6 +98,7 @@ record(calcout, "$(ON)Res-I") {
 }
 
 record(fanout, "$(ON)Res-FO_") {
+  field(ASG, "private")
   field(DESC, "Clock change resync")
   field(TSEL, "$(ON)Res-I.TIME")
   field(LNK1, "$(ON)Freq$(s=:)High-SP")
@@ -139,6 +140,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Rise32_39-SP") {
 }
 
 record(aSub, "$(ON)Pat$(s=:)Rise-ASub_") {
+  field(ASG, "private")
   field(SNAM, "Bit Array Gen")
   field(BRSV, "INVALID")
   field( FTA, "USHORT")
@@ -193,6 +195,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)High32_39-SP") {
 }
 
 record(aSub, "$(ON)Pat$(s=:)High-ASub_") {
+  field(ASG, "private")
   field(SNAM, "Bit Array Gen")
   field(BRSV, "INVALID")
   field( FTA, "USHORT")
@@ -247,6 +250,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Fall32_39-SP") {
 }
 
 record(aSub, "$(ON)Pat$(s=:)Fall-ASub_") {
+  field(ASG, "private")
   field(SNAM, "Bit Array Gen")
   field(BRSV, "INVALID")
   field( FTA, "USHORT")
@@ -301,6 +305,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Low32_39-SP") {
 }
 
 record(aSub, "$(ON)Pat$(s=:)Low-ASub_") {
+  field(ASG, "private")
   field(SNAM, "Bit Array Gen")
   field(BRSV, "INVALID")
   field( FTA, "USHORT")
@@ -451,6 +456,7 @@ record(waveform, "$(ON)Pat$(s=:)Wf-RB") {
 }
 
 record(aSub, "$(ON)Pat$(s=:)WfX-ASub_") {
+  field(ASG, "private")
   field(SNAM, "Timeline")
   field(BRSV, "INVALID")
   field(INPA, "0")
@@ -504,6 +510,7 @@ record(ao, "$(ON)WfCalc$(s=:)Width-SP") {
 }
 
 record(aSub, "$(ON)WfCalc-ASub_") {
+  field(ASG, "private")
   field(SDIS, "$(ON)WfCalc$(s=:)Ena-SP")
   field(DISV, "0")
   field(SNAM, "Delay Gen")
@@ -539,6 +546,7 @@ record(longout, "$(ON)BunchTrain$(s=:)Size-SP") {
 }
 
 record(aSub, "$(ON)BunchTrain-ASub_") {
+  field(ASG, "private")
   field(SDIS, "$(ON)BunchTrain$(s=:)Ena-SP")
   field(DISV, "0")
   field(SNAM, "Bunch Train")

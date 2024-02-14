@@ -385,6 +385,7 @@ record(mbbo, "$(ON)Src2$(s=:)Gate-SP") {
 # Mapping readback
 
 record(longin, "$(ON)Src-RB_") {
+  field(ASG, "private")
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( INP , "@OBJ=$(OBJ), PROP=Map")
@@ -392,6 +393,7 @@ record(longin, "$(ON)Src-RB_") {
 }
 
 record(longin, "$(ON)Src2-RB_") {
+  field(ASG, "private")
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( INP , "@OBJ=$(OBJ), PROP=Map2")

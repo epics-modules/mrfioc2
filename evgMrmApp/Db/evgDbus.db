@@ -34,6 +34,7 @@ record(mbbo, "$(P)Src-Sel") {
 }
 
 record(mbbo, "$(P)MapConv-Sel_") {
+    field(ASG, "private")
     field( DTYP, "Raw Soft Channel")
     field( ZRVL, "0")
     field( ONVL, "1")
@@ -93,6 +94,7 @@ record(mbbo, "$(P)Map-Sel") {
 # Input to the Distributed Bus
 #
 record(mbbiDirect, "$(P)Src-MbbiDir_") {
+    field(ASG, "private")
     field( DESC, "EVG Trig Evt Trig")
     field( INP,  "$(P)Src-Sel.RVAL CP")
 }

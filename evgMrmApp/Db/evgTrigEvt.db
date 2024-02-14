@@ -68,6 +68,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
 }
 
 record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
+    field(ASG, "private")
     field( DESC, "EVG Trig Evt Trig")
     field( INP,  "$(P)TrigSrc-Sel.RVAL")
 }
@@ -113,6 +114,7 @@ record(mbbo, "$(P)TrigSrc1-Sel") {
 }
 
 record(mbbiDirect, "$(P)TrigSrc1-MbbiDir_") {
+    field(ASG, "private")
     field( DESC, "EVG Trig Evt Trig")
     field( INP,  "$(P)TrigSrc1-Sel.RVAL")
 }
@@ -369,6 +371,7 @@ record(dfanout, "$(P)Omsl-FOut") {
 }
 
 record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
+    field(ASG, "private")
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
     field( OUTA, "$(P)TrigSrc$(s=:)AC-Sel.OMSL")
@@ -382,6 +385,7 @@ record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
 }
 
 record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
+    field(ASG, "private")
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
     field( OUTA, "$(P)TrigSrc$(s=:)UnivInp4-Sel.OMSL")
@@ -396,6 +400,7 @@ record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
 }
 
 record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
+    field(ASG, "private")
     field( OMSL, "closed_loop")
     field( DOL,  "$(P)Omsl-FOut")
     field( OUTA, "$(P)TrigSrc$(s=:)UnivInp12-Sel.OMSL")

@@ -145,6 +145,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
 # interrupt of the corresponding external input.
 #
 record(mbbiDirect, "$(P)1ppsInp-MbbiDir_") {
+    field(ASG, "private")
     field( DESC, "EVG 1PPS Input")
     field( INP,  "$(P)1ppsInp-Sel.RVAL NPP")
 }
