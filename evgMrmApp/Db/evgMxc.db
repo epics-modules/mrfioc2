@@ -75,6 +75,7 @@ record(longin , "$(P)Prescaler-RB") {
 # When Evt Clock Frequency changes, Mxc Freq changes keeping the Prescaler same.
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
+    field(ASG, "private")
     field( INP,  "$(PP=$(SYS){$(D)-)EvtClk$(s=})Frequency-RB CP")
     field( FLNK, "$(P)Frequency-RB")
 }

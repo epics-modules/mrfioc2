@@ -84,6 +84,7 @@ record(mbbo, "$(ON)Src$(s=:)Scale-SP") {
 # Mapping readback
 
 record(fanout, "$(ON)Src-FOut_") {
+  field(ASG, "private")
   field(LNK1, "$(ON)Src-RB_")
   field(LNK2, "$(ON)Src$(s=:)Pulse-RB")
   field(LNK3, "$(ON)Src$(s=:)DBus-RB")
@@ -92,6 +93,7 @@ record(fanout, "$(ON)Src-FOut_") {
 }
 
 record(longin, "$(ON)Src-RB_") {
+  field(ASG, "private")
   field( DTYP, "Obj Prop uint32")
   field( DESC, "$(DESC)")
   field( INP , "@OBJ=$(OBJ), PROP=Map")
@@ -144,15 +146,16 @@ record(mbbi, "$(ON)Src$(s=:)Scale-RB") {
 }
 
 record(aSub, "$(ON)Src-Calc_") {
-    field(SNAM, "Select String")
-    field(FTA , "STRING")
-    field(FTB , "STRING")
-    field(FTC , "STRING")
-    field(FTVA, "STRING")
-    field(INPA, "$(ON)Src$(s=:)Pulse-RB")
-    field(INPB, "$(ON)Src$(s=:)DBus-RB")
-    field(INPC, "$(ON)Src$(s=:)Scale-RB")
-    field(OUTA, "$(ON)Src-RB PP")
+  field(ASG, "private")
+  field(SNAM, "Select String")
+  field(FTA , "STRING")
+  field(FTB , "STRING")
+  field(FTC , "STRING")
+  field(FTVA, "STRING")
+  field(INPA, "$(ON)Src$(s=:)Pulse-RB")
+  field(INPB, "$(ON)Src$(s=:)DBus-RB")
+  field(INPC, "$(ON)Src$(s=:)Scale-RB")
+  field(OUTA, "$(ON)Src-RB PP")
 }
 
 record(stringin, "$(ON)Src-RB") {}

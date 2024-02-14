@@ -334,6 +334,7 @@ record(longin, "$(P)NumOfRuns-I") {
 #
 
 record(calcout, "$(P)Load-Calc_") {
+    field(ASG, "private")
     field( CALC, "A")
     field( INPA, "$(P)Load-RB NPP NMS")
     field( OOPT, "When Non-zero")
@@ -345,6 +346,7 @@ record(calcout, "$(P)Load-Calc_") {
 #
 
 record(calcout, "$(P)Commit-Calc_") {
+    field(ASG, "private")
     field( CALC, "A")
     field( INPA, "$(P)Commit-RB NPP NMS")
     field( OOPT, "When Non-zero")
@@ -356,6 +358,7 @@ record(calcout, "$(P)Commit-Calc_") {
 #
 
 record(calcout, "$(P)Enable-Calc_") {
+    field(ASG, "private")
     field( CALC, "A")
     field( INPA, "$(P)Enable-RB NPP NMS")
     field( OOPT, "When Non-zero")
@@ -363,6 +366,7 @@ record(calcout, "$(P)Enable-Calc_") {
 }
 
 record(fanout, "$(P)InitSeq-FOut_") {
+    field(ASG, "private")
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
     field( PINI, "RUNNING")
@@ -375,6 +379,7 @@ record(fanout, "$(P)InitSeq-FOut_") {
 }
 
 record(fanout, "$(P)InitSeq$(s=:)Cont-FOut_") {
+    field(ASG, "private")
     field( DESC, "Boot of sequence for sequencer")
     field( SELM, "All")
     field( LNK1, "$(P)TrigSrc$(s=:)Init-FOut_")
