@@ -3,7 +3,7 @@
 record(bo, "$(P)Ena-Sel") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")
-    field( OUT, "@OBJ=$(OBJ), PROP=DCEnable")
+    field(OUT, "@OBJ=$(OBJ), PROP=DCEnable")
     field(ZNAM, "Disable")
     field(ONAM, "Enable")
     field(PINI, "YES")
@@ -14,7 +14,7 @@ record(bo, "$(P)Ena-Sel") {
 record(bi, "$(P)Ena-RB") {
     field(DESC, "Apply DC correction")
     field(DTYP, "Obj Prop bool")
-    field( INP, "@OBJ=$(OBJ), PROP=DCEnable")
+    field(INP, "@OBJ=$(OBJ), PROP=DCEnable")
     field(ZNAM, "Disable")
     field(ONAM, "Enable")
 }
@@ -22,11 +22,11 @@ record(bi, "$(P)Ena-RB") {
 record(ao, "$(P)Tgt-SP") {
     field(DESC, "Desired total delay")
     field(DTYP, "Obj Prop double")
-    field( OUT, "@OBJ=$(OBJ), PROP=DCTarget")
-    field( EGU, "ns")
+    field(OUT, "@OBJ=$(OBJ), PROP=DCTarget")
+    field(EGU, "ns")
     # a too small value will cause glitches and dropped events.
     # so we pick a conservative default suitable for the slowest 50MHz clock
-    field( VAL, "110")
+    field(VAL, "110")
     field(PREC, "3")
     field(PINI, "YES")
     field(FLNK, "$(P)Tgt-RB")
@@ -35,8 +35,8 @@ record(ao, "$(P)Tgt-SP") {
 record(ai, "$(P)Tgt-RB") {
     field(DESC, "Desired total delay")
     field(DTYP, "Obj Prop double")
-    field( INP, "@OBJ=$(OBJ), PROP=DCTarget")
-    field( EGU, "ns")
+    field(INP, "@OBJ=$(OBJ), PROP=DCTarget")
+    field(EGU, "ns")
     field(PREC, "3")
     info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
@@ -44,8 +44,8 @@ record(ai, "$(P)Tgt-RB") {
 record(ai, "$(P)Msrd-I") {
     field(DESC, "Measured total delay")
     field(DTYP, "Obj Prop double")
-    field( INP, "@OBJ=$(OBJ), PROP=DCRx")
-    field( EGU, "ns")
+    field(INP, "@OBJ=$(OBJ), PROP=DCRx")
+    field(EGU, "ns")
     field(PREC, "3")
     field(SCAN, "1 second")
     field(FLNK, "$(P)Corr-I")
@@ -54,15 +54,15 @@ record(ai, "$(P)Msrd-I") {
 record(ai, "$(P)Corr-I") {
     field(DESC, "delay correction")
     field(DTYP, "Obj Prop double")
-    field( INP, "@OBJ=$(OBJ), PROP=DCInt")
-    field( EGU, "ns")
+    field(INP, "@OBJ=$(OBJ), PROP=DCInt")
+    field(EGU, "ns")
     field(PREC, "3")
     field(FLNK, "$(P)Lck-Sts")
     info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
 }
 record(bi, "$(P)Lck-Sts") {
     field(DTYP, "Obj Prop uint32")
-    field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
+    field(INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
     field(MASK, "1")
     field(ZSV , "MAJOR")
     field(ZNAM, "Unlocked")
@@ -72,7 +72,7 @@ record(bi, "$(P)Lck-Sts") {
 record(mbbi, "$(P)LckTrk-Sts") {
     field(DESC, "DC loop tracking")
     field(DTYP, "Obj Prop uint32")
-    field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
+    field(INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
     field(MASK, "0xc")
     field(SHFT, "2")
     field(ZRVL, "0")
@@ -91,7 +91,7 @@ record(mbbi, "$(P)LckTrk-Sts") {
 record(mbbi, "$(P)LckDat-Sts") {
     field(DESC, "DC data from master?")
     field(DTYP, "Obj Prop uint32")
-    field( INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
+    field(INP, "@OBJ=$(OBJ), PROP=DCStatusRaw")
     field(MASK, "0x300")
     field(SHFT, "8")
     field(ZRVL, "0")
@@ -110,5 +110,5 @@ record(mbbi, "$(P)LckDat-Sts") {
 record(longin, "$(P)ID-I") {
     field(DESC, "Topology ID")
     field(DTYP, "Obj Prop uint32")
-    field( INP, "@OBJ=$(OBJ), PROP=DCTOPID")
+    field(INP, "@OBJ=$(OBJ), PROP=DCTOPID")
 }

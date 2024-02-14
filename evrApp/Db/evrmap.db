@@ -42,14 +42,14 @@
 #   Bypass the automatic allocation mechanism and always include this code in the event FIFO.
 #
 record(longout, "$(NAME)") {
-  field( DTYP, "EVR Mapping" )
-  field( OUT , "@OBJ=$(OBJ), Func=$(func)")
-  field( PINI, "YES")
-  field( DESC, "Mapping for $(func)")
-  field( VAL , "$(EVT)")
-  field( LOPR, "0")
-  field( HOPR, "255")
-  field( DRVL, "0")
-  field( DRVH, "255")
+  field(DTYP, "EVR Mapping" )
+  field(OUT , "@OBJ=$(OBJ), Func=$(func)")
+  field(PINI, "YES")
+  field(DESC, "Mapping for $(func)")
+  field(VAL , "$(EVT)")
+  field(LOPR, "0")
+  field(HOPR, "255")
+  field(DRVL, "0")
+  field(DRVH, "255")
   info(autosaveFields_pass0, "OUT VAL")
 }

@@ -86,7 +86,7 @@ record(longin, "$(PN)Delay$(s=:)Raw-RB") {
   field(HOPR, "$(DMAX=0xffff)")
   field(LOPR, "0")
   field(HIGH, "$(DMAX=0xffff)")
-  field( HSV, "MAJOR")
+  field(HSV, "MAJOR")
 }
 
 # Determines the time between when the Pulse Generator changes state from
@@ -124,7 +124,7 @@ record(longin, "$(PN)Width$(s=:)Raw-RB") {
   field(HOPR, "$(WMAX=0xffff)")
   field(LOPR, "0")
   field(HIGH, "$(WMAX=0xffff)")
-  field( HSV, "MAJOR")
+  field(HSV, "MAJOR")
 }
 
 # Decreases the resolution of both delay and width by an integer multiple.
@@ -153,7 +153,7 @@ record(longin, "$(PN)Prescaler-RB") {
   field(HOPR, "$(PMAX=0xffff)")
   field(LOPR, "1")
   field(HIGH, "$(PMAX=0xffff)")
-  field( HSV, "MAJOR")
+  field(HSV, "MAJOR")
   field(FLNK, "$(PN)Res-I")
 }
 

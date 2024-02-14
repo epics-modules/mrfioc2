@@ -1,8 +1,8 @@
 # EVR "internal" (software) mapped output state
 
 record(bi, "$(ON)State-Sts") {
-  field( DTYP, "Obj Prop bool")
-  field( DESC, "Output State")
-  field( INP , "@OBJ=$(OBJ), PROP=SW Output status")
-  field( SCAN, ".1 second")
+  field(DTYP, "Obj Prop bool")
+  field(DESC, "Output State")
+  field(INP , "@OBJ=$(OBJ), PROP=SW Output status")
+  field(SCAN, ".1 second")
 }

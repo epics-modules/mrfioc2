@@ -29,5 +29,5 @@ record(aSub, "$(N)") {
 
     field(OUTA, "$(OUTCODE=)")
 
-    field( EFLG, "ALWAYS")
+    field(EFLG, "ALWAYS")
 }
