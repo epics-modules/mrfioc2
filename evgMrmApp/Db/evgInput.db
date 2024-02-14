@@ -1,33 +1,32 @@
 record(bo, "$(P)EnaIrq-Sel") {
-    field( DESC, "Enable External Input IRQ")
-    field( DTYP, "Obj Prop bool")
-    field( OUT , "@OBJ=$(OBJ), PROP=IRQ")
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
-    field( OMSL, "closed_loop")
+    field(DESC, "Enable External Input IRQ")
+    field(DTYP, "Obj Prop bool")
+    field(OUT , "@OBJ=$(OBJ), PROP=IRQ")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(OMSL, "closed_loop")
     # see evgMrm.db
-    field( DOL,  "$(PP=$(SYS){$(D)})1ppsInp-MbbiDir_.B$(Num) CP")
-    field( FLNK, "$(P)EnaIrq-RB")
+    field(DOL,  "$(PP=$(SYS){$(D)})1ppsInp-MbbiDir_.B$(Num) CP")
+    field(FLNK, "$(P)EnaIrq-RB")
     info( autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)EnaIrq-RB") {
-    field( DESC, "Enable External Input IRQ")
-    field( DTYP, "Obj Prop bool")
-    field( INP , "@OBJ=$(OBJ), PROP=IRQ")
-    field( ZNAM, "Disabled")
-    field( ONAM, "Enabled")
+    field(DESC, "Enable External Input IRQ")
+    field(DTYP, "Obj Prop bool")
+    field(INP , "@OBJ=$(OBJ), PROP=IRQ")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
 }
 
 record(ao, "$(P)FPMask-Sel") {
-    field( DESC, "FPxMask")
-    field( DTYP, "Obj Prop uint32")
-    field( OUT , "@OBJ=$(OBJ), PROP=FPMASK")
-    field( FLNK, "$(P)FPMask-RB")
+    field(DESC, "FPxMask")
+    field(DTYP, "Obj Prop uint32")
+    field(OUT , "@OBJ=$(OBJ), PROP=FPMASK")
+    field(FLNK, "$(P)FPMask-RB")
 }
 record(ai, "$(P)FPMask-RB") {
-    field( DESC, "FPxMask")
-    field( DTYP, "Obj Prop uint32")
-    field( INP , "@OBJ=$(OBJ), PROP=FPMASK")
+    field(DESC, "FPxMask")
+    field(DTYP, "Obj Prop uint32")
+    field(INP , "@OBJ=$(OBJ), PROP=FPMASK")
 }
-

@@ -2,9 +2,9 @@
 record(longout, "$(P)$(CML)$(PAT)$(s=:)load") {
   field(SCAN, "Event")
   field(EVNT, "$(EVNT)")
-  field( VAL, "0")
-  field( UDF, "0")
-  field( OUT, "$(P)$(CML)$(PAT).RARM PP")
+  field(VAL, "0")
+  field(UDF, "0")
+  field(OUT, "$(P)$(CML)$(PAT).RARM PP")
 }
 
 record(waveform, "$(P)$(CML)$(PAT)") {

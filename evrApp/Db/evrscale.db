@@ -9,35 +9,35 @@
 
 record(bo, "$(P)PSPolarity-Sel")
 {
-  field( DTYP, "Obj Prop bool")
-  field( DESC, "Polarity of all prescalers")
-  field( OUT , "@OBJ=$(EVR), PROP=PSPolarity")
-  field( PINI, "YES")
-  field( ZNAM, "PS-sync on falling edge")
-  field( ONAM, "PS-sync on rising edge")
-  field( VAL , "0")
+  field(DTYP, "Obj Prop bool")
+  field(DESC, "Polarity of all prescalers")
+  field(OUT , "@OBJ=$(EVR), PROP=PSPolarity")
+  field(PINI, "YES")
+  field(ZNAM, "PS-sync on falling edge")
+  field(ONAM, "PS-sync on rising edge")
+  field(VAL , "0")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(longout, "$(SN)Div-SP") {
-  field( DTYP, "Obj Prop uint32")
-  field( DESC, "Prescaler $(IDX)")
-  field( OUT , "@OBJ=$(OBJ), PROP=Divide")
-  field( PINI, "YES")
-  field( VAL , "2")
-  field( HOPR, "$(MAX=0xffff)")
-  field( LOPR, "2")
-  field( DRVH, "$(MAX=0xffff)")
-  field( DRVL, "2")
-  field( FLNK, "$(SN)Div-RB")
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler $(IDX)")
+  field(OUT , "@OBJ=$(OBJ), PROP=Divide")
+  field(PINI, "YES")
+  field(VAL , "2")
+  field(HOPR, "$(MAX=0xffff)")
+  field(LOPR, "2")
+  field(DRVH, "$(MAX=0xffff)")
+  field(DRVL, "2")
+  field(FLNK, "$(SN)Div-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(SN)Div-RB") {
-  field( DTYP, "Obj Prop uint32")
-  field( DESC, "Prescaler $(IDX)")
-  field( INP , "@OBJ=$(OBJ), PROP=Divide")
-  field( FLNK, "$(SN)Rate-I")
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler $(IDX)")
+  field(INP , "@OBJ=$(OBJ), PROP=Divide")
+  field(FLNK, "$(SN)Rate-I")
 }
 
 record(calc, "$(SN)Rate-I") {
@@ -57,51 +57,51 @@ record(waveform, "$(SN)Label-I") {
 }
 
 record(ao, "$(SN)PhasOffs-SP") {
-  field( DESC, "Prescaler $(IDX) Phase Offset")
-  field( EGU , "Deg")
-  field( OMSL, "supervisory")
-  field( HOPR, "359.9999999999")
-  field( LOPR, "0")
-  field( DRVH, "359.9999999999")
-  field( DRVL, "0")
-  field( FLNK, "$(SN)PhasOffs-CO_")
+  field(DESC, "Prescaler $(IDX) Phase Offset")
+  field(EGU , "Deg")
+  field(OMSL, "supervisory")
+  field(HOPR, "359.9999999999")
+  field(LOPR, "0")
+  field(DRVH, "359.9999999999")
+  field(DRVL, "0")
+  field(FLNK, "$(SN)PhasOffs-CO_")
 }
 
 record(calcout, "$(SN)PhasOffs-CO_") {
   field(ASG, "private")
-  field( DESC, "Degrees to Event Clock Ticks")
-  field( OUT , "$(SN)PhasOffs$(s=:)Raw-SP PP")
-  field( CALC, "FLOOR(B/360*A)")
-  field( INPA, "$(SN)Div-RB")
-  field( INPB, "$(SN)PhasOffs-SP")
+  field(DESC, "Degrees to Event Clock Ticks")
+  field(OUT , "$(SN)PhasOffs$(s=:)Raw-SP PP")
+  field(CALC, "FLOOR(B/360*A)")
+  field(INPA, "$(SN)Div-RB")
+  field(INPB, "$(SN)PhasOffs-SP")
 }
 
 record(longout, "$(SN)PhasOffs$(s=:)Raw-SP") {
-  field( DTYP, "Obj Prop uint32")
-  field( DESC, "Prescaler $(IDX) Phase Offset")
-  field( OUT , "@OBJ=$(OBJ), PROP=Phase Offset")
-  field( PINI, "YES")
-  field( VAL , "0")
-  field( HOPR, "0xffffffff")
-  field( LOPR, "0")
-  field( DRVH, "0xffffffff")
-  field( DRVL, "0")
-  field( FLNK, "$(SN)PhasOffs$(s=:)Raw-RB")
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler $(IDX) Phase Offset")
+  field(OUT , "@OBJ=$(OBJ), PROP=Phase Offset")
+  field(PINI, "YES")
+  field(VAL , "0")
+  field(HOPR, "0xffffffff")
+  field(LOPR, "0")
+  field(DRVH, "0xffffffff")
+  field(DRVL, "0")
+  field(FLNK, "$(SN)PhasOffs$(s=:)Raw-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(SN)PhasOffs$(s=:)Raw-RB") {
-  field( DTYP, "Obj Prop uint32")
-  field( DESC, "Prescaler $(IDX) Phase Offset")
-  field( INP , "@OBJ=$(OBJ), PROP=Phase Offset")
-  field( PINI, "YES")
-  field( FLNK, "$(SN)PhasOffs-RB")
+  field(DTYP, "Obj Prop uint32")
+  field(DESC, "Prescaler $(IDX) Phase Offset")
+  field(INP , "@OBJ=$(OBJ), PROP=Phase Offset")
+  field(PINI, "YES")
+  field(FLNK, "$(SN)PhasOffs-RB")
 }
 
 record(calc, "$(SN)PhasOffs-RB") {
-  field( DESC, "Prescaler $(IDX) Phase Offset")
-  field( CALC, "B/A*360")
-  field( EGU , "Deg")
-  field( INPA, "$(SN)Div-RB CPP")
-  field( INPB, "$(SN)PhasOffs$(s=:)Raw-RB PP")
+  field(DESC, "Prescaler $(IDX) Phase Offset")
+  field(CALC, "B/A*360")
+  field(EGU , "Deg")
+  field(INPA, "$(SN)Div-RB CPP")
+  field(INPB, "$(SN)PhasOffs$(s=:)Raw-RB PP")
 }

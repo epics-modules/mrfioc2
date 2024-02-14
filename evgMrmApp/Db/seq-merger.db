@@ -63,6 +63,5 @@ record(aSub, "$(N)") {
     field(OUTA, "$(OUTTIME=)")
     field(OUTB, "$(OUTCODE=)")
 
-    field( EFLG, "ALWAYS")
+    field(EFLG, "ALWAYS")
 }
-
