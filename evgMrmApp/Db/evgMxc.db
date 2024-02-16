@@ -16,7 +16,7 @@ record(bo, "$(P)Polarity-Sel") {
     field(ZNAM, "Orginal")
     field(ONAM, "Inverted")
     field(FLNK, "$(P)Polarity-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)Polarity-RB") {
@@ -38,7 +38,7 @@ record(ao, "$(P)Frequency-SP") {
     field(DRVL, "0.029")
     field(PREC, "3")
     field(FLNK, "$(P)Frequency-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(P)Frequency-RB") {
@@ -61,7 +61,7 @@ record(longout, "$(P)Prescaler-SP") {
     field(UDF,  "0")
     field(EGU, "Evt Clk Tick")
     field(FLNK, "$(P)Frequency-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(longin , "$(P)Prescaler-RB") {

@@ -23,7 +23,7 @@ record(bi, "$(IN)State-I") {
   field(PINI, "RUNNING")
   field(ZNAM, "Low")
   field(ONAM, "High")
-  info( autosaveFields_pass0, "SCAN")
+  info(autosaveFields_pass0, "SCAN")
 }
 
 record(bo, "$(IN)Edge-Sel") {

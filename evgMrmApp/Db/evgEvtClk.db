@@ -19,7 +19,7 @@ record(mbbo, "$(P)Source-Sel") {
     field(FVVL, "2")
     field(SXVL, "6")
     field(FLNK, "$(P)Source-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P)Source-RB") {
@@ -61,7 +61,7 @@ record(ao, "$(P)RFFreq-SP") {
     field(DRVL, "50")
     field(PREC, "3")
     field(FLNK, "$(P)RFFreq-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(P)RFFreq-RB") {
@@ -91,7 +91,7 @@ record(longout, "$(P)RFDiv-SP") {
     field(HHSV, "MAJOR")
     field(LLSV, "MAJOR")
     field(FLNK, "$(P)RFDiv-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)RFDiv-RB") {
@@ -123,7 +123,7 @@ record(ao, "$(P)FracSynFreq-SP") {
     field(DRVL, "50")
     field(PREC, "3")
     field(FLNK, "$(P)FracSynFreq-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(P)FracSynFreq-RB") {

@@ -11,7 +11,7 @@ record(mbbo, "$(P)Enable-Sel") {
     field(PINI, "RUNNING")
     field(VAL,  "1")
     field(FLNK, "$(P)Enable-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbi, "$(P)Enable-RB") {
@@ -137,7 +137,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
     field(FLNK, "$(P)1ppsInp-MbbiDir_")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 #
@@ -154,5 +154,5 @@ record(longin, "$(P)DbusStatus-RB" ) {
     field(DESC, "EVG Dbus Status")
     field(DTYP, "Obj Prop uint32")
     field(INP , "@OBJ=$(OBJ), PROP=DbusStatus")
-    info( autosaveFields_pass0, "SCAN")
+    info(autosaveFields_pass0, "SCAN")
 }

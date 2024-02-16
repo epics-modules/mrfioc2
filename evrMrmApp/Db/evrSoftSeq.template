@@ -49,7 +49,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)Pulse-Sel") {
     field(TTVL, "13")
     field(FTVL, "14")
     field(FFVL, "15")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
     alias("$(P)TrigSrc$(s=:)0-Sel")
 }
 
@@ -72,7 +72,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)DBus-Sel") {
     field(FVVL, "37")
     field(SXVL, "38")
     field(SVVL, "39")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
     alias("$(P)TrigSrc$(s=:)1-Sel")
 }
 
@@ -99,7 +99,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)Scale-Sel") {
     field(SVVL, "45")
     field(EIVL, "46")
     field(NIVL, "47")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
     alias("$(P)TrigSrc$(s=:)2-Sel")
 }
 
@@ -108,7 +108,7 @@ record(longout, "$(P)TrigSrc-Sel_") {
     field(DTYP, "Obj Prop uint32")
     field(OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
     field(VAL , "0x03000000") # default to None
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)TrigSrc-RB_") {

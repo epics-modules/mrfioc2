@@ -39,7 +39,7 @@ record(ao, "$(P)Delay0-SP") {
   field(LOPR, "0")
   field(PREC, 2)
   field(FLNK, "$(P)Delay0-RB")
-  info( autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(P)Delay0-RB") {
@@ -63,7 +63,7 @@ record(ao, "$(P)Delay1-SP") {
   field(LOPR, "0")
   field(PREC, 2)
   field(FLNK, "$(P)Delay1-RB")
-  info( autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(ai, "$(P)Delay1-RB") {

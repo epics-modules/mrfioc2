@@ -11,7 +11,7 @@ record(longout, "$(P)EvtCode-SP") {
     field(HHSV, "MAJOR")
     field(LLSV, "MAJOR")
     field(FLNK, "$(P)EvtCode-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)EvtCode-RB") {
@@ -64,7 +64,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
     field(FLNK, "$(P)TrigSrc-MbbiDir_")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
@@ -110,7 +110,7 @@ record(mbbo, "$(P)TrigSrc1-Sel") {
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
     field(FLNK, "$(P)TrigSrc1-MbbiDir_")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbiDirect, "$(P)TrigSrc1-MbbiDir_") {
@@ -367,7 +367,7 @@ record(dfanout, "$(P)Omsl-FOut") {
     field(OUTG, "$(P)TrigSrc$(s=:)Mxc6-Sel.OMSL")
     field(OUTH, "$(P)TrigSrc$(s=:)Mxc7-Sel.OMSL")
     field(FLNK, "$(P)Omsl$(s=:)Cont-FOut_")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {

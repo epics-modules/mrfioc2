@@ -66,7 +66,7 @@ record(waveform, "$(P)EvtEna-SP") {
     field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENA")
     field(NELM, "$(NELM)")
     field(FTVL, "UCHAR")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)EvtEna-RB") {
@@ -84,7 +84,7 @@ record(waveform, "$(P)EvtMask-SP") {
     field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=MASK")
     field(NELM, "$(NELM)")
     field(FTVL, "UCHAR")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)EvtMask-RB") {
@@ -102,7 +102,7 @@ record(waveform, "$(P)EvtCode-SP") {
     field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
     field(NELM, "$(NELM)")
     field(FTVL, "UCHAR")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)EvtCode-RB") {
@@ -120,7 +120,7 @@ record(waveform, "$(P)Timestamp-SP") {
     field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
     field(NELM, "$(NELM)")
     field(FTVL, "DOUBLE")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 }
 
 record(waveform, "$(P)Timestamp-RB") {
@@ -282,7 +282,7 @@ record(bi, "$(P)Load-RB") {
     field(SCAN, "I/O Intr")
     field(ZNAM, "Unloaded")
     field(ONAM, "Loaded")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)Commit-RB") {
@@ -292,7 +292,7 @@ record(bi, "$(P)Commit-RB") {
     field(SCAN, "I/O Intr")
     field(ZNAM, "Uncommitted")
     field(ONAM, "Committed")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)Enable-Sts") {
@@ -303,7 +303,7 @@ record(bi, "$(P)Enable-Sts") {
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
     field(FLNK, "$(ENALNK=)")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
     alias("$(P)Enable-RB")
 }
 

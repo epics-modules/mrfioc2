@@ -14,7 +14,7 @@ record(waveform, "$(P)EvtCode-SP") {
     field(NELM, "$(NELM)")
     field(FTVL, "UCHAR")
     field(FLNK, "$(P)Rep-Calc_")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 
     alias("$(P)EvtCode-RB")
 }
@@ -24,7 +24,7 @@ record(waveform, "$(P)Timestamp-SP") {
     field(NELM, "$(NELM)")
     field(FTVL, "DOUBLE")
     field(FLNK, "$(P)Rep-Calc_")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 
     alias("$(P)Timestamp-RB")
 }
@@ -32,7 +32,7 @@ record(waveform, "$(P)Timestamp-SP") {
 record(longout, "$(P)Mask$(s=:)Rep-SP") {
     field(DESC, "Mask selecting repeated slots")
     field(FLNK, "$(P)Rep-Calc_")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 # Calculation

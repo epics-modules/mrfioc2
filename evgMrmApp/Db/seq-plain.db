@@ -12,7 +12,7 @@ record(waveform, "$(P)EvtCode-SP") {
     field(NELM, "$(NELM)")
     field(FTVL, "UCHAR")
     field(FLNK, "$(FLNK=)")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 
     alias("$(P)EvtCode-RB")
 }
@@ -22,7 +22,7 @@ record(waveform, "$(P)Timestamp-SP") {
     field(NELM, "$(NELM)")
     field(FTVL, "DOUBLE")
     field(FLNK, "$(FLNK=)")
-    info( autosaveFields_pass1, "VAL")
+    info(autosaveFields_pass1, "VAL")
 
     alias("$(P)Timestamp-RB")
 }

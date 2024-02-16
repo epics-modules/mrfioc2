@@ -41,7 +41,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
     field(TTVL, "0x02020000")
     field(FTVL, "0x02020001")
     field(FFVL, "0x02020002")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
     alias("$(P)TrigSrc$(s=:)0-Sel")
 }
 
@@ -75,7 +75,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
     field(TEVL, "0x0202000d")
     field(ELVL, "0x0202000e")
     field(TVVL, "0x0202000f")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 # placeholder to OPIs
@@ -88,7 +88,7 @@ record(longout, "$(P)TrigSrc-Sel_") {
     field(DTYP, "Obj Prop uint32")
     field(OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
     field(VAL , "0x03000000") # default to None
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)TrigSrc-RB_") {

@@ -8,7 +8,7 @@ record(bo, "$(P)EnaIrq-Sel") {
     # see evgMrm.db
     field(DOL,  "$(PP=$(SYS){$(D)})1ppsInp-MbbiDir_.B$(Num) CP")
     field(FLNK, "$(P)EnaIrq-RB")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)EnaIrq-RB") {

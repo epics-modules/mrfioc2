@@ -30,7 +30,7 @@ record(mbbo, "$(P)Src-Sel") {
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
     field(OUT, "$(P)MapConv-Sel_ PP")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)MapConv-Sel_") {
@@ -55,7 +55,7 @@ record(mbbo, "$(P)MapConv-Sel_") {
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
     field(OUT, "$(P)Map-Sel PP")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(mbbo, "$(P)Map-Sel") {
@@ -86,7 +86,7 @@ record(mbbo, "$(P)Map-Sel") {
     field(FFSV, "INVALID")
     field(UNSV, "INVALID")
     field(IVOA, "Don't drive outputs")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 #
@@ -176,7 +176,7 @@ record(dfanout, "$(P)Omsl-FOut") {
     field(OUTD, "$(P)Src$(s=:)UnivInp1-Sel.OMSL")
     field(OUTE, "$(P)Src$(s=:)UnivInp2-Sel.OMSL")
     field(OUTF, "$(P)Src$(s=:)UnivInp3-Sel.OMSL")
-    info( autosaveFields_pass0, "VAL")
+    info(autosaveFields_pass0, "VAL")
 }
 
 record(waveform, "$(P)Label-I") {
