@@ -10,64 +10,64 @@
 # Inputs
 
 record(waveform, "$(P)EvtCode-SP") {
-    field(DESC, "Sequence event code array")
-    field(NELM, "$(NELM)")
-    field(FTVL, "UCHAR")
-    field(FLNK, "$(P)Rep-Calc_")
-    info(autosaveFields_pass1, "VAL")
+  field(DESC, "Sequence event code array")
+  field(NELM, "$(NELM)")
+  field(FTVL, "UCHAR")
+  field(FLNK, "$(P)Rep-Calc_")
+  info(autosaveFields_pass1, "VAL")
 
     alias("$(P)EvtCode-RB")
 }
 
 record(waveform, "$(P)Timestamp-SP") {
-    field(DESC, "Sequence timestamp array")
-    field(NELM, "$(NELM)")
-    field(FTVL, "DOUBLE")
-    field(FLNK, "$(P)Rep-Calc_")
-    info(autosaveFields_pass1, "VAL")
+  field(DESC, "Sequence timestamp array")
+  field(NELM, "$(NELM)")
+  field(FTVL, "DOUBLE")
+  field(FLNK, "$(P)Rep-Calc_")
+  info(autosaveFields_pass1, "VAL")
 
     alias("$(P)Timestamp-RB")
 }
 
 record(longout, "$(P)Mask$(s=:)Rep-SP") {
-    field(DESC, "Mask selecting repeated slots")
-    field(FLNK, "$(P)Rep-Calc_")
-    info(autosaveFields_pass0, "VAL")
+  field(DESC, "Mask selecting repeated slots")
+  field(FLNK, "$(P)Rep-Calc_")
+  info(autosaveFields_pass0, "VAL")
 }
 
 # Calculation
 
 
 record(aSub, "$(P)Rep-Calc_") {
-    field(ASG, "private")
-    field(SNAM, "Seq Repeat")
+  field(ASG, "private")
+  field(SNAM, "Seq Repeat")
     # A - cycle length in ticks
-    field(INPA, "$(CYCLELEN)")
-    field(FTA , "ULONG")
+  field(INPA, "$(CYCLELEN)")
+  field(FTA , "ULONG")
     # B - # of repetitions per cycle
-    field(INPB, "$(NREP)")
-    field(FTB , "ULONG")
+  field(INPB, "$(NREP)")
+  field(FTB , "ULONG")
     # C - Bit mask to select which repetitions should actually be issued
-    field(INPC, "$(P)Mask$(s=:)Rep-SP MS PP")
-    field(FTC , "ULONG")
+  field(INPC, "$(P)Mask$(s=:)Rep-SP MS PP")
+  field(FTC , "ULONG")
     # D - Unused
-    field(INPD, "$(P)Timestamp-SP MS PP")
-    field(FTD , "DOUBLE")
-    field(NOD , "$(NELM)")
+  field(INPD, "$(P)Timestamp-SP MS PP")
+  field(FTD , "DOUBLE")
+  field(NOD , "$(NELM)")
     # E - Input waveform
-    field(INPE, "$(P)EvtCode-SP MS PP")
-    field(FTE , "UCHAR")
-    field(NOE , "$(NELM)")
+  field(INPE, "$(P)EvtCode-SP MS PP")
+  field(FTE , "UCHAR")
+  field(NOE , "$(NELM)")
 
     # VALA - Single rep. cycle time
-    field(FTVA, "DOUBLE")
+  field(FTVA, "DOUBLE")
     # VALB - Full output waveform
-    field(FTVB, "DOUBLE")
-    field(NOVB, "$(NELM)")
-    field(FTVC, "UCHAR")
-    field(NOVC, "$(NELM)")
+  field(FTVB, "DOUBLE")
+  field(NOVB, "$(NELM)")
+  field(FTVC, "UCHAR")
+  field(NOVC, "$(NELM)")
 
-    field(EFLG, "ALWAYS")
+  field(EFLG, "ALWAYS")
 
-    field(FLNK, "$(FLNK=)")
+  field(FLNK, "$(FLNK=)")
 }

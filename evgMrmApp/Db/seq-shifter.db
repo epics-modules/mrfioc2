@@ -12,21 +12,21 @@
 
 
 record(aSub, "$(N)") {
-    field(SNAM, "Seq Shift")
+  field(SNAM, "Seq Shift")
 
-    field(FTA, "DOUBLE")
-    field(FTB, "DOUBLE")
+  field(FTA, "DOUBLE")
+  field(FTB, "DOUBLE")
 
-    field(NOB, "$(NELM)")
+  field(NOB, "$(NELM)")
 
-    field(INPA, "$(DELAY=)")
-    field(INPB, "$(INTIME=)")
+  field(INPA, "$(DELAY=)")
+  field(INPB, "$(INTIME=)")
 
-    field(FTVA, "DOUBLE")
+  field(FTVA, "DOUBLE")
 
-    field(NOVA, "$(NELM)")
+  field(NOVA, "$(NELM)")
 
-    field(OUTA, "$(OUTTIME)")
+  field(OUTA, "$(OUTTIME)")
 
-    field(EFLG, "ALWAYS")
+  field(EFLG, "ALWAYS")
 }

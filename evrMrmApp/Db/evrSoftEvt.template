@@ -10,30 +10,30 @@ record(longout, "$(P)EvtCode-SP") {
 # included here as it depends on SW event feature
 
 record (stringin, "$(P)Timestamp-RB") {
-    field(DTYP, "Obj Prop string")
-    field(INP , "@OBJ=$(OBJ), PROP=NextSecond")
-    field(SCAN, "1 second")
-    field(FLNK, "$(P)TimeErr-I")
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=NextSecond")
+  field(SCAN, "1 second")
+  field(FLNK, "$(P)TimeErr-I")
 }
 
 record(ai, "$(P)TimeErr-I") {
-    field(DTYP, "Obj Prop double")
-    field(INP , "@OBJ=$(OBJ), PROP=Time Error")
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=Time Error")
 }
 
 record(mbbo, "$(P)TimeSrc-Sel") {
-    field(DTYP, "Obj Prop uint32")
-    field(OUT , "@OBJ=$(OBJ), PROP=TimeSrc")
-    field(ZRST, "Disable (noop)")
-    field(ONST, "External clk")
-    field(TWST, "Sys. Clock")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=TimeSrc")
+  field(ZRST, "Disable (noop)")
+  field(ONST, "External clk")
+  field(TWST, "Sys. Clock")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
-    field(DTYP, "Obj Prop command")
-    field(OUT , "@OBJ=$(OBJ), PROP=Sync TS")
-    field(DESC, "EVG Sync TimeStamp")
+  field(DTYP, "Obj Prop command")
+  field(OUT , "@OBJ=$(OBJ), PROP=Sync TS")
+  field(DESC, "EVG Sync TimeStamp")
 }

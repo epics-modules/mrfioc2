@@ -22,56 +22,56 @@
 #   and the first element value is always zero.
 #
 record(waveform, "$(P)TS-I") {
-    field(DTYP, "Obj Prop waveform in")
-    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFlush)")
-    field(SCAN, "I/O Intr")
-    field(FTVL, "LONG") # int32
-    field(NELM, "$(NELM=128)")
-    field(TSE , "-2")
+  field(DTYP, "Obj Prop waveform in")
+  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFlush)")
+  field(SCAN, "I/O Intr")
+  field(FTVL, "LONG") # int32
+  field(NELM, "$(NELM=128)")
+  field(TSE , "-2")
 }
 
 record(longout, "$(P)CptEvt-SP") {
-    field(DTYP, "Obj Prop uint16")
-    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
-    field(VAL , "$(CODE=0)")
-    field(PINI, "YES")
-    field(FLNK, "$(P)CptEvt-RB")
+  field(DTYP, "Obj Prop uint16")
+  field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
+  field(VAL , "$(CODE=0)")
+  field(PINI, "YES")
+  field(FLNK, "$(P)CptEvt-RB")
 }
 
 record(longin, "$(P)CptEvt-RB") {
-    field(DTYP, "Obj Prop uint16")
-    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
+  field(DTYP, "Obj Prop uint16")
+  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
 }
 
 record(longout, "$(P)FlshEvt-SP") {
-    field(DTYP, "Obj Prop uint16")
-    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
-    field(VAL , "$(TRIG=0)")
-    field(PINI, "YES")
-    field(FLNK, "$(P)FlshEvt-RB")
+  field(DTYP, "Obj Prop uint16")
+  field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
+  field(VAL , "$(TRIG=0)")
+  field(PINI, "YES")
+  field(FLNK, "$(P)FlshEvt-RB")
 }
 
 record(longin, "$(P)FlshEvt-RB") {
-    field(DTYP, "Obj Prop uint16")
-    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
+  field(DTYP, "Obj Prop uint16")
+  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
 }
 
 record(bo, "$(P)Flsh-SP") {
-    field(DTYP, "Obj Prop command")
-    field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushManual")
-    field(VAL , "$(TRIG=0)")
-    field(ZNAM, "Flush")
-    field(ONAM, "Flush")
+  field(DTYP, "Obj Prop command")
+  field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushManual")
+  field(VAL , "$(TRIG=0)")
+  field(ZNAM, "Flush")
+  field(ONAM, "Flush")
 }
 
 record(longin, "$(P)Drop-I") {
-    field(DTYP, "Obj Prop uint32")
-    field(SCAN, "10 second")
-    field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=DropCnt")
-    field(FLNK, "$(P)DropRate-I")
+  field(DTYP, "Obj Prop uint32")
+  field(SCAN, "10 second")
+  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=DropCnt")
+  field(FLNK, "$(P)DropRate-I")
 }
 
 record(calc, "$(P)DropRate-I") {
-    field(INPA, "$(P)Drop-I NPP")
-    field(CALC, "C:=A-B;B:=A;C/10")
+  field(INPA, "$(P)Drop-I NPP")
+  field(CALC, "C:=A-B;B:=A;C/10")
 }

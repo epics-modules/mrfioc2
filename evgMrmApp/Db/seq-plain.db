@@ -8,21 +8,21 @@
 # Inputs
 
 record(waveform, "$(P)EvtCode-SP") {
-    field(DESC, "Sequence event code array")
-    field(NELM, "$(NELM)")
-    field(FTVL, "UCHAR")
-    field(FLNK, "$(FLNK=)")
-    info(autosaveFields_pass1, "VAL")
+  field(DESC, "Sequence event code array")
+  field(NELM, "$(NELM)")
+  field(FTVL, "UCHAR")
+  field(FLNK, "$(FLNK=)")
+  info(autosaveFields_pass1, "VAL")
 
     alias("$(P)EvtCode-RB")
 }
 
 record(waveform, "$(P)Timestamp-SP") {
-    field(DESC, "Sequence timestamp array")
-    field(NELM, "$(NELM)")
-    field(FTVL, "DOUBLE")
-    field(FLNK, "$(FLNK=)")
-    info(autosaveFields_pass1, "VAL")
+  field(DESC, "Sequence timestamp array")
+  field(NELM, "$(NELM)")
+  field(FTVL, "DOUBLE")
+  field(FLNK, "$(FLNK=)")
+  info(autosaveFields_pass1, "VAL")
 
     alias("$(P)Timestamp-RB")
 }
