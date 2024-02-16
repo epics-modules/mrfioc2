@@ -6,14 +6,14 @@
 #define epicsExportSharedSymbols
 #include "mrf/pollirq.h"
 
-IRQPoller::IRQPoller(pollerFN fn, void *arg, double period)
-    :done(false)
-    ,period(0.1)
-    ,fn(fn)
-    ,arg(arg)
-    ,runner(*this, "IRQPoller",
-            epicsThreadGetStackSize(epicsThreadStackBig),
-            epicsThreadPriorityHigh)
+IRQPoller::IRQPoller(pollerFN fn, void* arg, double period) :
+  done(false),
+  period(period),
+  fn(fn),
+  arg(arg),
+  runner(*this, "IRQPoller",
+        epicsThreadGetStackSize(epicsThreadStackBig),
+        epicsThreadPriorityHigh)
 {
     runner.start();
 }
