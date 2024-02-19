@@ -1,4 +1,4 @@
-%define kmod_name @@DRV_NAME@@
+%define kmod_name @@KMOD_NAME@@
 %define udev_rules_update \
   /sbin/udevadm control --reload-rules && \
   /sbin/udevadm trigger
@@ -24,8 +24,7 @@ BuildRoot: %{_tmppath}/%{kmod_name}-%{version}-root
 %define udevdir /etc/udev/rules.d
 
 %description
-Installs the kernel driver for interfacing to the MRF timing cards over
-PCI express. The driver is installed using dkms.
+Installs the kernel driver for interfacing to the MRF timing cards over PCI/PCIe. The driver is installed using dkms.
 
 %clean
 rm -rf %{buildroot}
@@ -71,6 +70,7 @@ rmdir /usr/src/%{kmod_name}-%{version}
 
 * Wed Jan 24 2024 Jerzy Jamroz <jerzy.jamroz@gmail.com> - 3-1
 - Build adjustments exposing the control variables.
+- Pkg name changed from mrf to mrf-dkms.
 - Correction of the driver version handling.
 - Group rw access for the pci resource0.
 - AER handling functions.

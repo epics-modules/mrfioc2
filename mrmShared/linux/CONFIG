@@ -1,8 +1,10 @@
 # Version definition for driver
 # 20240124 Release
 DRV_VERSION := 3
+DRV_GROUP := mrf
 
 # Package control vars
-PKG_NAME := mrf-dkms #PKG_NAME follows the drv name
-DRV_NAME := mrf # DRV_NAME has to be set as mrf due to hardcoded dependencies
-DRV_GROUP := mrf
+## PKG_NAME follows the kmod name
+PKG_NAME := mrf-dkms
+## KMOD_NAME has to be set as mrf due to hardcoded dependencies
+KMOD_NAME := mrf
