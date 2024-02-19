@@ -71,7 +71,6 @@ rmdir /usr/src/%{kmod_name}-%{version}
 
 * Wed Jan 24 2024 Jerzy Jamroz <jerzy.jamroz@gmail.com> - 3-1
 - Build adjustments exposing the control variables.
-- Pkg name changed to mrfioc2-dkms.
 - Correction of the driver version handling.
 - Group rw access for the pci resource0.
 - AER handling functions.

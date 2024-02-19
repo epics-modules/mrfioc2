@@ -3,6 +3,6 @@
 DRV_VERSION := 3
 
 # Package control vars
-PKG_NAME := mrfioc2-dkms
-DRV_NAME := mrf
+PKG_NAME := mrf-dkms #PKG_NAME follows the drv name
+DRV_NAME := mrf # DRV_NAME has to be set as mrf due to hardcoded dependencies
 DRV_GROUP := mrf

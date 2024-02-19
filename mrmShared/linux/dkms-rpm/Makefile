@@ -38,7 +38,7 @@ SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
 %: %.in CONFIG $(SRCDIR)/CONFIG
 	sed '$(SED_SUBSTS)' $< >$@
 
-SED_FILES = dkms.conf $(DRV_NAME).spec 50-mrf.rules
+SED_FILES = dkms.conf mrf.spec 50-mrf.rules
 
 
 $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
@@ -48,5 +48,5 @@ $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
             --define '_topdir %{_curdir}/rpmbuild' \
             --define '_sourcedir $(SRCDIR)' \
             --define '_tmppath %{_topdir}/BUILD' \
-            $(DRV_NAME).spec
+            mrf.spec
 	ln -sf rpmbuild/RPMS/$(ARCH)/$(RPM_FILE) .
