@@ -3,7 +3,7 @@ record(mbbo, "$(P)Source-Sel") {
   field(DTYP, "Obj Prop uint16")
   field(OUT,  "@OBJ=$(OBJ), PROP=Source")
   field(PINI, "YES")
-  field(VAL,  "0")
+  field(VAL,  "2")
   field(ZRST, "FracSyn (Int)")
   field(ONST, "RF (Ext)")
   field(TWST, "Upstream (fanout)")
