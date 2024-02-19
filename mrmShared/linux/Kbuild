@@ -1,7 +1,7 @@
 KBUILD_CPPFLAGS += -DDRV_VERSION='"$(DRV_VERSION)"'
 
-obj-m := mrf.o
+obj-m := mrfioc2.o
 
-mrf-objs := uio_mrf.o jtag_mrf.o
+mrfioc2-objs := uio_mrf.o jtag_mrf.o
 
 # vim: set filetype=make:

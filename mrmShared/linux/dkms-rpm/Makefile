@@ -38,7 +38,7 @@ SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
 %: %.in CONFIG $(SRCDIR)/CONFIG
 	sed '$(SED_SUBSTS)' $< >$@
 
-SED_FILES = dkms.conf $(DRV_NAME).spec 50-mrf.rules
+SED_FILES = dkms.conf $(DRV_NAME).spec 50-$(DRV_NAME).rules
 
 
 $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)

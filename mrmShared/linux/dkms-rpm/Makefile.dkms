@@ -4,5 +4,5 @@
 # standalone building we set a default if it's not already been set.
 KERNEL_DIR ?= /lib/modules/$(kernelver)/build
 
-mrf.ko:
+mrfioc2.ko:
 	make -C $(KERNEL_DIR) M=$(CURDIR) modules

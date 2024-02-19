@@ -11,7 +11,7 @@
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 
-#define DRV_NAME "mrf-pci"
+#define DRV_NAME "mrfioc2-pci"
 
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(DRV_VERSION);
