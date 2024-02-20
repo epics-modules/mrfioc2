@@ -10,7 +10,7 @@ Version: @@RPM_VERSION@@
 Release: @@RPM_RELEASE@@
 
 Vendor: EPICS Community
-License: EPICS Open License
+License: GPLv2
 Group: System Environment/Kernel
 URL: https://github.com/epics-modules/mrfioc2
 BuildRequires: autoconf libtool gcc gcc-c++
