@@ -9,8 +9,15 @@ record(mbbo, "$(P)Src-Sel") {
   field(FRST, "Univ1")
   field(FVST, "Univ2")
   field(SXST, "Univ3")
-  field(SVST, "Mxc $(dbusBit)")
-  field(EIST, "Up EVG")
+  field(SVST, "Univ4")
+  field(EIST, "Univ5")
+  field(NIST, "Univ6")
+  field(TEST, "Univ7")
+  field(ELST, "Univ8")
+  field(TVST, "Univ9")
+  field(TTST, "Univ10")
+  field(FTST, "Mxc $(dbusBit)")
+  field(FFST, "Up EVG")
   field(ZRVL, "0")
   field(ONVL, "1")
   field(TWVL, "2")
@@ -20,14 +27,14 @@ record(mbbo, "$(P)Src-Sel") {
   field(SXVL, "32")
   field(SVVL, "64")
   field(EIVL, "128")
-  field(NISV, "INVALID")
-  field(TESV, "INVALID")
-  field(ELSV, "INVALID")
-  field(TVSV, "INVALID")
-  field(TTSV, "INVALID")
-  field(FTSV, "INVALID")
-  field(FFSV, "INVALID")
-  field(UNSV, "INVALID")
+  field(NIVL, "256")
+  field(TEVL, "512")
+  field(ELVL, "1024")
+  field(TVVL, "2048")
+  field(TTVL, "4096")
+  field(FTVL, "8192")
+  field(FFVL, "16384")
+
   field(IVOA, "Don't drive outputs")
   field(OUT, "$(P)MapConv-Sel_ PP")
   info(autosaveFields_pass0, "VAL")
@@ -43,16 +50,16 @@ record(mbbo, "$(P)MapConv-Sel_") {
   field(FRVL, "1")
   field(FVVL, "1")
   field(SXVL, "1")
-  field(SVVL, "2")
-  field(EIVL, "3")
-  field(NISV, "INVALID")
-  field(TESV, "INVALID")
-  field(ELSV, "INVALID")
-  field(TVSV, "INVALID")
-  field(TTSV, "INVALID")
-  field(FTSV, "INVALID")
-  field(FFSV, "INVALID")
-  field(UNSV, "INVALID")
+  field(SVVL, "1")
+  field(EIVL, "1")
+  field(NIVL, "1")
+  field(TEVL, "1")
+  field(ELVL, "1")
+  field(TVVL, "1")
+  field(TTVL, "1")
+  field(FTVL, "2")
+  field(FFVL, "3")
+
   field(IVOA, "Don't drive outputs")
   field(OUT, "$(P)Map-Sel PP")
   info(autosaveFields_pass0, "VAL")
@@ -157,6 +164,76 @@ record(bo, "$(P)Src$(s=:)UnivInp3-Sel") {
   field(ONAM, "Set")
   field(OMSL, "closed_loop")
   field(DOL,  "$(P)Src-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp4-Sel") {
+  field(DESC, "Front Univ Input4 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp4")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.B6 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp5-Sel") {
+  field(DESC, "Front Univ Input5 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp5")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.B7 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp6-Sel") {
+  field(DESC, "Front Univ Input6 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp6")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.B8 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp7-Sel") {
+  field(DESC, "Front Univ Input7 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp7")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.B9 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp8-Sel") {
+  field(DESC, "Front Univ Input8 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp8")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.BA CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp9-Sel") {
+  field(DESC, "Front Univ Input9 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp9")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.BB CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp10-Sel") {
+  field(DESC, "Front Univ Input10 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp10")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src-MbbiDir_.BC CP")
 }
 
 #
