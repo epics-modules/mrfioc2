@@ -247,13 +247,38 @@ record(dfanout, "$(P)Omsl-FOut") {
   field(VAL,  "1")
   field(UDF,  "0")
   field(OMSL, "supervisory")
+  field(OUTA, "$(P)Omsl0-FOut_ PP")
+  field(OUTB, "$(P)Omsl1-FOut_ PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(dfanout, "$(P)Omsl0-FOut_") {
+  field(ASG, "private")
+  #field(PINI, "YES")
+  field(VAL,  "1")
+  field(UDF,  "0")
+  field(OMSL, "supervisory")
   field(OUTA, "$(P)Src$(s=:)FrontInp0-Sel.OMSL")
   field(OUTB, "$(P)Src$(s=:)FrontInp1-Sel.OMSL")
   field(OUTC, "$(P)Src$(s=:)UnivInp0-Sel.OMSL")
   field(OUTD, "$(P)Src$(s=:)UnivInp1-Sel.OMSL")
   field(OUTE, "$(P)Src$(s=:)UnivInp2-Sel.OMSL")
   field(OUTF, "$(P)Src$(s=:)UnivInp3-Sel.OMSL")
-  info(autosaveFields_pass0, "VAL")
+  field(OUTG, "$(P)Src$(s=:)UnivInp4-Sel.OMSL")
+  field(OUTH, "$(P)Src$(s=:)UnivInp5-Sel.OMSL")
+}
+
+record(dfanout, "$(P)Omsl1-FOut_") {
+  field(ASG, "private")
+  #field(PINI, "YES")
+  field(VAL,  "1")
+  field(UDF,  "0")
+  field(OMSL, "supervisory")
+  field(OUTA, "$(P)Src$(s=:)UnivInp6-Sel.OMSL")
+  field(OUTB, "$(P)Src$(s=:)UnivInp7-Sel.OMSL")
+  field(OUTC, "$(P)Src$(s=:)UnivInp8-Sel.OMSL")
+  field(OUTD, "$(P)Src$(s=:)UnivInp9-Sel.OMSL")
+  field(OUTE, "$(P)Src$(s=:)UnivInp10-Sel.OMSL")
 }
 
 record(waveform, "$(P)Label-I") {
