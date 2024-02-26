@@ -26,3 +26,5 @@ override_dh_auto_install:
 override_dh_auto_clean:
 override_dh_installudev:
 	dh_installudev --priority=50
+override_dh_builddeb:
+	    dh_builddeb -- -Zgzip
