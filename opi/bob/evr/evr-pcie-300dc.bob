@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-01-31 15:31:01 by agaget-->
+<!--Saved on 2024-02-28 11:12:48 by agaget-->
 <display version="2.0.0">
   <name>$(TITLE) Advanced</name>
   <width>1920</width>
@@ -602,7 +602,7 @@
       <name>Menu Button</name>
       <actions>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq0</SS>
           </macros>
@@ -610,7 +610,7 @@
           <description>SoftSeq #0</description>
         </action>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq1</SS>
           </macros>
@@ -618,7 +618,7 @@
           <description>SoftSeq #1</description>
         </action>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq2</SS>
           </macros>
@@ -817,7 +817,6 @@
           </children>
         </tab>
       </tabs>
-      <x>-1</x>
       <y>5</y>
       <width>541</width>
       <height>443</height>
