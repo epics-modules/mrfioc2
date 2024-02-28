@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-01-31 14:59:49 by agaget-->
+<!--Saved on 2024-02-28 11:14:31 by agaget-->
 <display version="2.0.0">
   <name>$(TITLE) Advanced</name>
   <width>1920</width>
@@ -50,70 +50,6 @@
       </background_color>
       <actions>
       </actions>
-      <widget type="embedded" version="2.0.0">
-        <name>InpUniv1</name>
-        <macros>
-          <NAME_INP>UnivIn1</NAME_INP>
-        </macros>
-        <file>_evrinput.bob</file>
-        <x>7</x>
-        <y>146</y>
-        <width>149</width>
-        <height>134</height>
-        <resize>2</resize>
-        <transparent>true</transparent>
-        <actions>
-        </actions>
-        <border_width>1</border_width>
-      </widget>
-      <widget type="embedded" version="2.0.0">
-        <name>InpUniv3</name>
-        <macros>
-          <NAME_INP>UnivIn3</NAME_INP>
-        </macros>
-        <file>_evrinput.bob</file>
-        <x>7</x>
-        <y>424</y>
-        <width>149</width>
-        <height>134</height>
-        <resize>2</resize>
-        <transparent>true</transparent>
-        <actions>
-        </actions>
-        <border_width>1</border_width>
-      </widget>
-      <widget type="embedded" version="2.0.0">
-        <name>InpUniv2</name>
-        <macros>
-          <NAME_INP>UnivIn2</NAME_INP>
-        </macros>
-        <file>_evrinput.bob</file>
-        <x>7</x>
-        <y>285</y>
-        <width>149</width>
-        <height>134</height>
-        <resize>2</resize>
-        <transparent>true</transparent>
-        <actions>
-        </actions>
-        <border_width>1</border_width>
-      </widget>
-      <widget type="embedded" version="2.0.0">
-        <name>InpUniv0</name>
-        <macros>
-          <NAME_INP>UnivIn0</NAME_INP>
-        </macros>
-        <file>_evrinput.bob</file>
-        <x>7</x>
-        <y>7</y>
-        <width>149</width>
-        <height>134</height>
-        <resize>2</resize>
-        <transparent>true</transparent>
-        <actions>
-        </actions>
-        <border_width>1</border_width>
-      </widget>
       <widget type="embedded" version="2.0.0">
         <name>BPIn0</name>
         <macros>
@@ -241,6 +177,63 @@
         <actions>
         </actions>
         <border_width>1</border_width>
+      </widget>
+      <widget type="group" version="3.0.0">
+        <name>Physical Inputs</name>
+        <y>7</y>
+        <width>156</width>
+        <height>280</height>
+        <style>3</style>
+        <font>
+          <font name="Normal Bold" family="OpenSans" style="BOLD" size="11.881188118811881">
+          </font>
+        </font>
+        <foreground_color>
+          <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+          </color>
+        </foreground_color>
+        <line_color>
+          <color name="Header_2_Background" red="114" green="159" blue="207">
+          </color>
+        </line_color>
+        <background_color>
+          <color name="Container Grey" red="200" green="200" blue="200">
+          </color>
+        </background_color>
+        <actions>
+        </actions>
+        <widget type="embedded" version="2.0.0">
+          <name>In1</name>
+          <macros>
+            <NAME_INP>In1</NAME_INP>
+          </macros>
+          <file>_evrinput.bob</file>
+          <x>1</x>
+          <y>139</y>
+          <width>149</width>
+          <height>134</height>
+          <resize>2</resize>
+          <transparent>true</transparent>
+          <actions>
+          </actions>
+          <border_width>1</border_width>
+        </widget>
+        <widget type="embedded" version="2.0.0">
+          <name>In0</name>
+          <macros>
+            <NAME_INP>In0</NAME_INP>
+          </macros>
+          <file>_evrinput.bob</file>
+          <x>1</x>
+          <y>1</y>
+          <width>149</width>
+          <height>134</height>
+          <resize>2</resize>
+          <transparent>true</transparent>
+          <actions>
+          </actions>
+          <border_width>1</border_width>
+        </widget>
       </widget>
     </widget>
   </widget>
@@ -838,7 +831,7 @@
       <name>Menu Button</name>
       <actions>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq0</SS>
           </macros>
@@ -846,7 +839,7 @@
           <description>SoftSeq #0</description>
         </action>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq1</SS>
           </macros>
@@ -854,7 +847,7 @@
           <description>SoftSeq #1</description>
         </action>
         <action type="open_display">
-          <file>evg-seq.bob</file>
+          <file>../evg/evg-seq.bob</file>
           <macros>
             <SS>SoftSeq2</SS>
           </macros>
@@ -1449,64 +1442,6 @@
     <name>LED</name>
     <x>414</x>
     <y>810</y>
-  </widget>
-  <widget type="group" version="3.0.0">
-    <name>Physical Inputs</name>
-    <x>584</x>
-    <y>451</y>
-    <width>156</width>
-    <height>280</height>
-    <style>3</style>
-    <font>
-      <font name="Normal Bold" family="OpenSans" style="BOLD" size="11.881188118811881">
-      </font>
-    </font>
-    <foreground_color>
-      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
-      </color>
-    </foreground_color>
-    <line_color>
-      <color name="Header_2_Background" red="114" green="159" blue="207">
-      </color>
-    </line_color>
-    <background_color>
-      <color name="Container Grey" red="200" green="200" blue="200">
-      </color>
-    </background_color>
-    <actions>
-    </actions>
-    <widget type="embedded" version="2.0.0">
-      <name>In1</name>
-      <macros>
-        <NAME_INP>In1</NAME_INP>
-      </macros>
-      <file>_evrinput.bob</file>
-      <x>1</x>
-      <y>139</y>
-      <width>149</width>
-      <height>134</height>
-      <resize>2</resize>
-      <transparent>true</transparent>
-      <actions>
-      </actions>
-      <border_width>1</border_width>
-    </widget>
-    <widget type="embedded" version="2.0.0">
-      <name>In0</name>
-      <macros>
-        <NAME_INP>In0</NAME_INP>
-      </macros>
-      <file>_evrinput.bob</file>
-      <x>1</x>
-      <y>1</y>
-      <width>149</width>
-      <height>134</height>
-      <resize>2</resize>
-      <transparent>true</transparent>
-      <actions>
-      </actions>
-      <border_width>1</border_width>
-    </widget>
   </widget>
   <widget type="textupdate" version="2.0.0">
     <name>Text Update_3</name>

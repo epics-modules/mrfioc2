@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-01-31 11:55:56 by agaget-->
+<!--Saved on 2024-02-28 10:33:28 by agaget-->
 <display version="2.0.0">
   <name>$(TITLE) Expert</name>
   <width>1303</width>
@@ -271,7 +271,7 @@
       <name>Action Button</name>
       <actions>
         <action type="open_display">
-          <file>evr-expert.bob</file>
+          <file>../evr/evr-expert.bob</file>
           <target>tab</target>
           <description>Open Display</description>
         </action>
@@ -433,7 +433,7 @@
               <macros>
                 <O>FP3</O>
               </macros>
-              <file>_evroutput.bob</file>
+              <file>../evr/_evroutput.bob</file>
               <x>6</x>
               <y>166</y>
               <width>418</width>
@@ -451,7 +451,7 @@
               <macros>
                 <O>FP2</O>
               </macros>
-              <file>_evroutput.bob</file>
+              <file>../evr/_evroutput.bob</file>
               <x>6</x>
               <y>115</y>
               <width>418</width>
@@ -469,7 +469,7 @@
               <macros>
                 <O>FP1</O>
               </macros>
-              <file>_evroutput.bob</file>
+              <file>../evr/_evroutput.bob</file>
               <x>6</x>
               <y>63</y>
               <width>418</width>
@@ -487,7 +487,7 @@
               <macros>
                 <O>FP0</O>
               </macros>
-              <file>_evroutput.bob</file>
+              <file>../evr/_evroutput.bob</file>
               <x>6</x>
               <y>12</y>
               <width>418</width>
@@ -613,7 +613,7 @@ $(pv_value)</tooltip>
         <N>6</N>
         <GEN>DlyGen6</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>288</y>
       <width>523</width>
@@ -633,7 +633,7 @@ $(pv_value)</tooltip>
         <N>8</N>
         <GEN>DlyGen8</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>368</y>
       <width>523</width>
@@ -653,7 +653,7 @@ $(pv_value)</tooltip>
         <N>3</N>
         <GEN>DlyGen3</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>167</y>
       <width>523</width>
@@ -673,7 +673,7 @@ $(pv_value)</tooltip>
         <N>7</N>
         <GEN>DlyGen7</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>327</y>
       <width>523</width>
@@ -693,7 +693,7 @@ $(pv_value)</tooltip>
         <N>9</N>
         <GEN>DlyGen9</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>407</y>
       <width>523</width>
@@ -713,9 +713,9 @@ $(pv_value)</tooltip>
         <N>5</N>
         <GEN>DlyGen5</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
-      <y>247</y>
+      <y>248</y>
       <width>523</width>
       <height>39</height>
       <resize>2</resize>
@@ -733,7 +733,7 @@ $(pv_value)</tooltip>
         <N>4</N>
         <GEN>DlyGen4</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>208</y>
       <width>523</width>
@@ -753,7 +753,7 @@ $(pv_value)</tooltip>
         <N>2</N>
         <GEN>DlyGen2</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>128</y>
       <width>523</width>
@@ -773,7 +773,7 @@ $(pv_value)</tooltip>
         <N>1</N>
         <GEN>DlyGen1</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>87</y>
       <width>523</width>
@@ -793,7 +793,7 @@ $(pv_value)</tooltip>
         <N>0</N>
         <GEN>DlyGen0</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>48</y>
       <width>523</width>
@@ -905,7 +905,7 @@ $(pv_value)</tooltip>
         <N>10</N>
         <GEN>DlyGen10</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>448</y>
       <width>523</width>
@@ -925,7 +925,7 @@ $(pv_value)</tooltip>
         <N>11</N>
         <GEN>DlyGen11</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>489</y>
       <width>523</width>
@@ -945,7 +945,7 @@ $(pv_value)</tooltip>
         <N>13</N>
         <GEN>DlyGen13</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>569</y>
       <width>523</width>
@@ -965,7 +965,7 @@ $(pv_value)</tooltip>
         <N>12</N>
         <GEN>DlyGen12</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>528</y>
       <width>523</width>
@@ -985,7 +985,7 @@ $(pv_value)</tooltip>
         <N>14</N>
         <GEN>DlyGen14</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>608</y>
       <width>523</width>
@@ -1005,7 +1005,7 @@ $(pv_value)</tooltip>
         <N>15</N>
         <GEN>DlyGen15</GEN>
       </macros>
-      <file>_evrdlygen.bob</file>
+      <file>../evr/_evrdlygen.bob</file>
       <x>12</x>
       <y>649</y>
       <width>523</width>
@@ -1019,10 +1019,5 @@ $(pv_value)</tooltip>
         </color>
       </border_color>
     </widget>
-  </widget>
-  <widget type="led" version="2.0.0">
-    <name>LED</name>
-    <x>414</x>
-    <y>810</y>
   </widget>
 </display>

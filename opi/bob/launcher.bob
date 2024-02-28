@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-01-31 15:19:53 by agaget-->
+<!--Saved on 2024-02-28 11:32:19 by agaget-->
 <display version="2.0.0">
   <name>Launcher timing Labo</name>
   <width>200</width>
@@ -84,9 +84,9 @@
     <name>Action Button_5</name>
     <actions>
       <action type="open_display">
-        <file>evr/evr-mtca-300.bob</file>
+        <file>evr/evr-pcie-300dc.bob</file>
         <macros>
-          <P>Labo:titan-EVR</P>
+          <P>Labo:titan-PCIEVR</P>
           <TITLE>EVR Demo</TITLE>
         </macros>
         <target>tab</target>
