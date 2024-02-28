@@ -820,7 +820,6 @@
       <y>5</y>
       <width>541</width>
       <height>443</height>
-      <active_tab>1</active_tab>
       <tooltip>
       </tooltip>
     </widget>
@@ -1533,7 +1532,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv1</name>
       <macros>
-        <NAME_INP>UnivIn1</NAME_INP>
+        <NAME_INP>InFPUV1</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>7</x>
@@ -1549,7 +1548,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv3</name>
       <macros>
-        <NAME_INP>UnivIn3</NAME_INP>
+        <NAME_INP>InFPUV3</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>7</x>
@@ -1565,7 +1564,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv2</name>
       <macros>
-        <NAME_INP>UnivIn2</NAME_INP>
+        <NAME_INP>InFPUV2</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>7</x>
@@ -1581,7 +1580,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv0</name>
       <macros>
-        <NAME_INP>UnivIn0</NAME_INP>
+        <NAME_INP>InFPUV0</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>7</x>
@@ -1597,7 +1596,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv1_3</name>
       <macros>
-        <NAME_INP>UnivIn5</NAME_INP>
+        <NAME_INP>InFPUV5</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>156</x>
@@ -1613,7 +1612,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv3_3</name>
       <macros>
-        <NAME_INP>UnivIn37</NAME_INP>
+        <NAME_INP>InFPUV7</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>156</x>
@@ -1629,7 +1628,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv2_3</name>
       <macros>
-        <NAME_INP>UnivIn6</NAME_INP>
+        <NAME_INP>InFPUV6</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>156</x>
@@ -1645,7 +1644,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv0_3</name>
       <macros>
-        <NAME_INP>UnivIn4</NAME_INP>
+        <NAME_INP>InFPUV4</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>156</x>
@@ -1661,7 +1660,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv1_4</name>
       <macros>
-        <NAME_INP>UnivIn9</NAME_INP>
+        <NAME_INP>InFPUV9</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>305</x>
@@ -1677,7 +1676,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv3_4</name>
       <macros>
-        <NAME_INP>UnivIn11</NAME_INP>
+        <NAME_INP>InFPUV11</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>305</x>
@@ -1693,7 +1692,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv2_4</name>
       <macros>
-        <NAME_INP>UnivIn10</NAME_INP>
+        <NAME_INP>InFPUV10</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>305</x>
@@ -1709,7 +1708,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv0_4</name>
       <macros>
-        <NAME_INP>UnivIn8</NAME_INP>
+        <NAME_INP>InFPUV8</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>305</x>
@@ -1725,7 +1724,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv1_5</name>
       <macros>
-        <NAME_INP>UnivIn13</NAME_INP>
+        <NAME_INP>InFPUV13</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>454</x>
@@ -1741,7 +1740,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv3_5</name>
       <macros>
-        <NAME_INP>UnivIn15</NAME_INP>
+        <NAME_INP>InFPUV15</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>454</x>
@@ -1757,7 +1756,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv2_5</name>
       <macros>
-        <NAME_INP>UnivIn14</NAME_INP>
+        <NAME_INP>InFPUV14</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>454</x>
@@ -1773,7 +1772,7 @@ $(pv_value)</tooltip>
     <widget type="embedded" version="2.0.0">
       <name>InpUniv0_5</name>
       <macros>
-        <NAME_INP>UnivIn12</NAME_INP>
+        <NAME_INP>InFPUV12</NAME_INP>
       </macros>
       <file>_evrinput.bob</file>
       <x>454</x>
