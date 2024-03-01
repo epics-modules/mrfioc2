@@ -1,0 +1,28 @@
+name: Create and release kernel module rpm package
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+        - 'kmod*r*'
+
+jobs:
+  Create_Packages:
+    name: Create Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: "REPO"
+
+      - name: Build packages
+        run: |
+            cd REPO/mrmShared/linux/dkms-rpm
+            make
+      - name: Release the Package
+        uses: softprops/action-gh-release@v1
+        with:
+          files: REPO/mrmShared/linux/dkms-rpm/rpmbuild/RPMS/*/*.rpm
