@@ -13,8 +13,7 @@ Vendor: EPICS Community
 License: GPLv2
 Group: System Environment/Kernel
 URL: https://github.com/epics-modules/mrfioc2
-BuildRequires: autoconf libtool gcc gcc-c++
-BuildArch: @@ARCH@@
+BuildArch: noarch
 Requires: dkms
 Requires: udev
 BuildRoot: %{_tmppath}/%{kmod_name}-%{version}-root
