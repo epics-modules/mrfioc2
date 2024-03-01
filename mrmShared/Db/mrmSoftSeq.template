@@ -136,12 +136,14 @@ record(mbbo, "$(P)RunMode-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
   field(UDF,  "0")
-  field(VAL,  "1") # default to Single
+  field(VAL,  "2") # default to Single
   field(ZRVL, "0")
-  field(ONVL, "2")
+  field(ONVL, "1")
+  field(TWVL, "2")
   field(ZRST, "Normal")
-  field(ONST, "Single")
-  field(TWSV, "INVALID")
+  field(ONST, "Automatic")
+  field(TWST, "Single")
+  # field(TWSV, "INVALID")
   field(THSV, "INVALID")
   field(FRSV, "INVALID")
   field(FVSV, "INVALID")

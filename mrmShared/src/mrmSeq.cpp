@@ -53,7 +53,7 @@
 
 namespace {
 
-enum RunMode {Normal=0, Single=2};
+enum RunMode {Normal=0, Automatic = 1, Single=2};
 
 }//namespace
 
@@ -343,6 +343,7 @@ public:
     {
         switch(mode) {
         case Single:
+        case Automatic:
         case Normal:
             break;
         default:
@@ -381,7 +382,7 @@ public:
     void enable();
     void disable();
     void softTrig();
-    
+
     epicsUInt32 getSwMask() const;
     void setSwMask(epicsUInt32 src);
     epicsUInt32 getSwEna() const;
@@ -815,6 +816,9 @@ void SoftSequence::sync()
     switch(committed.mode) {
     case Single:
         hw->ctrlreg_user |= EVG_SEQ_RAM_SINGLE;
+        break;
+    case Automatic:
+        hw->ctrlreg_user |= EVG_SEQ_RAM_RECYCLE;
         break;
     case Normal:
         hw->ctrlreg_user |= EVG_SEQ_RAM_NORMAL;
