@@ -5,9 +5,6 @@ SRCDIR = $(CURDIR)/..
 include $(SRCDIR)/CONFIG
 include CONFIG
 
-# Determine the architecture of the machine
-ARCH := $(shell uname -m)
-
 # The RPM_VERSION string takes the dotted version name (without extra version
 # info) and follows the Red Hat versioning rules: only letters, digits, and
 # periods.  See

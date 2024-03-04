@@ -1,3 +1,4 @@
 
 RPM_RELEASE := 1
 # NOTE: Not necessary DIST ?= el7
+ARCH := noarch
