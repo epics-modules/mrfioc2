@@ -47,3 +47,25 @@ jobs:
       - name: Build
         run: |
           make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
+
+  host:
+    name: With latest Ubuntu VM host
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Info
+        run: |
+          uname -a
+          gcc --version
+      - name: Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install linux-headers-`uname -r`
+      - name: Build
+        run: make -C mrmShared/linux
+      - name: Install/Load
+        run: |
+          sudo make -C mrmShared/linux modules_install
+          sudo depmod -a
+          sudo modprobe mrf
+          sudo dmesg | tail -n 100
