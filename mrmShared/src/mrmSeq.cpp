@@ -381,7 +381,7 @@ public:
     void enable();
     void disable();
     void softTrig();
-    
+
     epicsUInt32 getSwMask() const;
     void setSwMask(epicsUInt32 src);
     epicsUInt32 getSwEna() const;
@@ -524,7 +524,7 @@ void SoftSequence::softTrig()
 
 epicsUInt32 SoftSequence::getSwMask() const
 {
-    epicsUInt32 val;
+    epicsUInt32 val = 0;
 
     DEBUG(3, ("SW Mask getter\n"));
     SCOPED_LOCK(mutex);
@@ -537,10 +537,12 @@ epicsUInt32 SoftSequence::getSwMask() const
     else
     {
         DEBUG(5, ("Register sequencer : %u\n", nat_ioread32(hw->ctrlreg)));
-        epicsUInt32 val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWMASK) >> EVG_SEQ_RAM_SWMASK_shift;
+        val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWMASK) >> EVG_SEQ_RAM_SWMASK_shift;
         DEBUG(5, ("Response sequencer : %u\n", val));
         return val;
     }
+
+    return 0;
 }
 
 void SoftSequence::setSwMask(epicsUInt32 src)
@@ -570,7 +572,7 @@ void SoftSequence::setSwMask(epicsUInt32 src)
 
 epicsUInt32 SoftSequence::getSwEna() const
 {
-    epicsUInt32 val;
+    epicsUInt32 val = 0;
 
     DEBUG(3, ("SW Enable getter\n"));
     SCOPED_LOCK(mutex);
@@ -583,10 +585,12 @@ epicsUInt32 SoftSequence::getSwEna() const
     else
     {
         DEBUG(5, ("Register sequencer : %u\n", nat_ioread32(hw->ctrlreg)));
-        epicsUInt32 val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWENABLE) >> EVG_SEQ_RAM_SWENABLE_shift;
+        val = (nat_ioread32(hw->ctrlreg) & EVG_SEQ_RAM_SWENABLE) >> EVG_SEQ_RAM_SWENABLE_shift;
         DEBUG(5, ("Response sequencer : %u\n", val));
         return val;
     }
+
+    return 0;
 }
 
 void SoftSequence::setSwEna(epicsUInt32 src)
