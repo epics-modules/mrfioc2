@@ -23,6 +23,11 @@ mrf_DBD += drvemSupport.dbd
 mrf_DBD += epicsvme.dbd
 mrf_DBD += epicspci.dbd
 
+ifdef BASE_7_0
+mrf_DBD += evrSupportBase7.dbd
+endif
+
+
 # Add all the support libraries needed by this IOC
 mrf_LIBS += evgmrm evrMrm evr mrmShared mrfCommon epicspci epicsvme
 
