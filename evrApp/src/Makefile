@@ -12,6 +12,9 @@ SRC_DIRS += evr
 USR_INCLUDES += -I$(TOP)/mrfCommon/src
 
 DBD += evrSupport.dbd
+ifdef BASE_7_0
+DBD += evrSupportBase7.dbd
+endif
 
 # INC += evr/pulser.h
 # INC += evr/output.h
