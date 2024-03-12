@@ -2,3 +2,4 @@
 
 # Sets the relevant support.
 *.uv.substitutions @jerzyjamroz
+evr-mtca-300rf.substitutions evr-mtca-300u.substitutions @zioven
