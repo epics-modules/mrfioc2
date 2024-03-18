@@ -22,7 +22,7 @@ file "mrmevrdc.template"
 file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
-{"\$(P)Pps",  "$(EVG):EVR$(T)", 0x7d, 125}
+{"\$(P)1hz",  "$(EVG):EVR$(T)", 0x7d, 125}
 {"\$(P)EvtA", "$(EVG):EVR$(T)", 255,  255}
 {"\$(P)EvtB", "$(EVG):EVR$(T)", 255,  255}
 {"\$(P)EvtC", "$(EVG):EVR$(T)", 255,  255}
@@ -33,17 +33,38 @@ file "evrevent.db"
 {"\$(P)EvtH", "$(EVG):EVR$(T)", 255,  255}
 }
 
+file "evrscale.db"
+{pattern
+{IDX, P, SN, OBJ, EVR, MAX}
+{0, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+{1, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+{2, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+}
+
+file "evrin.db"
+{pattern
+{IN, OBJ, DESC}
+{"\$(P)InFP0", "$(EVG):EVR$(T):FPIn0", "$(T)FPIN0 Src !$(T)FP0"}
+{"\$(P)InFP1", "$(EVG):EVR$(T):FPIn1", "$(T)FPIN1 Src !$(T)FP1"}
+{"\$(P)InFP2", "$(EVG):EVR$(T):FPIn2", "$(T)FPIN2 Src !$(T)FP2"}
+{"\$(P)InFP3", "$(EVG):EVR$(T):FPIn3", "$(T)FPIN3 Src !$(T)FP3"}
+{"\$(P)InFP4", "$(EVG):EVR$(T):FPIn4", "$(T)FPIN4 Src !$(T)FP4"}
+{"\$(P)InFP5", "$(EVG):EVR$(T):FPIn5", "$(T)FPIN5 Src !$(T)FP5"}
+{"\$(P)InFP6", "$(EVG):EVR$(T):FPIn6", "$(T)FPIN6 Src !$(T)FP6"}
+{"\$(P)InFP7", "$(EVG):EVR$(T):FPIn7", "$(T)FPIN7 Src !$(T)FP7"}
+}
+
 file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
-{"\$(P)OutFP0", "$(EVG):EVR$(T):FrontOut0", "$(T)FP0 Src EVG UVIN8 !$(T)FPIN0"}
-{"\$(P)OutFP1", "$(EVG):EVR$(T):FrontOut1", "$(T)FP1 Src EVG UVIN9 !$(T)FPIN1"}
-{"\$(P)OutFP2", "$(EVG):EVR$(T):FrontOut2", "$(T)FP2 Src EVG UVIN10 !$(T)FPIN2"}
-{"\$(P)OutFP3", "$(EVG):EVR$(T):FrontOut3", "$(T)FP3 Src EVG UVIN11 !$(T)FPIN3"}
-{"\$(P)OutFP4", "$(EVG):EVR$(T):FrontOut4", "$(T)FP4 Src EVG UVIN12 !$(T)FPIN4"}
-{"\$(P)OutFP5", "$(EVG):EVR$(T):FrontOut5", "$(T)FP5 Src EVG UVIN13 !$(T)FPIN5"}
-{"\$(P)OutFP6", "$(EVG):EVR$(T):FrontOut6", "$(T)FP6 Src EVG UVIN14 !$(T)FPIN6"}
-{"\$(P)OutFP7", "$(EVG):EVR$(T):FrontOut7", "$(T)FP7 Src EVG UVIN15 !$(T)FPIN7"}
+{"\$(P)OutFP0", "$(EVG):EVR$(T):FrontOut0", "$(T)FP0 Dst EVG UVIN[0|8]  & !$(T)FPIN0"}
+{"\$(P)OutFP1", "$(EVG):EVR$(T):FrontOut1", "$(T)FP1 Dst EVG UVIN[1|9]  & !$(T)FPIN1"}
+{"\$(P)OutFP2", "$(EVG):EVR$(T):FrontOut2", "$(T)FP2 Dst EVG UVIN[2|10] & !$(T)FPIN2"}
+{"\$(P)OutFP3", "$(EVG):EVR$(T):FrontOut3", "$(T)FP3 Dst EVG UVIN[3|11] & !$(T)FPIN3"}
+{"\$(P)OutFP4", "$(EVG):EVR$(T):FrontOut4", "$(T)FP4 Dst EVG UVIN[4|12] & !$(T)FPIN4"}
+{"\$(P)OutFP5", "$(EVG):EVR$(T):FrontOut5", "$(T)FP5 Dst EVG UVIN[5|13] & !$(T)FPIN5"}
+{"\$(P)OutFP6", "$(EVG):EVR$(T):FrontOut6", "$(T)FP6 Dst EVG UVIN[6|14] & !$(T)FPIN6"}
+{"\$(P)OutFP7", "$(EVG):EVR$(T):FrontOut7", "$(T)FP7 Dst EVG UVIN[7|15] & !$(T)FPIN7"}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
@@ -286,15 +307,3 @@ file "evrdcpulser.template"
 {15, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
 }
 
-file "evrin.db"
-{pattern
-{IN, OBJ, DESC}
-{"\$(P)InFP0", "$(EVG):EVR$(T):FPIn0", "$(T)IN0 Src !$(T)FP0"}
-{"\$(P)InFP1", "$(EVG):EVR$(T):FPIn1", "$(T)IN1 Src !$(T)FP1"}
-{"\$(P)InFP2", "$(EVG):EVR$(T):FPIn2", "$(T)IN2 Src !$(T)FP2"}
-{"\$(P)InFP3", "$(EVG):EVR$(T):FPIn3", "$(T)IN3 Src !$(T)FP3"}
-{"\$(P)InFP4", "$(EVG):EVR$(T):FPIn4", "$(T)IN4 Src !$(T)FP4"}
-{"\$(P)InFP5", "$(EVG):EVR$(T):FPIn5", "$(T)IN5 Src !$(T)FP5"}
-{"\$(P)InFP6", "$(EVG):EVR$(T):FPIn6", "$(T)IN6 Src !$(T)FP6"}
-{"\$(P)InFP7", "$(EVG):EVR$(T):FPIn7", "$(T)IN7 Src !$(T)FP7"}
-}

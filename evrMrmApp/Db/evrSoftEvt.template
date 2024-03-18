@@ -20,8 +20,9 @@ record(ai, "$(P)TimeErr-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Time Error")
 }
-
-record(mbbo, "$(P)TimeSrc-Sel") {
+# This TimeSrc is usually used for EVR standalone test.
+# It is better to distinguish another similar db name $(P)Time$(s=:)Src-Sel inside evrbase.db
+record(mbbo, "$(P)SoftTimeSrc-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=TimeSrc")
   field(ZRST, "Disable (noop)")

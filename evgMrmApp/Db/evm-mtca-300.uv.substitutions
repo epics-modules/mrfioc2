@@ -49,11 +49,13 @@ file "evgInput.db"
 {"\$(P)InpUniv8",  "$(EVG):UnivInp8",   B}
 {"\$(P)InpUniv9",  "$(EVG):UnivInp9",   C}
 {"\$(P)InpUniv10", "$(EVG):UnivInp10",  D}
-{"\$(P)InpUniv11", "$(EVG):UnivInp11",  E}
-{"\$(P)InpUniv12", "$(EVG):UnivInp12",  F}
-{"\$(P)InpUniv13", "$(EVG):UnivInp13",  X}
-{"\$(P)InpUniv14", "$(EVG):UnivInp14",  X}
-{"\$(P)InpUniv15", "$(EVG):UnivInp15",  X}
+pattern
+{P, OBJ, Num, CONT}
+{"\$(P)InpUniv11", "$(EVG):UnivInp11",  0, "Cont-"}
+{"\$(P)InpUniv12", "$(EVG):UnivInp12",  1, "Cont-"}
+{"\$(P)InpUniv13", "$(EVG):UnivInp13",  2, "Cont-"}
+{"\$(P)InpUniv14", "$(EVG):UnivInp14",  3, "Cont-"}
+{"\$(P)InpUniv15", "$(EVG):UnivInp15",  4, "Cont-"}
 }
 
 file "evgMrm.db"
