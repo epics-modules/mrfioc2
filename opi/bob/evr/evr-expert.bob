@@ -1695,7 +1695,7 @@ $(pv_value)</tooltip>
     </widget>
     <widget type="combo" version="2.0.0">
       <name>Menu Button</name>
-      <pv_name>$(P):TimeSrc-Sel</pv_name>
+      <pv_name>$(P):SoftTimeSrc-Sel</pv_name>
       <x>96</x>
       <y>41</y>
       <width>73</width>

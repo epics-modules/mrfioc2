@@ -110,7 +110,7 @@ record(mbbo, "$(P)1ppsInp-Sel") {
   field(FVST, "Univ2")
   field(SXST, "Univ3")
   field(SVST, "Sys Clk")
-  field(EIST, "Front1")
+  field(EIST, "Front2")
   field(NIST, "Univ4")
   field(TEST, "Univ5")
   field(ELST, "Univ6")
@@ -149,7 +149,48 @@ record(mbbiDirect, "$(P)1ppsInp-MbbiDir_") {
   field(DESC, "EVG 1PPS Input")
   field(INP,  "$(P)1ppsInp-Sel.RVAL NPP")
 }
+record(mbbo, "$(P)1ppsInpCont-Sel") {
+  field(DESC, "EVG 1PPS Input")
+  field(PINI, "YES")
+  field(UDF,  "0")
+  field(VAL,  "0")
+  field(ZRST, "None")
+  field(ONST, "UnivInp11")
+  field(TWST, "UnivInp12")
+  field(THST, "UnivInp13")
+  field(FRST, "UnivInp14")
+  field(FVST, "UnivInp15")
+  field(ZRVL, "0x0")
+  field(ONVL, "0x1")
+  field(TWVL, "0x2")
+  field(THVL, "0x4")
+  field(FRVL, "0x8")
+  field(FVVL, "0x10")
+  field(SXSV, "INVALID")
+  field(SVSV, "INVALID")
+  field(EISV, "INVALID")
+  field(NISV, "INVALID")
+  field(TESV, "INVALID")
+  field(ELSV, "INVALID")
+  field(TVSV, "INVALID")
+  field(TTSV, "INVALID")
+  field(FTSV, "INVALID")
+  field(FFSV, "INVALID")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)1ppsInpCont-MbbiDir_")
+  info(autosaveFields_pass0, "VAL")
+}
 
+#
+# Each bit of the 1ppsInp-MbbiDir record is used to toggle the external input
+# interrupt of the corresponding external input.
+#
+record(mbbiDirect, "$(P)1ppsInpCont-MbbiDir_") {
+  field(ASG, "private")
+  field(DESC, "EVG 1PPS Input")
+  field(INP,  "$(P)1ppsInpCont-Sel.RVAL NPP")
+}
 record(longin, "$(P)DbusStatus-RB" ) {
   field(DESC, "EVG Dbus Status")
   field(DTYP, "Obj Prop uint32")

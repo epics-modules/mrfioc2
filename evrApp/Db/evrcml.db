@@ -352,7 +352,7 @@ record(ao, "$(ON)Freq$(s=:)Init-SP") {
   field(LINR, "LINEAR")
   field(ESLO, "1e9")
   field(PREC, "3")
-  field(FLNK, "$(ON)Freq$(s=:)High-RB")
+  field(FLNK, "$(ON)Freq$(s=:)Init-RB")
   info(autosaveFields_pass0, "VAL")
 }
 

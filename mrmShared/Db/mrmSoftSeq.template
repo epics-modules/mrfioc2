@@ -252,6 +252,7 @@ record(bo, "$(P)SoftTrig-Cmd") {
 record(mbbo, "$(P)SwMask-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Sequence RAM soft trigger")
+  field(NOBT, "4")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWMASK")
 }
 
@@ -265,6 +266,7 @@ record(mbbi, "$(P)SwMask-RB") {
 record(mbbo, "$(P)SwEna-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Sequence RAM soft trigger")
+  field(NOBT, "4")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWENA")
 }
 
