@@ -576,8 +576,7 @@ EVRMRM::clockSet(double freq)
 
     freq/=1e6;
 
-    epicsUInt32 newfrac=FracSynthControlWord(
-                        freq, fracref, 0, &err);
+    epicsUInt32 newfrac=FracSynthControlWord(freq, fracref, 0, &err);
 
     if(newfrac==0)
         throw std::out_of_range("New frequency can't be used");
@@ -593,8 +592,9 @@ EVRMRM::clockSet(double freq)
 
         WRITE32(base, FracDiv, newfrac);
 
-        eventClock=FracSynthAnalyze(READ32(base, FracDiv),
-                                    fracref,0)*1e6;
+        double clk = FracSynthAnalyze(READ32(base, FracDiv), fracref,0) * 1e6;
+        // Apply the soft clock if the registry is not implemented (EVRD/U)
+        eventClock = (clk == 0.0) ? clockTS() : clk;
     }
 
     // USecDiv is accessed as a 32 bit register, but
