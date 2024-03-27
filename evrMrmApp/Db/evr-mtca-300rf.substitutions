@@ -86,7 +86,7 @@ file "evrmap.db"
 file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
-{"\$(P)\$(ES)1hz",  "$(EVR)", 0x7d, 125}
+{"\$(P)\$(ES)Pps",  "$(EVR)", 0x7d, 125}
 {"\$(P)\$(ES)EvtA", "$(EVR)", 10, 10}
 {"\$(P)\$(ES)EvtB", "$(EVR)", 11, 11}
 {"\$(P)\$(ES)EvtC", "$(EVR)", 12, 12}

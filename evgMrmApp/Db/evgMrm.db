@@ -81,7 +81,7 @@ record(bo, "$(P)SimTimestamp-Sel") {
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=SimTime")
   field(OMSL, "closed_loop")
-  field(DOL , "$(P)1ppsInp-MbbiDir_.BF CP")
+  field(DOL , "$(P)PpsInp-MbbiDir_.BF CP")
   field(ZNAM, "Normal")
   field(ONAM, "Simulate")
 }
@@ -97,8 +97,8 @@ record(bo,"$(P)SyncTimestamp-Cmd" ) {
   field(DESC, "EVG Sync TimeStamp")
 }
 
-record(mbbo, "$(P)1ppsInp-Sel") {
-  field(DESC, "EVG 1PPS Input")
+record(mbbo, "$(P)PpsInp-Sel") {
+  field(DESC, "EVG Pps Input")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -136,21 +136,21 @@ record(mbbo, "$(P)1ppsInp-Sel") {
   field(FFVL, "0x2000")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)1ppsInp-MbbiDir_")
+  field(FLNK, "$(P)PpsInp-MbbiDir_")
   info(autosaveFields_pass0, "VAL")
 }
 
 #
-# Each bit of the 1ppsInp-MbbiDir record is used to toggle the external input
+# Each bit of the PpsInp-MbbiDir record is used to toggle the external input
 # interrupt of the corresponding external input.
 #
-record(mbbiDirect, "$(P)1ppsInp-MbbiDir_") {
+record(mbbiDirect, "$(P)PpsInp-MbbiDir_") {
   field(ASG, "private")
-  field(DESC, "EVG 1PPS Input")
-  field(INP,  "$(P)1ppsInp-Sel.RVAL NPP")
+  field(DESC, "EVG Pps Input")
+  field(INP,  "$(P)PpsInp-Sel.RVAL NPP")
 }
-record(mbbo, "$(P)1ppsInpCont-Sel") {
-  field(DESC, "EVG 1PPS Input")
+record(mbbo, "$(P)PpsInp1-Sel") {
+  field(DESC, "EVG Pps Input")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -178,18 +178,18 @@ record(mbbo, "$(P)1ppsInpCont-Sel") {
   field(FFSV, "INVALID")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)1ppsInpCont-MbbiDir_")
+  field(FLNK, "$(P)PpsInp1-MbbiDir_")
   info(autosaveFields_pass0, "VAL")
 }
 
 #
-# Each bit of the 1ppsInp-MbbiDir record is used to toggle the external input
+# Each bit of the PpsInp-MbbiDir record is used to toggle the external input
 # interrupt of the corresponding external input.
 #
-record(mbbiDirect, "$(P)1ppsInpCont-MbbiDir_") {
+record(mbbiDirect, "$(P)PpsInp1-MbbiDir_") {
   field(ASG, "private")
-  field(DESC, "EVG 1PPS Input")
-  field(INP,  "$(P)1ppsInpCont-Sel.RVAL NPP")
+  field(DESC, "EVG Pps Input")
+  field(INP,  "$(P)PpsInp1-Sel.RVAL NPP")
 }
 record(longin, "$(P)DbusStatus-RB" ) {
   field(DESC, "EVG Dbus Status")

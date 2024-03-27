@@ -143,7 +143,7 @@ file "mrmevrdc.template"
 file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
-{"$(SYS){$(D)U}1hz",  "$(EVG):EVRU", 0x7d, 125}
+{"$(SYS){$(D)U}Pps",  "$(EVG):EVRU", 0x7d, 125}
 {"$(SYS){$(D)U}EvtA", "$(EVG):EVRU", 10, 10}
 {"$(SYS){$(D)U}EvtB", "$(EVG):EVRU", 11, 11}
 {"$(SYS){$(D)U}EvtC", "$(EVG):EVRU", 12, 12}
@@ -311,7 +311,7 @@ file "mrmevrdc.template"
 file "evrevent.db"
 {pattern
 {EN, OBJ, CODE, EVNT}
-{"$(SYS){$(D)D}1hz",  "$(EVG):EVRD", 0x7d, 125}
+{"$(SYS){$(D)D}Pps",  "$(EVG):EVRD", 0x7d, 125}
 {"$(SYS){$(D)D}EvtA", "$(EVG):EVRD", 10, 10}
 {"$(SYS){$(D)D}EvtB", "$(EVG):EVRD", 11, 11}
 {"$(SYS){$(D)D}EvtC", "$(EVG):EVRD", 12, 12}

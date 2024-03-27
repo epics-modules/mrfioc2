@@ -564,7 +564,7 @@ $(pv_value)</tooltip>
     </widget>
     <widget type="combo" version="2.0.0">
       <name>Menu Button</name>
-      <pv_name>$(P):1ppsInp-Sel</pv_name>
+      <pv_name>$(P):PpsInp-Sel</pv_name>
       <x>6</x>
       <y>24</y>
       <width>91</width>
