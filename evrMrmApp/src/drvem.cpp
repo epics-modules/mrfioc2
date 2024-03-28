@@ -566,13 +566,11 @@ EVRMRM::specialSetMap(epicsUInt32 code, epicsUInt32 func,bool v)
     }
 }
 
-void
-EVRMRM::clockSet(double freq)
+// Set both the fractional synthesiser and microsecond divider.
+void EVRMRM::clockSet(double freq)
 {
     double err;
-    // Set both the fractional synthesiser and microsecond
-    // divider.
-    printf("Set EVR clock %f\n",freq);
+    double clk_soft = freq; //[Hz]
 
     freq/=1e6;
 
@@ -594,8 +592,10 @@ EVRMRM::clockSet(double freq)
 
         double clk = FracSynthAnalyze(READ32(base, FracDiv), fracref,0) * 1e6;
         // Apply the soft clock if the registry is not implemented (EVRD/U)
-        eventClock = (clk == 0.0) ? clockTS() : clk;
+        eventClock = (clk == 0.0) ? clk_soft : clk;
     }
+
+    printf("Set EVR %s clock %f newfrac %d (oldfrac %d)\n", model().c_str(), eventClock, newfrac, oldfrac);
 
     // USecDiv is accessed as a 32 bit register, but
     // only 16 are used.
