@@ -595,7 +595,7 @@ void EVRMRM::clockSet(double freq)
         eventClock = (clk == 0.0) ? clk_soft : clk;
     }
 
-    printf("Set EVR %s clock %f newfrac %d (oldfrac %d)\n", model().c_str(), eventClock, newfrac, oldfrac);
+    printf("Set EVR %s %s clock %f newfrac %d (oldfrac %d)\n", model().c_str(), name().c_str(), eventClock, newfrac, oldfrac);
 
     // USecDiv is accessed as a 32 bit register, but
     // only 16 are used.
@@ -867,8 +867,8 @@ EVRMRM::convertTS(epicsTimeStamp* ts)
      */
     if(ts->secPastEpoch > lastValidTimestamp+1)
     {
-        errlogPrintf("EVR ignoring invalid TS %08x %08x (expect %08x)\n",
-                     ts->secPastEpoch, ts->nsec, lastValidTimestamp);
+        errlogPrintf("EVR %s %s ignoring invalid TS %08x %08x (expect %08x)\n",
+                    model().c_str(), name().c_str(), ts->secPastEpoch, ts->nsec, lastValidTimestamp);
         timestampValid=0;
         scanIoRequest(timestampValidChange);
         return false;
