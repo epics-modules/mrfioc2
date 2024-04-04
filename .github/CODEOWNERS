@@ -1,5 +1,7 @@
-# See https://help.github.com/articles/about-codeowners/ for valid syntax for entries.
-
 # Sets the relevant support.
+
+# Univ naming convention
 *.uv.substitutions @jerzyjamroz
-evr-mtca-300rf.substitutions evr-mtca-300u.substitutions @zioven
+
+evr-mtca-300rf.substitutions @zioven
+evr-mtca-300u.substitutions @zioven
