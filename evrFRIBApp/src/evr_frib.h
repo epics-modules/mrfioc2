@@ -87,6 +87,14 @@ struct PulserFRIB : public Pulser
     virtual bool polarityInvert() const { return false; }
     virtual void setPolarityInvert(bool) {}
 
+    virtual epicsUInt32 trainRepCount() const { return 0u; }
+    virtual void setTrainRepCount(epicsUInt32) {}
+
+    virtual epicsUInt32 trainDelayRaw () const { return 0u; }
+    virtual double trainDelay() const { return 0u; }
+    virtual void setTrainDelayRaw(epicsUInt32) {}
+    virtual void setTrainDelay(double) {}
+
     virtual MapType::type mappedSource(epicsUInt32 src) const;
     virtual void sourceSetMap(epicsUInt32 src,MapType::type action);
 

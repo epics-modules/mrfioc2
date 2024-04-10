@@ -59,6 +59,14 @@ public:
     virtual bool polarityInvert() const OVERRIDE FINAL;
     virtual void setPolarityInvert(bool) OVERRIDE FINAL;
 
+    virtual epicsUInt32 trainRepCount() const OVERRIDE FINAL;
+    virtual void setTrainRepCount(epicsUInt32) OVERRIDE FINAL;
+
+    virtual void setTrainDelayRaw(epicsUInt32) OVERRIDE FINAL;
+    virtual void setTrainDelay(double) OVERRIDE FINAL;
+    virtual epicsUInt32 trainDelayRaw() const OVERRIDE FINAL;
+    virtual double trainDelay() const OVERRIDE FINAL;
+
     epicsUInt32 enables() const;
     void setEnables(epicsUInt32 inps);
     epicsUInt32 masks() const;

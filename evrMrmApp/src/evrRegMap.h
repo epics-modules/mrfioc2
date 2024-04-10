@@ -390,6 +390,15 @@
 #define ActionHeartBeat 101
 #define ActionPSRst    100
 
+// Pulse generator pulse train
+#define PulserTrainNCnt 0x7200
+#define PulserTrainNDly 0x7204
+#define U32_PulserTrainCnt(N)      (PulserTrainNCnt + (0x10*N))
+#define U32_PulserTrainDly(N)      (PulserTrainNDly + (0x10*N))
+// HW limitation: train delay must be at least pulser width + this many ticks
+#define PulserTrainMinGap 4
+
+
 // Sequence Ram Timestamp Array Base Offset
 #define  U32_SeqRamTS_base      0xc000
 #define  U32_SeqRamTS(n,m)      (U32_SeqRamTS_base + (0x4000*(n)) + (8*(m)))
