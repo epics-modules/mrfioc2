@@ -63,10 +63,19 @@ if(!$foundvcs && -d "$opt_t/.hg") { # Mercurial
 }
 if(!$foundvcs && -d "$opt_t/.git") {
     # same format as Mercurial
-    $result = `git --git-dir="$opt_t/.git" describe --tags --dirty`;
-    chomp($result);
-    if(!$? && length($result)>1) {
-        $opt_V = $result;
+    my @tags = `git --git-dir="$opt_t/.git" tag --sort=-creatordate`;
+
+    my $valid_tag;
+    # find first tag which starts from number
+    foreach my $tag (@tags) {
+        chomp($tag);
+        if ($tag =~ /^\d/) {
+            $valid_tag = $tag;
+            last;
+        }
+    }
+    if (!$? && defined $valid_tag && length($valid_tag) > 1) {
+        $opt_V = $valid_tag;
         $foundvcs = 1;
     }
 }
