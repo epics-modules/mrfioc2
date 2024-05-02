@@ -26,7 +26,6 @@
 #include "mrf/pollirq.h"
 #include "mrmpci.h"
 
-#include <devcsr.h>
 /* DZ: Does Win32 have a problem with devCSRTestSlot()? */
 #ifdef _WIN32
 #define devCSRTestSlot(vmeEvgIDs,slot,info) (NULL)
@@ -58,7 +57,7 @@ struct VMECSRID vmeEvgIDs[] = {
     VMECSRANY},
 /* VME-EVM-300 */
 {MRF_VME_IEEE_OUI,
-    MRF_VME_EVM_BID,
+    MRF_VME_EVM300_BID,
     VMECSRANY},
 VMECSR_END
 };
@@ -67,6 +66,13 @@ static const evgMrm::Config conf_vme_evg_230 = {
     "VME-EVG-230",
     2,
     4,
+    16,
+};
+
+static const evgMrm::Config conf_vme_evm_300 = {
+    "VME-EVM-300",
+    3,
+    0,
     16,
 };
 
@@ -196,6 +202,7 @@ mrmEvgSetupVME (
         epicsInt32  irqVector)  // Desired interrupt vector number
 {
     volatile epicsUInt8* regCpuAddr = 0;
+    volatile epicsUInt8* regCpuAddr2 = 0;
     struct VMECSRID info;
     bus_configuration bus;
 
@@ -271,7 +278,45 @@ mrmEvgSetupVME (
         printf("FPGA version: %08x\n", READ32(regCpuAddr, FPGAVersion));
         checkVersion(regCpuAddr, MRFVersion(0, 3, 0), MRFVersion(0, 3, 0));
 
-        const evgMrm::Config *conf = &conf_vme_evg_230;
+	/* Check if this is a 230-series or 300-series board */
+        const evgMrm::Config *conf;
+        switch(info.board) {
+        case MRF_VME_EVM300_BID:
+            conf = &conf_vme_evm_300;
+            /* Set base address of register map for function 2 */
+            CSRSetBase(csrCpuAddr, 2, vmeAddress+EVG_REGMAP_SIZE, VME_AM_STD_SUP_DATA);
+            {
+                epicsUInt32 temp = CSRRead32((csrCpuAddr) + CSR_FN_ADER(2));
+                if(temp != CSRADER((epicsUInt32)vmeAddress+EVG_REGMAP_SIZE,VME_AM_STD_SUP_DATA)) {
+                    printf("Failed to set CSR Base address in ADER2 for FCT register mapping. Check VME bus and card firmware version.\n");
+                    return -1;
+                }
+            }
+
+            /*Register VME address for function 2 and get corresponding CPU address */
+            status = devRegisterAddress (
+                    Description,                           // Event Generator card description
+                    atVMEA24,                              // A24 Address space
+                    vmeAddress+EVG_REGMAP_SIZE,            // Physical address of register space
+                    EVG_REGMAP_SIZE,                       // Size of card's register space
+                    (volatile void **)(void *)&regCpuAddr2 // Local address of card's register map
+                    );
+
+            if(status) {
+                printf("Failed to map VME address %08x for FCT mapping.\n", vmeAddress+EVG_REGMAP_SIZE);
+                return -1;
+            }
+            break;
+
+        case MRF_VME_EVG230_BID:
+            conf = &conf_vme_evg_230;
+            break;
+
+        default:
+            printf("Unknown/unsupported VME device %08x\n",info.board);
+            return -1;
+
+        }
 
         printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
                conf->numUnivInp, conf->numRearInp);
