@@ -86,7 +86,9 @@ static const epicsPCIID mrmevrs[] = {
 
 static const struct VMECSRID vmeevrs[] = {
     // VME-EVR-230 and VME-EVRRF-230
-    {MRF_VME_IEEE_OUI, MRF_VME_EVR_RF_BID|MRF_SERIES_230, VMECSRANY}
+    {MRF_VME_IEEE_OUI, MRF_VME_EVR230RF_BID, VMECSRANY}
+    // VME-EVR-300
+    ,{MRF_VME_IEEE_OUI, MRF_VME_EVR300_BID, VMECSRANY}
     ,VMECSR_END
 };
 
@@ -171,6 +173,21 @@ static const EVRMRM::Config cpci_evr_300 = {
     0,  // FP Delay outputs
     4,  // CML/GTX outputs
     MRMCML::typeTG300,
+    2,  // FP inputs
+};
+
+//VME EVR
+static const EVRMRM::Config vme_evr_300 = {
+    "VME-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    10, // FPUV outputs
+    16, // RB outputs
+    0,  // Backplane outputs
+    8,  // FP Delay outputs
+    4,  // CML/GTX outputs
+    MRMCML::typeCML,
     2,  // FP inputs
 };
 
@@ -831,7 +848,6 @@ mrmEvrSetupVME(const char* id,int slot,int base,int level, int vector)
 {
 try {
     bus_configuration bus;
-    const EVRMRM::Config *conf = &vme_evrrf_230;
 
     bus.busType = busType_vme;
     bus.vme.slot = slot;
@@ -857,6 +873,13 @@ try {
     printf("Found vendor: %08x board: %08x rev.: %08x\n",
            info.vendor, info.board, info.revision);
 
+    //Create the conf struct
+    const EVRMRM::Config *conf = NULL;
+
+    switch(info.board) {
+        case MRF_VME_EVR230RF_BID: conf = &vme_evrrf_230; break;
+        case MRF_VME_EVR300_BID: conf = &vme_evr_300; break;
+    }
     // Set base address
 
   /* Use function 0 for 16-bit addressing (length 0x00800 bytes)
