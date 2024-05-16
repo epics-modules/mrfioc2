@@ -81,4 +81,5 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP2("FracSynFreq", &evgMrm::getFracSynFreq, &evgMrm::setFracSynFreq);
     OBJECT_PROP1("Frequency",   &evgMrm::getFrequency);
     OBJECT_PROP1("PLL Lock Status", &evgMrm::pllLocked);
+    OBJECT_PROP2("PLL Bandwidth",   &evgMrm::getPLLBandwidth, &evgMrm::setPLLBandwidth);
 } OBJECT_END(evgMrm)
