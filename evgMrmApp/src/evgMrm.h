@@ -125,6 +125,9 @@ public:
 
     bool pllLocked() const;
 
+    void setPLLBandwidth(epicsUInt16 pllBandwidth);
+    epicsUInt16 getPLLBandwidth() const;
+
     /**    Interrupt and Callback    **/
     static void isr(evgMrm *evg, bool pci);
     static void isr_pci(void*);

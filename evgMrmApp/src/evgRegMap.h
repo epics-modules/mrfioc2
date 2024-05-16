@@ -117,11 +117,14 @@
 #define  ClockControl_plllock   0x80000000
 #define  ClockControl_Sel_MASK  0x07000000
 #define  ClockControl_Sel_SHIFT 24
+#define  ClockControl_pllbw     0x70000000
+#define  ClockControl_pllbw_SHIFT 28
 #define  ClockControl_Div_MASK  0x003f0000
 #define  ClockControl_Div_SHIFT 16
 #define  ClockControl_EXTRF     0x01000000 // External/Internal reference clock select
 #define  ClockControl_cglock    0x00000200
 
+#define  PLLBandwidth_MAX       4
 
 #define  U8_ClockSource         0x0050  // Event Clock Source(Internal or RF Input)
 #define  U8_RfDiv               0x0051  // RF Input Divider
