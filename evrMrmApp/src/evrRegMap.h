@@ -208,7 +208,7 @@
 #define U32_PulserNScal 0x204
 #define U32_PulserNDely 0x208
 #define U32_PulserNWdth 0x20c
-#  define PulserMax 10
+#  define PulserMax 24
 
 /* 0 <= N <= 15 */
 #define U32_PulserCtrl(N) (U32_PulserNCtrl + (16*(N)))
@@ -330,7 +330,7 @@
 #define U32_OutputCMLNPat_base 0x20000
 #define U32_OutputCMLPat(i,N) (U32_OutputCMLNPat_base + 0x4000*(i) + 4*(N))
 
-#  define OutputCMLMax 3
+#  define OutputCMLMax 4
 #  define OutputGTXMax 8
 
 /* 0 <= N <= 2 */
@@ -352,7 +352,7 @@
 #define U32_DataTx(N)      (U32_DataTx_base + (N))
 
 /* 0 <= N <= 0xfff */
-#define U32_EventLog(N)    (U32_EventLog_base I (N))
+#define U32_EventLog(N)    (U32_EventLog_base + (N))
 
 /* 0 <= M <= 1   ram select
  * 0 <= E <= 255 event code number
