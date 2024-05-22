@@ -22,8 +22,8 @@ public:
     void setBypass(bool);
     bool getBypass() const;
 
-    void setSyncSrc(bool);
-    bool getSyncSrc() const;
+    void setSyncSrc(epicsUInt16);
+    epicsUInt16 getSyncSrc() const;
 
     void setTrigEvtMap(epicsUInt16, bool);
     epicsUInt32 getTrigEvtMap() const;
