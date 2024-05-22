@@ -77,8 +77,8 @@
 
 #define  U32_AcTrigMap          0x0014
 
-#define  AcTrigMap_EvtMASK 0xff000000
-#define  AcTrigMap_EvtSHIFT 24
+#define  AcTrigMap_EvtMASK 0x000000ff
+#define  AcTrigMap_EvtSHIFT 0
 
 //=====================
 // Software Event Control Registers
