@@ -96,6 +96,10 @@
 //
 #define  U32_DataBufferControl  0x0020  // Data Buffer Control Register
 #define  U32_DBusSrc            0x0024  // Distributed Data Bus Mapping Register
+#define  U32_DBusTSEvt          0x0028  // Timestamp events configure for the distributed Data BusD
+
+#define  TSDBusEvt_MASK         0x000000E0
+#define  TSDBusEvt_SHIFT        5
 
 //=====================
 // FPGA Firmware Version
@@ -107,6 +111,16 @@
 #define FPGAVersion_FORM_SHIFT  24
 #define FPGAVersion_TYPE_SHIFT  28
 #define FPGAVersion_VER_MASK    0x000000FF
+
+//=====================
+// Timestamp Control
+//
+#define  U32_TSControl          0x0034  // TS Control register
+#define  TSGenerator_ena_MASK   0x01
+#define  TSGenerator_ena_SHIFT  0
+#define  TSValuse_load_MASK     0x02
+#define  TSValuse_load_SHIFT    1
+#define  U32_TSValue            0x0038  // TS Value to transmit
 
 //=====================
 // Event Clock Control

@@ -56,6 +56,7 @@ OBJECT_BEGIN(evgMrm) {
     OBJECT_PROP1("Sw Version", &evgMrm::getSwVersion);
     OBJECT_PROP1("CommitHash", &evgMrm::getCommitHash);
     OBJECT_PROP2("EvtCode", &evgMrm::writeonly, &evgMrm::setEvtCode);
+    OBJECT_PROP2("TS Generator", &evgMrm::getTSGenerator, &evgMrm::setTSGenerator);
     {
       bool (evgMrm::*getter)() const = &evgMrm::isSoftSeconds;
       void (evgMrm::*setter)(bool) = &evgMrm::softSecondsSrc;
@@ -65,6 +66,7 @@ OBJECT_BEGIN(evgMrm) {
       std::string (evgMrm::*getter)() const = &evgMrm::nextSecond;
       OBJECT_PROP1("NextSecond", getter);
     }
+    OBJECT_PROP1("SoftTick", &evgMrm::postSoftSecondsSrc);
     {
       double (evgMrm::*getter)() const = &evgMrm::deltaSeconds;
       OBJECT_PROP1("Time Error", getter);

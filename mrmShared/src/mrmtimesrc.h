@@ -30,6 +30,9 @@ public:
     //! Whether tickSecond() has been called for the past 5 seconds
     bool validSeconds() const;
 
+    //! Update the second counter and return the same value or the resynchronized second
+    epicsUInt32 updateSecond(epicsUInt32 ts_in);
+
     //! last difference between
     double deltaSeconds() const;
 
@@ -38,6 +41,7 @@ public:
     bool isSoftSeconds() const;
 
     std::string nextSecond() const;
+    std::string currentSecond() const;
 
 protected:
     virtual void setEvtCode(epicsUInt32 evtCode) =0;
