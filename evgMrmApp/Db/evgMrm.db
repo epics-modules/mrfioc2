@@ -86,6 +86,15 @@ record(bo, "$(P)SimTimestamp-Sel") {
   field(ONAM, "Simulate")
 }
 
+record(bo, "$(P)SoftTickSecond-Cmd") {
+  field(DTYP, "Obj Prop command")
+  field(DESC, "Tick second via EPICS scan")
+  field(OUT , "@OBJ=$(OBJ), PROP=SoftTick")
+  field(DISV, 0)
+  field(SDIS, "$(P)PpsInp1-MbbiDir_.BF")
+  field(SCAN, "1 second")
+}
+
 record(ai, "$(P)TimeErr-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Time Error")
@@ -160,13 +169,14 @@ record(mbbo, "$(P)PpsInp1-Sel") {
   field(THST, "UnivInp13")
   field(FRST, "UnivInp14")
   field(FVST, "UnivInp15")
+  field(SXST, "EPICS Scan")
   field(ZRVL, "0x0")
   field(ONVL, "0x1")
   field(TWVL, "0x2")
   field(THVL, "0x4")
   field(FRVL, "0x8")
   field(FVVL, "0x10")
-  field(SXSV, "INVALID")
+  field(SXVL, "0x8000")
   field(SVSV, "INVALID")
   field(EISV, "INVALID")
   field(NISV, "INVALID")
@@ -196,4 +206,51 @@ record(longin, "$(P)DbusStatus-RB" ) {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=DbusStatus")
   info(autosaveFields_pass0, "SCAN")
+}
+
+#
+# Timestamp Generator Select
+#
+record(mbbo, "$(P)TSGen-SP") {
+  field(DESC, "EVG TS Generator")
+  field(DTYP, "Obj Prop uint16")
+  field(OUT,  "@OBJ=$(OBJ), PROP=TS Generator")
+  field(PINI, "YES")
+  field(UDF,  "0")
+  field(VAL,  "0")
+  field(ZRST, "Software")
+  field(ONST, "Internal")
+  field(TWST, "External")
+  field(ZRVL, "0x0")
+  field(ONVL, "0x1")
+  field(TWVL, "0x2")
+  field(THSV, "INVALID")
+  field(FRSV, "INVALID")
+  field(FVSV, "INVALID")
+  field(SXSV, "INVALID")
+  field(SVSV, "INVALID")
+  field(EISV, "INVALID")
+  field(NISV, "INVALID")
+  field(TESV, "INVALID")
+  field(ELSV, "INVALID")
+  field(TVSV, "INVALID")
+  field(TTSV, "INVALID")
+  field(FTSV, "INVALID")
+  field(FFSV, "INVALID")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)TSGen-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbi, "$(P)TSGen-RB") {
+  field(DESC, "EVG TS Generator")
+  field(DTYP, "Obj Prop uint16")
+  field(INP,  "@OBJ=$(OBJ), PROP=TS Generator")
+  field(ZRST, "Software")
+  field(ONST, "Internal")
+  field(TWST, "External")
+  field(ZRVL, "0x0")
+  field(ONVL, "0x1")
+  field(TWVL, "0x2")
 }

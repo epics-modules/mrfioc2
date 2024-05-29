@@ -215,6 +215,47 @@ void TimeStampSource::tickSecond()
     }
 }
 
+epicsUInt32 TimeStampSource::updateSecond(epicsUInt32 ts_in)
+{
+    epicsUInt32 toUpdate = ts_in;
+    bool ok;
+
+    epicsTimeStamp ts;
+    bool valid = epicsTimeOK == generalTimeGetExceptPriority(&ts, 0, ER_PROVIDER_PRIORITY);
+
+    {
+        Guard G(impl->mutex);
+
+        ok = impl->okCnt>=5;
+
+        /* delay re-sync request until 1Hz is stable, valid system time is available */
+        if(ok && valid && impl->resync)  {
+            toUpdate = ts.secPastEpoch+POSIX_TIME_AT_EPICS_EPOCH+1;
+            impl->resync = false;
+        }
+
+        impl->next = toUpdate;
+
+        if(ok && valid) {
+            impl->lastError = double(toUpdate) - (ts.secPastEpoch+POSIX_TIME_AT_EPICS_EPOCH);
+        } else {
+            impl->lastError = -1.0;
+        }
+
+        if(!impl->timeout.get()) {
+            // lazy start of timestamp timeout thread
+            impl->timeout.reset(new epicsThread(impl->timeoutRun,
+                                                "TimeStampTimeout",
+                                                epicsThreadGetStackSize(epicsThreadStackSmall)));
+            impl->timeout->start();
+        }
+    }
+
+    impl->wakeup.signal();
+
+    return toUpdate;
+}
+
 bool TimeStampSource::validSeconds() const
 {
     Guard G(impl->mutex);
@@ -276,6 +317,24 @@ std::string TimeStampSource::nextSecond() const
     {
         Guard G(impl->mutex);
         raw.secPastEpoch = impl->next - POSIX_TIME_AT_EPICS_EPOCH;
+        raw.nsec = 0;
+    }
+    epicsTime time(raw);
+
+    std::vector<char> buf(40);
+
+    buf.resize(time.strftime(&buf[0], buf.size(), "%a, %d %b %Y %H:%M:%S"));
+    // buf.size() doesn't include trailing nil
+
+    return std::string(&buf[0], buf.size());
+}
+
+std::string TimeStampSource::currentSecond() const
+{
+    epicsTimeStamp raw;
+    {
+        Guard G(impl->mutex);
+        raw.secPastEpoch = impl->next - POSIX_TIME_AT_EPICS_EPOCH -1;
         raw.nsec = 0;
     }
     epicsTime time(raw);

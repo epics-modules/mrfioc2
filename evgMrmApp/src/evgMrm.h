@@ -136,6 +136,12 @@ public:
     static void init_cb(CALLBACK*, int, void(*)(CALLBACK*), void*);
     static void process_inp_cb(CALLBACK*);
 
+    /**    Timestamp Source Select  **/
+    void tsHandler();
+    epicsUInt16 getTSGenerator() const;
+    void setTSGenerator(epicsUInt16 TSGen);
+
+    /**    Soft Event Set  **/
     void setEvtCode(epicsUInt32);
 
     // use w/ Object properties for which no getter is necessary
@@ -167,6 +173,7 @@ private:
     epicsFloat64               m_fracSynFreq; // In MHz
     unsigned                   m_RFDiv;
     ClkSrc                     m_ClkSrc;
+    epicsUInt16	       m_TSGenerator;  //Timestamp Generator
     void recalcRFDiv();
 
     EvgSeqManager                 m_seq;
