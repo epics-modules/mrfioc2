@@ -42,6 +42,10 @@ public:
   virtual bool enabled() const OVERRIDE FINAL;
   virtual void enable(bool) OVERRIDE FINAL;
 
+  //Fine delay for UNIV-TTL-DLY on UTB64x board
+  virtual void setFineDelay(double);
+  virtual double fineDelay() const;
+
 private:
   EVRMRM * const owner;
   const OutputType type;

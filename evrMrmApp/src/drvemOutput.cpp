@@ -155,6 +155,54 @@ MRMOutput::setSourceInternal()
     }
 }
 
+//Fine delay for UNIV-TTL-DLY on UTB64x board
+void
+MRMOutput::setFineDelay(double val)
+{
+    double period = 1e9/owner->clock(); //clock period in ns
+
+    if(val < 0) val = 0;
+    if(val > period)val = period;
+    epicsUInt32 ticks=roundToUInt(val * 1023.0 / period);
+
+    switch(type) {
+    case OutputInt:
+        break; // will not get here
+    case OutputFP:
+        break;
+    case OutputFPUniv:
+        break;
+    case OutputRB:
+        WRITE32(owner->base, RTMDELAY(N), ticks); break;
+    case OutputBackplane:
+        break;
+    }
+}
+
+double
+MRMOutput::fineDelay() const
+{
+    double period = 1e9/owner->clock(); //clock period in ns
+    double dly_val=0.0;
+    switch(type) {
+    case OutputInt:
+        break; // will not get here
+    case OutputFP:
+        break;
+    case OutputFPUniv:
+        break;
+    case OutputRB:
+        epicsUInt32 ticks;
+        ticks = READ32(owner->base,RTMDELAY(N));
+        dly_val = (ticks*period)/1023.0;
+        break;
+    case OutputBackplane:
+        break;
+    }
+    return dly_val;
+}
+
 OBJECT_BEGIN2(MRMOutput, Output)
   OBJECT_PROP2("Map2", &MRMOutput::source2, &MRMOutput::setSource2);
+  OBJECT_PROP2("Fine Delay", &MRMOutput::fineDelay, &MRMOutput::setFineDelay);
 OBJECT_END(MRMOutput)

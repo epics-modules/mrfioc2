@@ -388,6 +388,8 @@
 #define U32_SFPEEPROM(N) (U32_SFPEEPROM_base + (N))
 #define U32_SFPDIAG_base 0x8300
 #define U32_SFPDIAG(N) (U32_SFPDIAG_base + (N))
+#define U32_RTMDELAY_base 0x8400
+#define U32_RTMDELAY(N) (U32_RTMDELAY_base + (4*(N)))
 
 #define EVR_REGMAP_SIZE 0x40000 // Total register map size = 256K
 
