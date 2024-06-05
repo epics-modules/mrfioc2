@@ -151,6 +151,7 @@ public:
     evgInput* getInput(epicsUInt32, InputType);
     epicsEvent* getTimerEvent();
     const bus_configuration* getBusConfiguration();
+    void resetFracSynth();
 
     CALLBACK                      irqExtInp_cb;
 

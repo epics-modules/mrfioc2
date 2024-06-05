@@ -385,3 +385,9 @@ record(mbbi, "$(P)TSGen-RB") {
   field(ONVL, "0x1")
   field(TWVL, "0x2")
 }
+
+record(bo,"$(P)ResetFracSynth-Cmd" ) {
+    field( DTYP, "Obj Prop command")
+    field( OUT , "@OBJ=$(OBJ), PROP=Reset Frac Synth")
+    field( DESC, "Reset")
+}

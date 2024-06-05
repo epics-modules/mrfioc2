@@ -524,6 +524,13 @@ evgMrm::setEvtCode(epicsUInt32 evtCode) {
 }
 
 /**    Access    functions     **/
+void
+evgMrm::resetFracSynth()
+{
+  epicsUInt32 oldControlWord=READ32(m_pReg, FracSynthWord);
+  WRITE32(m_pReg, FracSynthWord, oldControlWord);
+}
+
 
 evgInput*
 evgMrm::getInput(epicsUInt32 inpNum, InputType type) {
