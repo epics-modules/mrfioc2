@@ -34,6 +34,8 @@ DB += mtca-evm-300.db
 ifdef BASE_3_15
 DB += evm-mtca-300.uv.db
 DB += evm-mtca-300-evr.uv.db
+DB += evm-vme-300.db
+DB += evm-vme-300-evr.db
 endif
 
 ifneq ($(DEVIOCSTATS),)
