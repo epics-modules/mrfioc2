@@ -72,7 +72,7 @@ static const evgMrm::Config conf_vme_evg_230 = {
 static const evgMrm::Config conf_vme_evm_300 = {
     "VME-EVM-300",
     3,
-    0,
+    16,
     16,
 };
 
