@@ -154,8 +154,13 @@ record(calcout, "$(P)PpsInp-CO_") {
   field(CALC, "A")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OCAL, "0") # when PpsInp-Sel is not 0, set PpsInp1-Sel to 0
-  field(OUT , "$(P)PpsInp1-Sel PP")
+  field(OCAL, "0") # when PpsInp-Sel is not 0, set other PpsInp to 0
+  field(OUT , "$(P)PpsInp-DFO_ PP")
+}
+record(dfanout, "$(P)PpsInp-DFO_"){
+  field(SELM, "All")
+  field(OUTA, "$(P)PpsInp1-Sel PP")
+  #field(OUTB, "$(P)PpsInp2-Sel PP")
   field(FLNK, "$(P)PpsInp-MbbiDir_")
 }
 #
@@ -206,8 +211,13 @@ record(calcout, "$(P)PpsInp1-CO_") {
   field(CALC, "A")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OCAL, "0") # when PpsInp1-Sel is not 0, set PpsInp-Sel to 0
-  field(OUT , "$(P)PpsInp-Sel PP")
+  field(OCAL, "0") # when PpsInp-Sel is not 0, set other PpsInp to 0
+  field(OUT , "$(P)PpsInp1-DFO_ PP")
+}
+record(dfanout, "$(P)PpsInp1-DFO_"){
+  field(SELM, "All")
+  field(OUTA, "$(P)PpsInp-Sel PP")
+  #field(OUTB, "$(P)PpsInp2-Sel PP")
   field(FLNK, "$(P)PpsInp1-MbbiDir_")
 }
 #
