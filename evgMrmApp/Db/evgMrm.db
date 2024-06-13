@@ -145,10 +145,19 @@ record(mbbo, "$(P)PpsInp-Sel") {
   field(FFVL, "0x2000")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)PpsInp-MbbiDir_")
+  field(FLNK, "$(P)PpsInp-CO_")
   info(autosaveFields_pass0, "VAL")
 }
-
+record(calcout, "$(P)PpsInp-CO_") {
+  field(ASG, "private")
+  field(INPA, "$(P)PpsInp-Sel NPP")
+  field(CALC, "A")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "0") # when PpsInp-Sel is not 0, set PpsInp1-Sel to 0
+  field(OUT , "$(P)PpsInp1-Sel PP")
+  field(FLNK, "$(P)PpsInp-MbbiDir_")
+}
 #
 # Each bit of the PpsInp-MbbiDir record is used to toggle the external input
 # interrupt of the corresponding external input.
@@ -188,10 +197,19 @@ record(mbbo, "$(P)PpsInp1-Sel") {
   field(FFSV, "INVALID")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)PpsInp1-MbbiDir_")
+  field(FLNK, "$(P)PpsInp1-CO_")
   info(autosaveFields_pass0, "VAL")
 }
-
+record(calcout, "$(P)PpsInp1-CO_") {
+  field(ASG, "private")
+  field(INPA, "$(P)PpsInp1-Sel NPP")
+  field(CALC, "A")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "0") # when PpsInp1-Sel is not 0, set PpsInp-Sel to 0
+  field(OUT , "$(P)PpsInp-Sel PP")
+  field(FLNK, "$(P)PpsInp1-MbbiDir_")
+}
 #
 # Each bit of the PpsInp-MbbiDir record is used to toggle the external input
 # interrupt of the corresponding external input.
