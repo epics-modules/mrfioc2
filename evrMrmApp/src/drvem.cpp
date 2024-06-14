@@ -353,7 +353,7 @@ try{
 
     drain_fifo_task.start();
 
-    if(busConfig.busType==busType_pci)
+    if(busConfig.busType==busType_pci || (busConfig.busType==busType_vme && version()>=MRFVersion(2, 0, 0)))
         mrf::SPIDevice::registerDev(n+":FLASH", mrf::SPIDevice(this, 1));
 
     #ifndef DBR_UTAG
@@ -369,7 +369,7 @@ try{
 
 EVRMRM::~EVRMRM()
 {
-    if(getBusConfiguration()->busType==busType_pci)
+    if(getBusConfiguration()->busType==busType_pci || (getBusConfiguration()->busType==busType_vme && version()>=MRFVersion(2, 0, 0)))
         mrf::SPIDevice::unregisterDev(name()+":FLASH");
     cleanup();
 }

@@ -194,7 +194,7 @@ evgMrm::evgMrm(const std::string& id,
     
     scanIoInit(&ioScanTimestamp);
 
-    if((busConfig.busType==busType_pci) || (info.board==MRF_VME_EVM300_BID))
+    if(busConfig.busType==busType_pci || (busConfig.busType==busType_vme && version()>=MRFVersion(2, 0, 0)))
         mrf::SPIDevice::registerDev(id+":FLASH", mrf::SPIDevice(this, 1));
 
     if((pciDevice->id.sub_device==PCI_DEVICE_ID_MRF_MTCA_EVM_300) || (info.board==MRF_VME_EVM300_BID)) {
@@ -210,7 +210,7 @@ evgMrm::evgMrm(const std::string& id,
 }
 
 evgMrm::~evgMrm() {
-    if(getBusConfiguration()->busType==busType_pci)
+    if(getBusConfiguration()->busType==busType_pci || (getBusConfiguration()->busType==busType_vme && version()>=MRFVersion(2, 0, 0)))
         mrf::SPIDevice::unregisterDev(name()+":FLASH");
 
     for(size_t i = 0; i < m_trigEvt.size(); i++)
