@@ -165,7 +165,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 
         std::ifstream strm(infile, std::ios_base::in|std::ios_base::binary);
         if(strm.fail())
-            throw std::runtime_error("Unable to open output file");
+            throw std::runtime_error("Unable to open input file");
 
         strm.seekg(0, std::ios_base::end);
         const long fsize = strm.tellg();
