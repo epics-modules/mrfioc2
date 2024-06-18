@@ -15,6 +15,8 @@
 #define U32_UpDCValue 0x10
 #define U32_FIFODCValue 0x14
 #define U32_IntDCValue 0x18
+#define U32_UpDCTarget 0x1C
+#define U32_UpDCMode 0x24
 #define U32_TOPID 0x2c
 #define U32_PortNDCValue(N) (0x40 +(N)*4)
 
@@ -59,6 +61,33 @@ double FCT::dcInternal() const
     return double(READ32(base, IntDCValue))/65536.0*period;
 }
 
+bool FCT::getDcUpMode() const
+{
+    return bool(READ32(base, UpDCMode));
+}
+
+void FCT::setDcUpMode(bool ena)
+{
+    if (ena){
+        WRITE32(base, UpDCMode,0x1);
+    }else{
+        WRITE32(base, UpDCMode,0x0);
+    }
+}
+
+double FCT::getDcUpTarget() const
+{
+    double period=1e3/evg->getFrequency(); // in nanoseconds
+    return double(READ32(base, UpDCTarget))/65536.0*period;
+}
+
+void FCT::setDcUpTarget(double target)
+{
+    double period=1e3/evg->getFrequency(); // in nanoseconds
+    epicsUInt32 tgt = epicsUInt32(target/period*65536.0);
+    WRITE32(base, UpDCTarget,tgt);
+}
+
 epicsUInt32 FCT::topoId() const
 {
     return READ32(base, TOPID);
@@ -75,6 +104,8 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCUpstream", &FCT::dcUpstream);
     OBJECT_PROP1("DCFIFO", &FCT::dcFIFO);
     OBJECT_PROP1("DCInternal", &FCT::dcInternal);
+    OBJECT_PROP2("DCUpMode", &FCT::getDcUpMode , &FCT::setDcUpMode);
+    OBJECT_PROP2("DCUpTarget", &FCT::getDcUpTarget, &FCT::setDcUpTarget);
     OBJECT_PROP1("TopoID", &FCT::topoId);
     OBJECT_PROP1("DCPort1", &FCT::dcPort<0>);
     OBJECT_PROP1("DCPort2", &FCT::dcPort<1>);
