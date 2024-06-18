@@ -32,6 +32,10 @@ public:
     double dcUpstream() const;
     double dcFIFO() const;
     double dcInternal() const;
+    bool getDcUpMode() const;
+    void setDcUpMode(bool ena);
+    double getDcUpTarget() const;
+    void setDcUpTarget(double target);
 
     epicsUInt32 topoId() const;
 

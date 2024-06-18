@@ -155,3 +155,56 @@ record(longin, "$(P)ID-I") {
   field(INP, "@OBJ=$(OBJ), PROP=TopoID")
   field(SCAN, "1 second")
 }
+
+# Delay compensation at the EVM level
+record(bo, "$(P)DC-Ena-Sel") {
+  field(DESC, "Apply DC correction")
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=DCUpMode")
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+  field(PINI, "YES")
+  field(PHAS, "1") # after Tgt-SP
+  field(FLNK, "$(P)DC-Ena-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)DC-Ena-RB") {
+  field(DESC, "Apply DC correction")
+  field(DTYP, "Obj Prop bool")
+  field(INP, "@OBJ=$(OBJ), PROP=DCUpMode")
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+}
+
+record(ao, "$(P)DC-Tgt-SP") {
+  field(DESC, "Desired total delay")
+  field(DTYP, "Obj Prop double")
+  field(OUT, "@OBJ=$(OBJ), PROP=DCUpTarget")
+  field(EGU, "ns")
+  # a too small value will cause glitches and dropped events.
+  # so we pick a conservative default suitable for the slowest 50MHz clock
+  field(VAL, "110")
+  field(PREC, "3")
+  field(PINI, "YES")
+  field(FLNK, "$(P)DC-Tgt-RB")
+  info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
+}
+
+record(ai, "$(P)DC-Tgt-RB") {
+  field(DESC, "Desired total delay")
+  field(DTYP, "Obj Prop double")
+  field(INP, "@OBJ=$(OBJ), PROP=DCUpTarget")
+  field(EGU, "ns")
+  field(PREC, "3")
+  info(autosaveFields_pass0, "EGU ESLO HOPR LOPR PREC")
+}
+
+record(calc, "$(P)Msrd$(s=:)Total-I") {
+  field(SCAN, "1 second")
+  field(CALC, "A+B")
+  field(INPA, "$(P)Msrd$(s=:)Up-I NPP")
+  field(INPB, "$(P)Msrd$(s=:)FIFO-I NPP")
+  field(EGU, "ns")
+  field(PREC, "3")
+}
