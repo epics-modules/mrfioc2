@@ -7,3 +7,4 @@ modules.order
 .tmp_versions
 ifc
 ppmac
+*.mod
