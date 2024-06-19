@@ -1,0 +1,309 @@
+# Naming-agnostic
+# ===============
+## s unused separator, backward compatibility purposes
+global {s=""}
+
+# P - Prefix
+# T - Embedded EVR type: e.g. {U,D} ~ {upstream,downstream}, assumptions !U=D !D=U
+# The rest follows the standard EVR
+
+### Embedded EVR Core within EVM ###
+
+file "evrbase.db"
+{
+{P="\$(P)", OBJ="$(EVG):EVR$(T)", EVNT1HZ="125", FEVT="\$(FEVT=124.916)"}
+}
+
+file "mrmevrdc.template"
+{
+{P="\$(P)DC", OBJ="$(EVG):EVR$(T)"}
+}
+
+file "evrevent.db"
+{pattern
+{EN, OBJ, CODE, EVNT}
+{"\$(P)Pps",  "$(EVG):EVR$(T)", 0x7d, 125}
+{"\$(P)EvtA", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtB", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtC", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtD", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtE", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtF", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtG", "$(EVG):EVR$(T)", 255,  255}
+{"\$(P)EvtH", "$(EVG):EVR$(T)", 255,  255}
+}
+
+file "evrscale.db"
+{pattern
+{IDX, P, SN, OBJ, EVR, MAX}
+{0, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+{1, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+{2, "\$(P)", "\$(P)PS$(IDX)", "$(EVG):EVR$(T):PS$(IDX)", "$(EVG):EVR$(T)", "0xffffffff"}
+}
+
+file "evrin.db"
+{pattern
+{IN, OBJ, DESC}
+{"\$(P)InFP0", "$(EVG):EVR$(T):FPIn0", "$(T)FPIN0 <- !$(T)FP0"}
+{"\$(P)InFP1", "$(EVG):EVR$(T):FPIn1", "$(T)FPIN1 <- !$(T)FP1"}
+{"\$(P)InFP2", "$(EVG):EVR$(T):FPIn2", "$(T)FPIN2 <- !$(T)FP2"}
+{"\$(P)InFP3", "$(EVG):EVR$(T):FPIn3", "$(T)FPIN3 <- !$(T)FP3"}
+{"\$(P)InFP4", "$(EVG):EVR$(T):FPIn4", "$(T)FPIN4 <- !$(T)FP4"}
+{"\$(P)InFP5", "$(EVG):EVR$(T):FPIn5", "$(T)FPIN5 <- !$(T)FP5"}
+{"\$(P)InFP6", "$(EVG):EVR$(T):FPIn6", "$(T)FPIN6 <- !$(T)FP6"}
+{"\$(P)InFP7", "$(EVG):EVR$(T):FPIn7", "$(T)FPIN7 <- !$(T)FP7"}
+}
+
+file "mrmevrout.db"
+{pattern
+{ON, OBJ, DESC}
+{"\$(P)OutFP0", "$(EVG):EVR$(T):FrontOut0", "InEVG[$(T)==D?0:8]&!$(T)InFP0"}
+{"\$(P)OutFP1", "$(EVG):EVR$(T):FrontOut1", "InEVG[$(T)==D?1:9]&!$(T)InFP0"}
+{"\$(P)OutFP2", "$(EVG):EVR$(T):FrontOut2", "InEVG[$(T)==D?2:10]&!$(T)InFP0"}
+{"\$(P)OutFP3", "$(EVG):EVR$(T):FrontOut3", "InEVG[$(T)==D?3:11]&!$(T)InFP0"}
+{"\$(P)OutFP4", "$(EVG):EVR$(T):FrontOut4", "InEVG[$(T)==D?4:12]&!$(T)InFP0"}
+{"\$(P)OutFP5", "$(EVG):EVR$(T):FrontOut5", "InEVG[$(T)==D?5:13]&!$(T)InFP0"}
+{"\$(P)OutFP6", "$(EVG):EVR$(T):FrontOut6", "InEVG[$(T)==D?6:14]&!$(T)InFP0"}
+{"\$(P)OutFP7", "$(EVG):EVR$(T):FrontOut7", "InEVG[$(T)==D?7:15]&!$(T)InFP0"}
+}
+
+# Pulse generators w/o a prescaler set NOPS=1
+file "evrpulser.db"
+{pattern
+{PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
+{0, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{1, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{2, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{3, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
+{4, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{5, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{6, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{7, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{8, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{9, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{10,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{11,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{12,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{13,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{14,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{15,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+# gate generators
+{28,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{29,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{30,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{31,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+}
+
+# Default to 3 possible trigger mappings per pulser
+file "evrpulsermap.db"
+{pattern
+{PID, NAME, OBJ, F, EVT}
+{0, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{0, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{0, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{1, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{2, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{3, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{4, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{5, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{6, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{7, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{8, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{9, "\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{10,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{11,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{12,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{13,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{14,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{15,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+# gate generators mappings
+{28,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{28,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{28,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{29,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{30,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig0-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig1-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+{31,"\$(P)DlyGen$(PID)EvtTrig2-SP", "$(EVG):EVR$(T):Pul$(PID)", Trig, 0}
+
+{0, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{0, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{0, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{1, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{1, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{1, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{2, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{2, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{2, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{3, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{3, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{3, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{4, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{4, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{4, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{5, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{5, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{5, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{6, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{6, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{6, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{7, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{7, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{7, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{8, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{8, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{8, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{9, "\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{9, "\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{9, "\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{10,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{10,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{10,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{11,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{11,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{11,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{12,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{12,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{12,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{13,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{13,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{13,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{14,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{14,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{14,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{15,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{15,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{15,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+# gate generators mappings
+{28,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{28,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{28,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{29,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{29,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{29,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{30,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{30,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{30,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{31,"\$(P)DlyGen$(PID)EvtSet0-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{31,"\$(P)DlyGen$(PID)EvtSet1-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+{31,"\$(P)DlyGen$(PID)EvtSet2-SP", "$(EVG):EVR$(T):Pul$(PID)", Set, 0}
+
+{0, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{0, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{0, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{1, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{1, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{1, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{2, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{2, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{2, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{3, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{3, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{3, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{4, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{4, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{4, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{5, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{5, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{5, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{6, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{6, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{6, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{7, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{7, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{7, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{8, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{8, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{8, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{9, "\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{9, "\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{9, "\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{10,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{10,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{10,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{11,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{11,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{11,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{12,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{12,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{12,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{13,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{13,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{13,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{14,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{14,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{14,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{15,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{15,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{15,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+# gate generators mappings
+{28,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{28,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{28,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{29,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{29,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{29,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{30,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{30,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{30,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{31,"\$(P)DlyGen$(PID)EvtReset0-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{31,"\$(P)DlyGen$(PID)EvtReset1-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+{31,"\$(P)DlyGen$(PID)EvtReset2-SP", "$(EVG):EVR$(T):Pul$(PID)", Reset, 0}
+}
+
+# pulser masking controls
+file "evrdcpulser.template"
+{pattern
+{PID, P, PN, OBJ}
+{0,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{1,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{2,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{3,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{4,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{5,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{6,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{7,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{8,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{9,  "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{10, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{11, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{12, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{13, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{14, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+{15, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVG):EVR$(T):Pul$(PID)"}
+}
+
