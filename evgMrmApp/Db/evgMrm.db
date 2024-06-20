@@ -145,7 +145,7 @@ record(mbbo, "$(P)PpsInp-Sel") {
   field(FFVL, "0x2000")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)PpsInp-MbbiDir_")
+  field(FLNK, "$(P)PpsInp-SQ_")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -158,8 +158,34 @@ record(mbbiDirect, "$(P)PpsInp-MbbiDir_") {
   field(DESC, "EVG Pps Input")
   field(INP,  "$(P)PpsInp-Sel.RVAL NPP")
 }
+
+record(seq, "$(P)PpsInp-SQ_"){
+  field(DOL1, "0")
+  field(LNK1, "$(P)PpsInpItlk-SQ_.PROC")
+  field(DOL2, "0")
+  field(LNK2, "$(P)PpsInp-MbbiDir_.PROC")
+}
+
+record(seq, "$(P)PpsInpItlk-SQ_") {
+  field(DESC, "Sequence to control 1PPS Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)PpsInp1Itlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)PpsInp2Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)PpsInp1-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)PpsInp2-Sel.VAL PP NMS")
+  field(DLY5, "0.3")
+  field(DOL5, "0")
+  field(LNK5, "$(P)PpsInp1Itlk-SQ_.DISA NPP NMS")
+  field(DOL6, "0")
+  field(LNK6, "$(P)PpsInp2Itlk-SQ_.DISA NPP NMS")
+}
+
 record(mbbo, "$(P)PpsInp1-Sel") {
-  field(DESC, "EVG Pps Input")
+  field(DESC, "EVG Pps Input (more)")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -170,6 +196,7 @@ record(mbbo, "$(P)PpsInp1-Sel") {
   field(FRST, "UnivInp14")
   field(FVST, "UnivInp15")
   field(SXST, "EPICS Scan")
+  field(SVST, "RearInp0")
   field(ZRVL, "0x0")
   field(ONVL, "0x1")
   field(TWVL, "0x2")
@@ -177,7 +204,7 @@ record(mbbo, "$(P)PpsInp1-Sel") {
   field(FRVL, "0x8")
   field(FVVL, "0x10")
   field(SXVL, "0x8000")
-  field(SVSV, "INVALID")
+  field(SVVL, "0x20")
   field(EISV, "INVALID")
   field(NISV, "INVALID")
   field(TESV, "INVALID")
@@ -188,7 +215,7 @@ record(mbbo, "$(P)PpsInp1-Sel") {
   field(FFSV, "INVALID")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)PpsInp1-MbbiDir_")
+  field(FLNK, "$(P)PpsInp1-SQ_")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -201,6 +228,110 @@ record(mbbiDirect, "$(P)PpsInp1-MbbiDir_") {
   field(DESC, "EVG Pps Input")
   field(INP,  "$(P)PpsInp1-Sel.RVAL NPP")
 }
+
+record(seq, "$(P)PpsInp1-SQ_"){
+  field(DOL1, "0")
+  field(LNK1, "$(P)PpsInp1Itlk-SQ_.PROC")
+  field(DOL2, "0")
+  field(LNK2, "$(P)PpsInp1-MbbiDir_.PROC")
+}
+
+record(seq, "$(P)PpsInp1Itlk-SQ_") {
+  field(DESC, "Sequence to control 1PPS Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)PpsInp2Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)PpsInp-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)PpsInp2-Sel.VAL PP NMS")
+  field(DLY5, "0.3")
+  field(DOL5, "0")
+  field(LNK5, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
+  field(DOL6, "0")
+  field(LNK6, "$(P)PpsInp2Itlk-SQ_.DISA NPP NMS")
+}
+
+record(mbbo, "$(P)PpsInp2-Sel") {
+  field(DESC, "EVG Pps Input (more+)")
+  field(PINI, "YES")
+  field(UDF,  "0")
+  field(VAL,  "0")
+  field(ZRST, "None")
+  field(ONST, "Rear1")
+  field(TWST, "Rear2")
+  field(THST, "Rear3")
+  field(FRST, "Rear4")
+  field(FVST, "Rear5")
+  field(SXST, "Rear6")
+  field(SVST, "Rear7")
+  field(EIST, "Rear8")
+  field(NIST, "Rear9")
+  field(TEST, "Rear10")
+  field(ELST, "Rear11")
+  field(TVST, "Rear12")
+  field(TTST, "Rear13")
+  field(FTST, "Rear14")
+  field(FFST, "Rear15")
+  field(ZRVL, "0x0")
+  field(ONVL, "0x1")
+  field(TWVL, "0x2")
+  field(THVL, "0x4")
+  field(FRVL, "0x8")
+  field(FVVL, "0x10")
+  field(SXVL, "0x20")
+  field(SVVL, "0x40")
+  field(EIVL, "0x80")
+  field(NIVL, "0x100")
+  field(TEVL, "0x200")
+  field(ELVL, "0x400")
+  field(TVVL, "0x800")
+  field(TTVL, "0x1000")
+  field(FTVL, "0x2000")
+  field(FFVL, "0x4000")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)PpsInp2-SQ_")
+  info(autosaveFields_pass0, "VAL")
+}
+
+#
+# Each bit of the PpsInp-MbbiDir record is used to toggle the external input
+# interrupt of the corresponding external input.
+#
+record(mbbiDirect, "$(P)PpsInp2-MbbiDir_") {
+  field(ASG, "private")
+  field(DESC, "EVG Pps Input")
+  field(INP,  "$(P)PpsInp2-Sel.RVAL NPP")
+}
+
+record(seq, "$(P)PpsInp2-SQ_"){
+  field(DOL1, "0")
+  field(LNK1, "$(P)PpsInp2Itlk-SQ_.PROC")
+  field(DOL2, "0")
+  field(LNK2, "$(P)PpsInp2-MbbiDir_.PROC")
+}
+
+record(seq, "$(P)PpsInp2Itlk-SQ_") {
+  field(DESC, "Sequence to control 1PPS Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)PpsInp1Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)PpsInp-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)PpsInp1-Sel.VAL PP NMS")
+  field(DLY5, "0.3")
+  field(DOL5, "0")
+  field(LNK5, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
+  field(DOL6, "0")
+  field(LNK6, "$(P)PpsInp1Itlk-SQ_.DISA NPP NMS")
+}
+
 record(longin, "$(P)DbusStatus-RB" ) {
   field(DESC, "EVG Dbus Status")
   field(DTYP, "Obj Prop uint32")
