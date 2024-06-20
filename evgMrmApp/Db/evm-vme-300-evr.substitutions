@@ -58,13 +58,13 @@ file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
 {"\$(P)OutFP0", "$(EVG):EVR$(T):FrontOut0", "InEVG[$(T)==D?0:8]&!$(T)InFP0"}
-{"\$(P)OutFP1", "$(EVG):EVR$(T):FrontOut1", "InEVG[$(T)==D?1:9]&!$(T)InFP0"}
-{"\$(P)OutFP2", "$(EVG):EVR$(T):FrontOut2", "InEVG[$(T)==D?2:10]&!$(T)InFP0"}
-{"\$(P)OutFP3", "$(EVG):EVR$(T):FrontOut3", "InEVG[$(T)==D?3:11]&!$(T)InFP0"}
-{"\$(P)OutFP4", "$(EVG):EVR$(T):FrontOut4", "InEVG[$(T)==D?4:12]&!$(T)InFP0"}
-{"\$(P)OutFP5", "$(EVG):EVR$(T):FrontOut5", "InEVG[$(T)==D?5:13]&!$(T)InFP0"}
-{"\$(P)OutFP6", "$(EVG):EVR$(T):FrontOut6", "InEVG[$(T)==D?6:14]&!$(T)InFP0"}
-{"\$(P)OutFP7", "$(EVG):EVR$(T):FrontOut7", "InEVG[$(T)==D?7:15]&!$(T)InFP0"}
+{"\$(P)OutFP1", "$(EVG):EVR$(T):FrontOut1", "InEVG[$(T)==D?1:9]&!$(T)InFP1"}
+{"\$(P)OutFP2", "$(EVG):EVR$(T):FrontOut2", "InEVG[$(T)==D?2:10]&!$(T)InFP2"}
+{"\$(P)OutFP3", "$(EVG):EVR$(T):FrontOut3", "InEVG[$(T)==D?3:11]&!$(T)InFP3"}
+{"\$(P)OutFP4", "$(EVG):EVR$(T):FrontOut4", "InEVG[$(T)==D?4:12]&!$(T)InFP4"}
+{"\$(P)OutFP5", "$(EVG):EVR$(T):FrontOut5", "InEVG[$(T)==D?5:13]&!$(T)InFP5"}
+{"\$(P)OutFP6", "$(EVG):EVR$(T):FrontOut6", "InEVG[$(T)==D?6:14]&!$(T)InFP6"}
+{"\$(P)OutFP7", "$(EVG):EVR$(T):FrontOut7", "InEVG[$(T)==D?7:15]&!$(T)InFP7"}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
