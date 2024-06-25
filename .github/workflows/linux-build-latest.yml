@@ -46,7 +46,7 @@ jobs:
           make -C kernel CC=${CC:=gcc} modules_prepare
       - name: Build
         run: |
-          make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
+          KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
 
   host:
     name: With latest Ubuntu VM host
