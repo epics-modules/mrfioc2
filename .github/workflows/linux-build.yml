@@ -21,15 +21,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 20.04 - Series 4.x
-            os: ubuntu-20.04
+          - name: Ubuntu 22.04 - Series 4.x
+            os: ubuntu-22.04
             series: 4.x
             version: 4.9.1
 
-          - name: Ubuntu 20.04 - Series 5.x
-            os: ubuntu-20.04
+          - name: Ubuntu 22.04 - Series 5.x
+            os: ubuntu-22.04
             series: 5.x
             version: 5.9.6
+
+          - name: Ubuntu 22.04 - Series 6.x
+            os: ubuntu-22.04
+            series: 6.x
+            version: 6.5.9
 
     steps:
       - uses: actions/checkout@v2
@@ -57,11 +62,11 @@ jobs:
           make -C kernel CC=${CC:=gcc} modules_prepare
       - name: Build
         run: |
-          make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
+          KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
 
   host:
     name: With VM host
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Info
