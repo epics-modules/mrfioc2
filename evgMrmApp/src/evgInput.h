@@ -42,6 +42,9 @@ public:
     void setSeqTrigMap(epicsUInt32);
     epicsUInt32 getSeqTrigMap() const;
 
+    void setMxcReset(bool);
+    bool getMxcReset() const;
+
     void setTrigEvtMap(epicsUInt16, bool);
     bool getTrigEvtMap(epicsUInt16) const;
 

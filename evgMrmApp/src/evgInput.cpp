@@ -92,6 +92,21 @@ evgInput::getDbusMap(epicsUInt16 dbus) const {
     return (map & mask) != 0;
 }
 
+bool
+evgInput::getMxcReset() const
+{
+    bool val;
+    val = (nat_ioread32(m_pInReg) & EVG_INP_MXCR_ENA) >> EVG_INP_MXCR_ENA_shift;
+    return val;
+}
+
+void evgInput::setMxcReset(bool ena)
+{
+    epicsUInt32 src = ena;
+    epicsUInt32 inReg=nat_ioread32(m_pInReg) & ~(EVG_INP_MXCR_ENA);
+    nat_iowrite32(m_pInReg, inReg | (src<<EVG_INP_MXCR_ENA_shift));
+}
+
 void
 evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
     if(seqTrigMap > 3)
@@ -100,7 +115,7 @@ evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
     //Read-Modify-Write
     epicsUInt32 map = nat_ioread32(m_pInReg);
 
-    map = map & 0xffff00ff;
+    map = map & 0xfffff0ff;
     map = map | (seqTrigMap << 8);
 
     nat_iowrite32(m_pInReg, map);
@@ -109,7 +124,7 @@ evgInput::setSeqTrigMap(epicsUInt32 seqTrigMap) {
 epicsUInt32
 evgInput::getSeqTrigMap() const {
     epicsUInt32 map = nat_ioread32(m_pInReg);
-    map = map & 0x0000ff00;
+    map = map & 0x00000f00;
     map = map >> 8;
     return map;
 }

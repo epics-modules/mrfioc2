@@ -303,6 +303,8 @@
 #define  EVG_INP_FP_ENA_shift   24 
 #define  EVG_INP_FP_MASK        0xF0000000
 #define  EVG_INP_FP_MASK_shift  28
+#define  EVG_INP_MXCR_ENA       0x00008000
+#define  EVG_INP_MXCR_ENA_shift 15
 
 #ifndef  EVG_CONSTANTS
 #define  EVG_CONSTANTS
