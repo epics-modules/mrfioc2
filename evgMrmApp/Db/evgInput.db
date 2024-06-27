@@ -30,3 +30,22 @@ record(ai, "$(P)FPMask-RB") {
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=FPMASK")
 }
+
+record(bo, "$(P)EnaMxcr-Sel") {
+  field(DESC, "Enable Hardware Mxc Reset")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=Hw Reset MXC")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+  field(FLNK, "$(P)EnaIrq-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)EnaMxcr-RB") {
+  field(DESC, "Enable Hardware Mxc Reset")
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=Hw Reset MXC")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+}
+
