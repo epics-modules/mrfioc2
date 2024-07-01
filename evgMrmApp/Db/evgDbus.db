@@ -34,10 +34,30 @@ record(mbbo, "$(P)Src-Sel") {
   field(TTVL, "4096")
   field(FTVL, "8192")
   field(FFVL, "16384")
-
+  field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(OUT, "$(P)MapConv-Sel_ PP")
+  field(FLNK, "$(P)SrcItlk-SQ_.PROC PP")
   info(autosaveFields_pass0, "VAL")
+}
+
+record(seq, "$(P)SrcItlk-SQ_") {
+  field(DESC, "Sequence to control Src Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)Src1-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)Src2-Sel.VAL PP NMS")
+  field(DOL5, "$(P)Src-Sel.VAL NPP NMS")
+  field(LNK5, "$(P)MapConv-Sel_ PP NMS")
+  field(DLY6, "0.3")
+  field(DOL6, "0")
+  field(LNK6, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
+  field(DOL7, "0")
+  field(LNK7, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
 }
 
 record(mbbo, "$(P)MapConv-Sel_") {
@@ -59,7 +79,168 @@ record(mbbo, "$(P)MapConv-Sel_") {
   field(TTVL, "1")
   field(FTVL, "2")
   field(FFVL, "3")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(OUT, "$(P)Map-Sel PP")
+  info(autosaveFields_pass0, "VAL")
+}
 
+record(mbbo, "$(P)Src1-Sel") {
+  field(DESC, "EVG DBUS Source (more)")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Off")
+  field(ONST, "Rear1")
+  field(TWST, "Rear2")
+  field(THST, "Rear3")
+  field(FRST, "Rear4")
+  field(FVST, "Rear5")
+  field(SXST, "Rear6")
+  field(SVST, "Rear7")
+  field(EIST, "Rear8")
+  field(NIST, "Rear9")
+  field(TEST, "Rear10")
+  field(ELST, "Rear11")
+  field(TVST, "Rear12")
+  field(TTST, "Rear13")
+  field(FTST, "Rear14")
+  field(FFST, "Rear15")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
+  field(THVL, "4")
+  field(FRVL, "8")
+  field(FVVL, "16")
+  field(SXVL, "32")
+  field(SVVL, "64")
+  field(EIVL, "128")
+  field(NIVL, "256")
+  field(TEVL, "512")
+  field(ELVL, "1024")
+  field(TVVL, "2048")
+  field(TTVL, "4096")
+  field(FTVL, "8192")
+  field(FFVL, "16384")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)Src1Itlk-SQ_.PROC PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(seq, "$(P)Src1Itlk-SQ_") {
+  field(DESC, "Sequence to control Src1 Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)SrcItlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)Src-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)Src2-Sel.VAL PP NMS")
+  field(DOL5, "$(P)Src1-Sel.VAL NPP NMS")
+  field(LNK5, "$(P)MapConv1-Sel_ PP NMS")
+  field(DLY6, "0.3")
+  field(DOL6, "0")
+  field(LNK6, "$(P)SrcItlk-SQ_.DISA NPP NMS")
+  field(DOL7, "0")
+  field(LNK7, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
+}
+
+record(mbbo, "$(P)MapConv1-Sel_") {
+  field(ASG, "private")
+  field(DTYP, "Raw Soft Channel")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "1")
+  field(THVL, "1")
+  field(FRVL, "1")
+  field(FVVL, "1")
+  field(SXVL, "1")
+  field(SVVL, "1")
+  field(EIVL, "1")
+  field(NIVL, "1")
+  field(TEVL, "1")
+  field(ELVL, "1")
+  field(TVVL, "1")
+  field(TTVL, "1")
+  field(FTVL, "1")
+  field(FFVL, "1")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(OUT, "$(P)Map-Sel PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(P)Src2-Sel") {
+  field(DESC, "EVG DBUS Source (more+)")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Off")
+  field(ONST, "FrontInp2")
+  field(TWST, "Rear0")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
+  field(THSV, "INVALID")
+  field(FRSV, "INVALID")
+  field(FVSV, "INVALID")
+  field(SXSV, "INVALID")
+  field(SVSV, "INVALID")
+  field(EISV, "INVALID")
+  field(NISV, "INVALID")
+  field(TESV, "INVALID")
+  field(ELSV, "INVALID")
+  field(TVSV, "INVALID")
+  field(TTSV, "INVALID")
+  field(FTSV, "INVALID")
+  field(FFSV, "INVALID")
+  field(UNSV, "INVALID")
+  field(IVOA, "Don't drive outputs")
+  field(FLNK, "$(P)Src2Itlk-SQ_.PROC PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(seq, "$(P)Src2Itlk-SQ_") {
+  field(DESC, "Sequence to control Src1 Select")
+  field(DOL1, "1")
+  field(LNK1, "$(P)SrcItlk-SQ_.DISA NPP NMS")
+  field(DOL2, "1")
+  field(LNK2, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
+  field(DLY3, "0.3")
+  field(DOL3, "0")
+  field(LNK3, "$(P)Src-Sel.VAL PP NMS")
+  field(DOL4, "0")
+  field(LNK4, "$(P)Src1-Sel.VAL PP NMS")
+  field(DOL5, "$(P)Src2-Sel.VAL NPP NMS")
+  field(LNK5, "$(P)MapConv2-Sel_ PP NMS")
+  field(DLY6, "0.3")
+  field(DOL6, "0")
+  field(LNK6, "$(P)SrcItlk-SQ_.DISA NPP NMS")
+  field(DOL7, "0")
+  field(LNK7, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
+}
+
+record(mbbo, "$(P)MapConv2-Sel_") {
+  field(ASG, "private")
+  field(DTYP, "Raw Soft Channel")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "1")
+  field(THSV, "INVALID")
+  field(FRSV, "INVALID")
+  field(FVSV, "INVALID")
+  field(SXSV, "INVALID")
+  field(SVSV, "INVALID")
+  field(EISV, "INVALID")
+  field(NISV, "INVALID")
+  field(TESV, "INVALID")
+  field(ELSV, "INVALID")
+  field(TVSV, "INVALID")
+  field(TTSV, "INVALID")
+  field(FTSV, "INVALID")
+  field(FFSV, "INVALID")
+  field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
   field(OUT, "$(P)Map-Sel PP")
   info(autosaveFields_pass0, "VAL")
@@ -124,6 +305,16 @@ record(bo, "$(P)Src$(s=:)FrontInp1-Sel") {
   field(ONAM, "Set")
   field(OMSL, "closed_loop")
   field(DOL,  "$(P)Src-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src$(s=:)FrontInp2-Sel") {
+  field(DESC, "Front Input1 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp2")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B0 CP")
 }
 
 record(bo, "$(P)Src$(s=:)UnivInp0-Sel") {
@@ -236,6 +427,166 @@ record(bo, "$(P)Src$(s=:)UnivInp10-Sel") {
   field(DOL,  "$(P)Src-MbbiDir_.BC CP")
 }
 
+record(bo, "$(P)Src$(s=:)RearInp0-Sel") {
+  field(DESC, "Front Rear Input0 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp0")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp1-Sel") {
+  field(DESC, "Front Rear Input1 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp1")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B0 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp2-Sel") {
+  field(DESC, "Front Rear Input2 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp2")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B1 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp3-Sel") {
+  field(DESC, "Front Rear Input3 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp3")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp4-Sel") {
+  field(DESC, "Front Rear Input4 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp4")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B3 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp5-Sel") {
+  field(DESC, "Front Rear Input5 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp5")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp6-Sel") {
+  field(DESC, "Front Rear Input6 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp6")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp7-Sel") {
+  field(DESC, "Front Rear Input7 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp7")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B6 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp8-Sel") {
+  field(DESC, "Front Rear Input8 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp8")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B7 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp9-Sel") {
+  field(DESC, "Front Rear Input9 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp9")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B8 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp10-Sel") {
+  field(DESC, "Front Rear Input10 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp10")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.B9 CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp11-Sel") {
+  field(DESC, "Front Rear Input11 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp11")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.BA CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp12-Sel") {
+  field(DESC, "Front Rear Input12 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp12")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.BB CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp13-Sel") {
+  field(DESC, "Front Rear Input13 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp13")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.BC CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp14-Sel") {
+  field(DESC, "Front Rear Input14 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp14")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.BD CP")
+}
+
+record(bo, "$(P)Src$(s=:)RearInp15-Sel") {
+  field(DESC, "Front Rear Input15 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp15")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src1-MbbiDir_.BE CP")
+}
+
 #
 # By default OMSL field for the *Src* records is "closed_loop" hence
 # only one Source can be selected due of MBBO record. If you want to select
@@ -249,6 +600,8 @@ record(dfanout, "$(P)Omsl-FOut") {
   field(OMSL, "supervisory")
   field(OUTA, "$(P)Omsl0-FOut_ PP")
   field(OUTB, "$(P)Omsl1-FOut_ PP")
+  field(OUTC, "$(P)Omsl2-FOut_ PP")
+  field(OUTD, "$(P)Omsl3-FOut_ PP")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -279,6 +632,39 @@ record(dfanout, "$(P)Omsl1-FOut_") {
   field(OUTC, "$(P)Src$(s=:)UnivInp8-Sel.OMSL")
   field(OUTD, "$(P)Src$(s=:)UnivInp9-Sel.OMSL")
   field(OUTE, "$(P)Src$(s=:)UnivInp10-Sel.OMSL")
+  field(OUTF, "$(P)Src$(s=:)FrontInp2-Sel.OMSL")
+}
+
+record(dfanout, "$(P)Omsl2-FOut_") {
+  field(ASG, "private")
+  #field(PINI, "YES")
+  field(VAL,  "1")
+  field(UDF,  "0")
+  field(OMSL, "supervisory")
+  field(OUTA, "$(P)Src$(s=:)RearInp0-Sel.OMSL")
+  field(OUTB, "$(P)Src$(s=:)RearInp1-Sel.OMSL")
+  field(OUTC, "$(P)Src$(s=:)RearInp2-Sel.OMSL")
+  field(OUTD, "$(P)Src$(s=:)RearInp3-Sel.OMSL")
+  field(OUTE, "$(P)Src$(s=:)RearInp4-Sel.OMSL")
+  field(OUTF, "$(P)Src$(s=:)RearInp5-Sel.OMSL")
+  field(OUTG, "$(P)Src$(s=:)RearInp6-Sel.OMSL")
+  field(OUTH, "$(P)Src$(s=:)RearInp7-Sel.OMSL")
+}
+
+record(dfanout, "$(P)Omsl3-FOut_") {
+  field(ASG, "private")
+  #field(PINI, "YES")
+  field(VAL,  "1")
+  field(UDF,  "0")
+  field(OMSL, "supervisory")
+  field(OUTA, "$(P)Src$(s=:)RearInp8-Sel.OMSL")
+  field(OUTB, "$(P)Src$(s=:)RearInp9-Sel.OMSL")
+  field(OUTC, "$(P)Src$(s=:)RearInp10-Sel.OMSL")
+  field(OUTD, "$(P)Src$(s=:)RearInp11-Sel.OMSL")
+  field(OUTE, "$(P)Src$(s=:)RearInp12-Sel.OMSL")
+  field(OUTF, "$(P)Src$(s=:)RearInp13-Sel.OMSL")
+  field(OUTG, "$(P)Src$(s=:)RearInp14-Sel.OMSL")
+  field(OUTH, "$(P)Src$(s=:)RearInp15-Sel.OMSL")
 }
 
 record(waveform, "$(P)Label-I") {
