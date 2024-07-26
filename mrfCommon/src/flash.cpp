@@ -371,14 +371,16 @@ void CFIFlash::busyWait(double timeout, unsigned n)
 CFIStreamBuf::CFIStreamBuf(CFIFlash& flash)
     :flash(flash)
     ,pos(0u)
-{}
+{
+    buf.resize(1);
+}
 
 CFIStreamBuf::int_type CFIStreamBuf::underflow()
 {
     // read-ahead is only one page
-    buf.resize(flash.pageSize());
+    buf.resize(std::max(1u, flash.pageSize()));
     flash.read(pos, buf.size(), (epicsUInt8*)&buf[0]);
-    setg(&buf[0], &buf[0], &buf[buf.size()]);
+    setg(&buf[0], &buf[0], &buf[buf.size()-1u]);
     pos += buf.size();
 
     return buf[0];
