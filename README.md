@@ -4,20 +4,15 @@
 
 ---
 
-What is Available?
-------------------
+# What is Available?
 
 * More infomation on the Micro Research hardware can be found on their website http://www.mrf.fi/.
+* Documentation at [https://epics-modules.github.io/mrfioc2](https://epics-modules.github.io/mrfioc2).
+* [FPGA binaries and documentation](https://github.com/jpietari/mrf-firmware.git).
+* [Micro-Research Finland Event System Reference documentation](https://mrftiming.readthedocs.io/en/latest/index.html).
 
-* Documentation at [https://epics-modules.github.io/mrfioc2](https://epics-modules.github.io/mrfioc2)
+# Prerequisites
 
-Prerequisites
--------------
-
-The required software is EPICS Base >= 3.14.10, devLib2 >= 2.8, and the MSI tool (included in Base >= 3.15.1).
-
-Base: [http://www.aps.anl.gov/epics/base/R3-15/index.php](http://www.aps.anl.gov/epics/base/R3-15/index.php)
-
-devLib2: [https://github.com/epics-modules/devlib2/](https://github.com/epics-modules/devlib2/)
-
-MSI: [http://www.aps.anl.gov/epics/extensions/msi/index.php](http://www.aps.anl.gov/epics/extensions/msi/index.php)
+The required software is:
+* [epics-base](https://github.com/epics-base/epics-base) >= 3.15.1,
+* [devLib2](https://github.com/epics-modules/devlib2) >= 2.8.

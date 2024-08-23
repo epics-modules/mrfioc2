@@ -29,19 +29,9 @@ The canonical version of this page is @url http://epics-modules.github.io/mrfioc
 
 @subsection requires Requires
 
-EPICS Base >= 3.14.10
-
-@url http://www.aps.anl.gov/epics/
-
-MSI (Macro expansion tool)  Required with Base < 3.15.1
-
-@url http://www.aps.anl.gov/epics/extensions/msi/index.php
-
-devLib2 >= 2.9
-
-@url https://epics-modules.github.io/devlib2/
-
-RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
+- epics-base @url https://github.com/epics-base/epics-base >= 3.15.1,
+- devLib2 @url https://github.com/epics-modules/devlib2 >= 2.8.
+- RTEMS >= 4.9.x, vxWorks >=6.7, or Linux >= 2.6.26.
 
 @section hardware Supported Hardware
 
@@ -69,6 +59,10 @@ User documentation can be found in the form of usage manuals for both the
 <a href="evr-usage.pdf">Receiver</a>
 and
 <a href="evg-usage.pdf">Generator</a>
+
+The FPGA binaries and documentation releases are provided within the <a href="https://github.com/jpietari/mrf-firmware.git">mrf-firmware</a> repository.
+
+The <a href="https://mrftiming.readthedocs.io/en/latest/index.html">Micro-Research Finland Event System Reference documentation</a> is available on Readthedocs for community contributions.
 
 Those interested in the implementation for the Receiver might wish to start with mrmEvrSetupPCI()
 and mrmEvrSetupVME() or the ::EVRMRM class.
