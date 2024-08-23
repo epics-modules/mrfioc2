@@ -10,7 +10,7 @@
  *   info(lut0, " 0 = zero")
  *   info(lut1, " 1 = one")
  *   info(lut2, " 3 = three")
- *   info(lutX, "unknown")
+ *   info(lutXX, "unknown")
  */
 
 #include <stdexcept>
@@ -87,7 +87,7 @@ long init_record_lut(stringinRecord *prec)
 
             std::string line(dbGetInfoString(&entry.entry));
 
-            if(strcmp(name, "lutX")==0) {
+            if(strcmp(name, "lutXX")==0) {
                 priv->unknown = strip(line);
                 if(prec->tpro>1)
                     printf("%s : LUT <fallback> -> \"%s\"\n", prec->name, priv->unknown.c_str());
