@@ -1,7 +1,0 @@
-<map id="mrfFracSynth.h" name="mrfFracSynth.h">
-<area shape="rect" id="node2" href="$_frac_synth_analyze_8c.html" title="FracSynthAnalyze.c" alt="" coords="5,155,153,181"/>
-<area shape="rect" id="node3" href="$_frac_synth_control_word_8c.html" title="FracSynthControlWord.c" alt="" coords="179,155,355,181"/>
-<area shape="rect" id="node4" href="$mrf_frac_synth_8c.html" title="Support routines for the Micrel SY87739L Fractional&#45;N Synthesizer. " alt="" coords="113,80,232,107"/>
-<area shape="rect" id="node5" href="$evg_evt_clk_8cpp.html" title="evgEvtClk.cpp" alt="" coords="307,80,422,107"/>
-<area shape="rect" id="node6" href="$drvem_8cpp.html" title="drvem.cpp" alt="" coords="446,80,537,107"/>
-</map>

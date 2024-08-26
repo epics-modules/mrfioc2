@@ -298,14 +298,14 @@ $(function() {
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment"> * To quote the manual:</span></div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"> *   Subrelease ID For production releases the subrelease ID counts up from 00.</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment"> *   For pre-releases this ID is used “backwards” counting down from ff i.e. when</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment"> *   For pre-releases this ID is used &quot;backwards&quot; counting down from ff i.e. when</span></div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment"> *   approacing release 12000207, we have prereleases 12FF0206, 12FE0206,</span></div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment"> *   12FD0206 etc. in this order.</span></div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="keyword">class </span>epicsShareClass MRFVersion</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;{</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keyword">const</span> epicsUInt16 m_major;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keyword">const</span> epicsInt8 m_minor;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keyword">const</span> epicsUInt8 m_minor;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">explicit</span> MRFVersion(epicsUInt32 regval)</div>
@@ -317,7 +317,7 @@ $(function() {
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> firmware()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_major&gt;&gt;8; }</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> revision()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_major&amp;0xff; }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">int</span> subrelease()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_minor; }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> subrelease()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_minor; }</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keywordtype">int</span> compare(<span class="keyword">const</span> MRFVersion&amp; o) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">bool</span> operator&gt;(<span class="keyword">const</span> MRFVersion&amp; o)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> compare(o)==1; }</div>

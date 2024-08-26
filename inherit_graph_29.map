@@ -1,9 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structmrf_1_1property_base.html" title="An un&#45;typed property. " alt="" coords="5,78,145,105"/>
-<area shape="rect" id="node2" href="$structmrf_1_1property.html" title="A bound, typed scalar property. " alt="" coords="203,21,350,47"/>
-<area shape="rect" id="node4" href="$structmrf_1_1property_3_01_p[1]_4.html" title="A bound, typed array property. " alt="" coords="197,78,357,105"/>
-<area shape="rect" id="node6" href="$structmrf_1_1property_3_01void_01_4.html" title="A momentary/command. " alt="" coords="193,135,360,162"/>
-<area shape="rect" id="node3" href="$classmrf_1_1detail_1_1property_instance.html" title="final scalar implementation " alt="" coords="408,5,616,47"/>
-<area shape="rect" id="node5" href="$classmrf_1_1detail_1_1property_instance_3_01_c_00_01_p[1]_4.html" title="final array implementation " alt="" coords="408,71,616,112"/>
-<area shape="rect" id="node7" href="$classmrf_1_1detail_1_1property_instance_3_01_c_00_01void_01_4.html" title="mrf::detail::propertyInstance\l\&lt; C, void \&gt;" alt="" coords="408,136,616,177"/>
-</map>
