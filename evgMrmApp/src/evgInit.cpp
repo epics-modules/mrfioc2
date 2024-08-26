@@ -108,7 +108,7 @@ static const evgMrm::Config conf_mtca_evm_300 = {
     "mTCA-EVM-300",
     3,
     16,
-    0,
+    16,
 };
 
 static bool
