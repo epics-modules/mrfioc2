@@ -177,7 +177,7 @@ record(mbbo, "$(P)Src2-Sel") {
   field(PINI, "YES")
   field(VAL,  "0")
   field(ZRST, "Off")
-  field(ONST, "FrontInp2")
+  field(ONST, "Front2")
   field(TWST, "Rear0")
   field(ZRVL, "0")
   field(ONVL, "1")
