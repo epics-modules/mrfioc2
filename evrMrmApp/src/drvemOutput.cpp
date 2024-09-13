@@ -171,6 +171,13 @@ MRMOutput::setFineDelay(double val)
     case OutputFP:
         break;
     case OutputFPUniv:
+        if (owner->getDelayModule(N/2) != NULL){
+          if (N%2 == 0){
+              owner->getDelayModule(N/2)->setDelay0(val);
+          }else{
+              owner->getDelayModule(N/2)->setDelay1(val);
+          }
+        }
         break;
     case OutputRB:
         WRITE32(owner->base, RTMDELAY(N), ticks); break;
@@ -190,6 +197,13 @@ MRMOutput::fineDelay() const
     case OutputFP:
         break;
     case OutputFPUniv:
+        if (owner->getDelayModule(N/2) != NULL){
+            if (N%2 == 0){
+                dly_val = owner->getDelayModule(N/2)->getDelay0();
+            }else{
+                dly_val = owner->getDelayModule(N/2)->getDelay1();
+            }
+        }
         break;
     case OutputRB:
         epicsUInt32 ticks;
