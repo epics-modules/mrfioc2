@@ -499,6 +499,7 @@ file "evrin.db"
 {"\$(P)BPIn7"   , "$(EVR):FPIn31", "BPIN7 (LVDS)"}
 }
 
+# Obsolete: check inside mrmevrdlymodule.template for more info
 file "mrmevrdlymodule.template"
 {pattern
 {SLOT, P, OBJ}
