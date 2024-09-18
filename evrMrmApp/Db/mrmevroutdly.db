@@ -1,0 +1,28 @@
+# Fine delay adapter for mrmevrout.db - outputs with the fine delay capability
+# This file depreciates the mrmevrdlymodule.template
+
+record(ao, "$(ON)FineDelay-SP") {
+  field( DESC, "Fine delay output")
+  field( DTYP, "Obj Prop double")
+  field( OUT , "@OBJ=$(OBJ), PROP=Fine Delay")
+  field( EGU , "ns")
+  field( PINI, "YES")
+  field( VAL , "0")
+  field( HOPR, "8.686")
+  field( LOPR, "0")
+  field( DRVH, "10")
+  field( DRVL, "0")
+  field( PREC, "2")
+  field( FLNK, "$(ON)FineDelay-RB")
+  info( autosaveFields_pass0, "VAL")
+}
+
+record(ai, "$(ON)FineDelay-RB") {
+  field( DESC, "Fine delay")
+  field( DTYP, "Obj Prop double")
+  field( INP , "@OBJ=$(OBJ), PROP=Fine Delay")
+  field( HIHI, "8.687")
+  field( LOLO, "-0.001")
+  field( PREC, "2")
+  field( EGU,  "ns")
+}
