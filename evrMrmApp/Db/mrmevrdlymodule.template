@@ -1,3 +1,8 @@
+# Deprecated: mrmevrdlymodule.template
+# This template is obsolete and should not be used in new implementations.
+# It will be removed in future versions. Please use evrMrmApp/Db/mrmevrout.db $(ON)FineDelay-SP and $(ON)FineDelay-RB instead.
+# Date of obsolescence: [17/09/2024]
+
 # Delay Module control
 #
 # Macros:

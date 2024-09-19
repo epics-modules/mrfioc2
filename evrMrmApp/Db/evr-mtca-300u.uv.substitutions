@@ -499,10 +499,21 @@ file "evrin.db"
 {"\$(P)BPIn7"   , "$(EVR):FPIn31", "BPIN7 (LVDS)"}
 }
 
+# Obsolete: check inside mrmevrdlymodule.template for more info
+# Left for the backward compatibility - use mrmevroutdly.db instead
 file "mrmevrdlymodule.template"
 {pattern
 {SLOT, P, OBJ}
 {0, "\$(P)OutFPDly$(SLOT)", "$(EVR)"}
 {1, "\$(P)OutFPDly$(SLOT)", "$(EVR)"}
+}
 
+file "mrmevroutdly.db"
+{pattern
+{ON, OBJ}
+# FP UNIV
+{"\$(P)OutFPUV0",  "$(EVR):FrontUnivOut0"}
+{"\$(P)OutFPUV1",  "$(EVR):FrontUnivOut1"}
+{"\$(P)OutFPUV2",  "$(EVR):FrontUnivOut2"}
+{"\$(P)OutFPUV3",  "$(EVR):FrontUnivOut3"}
 }

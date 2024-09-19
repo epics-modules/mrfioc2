@@ -236,6 +236,15 @@ public:
     const void *isrLinuxPvt;
 #endif
 
+    //get the pointer of the delay module
+    DelayModule* getDelayModule(int i){
+        if (size_t(i)<delays.size()){
+            return delays[i];
+        }else{
+            return NULL;
+        }
+    }
+
     const Config * const conf;
     volatile unsigned char * const base;
     epicsUInt32 baselen;
