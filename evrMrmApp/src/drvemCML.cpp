@@ -26,10 +26,10 @@
 MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formFactor f)
   :CML(n)
   // CML word length
-  ,mult(f==formFactor_CPCIFULL || f==formFactor_mTCA ? 40 : 20)
+  ,mult(f==formFactor_CPCIFULL || f==formFactor_mTCA  || f==formFactor_VME64 ? 40 : 20)
   // # of 32-bit dwords used to store 1 CML word
   // 40 bits fit in 2 dwords, 20 bits fit in 1
-  ,wordlen(f==formFactor_CPCIFULL || f==formFactor_mTCA ? 2 : 1)
+  ,wordlen(f==formFactor_CPCIFULL || f==formFactor_mTCA || f==formFactor_VME64 ? 2 : 1)
   ,base(o.base)
   ,N(i)
   ,owner(o)
@@ -37,6 +37,12 @@ MRMCML::MRMCML(const std::string& n, unsigned char i,EVRMRM& o, outkind k, formF
   ,shadowWaveformlength(0)
   ,kind(k)
 {
+    //For EVR-VME230, CML world length is 20, Need to add this exception for VME
+    if (f==formFactor_VME64 && strcmp(o.conf->model,"VME-EVRRF-230")==0){
+        mult=20;
+        wordlen=1;
+    }
+
     epicsUInt32 val=READ32(base, OutputCMLEna(N));
 
     val&=~OutputCMLEna_type_mask;
@@ -357,31 +363,38 @@ MRMCML::getPattern(pattern p, unsigned char *buf, epicsUInt32 blen) const
     blen = std::min(plen, blen);
 
     epicsUInt32 val=0;
+
     for(epicsUInt32 i=0; i<blen; i++) {
         size_t cmlword = (i/mult);
         size_t cmlbit  = (i%mult);
-
+    
         size_t cpuword, cpubit;
         bool first; // first bit in CPU word
-
+    
         if(mult<32) {
             first = cmlbit==0;
             cpuword = cmlword;
             cpubit = 19 - cmlbit;
         } else {
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+            first = cmlbit==0 || cmlbit==32;
+            cpuword = 2*cmlword + (cmlbit<32 ? 1 : 0);
+            cpubit  = cmlbit<32 ? cmlbit : (cmlbit-32);
+#else
             first = cmlbit==0 || cmlbit==8;
             cpuword = 2*cmlword + (cmlbit<8 ? 0 : 1);
             cpubit  = cmlbit<8 ? 7-cmlbit : 31-(cmlbit-8);
+#endif
         }
-
+    
         if(first) {
             val=shadowPattern[p][cpuword];
         }
-
+    
         buf[i]=val>>cpubit;
         buf[i]&=0x1;
-
     }
+
     return blen;
 }
 
@@ -400,6 +413,7 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
 
 
     epicsUInt32 val=0;
+
     for(epicsUInt32 i=0; i<blen; i++) {
         size_t cmlword = (i/mult);
         size_t cmlbit  = (i%mult);
@@ -408,17 +422,24 @@ MRMCML::setPattern(pattern p, const unsigned char *buf, epicsUInt32 blen)
             cpuword = cmlword;
             cpubit = 19 - cmlbit;
         } else {
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+            cpuword = 2*cmlword + (cmlbit<32 ? 1 : 0);
+            cpubit  = cmlbit<32 ? cmlbit : (cmlbit-32);
+#else
             cpuword = 2*cmlword + (cmlbit<8 ? 0 : 1);
             cpubit  = cmlbit<8 ? 7-cmlbit : 31-(cmlbit-8);
+#endif
         }
-
         val|=(!!buf[i])<<cpubit;
 
-        // cpubit is counting down.
-        // write complete dword after the last bit is set
+        //write complete dword after the first or the second word is set
+#if EPICS_BYTE_ORDER == EPICS_ENDIAN_BIG
+        if(cmlbit==31 || cmlbit==39) {
+#else
         if(cpubit==0) {
-            shadowPattern[p][cpuword] = val;
-            val=0;
+#endif
+          shadowPattern[p][cpuword] = val;
+          val=0;
         }
     }
 
