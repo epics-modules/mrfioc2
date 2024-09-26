@@ -76,13 +76,38 @@ file "evgMxc.db"
 {"\$(P)Mxc7", "$(EVG):Mxc7"}
 }
 
+# Irrelevant to MTCA
+# file "evgOutput.db"
+# {pattern
+# {P, OBJ}
+# {"\$(P)OutFront0", "$(EVG):FrontOut0"}
+# {"\$(P)OutFront1", "$(EVG):FrontOut1"}
+# {"\$(P)OutFront2", "$(EVG):FrontOut2"}
+# {"\$(P)OutFront3", "$(EVG):FrontOut3"}
+# }
+
 file "evgOutput.db"
 {pattern
 {P, OBJ}
-{"\$(P)OutFront0", "$(EVG):FrontOut0"}
-{"\$(P)OutFront1", "$(EVG):FrontOut1"}
-{"\$(P)OutFront2", "$(EVG):FrontOut2"}
-{"\$(P)OutFront3", "$(EVG):FrontOut3"}
+{"\$(P)OutBack0",  "$(EVG):BackOut0"}
+{"\$(P)OutBack1",  "$(EVG):BackOut1"}
+{"\$(P)OutBack2",  "$(EVG):BackOut2"}
+{"\$(P)OutBack3",  "$(EVG):BackOut3"}
+{"\$(P)OutBack4",  "$(EVG):BackOut4"}
+{"\$(P)OutBack5",  "$(EVG):BackOut5"}
+{"\$(P)OutBack6",  "$(EVG):BackOut6"}
+{"\$(P)OutBack7",  "$(EVG):BackOut7"}
+
+{"\$(P)OutTB0",  "$(EVG):RearOut0"}
+{"\$(P)OutTB1",  "$(EVG):RearOut1"}
+{"\$(P)OutTB2",  "$(EVG):RearOut2"}
+{"\$(P)OutTB3",  "$(EVG):RearOut3"}
+{"\$(P)OutTB4",  "$(EVG):RearOut4"}
+{"\$(P)OutTB5",  "$(EVG):RearOut5"}
+{"\$(P)OutTB6",  "$(EVG):RearOut6"}
+{"\$(P)OutTB7",  "$(EVG):RearOut7"}
+{"\$(P)OutTB8",  "$(EVG):RearOut8"}
+{"\$(P)OutTB9",  "$(EVG):RearOut9"}
 }
 
 file "mrmSoftSeq.template"
