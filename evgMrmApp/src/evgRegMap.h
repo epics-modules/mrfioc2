@@ -331,6 +331,8 @@
 #define evgNumDbusBit 8
 #define evgNumFrontOut 6
 #define evgNumUnivOut 4
+#define evgNumBackOut 8
+#define evgNumRearOut 16
 #define evgNumSeqRam 2
 #define evgAllowedTsGitter 0.5f
 #define evgEndOfSeqBuf 5
