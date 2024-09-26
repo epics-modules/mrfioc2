@@ -23,7 +23,7 @@ record(longout, "$(ON)Src-SP") {
   field(OUT , "@OBJ=$(OBJ), PROP=Map")
   field(FLNK, "$(ON)Src-RB_")
   field(PINI, "YES")
-  field(VAL , "$(DEFAULT=63)") # default DEFAULT is Force Low
+  field(VAL , "$(DEFAULT=61)") # default is Tri-state
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
@@ -33,7 +33,7 @@ record(longout, "$(ON)Src2-SP") {
   field(OUT , "@OBJ=$(OBJ), PROP=Map2")
   field(FLNK, "$(ON)Src2-RB_")
   field(PINI, "YES")
-  field(VAL , "$(DEFAULT=63)") # default DEFAULT is Force Low
+  field(VAL , "$(DEFAULT=61)") # default is Tri-state
   info(autosaveFields_pass0, "VAL HOPR LOPR DRVH DRVL")
 }
 
