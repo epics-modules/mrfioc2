@@ -62,7 +62,8 @@ public:
         const char *model;
         unsigned numFrontInp,
                  numUnivInp,
-                 numRearInp;
+                 numRearInp,
+                 numBackInp;
     };
 
     evgMrm(const std::string& id,

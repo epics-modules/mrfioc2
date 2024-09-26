@@ -176,6 +176,13 @@ evgMrm::evgMrm(const std::string& id,
                 new evgInput(name.str(), i, RearInp, pReg + U32_RearInMap(i));
     }
 
+    for(unsigned i = 0; i < conf->numBackInp; i++) {
+        std::ostringstream name;
+        name<<id<<":BackInp"<<i;
+        m_input[ std::pair<epicsUInt32, InputType>(i, BackInp) ] =
+                new evgInput(name.str(), i, BackInp, pReg + U32_BackInMap(i));
+    }
+
     for(int i = 0; i < evgNumFrontOut; i++) {
         std::ostringstream name;
         name<<id<<":FrontOut"<<i;

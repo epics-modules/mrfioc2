@@ -62,11 +62,13 @@ struct VMECSRID vmeEvgIDs[] = {
 VMECSR_END
 };
 
+//Model , numFrontInp, numUnivInp, numRearInp, numBackInp;
 static const evgMrm::Config conf_vme_evg_230 = {
     "VME-EVG-230",
     2,
     4,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_vme_evm_300 = {
@@ -74,6 +76,7 @@ static const evgMrm::Config conf_vme_evm_300 = {
     3,
     16,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_pci_misc = {
@@ -81,6 +84,7 @@ static const evgMrm::Config conf_pci_misc = {
     2,
     4,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_cpci_evg_220 = {
@@ -88,6 +92,7 @@ static const evgMrm::Config conf_cpci_evg_220 = {
     2,
     4,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_cpci_evg_230 = {
@@ -95,6 +100,7 @@ static const evgMrm::Config conf_cpci_evg_230 = {
     2,
     4,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_cpci_evg_300 = {
@@ -102,6 +108,7 @@ static const evgMrm::Config conf_cpci_evg_300 = {
     2,
     4,
     16,
+    0,
 };
 
 static const evgMrm::Config conf_mtca_evm_300 = {
@@ -109,6 +116,7 @@ static const evgMrm::Config conf_mtca_evm_300 = {
     3,
     16,
     16,
+    8,
 };
 
 static bool
@@ -318,8 +326,8 @@ mrmEvgSetupVME (
 
         }
 
-        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
-               conf->numUnivInp, conf->numRearInp);
+        printf("%s #Inputs FP:%u UV:%u TB:%u BP:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp, conf->numBackInp);
 
         evgMrm* evg = new evgMrm(id, conf, bus, regCpuAddr, NULL);
 
@@ -530,8 +538,8 @@ mrmEvgSetupPCI (
         case PCI_DEVICE_ID_MRF_MTCA_EVM_300: conf = &conf_mtca_evm_300; break;
         }
 
-        printf("%s #Inputs FP:%u UV:%u RB:%u\n", conf->model, conf->numFrontInp,
-               conf->numUnivInp, conf->numRearInp);
+        printf("%s #Inputs FP:%u UV:%u TB:%u BP:%u\n", conf->model, conf->numFrontInp,
+               conf->numUnivInp, conf->numRearInp, conf->numBackInp);
 
         evgMrm* evg = new evgMrm(id, conf, bus, BAR_evg, cur);
 
