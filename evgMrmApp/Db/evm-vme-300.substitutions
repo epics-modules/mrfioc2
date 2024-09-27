@@ -37,25 +37,41 @@ file "evgInput.db"
 # The $(Num) are not sequential to avoid breaking historical autosave files
 {"\$(P)InpFront0", "$(EVG):FrontInp0",  0}
 {"\$(P)InpFront1", "$(EVG):FrontInp1",  1}
-{"\$(P)InpFront2", "$(EVG):FrontInp2",  2}
-{"\$(P)InpRear10", "$(EVG):RearInp10",  3}
-{"\$(P)InpRear11", "$(EVG):RearInp11",  4}
-{"\$(P)InpRear12", "$(EVG):RearInp12",  5}
-{"\$(P)InpRear13", "$(EVG):RearInp13",  6}
-{"\$(P)InpRear14", "$(EVG):RearInp14",  7}
-{"\$(P)InpRear15", "$(EVG):RearInp15",  8}
+{"\$(P)InpUniv0",  "$(EVG):UnivInp0",   2}
+{"\$(P)InpUniv1",  "$(EVG):UnivInp1",   3}
+{"\$(P)InpUniv2",  "$(EVG):UnivInp2",   4}
+{"\$(P)InpUniv3",  "$(EVG):UnivInp3",   5}
+{"\$(P)InpFront2", "$(EVG):FrontInp2",  6}
+{"\$(P)InpUniv4",  "$(EVG):UnivInp4",   7}
+{"\$(P)InpUniv5",  "$(EVG):UnivInp5",   8}
+{"\$(P)InpUniv6",  "$(EVG):UnivInp6",   9}
+{"\$(P)InpUniv7",  "$(EVG):UnivInp7",   A}
+{"\$(P)InpUniv8",  "$(EVG):UnivInp8",   B}
+{"\$(P)InpUniv9",  "$(EVG):UnivInp9",   C}
+{"\$(P)InpUniv10", "$(EVG):UnivInp10",  D}
 pattern
 {P, OBJ, Num, CONT}
-{"\$(P)InpRear0",  "$(EVG):RearInp0",   0, "1"}
-{"\$(P)InpRear1",  "$(EVG):RearInp1",   1, "1"}
-{"\$(P)InpRear2",  "$(EVG):RearInp2",   2, "1"}
-{"\$(P)InpRear3",  "$(EVG):RearInp3",   3, "1"}
-{"\$(P)InpRear4",  "$(EVG):RearInp4",   4, "1"}
-{"\$(P)InpRear5",  "$(EVG):RearInp5",   5, "1"}
-{"\$(P)InpRear6",  "$(EVG):RearInp6",   6, "1"}
-{"\$(P)InpRear7",  "$(EVG):RearInp7",   7, "1"}
-{"\$(P)InpRear8",  "$(EVG):RearInp8",   8, "1"}
-{"\$(P)InpRear9",  "$(EVG):RearInp9",   9, "1"}
+{"\$(P)InpUniv11", "$(EVG):UnivInp11",  0, "1"}
+{"\$(P)InpUniv12", "$(EVG):UnivInp12",  1, "1"}
+{"\$(P)InpUniv13", "$(EVG):UnivInp13",  2, "1"}
+{"\$(P)InpUniv14", "$(EVG):UnivInp14",  3, "1"}
+{"\$(P)InpUniv15", "$(EVG):UnivInp15",  4, "1"}
+{"\$(P)InpRear0",  "$(EVG):RearInp0",   5, "1"}
+{"\$(P)InpRear1",  "$(EVG):RearInp1",   0, "2"}
+{"\$(P)InpRear2",  "$(EVG):RearInp2",   1, "2"}
+{"\$(P)InpRear3",  "$(EVG):RearInp3",   2, "2"}
+{"\$(P)InpRear4",  "$(EVG):RearInp4",   3, "2"}
+{"\$(P)InpRear5",  "$(EVG):RearInp5",   4, "2"}
+{"\$(P)InpRear6",  "$(EVG):RearInp6",   5, "2"}
+{"\$(P)InpRear7",  "$(EVG):RearInp7",   6, "2"}
+{"\$(P)InpRear8",  "$(EVG):RearInp8",   7, "2"}
+{"\$(P)InpRear9",  "$(EVG):RearInp9",   8, "2"}
+{"\$(P)InpRear10", "$(EVG):RearInp10",  9, "2"}
+{"\$(P)InpRear11", "$(EVG):RearInp11",  A, "2"}
+{"\$(P)InpRear12", "$(EVG):RearInp12",  B, "2"}
+{"\$(P)InpRear13", "$(EVG):RearInp13",  C, "2"}
+{"\$(P)InpRear14", "$(EVG):RearInp14",  D, "2"}
+{"\$(P)InpRear15", "$(EVG):RearInp15",  E, "2"}
 }
 
 file "evgMrm.db"
