@@ -98,16 +98,16 @@ file "evgOutput.db"
 {"\$(P)OutBack6",  "$(EVG):BackOut6"}
 {"\$(P)OutBack7",  "$(EVG):BackOut7"}
 
-{"\$(P)OutTB0",  "$(EVG):RearOut0"}
-{"\$(P)OutTB1",  "$(EVG):RearOut1"}
-{"\$(P)OutTB2",  "$(EVG):RearOut2"}
-{"\$(P)OutTB3",  "$(EVG):RearOut3"}
-{"\$(P)OutTB4",  "$(EVG):RearOut4"}
-{"\$(P)OutTB5",  "$(EVG):RearOut5"}
-{"\$(P)OutTB6",  "$(EVG):RearOut6"}
-{"\$(P)OutTB7",  "$(EVG):RearOut7"}
-{"\$(P)OutTB8",  "$(EVG):RearOut8"}
-{"\$(P)OutTB9",  "$(EVG):RearOut9"}
+{"\$(P)OutRear0",  "$(EVG):RearOut0"}
+{"\$(P)OutRear1",  "$(EVG):RearOut1"}
+{"\$(P)OutRear2",  "$(EVG):RearOut2"}
+{"\$(P)OutRear3",  "$(EVG):RearOut3"}
+{"\$(P)OutRear4",  "$(EVG):RearOut4"}
+{"\$(P)OutRear5",  "$(EVG):RearOut5"}
+{"\$(P)OutRear6",  "$(EVG):RearOut6"}
+{"\$(P)OutRear7",  "$(EVG):RearOut7"}
+{"\$(P)OutRear8",  "$(EVG):RearOut8"}
+{"\$(P)OutRear9",  "$(EVG):RearOut9"}
 }
 
 file "mrmSoftSeq.template"
