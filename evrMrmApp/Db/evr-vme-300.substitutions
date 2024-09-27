@@ -96,32 +96,32 @@ file "mrmevrout.db"
 {pattern
 {ON, OBJ, DESC}
 {"\$(P)OutInt", "$(EVR):Int", "Internal"}
-{"\$(P)OutFPUV00", "$(EVR):FrontUnivOut0", "FPUV 0"}
-{"\$(P)OutFPUV01", "$(EVR):FrontUnivOut1", "FPUV 1"}
-{"\$(P)OutFPUV02", "$(EVR):FrontUnivOut2", "FPUV 2"}
-{"\$(P)OutFPUV03", "$(EVR):FrontUnivOut3", "FPUV 3"}
-{"\$(P)OutFPUV04", "$(EVR):FrontUnivOut4", "FPUV 0"}
-{"\$(P)OutFPUV05", "$(EVR):FrontUnivOut5", "FPUV 5"}
-{"\$(P)OutFPUV06", "$(EVR):FrontUnivOut6", "FPUV 6 (GTX)"}
-{"\$(P)OutFPUV07", "$(EVR):FrontUnivOut7", "FPUV 7 (GTX)"}
-{"\$(P)OutFPCML00", "$(EVR):FrontUnivOut8", "FP CML 0 (GTX)"}
-{"\$(P)OutFPCML01", "$(EVR):FrontUnivOut9", "FP CML 1 (GTX)"}
-{"\$(P)OutTBUV00", "$(EVR):RearUniv0", "TBUV 0"}
-{"\$(P)OutTBUV01", "$(EVR):RearUniv1", "TBUV 1"}
-{"\$(P)OutTBUV02", "$(EVR):RearUniv2", "TBUV 2"}
-{"\$(P)OutTBUV03", "$(EVR):RearUniv3", "TBUV 3"}
-{"\$(P)OutTBUV04", "$(EVR):RearUniv4", "TBUV 4"}
-{"\$(P)OutTBUV05", "$(EVR):RearUniv5", "TBUV 5"}
-{"\$(P)OutTBUV06", "$(EVR):RearUniv6", "TBUV 6"}
-{"\$(P)OutTBUV07", "$(EVR):RearUniv7", "TBUV 7"}
-{"\$(P)OutTBUV08", "$(EVR):RearUniv8", "TBUV 8"}
-{"\$(P)OutTBUV09", "$(EVR):RearUniv9", "TBUV 9"}
-{"\$(P)OutTBUV10", "$(EVR):RearUniv10", "TBUV 10"}
-{"\$(P)OutTBUV11", "$(EVR):RearUniv11", "TBUV 11"}
-{"\$(P)OutTBUV12", "$(EVR):RearUniv12", "TBUV 12"}
-{"\$(P)OutTBUV13", "$(EVR):RearUniv13", "TBUV 13"}
-{"\$(P)OutTBUV14", "$(EVR):RearUniv14", "TBUV 14"}
-{"\$(P)OutTBUV15", "$(EVR):RearUniv15", "TBUV 15"}
+{"\$(P)OutFPUV0", "$(EVR):FrontUnivOut0", "FPUV 0"}
+{"\$(P)OutFPUV1", "$(EVR):FrontUnivOut1", "FPUV 1"}
+{"\$(P)OutFPUV2", "$(EVR):FrontUnivOut2", "FPUV 2"}
+{"\$(P)OutFPUV3", "$(EVR):FrontUnivOut3", "FPUV 3"}
+{"\$(P)OutFPUV4", "$(EVR):FrontUnivOut4", "FPUV 0"}
+{"\$(P)OutFPUV5", "$(EVR):FrontUnivOut5", "FPUV 5"}
+{"\$(P)OutFPUV6", "$(EVR):FrontUnivOut6", "FPUV 6 (GTX)"}
+{"\$(P)OutFPUV7", "$(EVR):FrontUnivOut7", "FPUV 7 (GTX)"}
+{"\$(P)OutFPCML0", "$(EVR):FrontUnivOut8", "FP CML 0 (GTX)"}
+{"\$(P)OutFPCML1", "$(EVR):FrontUnivOut9", "FP CML 1 (GTX)"}
+{"\$(P)OutRear0", "$(EVR):RearUniv0", "Rear 0"}
+{"\$(P)OutRear1", "$(EVR):RearUniv1", "Rear 1"}
+{"\$(P)OutRear2", "$(EVR):RearUniv2", "Rear 2"}
+{"\$(P)OutRear3", "$(EVR):RearUniv3", "Rear 3"}
+{"\$(P)OutRear4", "$(EVR):RearUniv4", "Rear 4"}
+{"\$(P)OutRear5", "$(EVR):RearUniv5", "Rear 5"}
+{"\$(P)OutRear6", "$(EVR):RearUniv6", "Rear 6"}
+{"\$(P)OutRear7", "$(EVR):RearUniv7", "Rear 7"}
+{"\$(P)OutRear8", "$(EVR):RearUniv8", "Rear 8"}
+{"\$(P)OutRear9", "$(EVR):RearUniv9", "Rear 9"}
+{"\$(P)OutRear10", "$(EVR):RearUniv10", "Rear 10"}
+{"\$(P)OutRear11", "$(EVR):RearUniv11", "Rear 11"}
+{"\$(P)OutRear12", "$(EVR):RearUniv12", "Rear 12"}
+{"\$(P)OutRear13", "$(EVR):RearUniv13", "Rear 13"}
+{"\$(P)OutRear14", "$(EVR):RearUniv14", "Rear 14"}
+{"\$(P)OutRear15", "$(EVR):RearUniv15", "Rear 15"}
 }
 
 file "mrmevroutint.db"
@@ -134,8 +134,8 @@ file "evrcml.db"
 {P, ON, OBJ, NBIT, MAX}
 {"\$(P)", "\$(P)OutFPUV06", "$(EVR):CML0", 40, 81880}
 {"\$(P)", "\$(P)OutFPUV07", "$(EVR):CML1", 40, 81880}
-{"\$(P)", "\$(P)OutFPCML00", "$(EVR):CML2", 40, 81880}
-{"\$(P)", "\$(P)OutFPCML01", "$(EVR):CML3", 40, 81880}
+{"\$(P)", "\$(P)OutFPCML0", "$(EVR):CML2", 40, 81880}
+{"\$(P)", "\$(P)OutFPCML1", "$(EVR):CML3", 40, 81880}
 }
 
 # Pulse generators w/o a prescaler set NOPS=1
@@ -493,28 +493,28 @@ file "mrmevroutdly.db"
 {pattern
 {ON, OBJ}
 # FP UNIV
-{"\$(P)OutFPUV00", "$(EVR):FrontUnivOut0"}
-{"\$(P)OutFPUV01", "$(EVR):FrontUnivOut1"}
-{"\$(P)OutFPUV02", "$(EVR):FrontUnivOut2"}
-{"\$(P)OutFPUV03", "$(EVR):FrontUnivOut3"}
-{"\$(P)OutFPUV04", "$(EVR):FrontUnivOut4"}
-{"\$(P)OutFPUV05", "$(EVR):FrontUnivOut5"}
-{"\$(P)OutFPUV06", "$(EVR):FrontUnivOut6"}
-{"\$(P)OutFPUV07", "$(EVR):FrontUnivOut7"}
-{"\$(P)OutTBUV00", "$(EVR):RearUniv0"}
-{"\$(P)OutTBUV01", "$(EVR):RearUniv1"}
-{"\$(P)OutTBUV02", "$(EVR):RearUniv2"}
-{"\$(P)OutTBUV03", "$(EVR):RearUniv3"}
-{"\$(P)OutTBUV04", "$(EVR):RearUniv4"}
-{"\$(P)OutTBUV05", "$(EVR):RearUniv5"}
-{"\$(P)OutTBUV06", "$(EVR):RearUniv6"}
-{"\$(P)OutTBUV07", "$(EVR):RearUniv7"}
-{"\$(P)OutTBUV08", "$(EVR):RearUniv8"}
-{"\$(P)OutTBUV09", "$(EVR):RearUniv9"}
-{"\$(P)OutTBUV10", "$(EVR):RearUniv10"}
-{"\$(P)OutTBUV11", "$(EVR):RearUniv11"}
-{"\$(P)OutTBUV12", "$(EVR):RearUniv12"}
-{"\$(P)OutTBUV13", "$(EVR):RearUniv13"}
-{"\$(P)OutTBUV14", "$(EVR):RearUniv14"}
-{"\$(P)OutTBUV15", "$(EVR):RearUniv15"}
+{"\$(P)OutFPUV0", "$(EVR):FrontUnivOut0"}
+{"\$(P)OutFPUV1", "$(EVR):FrontUnivOut1"}
+{"\$(P)OutFPUV2", "$(EVR):FrontUnivOut2"}
+{"\$(P)OutFPUV3", "$(EVR):FrontUnivOut3"}
+{"\$(P)OutFPUV4", "$(EVR):FrontUnivOut4"}
+{"\$(P)OutFPUV5", "$(EVR):FrontUnivOut5"}
+{"\$(P)OutFPUV6", "$(EVR):FrontUnivOut6"}
+{"\$(P)OutFPUV7", "$(EVR):FrontUnivOut7"}
+{"\$(P)OutRear0", "$(EVR):RearUniv0"}
+{"\$(P)OutRear1", "$(EVR):RearUniv1"}
+{"\$(P)OutRear2", "$(EVR):RearUniv2"}
+{"\$(P)OutRear3", "$(EVR):RearUniv3"}
+{"\$(P)OutRear4", "$(EVR):RearUniv4"}
+{"\$(P)OutRear5", "$(EVR):RearUniv5"}
+{"\$(P)OutRear6", "$(EVR):RearUniv6"}
+{"\$(P)OutRear7", "$(EVR):RearUniv7"}
+{"\$(P)OutRear8", "$(EVR):RearUniv8"}
+{"\$(P)OutRear9", "$(EVR):RearUniv9"}
+{"\$(P)OutRear10", "$(EVR):RearUniv10"}
+{"\$(P)OutRear11", "$(EVR):RearUniv11"}
+{"\$(P)OutRear12", "$(EVR):RearUniv12"}
+{"\$(P)OutRear13", "$(EVR):RearUniv13"}
+{"\$(P)OutRear14", "$(EVR):RearUniv14"}
+{"\$(P)OutRear15", "$(EVR):RearUniv15"}
 }
