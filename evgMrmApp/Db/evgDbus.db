@@ -179,9 +179,19 @@ record(mbbo, "$(P)Src2-Sel") {
   field(ZRST, "Off")
   field(ONST, "Front2")
   field(TWST, "Rear0")
+  field(THST, "Univ11")
+  field(FRST, "Univ12")
+  field(FVST, "Univ13")
+  field(SXST, "Univ14")
+  field(SVST, "Univ15")
   field(ZRVL, "0")
   field(ONVL, "1")
   field(TWVL, "2")
+  field(THVL, "4")
+  field(FRVL, "8")
+  field(FVVL, "16")
+  field(SXVL, "32")
+  field(SVVL, "64")
   field(THSV, "INVALID")
   field(FRSV, "INVALID")
   field(FVSV, "INVALID")
@@ -425,6 +435,56 @@ record(bo, "$(P)Src$(s=:)UnivInp10-Sel") {
   field(ONAM, "Set")
   field(OMSL, "closed_loop")
   field(DOL,  "$(P)Src-MbbiDir_.BC CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp11-Sel") {
+  field(DESC, "Front Univ Input11 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp11")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B2 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp12-Sel") {
+  field(DESC, "Front Univ Input12 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp12")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B3 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp13-Sel") {
+  field(DESC, "Front Univ Input13 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp13")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B4 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp14-Sel") {
+  field(DESC, "Front Univ Input14 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp14")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B5 CP")
+}
+
+record(bo, "$(P)Src$(s=:)UnivInp15-Sel") {
+  field(DESC, "Front Univ Input15 on Dbus")
+  field(DTYP, "EVG Dbus")
+  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp15")
+  field(ZNAM, "Clear")
+  field(ONAM, "Set")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(P)Src2-MbbiDir_.B6 CP")
 }
 
 record(bo, "$(P)Src$(s=:)RearInp0-Sel") {
