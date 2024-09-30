@@ -678,10 +678,18 @@ struct printreg {
     REGINFO("DataBufferControl",DataBufferControl,32),
     REGINFO("DBusSrc",          DBusSrc,          32),
     REGINFO("FPGAVersion",      FPGAVersion,      32),
+
+    REGINFO("TSControl",        TSControl,        32),
+    REGINFO("TSValue",          TSValue,          32),
+
     REGINFO("ClockControl",     ClockControl,     32),
+    REGINFO("ClockStatus",      ClockStatus,      16),
+
     REGINFO("SeqControl(0)",    SeqControl(0),    32),
     REGINFO("SeqControl(1)",    SeqControl(1),    32),
+
     REGINFO("FracSynthWord",    FracSynthWord,    32),
+    REGINFO("RxInitPS",         RxInitPS,         32),
 
     REGINFO("TrigEventCtrl(0)", TrigEventCtrl(0), 32),
     REGINFO("TrigEventCtrl(1)", TrigEventCtrl(1), 32),
