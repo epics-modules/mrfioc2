@@ -37,7 +37,7 @@ record(bo, "$(P)EnaMxcr-Sel") {
   field(OUT , "@OBJ=$(OBJ), PROP=Hw Reset MXC")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
-  field(FLNK, "$(P)EnaIrq-RB")
+  field(FLNK, "$(P)EnaMxcr-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
