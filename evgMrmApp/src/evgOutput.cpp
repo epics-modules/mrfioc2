@@ -3,9 +3,9 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <mrfCommonIO.h> 
-#include <errlog.h> 
-#include <mrfCommon.h> 
+#include <mrfCommonIO.h>
+#include <errlog.h>
+#include <mrfCommon.h>
 
 #include "evgRegMap.h"
 
@@ -15,7 +15,7 @@ mrf::ObjectInst<evgOutput>(name),
 m_num(num),
 m_type(type),
 m_pOutReg(pOutReg) {
-    switch(m_type) {        
+    switch(m_type) {
         case(FrontOut):
             if(m_num >= evgNumFrontOut)
                 throw std::runtime_error("EVG Front panel output ID out of range");
@@ -24,6 +24,16 @@ m_pOutReg(pOutReg) {
         case(UnivOut):
             if(m_num >= evgNumUnivOut)
                 throw std::runtime_error("EVG Universal output ID out of range");
+            break;
+
+        case(BackOut):
+            if(m_num >= evgNumBackOut)
+                throw std::runtime_error("EVG Backplane output ID out of range");
+            break;
+
+        case(RearOut):
+            if(m_num >= evgNumRearOut)
+                throw std::runtime_error("EVG TB (rear) output ID out of range");
             break;
 
         default:

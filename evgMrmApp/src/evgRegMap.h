@@ -212,13 +212,25 @@
 #define  U16_FrontOutMap(n)        (U16_FrontOutMap_base + (2*(n)))
 
 //=====================
-// Front Panel Universal Output Mapping Register Array
+// Backplane Output Mapping Register Array
 //
-#define  U16_UnivOutMap_base    0x0440  // Front Univ Output Mapping Register
+#define  U16_BackOutMap_base      0x0424  // Backplane Output Port Mapping Register Offset
+#define  U16_BackOutMap(n)        (U16_BackOutMap_base + (2*(n)))
+
+//=====================
+// Universal Output Mapping Register Array
+//
+#define  U16_UnivOutMap_base    0x0440  // Universal Output Mapping Register
 #define  U16_UnivOutMap(n)      (U16_UnivOutMap_base + (2*(n)))
 
 //=====================
-// Front Panel Input Mapping Registers 
+// Transition Board Output Mapping Register Array
+//
+#define  U16_RearOutMap_base    0x0480  // Transition Board Output Mapping Register
+#define  U16_RearOutMap(n)      (U16_RearOutMap_base + (2*(n)))
+
+//=====================
+// Front Panel Input Mapping Registers
 //
 #define  U32_FrontInMap_base       0x0500  // Front Input Port Mapping Register
 #define  U32_FrontInMap(n)         (U32_FrontInMap_base + (4*(n)))
@@ -229,6 +241,11 @@
 #define  U32_UnivInMap_base     0x0540  // Front Univ Input Port Mapping Register
 #define  U32_UnivInMap(n)       (U32_UnivInMap_base + (4*(n)))
 
+//=====================
+// Backplane Input Mapping Registers
+//
+#define  U32_BackInMap_base     0x0580 // Backplane Input Port Mapping Register
+#define  U32_BackInMap(n)       (U32_BackInMap_base + (4*(n)))
 
 //=====================
 // Rear Universal Input Mapping Registers
@@ -300,7 +317,7 @@
 
 #define  EVG_EXT_INP_IRQ_ENA    0x01000000
 #define  EVG_INP_FP_ENA         0x0F000000
-#define  EVG_INP_FP_ENA_shift   24 
+#define  EVG_INP_FP_ENA_shift   24
 #define  EVG_INP_FP_MASK        0xF0000000
 #define  EVG_INP_FP_MASK_shift  28
 #define  EVG_INP_MXCR_ENA       0x00008000
@@ -314,6 +331,8 @@
 #define evgNumDbusBit 8
 #define evgNumFrontOut 6
 #define evgNumUnivOut 4
+#define evgNumBackOut 8
+#define evgNumRearOut 16
 #define evgNumSeqRam 2
 #define evgAllowedTsGitter 0.5f
 #define evgEndOfSeqBuf 5

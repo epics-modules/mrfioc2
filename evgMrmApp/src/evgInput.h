@@ -14,7 +14,8 @@ enum InputType {
     NoneInp = 0,
     FrontInp,
     UnivInp,
-    RearInp
+    RearInp,
+    BackInp
 };
 
 class evgInput : public mrf::ObjectInst<evgInput> {
