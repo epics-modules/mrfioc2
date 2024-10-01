@@ -214,7 +214,7 @@
 //=====================
 // Backplane Output Mapping Register Array
 //
-#define  U16_BackOutMap_base      0x0424  // Backplane Output Port Mapping Register Offset
+#define  U16_BackOutMap_base      0x0420  // Backplane Output Port Mapping Register Offset
 #define  U16_BackOutMap(n)        (U16_BackOutMap_base + (2*(n)))
 
 //=====================
