@@ -516,19 +516,25 @@ printregisters(volatile epicsUInt8 *evr,epicsUInt32 len)
 
         switch(printreg[reg].rsize){
         case 8:
-            printf("%9s: %02x\n",
-                   printreg[reg].label,
-                   ioread8(evr+printreg[reg].offset));
+            printf("0x%05x %02x %-9s\n",
+                printreg[reg].offset,
+                ioread8(evr+printreg[reg].offset),
+                printreg[reg].label
+                );
             break;
         case 16:
-            printf("%9s: %04x\n",
-                   printreg[reg].label,
-                   nat_ioread16(evr+printreg[reg].offset));
+            printf("0x%05x %04x %-9s\n",
+                printreg[reg].offset,
+                nat_ioread16(evr+printreg[reg].offset),
+                printreg[reg].label
+                );
             break;
         case 32:
-            printf("%9s: %08x\n",
-                   printreg[reg].label,
-                   nat_ioread32(evr+printreg[reg].offset));
+            printf("0x%05x %08x %-9s\n",
+                printreg[reg].offset,
+                nat_ioread32(evr+printreg[reg].offset),
+                printreg[reg].label
+                );
             break;
         }
     }
