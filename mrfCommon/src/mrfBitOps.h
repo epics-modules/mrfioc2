@@ -32,4 +32,7 @@
 #define BITFLIP(ord,len,base,offset,mask) \
         ord ## _WRITE ## len(base,offset, (ord ## _READ ## len(base,offset) ^ (epicsUInt ## len)(mask)))
 
+// Get U16 address
+#define U16_REG(base, no) (base + (2 * (no)))
+
 #endif /* MRFBITOPS_H */
