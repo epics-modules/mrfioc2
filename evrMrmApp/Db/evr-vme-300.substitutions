@@ -132,8 +132,8 @@ file "mrmevroutint.db"
 file "evrcml.db"
 {pattern
 {P, ON, OBJ, NBIT, MAX}
-{"\$(P)", "\$(P)OutFPUV06", "$(EVR):CML0", 40, 81880}
-{"\$(P)", "\$(P)OutFPUV07", "$(EVR):CML1", 40, 81880}
+{"\$(P)", "\$(P)OutFPUV6", "$(EVR):CML0", 40, 81880}
+{"\$(P)", "\$(P)OutFPUV7", "$(EVR):CML1", 40, 81880}
 {"\$(P)", "\$(P)OutFPCML0", "$(EVR):CML2", 40, 81880}
 {"\$(P)", "\$(P)OutFPCML1", "$(EVR):CML3", 40, 81880}
 }
