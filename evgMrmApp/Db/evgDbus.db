@@ -293,8 +293,20 @@ record(mbbo, "$(P)Map-Sel") {
 #
 record(mbbiDirect, "$(P)Src-MbbiDir_") {
   field(ASG, "private")
-  field(DESC, "EVG Trig Evt Trig")
+  field(DESC, "EVG Dbus source")
   field(INP,  "$(P)Src-Sel.RVAL CP")
+}
+
+record(mbbiDirect, "$(P)Src1-MbbiDir_") {
+  field(ASG, "private")
+  field(DESC, "EVG Dbus source 1")
+  field(INP,  "$(P)Src1-Sel.RVAL CP")
+}
+
+record(mbbiDirect, "$(P)Src2-MbbiDir_") {
+  field(ASG, "private")
+  field(DESC, "EVG Dbus source 2")
+  field(INP,  "$(P)Src2-Sel.RVAL CP")
 }
 
 record(bo, "$(P)Src$(s=:)FrontInp0-Sel") {
