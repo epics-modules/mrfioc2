@@ -63,7 +63,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
   field(FFVL, "16384")
   field(UNSV, "INVALID")
   field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)TrigSrc-MbbiDir_")
+  #field(FLNK, "$(P)TrigSrc-MbbiDir_")
   field(FLNK, "$(P)TrigSrc-SQ_")
   info(autosaveFields_pass0, "VAL")
 }
@@ -617,11 +617,32 @@ record(bo, "$(P)TrigSrc$(s=:)RearInp15-Sel") {
 # "supervisory" mode. In order to select multiple sources use directly *TrigSrc*
 # records bypassing the TrigSrc-Sel record.
 #
-record(dfanout, "$(P)Omsl-FOut") {
+
+record(bo, "$(P)Omsl-Sel") {
+  field(DESC, "Multiple sources")
   field(PINI, "YES")
   field(VAL,  "1")
   field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(ZNAM, "supervisory")
+  field(ONAM, "closed_loop")
+  field(OUT,  "$(P)Omsl-FOut_ PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(dfanout, "$(P)Omsl-FOut_") {
+  field(ASG, "private")
+  field(OMSL, "closed_loop")
+  field(OUTA, "$(P)Omsl0-FOut_ PP")
+  field(OUTB, "$(P)Omsl1-FOut_ PP")
+  field(OUTC, "$(P)Omsl2-FOut_ PP")
+  field(OUTD, "$(P)Omsl3-FOut_ PP")
+  field(OUTE, "$(P)Omsl4-FOut_ PP")
+  field(OUTF, "$(P)Omsl5-FOut_ PP")
+}
+
+record(dfanout, "$(P)Omsl0-FOut_") {
+  field(ASG, "private")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)TrigSrc$(s=:)Mxc0-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)Mxc1-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)Mxc2-Sel.OMSL")
@@ -630,14 +651,11 @@ record(dfanout, "$(P)Omsl-FOut") {
   field(OUTF, "$(P)TrigSrc$(s=:)Mxc5-Sel.OMSL")
   field(OUTG, "$(P)TrigSrc$(s=:)Mxc6-Sel.OMSL")
   field(OUTH, "$(P)TrigSrc$(s=:)Mxc7-Sel.OMSL")
-  field(FLNK, "$(P)Omsl$(s=:)Cont-FOut_")
-  info(autosaveFields_pass0, "VAL")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
+record(dfanout, "$(P)Omsl1-FOut_") {
   field(ASG, "private")
   field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Omsl-FOut")
   field(OUTA, "$(P)TrigSrc$(s=:)AC-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)FrontInp0-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)FrontInp1-Sel.OMSL")
@@ -646,13 +664,11 @@ record(dfanout, "$(P)Omsl$(s=:)Cont-FOut_") {
   field(OUTF, "$(P)TrigSrc$(s=:)UnivInp1-Sel.OMSL")
   field(OUTG, "$(P)TrigSrc$(s=:)UnivInp2-Sel.OMSL")
   field(OUTH, "$(P)TrigSrc$(s=:)UnivInp3-Sel.OMSL")
-  field(FLNK, "$(P)Omsl$(s=:)Cont1-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
+record(dfanout, "$(P)Omsl2-FOut_") {
   field(ASG, "private")
   field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Omsl-FOut")
   field(OUTA, "$(P)TrigSrc$(s=:)UnivInp4-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)UnivInp5-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)UnivInp6-Sel.OMSL")
@@ -661,13 +677,11 @@ record(dfanout, "$(P)Omsl$(s=:)Cont1-FOut_") {
   field(OUTF, "$(P)TrigSrc$(s=:)UnivInp9-Sel.OMSL")
   field(OUTG, "$(P)TrigSrc$(s=:)UnivInp10-Sel.OMSL")
   field(OUTH, "$(P)TrigSrc$(s=:)UnivInp11-Sel.OMSL")
-  field(FLNK, "$(P)Omsl$(s=:)Cont2-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
+record(dfanout, "$(P)Omsl3-FOut_") {
   field(ASG, "private")
   field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Omsl-FOut")
   field(OUTA, "$(P)TrigSrc$(s=:)UnivInp12-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)UnivInp13-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)UnivInp14-Sel.OMSL")
@@ -676,13 +690,11 @@ record(dfanout, "$(P)Omsl$(s=:)Cont2-FOut_") {
   field(OUTF, "$(P)TrigSrc$(s=:)RearInp1-Sel.OMSL")
   field(OUTG, "$(P)TrigSrc$(s=:)RearInp2-Sel.OMSL")
   field(OUTH, "$(P)TrigSrc$(s=:)RearInp3-Sel.OMSL")
-  field(FLNK, "$(P)Omsl$(s=:)Cont3-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont3-FOut_") {
+record(dfanout, "$(P)Omsl4-FOut_") {
   field(ASG, "private")
   field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Omsl-FOut")
   field(OUTA, "$(P)TrigSrc$(s=:)RearInp4-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)RearInp5-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)RearInp6-Sel.OMSL")
@@ -691,13 +703,11 @@ record(dfanout, "$(P)Omsl$(s=:)Cont3-FOut_") {
   field(OUTF, "$(P)TrigSrc$(s=:)RearInp9-Sel.OMSL")
   field(OUTG, "$(P)TrigSrc$(s=:)RearInp10-Sel.OMSL")
   field(OUTH, "$(P)TrigSrc$(s=:)RearInp11-Sel.OMSL")
-  field(FLNK, "$(P)Omsl$(s=:)Cont4-FOut_")
 }
 
-record(dfanout, "$(P)Omsl$(s=:)Cont4-FOut_") {
+record(dfanout, "$(P)Omsl5-FOut_") {
   field(ASG, "private")
   field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Omsl-FOut")
   field(OUTA, "$(P)TrigSrc$(s=:)RearInp12-Sel.OMSL")
   field(OUTB, "$(P)TrigSrc$(s=:)RearInp13-Sel.OMSL")
   field(OUTC, "$(P)TrigSrc$(s=:)RearInp14-Sel.OMSL")

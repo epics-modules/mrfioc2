@@ -665,24 +665,30 @@ record(bo, "$(P)Src$(s=:)RearInp15-Sel") {
 # multiple sources then the OMSL field for the *Src* records should be
 # "supervisory" mode.
 #
-record(dfanout, "$(P)Omsl-FOut") {
+
+record(bo, "$(P)Omsl-Sel") {
+  field(DESC, "Multiple sources")
   field(PINI, "YES")
   field(VAL,  "1")
   field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(ZNAM, "supervisory")
+  field(ONAM, "closed_loop")
+  field(OUT,  "$(P)Omsl-FOut_ PP")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(dfanout, "$(P)Omsl-FOut_") {
+  field(ASG, "private")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)Omsl0-FOut_ PP")
   field(OUTB, "$(P)Omsl1-FOut_ PP")
   field(OUTC, "$(P)Omsl2-FOut_ PP")
   field(OUTD, "$(P)Omsl3-FOut_ PP")
-  info(autosaveFields_pass0, "VAL")
 }
 
 record(dfanout, "$(P)Omsl0-FOut_") {
   field(ASG, "private")
-  #field(PINI, "YES")
-  field(VAL,  "1")
-  field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)Src$(s=:)FrontInp0-Sel.OMSL")
   field(OUTB, "$(P)Src$(s=:)FrontInp1-Sel.OMSL")
   field(OUTC, "$(P)Src$(s=:)UnivInp0-Sel.OMSL")
@@ -695,10 +701,7 @@ record(dfanout, "$(P)Omsl0-FOut_") {
 
 record(dfanout, "$(P)Omsl1-FOut_") {
   field(ASG, "private")
-  #field(PINI, "YES")
-  field(VAL,  "1")
-  field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)Src$(s=:)UnivInp6-Sel.OMSL")
   field(OUTB, "$(P)Src$(s=:)UnivInp7-Sel.OMSL")
   field(OUTC, "$(P)Src$(s=:)UnivInp8-Sel.OMSL")
@@ -709,10 +712,7 @@ record(dfanout, "$(P)Omsl1-FOut_") {
 
 record(dfanout, "$(P)Omsl2-FOut_") {
   field(ASG, "private")
-  #field(PINI, "YES")
-  field(VAL,  "1")
-  field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)Src$(s=:)RearInp0-Sel.OMSL")
   field(OUTB, "$(P)Src$(s=:)RearInp1-Sel.OMSL")
   field(OUTC, "$(P)Src$(s=:)RearInp2-Sel.OMSL")
@@ -725,10 +725,7 @@ record(dfanout, "$(P)Omsl2-FOut_") {
 
 record(dfanout, "$(P)Omsl3-FOut_") {
   field(ASG, "private")
-  #field(PINI, "YES")
-  field(VAL,  "1")
-  field(UDF,  "0")
-  field(OMSL, "supervisory")
+  field(OMSL, "closed_loop")
   field(OUTA, "$(P)Src$(s=:)RearInp8-Sel.OMSL")
   field(OUTB, "$(P)Src$(s=:)RearInp9-Sel.OMSL")
   field(OUTC, "$(P)Src$(s=:)RearInp10-Sel.OMSL")
