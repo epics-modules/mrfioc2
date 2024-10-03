@@ -310,6 +310,7 @@ record(mbbiDirect, "$(P)Src2-MbbiDir_") {
 }
 
 record(bo, "$(P)SrcFrontInp0-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Input0 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp0")
@@ -320,6 +321,7 @@ record(bo, "$(P)SrcFrontInp0-Sel") {
 }
 
 record(bo, "$(P)SrcFrontInp1-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Input1 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp1")
@@ -330,6 +332,7 @@ record(bo, "$(P)SrcFrontInp1-Sel") {
 }
 
 record(bo, "$(P)SrcFrontInp2-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Input1 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp2")
@@ -340,6 +343,7 @@ record(bo, "$(P)SrcFrontInp2-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp0-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input0 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp0")
@@ -350,6 +354,7 @@ record(bo, "$(P)SrcUnivInp0-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp1-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input1 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp1")
@@ -360,6 +365,7 @@ record(bo, "$(P)SrcUnivInp1-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp2-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input2 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp2")
@@ -370,6 +376,7 @@ record(bo, "$(P)SrcUnivInp2-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp3-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input3 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp3")
@@ -380,6 +387,7 @@ record(bo, "$(P)SrcUnivInp3-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp4-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input4 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp4")
@@ -390,6 +398,7 @@ record(bo, "$(P)SrcUnivInp4-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp5-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input5 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp5")
@@ -400,6 +409,7 @@ record(bo, "$(P)SrcUnivInp5-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp6-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input6 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp6")
@@ -410,6 +420,7 @@ record(bo, "$(P)SrcUnivInp6-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp7-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input7 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp7")
@@ -420,6 +431,7 @@ record(bo, "$(P)SrcUnivInp7-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp8-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input8 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp8")
@@ -430,6 +442,7 @@ record(bo, "$(P)SrcUnivInp8-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp9-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input9 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp9")
@@ -440,6 +453,7 @@ record(bo, "$(P)SrcUnivInp9-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp10-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input10 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp10")
@@ -450,6 +464,7 @@ record(bo, "$(P)SrcUnivInp10-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp11-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input11 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp11")
@@ -460,6 +475,7 @@ record(bo, "$(P)SrcUnivInp11-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp12-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input12 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp12")
@@ -470,6 +486,7 @@ record(bo, "$(P)SrcUnivInp12-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp13-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input13 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp13")
@@ -480,6 +497,7 @@ record(bo, "$(P)SrcUnivInp13-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp14-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input14 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp14")
@@ -490,6 +508,7 @@ record(bo, "$(P)SrcUnivInp14-Sel") {
 }
 
 record(bo, "$(P)SrcUnivInp15-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Univ Input15 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp15")
@@ -500,6 +519,7 @@ record(bo, "$(P)SrcUnivInp15-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp0-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input0 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp0")
@@ -510,6 +530,7 @@ record(bo, "$(P)SrcRearInp0-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp1-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input1 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp1")
@@ -520,6 +541,7 @@ record(bo, "$(P)SrcRearInp1-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp2-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input2 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp2")
@@ -530,6 +552,7 @@ record(bo, "$(P)SrcRearInp2-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp3-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input3 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp3")
@@ -540,6 +563,7 @@ record(bo, "$(P)SrcRearInp3-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp4-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input4 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp4")
@@ -550,6 +574,7 @@ record(bo, "$(P)SrcRearInp4-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp5-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input5 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp5")
@@ -560,6 +585,7 @@ record(bo, "$(P)SrcRearInp5-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp6-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input6 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp6")
@@ -570,6 +596,7 @@ record(bo, "$(P)SrcRearInp6-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp7-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input7 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp7")
@@ -580,6 +607,7 @@ record(bo, "$(P)SrcRearInp7-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp8-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input8 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp8")
@@ -590,6 +618,7 @@ record(bo, "$(P)SrcRearInp8-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp9-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input9 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp9")
@@ -600,6 +629,7 @@ record(bo, "$(P)SrcRearInp9-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp10-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input10 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp10")
@@ -610,6 +640,7 @@ record(bo, "$(P)SrcRearInp10-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp11-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input11 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp11")
@@ -620,6 +651,7 @@ record(bo, "$(P)SrcRearInp11-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp12-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input12 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp12")
@@ -630,6 +662,7 @@ record(bo, "$(P)SrcRearInp12-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp13-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input13 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp13")
@@ -640,6 +673,7 @@ record(bo, "$(P)SrcRearInp13-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp14-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input14 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp14")
@@ -650,6 +684,7 @@ record(bo, "$(P)SrcRearInp14-Sel") {
 }
 
 record(bo, "$(P)SrcRearInp15-Sel") {
+  field(ASG, "private")
   field(DESC, "Front Rear Input15 on Dbus")
   field(DTYP, "EVG Dbus")
   field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp15")
