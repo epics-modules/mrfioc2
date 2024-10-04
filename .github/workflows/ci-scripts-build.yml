@@ -127,6 +127,17 @@ jobs:
         sudo apt-get update
         sudo apt-get -y install g++-${{ matrix.utoolchain }}
       if: matrix.utoolchain
+      # The job can be removed once https://github.com/epics-base/ci-scripts/issues/96 is solved
+    - name: "Link /home/travis/.rtems"
+      run: |
+        if [ ! -d "/home/travis/.rtems" ]; then
+          sudo mkdir -p /home/travis
+          sudo chown $USER: /home/travis
+          ln -s /opt/rtems/$RTEMS /home/travis/.rtems
+        else
+          echo "Directory /home/travis/.rtems already exists. Skipping creation."
+        fi
+      if: env.RTEMS
     - name: Prepare and compile dependencies
       run: python .ci/cue.py prepare
     - name: Build main module
