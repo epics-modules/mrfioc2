@@ -10,32 +10,32 @@ name: EPICS driver
 on:
   push:
     paths-ignore:
-      - 'mrmShared/linux/**'
-      - 'documentation/**'
-      - 'python/**'
-      - '**/*.md'
+      - "mrmShared/linux/**"
+      - "documentation/**"
+      - "python/**"
+      - "**/*.md"
   pull_request:
     paths-ignore:
-      - 'mrmShared/linux/**'
-      - 'documentation/**'
-      - 'python/**'
-      - '**/*.md'
+      - "mrmShared/linux/**"
+      - "documentation/**"
+      - "python/**"
+      - "**/*.md"
   workflow_dispatch:
 
 env:
-    SETUP_PATH: .ci-local:.ci
-    EPICS_TEST_IMPRECISE_TIMING: YES
+  SETUP_PATH: .ci-local:.ci
+  EPICS_TEST_IMPRECISE_TIMING: YES
 
 jobs:
   build-base:
-    name: ${{ matrix.base }}/${{ matrix.os }}/${{ matrix.cmp }}/${{ matrix.configuration }}${{ matrix.rtems }}/${{ matrix.extra }}
+    name: ${{ matrix.base }} ${{ matrix.os }} ${{ matrix.cmp }} ${{ matrix.configuration }} ${{ matrix.cross }} ${{ matrix.extra }}
     runs-on: ${{ matrix.os }}
     # Set environment variables from matrix parameters
     env:
       BASE: ${{ matrix.base }}
       CMP: ${{ matrix.cmp }}
       BCFG: ${{ matrix.configuration }}
-      RTEMS: ${{ matrix.rtems }}
+      CI_CROSS_TARGETS: ${{ matrix.cross }}
       EXTRA: ${{ matrix.extra }}
       TEST: ${{ matrix.test }}
     strategy:
@@ -45,13 +45,7 @@ jobs:
           - os: ubuntu-20.04
             cmp: gcc
             configuration: default
-            base: "7.0"
-            wine: "64"
-
-          - os: ubuntu-20.04
-            cmp: gcc
-            configuration: static
-            base: "7.0"
+            base: "3.14"
 
           - os: ubuntu-20.04
             cmp: gcc
@@ -61,7 +55,13 @@ jobs:
           - os: ubuntu-20.04
             cmp: gcc
             configuration: default
-            base: "3.14"
+            base: "7.0"
+            #wine: "64"
+
+          - os: ubuntu-20.04
+            cmp: gcc
+            configuration: static
+            base: "7.0"
 
           - os: ubuntu-20.04
             cmp: gcc
@@ -70,6 +70,22 @@ jobs:
             extra: "CMD_CXXFLAGS=-std=c++11"
 
           - os: ubuntu-20.04
+            cmp: gcc-8
+            utoolchain: "8"
+            configuration: default
+            base: "7.0"
+
+          - os: ubuntu-latest
+            cmp: gcc
+            configuration: default
+            base: "7.0"
+
+          - os: ubuntu-20.04
+            cmp: clang
+            configuration: default
+            base: "7.0"
+
+          - os: ubuntu-20.04
             cmp: clang
             configuration: default
             base: "7.0"
@@ -79,59 +95,43 @@ jobs:
             cmp: gcc
             configuration: default
             base: "7.0"
-            rtems: "4.10"
+            cross: "RTEMS-pc386-qemu@4.10"
 
           - os: ubuntu-20.04
             cmp: gcc
             configuration: default
             base: "7.0"
-            rtems: "4.9"
-
-          - os: ubuntu-20.04
-            cmp: gcc-8
-            utoolchain: "8"
-            configuration: default
-            base: "7.0"
-
-          - os: ubuntu-20.04
-            cmp: clang
-            configuration: default
-            base: "7.0"
-
-          - os: ubuntu-latest
-            cmp: gcc
-            configuration: default
-            base: "7.0"
+            cross: "RTEMS-pc386-qemu@4.9"
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-    - name: Cache Dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache
-        key: ${{ matrix.base }}/${{ matrix.os }}/${{ matrix.cmp }}/${{ matrix.configuration }}/${{ matrix.wine }}${{ matrix.rtems }}/${{ matrix.extra }}
-    - name: Automatic core dump analysis
-      uses: mdavidsaver/ci-core-dumper@master
-    - name: "apt-get install"
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install qemu-system-x86 g++-mingw-w64-x86-64 gdb
-      if: runner.os == 'Linux'
-    - name: "apt-get install ${{ matrix.cmp }}"
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install software-properties-common
-        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get -y install g++-${{ matrix.utoolchain }}
-      if: matrix.utoolchain
-    - name: Prepare and compile dependencies
-      run: python .ci/cue.py prepare
-    - name: Build main module
-      run: python .ci/cue.py build
-    - name: Run main module tests
-      run: python .ci/cue.py test
-    - name: Collect and show test results
-      run: python .ci/cue.py test-results
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache
+          key: ${{ matrix.base }} ${{ matrix.os }} ${{ matrix.cmp }} ${{ matrix.configuration }} ${{ matrix.cross }} ${{ matrix.extra }}
+      - name: Automatic core dump analysis
+        uses: mdavidsaver/ci-core-dumper@master
+      - name: "apt-get install"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install qemu-system-x86 g++-mingw-w64-x86-64 gdb
+        if: runner.os == 'Linux'
+      - name: "apt-get install ${{ matrix.cmp }}"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install software-properties-common
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get -y install g++-${{ matrix.utoolchain }}
+        if: matrix.utoolchain
+      - name: Prepare and compile dependencies
+        run: python .ci/cue.py prepare
+      - name: Build main module
+        run: python .ci/cue.py build
+      - name: Run main module tests
+        run: python .ci/cue.py test
+      - name: Collect and show test results
+        run: python .ci/cue.py test-results
