@@ -14,12 +14,14 @@ on:
       - "documentation/**"
       - "python/**"
       - "**/*.md"
+      - "opi/**"
   pull_request:
     paths-ignore:
       - "mrmShared/linux/**"
       - "documentation/**"
       - "python/**"
       - "**/*.md"
+      - "opi/**"
   workflow_dispatch:
 
 env:
@@ -28,7 +30,7 @@ env:
 
 jobs:
   build-base:
-    name: ${{ matrix.base }} ${{ matrix.os }} ${{ matrix.cmp }} ${{ matrix.configuration }} ${{ matrix.cross }} ${{ matrix.extra }}
+    name: "${{ matrix.base }}_${{ matrix.os }}_${{ matrix.cmp }}_${{ matrix.configuration }}_${{ matrix.cross }}_${{ matrix.extra }}"
     runs-on: ${{ matrix.os }}
     # Set environment variables from matrix parameters
     env:
@@ -111,7 +113,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache
-          key: ${{ matrix.base }} ${{ matrix.os }} ${{ matrix.cmp }} ${{ matrix.configuration }} ${{ matrix.cross }} ${{ matrix.extra }}
+          key: "${{ matrix.base }}_${{ matrix.os }}_${{ matrix.cmp }}_${{ matrix.configuration }}_${{ matrix.cross }}_${{ matrix.extra }}"
+      - name: Cross Dependencies
+        uses: actions/cache@v4
+        with:
+          path: /opt/rtems
+          key: "${{ matrix.base }}_${{ matrix.os }}_${{ matrix.cmp }}_${{ matrix.configuration }}_${{ matrix.cross }}_${{ matrix.extra }}"
+        if: matrix.cross
       - name: Automatic core dump analysis
         uses: mdavidsaver/ci-core-dumper@master
       - name: "apt-get install"
