@@ -1,7 +1,15 @@
 # Sets the relevant support.
 
+# Global
+*       @mdavidsaver @jerzyjamroz @gabrielfedel
+
 # Univ naming convention
 *.uv.substitutions @jerzyjamroz
 
+# Substitutions
 evr-mtca-300rf.substitutions @zioven
 evr-mtca-300u.substitutions @zioven
+*vme-300*.substitutions @hongran
+
+# OPI-s
+/opi/ @agaget
