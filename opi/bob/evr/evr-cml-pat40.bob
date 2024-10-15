@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 16:17:31 by rhong-->
 <display version="2.0.0">
   <width>641</width>
   <height>45</height>
@@ -17,14 +18,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -34,6 +35,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_1</name>
@@ -43,14 +45,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -60,6 +62,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_2</name>
@@ -69,14 +72,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -86,6 +89,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_3</name>
@@ -95,14 +99,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -112,6 +116,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_4</name>
@@ -121,14 +126,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -138,6 +143,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_5</name>
@@ -147,14 +153,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -164,6 +170,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_6</name>
@@ -173,14 +180,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -190,6 +197,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_7</name>
@@ -199,14 +207,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -216,6 +224,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_8</name>
@@ -225,14 +234,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -242,6 +251,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_9</name>
@@ -251,14 +261,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -268,6 +278,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_10</name>
@@ -277,14 +288,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -294,6 +305,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_11</name>
@@ -303,14 +315,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -320,6 +332,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_12</name>
@@ -329,14 +342,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -346,6 +359,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_13</name>
@@ -355,14 +369,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -372,6 +386,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_14</name>
@@ -381,14 +396,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -398,6 +413,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_15</name>
@@ -407,14 +423,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -424,6 +440,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_16</name>
@@ -433,14 +450,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -450,6 +467,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_17</name>
@@ -459,14 +477,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -476,6 +494,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_18</name>
@@ -485,14 +504,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -502,6 +521,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_19</name>
@@ -511,14 +531,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -528,6 +548,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_20</name>
@@ -537,14 +558,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -554,6 +575,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_21</name>
@@ -563,14 +585,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -580,6 +602,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_22</name>
@@ -589,14 +612,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -606,6 +629,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_23</name>
@@ -615,14 +639,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -632,6 +656,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_24</name>
@@ -641,14 +666,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -658,6 +683,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_25</name>
@@ -667,14 +693,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -684,6 +710,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_26</name>
@@ -693,14 +720,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -710,6 +737,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_27</name>
@@ -719,14 +747,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -736,6 +764,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_28</name>
@@ -745,14 +774,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -762,6 +791,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_29</name>
@@ -771,14 +801,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -788,6 +818,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_30</name>
@@ -797,14 +828,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -814,6 +845,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_31</name>
@@ -823,14 +855,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -840,6 +872,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_32</name>
@@ -849,14 +882,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -866,6 +899,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_33</name>
@@ -875,14 +909,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -892,6 +926,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_34</name>
@@ -901,14 +936,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -918,6 +953,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_35</name>
@@ -927,14 +963,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -944,6 +980,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_36</name>
@@ -953,14 +990,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -970,6 +1007,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_37</name>
@@ -979,14 +1017,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -996,6 +1034,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_38</name>
@@ -1005,14 +1044,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -1022,6 +1061,7 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button_39</name>
@@ -1031,14 +1071,14 @@
     <y>12</y>
     <width>17</width>
     <height>33</height>
-    <off_label />
+    <off_label></off_label>
     <off_color>
-      <color name="Text" red="0" green="0" blue="0">
+      <color name="Off" red="60" green="100" blue="60">
       </color>
     </off_color>
-    <on_label />
+    <on_label></on_label>
     <on_color>
-      <color red="0" green="0" blue="0">
+      <color name="On" red="0" green="255" blue="0">
       </color>
     </on_color>
     <show_led>false</show_led>
@@ -1048,11 +1088,12 @@
     </background_color>
     <actions>
     </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>3</x>
     <width>11</width>
@@ -1074,7 +1115,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_1</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>83</x>
     <width>11</width>
@@ -1096,7 +1137,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_2</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>163</x>
     <width>11</width>
@@ -1118,7 +1159,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_3</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>243</x>
     <width>11</width>
@@ -1140,7 +1181,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_4</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>321</x>
     <width>11</width>
@@ -1162,7 +1203,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_5</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>401</x>
     <width>11</width>
@@ -1184,7 +1225,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_6</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>481</x>
     <width>11</width>
@@ -1206,7 +1247,7 @@ $(pv_value)</tooltip>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_7</name>
     <macros>
-      <pv_name />
+      <pv_name></pv_name>
     </macros>
     <x>561</x>
     <width>11</width>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 15:54:05 by rhong-->
+<display version="2.0.0">
+  <name>evg_trigevt</name>
+  <width>435</width>
+  <height>20</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>DBus$(N)</text>
+    <width>80</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button</name>
+    <pv_name>$(P):Dbus$(N)Src-Sel</pv_name>
+    <x>80</x>
+    <width>85</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button_1</name>
+    <pv_name>$(P):Dbus$(N)Src1-Sel</pv_name>
+    <x>164</x>
+    <width>85</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button_2</name>
+    <pv_name>$(P):Dbus$(N)Src2-Sel</pv_name>
+    <x>249</x>
+    <width>85</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button</name>
+    <pv_name>$(P):Dbus$(N)Omsl-FOut</pv_name>
+    <x>334</x>
+    <height>20</height>
+    <off_label>supervisory</off_label>
+    <on_label>closed_loop</on_label>
+  </widget>
+</display>
