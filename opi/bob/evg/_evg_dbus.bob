@@ -48,7 +48,7 @@
   </widget>
   <widget type="bool_button" version="2.0.0">
     <name>Boolean Button</name>
-    <pv_name>$(P):Dbus$(N)Omsl-FOut</pv_name>
+    <pv_name>$(P):Dbus$(N)Omsl-Sel</pv_name>
     <x>334</x>
     <height>20</height>
     <off_label>supervisory</off_label>
