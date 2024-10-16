@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 15:48:59 by rhong-->
+<display version="2.0.0">
+  <name>$(TITLE) Expert</name>
+  <width>1200</width>
+  <height>1200</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="group" version="3.0.0">
+    <name>Inputs</name>
+    <x>10</x>
+    <y>40</y>
+    <width>777</width>
+    <height>812</height>
+    <style>1</style>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="128" green="128" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display</name>
+      <macros>
+        <InpLabel>Front0</InpLabel>
+        <InpLabel2>FrontInp0</InpLabel2>
+        <Name>FP0</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>20</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <text>Mxc Reset</text>
+      <x>190</x>
+      <width>90</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <text>IRQ</text>
+      <x>100</x>
+      <width>90</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <text>DBus Bits</text>
+      <x>295</x>
+      <width>150</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <text>Trig Evt Bits</text>
+      <x>455</x>
+      <width>150</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <text>SQ Mask</text>
+      <x>620</x>
+      <width>60</width>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_1</name>
+      <macros>
+        <InpLabel>Front1</InpLabel>
+        <InpLabel2>FrontInp1</InpLabel2>
+        <Name>FP1</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>60</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_2</name>
+      <macros>
+        <InpLabel>Front2</InpLabel>
+        <InpLabel2>FrontInp2</InpLabel2>
+        <Name>FP2</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>100</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_3</name>
+      <macros>
+        <InpLabel>Rear0</InpLabel>
+        <InpLabel2>RearInp0</InpLabel2>
+        <Name>Rear0</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>140</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_4</name>
+      <macros>
+        <InpLabel>Rear1</InpLabel>
+        <InpLabel2>RearInp1</InpLabel2>
+        <Name>Rear1</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>180</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_5</name>
+      <macros>
+        <InpLabel>Rear2</InpLabel>
+        <InpLabel2>RearInp2</InpLabel2>
+        <Name>Rear2</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>220</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_6</name>
+      <macros>
+        <InpLabel>Rear3</InpLabel>
+        <InpLabel2>RearInp3</InpLabel2>
+        <Name>Rear3</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>260</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_7</name>
+      <macros>
+        <InpLabel>Rear4</InpLabel>
+        <InpLabel2>RearInp4</InpLabel2>
+        <Name>Rear4</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>300</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_8</name>
+      <macros>
+        <InpLabel>Rear5</InpLabel>
+        <InpLabel2>RearInp5</InpLabel2>
+        <Name>Rear5</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>340</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_9</name>
+      <macros>
+        <InpLabel>Rear6</InpLabel>
+        <InpLabel2>RearInp6</InpLabel2>
+        <Name>Rear6</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>380</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+    <widget type="embedded" version="2.0.0">
+      <name>Embedded Display_10</name>
+      <macros>
+        <InpLabel>Rear7</InpLabel>
+        <InpLabel2>RearInp7</InpLabel2>
+        <Name>Rear7</Name>
+        <P>$(P)</P>
+      </macros>
+      <file>_evg_input_full.bob</file>
+      <y>420</y>
+      <width>700</width>
+      <height>40</height>
+    </widget>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Title800_1</name>
+    <width>800</width>
+    <height>32</height>
+    <style>3</style>
+    <foreground_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </line_color>
+    <actions>
+    </actions>
+    <widget type="label" version="2.0.0">
+      <name>Text Input</name>
+      <macros>
+        <pv_name></pv_name>
+      </macros>
+      <text>${TITLE} Ext Input Expert</text>
+      <x>10</x>
+      <width>777</width>
+      <height>32</height>
+      <font>
+        <font name="Title" family="OpenSans" style="BOLD" size="24.752475247524753">
+        </font>
+      </font>
+      <foreground_color>
+        <color name="Header_ForeGround" red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="Header_Background" red="52" green="101" blue="164">
+        </color>
+      </background_color>
+      <transparent>false</transparent>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+      <border_color>
+        <color name="Container Border Grey" red="150" green="150" blue="150">
+        </color>
+      </border_color>
+    </widget>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_11</name>
+    <macros>
+      <InpLabel>Rear8</InpLabel>
+      <InpLabel2>RearInp8</InpLabel2>
+      <Name>Rear8</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>519</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_12</name>
+    <macros>
+      <InpLabel>Rear9</InpLabel>
+      <InpLabel2>RearInp9</InpLabel2>
+      <Name>Rear9</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>559</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_13</name>
+    <macros>
+      <InpLabel>Rear10</InpLabel>
+      <InpLabel2>RearInp10</InpLabel2>
+      <Name>Rear10</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>599</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_14</name>
+    <macros>
+      <InpLabel>Rear11</InpLabel>
+      <InpLabel2>RearInp11</InpLabel2>
+      <Name>Rear11</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>639</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_15</name>
+    <macros>
+      <InpLabel>Rear12</InpLabel>
+      <InpLabel2>RearInp12</InpLabel2>
+      <Name>Rear12</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>679</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_16</name>
+    <macros>
+      <InpLabel>Rear13</InpLabel>
+      <InpLabel2>RearInp13</InpLabel2>
+      <Name>Rear13</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>719</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_17</name>
+    <macros>
+      <InpLabel>Rear14</InpLabel>
+      <InpLabel2>RearInp14</InpLabel2>
+      <Name>Rear14</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>759</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_18</name>
+    <macros>
+      <InpLabel>Rear15</InpLabel>
+      <InpLabel2>RearInp15</InpLabel2>
+      <Name>Rear15</Name>
+      <P>$(P)</P>
+    </macros>
+    <file>_evg_input_full.bob</file>
+    <x>11</x>
+    <y>799</y>
+    <width>700</width>
+    <height>40</height>
+  </widget>
+</display>

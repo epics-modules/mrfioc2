@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 15:54:34 by rhong-->
+<display version="2.0.0">
+  <name>evg_input_full</name>
+  <width>700</width>
+  <height>40</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>$(Name)</text>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button</name>
+    <pv_name>$(P):Inp$(InpLabel)EnaIrq-Sel</pv_name>
+    <x>100</x>
+    <width>90</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED</name>
+    <pv_name>$(P):Inp$(InpLabel)EnaIrq-RB</pv_name>
+    <x>103</x>
+    <y>23</y>
+    <width>15</width>
+    <height>15</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Menu Button_1</name>
+    <pv_name>$(P):Inp$(InpLabel)EnaMxcr-Sel</pv_name>
+    <x>190</x>
+    <width>90</width>
+    <height>20</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>LED_1</name>
+    <pv_name>$(P):Inp$(InpLabel)EnaMxcr-RB</pv_name>
+    <x>193</x>
+    <y>23</y>
+    <width>15</width>
+    <height>15</height>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update</name>
+    <x>774</x>
+    <y>342</y>
+    <width>1</width>
+    <height>1</height>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_3</name>
+    <pv_name>$(P):Dbus0Src$(InpLabel2)-Sel</pv_name>
+    <x>425</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_4</name>
+    <pv_name>$(P):Dbus1Src$(InpLabel2)-Sel</pv_name>
+    <x>405</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_5</name>
+    <pv_name>$(P):Dbus2Src$(InpLabel2)-Sel</pv_name>
+    <x>385</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_6</name>
+    <pv_name>$(P):Dbus3Src$(InpLabel2)-Sel</pv_name>
+    <x>365</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_7</name>
+    <pv_name>$(P):Dbus4Src$(InpLabel2)-Sel</pv_name>
+    <x>347</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_8</name>
+    <pv_name>$(P):Dbus5Src$(InpLabel2)-Sel</pv_name>
+    <x>327</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_9</name>
+    <pv_name>$(P):Dbus6Src$(InpLabel2)-Sel</pv_name>
+    <x>307</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_10</name>
+    <pv_name>$(P):Dbus7Src$(InpLabel2)-Sel</pv_name>
+    <x>287</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_1</name>
+    <text>0</text>
+    <x>427</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_2</name>
+    <text>1</text>
+    <x>407</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_3</name>
+    <text>2</text>
+    <x>387</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_4</name>
+    <text>3</text>
+    <x>367</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_5</name>
+    <text>4</text>
+    <x>347</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>5</text>
+    <x>327</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_7</name>
+    <text>6</text>
+    <x>307</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_8</name>
+    <text>7</text>
+    <x>287</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_11</name>
+    <pv_name>$(P):TrigEvt0TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>590</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_12</name>
+    <pv_name>$(P):TrigEvt1TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>570</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_13</name>
+    <pv_name>$(P):TrigEvt2TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>550</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_14</name>
+    <pv_name>$(P):TrigEvt3TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>530</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_15</name>
+    <pv_name>$(P):TrigEvt4TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>512</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_16</name>
+    <pv_name>$(P):TrigEvt5TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>492</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_17</name>
+    <pv_name>$(P):TrigEvt6TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>472</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_18</name>
+    <pv_name>$(P):TrigEvt7TrigSrc$(InpLabel2)-Sel</pv_name>
+    <x>452</x>
+    <width>20</width>
+    <height>20</height>
+    <off_label></off_label>
+    <on_label></on_label>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_9</name>
+    <text>0</text>
+    <x>592</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_10</name>
+    <text>1</text>
+    <x>572</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_11</name>
+    <text>2</text>
+    <x>552</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_12</name>
+    <text>3</text>
+    <x>532</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_13</name>
+    <text>4</text>
+    <x>512</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_14</name>
+    <text>5</text>
+    <x>492</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_15</name>
+    <text>6</text>
+    <x>472</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_16</name>
+    <text>7</text>
+    <x>452</x>
+    <y>20</y>
+    <width>20</width>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry</name>
+    <pv_name>$(P):Inp$(InpLabel)FPMask-Sel</pv_name>
+    <x>620</x>
+    <width>60</width>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="byte_monitor" version="2.0.0">
+    <name>Byte Monitor</name>
+    <pv_name>$(P):Inp$(InpLabel)FPMask-RB</pv_name>
+    <x>620</x>
+    <y>22</y>
+    <width>60</width>
+    <height>15</height>
+    <numBits>4</numBits>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+</display>

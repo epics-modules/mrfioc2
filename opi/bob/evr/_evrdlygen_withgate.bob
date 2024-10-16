@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 16:01:58 by rhong-->
+<display version="2.0.0">
+  <name>evr_dlygen</name>
+  <width>780</width>
+  <height>39</height>
+  <actions>
+  </actions>
+  <grid_step_x>6</grid_step_x>
+  <grid_step_y>6</grid_step_y>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input</name>
+    <pv_name>$(P):$(GEN)Prescaler-SP</pv_name>
+    <x>90</x>
+    <width>37</width>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_1</name>
+    <pv_name>$(P):$(GEN)Delay-SP</pv_name>
+    <x>130</x>
+    <width>80</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_2</name>
+    <pv_name>$(P):$(GEN)Width-SP</pv_name>
+    <x>230</x>
+    <width>80</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update</name>
+    <pv_name>$(P):$(GEN)Delay-SP.EGU</pv_name>
+    <x>210</x>
+    <width>20</width>
+    <height>19</height>
+    <transparent>true</transparent>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_1</name>
+    <pv_name>$(P):$(GEN)Width-SP.EGU</pv_name>
+    <x>310</x>
+    <width>20</width>
+    <height>19</height>
+    <transparent>true</transparent>
+    <show_units>false</show_units>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>$(N)</text>
+    <width>30</width>
+    <height>37</height>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_3</name>
+    <pv_name>$(P):$(GEN)EvtTrig0-SP</pv_name>
+    <x>340</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_4</name>
+    <pv_name>$(P):$(GEN)EvtTrig1-SP</pv_name>
+    <x>372</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_5</name>
+    <pv_name>$(P):$(GEN)EvtTrig2-SP</pv_name>
+    <x>404</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button</name>
+    <pv_name>$(P):$(GEN)Polarity-Sel</pv_name>
+    <bit>-1</bit>
+    <x>26</x>
+    <y>20</y>
+    <width>65</width>
+    <height>20</height>
+    <off_label>Normal</off_label>
+    <off_color>
+      <color red="0" green="255" blue="0">
+      </color>
+    </off_color>
+    <on_label>Invert</on_label>
+    <on_color>
+      <color red="0" green="0" blue="255">
+      </color>
+    </on_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_1</name>
+    <pv_name>$(P):$(GEN)Ena-Sel</pv_name>
+    <bit>-1</bit>
+    <x>26</x>
+    <width>65</width>
+    <height>20</height>
+    <off_color>
+      <color red="255" green="0" blue="0">
+      </color>
+    </off_color>
+    <on_color>
+      <color red="0" green="255" blue="0">
+      </color>
+    </on_color>
+    <actions>
+    </actions>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_6</name>
+    <pv_name>$(P):$(GEN)Label-I</pv_name>
+    <x>90</x>
+    <y>20</y>
+    <width>550</width>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <format>6</format>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_7</name>
+    <pv_name>$(P):$(GEN)EvtSet0-SP</pv_name>
+    <x>444</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_8</name>
+    <pv_name>$(P):$(GEN)EvtSet1-SP</pv_name>
+    <x>476</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_9</name>
+    <pv_name>$(P):$(GEN)EvtSet2-SP</pv_name>
+    <x>508</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_10</name>
+    <pv_name>$(P):$(GEN)EvtReset0-SP</pv_name>
+    <x>546</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_11</name>
+    <pv_name>$(P):$(GEN)EvtReset1-SP</pv_name>
+    <x>578</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_12</name>
+    <pv_name>$(P):$(GEN)EvtReset2-SP</pv_name>
+    <x>610</x>
+    <width>30</width>
+    <height>19</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <show_units>false</show_units>
+    <horizontal_alignment>2</horizontal_alignment>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Group</name>
+    <x>710</x>
+    <width>60</width>
+    <height>20</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button</name>
+      <pv_name>$(P):$(GEN)Mask-Sel.B0</pv_name>
+      <x>45</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>0</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>0</on_label>
+      <show_led>false</show_led>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_2</name>
+      <pv_name>$(P):$(GEN)Mask-Sel.B1</pv_name>
+      <x>30</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>1</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>1</on_label>
+      <show_led>false</show_led>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_3</name>
+      <pv_name>$(P):$(GEN)Mask-Sel.B2</pv_name>
+      <x>15</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>2</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>2</on_label>
+      <show_led>false</show_led>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_4</name>
+      <pv_name>$(P):$(GEN)Mask-Sel.B3</pv_name>
+      <width>15</width>
+      <height>20</height>
+      <off_label>3</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>3</on_label>
+      <show_led>false</show_led>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+  </widget>
+  <widget type="byte_monitor" version="2.0.0">
+    <name>Choice Button_5</name>
+    <pv_name>$(P):$(GEN)Mask-RB</pv_name>
+    <x>710</x>
+    <y>22</y>
+    <width>60</width>
+    <height>15</height>
+    <numBits>4</numBits>
+    <square>true</square>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Group_1</name>
+    <x>645</x>
+    <width>60</width>
+    <height>20</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_8</name>
+      <pv_name>$(P):$(GEN)EnableGate-Sel.B1</pv_name>
+      <x>30</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>1</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>1</on_label>
+      <show_led>false</show_led>
+      <background_color>
+        <color name="Write_Background" red="0" green="255" blue="255">
+        </color>
+      </background_color>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_9</name>
+      <pv_name>$(P):$(GEN)EnableGate-Sel.B2</pv_name>
+      <x>15</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>2</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>2</on_label>
+      <show_led>false</show_led>
+      <background_color>
+        <color name="Write_Background" red="0" green="255" blue="255">
+        </color>
+      </background_color>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_10</name>
+      <pv_name>$(P):$(GEN)EnableGate-Sel.B3</pv_name>
+      <width>15</width>
+      <height>20</height>
+      <off_label>3</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>3</on_label>
+      <show_led>false</show_led>
+      <background_color>
+        <color name="Write_Background" red="0" green="255" blue="255">
+        </color>
+      </background_color>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Choice Button_11</name>
+      <pv_name>$(P):$(GEN)EnableGate-Sel.B0</pv_name>
+      <x>45</x>
+      <width>15</width>
+      <height>20</height>
+      <off_label>0</off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label>0</on_label>
+      <show_led>false</show_led>
+      <background_color>
+        <color name="Write_Background" red="0" green="255" blue="255">
+        </color>
+      </background_color>
+      <show_confirm_dialog>false</show_confirm_dialog>
+    </widget>
+  </widget>
+  <widget type="byte_monitor" version="2.0.0">
+    <name>Choice Button_12</name>
+    <pv_name>$(P):$(GEN)EnableGate-RB</pv_name>
+    <x>645</x>
+    <y>21</y>
+    <width>60</width>
+    <height>15</height>
+    <numBits>4</numBits>
+    <square>true</square>
+  </widget>
+</display>

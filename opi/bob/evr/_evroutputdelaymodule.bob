@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Saved on 2024-10-15 16:05:07 by rhong-->
+<display version="2.0.0">
+  <name>Display</name>
+  <width>437</width>
+  <height>71</height>
+  <background_color>
+    <color red="230" green="230" blue="179">
+    </color>
+  </background_color>
+  <widget type="bool_button" version="2.0.0">
+    <name>Boolean Button_1</name>
+    <pv_name>$(P):OutFPDly$(O)Ena-SP</pv_name>
+    <x>316</x>
+    <y>23</y>
+    <width>110</width>
+    <height>25</height>
+    <off_label>Disable</off_label>
+    <off_color>
+      <color red="0" green="100" blue="0">
+      </color>
+    </off_color>
+    <on_label>Enable</on_label>
+    <on_color>
+      <color red="0" green="255" blue="0">
+      </color>
+    </on_color>
+    <background_color>
+      <color name="Write_Background" red="0" green="255" blue="255">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <confirm_message>Are you sure you want to do this?</confirm_message>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_7</name>
+    <pv_name>$(P):OutFPDly$(O)Delay0-SP.DESC</pv_name>
+    <x>11</x>
+    <y>11</y>
+    <width>145</width>
+    <height>25</height>
+    <transparent>true</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_8</name>
+    <pv_name>$(P):OutFPDly$(O)Delay1-SP.DESC</pv_name>
+    <x>11</x>
+    <y>35</y>
+    <width>145</width>
+    <height>25</height>
+    <transparent>true</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_2</name>
+    <pv_name>$(P):OutFPDly$(O)Delay0-SP</pv_name>
+    <x>161</x>
+    <y>11</y>
+    <width>75</width>
+    <height>25</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Input_3</name>
+    <pv_name>$(P):OutFPDly$(O)Delay1-SP</pv_name>
+    <x>161</x>
+    <y>35</y>
+    <width>75</width>
+    <height>25</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <actions>
+    </actions>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_9</name>
+    <pv_name>$(P):OutFPDly$(O)Delay1-RB</pv_name>
+    <x>242</x>
+    <y>36</y>
+    <width>73</width>
+    <height>23</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_width>1</border_width>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_10</name>
+    <pv_name>$(P):OutFPDly$(O)Delay0-RB</pv_name>
+    <x>242</x>
+    <y>12</y>
+    <width>73</width>
+    <height>23</height>
+    <foreground_color>
+      <color name="Write_Foreground" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <vertical_alignment>1</vertical_alignment>
+    <wrap_words>false</wrap_words>
+    <actions>
+    </actions>
+    <border_width>1</border_width>
+    <border_color>
+      <color red="0" green="128" blue="255">
+      </color>
+    </border_color>
+  </widget>
+</display>

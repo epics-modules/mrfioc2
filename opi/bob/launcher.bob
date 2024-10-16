@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-02-28 11:32:19 by agaget-->
+<!--Saved on 2024-10-15 15:55:13 by rhong-->
 <display version="2.0.0">
   <name>Launcher timing Labo</name>
   <width>200</width>
-  <height>300</height>
+  <height>500</height>
   <widget type="action_button" version="3.0.0">
     <name>Action Button</name>
     <actions>
@@ -17,7 +17,7 @@
         <description>Open Display</description>
       </action>
     </actions>
-    <text>EVM300</text>
+    <text>MTCA EVM300</text>
     <x>16</x>
     <y>70</y>
     <width>170</width>
@@ -96,6 +96,44 @@
     <text>PCIe EVR300</text>
     <x>16</x>
     <y>190</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_3</name>
+    <actions>
+      <action type="open_display">
+        <file>evg/evm-vme-300.bob</file>
+        <macros>
+          <P>Labo:titan-EVM</P>
+          <TITLE>EVM DEMO</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>VME EVM300</text>
+    <x>16</x>
+    <y>270</y>
+    <width>170</width>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_6</name>
+    <actions>
+      <action type="open_display">
+        <file>evr/evr-vme-300.bob</file>
+        <macros>
+          <P>Labo:titan-EVR</P>
+          <TITLE>EVR Demo</TITLE>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>VME EVR300</text>
+    <x>16</x>
+    <y>310</y>
     <width>170</width>
     <tooltip>$(actions)</tooltip>
   </widget>
