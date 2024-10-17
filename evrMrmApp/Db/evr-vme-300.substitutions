@@ -100,7 +100,7 @@ file "mrmevrout.db"
 {"\$(P)OutFPUV1", "$(EVR):FrontUnivOut1", "FPUV 1"}
 {"\$(P)OutFPUV2", "$(EVR):FrontUnivOut2", "FPUV 2"}
 {"\$(P)OutFPUV3", "$(EVR):FrontUnivOut3", "FPUV 3"}
-{"\$(P)OutFPUV4", "$(EVR):FrontUnivOut4", "FPUV 0"}
+{"\$(P)OutFPUV4", "$(EVR):FrontUnivOut4", "FPUV 4"}
 {"\$(P)OutFPUV5", "$(EVR):FrontUnivOut5", "FPUV 5"}
 {"\$(P)OutFPUV6", "$(EVR):FrontUnivOut6", "FPUV 6 (GTX)"}
 {"\$(P)OutFPUV7", "$(EVR):FrontUnivOut7", "FPUV 7 (GTX)"}
