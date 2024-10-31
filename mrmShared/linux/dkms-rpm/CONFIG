@@ -1,4 +1,4 @@
 
-RPM_RELEASE := 1
+RPM_RELEASE := 2
 # NOTE: Not necessary DIST ?= el7
 ARCH := noarch

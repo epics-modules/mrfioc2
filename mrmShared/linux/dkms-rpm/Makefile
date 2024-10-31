@@ -20,6 +20,7 @@ driver-rpm: $(RPM_FILE)
 clean:
 	rm -f $(SED_FILES) *.rpm
 	rm -rf rpmbuild
+	rm -f Makefile.dkms
 .PHONY: clean
 
 
@@ -37,8 +38,10 @@ SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
 
 SED_FILES = dkms.conf mrf.spec 50-mrf.rules
 
+configure_target:
+	sed '1r $(SRCDIR)/CONFIG_TARGET' $(CURDIR)/Makefile.dkms.in > $(CURDIR)/Makefile.dkms
 
-$(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
+$(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*) configure_target
 	mkdir -p rpmbuild/RPMS rpmbuild/BUILD
 	rpmbuild -bb \
             --define '_curdir $(CURDIR)' \

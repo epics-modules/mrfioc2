@@ -1,0 +1,6 @@
+# Target specific CONFIG
+OS_NAME := $(shell grep "^NAME=" /etc/os-release | cut -d'=' -f2)
+# List backported OSes that use VM_FLAGS_WRAPPER for kernels <= 6.3
+ifeq ($(OS_NAME), "CentOS Stream")
+CFLAGS_MODULE += -DUSE_VM_FLAGS_WRAPPER
+endif

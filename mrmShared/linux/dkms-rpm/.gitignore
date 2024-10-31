@@ -2,6 +2,7 @@
 /dkms.conf
 /mrf.spec
 /50-mrf.rules
+/Makefile.dkms
 
 /rpmbuild
 /*.rpm
