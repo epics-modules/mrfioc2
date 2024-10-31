@@ -40,5 +40,7 @@ MRFIOC2_MINOR_VERSION ?= 0
 
 SHRLIB_VERSION ?= $(MRFIOC2_MAJOR_VERSION).$(MRFIOC2_MINOR_VERSION)
 
+include $(TOP)/configure/CONFIG_MRFIOC2_VERSION
+
 -include $(TOP)/../CONFIG_SITE.local
 -include $(TOP)/configure/CONFIG_SITE.local

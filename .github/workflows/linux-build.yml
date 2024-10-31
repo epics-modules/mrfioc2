@@ -36,6 +36,11 @@ jobs:
             series: 6.x
             version: 6.5.9
 
+          - name: Ubuntu 22.04 - Centos Stream 9 Linux kernel
+            os: ubuntu-22.04
+            alt_kernel: true
+            url: https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
+
     steps:
       - uses: actions/checkout@v2
       - name: Info
@@ -48,6 +53,7 @@ jobs:
           sudo apt-get -y install linux-headers-`uname -r` kmod libelf-dev
           [ "${{ matrix.cc }}" != "gcc-4.8" ] || sudo apt-get -y install gcc-4.8
       - name: Setup Linux
+        if: ${{ !matrix.alt_kernel }}
         run: |
           install -d kernel
           if [ "$KSER" == "latest" ]; then
@@ -60,10 +66,20 @@ jobs:
           curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz | tar -C kernel --strip-components=1 -xJ
           make -C kernel CC=${CC:=gcc} defconfig
           make -C kernel CC=${CC:=gcc} modules_prepare
+
+      - name: Setup Centos Stream 9 kernel source
+        if: ${{ matrix.alt_kernel }}
+        run: |
+          install -d kernel
+          git clone --depth 1 ${{ matrix.url }} kernel
+          make -C kernel CC=${CC:=gcc} defconfig
+          make -C kernel CC=${CC:=gcc} modules_prepare
+
       - name: Build
         run: |
           KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
 
+  
   host:
     name: With VM host
     runs-on: ubuntu-22.04
