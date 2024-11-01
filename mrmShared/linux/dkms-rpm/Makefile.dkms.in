@@ -5,4 +5,4 @@
 KERNEL_DIR ?= /lib/modules/$(kernelver)/build
 
 mrf.ko:
-	make -C $(KERNEL_DIR) M=$(CURDIR) CFLAGS_MODULE=$(CFLAGS_MODULE) modules
+	make -C $(KERNEL_DIR) M=$(CURDIR) CFLAGS_TARGET=$(CFLAGS_TARGET) modules
