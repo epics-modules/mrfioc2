@@ -68,7 +68,7 @@ jobs:
     name: CentOS Stream 9 Kernel Module Test
     runs-on: ubuntu-latest
     container:
-      image: centos:stream9
+      image: quay.io/centos/centos:stream9
     steps:
       - uses: actions/checkout@v2
       - name: Info
