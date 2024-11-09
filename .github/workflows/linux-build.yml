@@ -64,6 +64,23 @@ jobs:
         run: |
           KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
 
+  centos:
+    name: CentOS Stream 9 Kernel Module Test
+    runs-on: ubuntu-latest
+    container:
+      image: centos:stream9
+    steps:
+      - uses: actions/checkout@v2
+      - name: Info
+        run: |
+          gcc --version
+      - name: Install Dependencies
+        run: |
+          yum update -y
+          yum install -y kernel-devel kmod elfutils-libelf-devel
+      - name: Build
+        run: |
+          KBUILD_MODPOST_WARN=1 make -C mrmShared/linux KERNELDIR="/usr/src/kernels/$(uname -r)"
   host:
     name: With VM host
     runs-on: ubuntu-22.04
