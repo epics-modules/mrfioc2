@@ -15,6 +15,9 @@ on:
       - "python/**"
       - "**/*.md"
       - "opi/**"
+      - ".github/workflows/linux-*.yml"
+      - ".github/workflows/doxygen-*.yml"
+      - ".github/workflows/release-*.yml"
   pull_request:
     paths-ignore:
       - "mrmShared/linux/**"
@@ -22,6 +25,9 @@ on:
       - "python/**"
       - "**/*.md"
       - "opi/**"
+      - ".github/workflows/linux-*.yml"
+      - ".github/workflows/doxygen-*.yml"
+      - ".github/workflows/release-*.yml"
   workflow_dispatch:
 
 env:

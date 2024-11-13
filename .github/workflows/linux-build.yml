@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - "mrmShared/linux/**"
+      - ".github/workflows/linux-build.yml"
   pull_request:
     paths:
       - "mrmShared/linux/**"
+      - ".github/workflows/linux-build.yml"
   workflow_dispatch:
 
 jobs:
@@ -81,7 +83,6 @@ jobs:
         run: |
           KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
 
-  
   host:
     name: With VM host
     runs-on: ubuntu-22.04
