@@ -123,7 +123,9 @@ int mrf_mmap_physical(struct uio_info *info, struct vm_area_struct *vma)
         return -EINVAL;
     }
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
+    vm_flags_set(vma, VM_IO | VM_RESERVED);
+#elif defined(RHEL_RELEASE_CODE) && (RHEL_RELEASE_CODE >= 2310)
     vm_flags_set(vma, VM_IO | VM_RESERVED);
 #else
     vma->vm_flags |= VM_IO | VM_RESERVED;
