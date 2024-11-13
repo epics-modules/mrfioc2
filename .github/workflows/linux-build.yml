@@ -40,7 +40,8 @@ jobs:
 
           - name: Ubuntu 22.04 - Centos Stream 9
             os: ubuntu-22.04
-            version: Centos Stream 9
+            series: Centos Stream 9
+            version: kernel-5.9.0-36.el9
             kernel_url: https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
 
     steps:
@@ -72,9 +73,10 @@ jobs:
       - name: Setup Custom Linux Kernel
         if: ${{ matrix.kernel_url }}
         run: |
+          echo $KSER $KVER
           echo ${{ matrix.kernel_url }}
           install -d kernel
-          git clone --depth 1 ${{ matrix.kernel_url }} kernel
+          git clone --depth 1 --branch $KVER --single-branch ${{ matrix.kernel_url }} kernel
           make -C kernel CC=${CC:=gcc} defconfig
           make -C kernel CC=${CC:=gcc} modules_prepare
 
