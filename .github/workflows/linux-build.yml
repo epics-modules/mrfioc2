@@ -13,7 +13,7 @@ on:
 
 jobs:
   specific:
-    name: With ${{ matrix.version }}
+    name: Kernel ${{ matrix.version }}
     runs-on: ${{ matrix.os }}
     env:
       KSER: ${{ matrix.series }}
@@ -38,12 +38,10 @@ jobs:
             series: 6.x
             version: 6.5.9
 
-          - name: Ubuntu 22.04 - Centos Stream 9 Linux kernel
+          - name: Ubuntu 22.04 - Centos Stream 9
             os: ubuntu-22.04
-            series: 6.x
-            version: Centos Stream 9 Linux kernel
-            alt_kernel: true
-            url: https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
+            version: Centos Stream 9
+            kernel_url: https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
 
     steps:
       - uses: actions/checkout@v2
@@ -56,8 +54,8 @@ jobs:
           # linux-headers-* only to pull in kbuild deps
           sudo apt-get -y install linux-headers-`uname -r` kmod libelf-dev
           [ "${{ matrix.cc }}" != "gcc-4.8" ] || sudo apt-get -y install gcc-4.8
-      - name: Setup Linux
-        if: ${{ ! matrix.alt_kernel }}
+      - name: Setup Linux Kernel
+        if: ${{ ! matrix.kernel_url }}
         run: |
           install -d kernel
           if [ "$KSER" == "latest" ]; then
@@ -71,11 +69,12 @@ jobs:
           make -C kernel CC=${CC:=gcc} defconfig
           make -C kernel CC=${CC:=gcc} modules_prepare
 
-      - name: Setup Centos Stream 9 kernel source
-        if: ${{ matrix.alt_kernel }}
+      - name: Setup Custom Linux Kernel
+        if: ${{ matrix.kernel_url }}
         run: |
+          echo ${{ matrix.kernel_url }}
           install -d kernel
-          git clone --depth 1 ${{ matrix.url }} kernel
+          git clone --depth 1 ${{ matrix.kernel_url }} kernel
           make -C kernel CC=${CC:=gcc} defconfig
           make -C kernel CC=${CC:=gcc} modules_prepare
 
