@@ -13,6 +13,10 @@ DB += mrmevrbufrx.db
 DB += mrmevrtsbuf.db
 DB += sequencedemo.db
 DB += mrmevrdlymodule.template
+DB += evrSoftSeq.template
+DB += mrmevroutint.db
+DB += evrdcpulser.template
+DB += evrSoftEvt.template
 
 DB += evr-pmc-230.db
 DB += evr-cpci-230.db
