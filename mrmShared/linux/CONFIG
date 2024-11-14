@@ -1,7 +1,7 @@
 DESCRIPTION = mrf kernel driver provided by EPICS modules (mrfioc2)
 # Version definition for driver
 # 20240124 Release
-DRV_VERSION := 3
+DRV_VERSION := 4
 # Package control vars
 ## PKG_NAME follows the kmod name
 PKG_NAME_DKMS := mrf-dkms
