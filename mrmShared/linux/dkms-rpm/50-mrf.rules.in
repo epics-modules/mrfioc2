@@ -1,2 +1,0 @@
-# UDEV rule giving access to MRF device
-KERNEL=="uio*", ATTR{name}=="mrf-pci", GROUP="@@DRV_GROUP@@", MODE="0660", RUN+="/bin/chmod g+rw %S%p/resource0 && /bin/logger UDEV rule giving access to MRF device %S%p"

@@ -5,7 +5,7 @@
 
 Summary: DKMS mrfioc2 kernel module
 
-Name:    @@PKG_NAME@@
+Name:    @@PKG_NAME_DKMS@@
 Version: @@RPM_VERSION@@
 Release: @@RPM_RELEASE@@
 
@@ -37,7 +37,7 @@ install -m 0644 %{_sourcedir}/mrf.h         %{buildroot}%{dkmsdir}
 install -m 0644 %{_curdir}/Makefile.dkms    %{buildroot}%{dkmsdir}/Makefile
 install -m 0644 %{_sourcedir}/Kbuild        %{buildroot}%{dkmsdir}
 install -m 0644 %{_curdir}/dkms.conf        %{buildroot}%{dkmsdir}
-install -m 0644 %{_curdir}/50-mrf.rules     %{buildroot}%{udevdir}
+install -m 0644 %{_curdir}/../99-mrf.rules  %{buildroot}%{udevdir}
 
 %files
 %{dkmsdir}/uio_mrf.c
@@ -46,7 +46,7 @@ install -m 0644 %{_curdir}/50-mrf.rules     %{buildroot}%{udevdir}
 %{dkmsdir}/Makefile
 %{dkmsdir}/Kbuild
 %{dkmsdir}/dkms.conf
-%{udevdir}/50-mrf.rules
+%{udevdir}/99-mrf.rules
 
 %post
 # PRP: groupadd -r @@DRV_GROUP@@ 2>&1 || :

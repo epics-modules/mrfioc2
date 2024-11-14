@@ -12,7 +12,7 @@ include CONFIG
 # for information on RPM versioning.  We'll want to obey these rules if we can.
 RPM_VERSION = $(DRV_VERSION)
 
-RPM_FILE = $(PKG_NAME)-$(RPM_VERSION)-$(RPM_RELEASE).$(ARCH).rpm
+RPM_FILE = $(PKG_NAME_DKMS)-$(RPM_VERSION)-$(RPM_RELEASE).$(ARCH).rpm
 
 driver-rpm: $(RPM_FILE)
 .PHONY: driver-rpm
@@ -27,15 +27,16 @@ SED_SUBSTS =
 SED_SUBSTS += s/@@DRV_VERSION@@/$(DRV_VERSION)/g;
 SED_SUBSTS += s/@@KMOD_NAME@@/$(KMOD_NAME)/g;
 SED_SUBSTS += s/@@RPM_VERSION@@/$(RPM_VERSION)/g;
-SED_SUBSTS += s/@@DRV_GROUP@@/$(DRV_GROUP)/g;
+# SED_SUBSTS += s/@@DRV_GROUP@@/$(DRV_GROUP)/g;
 SED_SUBSTS += s/@@RPM_RELEASE@@/$(RPM_RELEASE)/g;
 SED_SUBSTS += s/@@ARCH@@/$(ARCH)/g;
-SED_SUBSTS += s/@@PKG_NAME@@/$(PKG_NAME)/g;
+SED_SUBSTS += s/@@PKG_NAME_DKMS@@/$(PKG_NAME_DKMS)/g;
+SED_SUBSTS += s/@@DESCRIPTION@@/$(DESCRIPTION)/g;
 
 %: %.in CONFIG $(SRCDIR)/CONFIG
 	sed '$(SED_SUBSTS)' $< >$@
 
-SED_FILES = dkms.conf mrf.spec 50-mrf.rules
+SED_FILES = dkms.conf mrf.spec
 
 
 $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
