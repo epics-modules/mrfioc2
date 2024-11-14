@@ -4,14 +4,16 @@ on:
   push:
     paths:
       - "mrmShared/linux/**"
+      - ".github/workflows/linux-build.yml"
   pull_request:
     paths:
       - "mrmShared/linux/**"
+      - ".github/workflows/linux-build.yml"
   workflow_dispatch:
 
 jobs:
   specific:
-    name: With ${{ matrix.version }}
+    name: ${{ matrix.version }}
     runs-on: ${{ matrix.os }}
     env:
       KSER: ${{ matrix.series }}
@@ -23,18 +25,29 @@ jobs:
         include:
           - name: Ubuntu 22.04 - Series 4.x
             os: ubuntu-22.04
-            series: 4.x
-            version: 4.9.1
+            series: v4.x
+            version: linux-4.9.1
 
           - name: Ubuntu 22.04 - Series 5.x
             os: ubuntu-22.04
-            series: 5.x
-            version: 5.9.6
+            series: v5.x
+            version: linux-5.9.6
 
           - name: Ubuntu 22.04 - Series 6.x
             os: ubuntu-22.04
-            series: 6.x
-            version: 6.5.9
+            series: v6.x
+            version: linux-6.5.9
+
+          - name: Ubuntu Latest - Series Latest
+            os: ubuntu-latest
+            series: latest
+            version: latest
+
+          - name: Ubuntu 22.04 - Centos Stream 9
+            os: ubuntu-22.04
+            series: Centos Stream 9
+            version: kernel-5.9.0-36.el9
+            git_repo: https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
 
     steps:
       - uses: actions/checkout@v2
@@ -47,19 +60,32 @@ jobs:
           # linux-headers-* only to pull in kbuild deps
           sudo apt-get -y install linux-headers-`uname -r` kmod libelf-dev
           [ "${{ matrix.cc }}" != "gcc-4.8" ] || sudo apt-get -y install gcc-4.8
-      - name: Setup Linux
+      - name: Setup Linux Kernel with Linux Kernel Archives
+        if: ${{ ! matrix.git_repo }}
         run: |
+          echo $KSER $KVER
           install -d kernel
           if [ "$KSER" == "latest" ]; then
-            KSER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/ | grep -o 'v[0-9]\+\.[0-9a-zA-Z]\+/' | sed 's/\/\s*//' | sort -t. -k2,2V -k3,3V -k4,4V | tail -n 1 | sed 's/v//')
+            KSER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/ | grep -o 'v[0-9]\+\.[0-9a-zA-Z]\+/' | sed 's/\/\s*//' | sort -t. -k2,2V -k3,3V -k4,4V | tail -n 1)
           fi
           if [ "$KVER" == "latest" ]; then
-            KVER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/ | grep -o 'linux-[0-9]\+\.[0-9]\+\.[0-9]\+\.tar\.xz' | sort -t- -k2,2n -k3,3n -k4,4n | tail -n 1 | sed 's/linux-\(.*\)\.tar\.xz/\1/')
+            KVER=$(curl -s https://cdn.kernel.org/pub/linux/kernel/$KSER/ | grep -o 'linux-[0-9]\+\.[0-9]\+\.[0-9]\+\.tar\.xz' | sort -t- -k2,2n -k3,3n -k4,4n | tail -n 1 | sed 's/\.tar\.xz$//')
           fi
-          echo "https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz"
-          curl -s https://cdn.kernel.org/pub/linux/kernel/v$KSER/linux-$KVER.tar.xz | tar -C kernel --strip-components=1 -xJ
+          echo "https://cdn.kernel.org/pub/linux/kernel/$KSER/$KVER.tar.xz"
+          curl -s https://cdn.kernel.org/pub/linux/kernel/$KSER/$KVER.tar.xz | tar -C kernel --strip-components=1 -xJ
           make -C kernel CC=${CC:=gcc} defconfig
           make -C kernel CC=${CC:=gcc} modules_prepare
+
+      - name: Setup Linux Kernel with git repository
+        if: ${{ matrix.git_repo }}
+        run: |
+          echo $KSER $KVER
+          echo ${{ matrix.git_repo }}
+          install -d kernel
+          git clone --depth 1 --branch $KVER --single-branch ${{ matrix.git_repo }} kernel
+          make -C kernel CC=${CC:=gcc} defconfig
+          make -C kernel CC=${CC:=gcc} modules_prepare
+
       - name: Build
         run: |
           KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
