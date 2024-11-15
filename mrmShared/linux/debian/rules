@@ -14,7 +14,7 @@ override_dh_install:
 	dh_install Makefile usr/src/mrf-$(DEB_VERSION_UPSTREAM)/
 	dh_install patchize.sh usr/src/mrf-$(DEB_VERSION_UPSTREAM)/
 	dh_install README.md usr/src/mrf-$(DEB_VERSION_UPSTREAM)/
-	dh_install debian/mrf-dkms.udev usr/src/mrf-$(DEB_VERSION_UPSTREAM)/50-mrf.rules
+	dh_install debian/mrf-dkms.udev usr/src/mrf-$(DEB_VERSION_UPSTREAM)/99-mrf.rules
 
 override_dh_dkms:
 	dh_dkms -V $(DEB_VERSION_UPSTREAM)
@@ -25,6 +25,6 @@ override_dh_auto_test:
 override_dh_auto_install:
 override_dh_auto_clean:
 override_dh_installudev:
-	dh_installudev --priority=50
+	dh_installudev --priority=99
 override_dh_builddeb:
 	    dh_builddeb -- -Zgzip
