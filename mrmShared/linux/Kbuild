@@ -1,4 +1,5 @@
-CFLAGS_MODULE += -DDRV_VERSION='"$(DRV_VERSION)"'
+KBUILD_CPPFLAGS += -DDRV_VERSION='"$(DRV_VERSION)"'
+KBUILD_CPPFLAGS += -finline-functions
 
 obj-m := mrf.o
 

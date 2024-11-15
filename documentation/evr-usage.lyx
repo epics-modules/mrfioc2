@@ -209,7 +209,7 @@ What is Available?
 
 \begin_layout Standard
 More infomation on the Micro Research hardware can be found on their website
- 
+
 \begin_inset Flex URL
 status open
 
@@ -225,7 +225,7 @@ http://www.mrf.fi/
 
 \begin_layout Standard
 The software discussed below can be found on the EPICS application project
- on SourceForge 
+ on SourceForge
 \begin_inset Flex URL
 status open
 
@@ -348,7 +348,7 @@ Build system optional modules.
 \end_layout
 
 \begin_layout Description
-autosave Automatic save and restore on boot 
+autosave Automatic save and restore on boot
 \begin_inset Newline newline
 \end_inset
 
@@ -1053,7 +1053,7 @@ literal "true"
 status collapsed
 
 \begin_layout Plain Layout
-List of supported hardware given in section 
+List of supported hardware given in section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:supported"
@@ -1089,7 +1089,7 @@ literal "true"
 
 \begin_layout Standard
 The MRF Event Timing System can be deployed in two configurations (Fig.
- 
+
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "img:sys:confs"
@@ -1176,7 +1176,7 @@ What is transmitted over the event link is a combination of 8-bit event
 
 \begin_layout Standard
 These two types of data can be combined in two ways (Fig.
- 
+
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "img:wire:frames"
@@ -1256,7 +1256,7 @@ When discussing the MRF timing system there are three clocks.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
+\begin_inset Formula
 \[
 F_{bit}/20=F_{Event}=F_{Ext}/N_{Divide}
 \]
@@ -1489,7 +1489,7 @@ Reset timestamp counter
 
 \begin_layout Plain Layout
 End of sequence (not transmitted).
- 
+
 \size footnotesize
 Use in other contexts is discouraged.
 \end_layout
@@ -1547,7 +1547,7 @@ literal "true"
  the EVR receives an event frame with DBus data.
  Depending on configuration this is either every frame, or every second
  frame (See fig.
- 
+
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "img:wire:frames"
@@ -1559,11 +1559,11 @@ reference "img:wire:frames"
 
 \begin_layout Standard
 The DBus can thus be used to distribute either periodic, or non-periodic,
- signals with bandwidth up to 
+ signals with bandwidth up to
 \begin_inset Formula $\frac{1}{2}$
 \end_inset
 
- (or 
+ (or
 \begin_inset Formula $\frac{1}{4}$
 \end_inset
 
@@ -1604,7 +1604,7 @@ Event Clock Phase
 The use of 8b10b encoding allows each EVR's local oscillator to lock to
  the EVG's reference clock.
  This allows operation at speeds higher then the event clock rate.
- This is used by the CML outputs described in section 
+ This is used by the CML outputs described in section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:evr:cml"
@@ -1620,7 +1620,7 @@ Global Time Distribution
 
 \begin_layout Standard
 The model of time implemented by the MRF hardware is two 32-bit unsigned
- integers: counter, and 
+ integers: counter, and
 \begin_inset Quotes eld
 \end_inset
 
@@ -1630,7 +1630,7 @@ seconds
 
 .
  The counter is maintained by each EVR and incremented quickly.
- The value of the 
+ The value of the
 \begin_inset Quotes eld
 \end_inset
 
@@ -1639,11 +1639,11 @@ seconds
 \end_inset
 
  is sent periodically from the EVG at a lower rate.
- 
+
 \end_layout
 
 \begin_layout Standard
-During each 
+During each
 \begin_inset Quotes eld
 \end_inset
 
@@ -1652,7 +1652,7 @@ second
 \end_inset
 
  33 special codes (see sec.
- 
+
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tbl:spec:codes"
@@ -1661,7 +1661,7 @@ reference "tbl:spec:codes"
 
 ) must be sent.
  The first 32 are the shift 0/1 codes which contain the value of the next
- 
+
 \begin_inset Quotes eld
 \end_inset
 
@@ -1671,7 +1671,7 @@ second
 
 .
  The last is the timestamp reset event.
- When received this code transfers the new 
+ When received this code transfers the new
 \begin_inset Quotes eld
 \end_inset
 
@@ -1680,7 +1680,7 @@ second
 \end_inset
 
  value out of the shift register, and resets the counter to zero.
- These actions start the next 
+ These actions start the next
 \begin_inset Quotes eld
 \end_inset
 
@@ -1692,7 +1692,7 @@ second
 \end_layout
 
 \begin_layout Standard
-Note that while it is referred to as 
+Note that while it is referred to as
 \begin_inset Quotes eld
 \end_inset
 
@@ -1710,7 +1710,7 @@ Light Source Time Model
 \end_layout
 
 \begin_layout Standard
-In this model the 
+In this model the
 \begin_inset Quotes eld
 \end_inset
 
@@ -1774,7 +1774,7 @@ Receiver Functions
 
 \begin_layout Standard
 Internally an EVR can be thought of as a number of logical sub-units (Fig.
- 
+
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "img:evr:blocks"
@@ -1901,7 +1901,7 @@ The Event Mapping Ram is a table used to define the actions to be taken
 The actions which can be taken can be grouped into two catagories: Special
  actions, and Pulse Generator actions.
  Special actions include those related to timestamp distribution, and the
- system heartbeat tick (see 
+ system heartbeat tick (see
 \begin_inset ERT
 status collapsed
 
@@ -1942,7 +1942,7 @@ Prescaler sub-units take the EVR's local oscillator and output a lower frequency
 To provide known phase relationships, all dividers can be synchronously
  reset when a mapped event code is received.
  This is the Reset PS action.
- See 
+ See
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:spec:mappings"
@@ -1959,7 +1959,7 @@ Outputs (TTL)
 \begin_layout Standard
 This sub-unit represents a local physical output on the EVR.
  Each output may be connected to one source: a Distributed Bus bit, a Prescaler,
- or a Pulse Generator (see 
+ or a Pulse Generator (see
 \begin_inset ERT
 status collapsed
 
@@ -2051,7 +2051,7 @@ Each EVR receives synchronous time broadcasts from an EVG.
 \begin_layout Standard
 Each EVR may be configured with a different method of incrementing the timestamp
  counter.
- See section 
+ See section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:evr:ts:src"
@@ -2066,7 +2066,7 @@ In addition to being slaved to an EVG, those EVR models/firmware which provide
  a Software Event transmission function can send timestamps as well.
  This can be used to simulate timestamps in a standalone environment such
  as a test lab.
- see the TimeSrc property in 
+ see the TimeSrc property in
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:evg:dc:func"
@@ -2116,7 +2116,7 @@ This section outlines a general strategy for adding an EVR to an IOC.
 \end_layout
 
 \begin_layout Standard
-An example IOC shell script is included as 
+An example IOC shell script is included as
 \begin_inset Quotes eld
 \end_inset
 
@@ -2178,7 +2178,7 @@ mrmEvrSetupVME("anEVR", 3, 0x30000000, 4, 0x28)
 \end_layout
 
 \begin_layout Standard
-In this example EVR 
+In this example EVR
 \begin_inset Quotes eld
 \end_inset
 
@@ -2301,7 +2301,7 @@ mrmEvrSetupPCI("PMC", "1:2.0")
 \end_layout
 
 \begin_layout Standard
-This example defines EVR 
+This example defines EVR
 \begin_inset Quotes eld
 \end_inset
 
@@ -2316,7 +2316,7 @@ PMC
 Support for using mTCA slot number is available on some targets (Linux only
  as of devlib2 2.9).
  This does any automatic lookup of PCI address from slot number.
- Be aware that PCIe 
+ Be aware that PCIe
 \begin_inset Quotes eld
 \end_inset
 
@@ -2408,14 +2408,14 @@ status open
 
 \begin_layout Plain Layout
 
-$ make -C /location/of/mrmShared/linux 
+$ make -C /location/of/mrmShared/linux
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-KERNELDIR=/lib/modules/`uname -r`/build modules_install
+KERNEL_SRC=/lib/modules/`uname -r`/build modules_install
 \end_layout
 
 \begin_layout Plain Layout
@@ -2445,28 +2445,28 @@ status open
 
 \begin_layout Plain Layout
 
-$ make -C /location/of/mrmShared/linux 
+$ make -C /location/of/mrmShared/linux
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-KERNELDIR=/location/of/kernel/src 
+KERNEL_SRC=/location/of/kernel/src
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-ARCH=arm CROSS_COMPILE=/usr/local/bin/arm- 
+ARCH=arm CROSS_COMPILE=/usr/local/bin/arm-
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-INSTALL_MOD_PATH=/location/of/target/root 
+INSTALL_MOD_PATH=/location/of/target/root
 \backslash
 
 \end_layout
@@ -2582,7 +2582,7 @@ Note:
 \series default
  UIO numbers are not considered during setup since these may change after
  a reboot.
- To ensure repeatability only PCI immutable ID fields, PCIe 
+ To ensure repeatability only PCI immutable ID fields, PCIe
 \begin_inset Quotes eld
 \end_inset
 
@@ -2604,7 +2604,7 @@ Example Databases
 
 \begin_layout Standard
 The MRFIOC2 module includes example database templates for all supported
- devices (see 
+ devices (see
 \begin_inset ERT
 status collapsed
 
@@ -2696,7 +2696,7 @@ autosave
 \end_layout
 
 \begin_layout Standard
-All example database files include 
+All example database files include
 \begin_inset Quotes eld
 \end_inset
 
@@ -2705,7 +2705,7 @@ info()
 \end_inset
 
  entries to generate autosave request files.
- The example IOC shell script 
+ The example IOC shell script
 \begin_inset Quotes eld
 \end_inset
 
@@ -2728,7 +2728,7 @@ save_restoreDebug(2)
 
 \begin_layout Plain Layout
 
-dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:") 
+dbLoadRecords("db/save_restoreStatus.db", "P=mrftest:")
 \end_layout
 
 \begin_layout Plain Layout
@@ -2793,7 +2793,7 @@ set_pass1_restoreFile("mrf_waveforms.sav")
 
 \begin_layout Standard
 Sets three files which will be loaded.
- The 
+ The
 \begin_inset Quotes eld
 \end_inset
 
@@ -2821,12 +2821,12 @@ iocInit()
 \begin_layout Plain Layout
 
 makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields") 
+makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields")
 \end_layout
 
 \begin_layout Plain Layout
@@ -2841,7 +2841,7 @@ makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
 
 \begin_layout Standard
 After the IOC has started the request files are generated.
- This is where the 
+ This is where the
 \begin_inset Quotes eld
 \end_inset
 
@@ -2869,7 +2869,7 @@ create_monitor_set("mrf_values.req", 5 , "")
 
 \begin_layout Plain Layout
 
-create_monitor_set("mrf_waveforms.req", 30 , "") 
+create_monitor_set("mrf_waveforms.req", 30 , "")
 \end_layout
 
 \end_inset
@@ -2891,7 +2891,7 @@ This section presents several step by step procedures which may be useful
 \end_layout
 
 \begin_layout Standard
-In the 
+In the
 \begin_inset Quotes eld
 \end_inset
 
@@ -2915,7 +2915,7 @@ This procedure requires both a generator, receiver, and a fiber jumper cable
 \begin_layout Standard
 It is assumed that no cables are connected to the front panel of either
  EVG or EVR.
- The example 
+ The example
 \begin_inset Quotes eld
 \end_inset
 
@@ -2923,15 +2923,15 @@ iocBoot/iocevrmrm/st.cmd
 \begin_inset Quotes erd
 \end_inset
 
- script is used with 
+ script is used with
 \family typewriter
 SYS=TST
 \family default
- and 
+ and
 \family typewriter
 D=evr
 \family default
- for the receiver and 
+ for the receiver and
 \family typewriter
 D=evg
 \family default
@@ -2970,20 +2970,20 @@ TST{evg-EvtClk}FracSynFreq-SP
 \end_layout
 
 \begin_layout Standard
-The following examples use the IOC shell commands 
+The following examples use the IOC shell commands
 \family typewriter
 dbpr()
 \family default
- and 
+ and
 \family typewriter
 dbpf()
 \family default
 .
- Remote use of 
+ Remote use of
 \family typewriter
 caput
 \family default
- and 
+ and
 \family typewriter
 caget
 \family default
@@ -3588,25 +3588,25 @@ status open
 
 \begin_layout Plain Layout
 
-$ camonitor TST{evr:3}Time-I 
+$ camonitor TST{evr:3}Time-I
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:32:11.999993 Thu, 02 Jun 2011
- 10:32:12 -0400   
+ 10:32:12 -0400
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:32:12.999993 Thu, 02 Jun 2011
- 10:32:13 -0400   
+ 10:32:13 -0400
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:32:13.999993 Thu, 02 Jun 2011
- 10:32:14 -0400   
+ 10:32:14 -0400
 \end_layout
 
 \begin_layout Plain Layout
@@ -3650,35 +3650,35 @@ $ caput TST{evr:3}Time-I.TSE 0
 
 \begin_layout Plain Layout
 
-Old : TST{evr:3}Time-I.TSE           125 
+Old : TST{evr:3}Time-I.TSE           125
 \end_layout
 
 \begin_layout Plain Layout
 
-New : TST{evr:3}Time-I.TSE           0 
+New : TST{evr:3}Time-I.TSE           0
 \end_layout
 
 \begin_layout Plain Layout
 
-$ camonitor TST{evr:3}Time-I 
+$ camonitor TST{evr:3}Time-I
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:35:31.005655 Thu, 02 Jun 2011
- 10:35:31 -0400   
+ 10:35:31 -0400
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:35:32.005655 Thu, 02 Jun 2011
- 10:35:32 -0400   
+ 10:35:32 -0400
 \end_layout
 
 \begin_layout Plain Layout
 
 TST{evr:3}Time-I               2011-06-02 10:35:33.005655 Thu, 02 Jun 2011
- 10:35:33 -0400   
+ 10:35:33 -0400
 \end_layout
 
 \begin_layout Plain Layout
@@ -3723,11 +3723,11 @@ These devices support upgrade of firmware through PCIe register access.
 \end_layout
 
 \begin_layout Standard
-To test if a card may be upgrade with this mechanism, run 
+To test if a card may be upgrade with this mechanism, run
 \shape italic
 flashinfo
 \shape default
- and 
+ and
 \shape italic
 flashread
 \shape default
@@ -3828,7 +3828,7 @@ epics>
 \begin_layout Standard
 Before upgrading, it is suggested to backup the existing firmware.
  If the size of the existing firmware is known, then this size can be used.
- Otherwise, use the capacity reported by 
+ Otherwise, use the capacity reported by
 \shape italic
 flashinfo
 \shape default
@@ -3886,7 +3886,7 @@ epics> flashwrite("EVR1:FLASH", 0, "PCIe-EVR-300DC.207.6.bit")
 \end_layout
 
 \begin_layout Standard
-If the update process is interrupted, 
+If the update process is interrupted,
 \series bold
 do not power cycle
 \series default
@@ -3903,7 +3903,7 @@ VME EVRs and EVGs
 \end_layout
 
 \begin_layout Standard
-Update for VME cards is accomplished through the ethernet jack label 
+Update for VME cards is accomplished through the ethernet jack label
 \begin_inset Quotes eld
 \end_inset
 
@@ -3994,7 +3994,7 @@ Creating an SVF file from a BIT file
 \begin_layout Standard
 The firmware file will likely be supplied in one of two formats having the
  extensions .bit or .svf.
- If the provided file has the extension .svf then proceed to section 
+ If the provided file has the extension .svf then proceed to section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:pmc:prog"
@@ -4007,7 +4007,7 @@ reference "sec:pmc:prog"
 \begin_layout Standard
 To convert a .bit file to a .svf file it is necessary to get the iMPACT programmin
 g tool from Xilinx.
- The easiest way to do this is with the 
+ The easiest way to do this is with the
 \begin_inset Quotes eld
 \end_inset
 
@@ -4045,7 +4045,7 @@ When prompted to create a project click cancel
 \end_layout
 
 \begin_layout Enumerate
-On the left side of the main window is a pane titled 
+On the left side of the main window is a pane titled
 \begin_inset Quotes eld
 \end_inset
 
@@ -4054,7 +4054,7 @@ iMPACT FLows
 \end_inset
 
 .
- Double click on 
+ Double click on
 \begin_inset Quotes eld
 \end_inset
 
@@ -4066,7 +4066,7 @@ Create PROM File
 \end_layout
 
 \begin_layout Enumerate
-Select 
+Select
 \begin_inset Quotes eld
 \end_inset
 
@@ -4078,7 +4078,7 @@ Xilinx Flash/PROM
 \end_layout
 
 \begin_layout Enumerate
-Select 
+Select
 \begin_inset Quotes eld
 \end_inset
 
@@ -4086,7 +4086,7 @@ Platform Flash
 \begin_inset Quotes erd
 \end_inset
 
- and 
+ and
 \begin_inset Quotes eld
 \end_inset
 
@@ -4094,7 +4094,7 @@ xcf08p
 \begin_inset Quotes erd
 \end_inset
 
- and click 
+ and click
 \begin_inset Quotes eld
 \end_inset
 
@@ -4113,7 +4113,7 @@ Select an output file name and path.
 
 \begin_layout Enumerate
 Several small dialogs will appear.
- When prompted to 
+ When prompted to
 \begin_inset Quotes eld
 \end_inset
 
@@ -4129,7 +4129,7 @@ When prompted to add another device click No.
 \end_layout
 
 \begin_layout Enumerate
-On the left side of the main window is a pane titled 
+On the left side of the main window is a pane titled
 \begin_inset Quotes eld
 \end_inset
 
@@ -4138,7 +4138,7 @@ iMPACT Processes
 \end_inset
 
 .
- Double click on 
+ Double click on
 \begin_inset Quotes eld
 \end_inset
 
@@ -4158,7 +4158,7 @@ Exit and restart iMPACT.
 \end_layout
 
 \begin_layout Standard
-See 
+See
 \begin_inset Flex URL
 status open
 
@@ -4174,7 +4174,7 @@ http://www.xilinx.com/support/documentation/user_guides/ug161.pdf
 
 \begin_layout Enumerate
 Create a new iMPACT project.
- Select 
+ Select
 \begin_inset Quotes eld
 \end_inset
 
@@ -4190,7 +4190,7 @@ When prompted, select a name for the resulting .svf file
 \end_layout
 
 \begin_layout Enumerate
-When prompted to 
+When prompted to
 \begin_inset Quotes eld
 \end_inset
 
@@ -4202,7 +4202,7 @@ Assign New Configuration File
 \end_layout
 
 \begin_layout Enumerate
-When prompted to select a PROM type choose 
+When prompted to select a PROM type choose
 \begin_inset Quotes eld
 \end_inset
 
@@ -4260,7 +4260,7 @@ http://urjtag.org/
 \end_layout
 
 \begin_layout Standard
-As of August 2012 support to the Linux GPIO 
+As of August 2012 support to the Linux GPIO
 \begin_inset Quotes eld
 \end_inset
 
@@ -4410,7 +4410,7 @@ $ dmesg
 \end_layout
 
 \begin_layout Standard
-The 
+The
 \begin_inset Quotes eld
 \end_inset
 
@@ -4729,7 +4729,7 @@ time2ntp("evrname", N)
 \end_layout
 
 \begin_layout Standard
-Here 
+Here
 \begin_inset Quotes eld
 \end_inset
 
@@ -4737,7 +4737,7 @@ evrname
 \begin_inset Quotes erd
 \end_inset
 
- is the same name given when configuring the EVR (see 
+ is the same name given when configuring the EVR (see
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:devnames"
@@ -4760,12 +4760,12 @@ It is suggested to use an unprivileged segment to avoid running the IOC
 \end_layout
 
 \begin_layout Standard
-The NTP daemon is configured from the file 
+The NTP daemon is configured from the file
 \shape italic
 /etc/ntp.conf
 \shape default
 .
- On Debian Linux systems using DHCP it will be necessary to modify 
+ On Debian Linux systems using DHCP it will be necessary to modify
 \shape italic
 /etc/dhcp/dhclient-exit-hooks.d/ntp
 \shape default
@@ -4794,7 +4794,7 @@ fudge 127.127.28.N refid EVR
 
 \begin_layout Standard
 This will configure NTPD to read time from segment N.
- Here N must match what was specified for 
+ Here N must match what was specified for
 \shape italic
 time2ntp()
 \shape default
@@ -4846,7 +4846,7 @@ remote           refid      st t when poll reach   delay   offset  jitter
 The shared memory interface can only be used to provide time with microsecond
  precision.
  So this measurement, taken from a production NSLS2 server, showing a jitter
- of 
+ of
 \begin_inset Formula $\pm1$
 \end_inset
 
@@ -4855,7 +4855,7 @@ The shared memory interface can only be used to provide time with microsecond
 
 \begin_layout Standard
 If the propagation time from the time source to the EVR is known, then the
- offset can be given by adding 
+ offset can be given by adding
 \begin_inset Quotes eld
 \end_inset
 
@@ -4863,7 +4863,7 @@ time1 0.XXX
 \begin_inset Quotes erd
 \end_inset
 
- to the 'fudge' line in 
+ to the 'fudge' line in
 \shape italic
 ntp.conf
 \shape default
@@ -4890,7 +4890,7 @@ The motivating use case for this feature was monitoring of a rotational
 \end_layout
 
 \begin_layout Standard
-Buffers are setup by loading instances of the 
+Buffers are setup by loading instances of the
 \begin_inset listings
 inline true
 status open
@@ -4991,7 +4991,7 @@ Event code FIFO Buffer
 
 \begin_layout Standard
 Each EVR implements a hardware First In First Out buffer for event codes.
- When certain 
+ When certain
 \begin_inset Quotes eld
 \end_inset
 
@@ -5017,7 +5017,7 @@ When the not empty interrupt occurs the fifo drain task (named EVRFIFO in
  The number 512 is an arbitrary number chosen to prevent the starvation
  of lower priority tasks if a high frequency event code is accidentally
  mapped into the FIFO.
- A minimum sleep time is enforced by the 
+ A minimum sleep time is enforced by the
 \series bold
 mrmEvrFIFOPeriod
 \series default
@@ -5042,7 +5042,7 @@ An invocation of an IOSCANPVT list may place an arbitrary number of CALLBACKs
 
 \begin_layout Standard
 To avoid this disastrous occurrence the EVR driver will not re-run the scan
- list for an event, until all actions 
+ list for an event, until all actions
 \series bold
 at all priorities
 \series default
@@ -5050,25 +5050,25 @@ at all priorities
  This is implemented by placing a special sentinel CALLBACK in all three
  queues.
  An event will not be re-run until all three of the CALLBACK have run.
- 
+
 \end_layout
 
 \begin_layout Standard
 The FIFO servicing code can indicate two error conditions.
- Occurrences of these errors are recorded in the 
+ Occurrences of these errors are recorded in the
 \family typewriter
 FIFO Overflow Count
 \family default
- and 
+ and
 \family typewriter
 FIFO Over rate
 \family default
  counters.
- 
+
 \end_layout
 
 \begin_layout Standard
-The 
+The
 \family typewriter
 FIFO Overflow Count
 \family default
@@ -5078,7 +5078,7 @@ FIFO Overflow Count
 \end_layout
 
 \begin_layout Standard
-The 
+The
 \family typewriter
 FIFO Over rate
 \family default
@@ -5162,13 +5162,13 @@ In this example the properties 'Delay' and 'Width' should be settable in
 
 \begin_layout Standard
 Some of the device supports defined are as follows.
- The full list is given in 
+ The full list is given in
 \family typewriter
 \series bold
 mrfCommon/src/mrfCommon.dbd
 \series default
 .
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -5217,7 +5217,7 @@ device(ai , INST_IO, devAOFromUINT16, "Obj Prop uint16")
 \end_layout
 
 \begin_layout Standard
-Unless otherwise noted, all device support use 
+Unless otherwise noted, all device support use
 \series bold
 INST_IO
 \series default

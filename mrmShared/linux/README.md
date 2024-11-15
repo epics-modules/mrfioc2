@@ -1,7 +1,7 @@
 
 # Cross compiling
 
-make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- KERNELDIR=/path/to/headers
+make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- KERNEL_SRC=/path/to/headers
 
 # udev
 

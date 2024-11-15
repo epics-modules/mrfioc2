@@ -88,7 +88,7 @@ jobs:
 
       - name: Build
         run: |
-          KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNELDIR="$PWD/kernel"
+          KBUILD_MODPOST_WARN=1 make -C mrmShared/linux CC=${CC:=gcc} KERNEL_SRC="$PWD/kernel"
 
   host:
     name: With VM host
