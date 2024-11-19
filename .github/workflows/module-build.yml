@@ -5,7 +5,7 @@
 
 # Set the 'name:' properties to values that work for you (pvxs)
 
-name: EPICS driver
+name: EPICS module (build and test)
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - "python/**"
       - "**/*.md"
       - "opi/**"
-      - ".github/workflows/linux-*.yml"
+      - ".github/workflows/kmod-*.yml"
       - ".github/workflows/doxygen-*.yml"
       - ".github/workflows/release-*.yml"
   pull_request:
@@ -25,7 +25,7 @@ on:
       - "python/**"
       - "**/*.md"
       - "opi/**"
-      - ".github/workflows/linux-*.yml"
+      - ".github/workflows/kmod-*.yml"
       - ".github/workflows/doxygen-*.yml"
       - ".github/workflows/release-*.yml"
   workflow_dispatch:

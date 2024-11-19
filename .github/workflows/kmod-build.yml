@@ -1,14 +1,14 @@
-name: Linux kernel module
+name: Linux kernel module (build and test)
 
 on:
   push:
     paths:
       - "mrmShared/linux/**"
-      - ".github/workflows/linux-build.yml"
+      - ".github/workflows/kmod-build.yml"
   pull_request:
     paths:
       - "mrmShared/linux/**"
-      - ".github/workflows/linux-build.yml"
+      - ".github/workflows/kmod-build.yml"
   workflow_dispatch:
 
 jobs:
