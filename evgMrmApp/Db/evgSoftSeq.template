@@ -43,7 +43,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
 
 record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
   field(DTYP, "Raw Soft Channel")
-  field(OUT , "$(P)TrigSrc$(s=:)-Sel_ PP")
+  field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(UDF,  "0")
   field(ZRST, "Univ0")
   field(ONST, "Univ1")
@@ -83,7 +83,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
 # placeholder to OPIs
 record(mbbo, "$(P)TrigSrc$(s=:)2-Sel") {
   field(DTYP, "Raw Soft Channel")
-  field(OUT , "$(P)TrigSrc$(s=:)-Sel_ PP")
+  field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(UDF,  "0")
   field(ZRST, "Rear0")
   field(ONST, "Rear1")
