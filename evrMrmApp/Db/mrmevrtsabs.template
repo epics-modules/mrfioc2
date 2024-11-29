@@ -13,7 +13,8 @@ record(longout, "$(P)$(Evt=)TsAbsCode-SP") {
 }
 
 record(printf, "$(P)$(Evt=)TsAbsLock_") {
-  field(OMSL, "closed_loop")
+  field(ASG, "private")
+  field(DISP, "1")
   field(FMT, "@OBJ=$(EVR),Code=%u")
   field(INP0, "$(P)$(Evt=)TsAbsCode-SP CPP")
   field(OUT, "$(P)$(Evt=)-SP.OUT CP")
