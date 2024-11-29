@@ -22,41 +22,51 @@
 #   and the first element value is always zero.
 #
 record(waveform, "$(P)TS-I") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop waveform in")
-  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFlush)")
+  field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=$(FLUSH=TimesRelFirst)")
   field(SCAN, "I/O Intr")
   field(FTVL, "LONG") # int32
   field(NELM, "$(NELM=128)")
   field(TSE , "-2")
+  field(EGU , "ns")
+  info(autosaveFields_pass0, "NELM")
 }
 
 record(longout, "$(P)CptEvt-SP") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
   field(VAL , "$(CODE=0)")
   field(PINI, "YES")
   field(FLNK, "$(P)CptEvt-RB")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)CptEvt-RB") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop uint16")
   field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=TimeEvent")
 }
 
 record(longout, "$(P)FlshEvt-SP") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
   field(VAL , "$(TRIG=0)")
   field(PINI, "YES")
   field(FLNK, "$(P)FlshEvt-RB")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)FlshEvt-RB") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop uint16")
   field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushEvent")
 }
 
 record(bo, "$(P)Flsh-SP") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop command")
   field(OUT , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=FlushManual")
   field(VAL , "$(TRIG=0)")
@@ -65,6 +75,7 @@ record(bo, "$(P)Flsh-SP") {
 }
 
 record(longin, "$(P)Drop-I") {
+  field(DESC, "$(DESC)")
   field(DTYP, "Obj Prop uint32")
   field(SCAN, "10 second")
   field(INP , "@OBJ=$(NAME=$(EVR):CPT$(CODE)), CLASS=EVRMRMTSBuffer, PARENT=$(EVR), PROP=DropCnt")
@@ -72,6 +83,14 @@ record(longin, "$(P)Drop-I") {
 }
 
 record(calc, "$(P)DropRate-I") {
+  field(DESC, "$(DESC)")
   field(INPA, "$(P)Drop-I NPP")
   field(CALC, "C:=A-B;B:=A;C/10")
+}
+
+record(waveform, "$(P)TsBufLabel-I") {
+  field(DESC, "$(DESC)")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
 }
