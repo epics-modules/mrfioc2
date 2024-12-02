@@ -30,7 +30,6 @@ record(waveform, "$(P)TS-I") {
   field(NELM, "$(NELM=128)")
   field(TSE , "-2")
   field(EGU , "ns")
-  info(autosaveFields_pass0, "NELM")
 }
 
 record(longout, "$(P)CptEvt-SP") {
@@ -88,7 +87,7 @@ record(calc, "$(P)DropRate-I") {
   field(CALC, "C:=A-B;B:=A;C/10")
 }
 
-record(waveform, "$(P)TsBufLabel-I") {
+record(waveform, "$(P)TSLabel-I") {
   field(DESC, "$(DESC)")
   field(FTVL, "CHAR")
   field(NELM, "128")

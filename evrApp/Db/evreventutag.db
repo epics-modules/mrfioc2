@@ -25,3 +25,19 @@ record(calc, "$(EN)Cnt-I") {
   field(INPA, "$(EN)Cnt-I NPP")
   $(SFTSEN=)field(TSEL, "$(EN)-SP.TIME")
 }
+
+record(longout, "$(EN)Code-SP") {
+  field(DESC, "Event Code")
+  field(VAL , "$(CODE=255)")
+  field(PINI, "YES")
+  alias("$(EN)Code-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(printf, "$(EN)Code-Lock_") {
+  field(ASG, "private")
+  field(DISP, "1")
+  field(FMT, "@OBJ=$(OBJ),Code=%u")
+  field(INP0, "$(EN)Code-SP CPP")
+  field(OUT, "$(EN)-SP.OUT CP")
+}

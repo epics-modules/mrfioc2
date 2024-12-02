@@ -11,7 +11,6 @@ DB += mrmevrbase.template
 DB += mrmevrdc.template
 DB += mrmevrbufrx.db
 DB += mrmevrtsbuf.db
-DB += mrmevrtsabs.template
 DB += sequencedemo.db
 DB += mrmevrdlymodule.template
 DB += evrSoftSeq.template
