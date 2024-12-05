@@ -607,6 +607,13 @@ void EVRMRM::clockSet(double freq)
     }
 }
 
+void
+EVRMRM::resetFracSynth()
+{
+    epicsUInt32 oldfrac=READ32(base, FracDiv);
+    WRITE32(base, FracDiv, oldfrac);
+}
+
 epicsUInt16
 EVRMRM::clockMode() const
 {

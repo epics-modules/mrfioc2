@@ -50,7 +50,7 @@ std::string EVR::versionSw() const
     return MRF_VERSION;
 }
 
-std::string EVR::getCommitHash() const 
+std::string EVR::getCommitHash() const
 {
     return __COMMIT_HASH;
 }
@@ -131,6 +131,7 @@ OBJECT_BEGIN(EVR) {
     OBJECT_PROP2("Timestamp Source", &EVR::SourceTSraw, &EVR::setSourceTSraw);
 
     OBJECT_PROP2("Clock", &EVR::clock, &EVR::clockSet);
+    OBJECT_PROP1("Reset Frac Synth", &EVR::resetFracSynth);
 
     OBJECT_PROP2("Timestamp Clock", &EVR::clockTS, &EVR::clockTSSet);
 

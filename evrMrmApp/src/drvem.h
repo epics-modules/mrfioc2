@@ -89,7 +89,7 @@ struct eventCode {
 
 /**@brief Modular Register Map Event Receivers
  *
- * 
+ *
  */
 class epicsShareClass EVRMRM : public mrf::ObjectInst<EVRMRM, EVR>,
                                public MRMSPI,
@@ -149,6 +149,7 @@ public:
     virtual double clock() const OVERRIDE FINAL
         {SCOPED_LOCK(evrLock);return eventClock;}
     virtual void clockSet(double) OVERRIDE FINAL;
+    virtual void resetFracSynth() OVERRIDE FINAL;
 
     epicsUInt16 clockMode() const;
     void clockModeSet(epicsUInt16 mode);

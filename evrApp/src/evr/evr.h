@@ -97,6 +97,7 @@ public:
    *@param clk Clock rate in Hz
    */
   virtual void clockSet(double clk)=0;
+  virtual void resetFracSynth()=0;
 
   //! Internal PLL Status
   virtual bool pllLocked() const=0;

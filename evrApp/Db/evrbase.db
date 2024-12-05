@@ -152,6 +152,14 @@ record(ao, "$(P)Link$(s=:)Clk-SP") {
   info(autosaveFields_pass0, "VAL EGU ESLO HOPR LOPR DRVH DRVL PREC")
 }
 
+record(bo,"$(P)ResetFracSynth-Cmd" ) {
+  field(DESC, "Reset button")
+  field(DTYP, "Obj Prop command")
+  field(OUT , "@OBJ=$(OBJ), PROP=Reset Frac Synth")
+  field(ZNAM, "Reset")
+  field(ONAM, "Reset")
+}
+
 record(ai, "$(P)Link$(s=:)Clk-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Clock")
