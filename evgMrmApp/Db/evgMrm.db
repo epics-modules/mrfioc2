@@ -1,3 +1,5 @@
+# The file collects EVG base functions.
+
 record(mbbo, "$(P)Enable-Sel") {
   field(DESC, "EVG Master Enable")
   field(DTYP, "Obj Prop uint16")
@@ -45,6 +47,13 @@ record(stringin, "$(P)CommitHash-I") {
   field(INP , "@OBJ=$(OBJ), PROP=CommitHash")
   field(PINI, "YES")
   field(DESC, "Commit hash")
+}
+
+record(waveform, "$(P)Label-I") {
+  field(DESC, "Label")
+  field(FTVL, "CHAR")
+  field(NELM, "128")
+  info(autosaveFields_pass1, "VAL")
 }
 
 record(bo, "$(P)ResetMxc-Cmd") {
