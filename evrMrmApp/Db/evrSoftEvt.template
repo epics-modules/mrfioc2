@@ -1,4 +1,5 @@
 record(longout, "$(P)EvtCode-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Sent software event")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=EvtCode")
@@ -34,6 +35,7 @@ record(mbbo, "$(P)SoftTimeSrc-Sel") {
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop command")
   field(OUT , "@OBJ=$(OBJ), PROP=Sync TS")
   field(DESC, "EVG Sync TimeStamp")

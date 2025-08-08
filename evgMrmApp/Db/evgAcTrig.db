@@ -1,5 +1,6 @@
 record(longout, "$(P)Divider-SP") {
   field(DESC, "EVG AC Divider")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=Divider")
   field(PINI, "YES")
@@ -25,6 +26,7 @@ record(longin, "$(P)Divider-RB") {
 
 record(ao, "$(P)Phase-SP") {
   field(DESC, "EVG AC Phase Shifter")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT,  "@OBJ=$(OBJ), PROP=Phase")
   field(PINI, "YES")
@@ -58,6 +60,7 @@ record(ai, "$(P)Phase-RB") {
 
 record(bo, "$(P)Bypass-Sel") {
   field(DESC, "Bypass AC divider and Phase shifter")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT,  "@OBJ=$(OBJ), PROP=Bypass")
   field(PINI, "YES")
@@ -79,6 +82,7 @@ record(bi, "$(P)Bypass-RB") {
 
 record(mbbo, "$(P)SyncSrc-Sel") {
   field(DESC, "Synchronization Source")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT,  "@OBJ=$(OBJ), PROP=SyncSrc")
   field(PINI, "YES")

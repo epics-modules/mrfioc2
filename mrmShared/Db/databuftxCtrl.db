@@ -7,6 +7,7 @@
 #
 record(bo, "$(P)Link$(s=:)TxMode-Sel") {
   field(DESC, "Data mode")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")

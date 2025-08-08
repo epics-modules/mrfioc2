@@ -8,6 +8,7 @@ record(bi, "$(P)Status-RB") {
 
 record(bo, "$(P)Polarity-Sel") {
   field(DESC, "EVG Mux Output Polarity")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Polarity")
   field(PINI, "YES")
@@ -29,6 +30,7 @@ record(bi, "$(P)Polarity-RB") {
 
 record(ao, "$(P)Frequency-SP") {
   field(DESC, "EVG Mux Frequency")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Frequency")
   field(EGU , "Hz")
@@ -54,6 +56,7 @@ record(ai, "$(P)Frequency-RB") {
 
 record(longout, "$(P)Prescaler-SP") {
   field(DESC, "EVG Mux Prescaler")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Prescaler")
   field(PINI, "YES")

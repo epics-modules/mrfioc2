@@ -6,6 +6,7 @@
 # Device indpendent parts of sequencer (excludes trigger source mapping)
 
 record(mbbo, "$(P)TsResolution-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMEUNITS")
   field(ZRST, "Ticks")
@@ -63,6 +64,7 @@ record(mbbi, "$(P)TsResolution-RB") {
 record(waveform, "$(P)EvtEna-SP") {
   field(DTYP, "Obj Prop waveform out")
   field(DESC, "Sequence event enable array")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENA")
   field(NELM, "$(NELM)")
   field(FTVL, "UCHAR")
@@ -81,6 +83,7 @@ record(waveform, "$(P)EvtEna-RB") {
 record(waveform, "$(P)EvtMask-SP") {
   field(DTYP, "Obj Prop waveform out")
   field(DESC, "Sequence event mask array")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=MASK")
   field(NELM, "$(NELM)")
   field(FTVL, "UCHAR")
@@ -99,6 +102,7 @@ record(waveform, "$(P)EvtMask-RB") {
 record(waveform, "$(P)EvtCode-SP") {
   field(DTYP, "Obj Prop waveform out")
   field(DESC, "Sequence event code array")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=CODES")
   field(NELM, "$(NELM)")
   field(FTVL, "UCHAR")
@@ -117,6 +121,7 @@ record(waveform, "$(P)EvtCode-RB") {
 record(waveform, "$(P)Timestamp-SP") {
   field(DTYP, "Obj Prop waveform out")
   field(DESC, "Sequence timestamp array")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TIMES")
   field(NELM, "$(NELM)")
   field(FTVL, "DOUBLE")
@@ -133,6 +138,7 @@ record(waveform, "$(P)Timestamp-RB") {
 }
 
 record(mbbo, "$(P)RunMode-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=RUN_MODE")
   field(UDF,  "0")
@@ -189,6 +195,7 @@ record(mbbi, "$(P)RunMode-RB") {
 record(bo, "$(P)Commit-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "Commit EVG Sequence")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=COMMIT")
   field(VAL,  "1")
   field(UDF,  "0")
@@ -199,6 +206,7 @@ record(bo, "$(P)Commit-Cmd") {
 record(bo, "$(P)Load-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "ALLOC EVG Sequence")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=LOAD")
   field(VAL,  "1")
   field(UDF,  "0")
@@ -209,6 +217,7 @@ record(bo, "$(P)Load-Cmd") {
 record(bo, "$(P)Unload-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "Dealloc EVG Sequence")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=UNLOAD")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -219,6 +228,7 @@ record(bo, "$(P)Unload-Cmd") {
 record(bo, "$(P)Enable-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "Enable EVG Sequence")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLE")
   field(VAL,  "1")
   field(UDF,  "0")
@@ -231,6 +241,7 @@ record(bo, "$(P)Enable-Cmd") {
 record(bo, "$(P)Disable-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "Disable EVG Sequence")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=DISABLE")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -242,6 +253,7 @@ record(bo, "$(P)Disable-Cmd") {
 record(bo, "$(P)SoftTrig-Cmd") {
   field(DTYP, "Obj Prop command")
   field(DESC, "Sequence RAM soft trigger")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SOFT_TRIG")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -252,6 +264,7 @@ record(bo, "$(P)SoftTrig-Cmd") {
 record(mbbo, "$(P)SwMask-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Sequence RAM soft trigger")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(NOBT, "4")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWMASK")
 }
@@ -266,6 +279,7 @@ record(mbbi, "$(P)SwMask-RB") {
 record(mbbo, "$(P)SwEna-Sel") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Sequence RAM soft trigger")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(NOBT, "4")
   field(OUT,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=SWENA")
 }
@@ -300,6 +314,7 @@ record(bi, "$(P)Commit-RB") {
 record(bi, "$(P)Enable-Sts") {
   field(DTYP, "Obj Prop bool")
   field(DESC, "Soft Seq Ena status")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(INP,  "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=ENABLED")
   field(SCAN, "I/O Intr")
   field(ZNAM, "Disabled")

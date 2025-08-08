@@ -15,6 +15,7 @@
 # before mapped actions take effect.
 #
 record(bo, "$(PN)Ena-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
@@ -27,12 +28,14 @@ record(bo, "$(PN)Ena-Sel") {
 
 # Pulser Soft set/reset
 record(bo, "$(PN)Set-Cmd") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Soft set")
   field(DTYP, "Obj Prop command")
   field(OUT , "@OBJ=$(OBJ), PROP=SoftSet")
 }
 
 record(bo, "$(PN)Reset-Cmd") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Soft reset")
   field(DTYP, "Obj Prop command")
   field(OUT , "@OBJ=$(OBJ), PROP=SoftReset")
@@ -42,6 +45,7 @@ record(bo, "$(PN)Reset-Cmd") {
 # output from normally low to normally high.
 #
 record(bo, "$(PN)Polarity-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Polarity")
   field(PINI, "YES")
@@ -55,6 +59,7 @@ record(bo, "$(PN)Polarity-Sel") {
 # Determines the time between when the Pulse Generator is triggered
 # and when it changes state from inactive to active (normally low to high).
 record(ao, "$(PN)Delay-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Delay")
   field(PINI, "YES")
@@ -93,6 +98,7 @@ record(longin, "$(PN)Delay$(s=:)Raw-RB") {
 # inactive to active (normally low to high), and when it changes back to inactive.
 #
 record(ao, "$(PN)Width-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Width")
   field(PINI, "YES")
@@ -132,6 +138,7 @@ record(longin, "$(PN)Width$(s=:)Raw-RB") {
 # Achieves greater range at the expense of resolution.
 #
 record(longout, "$(PN)Prescaler-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Prescaler")
   field(DESC, "Pulser prescaler")
@@ -183,6 +190,7 @@ record(waveform, "$(PN)Label-I") {
 # Triger pulser generator by one or more prescalers
 record(mbboDirect, "$(PN)PSTrig-Sel")
 {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=PSTrig")
   field(PINI, "YES")
@@ -204,6 +212,7 @@ record(mbbiDirect, "$(PN)PSTrig-RB")
 # Trigger pulser generator by one or more DBus bits
 record(mbboDirect, "$(PN)DBusTrig-Sel")
 {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=DBusTrig")
   field(PINI, "YES")

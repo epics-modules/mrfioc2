@@ -3,6 +3,7 @@ include "evrbase.db"
 
 
 record(mbbo, "$(P)Src$(s=:)Clk-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Clock Mode")
   field(PINI, "YES")

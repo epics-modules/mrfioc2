@@ -8,6 +8,7 @@
 record(bo, "$(IN)Lvl-Sel") {
   field(DTYP, "Obj Prop bool")
   field(DESC, "Input $(DESC)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Active Level")
   field(PINI, "YES")
   field(VAL , "1")
@@ -27,6 +28,7 @@ record(bi, "$(IN)State-I") {
 }
 
 record(bo, "$(IN)Edge-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Active Edge")
   field(PINI, "YES")
@@ -37,6 +39,7 @@ record(bo, "$(IN)Edge-Sel") {
 }
 
 record(mbbo, "$(IN)Trig$(s=:)Ext-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=External Mode")
   field(PINI, "YES")
@@ -66,6 +69,7 @@ record(mbbo, "$(IN)Trig$(s=:)Ext-Sel") {
 
 # Sets code which will be applied to the local mapping ram whenever the 'External Mode' condition is met.
 record(longout, "$(IN)Code$(s=:)Ext-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=External Code")
   field(PINI, "YES")
@@ -79,6 +83,7 @@ record(longout, "$(IN)Code$(s=:)Ext-SP") {
 
 # Sets the code which will be sent on the upstream event link whenever the 'Backwards Mode' condition is met.
 record(mbbo, "$(IN)Trig$(s=:)Back-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Backwards Mode")
   field(PINI, "YES")
@@ -107,6 +112,7 @@ record(mbbo, "$(IN)Trig$(s=:)Back-Sel") {
 }
 
 record(longout, "$(IN)Code$(s=:)Back-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Backwards Code")
   field(PINI, "YES")
@@ -119,6 +125,7 @@ record(longout, "$(IN)Code$(s=:)Back-SP") {
 }
 
 record(mbbo, "$(IN)DBus-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=DBus Mask")
   field(PINI, "YES")
