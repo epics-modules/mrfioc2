@@ -9,6 +9,7 @@
 
 record(bo, "$(P)PSPolarity-Sel")
 {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(DESC, "Polarity of all prescalers")
   field(OUT , "@OBJ=$(EVR), PROP=PSPolarity")
@@ -20,6 +21,7 @@ record(bo, "$(P)PSPolarity-Sel")
 }
 
 record(longout, "$(SN)Div-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Prescaler $(IDX)")
   field(OUT , "@OBJ=$(OBJ), PROP=Divide")
@@ -41,6 +43,7 @@ record(longin, "$(SN)Div-RB") {
 }
 
 record(calc, "$(SN)Rate-I") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Output frequency")
   field(INPA, "$(SN)Div-RB NPP")
   field(INPB, "$(P)Link$(s=:)Clk-I CP")
@@ -57,6 +60,7 @@ record(waveform, "$(SN)Label-I") {
 }
 
 record(ao, "$(SN)PhasOffs-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Prescaler $(IDX) Phase Offset")
   field(EGU , "Deg")
   field(OMSL, "supervisory")
@@ -77,6 +81,7 @@ record(calcout, "$(SN)PhasOffs-CO_") {
 }
 
 record(longout, "$(SN)PhasOffs$(s=:)Raw-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Prescaler $(IDX) Phase Offset")
   field(OUT , "@OBJ=$(OBJ), PROP=Phase Offset")

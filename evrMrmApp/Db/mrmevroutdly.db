@@ -2,6 +2,7 @@
 # This file depreciates the mrmevrdlymodule.template
 
 record(ao, "$(ON)FineDelay-SP") {
+  field( ASG,  "$(ASGPROTECTED=protected)")
   field( DESC, "Fine delay output")
   field( DTYP, "Obj Prop double")
   field( OUT , "@OBJ=$(OBJ), PROP=Fine Delay")

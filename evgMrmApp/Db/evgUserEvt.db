@@ -10,11 +10,12 @@
 #
 
 record(longout, "$(P)-Cmd") {
-  field(ASG , "OPERATOR")
+  field(ASG , "$(ASGOPERATOR=OPERATOR)")
   field(FLNK, "$(P)-Seq_")
 }
 
 record(seq, "$(P)-Seq_") {
+  field(ASG,  "$(ASGPRIVATE=private)")
   # Trigger soft event
   field(DOL1, "$(CODE)")
   field(LNK1, "$(SYS){$(D)-SoftEvt}EvtCode-SP PP")

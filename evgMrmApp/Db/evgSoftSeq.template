@@ -6,6 +6,7 @@ record(fanout, "$(P)TrigSrc$(s=:)Init-FOut_") {
 }
 
 record(mbbo, "$(P)TrigSrc-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(UDF,  "0")
@@ -42,6 +43,7 @@ record(mbbo, "$(P)TrigSrc-Sel") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(UDF,  "0")
@@ -82,6 +84,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)1-Sel") {
 
 # placeholder to OPIs
 record(mbbo, "$(P)TrigSrc$(s=:)2-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(UDF,  "0")

@@ -6,6 +6,7 @@
 #  OBJ = devObj name
 
 record(ao, "$(ON)Delay-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Fine Delay")
   field(PINI, "YES")

@@ -6,6 +6,7 @@
 #  DESC = Physical label found on output jack
 
 record(longout, "$(ON)Src-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(DESC, "Output $(DESC)")
   field(OUT , "@OBJ=$(OBJ), PROP=Map")
@@ -20,6 +21,7 @@ record(longin, "$(ON)Src-RB") {
 }
 
 record(bo, "$(ON)Ena-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(DESC, "Output $(DESC)")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")

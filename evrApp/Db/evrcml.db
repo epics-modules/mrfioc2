@@ -6,6 +6,7 @@
 #  OBJ = devObj name
 
 record(bo, "$(ON)Ena-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
@@ -17,6 +18,7 @@ record(bo, "$(ON)Ena-Sel") {
 }
 
 record(bo, "$(ON)Pwr-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=Power")
   field(PINI, "YES")
@@ -28,6 +30,7 @@ record(bo, "$(ON)Pwr-Sel") {
 }
 
 record(bo, "$(ON)Rst-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=Reset")
   field(PINI, "YES")
@@ -51,6 +54,7 @@ record(bo, "$(ON)Rst-Sel") {
 # Waveform
 #   Uses the bit pattern stored by the Pattern Set property.
 record(mbbo, "$(ON)Mode-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "CML/GTX pattern mode")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Mode")
@@ -112,6 +116,7 @@ record(fanout, "$(ON)Res-FO_") {
 # Send in 4x Pattern mode when output goes Inactive -> Active
 
 record(mbboDirect, "$(ON)Pat$(s=:)Rise00_15-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
@@ -121,6 +126,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Rise00_15-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Rise16_31-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
@@ -130,6 +136,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Rise16_31-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Rise32_39-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
@@ -152,6 +159,7 @@ record(aSub, "$(ON)Pat$(s=:)Rise-ASub_") {
 }
 
 record(waveform, "$(ON)Pat$(s=:)Rise-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Rising edge pattern")
   field(DTYP, "Obj Prop waveform out")
   field(INP, "@OBJ=$(OBJ), PROP=Pat Rise")
@@ -167,6 +175,7 @@ record(waveform, "$(ON)Pat$(s=:)Rise-SP") {
 # # Send in 4x Pattern mode when output remain Active -> Active
 
 record(mbboDirect, "$(ON)Pat$(s=:)High00_15-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
@@ -176,6 +185,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)High00_15-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)High16_31-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
@@ -185,6 +195,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)High16_31-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)High32_39-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
@@ -207,6 +218,7 @@ record(aSub, "$(ON)Pat$(s=:)High-ASub_") {
 }
 
 record(waveform, "$(ON)Pat$(s=:)High-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Rising edge pattern")
   field(DTYP, "Obj Prop waveform out")
   field(INP, "@OBJ=$(OBJ), PROP=Pat High")
@@ -222,6 +234,7 @@ record(waveform, "$(ON)Pat$(s=:)High-SP") {
 # Send in 4x Pattern mode when output goes Active -> Inactive
 
 record(mbboDirect, "$(ON)Pat$(s=:)Fall00_15-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
@@ -231,6 +244,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Fall00_15-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Fall16_31-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
@@ -240,6 +254,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Fall16_31-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Fall32_39-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
@@ -263,6 +278,7 @@ record(aSub, "$(ON)Pat$(s=:)Fall-ASub_") {
 
 record(waveform, "$(ON)Pat$(s=:)Fall-SP") {
   field(DESC, "Rising edge pattern")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop waveform out")
   field(INP, "@OBJ=$(OBJ), PROP=Pat Fall")
   field(PINI, "YES")
@@ -277,6 +293,7 @@ record(waveform, "$(ON)Pat$(s=:)Fall-SP") {
 # Send in 4x Pattern mode when output remains Inactive -> Inactive
 
 record(mbboDirect, "$(ON)Pat$(s=:)Low00_15-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 0-15")
   field(NOBT, "16")
@@ -286,6 +303,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Low00_15-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Low16_31-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 16-31")
   field(NOBT, "16")
@@ -295,6 +313,7 @@ record(mbboDirect, "$(ON)Pat$(s=:)Low16_31-SP") {
 }
 
 record(mbboDirect, "$(ON)Pat$(s=:)Low32_39-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Soft and restore")
   field(DESC, "Bits 32-39")
   field(NOBT, "16")
@@ -318,6 +337,7 @@ record(aSub, "$(ON)Pat$(s=:)Low-ASub_") {
 
 record(waveform, "$(ON)Pat$(s=:)Low-SP") {
   field(DESC, "Rising edge pattern")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop waveform out")
   field(INP, "@OBJ=$(OBJ), PROP=Pat Low")
   field(PINI, "YES")
@@ -330,6 +350,7 @@ record(waveform, "$(ON)Pat$(s=:)Low-SP") {
 # frequency mode
 
 record(bo, "$(ON)Freq$(s=:)Lvl-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(DESC, "Trigger level")
   field(OUT, "@OBJ=$(OBJ), PROP=Freq Trig Lvl")
@@ -343,6 +364,7 @@ record(bo, "$(ON)Freq$(s=:)Lvl-SP") {
 
 record(ao, "$(ON)Freq$(s=:)Init-SP") {
   field(DESC, "Trigger point")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=Counts Init")
   field(PINI, "YES")
@@ -368,6 +390,7 @@ record(longin, "$(ON)Freq$(s=:)Init-RB") {
 
 record(ao, "$(ON)Freq$(s=:)High-SP") {
   field(DESC, "Time active")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=Counts High")
   field(PINI, "YES")
@@ -392,6 +415,7 @@ record(longin, "$(ON)Freq$(s=:)High-RB") {
 
 record(ao, "$(ON)Freq$(s=:)Low-SP") {
   field(DESC, "Time inactive")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=Counts Low")
   field(PINI, "YES")
@@ -419,6 +443,7 @@ record(longin, "$(ON)Freq$(s=:)Low-RB") {
 
 record(bo, "$(ON)Pat$(s=:)WfCycle-SP") {
   field(DESC, "Waveform cycle mode")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=Pat Recycle")
   field(PINI, "YES")
@@ -432,6 +457,7 @@ record(bo, "$(ON)Pat$(s=:)WfCycle-SP") {
 
 record(waveform, "$(ON)Pat$(s=:)Wf-SP") {
   field(DESC, "Pattern setting")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop waveform out")
   field(INP, "@OBJ=$(OBJ), PROP=Waveform")
   field(PINI, "YES")
@@ -483,6 +509,7 @@ record(waveform, "$(ON)Pat$(s=:)WfX-I") {
 
 record(bo, "$(ON)WfCalc$(s=:)Ena-SP") {
   field(DESC, "Disable calculator")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
@@ -490,6 +517,7 @@ record(bo, "$(ON)WfCalc$(s=:)Ena-SP") {
 }
 
 record(ao, "$(ON)WfCalc$(s=:)Delay-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(OUT , "$(ON)WfCalc-ASub_.A PP")
   field(EGU , "ns")
@@ -500,6 +528,7 @@ record(ao, "$(ON)WfCalc$(s=:)Delay-SP") {
 }
 
 record(ao, "$(ON)WfCalc$(s=:)Width-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(OUT , "$(ON)WfCalc-ASub_.B PP")
   field(EGU , "ns")
@@ -530,6 +559,7 @@ record(aSub, "$(ON)WfCalc-ASub_") {
 
 record(bo, "$(ON)BunchTrain$(s=:)Ena-SP") {
   field(DESC, "Disable calculator")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(ONAM, "Enabled")
   field(ZNAM, "Disabled")
   field(UDF , "0")
@@ -538,6 +568,7 @@ record(bo, "$(ON)BunchTrain$(s=:)Ena-SP") {
 }
 
 record(longout, "$(ON)BunchTrain$(s=:)Size-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(OUT , "$(ON)BunchTrain-ASub_.A PP")
   field(UDF , "0")

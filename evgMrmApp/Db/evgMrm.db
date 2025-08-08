@@ -2,6 +2,7 @@
 
 record(mbbo, "$(P)Enable-Sel") {
   field(DESC, "EVG Master Enable")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(ZRST, "Disabled")
@@ -58,6 +59,7 @@ record(waveform, "$(P)Label-I") {
 
 record(bo, "$(P)ResetMxc-Cmd") {
   field(DTYP, "Obj Prop bool")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Reset MXC")
   field(DESC, "EVG Reset MXC")
   field(PINI, "YES")
@@ -67,6 +69,7 @@ record(bo, "$(P)ResetMxc-Cmd") {
 
 record(longout, "$(P)SendEvt-SP") {
   field(DESC, "EVG Software Event Code")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=EvtCode")
   field(UDF,  "0")
@@ -88,6 +91,7 @@ record (stringin, "$(P)Timestamp-RB") {
 
 record(bo, "$(P)SimTimestamp-Sel") {
   field(DTYP, "Obj Prop bool")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=SimTime")
   field(OMSL, "closed_loop")
   field(DOL , "$(P)PpsInp-MbbiDir_.BF CP")
@@ -97,6 +101,7 @@ record(bo, "$(P)SimTimestamp-Sel") {
 
 record(bo, "$(P)SoftTickSecond-Cmd") {
   field(DTYP, "Obj Prop command")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Tick second via EPICS scan")
   field(OUT , "@OBJ=$(OBJ), PROP=SoftTick")
   field(DISV, 0)
@@ -111,12 +116,14 @@ record(ai, "$(P)TimeErr-I") {
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
   field(DTYP, "Obj Prop command")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Sync TS")
   field(DESC, "EVG Sync TimeStamp")
 }
 
 record(mbbo, "$(P)PpsInp-Sel") {
   field(DESC, "EVG Pps Input")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -169,6 +176,7 @@ record(mbbiDirect, "$(P)PpsInp-MbbiDir_") {
 }
 
 record(seq, "$(P)PpsInp-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)PpsInpItlk-SQ_.PROC")
   field(DOL2, "0")
@@ -176,6 +184,7 @@ record(seq, "$(P)PpsInp-SQ_"){
 }
 
 record(seq, "$(P)PpsInpItlk-SQ_") {
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DESC, "Sequence to control 1PPS Select")
   field(DOL1, "1")
   field(LNK1, "$(P)PpsInp1Itlk-SQ_.DISA NPP NMS")
@@ -195,6 +204,7 @@ record(seq, "$(P)PpsInpItlk-SQ_") {
 
 record(mbbo, "$(P)PpsInp1-Sel") {
   field(DESC, "EVG Pps Input (more)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -239,6 +249,7 @@ record(mbbiDirect, "$(P)PpsInp1-MbbiDir_") {
 }
 
 record(seq, "$(P)PpsInp1-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)PpsInp1Itlk-SQ_.PROC")
   field(DOL2, "0")
@@ -247,6 +258,7 @@ record(seq, "$(P)PpsInp1-SQ_"){
 
 record(seq, "$(P)PpsInp1Itlk-SQ_") {
   field(DESC, "Sequence to control 1PPS Select")
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "1")
   field(LNK1, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
   field(DOL2, "1")
@@ -265,6 +277,7 @@ record(seq, "$(P)PpsInp1Itlk-SQ_") {
 
 record(mbbo, "$(P)PpsInp2-Sel") {
   field(DESC, "EVG Pps Input (more+)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(UDF,  "0")
   field(VAL,  "0")
@@ -317,6 +330,7 @@ record(mbbiDirect, "$(P)PpsInp2-MbbiDir_") {
 }
 
 record(seq, "$(P)PpsInp2-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)PpsInp2Itlk-SQ_.PROC")
   field(DOL2, "0")
@@ -324,6 +338,7 @@ record(seq, "$(P)PpsInp2-SQ_"){
 }
 
 record(seq, "$(P)PpsInp2Itlk-SQ_") {
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DESC, "Sequence to control 1PPS Select")
   field(DOL1, "1")
   field(LNK1, "$(P)PpsInpItlk-SQ_.DISA NPP NMS")
@@ -353,6 +368,7 @@ record(longin, "$(P)DbusStatus-RB" ) {
 #
 record(mbbo, "$(P)TSGen-SP") {
   field(DESC, "EVG TS Generator")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT,  "@OBJ=$(OBJ), PROP=TS Generator")
   field(PINI, "YES")
@@ -396,6 +412,7 @@ record(mbbi, "$(P)TSGen-RB") {
 }
 
 record(bo,"$(P)ResetFracSynth-Cmd" ) {
+    field (ASG,  "$(ASGPROTECTED=protected)")
     field( DTYP, "Obj Prop command")
     field( OUT , "@OBJ=$(OBJ), PROP=Reset Frac Synth")
     field( DESC, "Reset")
