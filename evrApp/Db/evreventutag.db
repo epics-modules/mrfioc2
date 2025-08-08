@@ -35,7 +35,7 @@ record(longout, "$(EN)Code-SP") {
 }
 
 record(printf, "$(EN)Code-Lock_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DISP, "1")
   field(FMT, "@OBJ=$(OBJ),Code=%u")
   field(INP0, "$(EN)Code-SP CPP")

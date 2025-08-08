@@ -39,7 +39,7 @@ record(longout, "$(P)Mask$(s=:)Rep-SP") {
 
 
 record(aSub, "$(P)Rep-Calc_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(SNAM, "Seq Repeat")
     # A - cycle length in ticks
   field(INPA, "$(CYCLELEN)")
