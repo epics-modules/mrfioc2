@@ -121,7 +121,7 @@ record(longin, "$(P)Cnt$(s=:)SwOflw-I") {
 # Detect the first time the event link
 # is online.  Then set master enable.
 record(calcout, "$(P)Link$(s=:)Init-FO_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DESC, "Detect initial link up")
   field(INPA, "$(P)Link-Sts")
   field(CALC, "A")
@@ -308,7 +308,7 @@ record(stringin, "$(P)Pos-I") {
 }
 
 record(fanout, "$(P)Time$(s=:)Init-FO_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(PINI, "YES")
   field(LNK1, "$(P)Time$(s=:)Clock-SP")
   field(LNK2, "$(P)Time$(s=:)Src-Sel")
@@ -372,7 +372,7 @@ record(mbbo, "$(P)Time$(s=:)Src-Sel") {
 # * DBus 4 Increments on the 0->1 transition of DBus bit #4.
 #
 record(longout, "$(P)Time$(s=:)Src-Sel_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Source")
   field(FLNK, "$(P)Time$(s=:)Clock-I")

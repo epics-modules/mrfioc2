@@ -1,6 +1,6 @@
 
 record(mbbiDirect, "$(P)Link-Sts_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint16")
   field(INP, "@OBJ=$(OBJ), PROP=Status")
   field(SCAN, "1 second")
