@@ -1,7 +1,7 @@
 # linked from mrmSoftSeq.template
 # $(P)InitSeq$(s=:)Cont-FOut_
 record(fanout, "$(P)TrigSrc$(s=:)Init-FOut_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(LNK1, "$(P)TrigSrc-Sel_")
 }
 
@@ -121,7 +121,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)2-Sel") {
 }
 
 record(longout, "$(P)TrigSrc-Sel_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
   field(VAL , "0x03000000") # default to None
@@ -129,7 +129,7 @@ record(longout, "$(P)TrigSrc-Sel_") {
 }
 
 record(longin, "$(P)TrigSrc-RB_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
   field(SCAN, "I/O Intr")
@@ -192,13 +192,13 @@ record(stringin, "$(P)TrigSrc-RB") {
 #(only if TsInpMode = EGU).
 #
 record(ai, "$(P)EvtClkFreq-RB_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(INP,  "$(PP=$(SYS){$(D)-)EvtClk$(s=})Frequency-RB CP")
   field(FLNK, "$(P)EvtClkFreq$(s=:)Cont-RB_")
 }
 
 record(ao, "$(P)EvtClkFreq$(s=:)Cont-RB_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(OUT,  "$(P)Timestamp-RB.PROC")
   field(VAL,  "1")
 }

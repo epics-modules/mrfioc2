@@ -163,7 +163,7 @@ record(mbbo, "$(P)PpsInp-Sel") {
 # interrupt of the corresponding external input.
 #
 record(mbbiDirect, "$(P)PpsInp-MbbiDir_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DESC, "EVG Pps Input")
   field(INP,  "$(P)PpsInp-Sel.RVAL NPP")
 }
@@ -233,7 +233,7 @@ record(mbbo, "$(P)PpsInp1-Sel") {
 # interrupt of the corresponding external input.
 #
 record(mbbiDirect, "$(P)PpsInp1-MbbiDir_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DESC, "EVG Pps Input")
   field(INP,  "$(P)PpsInp1-Sel.RVAL NPP")
 }
@@ -311,7 +311,7 @@ record(mbbo, "$(P)PpsInp2-Sel") {
 # interrupt of the corresponding external input.
 #
 record(mbbiDirect, "$(P)PpsInp2-MbbiDir_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DESC, "EVG Pps Input")
   field(INP,  "$(P)PpsInp2-Sel.RVAL NPP")
 }
