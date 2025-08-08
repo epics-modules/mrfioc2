@@ -1,4 +1,5 @@
 record(mbbo, "$(P)Source-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT , "@OBJ=$(OBJ), PROP=Source")
   field(ZRST, "Off")

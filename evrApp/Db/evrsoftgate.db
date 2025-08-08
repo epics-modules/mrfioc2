@@ -21,6 +21,7 @@
 
 
 record(longout, "$(P)Evt$(s=:)Start-SP_") {
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "EVR Event")
   field(OUT, "@OBJ=$(OBJ),Code=$(Code)")
   field(VAL, "-1")
@@ -38,22 +39,26 @@ record(longout, "$(P)Evt$(s=:)Start-SP_") {
 
 record(bo, "$(P)Ena-Sel") {
   field(DESC, "Request burst")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(UDF, "0")
   field(ZNAM, "Idle")
   field(ONAM, "Request Burst")
 }
 
 record(ao, "$(P)Delay-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(EGU, "us")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(ao, "$(P)Width-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(EGU, "us")
   info(autosaveFields_pass0, "VAL")
 }
 
 record(seq, "$(P)Evt$(s=:)1-Seq_") {
+  field(ASG, "$(ASGPRIVATE=private)")
   # First clear request
   field(DOL1, "0")
   field(LNK1, "$(P)Ena-Sel PP")
@@ -68,6 +73,7 @@ record(seq, "$(P)Evt$(s=:)1-Seq_") {
 }
 
 record(seq, "$(P)Evt$(s=:)2-Seq_") {
+  field(ASG, "$(ASGPRIVATE=private)")
   # wait DLY1
   # write 1 to enable output
   field(DOL1, "1")

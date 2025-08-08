@@ -1,6 +1,7 @@
 # Delay Compensation control/status
 
 record(bo, "$(P)Ena-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Apply DC correction")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=DCEnable")
@@ -20,6 +21,7 @@ record(bi, "$(P)Ena-RB") {
 }
 
 record(ao, "$(P)Tgt-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Desired total delay")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=DCTarget")

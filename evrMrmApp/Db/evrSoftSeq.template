@@ -15,6 +15,7 @@ record(fanout, "$(P)TrigSrc$(s=:)Init-FOut_") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)Pulse-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "Pulser 0")
@@ -54,6 +55,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)Pulse-Sel") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)DBus-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "DBus0")
@@ -77,6 +79,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)DBus-Sel") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)Scale-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "None")

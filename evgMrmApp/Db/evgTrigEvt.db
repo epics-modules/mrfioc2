@@ -1,6 +1,7 @@
 
 record(longout, "$(P)EvtCode-SP") {
   field(DESC, "EVG Trigger Event Code")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=EvtCode")
   field(PINI, "YES")
@@ -26,6 +27,7 @@ record(longin, "$(P)EvtCode-RB") {
 
 record(mbbo, "$(P)TrigSrc-Sel") {
   field(DESC, "EVG Trig Evt Trig")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -75,6 +77,7 @@ record(mbbiDirect, "$(P)TrigSrc-MbbiDir_") {
 }
 
 record(seq, "$(P)TrigSrc-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)TrigSrcItlk-SQ_.PROC")
   field(DOL2, "0")
@@ -82,6 +85,7 @@ record(seq, "$(P)TrigSrc-SQ_"){
 }
 
 record(seq, "$(P)TrigSrcItlk-SQ_") {
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DESC, "Sequence to control TrigSrc Select")
   field(DOL1, "1")
   field(LNK1, "$(P)TrigSrc1Itlk-SQ_.DISA NPP NMS")
@@ -101,6 +105,7 @@ record(seq, "$(P)TrigSrcItlk-SQ_") {
 
 record(mbbo, "$(P)TrigSrc1-Sel") {
   field(DESC, "EVG Trig Evt Trig (more)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -148,6 +153,7 @@ record(mbbiDirect, "$(P)TrigSrc1-MbbiDir_") {
 }
 
 record(seq, "$(P)TrigSrc1-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)TrigSrc1Itlk-SQ_.PROC")
   field(DOL2, "0")
@@ -156,6 +162,7 @@ record(seq, "$(P)TrigSrc1-SQ_"){
 
 record(seq, "$(P)TrigSrc1Itlk-SQ_") {
   field(DESC, "Sequence to control TrigSrc Select")
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "1")
   field(LNK1, "$(P)TrigSrcItlk-SQ_.DISA NPP NMS")
   field(DOL2, "1")
@@ -174,6 +181,7 @@ record(seq, "$(P)TrigSrc1Itlk-SQ_") {
 
 record(mbbo, "$(P)TrigSrc2-Sel") {
   field(DESC, "EVG Trig Evt Trig (more+)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(VAL,  "0")
   field(UDF,  "0")
@@ -222,6 +230,7 @@ record(mbbiDirect, "$(P)TrigSrc2-MbbiDir_") {
 }
 
 record(seq, "$(P)TrigSrc2-SQ_"){
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "0")
   field(LNK1, "$(P)TrigSrc2Itlk-SQ_.PROC")
   field(DOL2, "0")
@@ -230,6 +239,7 @@ record(seq, "$(P)TrigSrc2-SQ_"){
 
 record(seq, "$(P)TrigSrc2Itlk-SQ_") {
   field(DESC, "Sequence to control TrigSrc Select")
+  field(ASG,  "$(ASGPRIVATE=private)")
   field(DOL1, "1")
   field(LNK1, "$(P)TrigSrcItlk-SQ_.DISA NPP NMS")
   field(DOL2, "1")
@@ -247,7 +257,7 @@ record(seq, "$(P)TrigSrc2Itlk-SQ_") {
 }
 
 record(bo, "$(P)TrigSrcMxc0-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc0")
   field(ZNAM, "Clear")
@@ -257,7 +267,7 @@ record(bo, "$(P)TrigSrcMxc0-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc1-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc1")
   field(ZNAM, "Clear")
@@ -267,7 +277,7 @@ record(bo, "$(P)TrigSrcMxc1-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc2-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc2")
   field(ZNAM, "Clear")
@@ -277,7 +287,7 @@ record(bo, "$(P)TrigSrcMxc2-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc3-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc3")
   field(ZNAM, "Clear")
@@ -287,7 +297,7 @@ record(bo, "$(P)TrigSrcMxc3-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc4-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc4")
   field(ZNAM, "Clear")
@@ -297,7 +307,7 @@ record(bo, "$(P)TrigSrcMxc4-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc5-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc5")
   field(ZNAM, "Clear")
@@ -307,7 +317,7 @@ record(bo, "$(P)TrigSrcMxc5-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc6-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc6")
   field(ZNAM, "Clear")
@@ -317,7 +327,7 @@ record(bo, "$(P)TrigSrcMxc6-Sel") {
 }
 
 record(bo, "$(P)TrigSrcMxc7-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt Mxc")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):Mxc7")
   field(ZNAM, "Clear")
@@ -327,7 +337,7 @@ record(bo, "$(P)TrigSrcMxc7-Sel") {
 }
 
 record(bo, "$(P)TrigSrcAC-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG Trig Evt AC")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):AcTrig")
   field(ZNAM, "Clear")
@@ -337,7 +347,7 @@ record(bo, "$(P)TrigSrcAC-Sel") {
 }
 
 record(bo, "$(P)TrigSrcFrontInp0-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp0")
   field(ZNAM, "Clear")
@@ -347,7 +357,7 @@ record(bo, "$(P)TrigSrcFrontInp0-Sel") {
 }
 
 record(bo, "$(P)TrigSrcFrontInp1-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp1")
   field(ZNAM, "Clear")
@@ -357,7 +367,7 @@ record(bo, "$(P)TrigSrcFrontInp1-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp0-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp0")
   field(ZNAM, "Clear")
@@ -367,7 +377,7 @@ record(bo, "$(P)TrigSrcUnivInp0-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp1-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp1")
   field(ZNAM, "Clear")
@@ -377,7 +387,7 @@ record(bo, "$(P)TrigSrcUnivInp1-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp2-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp2")
   field(ZNAM, "Clear")
@@ -387,7 +397,7 @@ record(bo, "$(P)TrigSrcUnivInp2-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp3-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp3")
   field(ZNAM, "Clear")
@@ -397,7 +407,7 @@ record(bo, "$(P)TrigSrcUnivInp3-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp4-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp4")
   field(ZNAM, "Clear")
@@ -407,7 +417,7 @@ record(bo, "$(P)TrigSrcUnivInp4-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp5-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp5")
   field(ZNAM, "Clear")
@@ -417,7 +427,7 @@ record(bo, "$(P)TrigSrcUnivInp5-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp6-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp6")
   field(ZNAM, "Clear")
@@ -427,7 +437,7 @@ record(bo, "$(P)TrigSrcUnivInp6-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp7-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp7")
   field(ZNAM, "Clear")
@@ -437,7 +447,7 @@ record(bo, "$(P)TrigSrcUnivInp7-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp8-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp8")
   field(ZNAM, "Clear")
@@ -447,7 +457,7 @@ record(bo, "$(P)TrigSrcUnivInp8-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp9-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp9")
   field(ZNAM, "Clear")
@@ -457,7 +467,7 @@ record(bo, "$(P)TrigSrcUnivInp9-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp10-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp10")
   field(ZNAM, "Clear")
@@ -467,7 +477,7 @@ record(bo, "$(P)TrigSrcUnivInp10-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp11-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp11")
   field(ZNAM, "Clear")
@@ -477,7 +487,7 @@ record(bo, "$(P)TrigSrcUnivInp11-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp12-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp12")
   field(ZNAM, "Clear")
@@ -487,7 +497,7 @@ record(bo, "$(P)TrigSrcUnivInp12-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp13-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp13")
   field(ZNAM, "Clear")
@@ -497,7 +507,7 @@ record(bo, "$(P)TrigSrcUnivInp13-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp14-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp14")
   field(ZNAM, "Clear")
@@ -507,7 +517,7 @@ record(bo, "$(P)TrigSrcUnivInp14-Sel") {
 }
 
 record(bo, "$(P)TrigSrcUnivInp15-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):UnivInp15")
   field(ZNAM, "Clear")
@@ -517,7 +527,7 @@ record(bo, "$(P)TrigSrcUnivInp15-Sel") {
 }
 
 record(bo, "$(P)TrigSrcFrontInp2-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):FrontInp2")
   field(ZNAM, "Clear")
@@ -527,7 +537,7 @@ record(bo, "$(P)TrigSrcFrontInp2-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp0-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp0")
   field(ZNAM, "Clear")
@@ -537,7 +547,7 @@ record(bo, "$(P)TrigSrcRearInp0-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp1-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp1")
   field(ZNAM, "Clear")
@@ -547,7 +557,7 @@ record(bo, "$(P)TrigSrcRearInp1-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp2-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp2")
   field(ZNAM, "Clear")
@@ -557,7 +567,7 @@ record(bo, "$(P)TrigSrcRearInp2-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp3-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp3")
   field(ZNAM, "Clear")
@@ -567,7 +577,7 @@ record(bo, "$(P)TrigSrcRearInp3-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp4-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp4")
   field(ZNAM, "Clear")
@@ -577,7 +587,7 @@ record(bo, "$(P)TrigSrcRearInp4-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp5-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp5")
   field(ZNAM, "Clear")
@@ -587,7 +597,7 @@ record(bo, "$(P)TrigSrcRearInp5-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp6-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp6")
   field(ZNAM, "Clear")
@@ -597,7 +607,7 @@ record(bo, "$(P)TrigSrcRearInp6-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp7-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp7")
   field(ZNAM, "Clear")
@@ -607,7 +617,7 @@ record(bo, "$(P)TrigSrcRearInp7-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp8-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp8")
   field(ZNAM, "Clear")
@@ -617,7 +627,7 @@ record(bo, "$(P)TrigSrcRearInp8-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp9-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp9")
   field(ZNAM, "Clear")
@@ -627,7 +637,7 @@ record(bo, "$(P)TrigSrcRearInp9-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp10-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp10")
   field(ZNAM, "Clear")
@@ -637,7 +647,7 @@ record(bo, "$(P)TrigSrcRearInp10-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp11-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp11")
   field(ZNAM, "Clear")
@@ -647,7 +657,7 @@ record(bo, "$(P)TrigSrcRearInp11-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp12-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp12")
   field(ZNAM, "Clear")
@@ -657,7 +667,7 @@ record(bo, "$(P)TrigSrcRearInp12-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp13-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp13")
   field(ZNAM, "Clear")
@@ -667,7 +677,7 @@ record(bo, "$(P)TrigSrcRearInp13-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp14-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp14")
   field(ZNAM, "Clear")
@@ -677,7 +687,7 @@ record(bo, "$(P)TrigSrcRearInp14-Sel") {
 }
 
 record(bo, "$(P)TrigSrcRearInp15-Sel") {
-  field(ASG, "$(ASGPRIVATE=private)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVG TrigEvt")
   field(OUT , "#C0 S$(trigEvtNum) @$(EVG):RearInp15")
   field(ZNAM, "Clear")
@@ -696,6 +706,7 @@ record(bo, "$(P)TrigSrcRearInp15-Sel") {
 
 record(bo, "$(P)Omsl-Sel") {
   field(DESC, "Multiple sources")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(PINI, "YES")
   field(VAL,  "1")
   field(UDF,  "0")

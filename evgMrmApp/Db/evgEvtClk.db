@@ -1,5 +1,6 @@
 record(mbbo, "$(P)Source-Sel") {
   field(DESC, "EVG Evt Clk Source")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint16")
   field(OUT,  "@OBJ=$(OBJ), PROP=Source")
   field(PINI, "YES")
@@ -45,6 +46,7 @@ record(mbbi, "$(P)Source-RB") {
 
 record(ao, "$(P)RFFreq-SP") {
   field(DESC, "EVG RF Frequency")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT,  "@OBJ=$(OBJ), PROP=RFFreq")
   field(PINI, "YES")
@@ -81,6 +83,7 @@ record(ai, "$(P)RFFreq-RB") {
 
 record(longout, "$(P)RFDiv-SP") {
   field(DESC, "RF Divider")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=RFDiv")
   field(PINI, "YES")
@@ -107,6 +110,7 @@ record(longin, "$(P)RFDiv-RB") {
 
 record(ao, "$(P)FracSynFreq-SP") {
   field(DESC, "Fractional Synthesizer Freq")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT,  "@OBJ=$(OBJ), PROP=FracSynFreq")
   field(EGU,  "MHz")
@@ -160,6 +164,7 @@ record(bi, "$(P)Pll-Sts") {
 
 record(mbbo, "$(P)PLL-Bandwidth-Sel") {
     field( DESC, "EVG Evt Clock Bandwidth")
+    field( ASG,  "$(ASGPROTECTED=protected)")
     field( DTYP, "Obj Prop uint16")
     field( OUT,  "@OBJ=$(OBJ), PROP=PLL Bandwidth")
     field( PINI, "YES")

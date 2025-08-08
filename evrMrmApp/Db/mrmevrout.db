@@ -9,6 +9,7 @@
 record(bo, "$(ON)Ena-SP") {
   field(DTYP, "Obj Prop bool")
   field(DESC, "Output $(DESC)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(PINI, "YES")
   field(ZNAM, "Disabled")
@@ -20,6 +21,7 @@ record(bo, "$(ON)Ena-SP") {
 record(longout, "$(ON)Src-SP") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "$(DESC)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Map")
   field(FLNK, "$(ON)Src-RB_")
   field(PINI, "YES")
@@ -30,6 +32,7 @@ record(longout, "$(ON)Src-SP") {
 record(longout, "$(ON)Src2-SP") {
   field(DTYP, "Obj Prop uint32")
   field(DESC, "$(DESC)")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(OUT , "@OBJ=$(OBJ), PROP=Map2")
   field(FLNK, "$(ON)Src2-RB_")
   field(PINI, "YES")
@@ -41,6 +44,7 @@ record(longout, "$(ON)Src2-SP") {
 # Users use will set one of these at a time.
 
 record(mbbo, "$(ON)Src$(s=:)Pulse-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src-SP PP")
   field(ZRST, "Pulser 0")
@@ -81,6 +85,7 @@ record(mbbo, "$(ON)Src$(s=:)Pulse-SP") {
 }
 
 record(mbbo, "$(ON)Src$(s=:)Pulse2-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src-SP PP")
   field(ZRST, "Pulser 16")
@@ -113,6 +118,7 @@ record(mbbo, "$(ON)Src$(s=:)Pulse2-SP") {
 }
 
 record(mbbo, "$(ON)Src2$(s=:)Pulse-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src2-SP PP")
   field(ZRST, "Pulser 0")
@@ -153,6 +159,7 @@ record(mbbo, "$(ON)Src2$(s=:)Pulse-SP") {
 }
 
 record(mbbo, "$(ON)Src2$(s=:)Pulse2-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src2-SP PP")
   field(ZRST, "Pulser 16")
@@ -185,6 +192,7 @@ record(mbbo, "$(ON)Src2$(s=:)Pulse2-SP") {
 }
 
 record(mbbo, "$(ON)Src$(s=:)DBus-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src-SP PP")
   field(ZRST, "DBus 0")
@@ -217,6 +225,7 @@ record(mbbo, "$(ON)Src$(s=:)DBus-SP") {
 }
 
 record(mbbo, "$(ON)Src2$(s=:)DBus-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src2-SP PP")
   field(ZRST, "DBus 0")
@@ -249,6 +258,7 @@ record(mbbo, "$(ON)Src2$(s=:)DBus-SP") {
 }
 
 record(mbbo, "$(ON)Src$(s=:)Scale-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src-SP PP")
   field(ZRST, "Prescaler 0")
@@ -281,6 +291,7 @@ record(mbbo, "$(ON)Src$(s=:)Scale-SP") {
 }
 
 record(mbbo, "$(ON)Src2$(s=:)Scale-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src2-SP PP")
   field(ZRST, "Prescaler 0")
@@ -313,6 +324,7 @@ record(mbbo, "$(ON)Src2$(s=:)Scale-SP") {
 }
 
 record(mbbo, "$(ON)Src$(s=:)Gate-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src-SP PP")
   field(ZRST, "Flip-flop 0")
@@ -348,6 +360,7 @@ record(mbbo, "$(ON)Src$(s=:)Gate-SP") {
 }
 
 record(mbbo, "$(ON)Src2$(s=:)Gate-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(ON)Src2-SP PP")
   field(ZRST, "Flip-flop 0")

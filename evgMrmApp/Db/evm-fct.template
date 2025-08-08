@@ -159,6 +159,7 @@ record(longin, "$(P)ID-I") {
 # Delay compensation at the EVM level
 record(bo, "$(P)DC-Ena-Sel") {
   field(DESC, "Apply DC correction")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=DCUpMode")
   field(ZNAM, "Disable")
@@ -179,6 +180,7 @@ record(bi, "$(P)DC-Ena-RB") {
 
 record(ao, "$(P)DC-Tgt-SP") {
   field(DESC, "Desired total delay")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT, "@OBJ=$(OBJ), PROP=DCUpTarget")
   field(EGU, "ns")

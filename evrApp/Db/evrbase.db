@@ -14,6 +14,7 @@
 #
 record(bo, "$(P)Ena-Sel") {
   field(DESC, "Master HW Enable")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Enable")
   field(MASK, "1")
@@ -35,6 +36,7 @@ record(longin, "$(P)Cnt$(s=:)LinkTimo-I") {
 }
 
 record(bo, "$(P)ExtInhib-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=External Inhibit")
   field(PINI, "YES")
@@ -135,6 +137,7 @@ record(calcout, "$(P)Link$(s=:)Init-FO_") {
 #
 # This must be close enough to the EVG master oscilator to allow the phase locked loop in the EVR to lock.
 record(ao, "$(P)Link$(s=:)Clk-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Clock")
   field(PINI, "YES")
@@ -154,6 +157,7 @@ record(ao, "$(P)Link$(s=:)Clk-SP") {
 
 record(bo,"$(P)ResetFracSynth-Cmd" ) {
   field(DESC, "Reset button")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop command")
   field(OUT , "@OBJ=$(OBJ), PROP=Reset Frac Synth")
   field(ZNAM, "Reset")
@@ -337,6 +341,7 @@ record(bi, "$(P)Time$(s=:)Valid-Sts") {
 }
 
 record(mbbo, "$(P)Time$(s=:)Src-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)Time$(s=:)Src-Sel_")
   field(PINI, "YES")
@@ -388,6 +393,7 @@ record(longout, "$(P)Time$(s=:)Src-Sel_") {
 # to read back the actual divider setting via the "Timestamp Prescaler" property.
 #
 record(ao, "$(P)Time$(s=:)Clock-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop double")
   field(OUT , "@OBJ=$(OBJ), PROP=Timestamp Clock")
   field(DESC, "Timestamp frequency")
@@ -452,6 +458,7 @@ record(stringin, "$(P)Time-I") {
 #
 record(bo, "$(P)Link$(s=:)RxMode-Sel") {
   field(DESC, "Downstream data mode")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ):BUFRX, PROP=Enable")
   field(PINI, "YES")
@@ -469,6 +476,7 @@ record(waveform, "$(P)Label-I") {
 }
 
 record(mbbo, "$(P)PLL-Bandwidth-Sel") {
+    field( ASG,  "$(ASGPROTECTED=protected)")
     field( DESC, "EVR Evt Clock Bandwidth")
     field( DTYP, "Obj Prop uint16")
     field( OUT,  "@OBJ=$(OBJ), PROP=PLL Bandwidth")
