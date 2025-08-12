@@ -59,6 +59,7 @@ evgmrm_LIBS += mrfCommon mrmShared epicsvme epicspci $(EPICS_BASE_IOC_LIBS)
 
 DBD += evgInit.dbd
 
+evgMrm_CPPFLAGS += -D__COMMIT_HASH=\"$(shell git rev-parse --short=8 HEAD 2>/dev/null || echo unknown)\"
 #===========================
 
 include $(TOP)/configure/RULES

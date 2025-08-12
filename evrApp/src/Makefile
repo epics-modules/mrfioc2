@@ -45,6 +45,8 @@ evr_SRCS_DEFAULT += ntpShmNull.cpp
 
 evr_LIBS += mrfCommon $(EPICS_BASE_IOC_LIBS)
 
+evr_CPPFLAGS += -D__COMMIT_HASH=\"$(shell git rev-parse --short=8 HEAD 2>/dev/null || echo unknown)\"
+
 # Note: evrtest is NOT a working ioc.
 #       it exists to ensure that libevr
 #       will link correctly.
