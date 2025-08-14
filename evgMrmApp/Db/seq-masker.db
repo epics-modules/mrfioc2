@@ -19,7 +19,7 @@ record(aSub, "$(N)") {
 
   field(NOA, "$(NELM)")
   field(NOB, "$(NWORD=1)")
-
+ 
   field(INPA, "$(INCODE=)")
   field(INPB, "$(INMASK=)")
 

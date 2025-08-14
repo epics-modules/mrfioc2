@@ -8,6 +8,7 @@
 #  CODE = Event code (hardware)
 
 record(int64out, "$(EN)-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVR Event Utag")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")
@@ -27,6 +28,7 @@ record(calc, "$(EN)Cnt-I") {
 }
 
 record(longout, "$(EN)Code-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Event Code")
   field(VAL , "$(CODE=255)")
   field(PINI, "YES")
@@ -35,7 +37,7 @@ record(longout, "$(EN)Code-SP") {
 }
 
 record(printf, "$(EN)Code-Lock_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DISP, "1")
   field(FMT, "@OBJ=$(OBJ),Code=%u")
   field(INP0, "$(EN)Code-SP CPP")

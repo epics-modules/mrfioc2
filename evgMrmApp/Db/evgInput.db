@@ -1,5 +1,6 @@
 record(bo, "$(P)EnaIrq-Sel") {
   field(DESC, "Enable External Input IRQ")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=IRQ")
   field(ZNAM, "Disabled")
@@ -21,6 +22,7 @@ record(bi, "$(P)EnaIrq-RB") {
 
 record(ao, "$(P)FPMask-Sel") {
   field(DESC, "FPxMask")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=FPMASK")
   field(FLNK, "$(P)FPMask-RB")
@@ -33,6 +35,7 @@ record(ai, "$(P)FPMask-RB") {
 
 record(bo, "$(P)EnaMxcr-Sel") {
   field(DESC, "Enable Hardware Mxc Reset")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT , "@OBJ=$(OBJ), PROP=Hw Reset MXC")
   field(ZNAM, "Disabled")

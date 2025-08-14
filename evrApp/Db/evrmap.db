@@ -42,6 +42,7 @@
 #   Bypass the automatic allocation mechanism and always include this code in the event FIFO.
 #
 record(longout, "$(NAME)") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVR Mapping" )
   field(OUT , "@OBJ=$(OBJ), Func=$(func)")
   field(PINI, "YES")

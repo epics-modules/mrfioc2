@@ -10,6 +10,7 @@
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
 record(longout, "$(EN)-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(OBJ),Code=$(CODE)")

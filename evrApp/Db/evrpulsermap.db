@@ -10,6 +10,7 @@
 #
 
 record(longout, "$(NAME)") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "EVR Pulser Mapping" )
   field(OUT , "@OBJ=$(OBJ), Func=$(F=Trig)")
   field(PINI, "YES")

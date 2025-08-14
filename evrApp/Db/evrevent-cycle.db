@@ -13,6 +13,7 @@
 # EVT  - Timing hardware event code
 # ENUM - EPICS DB event number
 record(longout, "$(P)Cnt$(s=:)$(C)-SP_") {
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "EVR Event")
   field(SCAN, "I/O Intr")
   field(OUT , "@OBJ=$(EVR),Code=$(CODE)")

@@ -10,11 +10,12 @@
 # linked from mrmSoftSeq.template
 # $(P)InitSeq$(s=:)Cont-FOut_
 record(fanout, "$(P)TrigSrc$(s=:)Init-FOut_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(LNK1, "$(P)TrigSrc-Sel_")
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)Pulse-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "Pulser 0")
@@ -54,6 +55,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)Pulse-Sel") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)DBus-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "DBus0")
@@ -77,6 +79,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)DBus-Sel") {
 }
 
 record(mbbo, "$(P)TrigSrc$(s=:)Scale-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
   field(ZRST, "None")
@@ -104,7 +107,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)Scale-Sel") {
 }
 
 record(longout, "$(P)TrigSrc-Sel_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
   field(VAL , "0x03000000") # default to None
@@ -112,7 +115,7 @@ record(longout, "$(P)TrigSrc-Sel_") {
 }
 
 record(longin, "$(P)TrigSrc-RB_") {
-  field(ASG, "private")
+  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(EVG):SEQ$(seqNum), CLASS=SeqManager, PARENT=$(EVG):SEQMGR, PROP=TRIG_SRC")
   field(UDF,  "0")

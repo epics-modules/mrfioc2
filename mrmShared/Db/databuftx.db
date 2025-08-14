@@ -1,6 +1,7 @@
 
 record(waveform, "$(P)dbus$(s=:)send$(s=:)s8") {
   field(DESC, "Send Buffer")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "MRF Data Buf Tx")
   field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "CHAR")
@@ -11,6 +12,7 @@ record(waveform, "$(P)dbus$(s=:)send$(s=:)s8") {
 
 record(waveform, "$(P)dbus$(s=:)send$(s=:)u32") {
   field(DESC, "Send Buffer")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "MRF Data Buf Tx")
   field(INP , "@OBJ=$(OBJ), Proto=$(PROTO), P=Data Tx")
   field(FTVL, "ULONG")
