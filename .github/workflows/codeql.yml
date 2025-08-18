@@ -1,63 +1,62 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
-    paths-ignore:
-      - ".appveyor/*"
-      - ".tools/*"
-      - "documentation/*"
-      - "startup/*"
-      - "**/*.md"
-      - "**/*.html"
+    paths:
+      - ".github/workflows/codeql.yml"
+      - "evgMrmApp"
+      - "evrApp"
+      - "evrFRIBApp"
+      - "evrMrmApp"
+      - "mrfApp"
+      - "mrfCommon"
+      - "mrmShared"
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  SETUP_PATH: .ci-local:.ci
+  BASE: "7.0"
+  CMP: gcc
+  BCFG: default
 
 jobs:
   analyze:
     name: Analyze
-    runs-on:
-      - ubuntu-latest
-    # - windows-latest
-    # Supported by CodeQL which would check the Windows
-    # port, but needs more work here to set it up
-
-    permissions:
-      # Required for all workflows:
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [cpp]
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repositories
+      - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: false
+          submodules: true
+          fetch-depth: 0
 
-      - name: Install Packages
+      - name: Deps
         run: |
           sudo apt-get update
-          sudo apt-get install --yes libreadline-dev
+          sudo apt-get -y install qemu-system-x86 gdb
 
-      - name: Initialize CodeQL
+      - name: Prepare deps (ci-scripts)
+        run: python3 .ci/cue.py prepare
+
+      - name: Initialize CodeQL (manual build)
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
+          languages: cpp
+          build-mode: manual
           config-file: ./.github/codeql/config.yml
 
-      - name: Build C/C++
+      - name: Build (same as in ci-scripts workflow)
         run: |
-          echo '*** Building with these versions >>>'
-          g++ --version
-          make --version
-          perl --version
-          echo '<<<'
-          make -sj2 || echo '*** Ignoring build failure for CodeQL ***'
+          python3 .ci/cue.py build
 
-      - name: Perform CodeQL Analysis
+      - name: Analyze
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{ matrix.language }}"
+          category: "/language:cpp"
