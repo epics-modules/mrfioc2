@@ -9,4 +9,4 @@ insert_final_newline = true
 
 # Ignore for OPI-s
 [*.opi]
-insert_final_newline = false
+insert_final_newline = unset
