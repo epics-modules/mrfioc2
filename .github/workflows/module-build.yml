@@ -30,6 +30,12 @@ on:
       - ".github/workflows/release-*.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  statuses: write
+
 env:
   SETUP_PATH: .ci-local:.ci
   EPICS_TEST_IMPRECISE_TIMING: YES
