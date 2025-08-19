@@ -12,14 +12,14 @@ public:
     /* locking done internally */
     virtual void lock() const{};
     virtual void unlock() const{};
-    
+
     void setSource(epicsUInt16);
     epicsUInt16 getSource() const;
 
 private:
     const epicsUInt32          m_id;
     volatile epicsUInt8* const m_pReg;
-    
+
 };
 
 #endif //EVG_DBUS_H

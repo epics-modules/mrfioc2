@@ -4,9 +4,9 @@
 
 #include <errlog.h>
 
-#include <mrfCommonIO.h> 
+#include <mrfCommonIO.h>
 #include <mrfCommon.h>
- 
+
 #include "evgRegMap.h"
 std::map<std::string, epicsUInt32> InpStrToEnum;
 

@@ -86,7 +86,7 @@ long seq_select(aSubRecord *prec)
     /* Allow only permitted slots to be filled */
     LNMode &= LNMask;
     BRMode &= BRMask;
-    
+
     if(LNMode&~0x3ff) {
         errlogPrintf("%s: Invalid LN Mode Mask\n", prec->name);
         fail = 1;
@@ -95,14 +95,14 @@ long seq_select(aSubRecord *prec)
         errlogPrintf("%s: Invalid BR Mode Mask\n", prec->name);
         fail = 1;
     }
-    
+
     if(fail) {
         (void)recGblSetSevr(prec, UDF_ALARM, INVALID_ALARM);
         LNMode = BRMode = 0;
     }
-    
+
     *InjMask = (LNMode<<4)|BRMode;
-    
+
     switch(*InjMask) {
     case 0x011: /* 1Hz in both */
     case 0x032: /* Stacking in both */
@@ -112,8 +112,8 @@ long seq_select(aSubRecord *prec)
     default: /* All others prohibit injection into BR */
         *BRAllow = 0;
     }
-    
-    *LNRepMask = LNMode; 
+
+    *LNRepMask = LNMode;
     *BR1HzRepMask = BRMode & 1;
     *BR2HzRepMask = (BRMode>>2) & 3;
     *BRStkRepMask = (BRMode>>1) & 1;

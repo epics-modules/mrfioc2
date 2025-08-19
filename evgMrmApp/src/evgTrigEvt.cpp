@@ -5,7 +5,7 @@
 
 #include <errlog.h>
 
-#include <mrfCommonIO.h> 
+#include <mrfCommonIO.h>
 #include <mrfCommon.h>
 
 #include "evgRegMap.h"
@@ -18,7 +18,7 @@ m_pReg(pReg) {
 }
 
 evgTrigEvt::~evgTrigEvt() {
-} 
+}
 
 epicsUInt32
 evgTrigEvt::getEvtCode() const {

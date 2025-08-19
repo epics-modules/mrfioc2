@@ -95,7 +95,7 @@ mrmDataBufTx::dataSend(epicsUInt32 len,
 
     if (len > DataTxCtrl_len_max)
         throw std::out_of_range("Tx buffer is too long");
-    
+
     // len must be a multiple of 4
     len &= DataTxCtrl_len_mask;
 

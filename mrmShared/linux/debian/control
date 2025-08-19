@@ -8,6 +8,6 @@ Package: mrf-dkms
 Architecture: all
 Depends: ${misc:Depends},
 Description:  Kernel driver for MRF timing cards.
- Installs the kernel driver for interfacing to the 
- Micro Research Finland (MRF) timing cards over PCI/PCIe. 
+ Installs the kernel driver for interfacing to the
+ Micro Research Finland (MRF) timing cards over PCI/PCIe.
  The driver is installed using dkms.

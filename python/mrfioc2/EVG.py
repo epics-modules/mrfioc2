@@ -96,7 +96,7 @@ class Sequence(object):
             todo.update(E.refby)
 
         result = result.items() # to list
-        
+
         if self.include:
             result = filter(lambda (E,T):E in self.include or E.num in self.include, result)
         if self.omit:
@@ -206,10 +206,10 @@ class EVG(object):
 
         # Find divider which will produce the high frequency which satisfy constraints
         N = int(lcm([1/Fraction(o) for o in others]))
-        
+
         if not startfreq:
             return N
-        
+
         # Find the range of possible EVG dividers
         Nmin = self.findDiv(startfreq, ref=ref)
 

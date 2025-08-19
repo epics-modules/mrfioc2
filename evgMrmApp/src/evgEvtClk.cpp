@@ -1,11 +1,11 @@
 
 #include <stdio.h>
-#include <errlog.h> 
+#include <errlog.h>
 #include <stdexcept>
 #include <sstream>
 
-#include <mrfCommonIO.h> 
-#include <mrfCommon.h> 
+#include <mrfCommonIO.h>
+#include <mrfCommon.h>
 #include <mrfFracSynth.h>
 
 #include "evgMrm.h"
@@ -39,7 +39,7 @@ evgMrm::setRFFreq (epicsFloat64 RFref) {
 
 epicsFloat64
 evgMrm::getRFFreq() const {
-    return m_RFref;    
+    return m_RFref;
 }
 
 void
@@ -67,7 +67,7 @@ evgMrm::setFracSynFreq(epicsFloat64 freq) {
     epicsUInt32 controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
     if ((!controlWord) || (error > 100.0)) {
         char err[80];
-        sprintf(err, "Cannot set event clock speed to %f MHz.\n", freq);            
+        sprintf(err, "Cannot set event clock speed to %f MHz.\n", freq);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }

@@ -17,7 +17,7 @@ $opt_t = ".";
 my $foundvcs = 0;
 my $result;
 
-getopts("vt:N:V:") or 
+getopts("vt:N:V:") or
     die "Usage: genVersionHeader.pl [-t top] [-N NAME] [-V VERSION] output.h";
 
 my ($outfile) = @ARGV;

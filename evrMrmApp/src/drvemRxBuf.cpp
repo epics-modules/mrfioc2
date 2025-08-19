@@ -100,12 +100,12 @@ try {
         } else {
 
             unsigned int rsize=sts&DataBufCtrl_len_mask;
-            
+
             if (rsize>bsize) {
                 errlogPrintf("Received data buffer with size %u >= %u\n", rsize, bsize);
                 rsize=bsize;
             }
-            
+
             if(evrMrmSeqRxDebug>=1)
             {
                 errlogPrintf("buffer %s: size=%u %08x %08x %08x %08x\n",

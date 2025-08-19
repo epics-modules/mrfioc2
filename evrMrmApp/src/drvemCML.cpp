@@ -367,10 +367,10 @@ MRMCML::getPattern(pattern p, unsigned char *buf, epicsUInt32 blen) const
     for(epicsUInt32 i=0; i<blen; i++) {
         size_t cmlword = (i/mult);
         size_t cmlbit  = (i%mult);
-    
+
         size_t cpuword, cpubit;
         bool first; // first bit in CPU word
-    
+
         if(mult<32) {
             first = cmlbit==0;
             cpuword = cmlword;
@@ -386,11 +386,11 @@ MRMCML::getPattern(pattern p, unsigned char *buf, epicsUInt32 blen) const
             cpubit  = cmlbit<8 ? 7-cmlbit : 31-(cmlbit-8);
 #endif
         }
-    
+
         if(first) {
             val=shadowPattern[p][cpuword];
         }
-    
+
         buf[i]=val>>cpubit;
         buf[i]&=0x1;
     }

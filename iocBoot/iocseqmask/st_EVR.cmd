@@ -30,13 +30,13 @@ iocInit()
 ## Indeed You can remove that part and use analogic signal in other inputs if you prefer.
 ### When we receive event 2 Pulser 1-> backplane 1 is triggered
 dbpf $(P):DlyGen1Width-SP 100
-dbpf $(P):DlyGen1Width-RB 
+dbpf $(P):DlyGen1Width-RB
 dbpf $(P):DlyGen1EvtTrig0-SP 2
 dbpf $(P):OutBack1SrcPulse-SP "Pulser 1"
 
 #When we receive event 3 Pulser 2-> backplane 2 is triggered
 dbpf $(P):DlyGen2Width-SP 100
-dbpf $(P):DlyGen2Width-RB 
+dbpf $(P):DlyGen2Width-RB
 dbpf $(P):DlyGen2EvtTrig0-SP 3
 dbpf $(P):OutBack2SrcPulse-SP "Pulser 2"
 
@@ -57,5 +57,5 @@ dbpf $(P):EvtC-SP.OUT "@OBJ=EVR-MTCA,Code=3"
 dbpf $(P):EvtD-SP.OUT "@OBJ=EVR-MTCA,Code=13"
 dbpf $(P):EvtE-SP.OUT "@OBJ=EVR-MTCA,Code=11"
 
-## 
+##
 

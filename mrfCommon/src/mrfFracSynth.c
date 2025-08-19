@@ -39,7 +39,7 @@
  * @addtogroup mrfCommon
  * @{
  **************************************************************************************************/
-/** 
+/**
  * @file       mrfFracSynth.c
  * @brief      Support routines for the Micrel SY87739L Fractional-N Synthesizer
  *
@@ -327,7 +327,7 @@ static const CorrectionValStruct  CorrectionValList [NUM_CORRECTION_VALS] = {
  *    will contain zero.
  *
  * @param   InputClockSpeed   = (input)   Desired event clock speed in Megahertz.
- *                                        0.0 means no clock speed specified.      
+ *                                        0.0 means no clock speed specified.
  * @param   InputControlWord  = (input)   Desired value for the fractional synthesizer
  *                                        control word. 0 means no control word specified.
  * @param   ReferenceFreq     = (input)   SY87739L input reference frequency in MegaHertz.
@@ -629,7 +629,7 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
 
            /*---------------------
             * Divisor Loop:
-            *--------------------- 
+            *---------------------
             *  Search for a divisor that will produce the closest fractional-N P/P-1 frequency to
             *  the desired fractional frequency.  If we are lucky, we will find a number that
             *  exactly divides the desired fractional frequency and we can stop the search here.
@@ -719,7 +719,7 @@ epicsShareExtern epicsUInt32 FracSynthControlWord (
                         FracFreqErr = ZERO_THRESHOLD;
 
                 }/*end denominator does not exactly divide the desired fractional frequency*/
- 
+
                /*---------------------
                 * Store the parameters for the numerator/correction pair that produces the lowest
                 * fractional frequency error for this denominator.  If it turns out that the

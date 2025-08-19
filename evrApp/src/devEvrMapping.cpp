@@ -70,7 +70,7 @@ linkOptionEnumType funcEnum[] = {
 };
 
 static const
-linkOptionDef eventdef[] = 
+linkOptionDef eventdef[] =
 {
     linkString  (map_priv, obj , "OBJ"  , 1, 0),
     linkEnum    (map_priv, func, "Func"  , 1, 0, funcEnum),

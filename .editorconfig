@@ -20,6 +20,6 @@ trim_trailing_whitespace = false
 tab_width = 4
 indent_style = tab
 
-[{*.{md,lyx},Doxyfile}]
+[{*.{md,lyx},Doxyfile,LICENSE,copyright}]
 charset = unset
 trim_trailing_whitespace = false
