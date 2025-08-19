@@ -42,9 +42,9 @@ SED_FILES = dkms.conf mrf.spec
 $(RPM_FILE): $(SED_FILES) $(wildcard $(SRCDIR)/*)
 	mkdir -p rpmbuild/RPMS rpmbuild/BUILD
 	rpmbuild -bb \
-            --define '_curdir $(CURDIR)' \
-            --define '_topdir %{_curdir}/rpmbuild' \
-            --define '_sourcedir $(SRCDIR)' \
-            --define '_tmppath %{_topdir}/BUILD' \
-            mrf.spec
+						--define '_curdir $(CURDIR)' \
+						--define '_topdir %{_curdir}/rpmbuild' \
+						--define '_sourcedir $(SRCDIR)' \
+						--define '_tmppath %{_topdir}/BUILD' \
+						mrf.spec
 	ln -sf rpmbuild/RPMS/$(ARCH)/$(RPM_FILE) .
