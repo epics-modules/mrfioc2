@@ -6,7 +6,20 @@ root = true
 # as some compilers complain about files not ending in newline
 [*]
 insert_final_newline = true
+trim_trailing_whitespace = true
+charset = utf-8
+end_of_line = lf
 
 # Ignore for OPI-s
-[*.opi]
+[*.{opi,bob,def}]
 insert_final_newline = unset
+end_of_line = unset
+
+[*Makefile*]
+trim_trailing_whitespace = false
+tab_width = 4
+indent_style = tab
+
+[{*.{md,lyx},Doxyfile}]
+charset = unset
+trim_trailing_whitespace = false
