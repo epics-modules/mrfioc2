@@ -67,7 +67,7 @@ evgMrm::setFracSynFreq(epicsFloat64 freq) {
     epicsUInt32 controlWord = FracSynthControlWord (freq, MRF_FRAC_SYNTH_REF, 0, &error);
     if ((!controlWord) || (error > 100.0)) {
         char err[80];
-        sprintf(err, "Cannot set event clock speed to %f MHz.\n", freq);
+        snprintf(err, sizeof(err), "Cannot set event clock speed to %f MHz.\n", freq);
         std::string strErr(err);
         throw std::runtime_error(strErr);
     }

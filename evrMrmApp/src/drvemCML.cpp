@@ -517,7 +517,7 @@ MRMCML::syncPattern(pattern p)
     case cmlModePattern:
         switch(p) {
         case patternWaveform:
-            for(size_t i=0; i<shadowWaveformlength*wordlen; i++)
+            for(size_t i=0; i<(size_t)shadowWaveformlength*wordlen; i++)
                 WRITE32(base, OutputCMLPat(N, i), shadowPattern[patternWaveform][i]);
             break;
         default:
