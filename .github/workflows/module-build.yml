@@ -11,25 +11,27 @@ on:
   push:
     paths:
       - ".github/workflows/module-build.yml"
-      - "configure"
-      - "evgMrmApp"
-      - "evrApp"
-      - "evrFRIBApp"
-      - "evrMrmApp"
-      - "mrfApp"
-      - "mrfCommon"
-      - "mrmShared"
+      - "configure/**"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
   pull_request:
     paths:
       - ".github/workflows/module-build.yml"
-      - "configure"
-      - "evgMrmApp"
-      - "evrApp"
-      - "evrFRIBApp"
-      - "evrMrmApp"
-      - "mrfApp"
-      - "mrfCommon"
-      - "mrmShared"
+      - "configure/**"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
   workflow_dispatch:
 
 permissions:

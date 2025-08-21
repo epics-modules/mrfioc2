@@ -1,4 +1,4 @@
-name: CodeQL
+name: CodeQL Module
 
 on:
   push:
@@ -7,13 +7,14 @@ on:
     branches: [master]
     paths:
       - ".github/workflows/codeql.yml"
-      - "evgMrmApp"
-      - "evrApp"
-      - "evrFRIBApp"
-      - "evrMrmApp"
-      - "mrfApp"
-      - "mrfCommon"
-      - "mrmShared"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
 
 permissions:
   contents: read
