@@ -1,8 +1,8 @@
 name: Check EditorConfig
 
 on:
-  push:
-  pull_request:
+  push: {}
+  pull_request: {}
 
 permissions:
   contents: read
@@ -12,5 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: EditorConfig-Action
-        uses: greut/eclint-action@v0
+      - name: EditorConfig compliance check
+        uses: editorconfig-checker/action-editorconfig-checker@v2
