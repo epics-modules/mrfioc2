@@ -151,7 +151,7 @@ void datarx(void *arg, epicsStatus ok,
 {
     waveformRecord* prec=(waveformRecord*)arg;
     s_priv *paddr=static_cast<s_priv*>(prec->dpvt);
-    
+
     //check protocol id
     if (paddr->proto != 0xff00 && paddr->proto != buf[0]) return;
     if (paddr->proto16 && paddr->proto16 != ntohs(((epicsUInt16*)buf)[0])) return;

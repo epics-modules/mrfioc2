@@ -3,6 +3,10 @@ name: Doxygen GitHub Pages Deploy Action
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

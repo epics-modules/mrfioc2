@@ -31,7 +31,7 @@
 |* and the final output frequency that the control word will produce.
 |*
 |* The control word is also analyzed for programming errors and will display any problems it
-|* finds. 
+|* finds.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* USAGE:
@@ -51,7 +51,7 @@
 /**************************************************************************************************
 |*                                     COPYRIGHT NOTIFICATION
 |**************************************************************************************************
-|*  
+|*
 |* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
 |* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
 |* AND IN ALL SOURCE LISTINGS OF THE CODE.

@@ -5,9 +5,9 @@
 # EVR = Card name (same as mrmEvrSetupPCI())
 # FEVT = Event link frequency (default 124.916 MHz)
 # ES = end separator (to maintain backwards compatibility set to "}")
-# 
+#
 # Option Macros
-# * s = Separator between SubDev and Signal 
+# * s = Separator between SubDev and Signal
 #       (default value set to ':')
 # * dsh = dash separator
 #       (to maintain backwards compatibility)

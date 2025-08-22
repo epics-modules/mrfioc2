@@ -42,7 +42,7 @@ struct s_priv
 };
 
 static const
-linkOptionDef eventdef[] = 
+linkOptionDef eventdef[] =
 {
   linkString  (s_priv, obj , "OBJ"  , 1, 0),
   linkInt32   (s_priv, proto, "Proto", 1, 0),

@@ -1,0 +1,54 @@
+name: CodeQL Linux kernel module
+
+on:
+  push:
+    paths:
+      - "mrmShared/linux/**"
+      - ".github/workflows/kmod-codeql.yml"
+  pull_request:
+    paths:
+      - "mrmShared/linux/**"
+      - ".github/workflows/kmod-codeql.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL (C/C++)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Info
+        run: |
+          uname -a
+          gcc --version
+
+      - name: Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install linux-headers-$(uname -r) kmod libelf-dev make
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: cpp
+          # Optional stronger rules:
+          # queries: security-and-quality
+          # Optional smaller SARIF:
+          # add-snippets: false
+
+      - name: Build (extraction only)
+        run: |
+          make -C mrmShared/linux
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:cpp"

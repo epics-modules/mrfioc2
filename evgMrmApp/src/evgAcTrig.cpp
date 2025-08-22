@@ -10,8 +10,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <mrfCommonIO.h>    
-#include <mrfCommon.h> 
+#include <mrfCommonIO.h>
+#include <mrfCommon.h>
 
 #include "evgRegMap.h"
 

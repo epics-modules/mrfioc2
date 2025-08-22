@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include <mrfCommonIO.h> 
-#include <errlog.h> 
-#include <mrfCommon.h> 
+#include <mrfCommonIO.h>
+#include <errlog.h>
+#include <mrfCommon.h>
 
 #include "evgRegMap.h"
 
@@ -37,4 +37,4 @@ evgDbus::getSource() const {
     epicsUInt32 dbusSrc = READ32(m_pReg, DBusSrc);
     return dbusSrc & (0xf << (4 * m_id));
 }
- 
+

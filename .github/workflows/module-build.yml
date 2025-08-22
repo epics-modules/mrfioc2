@@ -9,26 +9,36 @@ name: EPICS module (build and test)
 
 on:
   push:
-    paths-ignore:
-      - "mrmShared/linux/**"
-      - "documentation/**"
-      - "python/**"
-      - "**/*.md"
-      - "opi/**"
-      - ".github/workflows/kmod-*.yml"
-      - ".github/workflows/doxygen-*.yml"
-      - ".github/workflows/release-*.yml"
+    paths:
+      - ".github/workflows/module-build.yml"
+      - "configure/**"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
   pull_request:
-    paths-ignore:
-      - "mrmShared/linux/**"
-      - "documentation/**"
-      - "python/**"
-      - "**/*.md"
-      - "opi/**"
-      - ".github/workflows/kmod-*.yml"
-      - ".github/workflows/doxygen-*.yml"
-      - ".github/workflows/release-*.yml"
+    paths:
+      - ".github/workflows/module-build.yml"
+      - "configure/**"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  statuses: write
 
 env:
   SETUP_PATH: .ci-local:.ci

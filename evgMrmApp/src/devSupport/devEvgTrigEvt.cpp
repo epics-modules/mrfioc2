@@ -18,7 +18,7 @@
 #include <evgInit.h>
 
 /*returns: (0,2)=>(success,success no convert) */
-static long 
+static long
 init_bo_trigSrc(boRecord* pbo) {
     long ret = 0;
 
@@ -26,7 +26,7 @@ init_bo_trigSrc(boRecord* pbo) {
         errlogPrintf("ERROR: Hardware link not VME_IO : %s\n", pbo->name);
         return(S_db_badField);
     }
-    
+
     try {
         std::string parm(pbo->out.value.vmeio.parm);
         pbo->dpvt = mrf::Object::getObject(parm);
@@ -43,7 +43,7 @@ init_bo_trigSrc(boRecord* pbo) {
 }
 
 /*returns: (-1,0)=>(failure,success)*/
-static long 
+static long
 write_bo_trigSrc_mxc(boRecord* pbo) {
     long ret = 0;
 
@@ -65,7 +65,7 @@ write_bo_trigSrc_mxc(boRecord* pbo) {
 }
 
 /*returns: (-1,0)=>(failure,success)*/
-static long 
+static long
 write_bo_trigSrc_ac(boRecord* pbo) {
     long ret = 0;
 
@@ -87,7 +87,7 @@ write_bo_trigSrc_ac(boRecord* pbo) {
 }
 
 /*returns: (-1,0)=>(failure,success)*/
-static long 
+static long
 write_bo_trigSrc_inp(boRecord* pbo) {
     long ret = 0;
 

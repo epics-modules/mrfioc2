@@ -35,7 +35,7 @@ struct ts_priv {
 };
 
 static const
-linkOptionDef eventdef[] = 
+linkOptionDef eventdef[] =
 {
     linkString  (ts_priv, obj ,  "OBJ"  , 1, 0),
     linkInt32   (ts_priv, code , "Code" , 0, 0),

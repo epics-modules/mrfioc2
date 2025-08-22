@@ -11,8 +11,8 @@
 #include <stdexcept>
 #include <math.h>
 
-#include <mrfCommonIO.h> 
-#include <errlog.h>     
+#include <mrfCommonIO.h>
+#include <errlog.h>
 #include <mrfCommon.h>
 
 #include "evgMrm.h"
@@ -23,13 +23,13 @@ evgMxc::evgMxc(const std::string& name, const epicsUInt32 id,
 mrf::ObjectInst<evgMxc>(name),
 m_id(id),
 m_owner(owner),
-m_pReg(owner->getRegAddr()) {    
+m_pReg(owner->getRegAddr()) {
 }
 
 evgMxc::~evgMxc() {
 }
 
-bool 
+bool
 evgMxc::getStatus() const {
     return (READ32(m_pReg, MuxControl(m_id)) & MuxControl_Sts) != 0;
 }
@@ -72,12 +72,12 @@ evgMxc::setFrequency(epicsFloat64 freq) {
     setPrescaler(preScaler);
 }
 
-epicsFloat64 
+epicsFloat64
 evgMxc::getFrequency() const {
     epicsFloat64 clkSpeed = (epicsFloat64)m_owner->getFrequency()
                              * pow(10.0, 6);
     epicsFloat64 preScaler = (epicsFloat64)getPrescaler();
-    return clkSpeed/preScaler;    
+    return clkSpeed/preScaler;
 }
 
 void

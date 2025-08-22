@@ -76,5 +76,5 @@ dbpf $(P):SoftSeq0Enable-Cmd 1
 dbpf $(P):TrigEvt1TrigSrc1-Sel  Univ8
 dbpf $(P):TrigEvt1EvtCode-SP  13
 
-## 
+##
 

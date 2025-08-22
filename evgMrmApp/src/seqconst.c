@@ -105,11 +105,11 @@ long seq_repeat(aSubRecord *prec)
     period = *(epicsUInt32*)prec->a;
     num_cycles = *(epicsUInt32*)prec->b;
     per_mask = *(epicsUInt32*)prec->c;
-    
+
     len_in = prec->ned;
     if(len_in > prec->nee)
         len_in = prec->nee;
-    
+
     len_out = prec->novb;
     if(len_out > prec->novc)
         len_out = prec->novc;
@@ -151,7 +151,7 @@ long seq_repeat(aSubRecord *prec)
         }
         num_out++;
     }
-    
+
     if(num_out==0 || len_in==0) {
         /* 0 length arrays aren't handled so well, so have 1 length w/ 0 value */
         *period_D++ = 0.0;
@@ -251,7 +251,7 @@ long seq_merge(aSubRecord *prec)
         for(N=0; N<ninputs; N++) {
             double *T;
             epicsUInt8 *C;
-	    
+
             T = (double*)(&prec->a)[2*N];
             C = (epicsUInt8*)(&prec->a)[2*N+1];
 
@@ -420,7 +420,7 @@ long seq_mask(aSubRecord *prec)
         epicsUInt8 M = (mask[i/32]>>(i%32))&0x1;
         out[i] = M ? inp[i] : 0;
     }
-    
+
     prec->neva = num;
 
     return 0;

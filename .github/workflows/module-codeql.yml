@@ -1,0 +1,63 @@
+name: CodeQL Module
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+    paths:
+      - ".github/workflows/codeql.yml"
+      - "evgMrmApp/**"
+      - "evrApp/**"
+      - "evrFRIBApp/**"
+      - "evrMrmApp/**"
+      - "mrfApp/**"
+      - "mrfCommon/**"
+      - "mrmShared/**"
+      - "!mrmShared/linux/**"
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  SETUP_PATH: .ci-local:.ci
+  BASE: "7.0"
+  CMP: gcc
+  BCFG: default
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install qemu-system-x86 gdb
+
+      - name: Prepare deps (ci-scripts)
+        run: python3 .ci/cue.py prepare
+
+      - name: Initialize CodeQL (manual build)
+        uses: github/codeql-action/init@v3
+        with:
+          languages: cpp
+          build-mode: manual
+          config-file: ./.github/codeql/config.yml
+
+      - name: Build (same as in ci-scripts workflow)
+        run: |
+          python3 .ci/cue.py build
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:cpp"

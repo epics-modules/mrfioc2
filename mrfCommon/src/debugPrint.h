@@ -55,7 +55,7 @@
 /**************************************************************************************************
 |*                                     COPYRIGHT NOTIFICATION
 |**************************************************************************************************
-|*  
+|*
 |* THE FOLLOWING IS A NOTICE OF COPYRIGHT, AVAILABILITY OF THE CODE,
 |* AND DISCLAIMER WHICH MUST BE INCLUDED IN THE PROLOGUE OF THE CODE
 |* AND IN ALL SOURCE LISTINGS OF THE CODE.
