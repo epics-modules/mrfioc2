@@ -89,8 +89,8 @@ typedef struct linkOptionEnumType {
 typedef struct linkOptionDef {
     const char * name;
     linkOption optType;
-    int required:1;
-    int overwrite:1;
+    unsigned int required:1;
+    unsigned int overwrite:1;
     epicsUInt32 offset;
     epicsUInt32 size;
     const linkOptionEnumType *Enums;
