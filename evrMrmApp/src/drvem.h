@@ -211,6 +211,10 @@ public:
 
     bool dcEnabled() const;
     void dcEnable(bool v);
+
+    bool resetfifoRB() const;
+    void resetfifo(bool v);
+
     double dcTarget() const;
     void dcTargetSet(double);
     //! Measured delay
