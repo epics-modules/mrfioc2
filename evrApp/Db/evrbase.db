@@ -515,3 +515,9 @@ record(mbbi, "$(P)PLL-Bandwidth-RB") {
     field( THVL, "3")
     field( FRVL, "4")
 }
+
+record(bo, "$(P)ResetFIFO") {
+  field(DESC, "Apply DC correction")
+  field(DTYP, "Obj Prop bool")
+  field(OUT, "@OBJ=$(OBJ), PROP=RESETFifo")
+}

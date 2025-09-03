@@ -1003,6 +1003,20 @@ EVRMRM::dcEnable(bool v)
         BITCLR32(base, Control, Control_DCEna);
 }
 
+
+bool
+EVRMRM::resetfifoRB() const
+{
+    return 1;
+}
+
+void
+EVRMRM::resetfifo(bool v)
+{
+    printf("\n\n\n RESETING FIFO -- function \n\n\n ");
+    BITSET(NAT,32, base, Control, Control_fiforst);
+}
+
 double
 EVRMRM::dcTarget() const
 {
@@ -1118,6 +1132,7 @@ void EVRMRM::setTimeSrc(epicsUInt32 raw)
 OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP2("Clock Mode", &EVRMRM::clockMode, &EVRMRM::clockModeSet);
   OBJECT_PROP2("DCEnable", &EVRMRM::dcEnabled, &EVRMRM::dcEnable);
+  OBJECT_PROP2("RESETFifo", &EVRMRM::resetfifoRB, &EVRMRM::resetfifo);
   OBJECT_PROP2("DCTarget", &EVRMRM::dcTarget, &EVRMRM::dcTargetSet);
   OBJECT_PROP1("DCRx",     &EVRMRM::dcRx);
   OBJECT_PROP1("DCInt",    &EVRMRM::dcInternal);
@@ -1423,6 +1438,7 @@ EVRMRM::drain_fifo()
         if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
             // clear fifo if link lost or buffer overflow
             BITSET(NAT,32, base, Control, Control_fiforst);
+            printf("\n\n\n RESETING FIFO \n\n\n ");
         }
 
         int iflags=epicsInterruptLock();
