@@ -86,14 +86,14 @@ file "evrevent.db"
 file "evrscale.db"
 {pattern
 {IDX, P, SN, OBJ, MAX}
-{0, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{1, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{2, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{3, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{4, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{5, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{6, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
-{7, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0xffffffff"}
+{0, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{1, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{2, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{3, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{4, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{5, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{6, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
+{7, "\$(P)", "\$(P)PS$(IDX)", "$(EVR):PS$(IDX)", "0x7fffffff"}
 }
 
 file "mrmevrout.db"
@@ -150,35 +150,35 @@ file "evrcml.db"
 file "evrpulser.db"
 {pattern
 {PID, P, PN, OBJ, DMAX, WMAX, PMAX, NOPS}
-{0, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
-{1, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
-{2, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
-{3, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffffffff", "0xffff", 0}
-{4, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{5, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{6, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{7, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{8, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{9, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{10,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{11,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{12,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{13,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{14,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{15,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{16,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{17,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{18,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{19,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{20,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{21,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{22,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{23,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{0, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0x7fffffff", "0xffff", 0}
+{1, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0x7fffffff", "0xffff", 0}
+{2, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0x7fffffff", "0xffff", 0}
+{3, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0x7fffffff", "0xffff", 0}
+{4, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{5, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{6, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{7, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{8, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{9, "\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{10,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{11,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{12,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{13,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{14,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{15,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{16,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{17,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{18,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{19,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{20,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{21,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{22,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{23,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
 # gate generators
-{28,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{29,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{30,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
-{31,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0xffffffff", "0xffff", "1", 1}
+{28,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{29,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{30,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
+{31,"\$(P)", "\$(P)DlyGen$(PID)", "$(EVR):Pul$(PID)", "0x7fffffff", "0xffff", "1", 1}
 }
 
 # Default to 3 possible trigger mappings per pulser
