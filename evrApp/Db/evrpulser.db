@@ -8,6 +8,7 @@
 #  DMAX = Max delay setting
 #  WMAX = Max width setting
 #  PMAX = Max prescaler (divider) setting
+#  WDRVH = Maximum Width (in EGU unitis)
 #  NOPS = 0 - enable prescaler, 1 - disable prescaler
 
 # When Disabled, the output of the Pulse Generator will remain in
@@ -108,6 +109,8 @@ record(ao, "$(PN)Width-SP") {
   field(LINR, "LINEAR")
   field(ESLO, "1e6")
   field(PREC, "3")
+  field(DRVL, "0")
+  field(DRVH, "$(WDRVH=0)")
   field(FLNK, "$(PN)Width-RB")
   info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH")
 }
