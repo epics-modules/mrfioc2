@@ -18,6 +18,8 @@
 #define U32_UpDCTarget 0x1C
 #define U32_UpDCMode 0x24
 #define U32_TOPID 0x2c
+#define U32_RxShutter 0x34
+#define U32_TxShutter 0x38
 #define U32_PortNDCValue(N) (0x40 +(N)*4)
 #define U32_PortNDCStatus(N) (0x140 +(N)*4)
 
