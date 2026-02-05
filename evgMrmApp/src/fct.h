@@ -40,10 +40,16 @@ public:
     epicsUInt32 topoId() const;
 
     double dcPortN(unsigned port) const;
+    epicsUInt32 dcPortNStatus(unsigned port) const;
 
     template<int port>
     double dcPort() const {
         return dcPortN(port);
+    }
+
+    template<int port>
+    epicsUInt32 dcPortStatus() const {
+        return dcPortNStatus(port);
     }
 };
 
