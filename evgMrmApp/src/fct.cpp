@@ -19,6 +19,7 @@
 #define U32_UpDCMode 0x24
 #define U32_TOPID 0x2c
 #define U32_PortNDCValue(N) (0x40 +(N)*4)
+#define U32_PortNDCStatus(N) (0x140 +(N)*4)
 
 FCT::FCT(evgMrm *evg, const std::string& id, volatile epicsUInt8* const base)
     :mrf::ObjectInst<FCT>(id)
@@ -99,6 +100,11 @@ double FCT::dcPortN(unsigned port) const
     return READ32(base, PortNDCValue(port))/65536.0*period;
 }
 
+epicsUInt32 FCT::dcPortNStatus(unsigned port) const
+{
+    return READ32(base, PortNDCStatus(port));
+}
+
 OBJECT_BEGIN(FCT)
     OBJECT_PROP1("Status", &FCT::statusRaw);
     OBJECT_PROP1("DCUpstream", &FCT::dcUpstream);
@@ -115,4 +121,12 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCPort6", &FCT::dcPort<5>);
     OBJECT_PROP1("DCPort7", &FCT::dcPort<6>);
     OBJECT_PROP1("DCPort8", &FCT::dcPort<7>);
+    OBJECT_PROP1("DCPortStatus1", &FCT::dcPortStatus<0>);
+    OBJECT_PROP1("DCPortStatus2", &FCT::dcPortStatus<1>);
+    OBJECT_PROP1("DCPortStatus3", &FCT::dcPortStatus<2>);
+    OBJECT_PROP1("DCPortStatus4", &FCT::dcPortStatus<3>);
+    OBJECT_PROP1("DCPortStatus5", &FCT::dcPortStatus<4>);
+    OBJECT_PROP1("DCPortStatus6", &FCT::dcPortStatus<5>);
+    OBJECT_PROP1("DCPortStatus7", &FCT::dcPortStatus<6>);
+    OBJECT_PROP1("DCPortStatus8", &FCT::dcPortStatus<7>);
 OBJECT_END(FCT)
