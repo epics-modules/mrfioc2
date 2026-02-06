@@ -121,12 +121,12 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCPort6", &FCT::dcPort<5>);
     OBJECT_PROP1("DCPort7", &FCT::dcPort<6>);
     OBJECT_PROP1("DCPort8", &FCT::dcPort<7>);
-    OBJECT_PROP1("DCPortStatus1", &FCT::dcPortStatus<0>);
-    OBJECT_PROP1("DCPortStatus2", &FCT::dcPortStatus<1>);
-    OBJECT_PROP1("DCPortStatus3", &FCT::dcPortStatus<2>);
-    OBJECT_PROP1("DCPortStatus4", &FCT::dcPortStatus<3>);
-    OBJECT_PROP1("DCPortStatus5", &FCT::dcPortStatus<4>);
-    OBJECT_PROP1("DCPortStatus6", &FCT::dcPortStatus<5>);
-    OBJECT_PROP1("DCPortStatus7", &FCT::dcPortStatus<6>);
-    OBJECT_PROP1("DCPortStatus8", &FCT::dcPortStatus<7>);
+    OBJECT_PROP1("DCStatus1", &FCT::dcPortStatus<0>);
+    OBJECT_PROP1("DCStatus2", &FCT::dcPortStatus<1>);
+    OBJECT_PROP1("DCStatus3", &FCT::dcPortStatus<2>);
+    OBJECT_PROP1("DCStatus4", &FCT::dcPortStatus<3>);
+    OBJECT_PROP1("DCStatus5", &FCT::dcPortStatus<4>);
+    OBJECT_PROP1("DCStatus6", &FCT::dcPortStatus<5>);
+    OBJECT_PROP1("DCStatus7", &FCT::dcPortStatus<6>);
+    OBJECT_PROP1("DCStatus8", &FCT::dcPortStatus<7>);
 OBJECT_END(FCT)

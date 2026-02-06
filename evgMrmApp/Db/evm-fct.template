@@ -150,51 +150,51 @@ record(ai, "$(P)Msrd$(s=:)8-I") {
   field(PREC, "3")
 }
 
-record(longin, "$(P)DCPort1-Sts") {
+record(longin, "$(P)DCStatus1-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus1")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus1")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort2-Sts") {
+record(longin, "$(P)DCStatus2-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus2")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus2")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort3-Sts") {
+record(longin, "$(P)DCStatus3-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus3")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus3")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort4-Sts") {
+record(longin, "$(P)DCStatus4-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus4")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus4")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort5-Sts") {
+record(longin, "$(P)DCStatus5-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus5")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus5")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort6-Sts") {
+record(longin, "$(P)DCStatus6-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus6")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus6")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort7-Sts") {
+record(longin, "$(P)DCStatus7-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus7")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus7")
   field(SCAN, "1 second")
 }
 
-record(longin, "$(P)DCPort8-Sts") {
+record(longin, "$(P)DCStatus8-I") {
   field(DTYP, "Obj Prop uint32")
-  field(INP, "@OBJ=$(OBJ), PROP=DCPortStatus8")
+  field(INP, "@OBJ=$(OBJ), PROP=DCStatus8")
   field(SCAN, "1 second")
 }
 
