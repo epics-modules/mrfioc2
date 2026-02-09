@@ -259,34 +259,26 @@ record(calc, "$(P)Msrd$(s=:)Total-I") {
   field(PREC, "3")
 }
 
-record(mbboDirect, "$(P)RxShutter-SP") {
-  field(DESC, "")
+record(mbboDirect, "$(P)RxShutter-SP")
+{
+  field(DESC, "RX Channel Event and DBUS Shutter")
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=RxShutter")
   field(PINI, "YES")
   field(VAL,  "0")
   field(UDF,  "0")
-  #field(HIHI, "256")
-  #field(LOLO, "-1")
-  #field(HHSV, "MAJOR")
-  #field(LLSV, "MAJOR")
-  #field(FLNK, "$(P)Divider-RB")
-  #info(autosaveFields_pass0, "VAL")
+  field(FLNK, "$(P)RxShutter-RB")
+  info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbiDirect, "$(P)RxShutter-RB") {
-  field(DESC, "")
+record(mbbiDirect, "$(P)RxShutter-RB")
+{
+  field(DESC, "RX Channel Event and DBUS Shutter")
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(INP,  "@OBJ=$(OBJ), PROP=RxShutter")
   field(PINI, "YES")
   field(VAL,  "0")
   field(UDF,  "0")
-  #field(HIHI, "256")
-  #field(LOLO, "-1")
-  #field(HHSV, "MAJOR")
-  #field(LLSV, "MAJOR")
-  #field(FLNK, "$(P)Divider-RB")
-  #info(autosaveFields_pass0, "VAL")
 }
