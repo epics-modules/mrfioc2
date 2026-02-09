@@ -107,6 +107,14 @@ epicsUInt32 FCT::dcPortNStatus(unsigned port) const
     return READ32(base, PortNDCStatus(port));
 }
 
+epicsUInt32 FCT::getRxShutter() const {
+    return READ32(base, RxShutter);
+}
+
+void FCT::setRxShutter(epicsUInt32 rxShutter) {
+    WRITE32(base, RxShutter, rxShutter);
+}
+
 OBJECT_BEGIN(FCT)
     OBJECT_PROP1("Status", &FCT::statusRaw);
     OBJECT_PROP1("DCUpstream", &FCT::dcUpstream);
@@ -131,4 +139,5 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCStatus6", &FCT::dcPortStatus<5>);
     OBJECT_PROP1("DCStatus7", &FCT::dcPortStatus<6>);
     OBJECT_PROP1("DCStatus8", &FCT::dcPortStatus<7>);
+    OBJECT_PROP2("RxShutter", &FCT::getRxShutter, &FCT::setRxShutter);
 OBJECT_END(FCT)
