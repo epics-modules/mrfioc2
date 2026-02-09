@@ -51,6 +51,12 @@ public:
     epicsUInt32 dcPortStatus() const {
         return dcPortNStatus(port);
     }
+
+    // Read Rx Shutter enable/disable bits
+    epicsUInt32 getRxShutter() const;
+    // Set Rx Shutter enable/disable bits
+    void setRxShutter(epicsUInt32);
+
 };
 
 #endif // EVG_FCT_H
