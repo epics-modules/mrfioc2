@@ -269,13 +269,31 @@ record(mbboDirect, "$(P)RxShutter-SP")
   field(FLNK, "$(P)RxShutter-RB")
   info(autosaveFields_pass0, "RVAL")
 }
-
 record(mbbiDirect, "$(P)RxShutter-RB")
 {
   field(DESC, "RX Channel Event and DBUS Shutter")
-  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(INP,  "@OBJ=$(OBJ), PROP=RxShutter")
+  field(VAL,  "0")
+  field(UDF,  "0")
+  field(DISP, "1")
+}
+
+record(mbboDirect, "$(P)TxShutter-SP")
+{
+  field(DESC, "TX Channel Event and DBUS Shutter")
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT,  "@OBJ=$(OBJ), PROP=TxShutter")
+  field(PINI, "RUN")
+  field(FLNK, "$(P)TxShutter-RB")
+  info(autosaveFields_pass0, "RVAL")
+}
+record(mbbiDirect, "$(P)TxShutter-RB")
+{
+  field(DESC, "TX Channel Event and DBUS Shutter")
+  field(DTYP, "Obj Prop uint32")
+  field(INP,  "@OBJ=$(OBJ), PROP=TxShutter")
   field(VAL,  "0")
   field(UDF,  "0")
   field(DISP, "1")

@@ -56,6 +56,10 @@ public:
     epicsUInt32 getRxShutter() const;
     // Set Rx Shutter enable/disable bits
     void setRxShutter(epicsUInt32);
+    // Read Tx Shutter enable/disable bits
+    epicsUInt32 getTxShutter() const;
+    // Set Tx Shutter enable/disable bits
+    void setTxShutter(epicsUInt32);
 
 };
 
