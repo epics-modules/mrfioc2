@@ -161,6 +161,10 @@ file "evm-fct-ctrl.template"
 {
 {P="\$(P)FCT", DIR="Rx"}
 }
+file "evm-fct-ctrl.template"
+{
+{P="\$(P)FCT", DIR="Tx"}
+}
 
 file "sfp.db"
 {

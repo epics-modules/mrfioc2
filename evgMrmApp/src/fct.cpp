@@ -111,9 +111,18 @@ epicsUInt32 FCT::getRxShutter() const {
     return READ32(base, RxShutter);
 }
 
-void FCT::setRxShutter(epicsUInt32 rxShutter) {
-    WRITE32(base, RxShutter, rxShutter);
+void FCT::setRxShutter(epicsUInt32 ports) {
+    WRITE32(base, RxShutter, ports);
 }
+
+epicsUInt32 FCT::getTxShutter() const {
+    return READ32(base, TxShutter);
+}
+
+void FCT::setTxShutter(epicsUInt32 ports) {
+    WRITE32(base, TxShutter, ports);
+}
+
 
 OBJECT_BEGIN(FCT)
     OBJECT_PROP1("Status", &FCT::statusRaw);
@@ -140,4 +149,5 @@ OBJECT_BEGIN(FCT)
     OBJECT_PROP1("DCStatus7", &FCT::dcPortStatus<6>);
     OBJECT_PROP1("DCStatus8", &FCT::dcPortStatus<7>);
     OBJECT_PROP2("RxShutter", &FCT::getRxShutter, &FCT::setRxShutter);
+    OBJECT_PROP2("TxShutter", &FCT::getTxShutter, &FCT::setTxShutter);
 OBJECT_END(FCT)
