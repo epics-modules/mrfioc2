@@ -157,6 +157,10 @@ file "evm-fct.template"
 {
 {P="\$(P)FCT", OBJ="$(EVG):FCT"}
 }
+file "evm-fct-ctrl.template"
+{
+{P="\$(P)FCT", DIR="Rx"}
+}
 
 file "sfp.db"
 {

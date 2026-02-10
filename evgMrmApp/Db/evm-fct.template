@@ -265,11 +265,9 @@ record(mbboDirect, "$(P)RxShutter-SP")
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop uint32")
   field(OUT,  "@OBJ=$(OBJ), PROP=RxShutter")
-  #field(PINI, "YES")
-  field(VAL,  "0")
-  field(UDF,  "0")
+  field(PINI, "RUN")
   field(FLNK, "$(P)RxShutter-RB")
-  info(autosaveFields_pass0, "VAL")
+  info(autosaveFields_pass0, "RVAL")
 }
 
 record(mbbiDirect, "$(P)RxShutter-RB")
@@ -280,48 +278,5 @@ record(mbbiDirect, "$(P)RxShutter-RB")
   field(INP,  "@OBJ=$(OBJ), PROP=RxShutter")
   field(VAL,  "0")
   field(UDF,  "0")
-}
-
-record(bo, "$(P)RxShutEvt1-Sel") {
-  field(DESC, "")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(OUT, "$(P)RxShutter-SP.B0 PP")
-  field(ZNAM, "Enable")
-  field(ONAM, "Disable")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P)RxShutEvt2-Sel") {
-  field(DESC, "")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(OUT, "$(P)RxShutter-SP.B1 PP")
-  field(ZNAM, "Enable")
-  field(ONAM, "Disable")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P)RxShutDbus1-Sel") {
-  field(DESC, "")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(OUT, "$(P)RxShutter-SP.B10 PP")
-  field(ZNAM, "Enable")
-  field(ONAM, "Disable")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bo, "$(P)RxShutDbus2-Sel") {
-  field(DESC, "")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(OUT, "$(P)RxShutter-SP.B11 PP")
-  field(ZNAM, "Enable")
-  field(ONAM, "Disable")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  info(autosaveFields_pass0, "VAL")
+  field(DISP, "1")
 }
