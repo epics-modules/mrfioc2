@@ -157,13 +157,25 @@ file "evm-fct.template"
 {
 {P="\$(P)FCT", OBJ="$(EVG):FCT"}
 }
-file "evm-fct-ctrl.template"
-{
-{P="\$(P)FCT", DIR="Rx"}
-}
-file "evm-fct-ctrl.template"
-{
-{P="\$(P)FCT", DIR="Tx"}
+file "evm-fct-shutter.template"
+{pattern
+{P,          DIR,  PORT, BIT}
+{"\$(P)FCT", "Rx", "1",  "0"}
+{"\$(P)FCT", "Rx", "2",  "1"}
+{"\$(P)FCT", "Rx", "3",  "2"}
+{"\$(P)FCT", "Rx", "4",  "3"}
+{"\$(P)FCT", "Rx", "5",  "4"}
+{"\$(P)FCT", "Rx", "6",  "5"}
+{"\$(P)FCT", "Rx", "7",  "6"}
+{"\$(P)FCT", "Rx", "8",  "7"}
+{"\$(P)FCT", "Tx", "1",  "0"}
+{"\$(P)FCT", "Tx", "2",  "1"}
+{"\$(P)FCT", "Tx", "3",  "2"}
+{"\$(P)FCT", "Tx", "4",  "3"}
+{"\$(P)FCT", "Tx", "5",  "4"}
+{"\$(P)FCT", "Tx", "6",  "5"}
+{"\$(P)FCT", "Tx", "7",  "6"}
+{"\$(P)FCT", "Tx", "8",  "7"}
 }
 
 file "sfp.db"

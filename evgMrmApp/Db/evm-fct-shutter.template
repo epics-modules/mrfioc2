@@ -1,0 +1,43 @@
+# DIR  - link direction: Rx or Tx (only).
+# PORT - SFP port number.
+# BIT  - bit index assigned to the given SFP port.
+
+# Enable/Disable events
+record(bo, "$(P)$(DIR)Shut$(PORT)Evt-Sel")
+{
+  field(DESC, "$(DIR) Channel Event Shutter")
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(OUT, "$(P)$(DIR)Shutter-SP.B$(BIT) PP")
+  field(ZNAM, "Enable")
+  field(ONAM, "Disable")
+  field(VAL,  "0")
+  info(autosaveFields_pass0, "VAL")
+}
+record(bi, "$(P)$(DIR)Shut$(PORT)Evt-RB")
+{
+  field(DESC, "$(DIR) Channel Event Shutter")
+  field(INP, "$(P)$(DIR)Shutter-RB.B$(BIT) CPP")
+  field(ZNAM, "Enable")
+  field(ONAM, "Disable")
+  field(DISP, "1")
+}
+
+# Enable/Disable dbus
+record(bo, "$(P)$(DIR)Shut$(PORT)Dbus-Sel")
+{
+  field(DESC, "$(DIR) Channel DBUS Shutter")
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(OUT, "$(P)$(DIR)Shutter-SP.B1$(BIT) PP")
+  field(ZNAM, "Enable")
+  field(ONAM, "Disable")
+  field(VAL,  "0")
+  info(autosaveFields_pass0, "VAL")
+}
+record(bi, "$(P)$(DIR)Shut$(PORT)Dbus-RB")
+{
+  field(DESC, "$(DIR) Channel DBUS Shutter")
+  field(INP, "$(P)$(DIR)Shutter-RB.B1$(BIT) CPP")
+  field(ZNAM, "Enable")
+  field(ONAM, "Disable")
+  field(DISP, "1")
+}
