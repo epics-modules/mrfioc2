@@ -1309,6 +1309,9 @@ EVRMRM::drain_fifo()
 
     SCOPED_LOCK2(evrLock, guard);
 
+    // Reset fifo when IOC starts
+    BITSET(NAT,32, base, Control, Control_fiforst);
+
     while(true) {
         int msg, err;
 
@@ -1424,6 +1427,11 @@ EVRMRM::drain_fifo()
             // clear fifo if link lost or buffer overflow
             BITSET(NAT,32, base, Control, Control_fiforst);
         }
+
+        // if (status&(IRQ_LinkChg)) {
+        //     // clear fifo if Link state change
+        //     BITSET(NAT,32, base, Control, Control_fiforst);
+        // }
 
         int iflags=epicsInterruptLock();
 
