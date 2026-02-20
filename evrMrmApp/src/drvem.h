@@ -212,8 +212,8 @@ public:
     bool dcEnabled() const;
     void dcEnable(bool v);
 
-    bool resetfifoRB() const;
-    void resetfifo(bool v);
+    bool fifoResetGet() const;
+    void fifoResetSet(bool v);
 
     double dcTarget() const;
     void dcTargetSet(double);
