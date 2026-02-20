@@ -524,8 +524,8 @@ record(mbbi, "$(P)PLL-Bandwidth-RB") {
     field( FRVL, "4")
 }
 
-record(bo, "$(P)ResetFIFO") {
-  field(DESC, "Apply DC correction")
+record(bo, "$(P)FifoReset-Cmd") {
+  field(DESC, "Reset Event FIFO")
   field(DTYP, "Obj Prop bool")
-  field(OUT, "@OBJ=$(OBJ), PROP=RESETFifo")
+  field(OUT, "@OBJ=$(OBJ), PROP=FifoReset")
 }
