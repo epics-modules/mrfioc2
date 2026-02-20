@@ -526,6 +526,9 @@ record(mbbi, "$(P)PLL-Bandwidth-RB") {
 
 record(bo, "$(P)FifoReset-Cmd") {
   field(DESC, "Reset Event FIFO")
+  field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Obj Prop bool")
   field(OUT, "@OBJ=$(OBJ), PROP=FifoReset")
+  field(ZNAM, "Reset")
+  field(ONAM, "Reset")
 }

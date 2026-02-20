@@ -1012,7 +1012,7 @@ EVRMRM::fifoResetGet() const
 void
 EVRMRM::fifoResetSet(bool v)
 {
-    printf("Command: Reset Event FIFO.\n");
+    printf("EVR(Command): Reset Event FIFO.\n");
     BITSET(NAT,32, base, Control, Control_fiforst);
 }
 
@@ -1440,14 +1440,8 @@ EVRMRM::drain_fifo()
         if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
             // clear fifo if link lost or buffer overflow
             BITSET(NAT,32, base, Control, Control_fiforst);
-            printf("Reset Event FIFO.\n");
+            printf("EVR(IRQ_FIFOFull|IRQ_RXErr): Reset Event FIFO (status=0x%08)\n", status);
         }
-
-        // Never enters
-        // if (status&(IRQ_LinkChg)) {
-        //     // clear fifo if Link state change
-        //     BITSET(NAT,32, base, Control, Control_fiforst);
-        // }
 
         int iflags=epicsInterruptLock();
 
