@@ -81,6 +81,9 @@ static const epicsPCIID mrmevrs[] = {
     /* PCIe-EVR-300DC */
     ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV,    PCI_VENDOR_ID_XILINX,
                                PCI_SUBDEVICE_ID_PCIE_EVR_300, PCI_VENDOR_ID_MRF)
+    /* PXIe-EVR-300 */
+    ,DEVPCI_SUBDEVICE_SUBVENDOR(PCI_DEVICE_ID_XILINX_DEV2,   PCI_VENDOR_ID_XILINX,
+                               PCI_SUBDEVICE_ID_PXIE_EVR_300, PCI_VENDOR_ID_MRF)
     ,DEVPCI_END
 };
 
@@ -284,6 +287,21 @@ static const EVRMRM::Config pcie_evr_300 = {
      * 4 <= N <= 23 : UnivInMap
      */
     24, // FP, Univ inputs
+};
+
+static const EVRMRM::Config pxie_evr_300 = {
+    "PXIe-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    4,  // FPUV outputs
+    0,  // RB outputs
+    59, // Backplane outputs: TRIG[0:7] STAR[0:16] STARA[0:16] STARB[0:16]
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeTG300,
+    2,  // FP inputs
+    // RBIN[0:41]?  TRIG[0:7] STAR[0:16] DSTARC[0:16]
 };
 
 static const EVRMRM::Config cpci_evr_unknown = {
@@ -738,6 +756,7 @@ try {
         case PCI_DEVICE_ID_XILINX_DEV: conf = &pcie_evr_300; break;
         }
         break;
+    case PCI_SUBDEVICE_ID_PXIE_EVR_300: conf = &pxie_evr_300; break;
     }
 
     if(!conf) {
@@ -828,6 +847,7 @@ try {
     case PCI_DEVICE_ID_EC_30:
     case PCI_DEVICE_ID_MRF_CPCIEVR300:
     case PCI_DEVICE_ID_XILINX_DEV:
+    case PCI_DEVICE_ID_XILINX_DEV2:
         /* the endianness the 300 series devices w/o PLX bridge
          * is a little tricky to setup.  byte order swapping is controlled
          * through the EVR's Control register and access to this register
