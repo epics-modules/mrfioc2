@@ -60,11 +60,17 @@ mrf_DBD += caPutLog.dbd
 mrf_LIBS += caPutLog
 endif
 
-ifneq ($(PVA2PVA),)
+# Link QSRV
+ifdef PVXS_MAJOR_VERSION # prefer v2
+mrf_DBD += pvxsIoc.dbd
+mrf_LIBS += pvxsIoc pvxs
+else
+ifdef EPICS_QSRV_MAJOR_VERSION # fallback to v1
 mrf_DBD += PVAServerRegister.dbd
 mrf_DBD += qsrv.dbd
 mrf_LIBS += qsrv
 mrf_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+endif
 endif
 
 # Finally link to the EPICS Base libraries
