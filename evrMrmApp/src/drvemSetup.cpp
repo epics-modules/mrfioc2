@@ -858,7 +858,7 @@ try {
         NAT_WRITE32(evr, Control, 0);
         // Enable byte order swapping if necessary
 #if EPICS_BYTE_ORDER == EPICS_ENDIAN_LITTLE
-        BE_WRITE32(evr, Control, 0x02000000);
+        BE_WRITE32(evr, Control, 0x02000002);
 #endif
 
         // Disable interrupts on device
