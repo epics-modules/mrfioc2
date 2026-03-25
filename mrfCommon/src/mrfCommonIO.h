@@ -143,10 +143,10 @@
 /*================================================================================================*/
 
 #define NAT_READ32(base,offset) \
-        be_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
+        nat_ioread32 ((epicsUInt8 *)(base) + U32_ ## offset)
 
 #define NAT_WRITE32(base,offset,value) \
-        be_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
+        nat_iowrite32 (((epicsUInt8 *)(base) + U32_ ## offset), value)
 
 /**************************************************************************************************/
 /*                             Macros For Big-Endian Bus I/O                                      */
