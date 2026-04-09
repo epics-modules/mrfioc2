@@ -1,0 +1,54 @@
+record(longout, "$(P)FastEvtCode-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DESC, "Set fast event code")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtCode")
+  field(VAL , "0")
+  field(PINI, "YES") # send event 0 is a no-op
+}
+
+record(longin, "$(P)FastEvtCode-RB") {
+  field(DESC, "Get fast event code")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtCode")
+  field(SCAN, "1 second")
+}
+
+record(bo, "$(P)FastEvtEna-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DESC, "Enable fast event")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtEna")
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+  field(VAL , "0")
+}
+
+record(bi, "$(P)FastEvtEna-RB") {
+  field(DESC, "Enable fast event")
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtEna")
+  field(SCAN, "1 second")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+}
+
+record(bo, "$(P)FastEvtPri-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DESC, "Set fast event priority")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtPri")
+  field(ZNAM, "Low")
+  field(ONAM, "High")
+  field(VAL , "0")
+}
+
+record(bi, "$(P)FastEvtPri-RB") {
+  field(DESC, "Get fast event priority")
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtPri")
+  field(SCAN, "1 second")
+  field(ZNAM, "Low")
+  field(ONAM, "High")
+}
+

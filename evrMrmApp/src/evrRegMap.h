@@ -108,6 +108,16 @@
 #define U32_IRQPulseMap 0x010
 
 //=====================
+// Fast Event Control Registers
+//
+#define U32_FastEvent 0x014
+
+#define  FastEvent_Ena            0x00000100
+#define  FastEvent_Pri            0x00000200
+#define  FastEvent_Code_MASK      0x000000ff
+#define  FastEvent_Code_SHIFT     0
+
+//=====================
 // Software Event Control Registers
 //
 #define  U32_SwEvent            0x0018
