@@ -1067,12 +1067,6 @@ EVRMRM::psPolaritySet(bool v)
         BITCLR32(base, Control, Control_pspol);
 }
 
-bool
-EVRMRM::fastEvtEnaGet() const
-{
-    return READ32(base, FastEvent) & FastEvent_Ena;
-}
-
 void
 EVRMRM::fastEvtEnaSet(bool v)
 {
@@ -1083,9 +1077,9 @@ EVRMRM::fastEvtEnaSet(bool v)
 }
 
 bool
-EVRMRM::fastEvtPriGet() const
+EVRMRM::fastEvtEnaGet() const
 {
-    return READ32(base, FastEvent) & FastEvent_Pri;
+    return READ32(base, FastEvent) & FastEvent_Ena;
 }
 
 void
@@ -1095,6 +1089,12 @@ EVRMRM::fastEvtPriSet(bool v)
         BITSET32(base, FastEvent, FastEvent_Pri);
     else
         BITCLR32(base, FastEvent, FastEvent_Pri);
+}
+
+bool
+EVRMRM::fastEvtPriGet() const
+{
+    return READ32(base, FastEvent) & FastEvent_Pri;
 }
 
 void
@@ -1109,7 +1109,7 @@ EVRMRM::fastEvtCodeSet(epicsUInt32 code)
 }
 
 epicsUInt32
-EVRMRM::fastEvtCodeGet()
+EVRMRM::fastEvtCodeGet() const
 {
     epicsUInt32 code = READ32(base, FastEvent);
     code &= FastEvent_Code_MASK;

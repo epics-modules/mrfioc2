@@ -227,6 +227,15 @@ public:
     bool psPolarity() const;
     void psPolaritySet(bool v);
 
+    void fastEvtEnaSet(bool v);
+    bool fastEvtEnaGet() const;
+
+    void fastEvtPriSet(bool v);
+    bool fastEvtPriGet() const;
+
+    void fastEvtCodeSet(epicsUInt32 code);
+    epicsUInt32 fastEvtCodeGet() const;
+
     epicsUInt32 dummy() const { return 0; }
     void setEvtCode(epicsUInt32 code) OVERRIDE FINAL;
 
