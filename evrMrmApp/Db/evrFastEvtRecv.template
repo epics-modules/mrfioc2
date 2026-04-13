@@ -1,55 +1,55 @@
-record(longout, "$(P)FastEvtCode-SP") {
+record(longout, "$(P)FastEvtRecvCode-SP") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Set fast event code")
   field(DTYP, "Obj Prop uint32")
-  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtCode")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
   field(VAL , "0")
   field(PINI, "YES")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(longin, "$(P)FastEvtCode-RB") {
+record(longin, "$(P)FastEvtRecvCode-RB") {
   field(DESC, "Get fast event code")
   field(DTYP, "Obj Prop uint32")
-  field(INP , "@OBJ=$(OBJ), PROP=FastEvtCode")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
   field(SCAN, "1 second")
 }
 
-record(bo, "$(P)FastEvtEna-SP") {
+record(bo, "$(P)FastEvtRecvEna-SP") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Enable fast event")
   field(DTYP, "Obj Prop bool")
-  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtEna")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvEna")
   field(ZNAM, "Disable")
   field(ONAM, "Enable")
   field(VAL , "0")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)FastEvtEna-RB") {
+record(bi, "$(P)FastEvtRecvEna-RB") {
   field(DESC, "Enable fast event")
   field(DTYP, "Obj Prop bool")
-  field(INP , "@OBJ=$(OBJ), PROP=FastEvtEna")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvEna")
   field(SCAN, "1 second")
   field(ZNAM, "Disabled")
   field(ONAM, "Enabled")
 }
 
-record(bo, "$(P)FastEvtPri-SP") {
+record(bo, "$(P)FastEvtRecvPri-SP") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Set fast event priority")
   field(DTYP, "Obj Prop bool")
-  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtPri")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvPri")
   field(ZNAM, "Low")
   field(ONAM, "High")
   field(VAL , "0")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(bi, "$(P)FastEvtPri-RB") {
+record(bi, "$(P)FastEvtRecvPri-RB") {
   field(DESC, "Get fast event priority")
   field(DTYP, "Obj Prop bool")
-  field(INP , "@OBJ=$(OBJ), PROP=FastEvtPri")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvPri")
   field(SCAN, "1 second")
   field(ZNAM, "Low")
   field(ONAM, "High")

@@ -32,7 +32,7 @@ file "databuftx.db"
 {"\$(P)\$(ES)", "$(EVR):BUFTX", 1, "-"}
 }
 
-file "evrFastEvt.template"
+file "evrFastEvtRecv.template"
 {
 {P="\$(P)", OBJ="$(EVR)"}
 }

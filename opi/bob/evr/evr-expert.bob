@@ -1821,7 +1821,7 @@ $(pv_value)</tooltip>
     </actions>
     <widget type="textentry" version="3.0.0">
       <name>Text Input_4</name>
-      <pv_name>$(P):FastEvtCode-SP</pv_name>
+      <pv_name>$(P):FastEvtRecvCode-SP</pv_name>
       <x>96</x>
       <y>34</y>
       <width>67</width>
@@ -1869,7 +1869,7 @@ $(pv_value)</tooltip>
     </widget>
     <widget type="combo" version="2.0.0">
       <name>Menu Button_1</name>
-      <pv_name>$(P):FastEvtPri-SP</pv_name>
+      <pv_name>$(P):FastEvtRecvPri-SP</pv_name>
       <x>96</x>
       <y>62</y>
       <width>73</width>
@@ -1893,7 +1893,7 @@ $(pv_value)</tooltip>
     </widget>
     <widget type="combo" version="2.0.0">
       <name>Menu Button_2</name>
-      <pv_name>$(P):FastEvtEna-SP</pv_name>
+      <pv_name>$(P):FastEvtRecvEna-SP</pv_name>
       <x>95</x>
       <y>5</y>
       <width>73</width>

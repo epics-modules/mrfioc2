@@ -1068,52 +1068,52 @@ EVRMRM::psPolaritySet(bool v)
 }
 
 void
-EVRMRM::fastEvtEnaSet(bool v)
+EVRMRM::fastEvtRecvEnaSet(bool v)
 {
     if(v)
-        BITSET32(base, FastEvent, FastEvent_Ena);
+        BITSET32(base, FastEventRecv, FastEventRecv_Ena);
     else
-        BITCLR32(base, FastEvent, FastEvent_Ena);
+        BITCLR32(base, FastEventRecv, FastEventRecv_Ena);
 }
 
 bool
-EVRMRM::fastEvtEnaGet() const
+EVRMRM::fastEvtRecvEnaGet() const
 {
-    return READ32(base, FastEvent) & FastEvent_Ena;
+    return READ32(base, FastEventRecv) & FastEventRecv_Ena;
 }
 
 void
-EVRMRM::fastEvtPriSet(bool v)
+EVRMRM::fastEvtRecvPriSet(bool v)
 {
     if(v)
-        BITSET32(base, FastEvent, FastEvent_Pri);
+        BITSET32(base, FastEventRecv, FastEventRecv_Pri);
     else
-        BITCLR32(base, FastEvent, FastEvent_Pri);
+        BITCLR32(base, FastEventRecv, FastEventRecv_Pri);
 }
 
 bool
-EVRMRM::fastEvtPriGet() const
+EVRMRM::fastEvtRecvPriGet() const
 {
-    return READ32(base, FastEvent) & FastEvent_Pri;
+    return READ32(base, FastEventRecv) & FastEventRecv_Pri;
 }
 
 void
-EVRMRM::fastEvtCodeSet(epicsUInt32 code)
+EVRMRM::fastEvtRecvCodeSet(epicsUInt32 code)
 {
     if(code==0) return;
     else if(code>255) throw std::runtime_error("Event code out of range");
 
-    epicsUInt32 cur = READ32(base, FastEvent);
-    cur &= ~FastEvent_Code_MASK;
-    WRITE32(base, FastEvent, (code<<FastEvent_Code_SHIFT) | cur);
+    epicsUInt32 cur = READ32(base, FastEventRecv);
+    cur &= ~FastEventRecv_Code_MASK;
+    WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
 }
 
 epicsUInt32
-EVRMRM::fastEvtCodeGet() const
+EVRMRM::fastEvtRecvCodeGet() const
 {
-    epicsUInt32 code = READ32(base, FastEvent);
-    code &= FastEvent_Code_MASK;
-    return code>>FastEvent_Code_SHIFT;
+    epicsUInt32 code = READ32(base, FastEventRecv);
+    code &= FastEventRecv_Code_MASK;
+    return code>>FastEventRecv_Code_SHIFT;
 }
 
 epicsUInt32
@@ -1187,9 +1187,9 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
   OBJECT_PROP2("PSPolarity", &EVRMRM::psPolarity, &EVRMRM::psPolaritySet);
-  OBJECT_PROP2("FastEvtEna", &EVRMRM::fastEvtEnaGet, &EVRMRM::fastEvtEnaSet);
-  OBJECT_PROP2("FastEvtPri", &EVRMRM::fastEvtPriGet, &EVRMRM::fastEvtPriSet);
-  OBJECT_PROP2("FastEvtCode", &EVRMRM::fastEvtCodeGet, &EVRMRM::fastEvtCodeSet);
+  OBJECT_PROP2("FastEvtRecvEna", &EVRMRM::fastEvtRecvEnaGet, &EVRMRM::fastEvtRecvEnaSet);
+  OBJECT_PROP2("FastEvtRecvPri", &EVRMRM::fastEvtRecvPriGet, &EVRMRM::fastEvtRecvPriSet);
+  OBJECT_PROP2("FastEvtRecvCode", &EVRMRM::fastEvtRecvCodeGet, &EVRMRM::fastEvtRecvCodeSet);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
   OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
     {
