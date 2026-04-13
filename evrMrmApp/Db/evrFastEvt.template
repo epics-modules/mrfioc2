@@ -4,7 +4,8 @@ record(longout, "$(P)FastEvtCode-SP") {
   field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=FastEvtCode")
   field(VAL , "0")
-  field(PINI, "YES") # send event 0 is a no-op
+  field(PINI, "YES")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(longin, "$(P)FastEvtCode-RB") {
@@ -22,6 +23,7 @@ record(bo, "$(P)FastEvtEna-SP") {
   field(ZNAM, "Disable")
   field(ONAM, "Enable")
   field(VAL , "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)FastEvtEna-RB") {
@@ -41,6 +43,7 @@ record(bo, "$(P)FastEvtPri-SP") {
   field(ZNAM, "Low")
   field(ONAM, "High")
   field(VAL , "0")
+  info(autosaveFields_pass0, "VAL")
 }
 
 record(bi, "$(P)FastEvtPri-RB") {
