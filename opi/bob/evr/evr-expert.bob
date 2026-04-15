@@ -1823,7 +1823,7 @@ $(pv_value)</tooltip>
       <name>Text Input_4</name>
       <pv_name>$(P):FastEvtRecvCode-SP</pv_name>
       <x>96</x>
-      <y>34</y>
+      <y>19</y>
       <width>67</width>
       <height>19</height>
       <foreground_color>
@@ -1840,7 +1840,7 @@ $(pv_value)</tooltip>
     <widget type="label" version="2.0.0">
       <name>Label_6</name>
       <text>Fast Event</text>
-      <y>35</y>
+      <y>20</y>
       <width>90</width>
       <height>17</height>
       <horizontal_alignment>2</horizontal_alignment>
@@ -1855,7 +1855,7 @@ $(pv_value)</tooltip>
     <widget type="label" version="2.0.0">
       <name>Label_7</name>
       <text>Priority</text>
-      <y>63</y>
+      <y>48</y>
       <width>90</width>
       <height>17</height>
       <horizontal_alignment>2</horizontal_alignment>
@@ -1871,31 +1871,7 @@ $(pv_value)</tooltip>
       <name>Menu Button_1</name>
       <pv_name>$(P):FastEvtRecvPri-SP</pv_name>
       <x>96</x>
-      <y>62</y>
-      <width>73</width>
-      <height>19</height>
-      <border_alarm_sensitive>false</border_alarm_sensitive>
-    </widget>
-    <widget type="label" version="2.0.0">
-      <name>Label_10</name>
-      <text>Enable</text>
-      <y>6</y>
-      <width>90</width>
-      <height>17</height>
-      <horizontal_alignment>2</horizontal_alignment>
-      <vertical_alignment>1</vertical_alignment>
-      <actions>
-      </actions>
-      <border_color>
-        <color red="0" green="128" blue="255">
-        </color>
-      </border_color>
-    </widget>
-    <widget type="combo" version="2.0.0">
-      <name>Menu Button_2</name>
-      <pv_name>$(P):FastEvtRecvEna-SP</pv_name>
-      <x>95</x>
-      <y>5</y>
+      <y>47</y>
       <width>73</width>
       <height>19</height>
       <border_alarm_sensitive>false</border_alarm_sensitive>

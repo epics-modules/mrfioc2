@@ -1068,21 +1068,6 @@ EVRMRM::psPolaritySet(bool v)
 }
 
 void
-EVRMRM::fastEvtRecvEnaSet(bool v)
-{
-    if(v)
-        BITSET32(base, FastEventRecv, FastEventRecv_Ena);
-    else
-        BITCLR32(base, FastEventRecv, FastEventRecv_Ena);
-}
-
-bool
-EVRMRM::fastEvtRecvEnaGet() const
-{
-    return READ32(base, FastEventRecv) & FastEventRecv_Ena;
-}
-
-void
 EVRMRM::fastEvtRecvPriSet(bool v)
 {
     if(v)
@@ -1100,12 +1085,24 @@ EVRMRM::fastEvtRecvPriGet() const
 void
 EVRMRM::fastEvtRecvCodeSet(epicsUInt32 code)
 {
-    if(code==0) return;
-    else if(code>255) throw std::runtime_error("Event code out of range");
-
-    epicsUInt32 cur = READ32(base, FastEventRecv);
-    cur &= ~FastEventRecv_Code_MASK;
-    WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
+    if(code>255) throw std::runtime_error("Event code out of range");
+    else {
+        epicsUInt32 cur;
+        // code 0 is used to disable Fast Event
+        if(code==0) {
+            BITCLR32(base, FastEventRecv, FastEventRecv_Ena);
+            cur = READ32(base, FastEventRecv);
+            cur &= ~FastEventRecv_Code_MASK;
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
+        }
+        // any other valid code enables Fast Event
+        else {
+            cur = READ32(base, FastEventRecv);
+            cur &= ~FastEventRecv_Code_MASK;
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
+            BITSET32(base, FastEventRecv, FastEventRecv_Ena);
+        }
+    };
 }
 
 epicsUInt32
@@ -1187,7 +1184,6 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
   OBJECT_PROP2("PSPolarity", &EVRMRM::psPolarity, &EVRMRM::psPolaritySet);
-  OBJECT_PROP2("FastEvtRecvEna", &EVRMRM::fastEvtRecvEnaGet, &EVRMRM::fastEvtRecvEnaSet);
   OBJECT_PROP2("FastEvtRecvPri", &EVRMRM::fastEvtRecvPriGet, &EVRMRM::fastEvtRecvPriSet);
   OBJECT_PROP2("FastEvtRecvCode", &EVRMRM::fastEvtRecvCodeGet, &EVRMRM::fastEvtRecvCodeSet);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);

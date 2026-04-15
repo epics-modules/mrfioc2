@@ -227,9 +227,6 @@ public:
     bool psPolarity() const;
     void psPolaritySet(bool v);
 
-    void fastEvtRecvEnaSet(bool v);
-    bool fastEvtRecvEnaGet() const;
-
     void fastEvtRecvPriSet(bool v);
     bool fastEvtRecvPriGet() const;
 

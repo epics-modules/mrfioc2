@@ -15,26 +15,6 @@ record(longin, "$(P)FastEvtRecvCode-RB") {
   field(SCAN, "1 second")
 }
 
-record(bo, "$(P)FastEvtRecvEna-SP") {
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DESC, "Enable fast event")
-  field(DTYP, "Obj Prop bool")
-  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvEna")
-  field(ZNAM, "Disable")
-  field(ONAM, "Enable")
-  field(VAL , "0")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(bi, "$(P)FastEvtRecvEna-RB") {
-  field(DESC, "Enable fast event")
-  field(DTYP, "Obj Prop bool")
-  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvEna")
-  field(SCAN, "1 second")
-  field(ZNAM, "Disabled")
-  field(ONAM, "Enabled")
-}
-
 record(bo, "$(P)FastEvtRecvPri-SP") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DESC, "Set fast event priority")
