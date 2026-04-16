@@ -1087,21 +1087,14 @@ EVRMRM::fastEvtRecvCodeSet(epicsUInt32 code)
 {
     if(code>255) throw std::runtime_error("Event code out of range");
     else {
-        epicsUInt32 cur;
+        epicsUInt32 cur = READ32(base, FastEventRecv);
+        cur &= ~FastEventRecv_Code_MASK;
         // code 0 is used to disable Fast Event
-        if(code==0) {
-            BITCLR32(base, FastEventRecv, FastEventRecv_Ena);
-            cur = READ32(base, FastEventRecv);
-            cur &= ~FastEventRecv_Code_MASK;
-            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
-        }
+        if(code==0)
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur & ~FastEventRecv_Ena);
         // any other valid code enables Fast Event
-        else {
-            cur = READ32(base, FastEventRecv);
-            cur &= ~FastEventRecv_Code_MASK;
-            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur);
-            BITSET32(base, FastEventRecv, FastEventRecv_Ena);
-        }
+        else
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur | FastEventRecv_Ena);
     };
 }
 
