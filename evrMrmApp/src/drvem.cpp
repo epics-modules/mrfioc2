@@ -1067,6 +1067,45 @@ EVRMRM::psPolaritySet(bool v)
         BITCLR32(base, Control, Control_pspol);
 }
 
+void
+EVRMRM::fastEvtRecvPriSet(bool v)
+{
+    if(v)
+        BITSET32(base, FastEventRecv, FastEventRecv_Pri);
+    else
+        BITCLR32(base, FastEventRecv, FastEventRecv_Pri);
+}
+
+bool
+EVRMRM::fastEvtRecvPriGet() const
+{
+    return READ32(base, FastEventRecv) & FastEventRecv_Pri;
+}
+
+void
+EVRMRM::fastEvtRecvCodeSet(epicsUInt32 code)
+{
+    if(code>255) throw std::runtime_error("Event code out of range");
+    else {
+        epicsUInt32 cur = READ32(base, FastEventRecv);
+        cur &= ~FastEventRecv_Code_MASK;
+        // code 0 is used to disable Fast Event
+        if(code==0)
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur & ~FastEventRecv_Ena);
+        // any other valid code enables Fast Event
+        else
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur | FastEventRecv_Ena);
+    };
+}
+
+epicsUInt32
+EVRMRM::fastEvtRecvCodeGet() const
+{
+    epicsUInt32 code = READ32(base, FastEventRecv);
+    code &= FastEventRecv_Code_MASK;
+    return code>>FastEventRecv_Code_SHIFT;
+}
+
 epicsUInt32
 EVRMRM::topId() const
 {
@@ -1138,6 +1177,8 @@ OBJECT_BEGIN2(EVRMRM, EVR)
   OBJECT_PROP1("DCStatusRaw", &EVRMRM::dcStatusRaw);
   OBJECT_PROP1("DCTOPID", &EVRMRM::topId);
   OBJECT_PROP2("PSPolarity", &EVRMRM::psPolarity, &EVRMRM::psPolaritySet);
+  OBJECT_PROP2("FastEvtRecvPri", &EVRMRM::fastEvtRecvPriGet, &EVRMRM::fastEvtRecvPriSet);
+  OBJECT_PROP2("FastEvtRecvCode", &EVRMRM::fastEvtRecvCodeGet, &EVRMRM::fastEvtRecvCodeSet);
   OBJECT_PROP2("EvtCode", &EVRMRM::dummy, &EVRMRM::setEvtCode);
   OBJECT_PROP2("TimeSrc", &EVRMRM::timeSrc, &EVRMRM::setTimeSrc);
     {

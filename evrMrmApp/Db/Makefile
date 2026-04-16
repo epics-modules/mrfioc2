@@ -16,6 +16,7 @@ DB += mrmevrdlymodule.template
 DB += evrSoftSeq.template
 DB += mrmevroutint.db
 DB += evrdcpulser.template
+DB += evrFastEvtRecv.template
 DB += evrSoftEvt.template
 
 DB += evr-pmc-230.db

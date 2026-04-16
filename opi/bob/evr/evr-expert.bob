@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Saved on 2024-10-15 16:36:52 by rhong-->
 <display version="2.0.0">
   <name>$(TITLE) Expert</name>
   <height>571</height>
@@ -1622,7 +1621,7 @@ $(pv_value)</tooltip>
   <widget type="group" version="3.0.0">
     <name>Software Event</name>
     <x>474</x>
-    <y>358</y>
+    <y>345</y>
     <width>181</width>
     <height>105</height>
     <style>1</style>
@@ -1793,6 +1792,89 @@ $(pv_value)</tooltip>
         <color red="0" green="128" blue="255">
         </color>
       </border_color>
+    </widget>
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Fast Event</name>
+    <x>474</x>
+    <y>454</y>
+    <width>181</width>
+    <height>105</height>
+    <style>1</style>
+    <font>
+      <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_2_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color name="Header_2_Background" red="114" green="159" blue="207">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Group_Background" red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <actions>
+    </actions>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Input_4</name>
+      <pv_name>$(P):FastEvtRecvCode-SP</pv_name>
+      <x>96</x>
+      <y>19</y>
+      <width>67</width>
+      <height>19</height>
+      <foreground_color>
+        <color name="Write_Foreground" red="0" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <text>Fast Event</text>
+      <y>20</y>
+      <width>90</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <text>Priority</text>
+      <y>48</y>
+      <width>90</width>
+      <height>17</height>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <actions>
+      </actions>
+      <border_color>
+        <color red="0" green="128" blue="255">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Menu Button_1</name>
+      <pv_name>$(P):FastEvtRecvPri-SP</pv_name>
+      <x>96</x>
+      <y>47</y>
+      <width>73</width>
+      <height>19</height>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
     </widget>
   </widget>
 </display>

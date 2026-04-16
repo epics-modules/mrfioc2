@@ -18,6 +18,11 @@ file "databuftx.db"
 {"\$(P)", "$(EVR):BUFTX", 1, "-"}
 }
 
+file "evrFastEvtRecv.template"
+{
+{P="\$(P)", OBJ="$(EVR)"}
+}
+
 file "evrSoftEvt.template"
 {
 {P="\$(P)", OBJ="$(EVR)"}

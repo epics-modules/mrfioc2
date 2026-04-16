@@ -1,0 +1,41 @@
+record(longout, "$(P)FastEvtRecvCode-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DESC, "Set fast event code")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
+  field(VAL , "0")
+  field(HIGH, "256")
+  field(HSV , "INVALID")
+  field(IVOA, "Set output to IVOV")
+  field(IVOV, "0")
+  field(PINI, "YES")
+  field(FLNK, "$(P)FastEvtRecvCode-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(P)FastEvtRecvCode-RB") {
+  field(DESC, "Get fast event code")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
+}
+
+record(bo, "$(P)FastEvtRecvPri-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DESC, "Set fast event priority")
+  field(DTYP, "Obj Prop bool")
+  field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvPri")
+  field(ZNAM, "Low")
+  field(ONAM, "High")
+  field(VAL , "0")
+  field(FLNK, "$(P)FastEvtRecvPri-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(bi, "$(P)FastEvtRecvPri-RB") {
+  field(DESC, "Get fast event priority")
+  field(DTYP, "Obj Prop bool")
+  field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvPri")
+  field(ZNAM, "Low")
+  field(ONAM, "High")
+}
+
