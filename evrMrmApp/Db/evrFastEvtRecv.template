@@ -5,6 +5,7 @@ record(longout, "$(P)FastEvtRecvCode-SP") {
   field(OUT , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
   field(VAL , "0")
   field(PINI, "YES")
+  field(FLNK, "$(P)FastEvtRecvCode-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -12,7 +13,6 @@ record(longin, "$(P)FastEvtRecvCode-RB") {
   field(DESC, "Get fast event code")
   field(DTYP, "Obj Prop uint32")
   field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvCode")
-  field(SCAN, "1 second")
 }
 
 record(bo, "$(P)FastEvtRecvPri-SP") {
@@ -23,6 +23,7 @@ record(bo, "$(P)FastEvtRecvPri-SP") {
   field(ZNAM, "Low")
   field(ONAM, "High")
   field(VAL , "0")
+  field(FLNK, "$(P)FastEvtRecvPri-RB")
   info(autosaveFields_pass0, "VAL")
 }
 
@@ -30,7 +31,6 @@ record(bi, "$(P)FastEvtRecvPri-RB") {
   field(DESC, "Get fast event priority")
   field(DTYP, "Obj Prop bool")
   field(INP , "@OBJ=$(OBJ), PROP=FastEvtRecvPri")
-  field(SCAN, "1 second")
   field(ZNAM, "Low")
   field(ONAM, "High")
 }
