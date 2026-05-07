@@ -123,7 +123,7 @@ CFIFlash::readID(ID *id)
         case 0x60: // W25Q128JW-IQ/JQ 
         case 0x80: // W25Q128JW-IM/JM
             id->capacity = 1u<<(id->dev_id);
-            id->sectorSize = 16*1024u;
+            id->sectorSize = 64*1024u;
             id->pageSize = 256;
             break;
         }
