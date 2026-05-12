@@ -115,6 +115,20 @@ CFIFlash::readID(ID *id)
         }
     }
 
+    if(id->vendor==0xef) { // Winbond
+
+        id->vendorName = "Winbond";
+
+        switch(id->dev_type) {
+        case 0x60: // W25Q128JW-IQ/JQ 
+        case 0x80: // W25Q128JW-IM/JM
+            id->capacity = 1u<<(id->dev_id);
+            id->sectorSize = 64*1024u;
+            id->pageSize = 256;
+            break;
+        }
+    }
+
     // we only use 24-bit read/write/erase ops
     // so capacity beyond 16MB is not accessible.
     if(id->capacity>0x1000000)
