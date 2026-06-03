@@ -1,98 +1,72 @@
 record(mbbo, "$(P)Src-Sel") {
-  field(DESC, "EVG DBUS Source")
+  field(DESC, "EVG DBUS Source 0")
   field(ASG,  "$(ASGPROTECTED=protected)")
-  field(PINI, "YES")
+  field(DTYP, "Raw Soft Channel")
+  field(OUT , "$(P)Src-Sel_ PP")
+  field(PINI, "RUNNING")
   field(VAL,  "0")
   field(ZRST, "Off")
   field(ONST, "Front0")
   field(TWST, "Front1")
-  field(THST, "Univ0")
-  field(FRST, "Univ1")
-  field(FVST, "Univ2")
-  field(SXST, "Univ3")
-  field(SVST, "Univ4")
-  field(EIST, "Univ5")
-  field(NIST, "Univ6")
-  field(TEST, "Univ7")
-  field(ELST, "Univ8")
-  field(TVST, "Univ9")
-  field(TTST, "Univ10")
-  field(FTST, "Mxc $(dbusBit)")
-  field(FFST, "Up EVG")
+  field(THST, "Front2")
+  field(FRST, "Mxc $(dbusBit)")
+  field(FVST, "Up EVG")
   field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "2")
-  field(THVL, "4")
-  field(FRVL, "8")
-  field(FVVL, "16")
-  field(SXVL, "32")
-  field(SVVL, "64")
-  field(EIVL, "128")
-  field(NIVL, "256")
-  field(TEVL, "512")
-  field(ELVL, "1024")
-  field(TVVL, "2048")
-  field(TTVL, "4096")
-  field(FTVL, "8192")
-  field(FFVL, "16384")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)SrcItlk-SQ_.PROC PP")
+  field(ONVL, "0x02010000")
+  field(TWVL, "0x02010001")
+  field(THVL, "0x02010002")
+  field(FRVL, "2")
+  field(FVVL, "3")
   info(autosaveFields_pass0, "VAL")
+  alias("$(P)Src$(s=:)0-Sel")
 }
 
-record(seq, "$(P)SrcItlk-SQ_") {
-  field(DESC, "Sequence to control Src Select")
-  field(ASG,  "$(ASGPRIVATE=private)")
-  field(DOL1, "1")
-  field(LNK1, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
-  field(DOL2, "1")
-  field(LNK2, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
-  field(DLY3, "0.3")
-  field(DOL3, "0")
-  field(LNK3, "$(P)Src1-Sel.VAL PP NMS")
-  field(DOL4, "0")
-  field(LNK4, "$(P)Src2-Sel.VAL PP NMS")
-  field(DOL5, "$(P)Src-Sel.VAL NPP NMS")
-  field(LNK5, "$(P)MapConv-Sel_ PP NMS")
-  field(DLY6, "0.3")
-  field(DOL6, "0")
-  field(LNK6, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
-  field(DOL7, "0")
-  field(LNK7, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
-}
-
-record(mbbo, "$(P)MapConv-Sel_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(DTYP, "Raw Soft Channel")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "1")
-  field(THVL, "1")
-  field(FRVL, "1")
-  field(FVVL, "1")
-  field(SXVL, "1")
-  field(SVVL, "1")
-  field(EIVL, "1")
-  field(NIVL, "1")
-  field(TEVL, "1")
-  field(ELVL, "1")
-  field(TVVL, "1")
-  field(TTVL, "1")
-  field(FTVL, "2")
-  field(FFVL, "3")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(OUT, "$(P)Map-Sel PP")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(mbbo, "$(P)Src1-Sel") {
-  field(DESC, "EVG DBUS Source (more)")
+record(mbbo, "$(P)Src$(s=:)1-Sel") {
+  field(DESC, "EVG DBUS Source 1")
   field(ASG,  "$(ASGPROTECTED=protected)")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  field(ZRST, "Off")
+  field(DTYP, "Raw Soft Channel")
+  field(OUT , "$(P)Src-Sel_ PP")
+  field(ZRST, "Univ0")
+  field(ONST, "Univ1")
+  field(TWST, "Univ2")
+  field(THST, "Univ3")
+  field(FRST, "Univ4")
+  field(FVST, "Univ5")
+  field(SXST, "Univ6")
+  field(SVST, "Univ7")
+  field(EIST, "Univ8")
+  field(NIST, "Univ9")
+  field(TEST, "Univ10")
+  field(ELST, "Univ11")
+  field(TVST, "Univ12")
+  field(TTST, "Univ13")
+  field(FTST, "Univ14")
+  field(FFST, "Univ15")
+  field(ZRVL, "0x02020000")
+  field(ONVL, "0x02020001")
+  field(TWVL, "0x02020002")
+  field(THVL, "0x02020003")
+  field(FRVL, "0x02020004")
+  field(FVVL, "0x02020005")
+  field(SXVL, "0x02020006")
+  field(SVVL, "0x02020007")
+  field(EIVL, "0x02020008")
+  field(NIVL, "0x02020009")
+  field(TEVL, "0x0202000a")
+  field(ELVL, "0x0202000b")
+  field(TVVL, "0x0202000c")
+  field(TTVL, "0x0202000d")
+  field(FTVL, "0x0202000e")
+  field(FFVL, "0x0202000f")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(mbbo, "$(P)Src$(s=:)2-Sel") {
+  field(DESC, "EVG DBUS Source 2")
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DTYP, "Raw Soft Channel")
+  field(OUT , "$(P)Src-Sel_ PP")
+  field(ZRST, "Rear0")
   field(ONST, "Rear1")
   field(TWST, "Rear2")
   field(THST, "Rear3")
@@ -108,675 +82,114 @@ record(mbbo, "$(P)Src1-Sel") {
   field(TTST, "Rear13")
   field(FTST, "Rear14")
   field(FFST, "Rear15")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "2")
-  field(THVL, "4")
-  field(FRVL, "8")
-  field(FVVL, "16")
-  field(SXVL, "32")
-  field(SVVL, "64")
-  field(EIVL, "128")
-  field(NIVL, "256")
-  field(TEVL, "512")
-  field(ELVL, "1024")
-  field(TVVL, "2048")
-  field(TTVL, "4096")
-  field(FTVL, "8192")
-  field(FFVL, "16384")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)Src1Itlk-SQ_.PROC PP")
+  field(ZRVL, "0x02030000")
+  field(ONVL, "0x02030001")
+  field(TWVL, "0x02030002")
+  field(THVL, "0x02030003")
+  field(FRVL, "0x02030004")
+  field(FVVL, "0x02030005")
+  field(SXVL, "0x02030006")
+  field(SVVL, "0x02030007")
+  field(EIVL, "0x02030008")
+  field(NIVL, "0x02030009")
+  field(TEVL, "0x0203000a")
+  field(ELVL, "0x0203000b")
+  field(TVVL, "0x0203000c")
+  field(TTVL, "0x0203000d")
+  field(FTVL, "0x0203000e")
+  field(FFVL, "0x0203000f")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(seq, "$(P)Src1Itlk-SQ_") {
-  field(DESC, "Sequence to control Src1 Select")
-  field(ASG,  "$(ASGPRIVATE=private)")
-  field(DOL1, "1")
-  field(LNK1, "$(P)SrcItlk-SQ_.DISA NPP NMS")
-  field(DOL2, "1")
-  field(LNK2, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
-  field(DLY3, "0.3")
-  field(DOL3, "0")
-  field(LNK3, "$(P)Src-Sel.VAL PP NMS")
-  field(DOL4, "0")
-  field(LNK4, "$(P)Src2-Sel.VAL PP NMS")
-  field(DOL5, "$(P)Src1-Sel.VAL NPP NMS")
-  field(LNK5, "$(P)MapConv1-Sel_ PP NMS")
-  field(DLY6, "0.3")
-  field(DOL6, "0")
-  field(LNK6, "$(P)SrcItlk-SQ_.DISA NPP NMS")
-  field(DOL7, "0")
-  field(LNK7, "$(P)Src2Itlk-SQ_.DISA NPP NMS")
-}
-
-record(mbbo, "$(P)MapConv1-Sel_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(DTYP, "Raw Soft Channel")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "1")
-  field(THVL, "1")
-  field(FRVL, "1")
-  field(FVVL, "1")
-  field(SXVL, "1")
-  field(SVVL, "1")
-  field(EIVL, "1")
-  field(NIVL, "1")
-  field(TEVL, "1")
-  field(ELVL, "1")
-  field(TVVL, "1")
-  field(TTVL, "1")
-  field(FTVL, "1")
-  field(FFVL, "1")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(OUT, "$(P)Map-Sel PP")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(mbbo, "$(P)Src2-Sel") {
-  field(DESC, "EVG DBUS Source (more+)")
+record(mbbo, "$(P)Src$(s=:)3-Sel") {
+  field(DESC, "EVG DBUS Source 3")
   field(ASG,  "$(ASGPROTECTED=protected)")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  field(ZRST, "Off")
-  field(ONST, "Front2")
-  field(TWST, "Rear0")
-  field(THST, "Univ11")
-  field(FRST, "Univ12")
-  field(FVST, "Univ13")
-  field(SXST, "Univ14")
-  field(SVST, "Univ15")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "2")
-  field(THVL, "4")
-  field(FRVL, "8")
-  field(FVVL, "16")
-  field(SXVL, "32")
-  field(SVVL, "64")
-  field(THSV, "INVALID")
-  field(FRSV, "INVALID")
-  field(FVSV, "INVALID")
-  field(SXSV, "INVALID")
-  field(SVSV, "INVALID")
-  field(EISV, "INVALID")
-  field(NISV, "INVALID")
-  field(TESV, "INVALID")
-  field(ELSV, "INVALID")
-  field(TVSV, "INVALID")
-  field(TTSV, "INVALID")
-  field(FTSV, "INVALID")
-  field(FFSV, "INVALID")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(FLNK, "$(P)Src2Itlk-SQ_.PROC PP")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(seq, "$(P)Src2Itlk-SQ_") {
-  field(DESC, "Sequence to control Src1 Select")
-  field(ASG,  "$(ASGPRIVATE=private)")
-  field(DOL1, "1")
-  field(LNK1, "$(P)SrcItlk-SQ_.DISA NPP NMS")
-  field(DOL2, "1")
-  field(LNK2, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
-  field(DLY3, "0.3")
-  field(DOL3, "0")
-  field(LNK3, "$(P)Src-Sel.VAL PP NMS")
-  field(DOL4, "0")
-  field(LNK4, "$(P)Src1-Sel.VAL PP NMS")
-  field(DOL5, "$(P)Src2-Sel.VAL NPP NMS")
-  field(LNK5, "$(P)MapConv2-Sel_ PP NMS")
-  field(DLY6, "0.3")
-  field(DOL6, "0")
-  field(LNK6, "$(P)SrcItlk-SQ_.DISA NPP NMS")
-  field(DOL7, "0")
-  field(LNK7, "$(P)Src1Itlk-SQ_.DISA NPP NMS")
-}
-
-record(mbbo, "$(P)MapConv2-Sel_") {
-  field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Raw Soft Channel")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "1")
-  field(THSV, "INVALID")
-  field(FRSV, "INVALID")
-  field(FVSV, "INVALID")
-  field(SXSV, "INVALID")
-  field(SVSV, "INVALID")
-  field(EISV, "INVALID")
-  field(NISV, "INVALID")
-  field(TESV, "INVALID")
-  field(ELSV, "INVALID")
-  field(TVSV, "INVALID")
-  field(TTSV, "INVALID")
-  field(FTSV, "INVALID")
-  field(FFSV, "INVALID")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
-  field(OUT, "$(P)Map-Sel PP")
+  field(OUT , "$(P)Src-Sel_ PP")
+  field(ZRST, "Back0")
+  field(ONST, "Back1")
+  field(TWST, "Back2")
+  field(THST, "Back3")
+  field(FRST, "Back4")
+  field(FVST, "Back5")
+  field(SXST, "Back6")
+  field(SVST, "Back7")
+  field(ZRVL, "0x02040000")
+  field(ONVL, "0x02040001")
+  field(TWVL, "0x02040002")
+  field(THVL, "0x02040003")
+  field(FRVL, "0x02040004")
+  field(FVVL, "0x02040005")
+  field(SXVL, "0x02040006")
+  field(SVVL, "0x02040007")
   info(autosaveFields_pass0, "VAL")
 }
 
-record(mbbo, "$(P)Map-Sel") {
-  field(DTYP, "Obj Prop uint16")
-  field(ASG,  "$(ASGPROTECTED=protected)")
+record(longout, "$(P)Src-Sel_") {
+  field(ASG, "$(ASGPRIVATE=private)")
+  field(DTYP, "Obj Prop uint32")
   field(OUT , "@OBJ=$(OBJ), PROP=Source")
-  field(PINI, "YES")
-  field(VAL,  "0")
-  field(UDF,  "0")
-  field(ZRST, "Off")
-  field(ONST, "ExtInp")
-  field(TWST, "Mxc$(dbusBit)")
-  field(THST, "Up EVG")
-  field(ZRVL, "0")
-  field(ONVL, "1")
-  field(TWVL, "2")
-  field(THVL, "3")
-  field(FRSV, "INVALID")
-  field(FVSV, "INVALID")
-  field(SXSV, "INVALID")
-  field(SVSV, "INVALID")
-  field(EISV, "INVALID")
-  field(NISV, "INVALID")
-  field(TESV, "INVALID")
-  field(ELSV, "INVALID")
-  field(TVSV, "INVALID")
-  field(TTSV, "INVALID")
-  field(FTSV, "INVALID")
-  field(FFSV, "INVALID")
-  field(UNSV, "INVALID")
-  field(IVOA, "Don't drive outputs")
+  field(VAL , "0") # default to None
   info(autosaveFields_pass0, "VAL")
 }
 
-#
-# If the selected source is an external input then when we need to map that
-# Input to the Distributed Bus
-#
-record(mbbiDirect, "$(P)Src-MbbiDir_") {
+record(longin, "$(P)Src-RB_") {
   field(ASG, "$(ASGPRIVATE=private)")
-  field(DESC, "EVG Dbus source")
-  field(INP,  "$(P)Src-Sel.RVAL CP")
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=Source")
+  field(SCAN, "I/O Intr")
+  field(FLNK, "$(P)Src-RB")
 }
 
-record(mbbiDirect, "$(P)Src1-MbbiDir_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(DESC, "EVG Dbus source 1")
-  field(INP,  "$(P)Src1-Sel.RVAL CP")
-}
-
-record(mbbiDirect, "$(P)Src2-MbbiDir_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(DESC, "EVG Dbus source 2")
-  field(INP,  "$(P)Src2-Sel.RVAL CP")
-}
-
-record(bo, "$(P)SrcFrontInp0-Sel") {
-  field(DESC, "Front Input0 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp0")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B0 CP")
-}
-
-record(bo, "$(P)SrcFrontInp1-Sel") {
-  field(DESC, "Front Input1 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp1")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B1 CP")
-}
-
-record(bo, "$(P)SrcFrontInp2-Sel") {
-  field(DESC, "Front Input1 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):FrontInp2")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B0 CP")
-}
-
-record(bo, "$(P)SrcUnivInp0-Sel") {
-  field(DESC, "Front Univ Input0 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp0")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B2 CP")
-}
-
-record(bo, "$(P)SrcUnivInp1-Sel") {
-  field(DESC, "Front Univ Input1 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp1")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B3 CP")
-}
-
-record(bo, "$(P)SrcUnivInp2-Sel") {
-  field(DESC, "Front Univ Input2 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp2")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B4 CP")
-}
-
-record(bo, "$(P)SrcUnivInp3-Sel") {
-  field(DESC, "Front Univ Input3 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp3")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B5 CP")
-}
-
-record(bo, "$(P)SrcUnivInp4-Sel") {
-  field(DESC, "Front Univ Input4 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp4")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B6 CP")
-}
-
-record(bo, "$(P)SrcUnivInp5-Sel") {
-  field(DESC, "Front Univ Input5 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp5")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B7 CP")
-}
-
-record(bo, "$(P)SrcUnivInp6-Sel") {
-  field(DESC, "Front Univ Input6 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp6")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B8 CP")
-}
-
-record(bo, "$(P)SrcUnivInp7-Sel") {
-  field(DESC, "Front Univ Input7 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp7")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.B9 CP")
-}
-
-record(bo, "$(P)SrcUnivInp8-Sel") {
-  field(DESC, "Front Univ Input8 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp8")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.BA CP")
-}
-
-record(bo, "$(P)SrcUnivInp9-Sel") {
-  field(DESC, "Front Univ Input9 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp9")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.BB CP")
-}
-
-record(bo, "$(P)SrcUnivInp10-Sel") {
-  field(DESC, "Front Univ Input10 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp10")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src-MbbiDir_.BC CP")
-}
-
-record(bo, "$(P)SrcUnivInp11-Sel") {
-  field(DESC, "Front Univ Input11 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp11")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B2 CP")
-}
-
-record(bo, "$(P)SrcUnivInp12-Sel") {
-  field(DESC, "Front Univ Input12 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp12")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B3 CP")
-}
-
-record(bo, "$(P)SrcUnivInp13-Sel") {
-  field(DESC, "Front Univ Input13 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp13")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B4 CP")
-}
-
-record(bo, "$(P)SrcUnivInp14-Sel") {
-  field(DESC, "Front Univ Input14 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp14")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B5 CP")
-}
-
-record(bo, "$(P)SrcUnivInp15-Sel") {
-  field(DESC, "Front Univ Input15 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):UnivInp15")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B6 CP")
-}
-
-record(bo, "$(P)SrcRearInp0-Sel") {
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DESC, "Front Rear Input0 on Dbus")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp0")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src2-MbbiDir_.B1 CP")
-}
-
-record(bo, "$(P)SrcRearInp1-Sel") {
-  field(DESC, "Front Rear Input1 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp1")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B0 CP")
-}
-
-record(bo, "$(P)SrcRearInp2-Sel") {
-  field(DESC, "Front Rear Input2 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp2")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B1 CP")
-}
-
-record(bo, "$(P)SrcRearInp3-Sel") {
-  field(DESC, "Front Rear Input3 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp3")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B2 CP")
-}
-
-record(bo, "$(P)SrcRearInp4-Sel") {
-  field(DESC, "Front Rear Input4 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp4")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B3 CP")
-}
-
-record(bo, "$(P)SrcRearInp5-Sel") {
-  field(DESC, "Front Rear Input5 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp5")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B4 CP")
-}
-
-record(bo, "$(P)SrcRearInp6-Sel") {
-  field(DESC, "Front Rear Input6 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp6")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B5 CP")
-}
-
-record(bo, "$(P)SrcRearInp7-Sel") {
-  field(DESC, "Front Rear Input7 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp7")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B6 CP")
-}
-
-record(bo, "$(P)SrcRearInp8-Sel") {
-  field(DESC, "Front Rear Input8 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp8")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B7 CP")
-}
-
-record(bo, "$(P)SrcRearInp9-Sel") {
-  field(DESC, "Front Rear Input9 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp9")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B8 CP")
-}
-
-record(bo, "$(P)SrcRearInp10-Sel") {
-  field(DESC, "Front Rear Input10 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp10")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.B9 CP")
-}
-
-record(bo, "$(P)SrcRearInp11-Sel") {
-  field(DESC, "Front Rear Input11 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp11")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.BA CP")
-}
-
-record(bo, "$(P)SrcRearInp12-Sel") {
-  field(DESC, "Front Rear Input12 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp12")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.BB CP")
-}
-
-record(bo, "$(P)SrcRearInp13-Sel") {
-  field(DESC, "Front Rear Input13 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp13")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.BC CP")
-}
-
-record(bo, "$(P)SrcRearInp14-Sel") {
-  field(DESC, "Front Rear Input14 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp14")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.BD CP")
-}
-
-record(bo, "$(P)SrcRearInp15-Sel") {
-  field(DESC, "Front Rear Input15 on Dbus")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(DTYP, "EVG Dbus")
-  field(OUT , "#C0 S$(dbusBit) @$(EVG):RearInp15")
-  field(ZNAM, "Clear")
-  field(ONAM, "Set")
-  field(OMSL, "closed_loop")
-  field(DOL,  "$(P)Src1-MbbiDir_.BE CP")
-}
-
-#
-# By default OMSL field for the *Src* records is "closed_loop" hence
-# only one Source can be selected due of MBBO record. If you want to select
-# multiple sources then the OMSL field for the *Src* records should be
-# "supervisory" mode.
-#
-
-record(bo, "$(P)Omsl-Sel") {
-  field(DESC, "Multiple sources")
-  field(ASG,  "$(ASGPROTECTED=protected)")
-  field(PINI, "YES")
-  field(VAL,  "1")
-  field(UDF,  "0")
-  field(ZNAM, "supervisory")
-  field(ONAM, "closed_loop")
-  field(OUT,  "$(P)Omsl-FOut_ PP")
-  info(autosaveFields_pass0, "VAL")
-}
-
-record(dfanout, "$(P)Omsl-FOut_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(OMSL, "closed_loop")
-  field(OUTA, "$(P)Omsl0-FOut_ PP")
-  field(OUTB, "$(P)Omsl1-FOut_ PP")
-  field(OUTC, "$(P)Omsl2-FOut_ PP")
-  field(OUTD, "$(P)Omsl3-FOut_ PP")
-}
-
-record(dfanout, "$(P)Omsl0-FOut_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(OMSL, "closed_loop")
-  field(OUTA, "$(P)SrcFrontInp0-Sel.OMSL")
-  field(OUTB, "$(P)SrcFrontInp1-Sel.OMSL")
-  field(OUTC, "$(P)SrcUnivInp0-Sel.OMSL")
-  field(OUTD, "$(P)SrcUnivInp1-Sel.OMSL")
-  field(OUTE, "$(P)SrcUnivInp2-Sel.OMSL")
-  field(OUTF, "$(P)SrcUnivInp3-Sel.OMSL")
-  field(OUTG, "$(P)SrcUnivInp4-Sel.OMSL")
-  field(OUTH, "$(P)SrcUnivInp5-Sel.OMSL")
-}
-
-record(dfanout, "$(P)Omsl1-FOut_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(OMSL, "closed_loop")
-  field(OUTA, "$(P)SrcUnivInp6-Sel.OMSL")
-  field(OUTB, "$(P)SrcUnivInp7-Sel.OMSL")
-  field(OUTC, "$(P)SrcUnivInp8-Sel.OMSL")
-  field(OUTD, "$(P)SrcUnivInp9-Sel.OMSL")
-  field(OUTE, "$(P)SrcUnivInp10-Sel.OMSL")
-  field(OUTF, "$(P)SrcFrontInp2-Sel.OMSL")
-}
-
-record(dfanout, "$(P)Omsl2-FOut_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(OMSL, "closed_loop")
-  field(OUTA, "$(P)SrcRearInp0-Sel.OMSL")
-  field(OUTB, "$(P)SrcRearInp1-Sel.OMSL")
-  field(OUTC, "$(P)SrcRearInp2-Sel.OMSL")
-  field(OUTD, "$(P)SrcRearInp3-Sel.OMSL")
-  field(OUTE, "$(P)SrcRearInp4-Sel.OMSL")
-  field(OUTF, "$(P)SrcRearInp5-Sel.OMSL")
-  field(OUTG, "$(P)SrcRearInp6-Sel.OMSL")
-  field(OUTH, "$(P)SrcRearInp7-Sel.OMSL")
-}
-
-record(dfanout, "$(P)Omsl3-FOut_") {
-  field(ASG, "$(ASGPRIVATE=private)")
-  field(OMSL, "closed_loop")
-  field(OUTA, "$(P)SrcRearInp8-Sel.OMSL")
-  field(OUTB, "$(P)SrcRearInp9-Sel.OMSL")
-  field(OUTC, "$(P)SrcRearInp10-Sel.OMSL")
-  field(OUTD, "$(P)SrcRearInp11-Sel.OMSL")
-  field(OUTE, "$(P)SrcRearInp12-Sel.OMSL")
-  field(OUTF, "$(P)SrcRearInp13-Sel.OMSL")
-  field(OUTG, "$(P)SrcRearInp14-Sel.OMSL")
-  field(OUTH, "$(P)SrcRearInp15-Sel.OMSL")
+record(stringin, "$(P)Src-RB") {
+  field(DTYP, "LUT uint32 -> string")
+  field(INP, "$(P)Src-RB_")
+  info(lut0 , " 0 = Off")
+  info(lut1 , " 2 = Mxc $(dbusBit)")
+  info(lut2 , " 3 = Up EVG")
+  info(lut3 , " 0x02010000 = Front0")
+  info(lut4 , " 0x02010001 = Front1")
+  info(lut5 , " 0x02010002 = Front2")
+  info(lut6 , " 0x02020000 = Univ0")
+  info(lut7 , " 0x02020001 = Univ1")
+  info(lut8 , " 0x02020002 = Univ2")
+  info(lut9 , " 0x02020003 = Univ3")
+  info(luta , " 0x02020004 = Univ4")
+  info(lutb , " 0x02020005 = Univ5")
+  info(lutc , " 0x02020006 = Univ6")
+  info(lutd , " 0x02020007 = Univ7")
+  info(lute , " 0x02020008 = Univ8")
+  info(lutf , " 0x02020009 = Univ9")
+  info(lutg , " 0x0202000a = Univ10")
+  info(luth , " 0x0202000b = Univ11")
+  info(luti , " 0x0202000c = Univ12")
+  info(lutj , " 0x0202000d = Univ13")
+  info(lutk , " 0x0202000e = Univ14")
+  info(lutl , " 0x0202000f = Univ15")
+  info(lutm , " 0x02030000 = Rear0")
+  info(lutn , " 0x02030001 = Rear1")
+  info(luto , " 0x02030002 = Rear2")
+  info(lutp , " 0x02030003 = Rear3")
+  info(lutq , " 0x02030004 = Rear4")
+  info(lutr , " 0x02030005 = Rear5")
+  info(luts , " 0x02030006 = Rear6")
+  info(lutt , " 0x02030007 = Rear7")
+  info(lutu , " 0x02030008 = Rear8")
+  info(lutv , " 0x02030009 = Rear9")
+  info(lutw , " 0x0203000a = Rear10")
+  info(lutx , " 0x0203000b = Rear11")
+  info(luty , " 0x0203000c = Rear12")
+  info(lutz , " 0x0203000d = Rear13")
+  info(lutA , " 0x0203000e = Rear14")
+  info(lutB , " 0x0203000f = Rear15")
+  info(lutC , " 0x02040000 = Back0")
+  info(lutD , " 0x02040001 = Back1")
+  info(lutE , " 0x02040002 = Back2")
+  info(lutF , " 0x02040003 = Back3")
+  info(lutG , " 0x02040004 = Back4")
+  info(lutH , " 0x02040005 = Back5")
+  info(lutI , " 0x02040006 = Back6")
+  info(lutJ , " 0x02040007 = Back7")
 }
 
 record(waveform, "$(P)Label-I") {

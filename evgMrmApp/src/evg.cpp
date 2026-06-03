@@ -24,6 +24,7 @@ OBJECT_BEGIN(evgAcTrig) {
 
 OBJECT_BEGIN(evgDbus) {
     OBJECT_PROP2("Source", &evgDbus::getSource, &evgDbus::setSource);
+    OBJECT_PROP1("Source", &evgDbus::stateChange);
 } OBJECT_END(evgDbus)
 
 OBJECT_BEGIN(evgInput) {
@@ -46,6 +47,8 @@ OBJECT_BEGIN(evgOutput) {
 
 OBJECT_BEGIN(evgTrigEvt) {
     OBJECT_PROP2("EvtCode", &evgTrigEvt::getEvtCode, &evgTrigEvt::setEvtCode);
+    OBJECT_PROP2("Source",  &evgTrigEvt::getSource,  &evgTrigEvt::setSource);
+    OBJECT_PROP1("Source",  &evgTrigEvt::stateChange);
 } OBJECT_END(evgTrigEvt)
 
 OBJECT_BEGIN(evgMrm) {

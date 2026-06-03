@@ -140,7 +140,7 @@ evgMrm::evgMrm(const std::string& id,
     for(int i = 0; i < evgNumEvtTrig; i++) {
         std::ostringstream name;
         name<<id<<":TrigEvt"<<i;
-        m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg));
+        m_trigEvt.push_back(new evgTrigEvt(name.str(), i, pReg, this));
     }
 
     for(int i = 0; i < evgNumMxc; i++) {
@@ -152,7 +152,7 @@ evgMrm::evgMrm(const std::string& id,
     for(int i = 0; i < evgNumDbusBit; i++) {
         std::ostringstream name;
         name<<id<<":Dbus"<<i;
-        m_dbus.push_back(new evgDbus(name.str(), i, pReg));
+        m_dbus.push_back(new evgDbus(name.str(), i, pReg, this));
     }
 
     for(unsigned i = 0; i < conf->numFrontInp; i++) {
@@ -574,4 +574,15 @@ const bus_configuration *evgMrm::getBusConfiguration()
 
 void evgMrm::show(int lvl)
 {
+}
+
+evgMxc*
+evgMrm::getMxc(epicsUInt32 idx) {
+    if (idx >= m_muxCounter.size()) return NULL;
+    return m_muxCounter[idx];
+}
+
+evgAcTrig*
+evgMrm::getAcTrig() {
+    return &m_acTrig;
 }

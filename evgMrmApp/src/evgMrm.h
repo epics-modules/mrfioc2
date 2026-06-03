@@ -153,6 +153,8 @@ public:
     epicsEvent* getTimerEvent();
     const bus_configuration* getBusConfiguration();
     void resetFracSynth();
+    evgMxc* getMxc(epicsUInt32 idx);
+    evgAcTrig* getAcTrig();
 
     CALLBACK                      irqExtInp_cb;
 
