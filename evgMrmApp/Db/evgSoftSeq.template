@@ -123,6 +123,30 @@ record(mbbo, "$(P)TrigSrc$(s=:)2-Sel") {
   info(autosaveFields_pass0, "VAL")
 }
 
+record(mbbo, "$(P)TrigSrc$(s=:)3-Sel") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DTYP, "Raw Soft Channel")
+  field(OUT , "$(P)TrigSrc-Sel_ PP")
+  field(UDF,  "0")
+  field(ZRST, "Back0")
+  field(ONST, "Back1")
+  field(TWST, "Back2")
+  field(THST, "Back3")
+  field(FRST, "Back4")
+  field(FVST, "Back5")
+  field(SXST, "Back6")
+  field(SVST, "Back7")
+  field(ZRVL, "0x02040000")
+  field(ONVL, "0x02040001")
+  field(TWVL, "0x02040002")
+  field(THVL, "0x02040003")
+  field(FRVL, "0x02040004")
+  field(FVVL, "0x02040005")
+  field(SXVL, "0x02040006")
+  field(SVVL, "0x02040007")
+  info(autosaveFields_pass0, "VAL")
+}
+
 record(longout, "$(P)TrigSrc-Sel_") {
   field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
@@ -187,6 +211,14 @@ record(stringin, "$(P)TrigSrc-RB") {
   info(lutG , " 0x0203000d = Rear13")
   info(lutH , " 0x0203000e = Rear14")
   info(lutI , " 0x0203000f = Rear15")
+  info(lutJ , " 0x02040000 = Back0")
+  info(lutK , " 0x02040001 = Back1")
+  info(lutL , " 0x02040002 = Back2")
+  info(lutM , " 0x02040003 = Back3")
+  info(lutN , " 0x02040004 = Back4")
+  info(lutO , " 0x02040005 = Back5")
+  info(lutP , " 0x02040006 = Back6")
+  info(lutQ , " 0x02040007 = Back7")
   info(lutY , " 0x03000000 = None")
 }
 

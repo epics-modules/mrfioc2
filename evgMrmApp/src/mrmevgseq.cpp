@@ -51,6 +51,7 @@ void EvgSeqManager::mapTriggerSrc(unsigned i, unsigned src)
      * 0x020100xx - Front panel in
      * 0x020200xx - UV in
      * 0x020300xx - TB in
+     * 0x020400xx - Backplane in
      */
     if((src&0xff000000)!=0x02000000) {
         DEBUG(0, ("EvgSeqManager::mapTriggerSrc unsupported %x\n", src));
