@@ -203,11 +203,11 @@ static const EVRMRM::Config mtca_evr_300rf = {
     6,  // CML/GTX outputs - CLKA/B, 1x UNIV I/O slot (2 outputs), 1x SFP, 1x CML
     MRMCML::typeCML,
     /**
-     * 0 <= N <= 1   : FPInMap
-     * 2 <= N <= 15  : UnivInMap
-     * 16 <= N <= 25 : BPInMap
+     * 0 <= N <= 3   : FPInMap, only 2 physical ports, but 4 registers exist
+     * 4 <= N <= 23  : UnivInMap
+     * 24 <= N <= 31 : BPInMap
      */
-    26,  // FP, Univ, BP inputs
+    32,  // FP, Univ, BP inputs
 };
 
 static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP

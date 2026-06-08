@@ -31,6 +31,7 @@ DB += evr-mtca-300u.db
 
 ifdef BASE_3_15
 DB += evr-mtca-300u.uv.db
+DB += evr-mtca-300rf.uv.db
 DB += evr-vme-300.db
 endif
 
