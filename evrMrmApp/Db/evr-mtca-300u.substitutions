@@ -34,7 +34,7 @@ file "databuftx.db"
 
 file "evrFastEvtRecv.template"
 {
-{P="\$(P)", OBJ="$(EVR)"}
+{P="\$(P)\$(ES)", OBJ="$(EVR)"}
 }
 
 file "evrSoftEvt.template"
