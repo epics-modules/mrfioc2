@@ -22,7 +22,7 @@ file "databuftx.db"
 
 file "evrFastEvtRecv.template"
 {
-{P="\$(P)", OBJ="$(EVR)"}
+{P="$(SYS){$(D)}", OBJ="$(EVR)"}
 }
 
 file "evrSoftEvt.template"
