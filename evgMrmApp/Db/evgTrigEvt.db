@@ -29,7 +29,6 @@ record(mbbo, "$(P)TrigSrc-Sel") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)TrigSrc-Sel_ PP")
-  field(PINI, "RUNNING")
   field(VAL,  "0")
   field(ZRST, "Off")
   field(ONST, "Mxc0")
@@ -168,6 +167,7 @@ record(mbbo, "$(P)TrigSrc$(s=:)3-Sel") {
 record(longout, "$(P)TrigSrc-Sel_") {
   field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
+  field(PINI, "RUNNING")
   field(OUT , "@OBJ=$(OBJ), PROP=Source")
   field(VAL , "0x03000000")
   info(autosaveFields_pass0, "VAL")

@@ -3,7 +3,6 @@ record(mbbo, "$(P)Src-Sel") {
   field(ASG,  "$(ASGPROTECTED=protected)")
   field(DTYP, "Raw Soft Channel")
   field(OUT , "$(P)Src-Sel_ PP")
-  field(PINI, "RUNNING")
   field(VAL,  "0")
   field(ZRST, "Off")
   field(ONST, "Front0")
@@ -128,6 +127,7 @@ record(mbbo, "$(P)Src$(s=:)3-Sel") {
 record(longout, "$(P)Src-Sel_") {
   field(ASG, "$(ASGPRIVATE=private)")
   field(DTYP, "Obj Prop uint32")
+  field(PINI, "RUNNING")
   field(OUT , "@OBJ=$(OBJ), PROP=Source")
   field(VAL , "0") # default to None
   info(autosaveFields_pass0, "VAL")
