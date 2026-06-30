@@ -458,7 +458,8 @@ evgMrm::process_inp_cb(CALLBACK *pCallback) {
 void
 evgMrm::postSoftSecondsSrc()
 {
-    setEvtCode(0x7d);
+    // MRF_EVENT_TS_COUNTER_RST event is sent by TimeStampSource::Impl::runSrc()
+    // before this hook is called.
     tickSecond();
     scanIoRequest(ioScanTimestamp);
 }
