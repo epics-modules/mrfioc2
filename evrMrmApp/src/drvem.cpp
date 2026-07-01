@@ -738,7 +738,7 @@ EVRMRM::clockTS() const
     double eclk=clock();
 
     if( (src!=TSSourceInternal) ||
-       ((src==TSSourceInternal) && (stampClock>eclk)))
+       ((src==TSSourceInternal) && (stampClock > 0)))
         return stampClock;
 
     epicsUInt16 div=tsDiv();
