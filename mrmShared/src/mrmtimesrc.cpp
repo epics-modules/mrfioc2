@@ -172,15 +172,16 @@ void TimeStampSource::tickSecond()
 
         /* delay re-sync request until 1Hz is stable, valid system time is available */
         if(ok && valid && impl->resync)  {
-            impl->next = ts.secPastEpoch+POSIX_TIME_AT_EPICS_EPOCH+1;
+            impl->next = ts.secPastEpoch+POSIX_TIME_AT_EPICS_EPOCH;
             impl->resync = false;
         }
+
+        impl->next++;
 
         if(ok) {
             tosend = impl->next;
         }
 
-        impl->next++;
         ok &= tosend!=0;
 
         if(ok && valid) {
