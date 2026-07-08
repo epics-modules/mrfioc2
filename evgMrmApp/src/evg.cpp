@@ -69,6 +69,10 @@ OBJECT_BEGIN(evgMrm) {
       std::string (evgMrm::*getter)() const = &evgMrm::nextSecond;
       OBJECT_PROP1("NextSecond", getter);
     }
+    {
+      std::string (evgMrm::*getter)() const = &evgMrm::currentSecond;
+      OBJECT_PROP1("CurrentSecond", getter);
+    }
     OBJECT_PROP1("SoftTick", &evgMrm::postSoftSecondsSrc);
     {
       double (evgMrm::*getter)() const = &evgMrm::deltaSeconds;
