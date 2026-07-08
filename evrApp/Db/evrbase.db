@@ -442,6 +442,7 @@ record(longin, "$(P)Time$(s=:)Div-I") {
 # reflect the reset of the sub-seconds counter, and will never have nsec==0.
 #
 record(stringin, "$(P)Time-I") {
+  field(DESC, "Actual Time")
   field(DTYP, "EVR Timestamp")
   field(INP , "@OBJ=$(OBJ), Code=$(EVNT1HZ=125)")
   field(SCAN, "Event")

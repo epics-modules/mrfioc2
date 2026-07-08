@@ -83,6 +83,7 @@ record(longout, "$(P)SendEvt-SP") {
 }
 
 record (stringin, "$(P)Timestamp-RB") {
+  field(DESC, "Next Second Time (+1s)")
   field(DTYP, "Obj Prop string")
   field(INP , "@OBJ=$(OBJ), PROP=NextSecond")
   field(SCAN, "I/O Intr")
@@ -112,6 +113,13 @@ record(bo, "$(P)SoftTickSecond-Cmd") {
 record(ai, "$(P)TimeErr-I") {
   field(DTYP, "Obj Prop double")
   field(INP , "@OBJ=$(OBJ), PROP=Time Error")
+  field(FLNK, "$(P)Time-I")
+}
+
+record (stringin, "$(P)Time-I") {
+  field(DESC, "Actual Time")
+  field(DTYP, "Obj Prop string")
+  field(INP , "@OBJ=$(OBJ), PROP=CurrentSecond")
 }
 
 record(bo,"$(P)SyncTimestamp-Cmd" ) {
