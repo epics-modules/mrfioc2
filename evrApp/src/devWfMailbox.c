@@ -88,8 +88,8 @@ struct {
     5,
     NULL,
     NULL,
-    init_record,
+    (DEVSUPFUN)init_record,
     NULL,
-    read_wf
+    (DEVSUPFUN)read_wf
 };
 epicsExportAddress(dset, devWfMailbox);
