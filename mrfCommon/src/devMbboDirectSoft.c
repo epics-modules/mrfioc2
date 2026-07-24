@@ -43,9 +43,9 @@ struct {
 	5,
 	NULL,
 	NULL,
-	init_record,
+	(DEVSUPFUN)init_record,
 	NULL,
-	write_mbbo
+	(DEVSUPFUN)write_mbbo
 };
 epicsExportAddress(dset,devMbboDirectRestore);
 
