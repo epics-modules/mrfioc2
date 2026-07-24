@@ -1481,7 +1481,7 @@ EVRMRM::drain_fifo()
         if (status&(IRQ_FIFOFull|IRQ_RXErr)) {
             // clear fifo if link lost or buffer overflow
             BITSET(NAT,32, base, Control, Control_fiforst);
-            printf("EVR(IRQ_FIFOFull|IRQ_RXErr): Reset Event FIFO (status=0x%08)\n", status);
+            printf("EVR(IRQ_FIFOFull|IRQ_RXErr): Reset Event FIFO (status=0x%08x)\n", status);
         }
 
         int iflags=epicsInterruptLock();
