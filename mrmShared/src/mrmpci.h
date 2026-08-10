@@ -14,6 +14,7 @@
 #define PCI_VENDOR_ID_XILINX          0x10ee
 
 #define PCI_DEVICE_ID_XILINX_DEV      0x7011
+#define PCI_DEVICE_ID_XILINX_DEV2     0x0505
 
 #define PCI_VENDOR_ID_PLX             0x10b5   /* PCI Vendor ID for PLX Technology, Inc.          */
 
@@ -38,6 +39,8 @@
 #define PCI_SUBDEVICE_ID_PCIE_EVR_300       0x172c
 /* mTCA-EVR-300 */
 #define PCI_DEVICE_ID_MRF_EVRMTCA300  0x132c
+/* PXIe-EVR-300 */
+#define PCI_SUBDEVICE_ID_PXIE_EVR_300       0x112c
 
 /* mTCA-EVM-300 */
 #define PCI_DEVICE_ID_MRF_MTCA_EVM_300      0x232c
