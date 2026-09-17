@@ -116,6 +116,7 @@ struct TimeStampSource::Impl
 
             owner->postSoftSecondsSrc();
         }
+        softsrc.reset();
     }
 #endif
 
@@ -273,7 +274,6 @@ double TimeStampSource::deltaSeconds() const
 void TimeStampSource::softSecondsSrc(bool enable)
 {
 #ifdef HAVE_CNS
-    mrf::auto_ptr<epicsThread> cleanup;
     {
         Guard G(impl->mutex);
         if(enable && !impl->softsrc.get()) {
@@ -287,14 +287,13 @@ void TimeStampSource::softSecondsSrc(bool enable)
 
             resyncSecond();
 
+        } else if(enable && impl->stopsrc) {
+            impl->stopsrc = false;
+            resyncSecond();
         } else if(!enable && impl->softsrc.get()) {
             impl->stopsrc = true;
-            cleanup = PTRMOVE(impl->softsrc);
+            impl->wakeupsrc.signal();
         }
-    }
-    if(cleanup.get()) {
-        impl->wakeup.signal();
-        cleanup->exitWait();
     }
 #else
     if(enable)
