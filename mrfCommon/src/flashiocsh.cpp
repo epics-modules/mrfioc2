@@ -146,13 +146,15 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 {
     if(!infile || infile[0]=='\0') {
         printf("Usage: flashwrite <name> <start_address> <filename>\n");
+        iocshSetError(1);
         return;
     }
 
     try {
         mrf::SPIDevice dev;
         if(!mrf::SPIDevice::lookupDev(name, &dev)) {
-            printf("No such device");
+            printf("No such device\n");
+            iocshSetError(1);
             return;
         }
         epicsUInt32 addr = addrraw;
@@ -160,6 +162,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
         mrf::CFIFlash mem(dev);
         if(!mem.writable()) {
             printf("Device not writable\n");
+            iocshSetError(1);
             return;
         }
 
@@ -192,6 +195,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 
                 if(!flashAcknowledgeMismatch) {
                     fprintf(stderr, "To override, re-run after setting: var(\"flashAcknowledgeMismatch\", 1)\n");
+                    iocshSetError(1);
                     return;
                 }
             }
@@ -221,6 +225,7 @@ void flashwrite(const char *name, int addrraw, const char *infile)
 
     }catch(std::exception& e){
         printf("Error: %s\n", e.what());
+        iocshSetError(1);
     }
 }
 }
