@@ -27,6 +27,14 @@
 #include "mrf/flash.h"
 
 #include <epicsExport.h>
+#include <epicsVersion.h>
+
+#if !defined(EPICS_VERSION_INT) || EPICS_VERSION_INT < VERSION_INT(7,0,3,1)
+static int iocshSetError(int err)
+{
+    return err;
+}
+#endif
 
 extern "C" {
 int flashAcknowledgeMismatch;
