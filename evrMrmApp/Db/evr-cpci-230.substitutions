@@ -78,6 +78,16 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:FPUV3}", "$(EVR):FrontUnivOut3", "UNIV3"}
 }
 
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+{"$(SYS){$(D):FPUV0}"}
+{"$(SYS){$(D):FPUV1}"}
+{"$(SYS){$(D):FPUV2}"}
+{"$(SYS){$(D):FPUV3}"}
+}
+
 file "mrmevroutint.db"
 {{
     ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"

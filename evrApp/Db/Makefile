@@ -21,6 +21,7 @@ DB += evrevent-cycle.db
 DB += evrsoftgate.db
 DB += evralias.db
 DB += evrNtp.db
+DB += evruniv.db
 
 DB += nsls2-egunfine.db
 

@@ -1,0 +1,18 @@
+# Record set for an EVR's Universal I/O information
+#
+# Macros:
+#  ON = record name prefix
+
+record(mbbi, "$(ON)Model") {
+  field(DESC, "UNIV Model")
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(VAL , "0")
+  field(ZRST, "None")
+  field(ONST, "OUT HFBR-1414")
+  field(TWST, "OUT HFBR-1528")
+  field(THST, "OUT TTL")
+  field(FRST, "OUT TTL DLY")
+  field(FVST, "OUT TTL 5V")
+  field(SXST, "IN TTL")
+  field(PINI, "YES")
+}

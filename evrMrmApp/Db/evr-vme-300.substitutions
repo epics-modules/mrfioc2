@@ -518,3 +518,35 @@ file "mrmevroutdly.db"
 {"\$(P)OutRear14", "$(EVR):RearUniv14"}
 {"\$(P)OutRear15", "$(EVR):RearUniv15"}
 }
+
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+# Front Panel
+{"\$(P)FPUV0"}
+{"\$(P)FPUV1"}
+{"\$(P)FPUV2"}
+{"\$(P)FPUV3"}
+{"\$(P)FPUV4"}
+{"\$(P)FPUV5"}
+{"\$(P)FPUV6"}
+{"\$(P)FPUV7"}
+# RTM
+{"\$(P)Rear0"}
+{"\$(P)Rear1"}
+{"\$(P)Rear2"}
+{"\$(P)Rear3"}
+{"\$(P)Rear4"}
+{"\$(P)Rear5"}
+{"\$(P)Rear6"}
+{"\$(P)Rear7"}
+{"\$(P)Rear8"}
+{"\$(P)Rear9"}
+{"\$(P)Rear10"}
+{"\$(P)Rear11"}
+{"\$(P)Rear12"}
+{"\$(P)Rear13"}
+{"\$(P)Rear14"}
+{"\$(P)Rear15"}
+}
