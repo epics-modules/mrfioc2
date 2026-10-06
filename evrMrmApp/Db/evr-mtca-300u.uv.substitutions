@@ -139,6 +139,28 @@ pattern
 {"\$(P)OutRearUniv9", "$(EVR):RearUniv9", "RTM (9)" , 63}
 }
 
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+# Front Panel
+{"\$(P)FPUV0"}
+{"\$(P)FPUV1"}
+{"\$(P)FPUV2"}
+{"\$(P)FPUV3"}
+# RTM
+{"\$(P)OutRearUniv0"}
+{"\$(P)OutRearUniv1"}
+{"\$(P)OutRearUniv2"}
+{"\$(P)OutRearUniv3"}
+{"\$(P)OutRearUniv4"}
+{"\$(P)OutRearUniv5"}
+{"\$(P)OutRearUniv6"}
+{"\$(P)OutRearUniv7"}
+{"\$(P)OutRearUniv8"}
+{"\$(P)OutRearUniv9"}
+}
+
 file "mrmevroutint.db"
 {{
     ON="\$(P)OutInt", OBJ="$(EVR)"

@@ -265,3 +265,25 @@ file "evrin.db"
 {"$(SYS){$(D)-In:FPUV14}", "$(EVR):FPIn14", "In:FPUV14"}
 {"$(SYS){$(D)-In:FPUV15}", "$(EVR):FPIn15", "In:FPUV15"}
 }
+
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+{"$(SYS){$(D)FPUV0}"}
+{"$(SYS){$(D)FPUV1}"}
+{"$(SYS){$(D)FPUV2}"}
+{"$(SYS){$(D)FPUV3}"}
+{"$(SYS){$(D)FPUV4}"}
+{"$(SYS){$(D)FPUV5}"}
+{"$(SYS){$(D)FPUV6}"}
+{"$(SYS){$(D)FPUV7}"}
+{"$(SYS){$(D)FPUV8}"}
+{"$(SYS){$(D)FPUV9}"}
+{"$(SYS){$(D)FPUV10}"}
+{"$(SYS){$(D)FPUV11}"}
+{"$(SYS){$(D)FPUV12}"}
+{"$(SYS){$(D)FPUV13}"}
+{"$(SYS){$(D)FPUV14}"}
+{"$(SYS){$(D)FPUV15}"}
+}

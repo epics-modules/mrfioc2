@@ -102,6 +102,34 @@ file "mrmevrout.db"
 {"$(SYS){$(D)-Out:RB15}","$(EVR):RearUniv15","Rear 15"}
 }
 
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+# Front Panel
+{"$(SYS){$(D):FPUV0}"}
+{"$(SYS){$(D):FPUV1}"}
+{"$(SYS){$(D):FPUV2}"}
+{"$(SYS){$(D):FPUV3}"}
+# RTM
+{"$(SYS){$(D):RB00}"}
+{"$(SYS){$(D):RB01}"}
+{"$(SYS){$(D):RB02}"}
+{"$(SYS){$(D):RB03}"}
+{"$(SYS){$(D):RB04}"}
+{"$(SYS){$(D):RB05}"}
+{"$(SYS){$(D):RB06}"}
+{"$(SYS){$(D):RB07}"}
+{"$(SYS){$(D):RB08}"}
+{"$(SYS){$(D):RB09}"}
+{"$(SYS){$(D):RB10}"}
+{"$(SYS){$(D):RB11}"}
+{"$(SYS){$(D):RB12}"}
+{"$(SYS){$(D):RB13}"}
+{"$(SYS){$(D):RB14}"}
+{"$(SYS){$(D):RB15}"}
+}
+
 file "mrmevroutint.db"
 {{
     ON="$(SYS){$(D)-Out:Int}", OBJ="$(EVR)"

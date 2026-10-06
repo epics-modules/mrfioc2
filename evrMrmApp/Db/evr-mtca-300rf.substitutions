@@ -146,6 +146,28 @@ pattern
 {"\$(P)\$(dsh=-)Out\$(s=:)RearUniv9\$(ES)", "$(EVR):RearUniv9"     , "RTM (9)" , 63}
 }
 
+# Records to identify the type of UNIV I/O
+file "evruniv.db"
+{pattern
+{ON}
+# Front pannel
+{"\$(P)\$(s=:)FPUV0\$(ES)"}
+{"\$(P)\$(s=:)FPUV1\$(ES)"}
+{"\$(P)\$(s=:)FPUV2\$(ES)"}
+{"\$(P)\$(s=:)FPUV3\$(ES)"}
+# RTM
+{"\$(P)\$(s=:)RearUniv0\$(ES)"}
+{"\$(P)\$(s=:)RearUniv1\$(ES)"}
+{"\$(P)\$(s=:)RearUniv2\$(ES)"}
+{"\$(P)\$(s=:)RearUniv3\$(ES)"}
+{"\$(P)\$(s=:)RearUniv4\$(ES)"}
+{"\$(P)\$(s=:)RearUniv5\$(ES)"}
+{"\$(P)\$(s=:)RearUniv6\$(ES)"}
+{"\$(P)\$(s=:)RearUniv7\$(ES)"}
+{"\$(P)\$(s=:)RearUniv8\$(ES)"}
+{"\$(P)\$(s=:)RearUniv9\$(ES)"}
+}
+
 file "mrmevroutint.db"
 {{
     ON="\$(P)\$(dsh=-)Out\$(s=:)Int\$(ES)", OBJ="$(EVR)"
