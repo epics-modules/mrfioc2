@@ -225,8 +225,9 @@ static const EVRMRM::Config mtca_evr_300u = { // with UNIV slots on FP
      * 0 <= N <= 3   : FPInMap
      * 4 <= N <= 23  : UnivInMap
      * 24 <= N <= 31 : BPInMap
+     * 48 - 57 : TBInMap (EVRTM)
      */
-    32,  // FP, Univ, BP inputs
+    58, // FP, Univ, BP, TB inputs
 };
 // Default MTCA EVR
 static const EVRMRM::Config mtca_evr_300 = {
@@ -269,11 +270,47 @@ static const EVRMRM::Config mtca_evr_300ifb = {
 };
 
 static const EVRMRM::Config pcie_evr_300 = {
+    "PCIe-EVR-300",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    16, // FPUV outputs
+    0,  // RB outputs
+    0,  // Backplane outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeCML,
+    /**
+     * 0 <= N <= 3  : FPInMap
+     * 4 <= N <= 23 : UnivInMap
+     */
+    24, // FP, Univ inputs
+};
+
+static const EVRMRM::Config pcie_evr_300dc = {
     "PCIe-EVR-300DC",
     24, // pulse generators
     8,  // prescalers
     0,  // FP outputs
-    16, // FPUV outputs  (via external IFB)
+    16, // FPUV outputs (via external IFB-300)
+    0,  // RB outputs
+    0,  // Backplane outputs
+    0,  // FP Delay outputs
+    0,  // CML/GTX outputs
+    MRMCML::typeCML,
+    /**
+     * 0 <= N <= 3  : FPInMap
+     * 4 <= N <= 23 : UnivInMap
+     */
+    24, // FP, Univ inputs
+};
+
+static const EVRMRM::Config pcie_evr_300dcs = {
+    "PCIe-EVR-300DCS",
+    24, // pulse generators
+    8,  // prescalers
+    0,  // FP outputs
+    16, // FPUV outputs (via external IFB-300S)
     0,  // RB outputs
     0,  // Backplane outputs
     0,  // FP Delay outputs
@@ -672,7 +709,7 @@ static bool checkUIOVersion(int,int,int*) {return false;}
 #endif
 
 void
-mrmEvrSetupPCI(const char* id,const char* pcispec, const char* mtca_evr_model)
+mrmEvrSetupPCI(const char* id,const char* pcispec, const char* evr_model)
 {
 try {
     bus_configuration bus;
@@ -714,29 +751,47 @@ try {
     case PCI_DEVICE_ID_MRF_EVRTG_300:  conf = &cpci_evrtg_300; break;
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
     case PCI_DEVICE_ID_MRF_EVRMTCA300:
-        if (mtca_evr_model == NULL)
+        if (evr_model == NULL)
         {
             // if no EVR type is provided, we assume mtca_evr_300 generic as this was the default beforehand
-            mtca_evr_model = "default";
+            evr_model = "default";
             conf = &mtca_evr_300;
-        } else if (strcmp(mtca_evr_model, "UNIV") == 0) {
-            printf("Config for EVR FP UNIV model (mTCA-EVR-300U).\n");
+            printf("Config for EVR model: %s.\n", mtca_evr_300.model);
+        } else if (strcmp(evr_model, "UNIV") == 0) {
             conf = &mtca_evr_300u;
-        } else if (strcmp(mtca_evr_model, "IFB") == 0) {
-            printf("Config for EVR FP IFB model (mTCA-EVR-300IFB - obsolete).\n");
+            printf("Config for EVR UNIV model: %s.\n", mtca_evr_300u.model);
+        } else if (strcmp(evr_model, "IFB") == 0) {
             conf = &mtca_evr_300ifb;
-        } else if (strcmp(mtca_evr_model, "RF") == 0) {
-            printf("Config for EVR FP RF model (mTCA-EVR-300RF).\n");
+            printf("Config for EVR IFB model (obsolete): %s.\n", mtca_evr_300ifb.model);
+        } else if (strcmp(evr_model, "RF") == 0) {
             conf = &mtca_evr_300rf;
+            printf("Config for EVR RF model: %s.\n", mtca_evr_300rf.model);
         } else {
-            printf("Error: mtca_evr_model arg (%s), needs no param (default) or 'UNIV' or 'RF' or 'IFB'.\n", mtca_evr_model);
+            printf("Error: evr_model arg (%s), needs no param (default) or 'UNIV' or 'RF' or 'IFB'.\n", evr_model);
             return;
         }
         break;
     case PCI_DEVICE_ID_MRF_EVRTG_300E: // aka PCI_SUBDEVICE_ID_PCIE_EVR_300
         switch (cur->id.device) {
         case PCI_DEVICE_ID_EC_30: conf = &cpci_evrtg_300; break;
-        case PCI_DEVICE_ID_XILINX_DEV: conf = &pcie_evr_300; break;
+        case PCI_DEVICE_ID_XILINX_DEV:
+            if (evr_model == NULL)
+            {
+                // if no EVR type is provided
+                evr_model = "default";
+                conf = &pcie_evr_300;
+                printf("Config for EVR model: %s.\n", pcie_evr_300.model);
+            } else if (strcmp(evr_model, "DC") == 0) {
+                conf = &pcie_evr_300dc;
+                printf("Config for EVR model: %s.\n", pcie_evr_300dc.model);
+            } else if (strcmp(evr_model, "DCS") == 0) {
+                conf = &pcie_evr_300dcs;
+                printf("Config for EVR model: %s.\n", pcie_evr_300dcs.model);
+            } else {
+                printf("Error: evr_model arg (%s), needs no param (default) or 'DC' or 'DCS'.\n", evr_model);
+                return;
+            }
+            break;
         }
         break;
     }
