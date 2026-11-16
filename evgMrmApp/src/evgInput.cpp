@@ -57,12 +57,26 @@ epicsUInt32 evgInput::getHwMask() const
 
 void evgInput::setHwMask(epicsUInt32 src)
 {
+    if (src > 0xF)
+        throw std::runtime_error("FPMASK: use mask lines 0-3 only (value 0-15)");
     epicsUInt32 inReg=nat_ioread32(m_pInReg) & ~(EVG_INP_FP_MASK);
     nat_iowrite32(m_pInReg, inReg | (src<<EVG_INP_FP_MASK_shift));
     scanIoRequest(changed);
 }
 
+epicsUInt32 evgInput::getHwEna() const
+{
+    return (nat_ioread32(m_pInReg) & EVG_INP_FP_ENA_USER) >> EVG_INP_FP_ENA_shift;
+}
 
+void evgInput::setHwEna(epicsUInt32 src)
+{
+    if (src > 0xF || (src & 0x1))
+        throw std::runtime_error("FPENA: use lines 1-3 only (bit 0 aliases ext IRQ/PPS on bit 24)");
+    epicsUInt32 inReg = nat_ioread32(m_pInReg) & ~(epicsUInt32)EVG_INP_FP_ENA_USER;
+    nat_iowrite32(m_pInReg, inReg | (src << EVG_INP_FP_ENA_shift));
+    scanIoRequest(changed);
+}
 
 void
 evgInput::setDbusMap(epicsUInt16 dbus, bool ena) {
