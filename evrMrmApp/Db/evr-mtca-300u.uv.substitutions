@@ -543,4 +543,15 @@ file "mrmevroutdly.db"
 {"\$(P)OutFPUV1",  "$(EVR):FrontUnivOut1"}
 {"\$(P)OutFPUV2",  "$(EVR):FrontUnivOut2"}
 {"\$(P)OutFPUV3",  "$(EVR):FrontUnivOut3"}
+# RTM (RTMDELAY hardware)
+{"\$(P)OutRearUniv0", "$(EVR):RearUniv0"}
+{"\$(P)OutRearUniv1", "$(EVR):RearUniv1"}
+{"\$(P)OutRearUniv2", "$(EVR):RearUniv2"}
+{"\$(P)OutRearUniv3", "$(EVR):RearUniv3"}
+{"\$(P)OutRearUniv4", "$(EVR):RearUniv4"}
+{"\$(P)OutRearUniv5", "$(EVR):RearUniv5"}
+{"\$(P)OutRearUniv6", "$(EVR):RearUniv6"}
+{"\$(P)OutRearUniv7", "$(EVR):RearUniv7"}
+{"\$(P)OutRearUniv8", "$(EVR):RearUniv8"}
+{"\$(P)OutRearUniv9", "$(EVR):RearUniv9"}
 }
