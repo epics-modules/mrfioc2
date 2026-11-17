@@ -65,7 +65,7 @@ jobs:
             configuration: default
             base: "3.14"
 
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             cmp: gcc
             configuration: default
             base: "3.15"
