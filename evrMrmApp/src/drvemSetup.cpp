@@ -751,7 +751,7 @@ try {
     case PCI_DEVICE_ID_MRF_EVRTG_300:  conf = &cpci_evrtg_300; break;
     case PCI_DEVICE_ID_MRF_CPCIEVR300: conf = &cpci_evr_300; break;
     case PCI_DEVICE_ID_MRF_EVRMTCA300:
-        if (evr_model == NULL)
+        if (evr_model == NULL || (strcmp(evr_model, "") == 0))
         {
             // if no EVR type is provided, we assume mtca_evr_300 generic as this was the default beforehand
             evr_model = "default";
@@ -775,7 +775,7 @@ try {
         switch (cur->id.device) {
         case PCI_DEVICE_ID_EC_30: conf = &cpci_evrtg_300; break;
         case PCI_DEVICE_ID_XILINX_DEV:
-            if (evr_model == NULL)
+            if (evr_model == NULL || (strcmp(evr_model, "") == 0))
             {
                 // if no EVR type is provided
                 evr_model = "default";
