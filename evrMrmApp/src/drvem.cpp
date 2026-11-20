@@ -1091,7 +1091,7 @@ EVRMRM::fastEvtRecvCodeSet(epicsUInt32 code)
         cur &= ~FastEventRecv_Code_MASK;
         // code 0 is used to disable Fast Event
         if(code==0)
-            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur & ~FastEventRecv_Ena);
+            WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | (cur & ~FastEventRecv_Ena));
         // any other valid code enables Fast Event
         else
             WRITE32(base, FastEventRecv, (code<<FastEventRecv_Code_SHIFT) | cur | FastEventRecv_Ena);
