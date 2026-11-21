@@ -46,6 +46,7 @@ MODULE_PARM_DESC(use_msi, "Use MSI if present (default 1, yes)");
 #define PCI_DEVICE_ID_EC_30                 0xEC30
 
 #define PCI_DEVICE_ID_XILINX_DEV            0x7011
+#define PCI_DEVICE_ID_XILINX_DEV2           0x0505
 
 #define PCI_DEVICE_ID_PLX_9030              0x9030      /** PCI Device ID for PLX-9030 bridge chip */
 #define PCI_DEVICE_ID_PLX_9056              0x9056      /** PCI Device ID for PLX-9056 bridge chip */
@@ -62,6 +63,8 @@ MODULE_PARM_DESC(use_msi, "Use MSI if present (default 1, yes)");
 #define PCI_SUBDEVICE_ID_MRF_EVRTG_300      0x192c
 /* PCIe-EVR-300 and PCIe-EVR-300DC */
 #define PCI_SUBDEVICE_ID_PCIE_EVR_300       0x172c
+/* PXIe-EVR-300 */
+#define PCI_SUBDEVICE_ID_PXIE_EVR_300       0x112c
 
 /* mTCA-EVM-300 */
 #define PCI_DEVICE_ID_MRF_MTCA_EVM_300      0x232c
@@ -773,6 +776,13 @@ static struct pci_device_id mrf_pci_ids[] = {
         .subvendor =    PCI_SUBVENDOR_ID_MRF,
         .subdevice =    PCI_DEVICE_ID_MRF_MTCA_EVM_300,
         .driver_data =  0x28,
+    },
+    {
+        .vendor =       PCI_VENDOR_ID_XILINX,
+        .device =       PCI_DEVICE_ID_XILINX_DEV2,
+        .subvendor =    PCI_SUBVENDOR_ID_MRF,
+        .subdevice =    PCI_SUBDEVICE_ID_PXIE_EVR_300,
+        .driver_data =  0x16,
     },
     { 0, }
 };
