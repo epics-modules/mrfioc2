@@ -119,6 +119,14 @@ MRMPulser::setWidth(double v)
 
     epicsUInt32 ticks=roundToUInt((v*clk)/scal);
 
+    // Due to HW limitations train delay must always be PulserTrainMinGap
+    // ticks bigger than pulser width
+    epicsUInt32 trainDelay=trainDelayRaw();
+    epicsUInt32 minTrainDelay=ticks+PulserTrainMinGap;
+    if (trainDelay < minTrainDelay) {
+      setTrainDelayRaw(minTrainDelay);
+    }
+
     setWidthRaw(ticks);
 }
 
@@ -203,6 +211,61 @@ MRMPulser::setDBusTrig(epicsUInt32 v)
         }
         WRITE32(owner.base, DBusPulsTrig(i), t);
     }
+}
+
+void
+MRMPulser::setTrainRepCount(epicsUInt32 v)
+{
+    WRITE32(owner.base, PulserTrainCnt(id), v);
+}
+
+epicsUInt32
+MRMPulser::trainRepCount() const
+{
+    return READ32(owner.base, PulserTrainCnt(id));
+}
+
+void
+MRMPulser::setTrainDelayRaw(epicsUInt32 v)
+{
+    WRITE32(owner.base, PulserTrainDly(id), v);
+}
+
+void
+MRMPulser::setTrainDelay(double v)
+{
+    double scal=double(prescaler());
+    if (scal<=0) scal=1;
+    double clk=owner.clock(); // in MHz.  MTicks/second
+
+    epicsUInt32 ticks=roundToUInt((v*clk)/scal);
+
+    // Due to HW limitations train delay must always be PulserTrainMinGap
+    // ticks bigger than pulser width
+    epicsUInt32 width=widthRaw();
+    epicsUInt32 minTrainDelay=width+PulserTrainMinGap;
+    if (ticks < minTrainDelay) {
+      ticks=minTrainDelay;
+    }
+
+    setTrainDelayRaw(ticks);
+}
+
+epicsUInt32
+MRMPulser::trainDelayRaw() const
+{
+    return READ32(owner.base, PulserTrainDly(id));
+}
+
+double
+MRMPulser::trainDelay() const
+{
+    double scal=double(prescaler());
+    double ticks=double(trainDelayRaw());
+    double clk=owner.clock(); // in MHz.  MTicks/second
+    if (scal<=0) scal=1;
+
+    return (ticks*scal)/clk;
 }
 
 bool

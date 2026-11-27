@@ -206,6 +206,11 @@ OBJECT_BEGIN(Pulser) {
 
     OBJECT_PROP2("DBusTrig", &Pulser::dbusTrig, &Pulser::setDBusTrig);
 
+    OBJECT_PROP2("TrainRepCount", &Pulser::trainRepCount, &Pulser::setTrainRepCount);
+
+    OBJECT_PROP2("TrainDelay", &Pulser::trainDelay, &Pulser::setTrainDelay);
+    OBJECT_PROP2("TrainDelay", &Pulser::trainDelayRaw, &Pulser::setTrainDelayRaw);
+
 } OBJECT_END(Pulser)
 
 

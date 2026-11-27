@@ -318,6 +318,9 @@
 #define  EVG_EXT_INP_IRQ_ENA    0x01000000
 #define  EVG_INP_FP_ENA         0x0F000000
 #define  EVG_INP_FP_ENA_shift   24
+/* Bit 24 (enable line 0) is shared with EVG_EXT_INP_IRQ_ENA (PPS/IRQ).
+ * Only lines 1-3 (bits 25-27) are safe to use for sequence enable mapping. */
+#define  EVG_INP_FP_ENA_USER    0x0E000000
 #define  EVG_INP_FP_MASK        0xF0000000
 #define  EVG_INP_FP_MASK_shift  28
 #define  EVG_INP_MXCR_ENA       0x00008000

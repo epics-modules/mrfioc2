@@ -56,6 +56,22 @@ pattern
 {"\$(P)InpUniv13", "$(EVG):UnivInp13",  2, "1"}
 {"\$(P)InpUniv14", "$(EVG):UnivInp14",  3, "1"}
 {"\$(P)InpUniv15", "$(EVG):UnivInp15",  4, "1"}
+{"\$(P)InpRear0",  "$(EVG):RearInp0",   5, "1"}
+{"\$(P)InpRear1",  "$(EVG):RearInp1",   0, "2"}
+{"\$(P)InpRear2",  "$(EVG):RearInp2",   1, "2"}
+{"\$(P)InpRear3",  "$(EVG):RearInp3",   2, "2"}
+{"\$(P)InpRear4",  "$(EVG):RearInp4",   3, "2"}
+{"\$(P)InpRear5",  "$(EVG):RearInp5",   4, "2"}
+{"\$(P)InpRear6",  "$(EVG):RearInp6",   5, "2"}
+{"\$(P)InpRear7",  "$(EVG):RearInp7",   6, "2"}
+{"\$(P)InpRear8",  "$(EVG):RearInp8",   7, "2"}
+{"\$(P)InpRear9",  "$(EVG):RearInp9",   8, "2"}
+{"\$(P)InpRear10", "$(EVG):RearInp10",  9, "2"}
+{"\$(P)InpRear11", "$(EVG):RearInp11",  A, "2"}
+{"\$(P)InpRear12", "$(EVG):RearInp12",  B, "2"}
+{"\$(P)InpRear13", "$(EVG):RearInp13",  C, "2"}
+{"\$(P)InpRear14", "$(EVG):RearInp14",  D, "2"}
+{"\$(P)InpRear15", "$(EVG):RearInp15",  E, "2"}
 }
 
 file "evgMrm.db"

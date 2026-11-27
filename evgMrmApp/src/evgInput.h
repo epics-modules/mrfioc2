@@ -37,6 +37,9 @@ public:
     void setHwMask(epicsUInt32);
     epicsUInt32 getHwMask() const;
 
+    void setHwEna(epicsUInt32);
+    epicsUInt32 getHwEna() const;
+
     void setDbusMap(epicsUInt16, bool);
     bool getDbusMap(epicsUInt16) const;
 

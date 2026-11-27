@@ -134,6 +134,92 @@ record(longin, "$(PN)Width$(s=:)Raw-RB") {
   field(LOPR, "0")
   field(HIGH, "$(WMAX=0xffff)")
   field(HSV, "MAJOR")
+  field(FLNK, "$(PN)TrainDelay-RB")
+}
+
+# Determines the train generation repetition count. If the repetition count is
+# 0, only one pulse is emitted from the pulser.
+record(longout, "$(PN)TrainRepCount-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DTYP, "Obj Prop uint32")
+  field(OUT , "@OBJ=$(OBJ), PROP=TrainRepCount")
+  field(DESC, "Pulse Generator $(PID) Train Rep Count")
+  field(PINI, "YES")
+  field(DRVL, "0")
+  field(FLNK, "$(PN)TrainRepCount-RB")
+  info(autosaveFields_pass0, "VAL")
+}
+
+record(longin, "$(PN)TrainRepCount-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=TrainRepCount")
+  field(DESC, "Pulse Generator $(PID) Train Rep Count")
+  field(PINI, "YES")
+  field(HOPR, "$(REPMAX=0xffff)")
+  field(LOPR, "0")
+  field(HIGH, "$(REPMAX=0xffff)")
+  field(HSV, "MAJOR")
+}
+
+# Because of hardware limitations, the TrainDelay register cannot be set to
+# less than: Width-SP + 4 ticks. The functions that write to the registers
+# ensure this condition is always satisfied.
+# Determines the time between sequential pulses in a pulse train.
+record(ao, "$(PN)TrainDelay-SP") {
+  field(ASG,  "$(ASGPROTECTED=protected)")
+  field(DTYP, "Obj Prop double")
+  field(OUT , "@OBJ=$(OBJ), PROP=TrainDelay")
+  field(PINI, "YES")
+  field(DESC, "Pulse Generator $(PID) Train Delay")
+  field(VAL , "0")
+  field(EGU , "us")
+  field(DRVL, "0")
+  field(LINR, "LINEAR")
+  field(LSV , "MAJOR")
+  field(ESLO, "1e6")
+  field(PREC, "3")
+  field(FLNK, "$(PN)TrainDelay-RB")
+  info(autosaveFields_pass0, "VAL EGU ESLO PREC HOPR LOPR DRVL DRVH LOW")
+}
+
+# This record signifies minimum allowed train delay.
+# It presents two output parameters to the user:
+# VAL: whether TrainDelay-SP is below the minimum (Width-SP + 4 ticks)
+# D: minimum allowed train delay in us
+record(calcout, "$(PN)MinTrainDelay") {
+  field(DESC, "Minimal Train Delay Condition")
+  field(INPA, "$(PN)Width-RB CP") #us
+  field(INPB, "$(PN)TrainDelay-SP CP") #us
+  field(INPC, "$(PN)Res-I CP") #ns
+  field(CALC, "D:=A+(C/1000)*4;B<D ? 1:0")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "D")
+  field(OUT , "$(PN)TrainDelay-SP.LOW PP")
+  field(EGU , "us")
+  field(PREC, "3")
+}
+
+record(ai, "$(PN)TrainDelay-RB") {
+  field(DTYP, "Obj Prop double")
+  field(INP , "@OBJ=$(OBJ), PROP=TrainDelay")
+  field(DESC, "Pulse Generator $(PID) Train Delay")
+  field(VAL , "0")
+  field(EGU , "us")
+  field(LINR, "LINEAR")
+  field(ESLO, "1e6")
+  field(PREC, "3")
+  field(FLNK, "$(PN)TrainDelay$(s=:)Raw-RB")
+}
+
+record(longin, "$(PN)TrainDelay$(s=:)Raw-RB") {
+  field(DTYP, "Obj Prop uint32")
+  field(INP , "@OBJ=$(OBJ), PROP=TrainDelay")
+  field(DESC, "Pulse Generator $(PID) Train Delay")
+  field(EGU , "cnts")
+  field(HOPR, "$(DMAX=0xffff)")
+  field(LOPR, "0")
+  field(HIGH, "$(DMAX=0xffff)")
+  field(HSV, "MAJOR")
 }
 
 # Decreases the resolution of both delay and width by an integer multiple.
@@ -181,6 +267,7 @@ record(fanout, "$(PN)Res-FO_") {
   field(DESC, "Clock change resync")
   field(LNK1, "$(PN)Delay-SP")
   field(LNK2, "$(PN)Width-SP")
+  field(LNK3, "$(PN)TrainDelay-SP")
 }
 
 record(waveform, "$(PN)Label-I") {

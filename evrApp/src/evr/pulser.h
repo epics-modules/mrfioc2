@@ -108,6 +108,22 @@ public:
   virtual void setPolarityInvert(bool)=0;
   /*@}*/
 
+  /**\defgroup scaler Set prescaler train repetition count
+   */
+  /*@{*/
+  virtual epicsUInt32 trainRepCount() const=0;
+  virtual void setTrainRepCount(epicsUInt32)=0;
+  /*@}*/
+
+  /**\defgroup scaler Set prescaler train repetition count
+   */
+  /*@{*/
+  virtual void setTrainDelay(double)=0;
+  virtual void setTrainDelayRaw(epicsUInt32)=0;
+  virtual double trainDelay() const=0;
+  virtual epicsUInt32 trainDelayRaw() const=0;
+  /*@}*/
+
   /**\defgroup map Control which source(s) effect this pulser.
    *
    * Meaning of source id number is device specific.
